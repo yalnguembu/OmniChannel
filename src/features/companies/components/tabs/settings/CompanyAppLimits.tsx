@@ -1,0 +1,254 @@
+import { useNavigate } from "@tanstack/react-router"
+import { useTranslation } from "react-i18next"
+import { useEffect, useMemo, useState } from "react"
+import { DataGrid } from "@/shared/components/data-grid/data-grid"
+import { DataGridColumnHeader, DataGridRowEntry, DataGridSort } from "@/shared/types"
+import { SortDirection } from "@/shared/enums/data-grid"
+import { Button } from "@/shared/components/ui/button"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/shared/components/ui/dropdown-menu"
+import { MoreHorizontal, Eye, Edit, Trash2, Plus } from "lucide-react"
+import { useCompanyAppLimit } from "@/features/company-app-limits/hooks/useCompanyAppLimit"
+import { BaseFilter } from "@/shared/components/filter/base-filter"
+import { zSearchCompanyAppLimitRequest } from "@/shared/api/zod.gen"
+import { SearchCompanyAppLimitRequest, UpdateCompanyAppLimitRequest } from "@/shared"
+import { CommonDataGridEntry, Entity } from "@/shared/components/data-grid/adapters/common"
+import { Card, CardContent } from "@/shared/components/ui/card"
+import { ModalWrapper } from "@/shared/components/ModalWrapper"
+import { CompanyAppLimitCreateForm } from "@/features/company-app-limits/components/CompanyAppLimitCreateForm"
+
+export function CompanyAppLimitsTab({ companyId }: { companyId: string }) {
+  const navigate = useNavigate()
+  const { t } = useTranslation()
+
+  const [showCreateModal, setShowCreateModal] = useState(false)
+  const toggleShowCreateModal = () => setShowCreateModal((prev) => !prev)
+
+  const {
+    companyAppLimits,
+    searchCompanyAppLimits,
+    currentPage,
+    pageSize,
+    totalItems,
+    sortBy,
+    sortDirection,
+    selectedRows,
+    isLoading,
+    hasSelection,
+    viewMode,
+    setViewMode,
+    refreshData,
+    applyFilters,
+    clearFilters,
+    changePage,
+    changeSort,
+    setSelectedRows,
+    deleteCompanyAppLimit,
+    bulkDeleteMutation,
+    createMutation,
+  } = useCompanyAppLimit()
+
+  const columnHeaders: DataGridColumnHeader[] = [
+    {
+      key: "createdAt",
+      label: "Created At",
+      sortable: true,
+      resizable: true,
+    },
+    {
+      key: "applicationName",
+      label: "Application Name",
+      sortable: true,
+      resizable: true,
+    },
+    {
+      key: "companyName",
+      label: "Company Name",
+      sortable: true,
+      resizable: true,
+    },
+    {
+      key: "apiRequestsLimit",
+      label: "Api Requests Limit",
+      sortable: true,
+      resizable: true,
+    },
+    {
+      key: "defaultDailyLimit",
+      label: "Default Daily Limit",
+      sortable: true,
+      resizable: true,
+    },
+    {
+      key: "defaultMonthlyLimit",
+      label: "Default Monthly Limit",
+      sortable: true,
+      resizable: true,
+    },
+    {
+      key: "defaultSingleTransactionLimit",
+      label: "Default Single Transaction Limit",
+      sortable: true,
+      resizable: true,
+    },
+    {
+      key: "actions",
+      label: t("companyAppLimits.actions.more"),
+      sortable: false,
+      width: 70,
+    },
+  ]
+
+  useEffect(() => {
+    searchCompanyAppLimits()
+  }, [])
+
+  const gridItems = useMemo(() => {
+    return companyAppLimits.map((item) => new CommonDataGridEntry(item as Entity))
+  }, [companyAppLimits])
+
+  const handleView = (id: string) => {
+    navigate({ to: `/administration/company-app-limits/${id}` })
+  }
+
+  const handleEdit = (id: string) => {
+    navigate({ to: `/administration/company-app-limits/${id}/edit` })
+  }
+
+  const handleDelete = (id: string) => {
+    if (confirm(t("companyAppLimits.messages.delete.confirm"))) {
+      deleteCompanyAppLimit(id)
+    }
+  }
+
+  const handleBulkDelete = () => {
+    if (confirm(t("companyAppLimits.bulk.deleteConfirm", { count: selectedRows.length }))) {
+      bulkDeleteMutation.mutate(selectedRows)
+    }
+  }
+
+  const renderCell = (item: DataGridRowEntry, columnKey: string) => {
+    switch (columnKey) {
+      case "actions":
+        return (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="h-8 w-8 p-0">
+                <span className="sr-only">Open menu</span>
+                <MoreHorizontal className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem onClick={() => handleView(item.getId())}>
+                <Eye className="mr-2 h-4 w-4" />
+                {t("companyAppLimits.actions.view")}
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => handleEdit(item.getId())}>
+                <Edit className="mr-2 h-4 w-4" />
+                {t("companyAppLimits.actions.edit")}
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => handleDelete(item.getId())} className="text-red-600">
+                <Trash2 className="mr-2 h-4 w-4" />
+                {t("companyAppLimits.actions.delete")}
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        )
+      default:
+        return item.getTextFor(columnKey) || "N/A"
+    }
+  }
+
+  const sortConfig: DataGridSort | undefined = sortBy
+    ? {
+        column: sortBy,
+        direction: sortDirection === "desc" ? SortDirection.DESC : SortDirection.ASC,
+      }
+    : undefined
+
+  const handleSortChange = (config: DataGridSort) => {
+    const direction = config.direction
+    changeSort(config.column, direction)
+  }
+
+  const handleSelectionChange = (selectedIds: string[]) => {
+    setSelectedRows(selectedIds)
+  }
+
+  const handlePageChange = (page: number) => {
+    changePage(page)
+  }
+
+  const bulkActions = hasSelection
+    ? [
+        {
+          label: bulkDeleteMutation.isPending ? t("companyAppLimits.bulk.deleting") : t("companyAppLimits.bulk.delete", { count: selectedRows.length }),
+          action: handleBulkDelete,
+          variant: "destructive" as const,
+          loading: bulkDeleteMutation.isPending,
+        },
+      ]
+    : undefined
+
+  const handleSubmit = (data: UpdateCompanyAppLimitRequest) => {
+    createMutation.mutate(
+      { body: data },
+      {
+        onSuccess: () => {
+          toggleShowCreateModal()
+          searchCompanyAppLimits()
+        },
+      },
+    )
+  }
+
+  return (
+    <div className="flex flex-col gap-y-4 pt-4">
+      <BaseFilter<SearchCompanyAppLimitRequest>
+        schema={zSearchCompanyAppLimitRequest}
+        onFilter={applyFilters}
+        onReset={clearFilters}
+        viewMode={viewMode}
+        setViewMode={setViewMode}
+        refreshData={refreshData}
+        isLoading={isLoading}
+        hasSelection={hasSelection}
+        selectedRows={selectedRows}
+        selectionCount={selectedRows.length}
+      />
+
+      <Card className="shadow-none">
+        <CardContent className="relative px-4">
+          <Button onClick={toggleShowCreateModal} className="absolute top-2 right-36">
+            <Plus className="size-4" />
+            <span>{t("companyAppLimits.form.create.title")}</span>
+          </Button>
+          <DataGrid
+            columnHeaders={columnHeaders}
+            items={gridItems}
+            total={totalItems}
+            page={currentPage}
+            limit={pageSize}
+            hasPagination={true}
+            onPageChange={handlePageChange}
+            isLoading={isLoading}
+            emptyMessage={t("companyAppLimits.messages.noData")}
+            enableSelection={true}
+            selectedRows={selectedRows}
+            onSelectionChange={handleSelectionChange}
+            enableSorting={true}
+            sortConfig={sortConfig}
+            onSortChange={handleSortChange}
+            enableColumnVisibility={true}
+            hiddenColumns={[]}
+            onColumnVisibilityChange={() => {}}
+            bulkActions={bulkActions}
+            renderCell={renderCell}
+          />
+        </CardContent>
+      </Card>
+      <ModalWrapper title={t("companyAppLimits.form.create.title")} description={t("companyAppLimits.form.create.title")} open={showCreateModal} onOpenChange={toggleShowCreateModal}>
+        <CompanyAppLimitCreateForm companyId={companyId} onSubmit={handleSubmit} onCancel={toggleShowCreateModal} isLoading={false} />
+      </ModalWrapper>
+    </div>
+  )
+}

@@ -1,0 +1,8 @@
+{
+  "username": "testuser",
+  "password": "Test@123",
+  "otpCode": "123456",
+  "twofaCode": "654321",
+  "newPassword": "NewSecure@123",
+  "confirmPassword": "NewSecure@123"
+}

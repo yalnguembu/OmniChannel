@@ -1,0 +1,54 @@
+trigger:
+- main
+
+pool:
+  vmImage: 'windows-latest'
+
+steps:
+# Étape 1 : Installer la version de Node.js requise
+- task: NodeTool@0
+  displayName: 'Install Node.js'
+  inputs:
+    versionSpec: '22.x' 
+
+# Étape 2 : Installer les dépendances avec 'npm install'
+- task: Npm@1
+  displayName: 'Install Project Dependencies (npm install)'
+  inputs:
+    command: 'install'
+
+
+# Étape 3 : Construire l'application React
+- task: Npm@1
+  displayName: 'Build React App (npm run build:prod)'
+  inputs:
+    command: 'custom'
+    customCommand: 'run build:prod'
+
+
+# Étape 4 : Préparer les fichiers pour l'archivage
+- task: CopyFiles@2
+  displayName: 'Prepare files for archive'
+  inputs:
+    SourceFolder: '$(System.DefaultWorkingDirectory)'
+    Contents: |
+      build/**
+      .env.example
+    TargetFolder: '$(Build.ArtifactStagingDirectory)/publish'
+
+# Étape 5 : Archiver les fichiers préparés
+- task: ArchiveFiles@2
+  displayName: 'Archive Files'
+  inputs:
+    rootFolderOrFile: '$(Build.ArtifactStagingDirectory)/publish'
+    includeRootFolder: false
+    archiveType: 'zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+    replaceExistingArchive: true
+
+# Étape 6 : Publier l'artefact
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact'
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+    ArtifactName: 'drop-frontend'

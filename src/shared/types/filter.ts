@@ -1,0 +1,54 @@
+import { z } from "zod"
+import { FilterFieldType } from "../enums/filter"
+
+// Filter types
+export interface FilterOption {
+  label: string
+  value: string
+}
+
+export interface FilterFieldConfig {
+  key: string
+  label?: string
+  type: FilterFieldType
+  placeholder?: string
+  options?: FilterOption[]
+  required?: boolean
+  disabled?: boolean
+  searchable?: boolean
+  multiple?: boolean
+  validation?: z.ZodType<any>
+  className?: string
+  description?: string
+}
+
+export interface FilterSection {
+  title: string
+  fields: FilterFieldConfig[]
+  collapsible?: boolean
+  defaultCollapsed?: boolean
+}
+export type ViewMode = "list" | "grid"
+export interface BaseFilterProps<T = Record<string, any>> {
+  schema: z.ZodSchema<T>
+  onFilter: (values: T) => void
+  onReset?: () => void
+  defaultValues?: Partial<T>
+  isLoading?: boolean
+  showResetButton?: boolean
+  showFilterButton?: boolean
+  className?: string
+  collapsible?: boolean
+  defaultCollapsed?: boolean
+  viewMode: ViewMode
+  setViewMode: (mode: ViewMode) => void
+  refreshData: () => void
+  hasSelection: boolean
+  selectedRows: any[]
+  selectionCount: number
+  onImport?: () => void
+  onExport?: () => void
+  enableDateRange?: boolean
+  sections?: FilterSection[]
+  fieldTranslationPrefix?: string
+}

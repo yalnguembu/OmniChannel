@@ -1,0 +1,2531 @@
+{
+  "about": {
+    "cta": "Rejoignez la révolution FujiPay. Contactez notre équipe dès aujourd'hui pour en savoir plus.",
+    "storyMission": {
+      "content": "FujiPay est le fruit de l'expertise et de la vision de Graphics System SA, une entreprise technologique camerounaise dont la mission est de révolutionner la gestion des paiements mobiles en Afrique. Grâce à notre connaissance approfondie du marché local et des défis commerciaux, nous avons développé une plateforme robuste, sécurisée et conforme aux normes internationales.",
+      "title": "Notre histoire et notre mission"
+    },
+    "title": "À propos de FujiPay : Votre partenaire stratégique en solutions de paiement mobile au Cameroun",
+    "values": {
+      "title": "Nos valeurs fondamentales"
+    },
+    "vision": {
+      "content": "Devenir le leader incontesté de l'agrégation de paiements mobiles en Afrique, en contribuant activement à l'inclusion financière et à la transformation numérique des entreprises.",
+      "title": "Notre vision"
+    }
+  },
+  "accessDenied": "Accès refusé",
+  "allowedips": {
+    "headers": {
+      "applicationId": "ID de l'application",
+      "applicationName": "Application",
+      "applicationStatus": "Statut de l'application",
+      "createdAt": "Créé le",
+      "ipAddress": "Adresse IP"
+    }
+  },
+  "allowedIps": {
+    "actions": {
+      "add": "Ajouter une IP autorisée",
+      "delete": "Supprimer",
+      "edit": "Modifier",
+      "more": "Plus d'actions",
+      "view": "Voir"
+    },
+    "bulk": {
+      "deleteError": "Erreur lors de la suppression des adresses IP sélectionnées.",
+      "deleteReason": "Motif de la suppression groupée",
+      "partialError_one": "Une erreur partielle est survenue.",
+      "partialError_other": "{{count}} erreurs partielles sont survenues."
+    },
+    "details": {
+      "title": "Détails de l'IP autorisée"
+    },
+    "form": {
+      "applicationIdLabel": "Application",
+      "applicationIdPlaceholder": "Sélectionnez une application",
+      "create": {
+        "description": "Ajouter une nouvelle adresse IP autorisée.",
+        "title": "Créer une IP autorisée"
+      },
+      "edit": {
+        "description": "Mettre à jour les détails de cette adresse IP autorisée.",
+        "submit": "Enregistrer les modifications",
+        "title": "Modifier l'IP autorisée"
+      },
+      "ipAddressLabel": "Adresse IP",
+      "ipAddressPlaceholder": "Saisir l'adresse IP"
+    },
+    "messages": {
+      "create": {
+        "error": "Échec de la création de l'IP autorisée.",
+        "success": "IP autorisée créée avec succès."
+      },
+      "delete": {
+        "error": "Échec de la suppression de l'IP autorisée.",
+        "success": "IP autorisée supprimée avec succès.",
+        "success_one": "1 IP autorisée supprimée avec succès.",
+        "success_other": "{{count}} adresses IP autorisées supprimées avec succès."
+      },
+      "noData": "Aucune IP autorisée trouvée.",
+      "search": {
+        "error": "Échec de la recherche des adresses IP autorisées."
+      },
+      "update": {
+        "error": "Échec de la mise à jour de l'IP autorisée.",
+        "success": "IP autorisée mise à jour avec succès."
+      }
+    },
+    "title": "Adresses IP autorisées",
+    "totalCount_one": "1 IP autorisée",
+    "totalCount_other": "{{count}} adresses IP autorisées"
+  },
+  "applications": {
+    "actions": {
+      "add": "Ajouter une application",
+      "delete": "Supprimer",
+      "edit": "Modifier",
+      "more": "Plus d'actions",
+      "view": "Voir"
+    },
+    "bulk": {
+      "delete_one": "Supprimer cette application ?",
+      "delete_other": "Supprimer ces applications ?",
+      "deleteConfirm_one": "Êtes-vous sûr de vouloir supprimer cette application ?",
+      "deleteConfirm_other": "Êtes-vous sûr de vouloir supprimer ces {{count}} applications ?",
+      "deleteError": "Erreur lors de la suppression des applications.",
+      "deleteReason": "Motif de la suppression groupée",
+      "deleting": "Suppression en cours...",
+      "partialError_one": "Une erreur partielle est survenue.",
+      "partialError_other": "{{count}} erreurs partielles sont survenues."
+    },
+    "create": "Créer une application",
+    "details": "Détails de l'application",
+    "edit": "Modifier l'application",
+    "form": {
+      "companyIdLabel": "Entreprise",
+      "companyIdPlaceholder": "Sélectionnez une entreprise",
+      "create": {
+        "description": "Ajouter une nouvelle application.",
+        "submit": "Créer",
+        "title": "Créer une application"
+      },
+      "descriptionLabel": "Description",
+      "descriptionPlaceholder": "Saisir la description",
+      "edit": {
+        "description": "Mettre à jour les détails de l'application.",
+        "loadError": "Échec du chargement de l'application.",
+        "submit": "Enregistrer les modifications",
+        "title": "Modifier l'application"
+      },
+      "nameLabel": "Nom",
+      "namePlaceholder": "Saisir le nom"
+    },
+    "headers": {
+      "companyName": "Entreprise",
+      "createdAt": "Créé le",
+      "description": "Description",
+      "environment": "Environnement",
+      "name": "Nom",
+      "status": "Statut"
+    },
+    "messages": {
+      "create": {
+        "error": "Échec de la création de l'application.",
+        "success": "Application créée avec succès."
+      },
+      "delete": {
+        "confirm": "Êtes-vous sûr ?",
+        "error": "Échec de la suppression de l'application.",
+        "success": "Application supprimée avec succès.",
+        "success_one": "1 application supprimée.",
+        "success_other": "{{count}} applications supprimées."
+      },
+      "noData": "Aucune application trouvée.",
+      "search": {
+        "error": "Échec de la recherche des applications."
+      },
+      "update": {
+        "error": "Échec de la mise à jour de l'application.",
+        "success": "Application mise à jour avec succès."
+      }
+    },
+    "title": "Applications",
+    "totalCount_one": "1 application",
+    "totalCount_other": "{{count}} applications"
+  },
+  "auditlogs": {
+    "headers": {
+      "action": "Action",
+      "changedColumn": "Colonne modifiée",
+      "changeReason": "Motif de la modification",
+      "companyEmail": "E-mail de l'entreprise",
+      "companyId": "ID de l'entreprise",
+      "companyName": "Entreprise",
+      "companyPhoneNumber": "Numéro de téléphone de l'entreprise",
+      "companyStatus": "Statut de l'entreprise",
+      "createdAt": "Créé le",
+      "entityDisplayName": "Nom d'affichage de l'entité",
+      "entityId": "ID de l'entité",
+      "entityName": "Entité",
+      "entityType": "Type d'entité",
+      "ipAddress": "Adresse IP",
+      "newValues": "Nouvelles valeurs",
+      "oldValues": "Anciennes valeurs",
+      "riskLevel": "Niveau de risque",
+      "userAgent": "Agent utilisateur",
+      "userEmail": "E-mail de l'utilisateur",
+      "userFirstName": "Prénom de l'utilisateur",
+      "userId": "ID de l'utilisateur",
+      "userLastName": "Nom de famille de l'utilisateur",
+      "userPhoneNumber": "Numéro de téléphone de l'utilisateur",
+      "userStatus": "Statut de l'utilisateur"
+    }
+  },
+  "auditLogs": {
+    "actions": {
+      "add": "Ajouter un journal",
+      "more": "Plus d'actions",
+      "view": "Voir"
+    },
+    "bulk": {
+      "deleteError": "Erreur lors de la suppression des journaux.",
+      "deleteReason": "Motif de la suppression",
+      "partialError_one": "Une erreur partielle est survenue.",
+      "partialError_other": "{{count}} erreurs partielles sont survenues."
+    },
+    "details": {
+      "title": "Détails du journal d'audit"
+    },
+    "messages": {
+      "create": {
+        "error": "Échec de la création du journal.",
+        "success": "Journal créé avec succès."
+      },
+      "delete": {
+        "error": "Échec de la suppression du journal.",
+        "success": "Journal supprimé avec succès.",
+        "success_one": "1 journal supprimé.",
+        "success_other": "{{count}} journaux supprimés."
+      },
+      "noData": "Aucun journal d'audit trouvé.",
+      "search": {
+        "error": "La recherche a échoué."
+      },
+      "update": {
+        "error": "La mise à jour a échoué.",
+        "success": "Mise à jour réussie."
+      }
+    },
+    "title": "Journaux d'audit",
+    "totalCount_one": "1 journal",
+    "totalCount_other": "{{count}} journaux"
+  },
+  "auth": {
+    "login": {
+      "description": "Connectez-vous en saisissant vos identifiants.",
+      "email": "E-mail",
+      "emailPlaceholder": "Saisissez votre e-mail",
+      "password": "Mot de passe",
+      "passwordPlaceholder": "••••••••",
+      "signIn": "Se connecter",
+      "title": "Connectez-vous à votre compte"
+    }
+  },
+  "balancesreadmodels": {
+    "headers": {
+      "availableBalance": "Solde disponible",
+      "balanceType": "Type de solde",
+      "balanceTypeCode": "Code du type de solde",
+      "balanceTypeName": "Nom du type de solde",
+      "createdAt": "Créé le",
+      "createdByEmail": "Créé par (E-mail)",
+      "createdByFirstName": "Créé par (Prénom)",
+      "createdByLastName": "Créé par (Nom)",
+      "createdByPhoneNumber": "Créé par (Téléphone)",
+      "createdByStatus": "Créé par (Statut)",
+      "currency": "Devise",
+      "currencyCode": "Code de la devise",
+      "currencyName": "Nom de la devise",
+      "currencySymbol": "Symbole de la devise",
+      "currentBalance": "Solde actuel",
+      "currentVersion": "Version actuelle",
+      "lastCreditDate": "Date du dernier crédit",
+      "lastDebitDate": "Date du dernier débit",
+      "lastReconciliationBy": "Dernier rapprochement par",
+      "lastReconciliationByEmail": "Dernier rap. par (E-mail)",
+      "lastReconciliationByFirstName": "Dernier rap. par (Prénom)",
+      "lastReconciliationByLastName": "Dernier rap. par (Nom)",
+      "lastReconciliationByPhoneNumber": "Dernier rap. par (Téléphone)",
+      "lastReconciliationByStatus": "Dernier rap. par (Statut)",
+      "lastReconciliationDate": "Date du dernier rapprochement",
+      "ownerId": "ID du propriétaire",
+      "ownerName": "Nom du propriétaire",
+      "ownerType": "Type de propriétaire",
+      "paymentMethodCode": "Code du moyen de paiement",
+      "paymentMethodId": "ID du moyen de paiement",
+      "paymentMethodName": "Nom du moyen de paiement",
+      "reconciliationNotes": "Notes de rapprochement",
+      "reconciliationStatus": "Statut du rapprochement",
+      "reservedBalance": "Solde réservé",
+      "totalCredits": "Total des crédits",
+      "totalDebits": "Total des débits",
+      "transactionCount": "Nombre de transactions",
+      "updatedByEmail": "Mis à jour par (E-mail)",
+      "updatedByFirstName": "Mis à jour par (Prénom)",
+      "updatedByLastName": "Mis à jour par (Nom)",
+      "updatedByPhoneNumber": "Mis à jour par (Téléphone)",
+      "updatedByStatus": "Mis à jour par (Statut)"
+    }
+  },
+  "balancesReadModels": {
+    "actions": {
+      "add": "Ajouter un solde",
+      "delete": "Supprimer",
+      "edit": "Modifier",
+      "more": "Plus d'actions",
+      "view": "Voir"
+    },
+    "bulk": {
+      "delete_one": "Supprimer ce solde ?",
+      "delete_other": "Supprimer ces soldes ?",
+      "deleteConfirm_one": "Êtes-vous sûr de vouloir supprimer ce solde ?",
+      "deleteConfirm_other": "Êtes-vous sûr de vouloir supprimer ces {{count}} soldes ?",
+      "deleteError": "Erreur lors de la suppression des soldes.",
+      "deleteReason": "Motif de la suppression",
+      "deleting": "Suppression en cours...",
+      "partialError_one": "Une erreur partielle est survenue.",
+      "partialError_other": "{{count}} erreurs partielles sont survenues."
+    },
+    "messages": {
+      "create": {
+        "error": "Échec de la création du solde.",
+        "success": "Solde créé avec succès."
+      },
+      "delete": {
+        "confirm": "Êtes-vous sûr ?",
+        "error": "Échec de la suppression du solde.",
+        "success": "Solde supprimé avec succès.",
+        "success_one": "1 solde supprimé.",
+        "success_other": "{{count}} soldes supprimés."
+      },
+      "noData": "Aucun solde trouvé.",
+      "search": {
+        "error": "La recherche a échoué."
+      },
+      "update": {
+        "error": "La mise à jour a échoué.",
+        "success": "Mise à jour réussie."
+      }
+    },
+    "title": "Soldes",
+    "totalCount_one": "1 solde",
+    "totalCount_other": "{{count}} soldes"
+  },
+  "blockedIp": {
+    "actions": {
+      "add": "Ajouter une IP bloquée",
+      "delete": "Supprimer",
+      "edit": "Modifier",
+      "more": "Plus d'actions",
+      "view": "Voir"
+    },
+    "bulk": {
+      "deleteError": "Erreur lors de la suppression des adresses IP.",
+      "deleteReason": "Motif de la suppression",
+      "partialError_one": "Une erreur partielle est survenue.",
+      "partialError_other": "{{count}} erreurs partielles sont survenues."
+    },
+    "details": {
+      "title": "Détails de l'IP bloquée"
+    },
+    "form": {
+      "create": {
+        "description": "Ajouter une nouvelle IP à bloquer.",
+        "submit": "Créer",
+        "title": "Bloquer une IP"
+      },
+      "edit": {
+        "submit": "Enregistrer les modifications"
+      }
+    },
+    "messages": {
+      "create": {
+        "error": "Échec du blocage de l'IP.",
+        "success": "IP bloquée avec succès."
+      },
+      "delete": {
+        "confirm": "Êtes-vous sûr ?",
+        "error": "Le déblocage a échoué.",
+        "success": "Déblocage réussi.",
+        "success_one": "Succès",
+        "success_other": "Succès"
+      },
+      "noData": "Aucune IP bloquée trouvée.",
+      "search": {
+        "error": "La recherche a échoué."
+      },
+      "update": {
+        "error": "La mise à jour a échoué.",
+        "success": "Mise à jour réussie."
+      }
+    },
+    "title": "Adresses IP bloquées",
+    "totalCount_one": "1 IP bloquée",
+    "totalCount_other": "{{count}} adresses IP bloquées"
+  },
+  "blockedips": {
+    "headers": {
+      "applicationId": "ID de l'application",
+      "applicationName": "Application",
+      "applicationStatus": "Statut de l'application",
+      "createdAt": "Créé le",
+      "ipAddress": "Adresse IP",
+      "reason": "Motif"
+    }
+  },
+  "blockedIps": {
+    "form": {
+      "applicationIdLabel": "Application",
+      "applicationIdPlaceholder": "Sélectionnez une application",
+      "edit": {
+        "description": "Mettre à jour les détails de cette IP bloquée.",
+        "title": "Modifier l'IP bloquée"
+      },
+      "ipdAdressLabel": "Adresse IP",
+      "ipdAdressPlaceholder": "Saisir l'adresse IP",
+      "reasonLabel": "Motif",
+      "reasonPlaceholder": "Saisir le motif"
+    }
+  },
+  "common": {
+    "actions": {
+      "delete": "Supprimer",
+      "edit": "Modifier",
+      "more": "Plus d'actions",
+      "view": "Voir"
+    },
+    "cancel": "Annuler",
+    "dataGrid": {
+      "items": "Éléments",
+      "total": "Total"
+    },
+    "filter": {
+      "actions": {
+        "clear": "Effacer",
+        "export": "Exporter",
+        "filter": "Filtrer",
+        "import": "Importer",
+        "more": "Plus",
+        "refresh": "Actualiser",
+        "reset": "Réinitialiser"
+      },
+      "selection": {
+        "count_one": "1 sélectionné",
+        "count_other": "{{count}} sélectionnés"
+      },
+      "view": {
+        "grid": "Grille",
+        "list": "Liste"
+      }
+    },
+    "form": {
+      "valueLabel": "Valeur"
+    }
+  },
+  "companies": {
+    "actions": {
+      "add": "Ajouter une entreprise",
+      "delete": "Supprimer l'entreprise",
+      "edit": "Modifier l'entreprise",
+      "more": "Plus d'actions",
+      "view": "Voir l'entreprise"
+    },
+    "bulk": {
+      "delete_one": "Supprimer cette entreprise ?",
+      "delete_other": "Supprimer ces entreprises ?",
+      "deleteConfirm_one": "Êtes-vous sûr de vouloir supprimer cette entreprise ?",
+      "deleteConfirm_other": "Êtes-vous sûr de vouloir supprimer ces {{count}} entreprises ?",
+      "deleteError": "Erreur lors de la suppression.",
+      "deleteReason": "Motif de la suppression",
+      "deleting": "Suppression en cours...",
+      "partialError_one": "Une erreur partielle est survenue.",
+      "partialError_other": "{{count}} erreurs partielles sont survenues."
+    },
+    "create": "Créer une entreprise",
+    "details": "Détails de l'entreprise",
+    "edit": "Modifier l'entreprise",
+    "fields": {
+      "address": "Adresse",
+      "businessRegistrationNumber": "Numéro de registre du commerce",
+      "companySize": "Taille",
+      "companyType": "Type",
+      "contactPerson": "Personne de contact",
+      "countryCode": "Code du pays",
+      "createdAt": "Date de création",
+      "email": "E-mail",
+      "isVerified": "Vérifié",
+      "name": "Nom",
+      "phoneNumber": "Numéro de téléphone",
+      "status": "Statut",
+      "taxNumber": "Numéro d'identification fiscale"
+    },
+    "form": {
+      "adressLabel": "Adresse",
+      "adressPlaceholder": "Saisir l'adresse",
+      "businessRegistrationNumberLabel": "Numéro RCCM",
+      "businessRegistrationNumberPlaceholder": "Saisir le numéro RCCM",
+      "companySizeLabel": "Taille de l'entreprise",
+      "companySizePlaceholder": "Sélectionnez la taille",
+      "companyTypeLabel": "Type d'entreprise",
+      "companyTypePlaceholder": "Sélectionnez le type",
+      "conctactPhoneLabel": "Téléphone du contact",
+      "contactPersonLabel": "Personne de contact",
+      "contactPersonPlaceholder": "Saisir la personne de contact",
+      "contactPhonePlaceholder": "Saisir le téléphone du contact",
+      "countryIdLabel": "Pays",
+      "countryIdPlaceholder": "Sélectionnez un pays",
+      "create": {
+        "description": "Ajouter une nouvelle entreprise.",
+        "submit": "Créer"
+      },
+      "edit": {
+        "description": "Mettre à jour les détails de l'entreprise.",
+        "loadError": "Échec du chargement de l'entreprise.",
+        "submit": "Enregistrer les modifications",
+        "title": "Modifier l'entreprise"
+      },
+      "emailLabel": "E-mail",
+      "emailPlaceholder": "Saisir l'e-mail",
+      "nameLabel": "Entreprise",
+      "namePlaceholder": "Saisir le Entreprise",
+      "phoneNumberLabel": "Numéro de téléphone",
+      "phoneNumberPlaceholder": "Saisir le numéro de téléphone",
+      "statusLabel": "Statut",
+      "statusPlaceholder": "Sélectionnez un statut",
+      "taxNumberLabel": "Numéro d'identification fiscale",
+      "taxNumberPlaceholder": "Saisir le numéro d'identification fiscale",
+      "websiteLabel": "Site Web",
+      "websitePlaceholder": "Saisir l'URL du site Web"
+    },
+    "headers": {
+      "contactPhone": "Téléphone du contact",
+      "countryId": "ID du pays",
+      "countryName": "Nom du pays",
+      "website": "Site Web"
+    },
+    "messages": {
+      "create": {
+        "error": "Échec de la création de l'entreprise.",
+        "success": "Entreprise créée avec succès."
+      },
+      "delete": {
+        "confirm": "Êtes-vous sûr ?",
+        "error": "La suppression a échoué.",
+        "success": "Suppression réussie.",
+        "success_one": "1 entreprise supprimée.",
+        "success_other": "{{count}} entreprises supprimées."
+      },
+      "dropdown": {
+        "error": "Échec du chargement des entreprises."
+      },
+      "fetch": {
+        "error": "Échec de la récupération des entreprises."
+      },
+      "noData": "Aucune entreprise trouvée.",
+      "search": {
+        "error": "La recherche a échoué."
+      },
+      "update": {
+        "error": "La mise à jour a échoué.",
+        "success": "Mise à jour réussie."
+      }
+    },
+    "tabs": {
+      "settings": {
+        "description": "Gérer les paramètres de l'entreprise."
+      }
+    },
+    "title": "Entreprises",
+    "totalCount_one": "1 entreprise",
+    "totalCount_other": "{{count}} entreprises"
+  },
+  "company": {
+    "messages": {
+      "dropdown": {
+        "error": "Échec du chargement des entreprises."
+      }
+    }
+  },
+  "companyapplimits": {
+    "headers": {
+      "apiRequestsLimit": "Limite de requêtes API",
+      "applicationId": "ID de l'application",
+      "applicationName": "Application",
+      "applicationStatus": "Statut de l'application",
+      "companyEmail": "E-mail de l'entreprise",
+      "companyId": "ID de l'entreprise",
+      "companyName": "Entreprise",
+      "companyPhoneNumber": "Numéro de téléphone de l'entreprise",
+      "companyStatus": "Statut de l'entreprise",
+      "createdAt": "Créé le",
+      "defaultDailyLimit": "Limite quotidienne par défaut",
+      "defaultMonthlyLimit": "Limite mensuelle par défaut",
+      "defaultSingleTransactionLimit": "Limite par transaction unique par défaut"
+    }
+  },
+  "companyAppLimits": {
+    "actions": {
+      "add": "Ajouter une limite",
+      "delete": "Supprimer",
+      "edit": "Modifier",
+      "more": "Plus d'actions",
+      "view": "Voir"
+    },
+    "bulk": {
+      "delete_one": "Supprimer cette limite ?",
+      "delete_other": "Supprimer ces limites ?",
+      "deleteConfirm_one": "Êtes-vous sûr de vouloir supprimer cette limite ?",
+      "deleteConfirm_other": "Êtes-vous sûr de vouloir supprimer ces {{count}} limites ?",
+      "deleteError": "Erreur lors de la suppression.",
+      "deleteReason": "Motif de la suppression",
+      "deleting": "Suppression en cours...",
+      "partialError_one": "Une erreur partielle est survenue.",
+      "partialError_other": "{{count}} erreurs partielles sont survenues."
+    },
+    "create": "Créer une limite d'application d'entreprise",
+    "edit": "Modifier la limite d'application d'entreprise",
+    "form": {
+      "apiRequestsLimitLabel": "Limite de requêtes API",
+      "apiRequestsLimitPlaceholder": "Saisir la limite de requêtes API",
+      "applicationIdLabel": "Application",
+      "applicationIdPlaceholder": "Sélectionnez une application",
+      "companyIdLabel": "Entreprise",
+      "companyIdPlaceholder": "Sélectionnez une entreprise",
+      "create": {
+        "description": "Ajouter une nouvelle limite d'application pour une entreprise.",
+        "submit": "Créer",
+        "title": "Créer une limite d'application d'entreprise"
+      },
+      "defaultDailyLimitLabel": "Limite quotidienne par défaut",
+      "defaultDailyLimitPlaceholder": "Saisir la limite quotidienne par défaut",
+      "edit": {
+        "description": "Mettre à jour les détails de cette limite d'application d'entreprise.",
+        "loadError": "Échec du chargement de la limite.",
+        "submit": "Enregistrer les modifications",
+        "title": "Modifier la limite d'application d'entreprise"
+      }
+    },
+    "messages": {
+      "create": {
+        "error": "La création a échoué.",
+        "success": "Création réussie."
+      },
+      "delete": {
+        "confirm": "Êtes-vous sûr de vouloir supprimer cette limite ?",
+        "error": "La suppression a échoué.",
+        "success": "Suppression réussie.",
+        "success_one": "1 limite supprimée.",
+        "success_other": "{{count}} limites supprimées."
+      },
+      "noData": "Aucune limite trouvée.",
+      "search": {
+        "error": "La recherche a échoué."
+      },
+      "update": {
+        "error": "La mise à jour a échoué.",
+        "success": "Mise à jour réussie."
+      }
+    },
+    "title": "Limites d'application d'entreprise",
+    "totalCount_one": "1 limite",
+    "totalCount_other": "{{count}} limites"
+  },
+  "contact": {
+    "contactInfo": {
+      "address": "Adresse",
+      "email": "E-mail commercial",
+      "hours": "Heures de bureau : Lundi - Vendredi, 8:00 - 17:00 (WAT - Heure d'Afrique de l'Ouest)",
+      "phone": "Téléphone",
+      "title": "Coordonnées directes"
+    },
+    "form": {
+      "companyName": "Entreprise",
+      "companyType": "Type d'entreprise",
+      "consent": "J'ai lu et j'accepte la politique de confidentialité et les conditions de service.",
+      "email": "E-mail professionnel",
+      "fullName": "Nom complet",
+      "message": "Votre message",
+      "phone": "Numéro de téléphone",
+      "subject": "Sujet de votre message",
+      "submit": "Envoyer votre demande"
+    },
+    "intro": "Avez-vous des questions, besoin d'une démo ou souhaitez-vous obtenir un compte FujiPay ? Notre équipe commerciale est prête à vous aider. Veuillez noter que l'ouverture d'un compte se fait par contact direct avec nos représentants commerciaux.",
+    "title": "Contactez l'équipe FujiPay : Nous sommes là pour vous"
+  },
+  "countries": {
+    "actions": {
+      "add": "Ajouter un pays",
+      "delete": "Supprimer",
+      "edit": "Modifier",
+      "more": "Plus d'actions",
+      "view": "Voir"
+    },
+    "bulk": {
+      "deleteError": "Échec de la suppression des pays sélectionnés",
+      "deleteReason": "Opération de suppression groupée",
+      "partialError_one": "1 erreur partielle est survenue.",
+      "partialError_other": "{{count}} erreurs partielles sont survenues."
+    },
+    "create": "Créer un pays",
+    "edit": "Modifier le pays",
+    "form": {
+      "codeLabel": "Code",
+      "codePlaceholder": "Saisir le code du pays",
+      "create": {
+        "description": "Ajouter un nouveau pays.",
+        "submit": "Créer",
+        "title": "Créer un pays"
+      },
+      "edit": {
+        "description": "Mettre à jour les détails de ce pays.",
+        "loadError": "Échec du chargement du pays.",
+        "submit": "Enregistrer les modifications",
+        "title": "Modifier le pays"
+      },
+      "fields": {
+        "isActive": "Actif",
+        "isVerified": "Vérifié"
+      },
+      "nameLabel": "Nom",
+      "namePlaceholder": "Saisir le nom du pays"
+    },
+    "headers": {
+      "code": "Code",
+      "createdAt": "Créé le",
+      "isActive": "Actif",
+      "name": "Nom"
+    },
+    "messages": {
+      "create": {
+        "error": "Échec de la création du pays.",
+        "success": "Pays créé avec succès."
+      },
+      "delete": {
+        "confirm": "Êtes-vous sûr de vouloir supprimer ce pays ?",
+        "error": "Échec de la suppression du pays.",
+        "success": "Pays supprimé avec succès.",
+        "success_one": "1 pays supprimé.",
+        "success_other": "{{count}} pays supprimés."
+      },
+      "noData": "Aucun pays trouvé.",
+      "search": {
+        "error": "Échec de la recherche de pays."
+      },
+      "update": {
+        "error": "Échec de la mise à jour du pays.",
+        "success": "Pays mis à jour avec succès."
+      }
+    },
+    "title": "Pays",
+    "totalCount_one": "1 pays",
+    "totalCount_other": "{{count}} pays"
+  },
+  "currencies": {
+    "actions": {
+      "add": "Ajouter une devise",
+      "delete": "Supprimer",
+      "edit": "Modifier",
+      "more": "Plus d'actions",
+      "view": "Voir"
+    },
+    "bulk": {
+      "delete_one": "Supprimer cette devise ?",
+      "delete_other": "Supprimer ces devises ?",
+      "deleteConfirm_one": "Êtes-vous sûr de vouloir supprimer cette devise ?",
+      "deleteConfirm_other": "Êtes-vous sûr de vouloir supprimer ces {{count}} devises ?",
+      "deleteError": "Erreur lors de la suppression.",
+      "deleteReason": "Motif de la suppression",
+      "deleting": "Suppression en cours...",
+      "partialError_one": "Une erreur partielle est survenue.",
+      "partialError_other": "{{count}} erreurs partielles sont survenues."
+    },
+    "create": "Créer une devise",
+    "edit": "Modifier la devise",
+    "form": {
+      "codeLabel": "Code",
+      "codePlaceholder": "Saisir le code",
+      "create": {
+        "description": "Remplissez les détails pour créer une nouvelle devise.",
+        "title": "Créer une devise"
+      },
+      "decimalPlacesLabel": "Nombre de décimales",
+      "decimalPlacesPlaceholder": "Saisir le nombre de décimales",
+      "edit": {
+        "description": "Mettre à jour les détails de la devise.",
+        "loadError": "Échec du chargement de la devise.",
+        "submit": "Enregistrer les modifications",
+        "title": "Modifier la devise"
+      },
+      "exchangeRateLabel": "Taux de change",
+      "fields": {
+        "isActive": "Actif",
+        "isBaseCurrency": "Devise de base"
+      },
+      "nameLabel": "Nom",
+      "namePlaceholder": "Saisir le nom",
+      "symbolLabel": "Symbole",
+      "symbolPlaceholder": "Saisir le symbole"
+    },
+    "headers": {
+      "code": "Code",
+      "createdAt": "Créé le",
+      "decimalPlaces": "Décimales",
+      "exchangeRate": "Taux de change",
+      "isActive": "Actif",
+      "isBaseCurrency": "Devise de base",
+      "name": "Nom",
+      "symbol": "Symbole"
+    },
+    "messages": {
+      "create": {
+        "error": "La création a échoué.",
+        "success": "Création réussie."
+      },
+      "delete": {
+        "confirm": "Êtes-vous sûr ?",
+        "error": "La suppression a échoué.",
+        "success": "Suppression réussie.",
+        "success_one": "1 devise supprimée.",
+        "success_other": "{{count}} devises supprimées."
+      },
+      "noData": "Aucune devise trouvée.",
+      "search": {
+        "error": "La recherche a échoué."
+      },
+      "update": {
+        "error": "La mise à jour a échoué.",
+        "success": "Mise à jour réussie."
+      }
+    },
+    "title": "Devises",
+    "totalCount_one": "1 devise",
+    "totalCount_other": "{{count}} devises"
+  },
+  "dataGrid": {
+    "emptyMessage": "Aucun élément à afficher"
+  },
+  "developers": {
+    "badge": "DÉVELOPPEURS D'ABORD",
+    "cta": {
+      "description": "Notre équipe de support aux développeurs est là pour vous aider avec toutes les questions techniques ou les défis d'intégration que vous pourriez rencontrer.",
+      "primary": "Contacter le support développeur",
+      "secondary": "Rejoindre notre communauté de développeurs",
+      "title": "Questions techniques ?"
+    },
+    "endpoints": {
+      "description": "Description",
+      "endpoint": "Point de terminaison",
+      "method": "Méthode",
+      "title": "Points de terminaison clés de l'API"
+    },
+    "intro": "L'API FujiPay est conçue pour une intégration rapide et transparente avec vos applications, sites web ou systèmes existants. Accédez à toutes nos fonctionnalités via des points de terminaison sécurisés et fiables.",
+    "resources": {
+      "apiDocs": "Accéder à la documentation de l'API",
+      "quickstart": "Guide de démarrage rapide",
+      "sandbox": "Portail développeur / Sandbox",
+      "sdkLibraries": "Bibliothèques clientes (SDK)",
+      "title": "Nos ressources pour les développeurs"
+    },
+    "security": {
+      "auth": {
+        "description": "FujiPay utilise une authentification à plusieurs niveaux avec des clés API et des jetons JWT pour un accès sécurisé à nos points de terminaison API.",
+        "title": "Méthodes d'authentification"
+      },
+      "encryption": {
+        "description": "Les données sensibles sont chiffrées à l'aide d'AES-256-GCM, avec des clés gérées via Azure Key Vault pour une sécurité maximale.",
+        "title": "Chiffrement des données"
+      },
+      "ip": {
+        "description": "Pour plus de sécurité, vous pouvez restreindre l'accès à l'API à des adresses IP ou des plages spécifiques approuvées pour votre compte.",
+        "title": "Restrictions IP"
+      },
+      "tabs": {
+        "auth": "Authentification",
+        "encryption": "Chiffrement",
+        "ip": "Restrictions IP"
+      },
+      "title": "Sécurité de l'API"
+    },
+    "title": "Intégration FujiPay : Une API puissante, flexible et documentée",
+    "whyIntegrate": {
+      "documentation": {
+        "description": "Guides clairs et exemples de code.",
+        "title": "Documentation complète"
+      },
+      "restful": {
+        "description": "Facile à comprendre et à utiliser.",
+        "title": "API RESTful intuitive"
+      },
+      "sandbox": {
+        "description": "Testez vos intégrations sans risque.",
+        "title": "Environnement Sandbox"
+      },
+      "sdks": {
+        "description": "Disponible pour Python, Node.js, PHP, et plus encore.",
+        "title": "Bibliothèques clientes (SDK)"
+      },
+      "security": {
+        "description": "Authentification par clé API et JWT, chiffrement des données.",
+        "title": "Sécurité robuste"
+      },
+      "title": "Pourquoi intégrer FujiPay ?",
+      "webhooks": {
+        "description": "Recevez des notifications en temps réel pour tous les événements clés.",
+        "title": "Webhooks"
+      }
+    }
+  },
+  "documentsTypes": {
+    "actions": {
+      "add": "Ajouter un type",
+      "more": "Plus d'actions"
+    },
+    "bulk": {
+      "deleteError": "Erreur lors de la suppression.",
+      "deleteReason": "Motif de la suppression",
+      "partialError_one": "Une erreur partielle est survenue.",
+      "partialError_other": "{{count}} erreurs partielles sont survenues."
+    },
+    "form": {
+      "create": {
+        "description": "Ajouter un nouveau type de document.",
+        "submit": "Créer",
+        "title": "Créer un type de document"
+      },
+      "descriptionLabel": "Description",
+      "descriptionPlaceholder": "Saisir la description",
+      "edit": {
+        "description": "Mettre à jour les détails de ce type de document.",
+        "submit": "Enregistrer les modifications",
+        "title": "Modifier le type de document"
+      },
+      "nameLabel": "Nom",
+      "namePlaceholder": "Saisir le nom"
+    },
+    "messages": {
+      "create": {
+        "error": "La création a échoué.",
+        "success": "Création réussie."
+      },
+      "delete": {
+        "error": "La suppression a échoué.",
+        "success": "Suppression réussie.",
+        "success_one": "1 type de document supprimé.",
+        "success_other": "{{count}} types de documents supprimés."
+      },
+      "noData": "Aucun type de document trouvé.",
+      "search": {
+        "error": "La recherche a échoué."
+      },
+      "update": {
+        "error": "La mise à jour a échoué.",
+        "success": "Mise à jour réussie."
+      }
+    },
+    "title": "Types de documents",
+    "totalCount_one": "1 type de document",
+    "totalCount_other": "{{count}} types de documents"
+  },
+  "documentTypes": {
+    "headers": {
+      "createdAt": "Créé le",
+      "description": "Description",
+      "name": "Nom"
+    }
+  },
+  "FAQ": {
+    "clearSearch": "Effacer la recherche",
+    "intro": "Nous avons compilé les questions les plus fréquemment posées par nos utilisateurs et prospects. Si vous ne trouvez pas la réponse ici, n'hésitez pas à nous contacter.",
+    "noResults": "Aucune question correspondante trouvée",
+    "notFound": {
+      "cta": "Nous contacter",
+      "description": "Notre équipe est prête à vous aider pour toute question spécifique.",
+      "title": "Vous n'avez pas trouvé votre réponse ?"
+    },
+    "searchPlaceholder": "Rechercher des questions...",
+    "title": "Foire aux questions"
+  },
+  "features": {
+    "badge": "FONCTIONNALITÉS",
+    "intro": "FujiPay est conçu pour offrir un contrôle total sur vos opérations financières mobiles au Cameroun, grâce à une suite de fonctionnalités avancées et sécurisées.",
+    "paymentManagement": {
+      "benefit1": "Intégration unifiée Orange Money et MTN Mobile Money",
+      "benefit2": "Gestion complète du cycle de vie des transactions",
+      "benefit3": "Rapprochement et rapports automatisés",
+      "benefit4": "Pages et liens de paiement personnalisables",
+      "description": "Traitez efficacement les paiements entrants via Orange Money et MTN Mobile Money. Gérez le cycle de vie complet de chaque transaction (création, traitement, achèvement).",
+      "title": "Gestion des paiements"
+    },
+    "reporting": {
+      "benefit1": "Tableaux de bord des transactions en temps réel",
+      "benefit2": "Génération de rapports personnalisés",
+      "benefit3": "Capacités d'exportation de données (CSV, Excel)",
+      "benefit4": "Analyse des moyens de paiement",
+      "description": "Obtenez des informations précieuses grâce à des outils de reporting et d'analyse complets pour une meilleure prise de décision.",
+      "title": "Analyses et rapports"
+    },
+    "requestDemo": "Demander une démo",
+    "security": {
+      "benefit1": "Authentification à plusieurs niveaux (clé API, JWT)",
+      "benefit2": "Chiffrement AES-256-GCM pour les données sensibles",
+      "benefit3": "Capacités de restriction d'adresse IP",
+      "benefit4": "Journalisation d'audit complète",
+      "description": "Protégez votre entreprise et vos clients avec des fonctionnalités de sécurité de niveau entreprise conçues pour le secteur financier.",
+      "title": "Sécurité"
+    },
+    "subtitle": "La puissance à votre service",
+    "title": "Les fonctionnalités complètes de FujiPay",
+    "title1": "La puissance à votre service",
+    "title2": "",
+    "withdrawalManagement": {
+      "benefit1": "Vérification à deux facteurs pour la sécurité",
+      "benefit2": "Prise en charge d'Orange Money et de MTN Mobile Money",
+      "benefit3": "Traitement par lots pour les volumes élevés",
+      "benefit4": "Processus d'approbation flexibles",
+      "description": "Initiez et traitez les demandes de retrait de fonds avec une sécurité optimale. Que ce soit via mobile money ou virement bancaire, FujiPay s'adapte à vos besoins.",
+      "title": "Gestion des retraits"
+    }
+  },
+  "feeconfigurations": {
+    "headers": {
+      "createdAt": "Créé le",
+      "currency": "Devise",
+      "currencyCode": "Code de la devise",
+      "currencyName": "Nom de la devise",
+      "currencySymbol": "Symbole de la devise",
+      "endDate": "Date de fin",
+      "feeTypeCode": "Code du type de frais",
+      "feeTypeId": "ID du type de frais",
+      "feeTypeName": "Nom du type de frais",
+      "feeTypeTransactionType": "Type de transaction du type de frais",
+      "fixedAmount": "Montant fixe",
+      "isActive": "Actif",
+      "maxAmount": "Montant maximum",
+      "minAmount": "Montant minimum",
+      "ownerId": "ID du propriétaire",
+      "ownerType": "Type de propriétaire",
+      "percentageRate": "Taux de pourcentage",
+      "startDate": "Date de début"
+    }
+  },
+  "feeConfigurations": {
+    "actions": {
+      "add": "Nouveaux frais",
+      "delete": "Supprimer",
+      "edit": "Modifier",
+      "more": "Plus d'actions",
+      "view": "Voir"
+    },
+    "bulk": {
+      "delete_one": "Supprimer cette configuration ?",
+      "delete_other": "Supprimer ces configurations ?",
+      "deleteConfirm_one": "Êtes-vous sûr de vouloir supprimer cette configuration ?",
+      "deleteConfirm_other": "Êtes-vous sûr de vouloir supprimer ces {{count}} configurations ?",
+      "deleteError": "Erreur lors de la suppression.",
+      "deleteReason": "Motif de la suppression",
+      "deleting": "Suppression en cours...",
+      "partialError_one": "Une erreur partielle est survenue.",
+      "partialError_other": "{{count}} erreurs partielles sont survenues."
+    },
+    "create": "Créer une configuration de frais",
+    "edit": "Modifier la configuration de frais",
+    "form": {
+      "companyId": {
+        "placeholder": "Sélectionnez une entreprise"
+      },
+      "create": {
+        "description": "Ajouter une nouvelle configuration de frais.",
+        "submit": "Créer",
+        "title": "Créer une configuration de frais"
+      },
+      "edit": {
+        "loadError": "Échec du chargement de la configuration."
+      },
+      "fields": {
+        "currency": "Devise",
+        "endDate": "Date de fin",
+        "feeTypeId": "Type de frais",
+        "fixedAmount": "Montant fixe",
+        "isActive": "Actif",
+        "maxAmount": "Montant maximum",
+        "minAmount": "Montant minimum",
+        "ownerId": "ID du propriétaire",
+        "ownerType": "Type de propriétaire",
+        "percentageRate": "Taux de pourcentage",
+        "startDate": "Date de début"
+      },
+      "placeholders": {
+        "fixedAmount": "Saisir le montant fixe",
+        "maxAmount": "Saisir le montant maximum",
+        "minAmount": "Saisir le montant minimum",
+        "percentageRate": "Saisir le taux de pourcentage"
+      }
+    },
+    "forms": {
+      "edit": {
+        "description": "Mettre à jour les détails de cette configuration.",
+        "title": "Modifier la configuration de frais"
+      }
+    },
+    "messages": {
+      "create": {
+        "error": "La création a échoué.",
+        "success": "Création réussie."
+      },
+      "delete": {
+        "confirm": "Êtes-vous sûr de vouloir supprimer cette configuration ?",
+        "error": "La suppression a échoué.",
+        "success": "Suppression réussie.",
+        "success_one": "1 configuration supprimée.",
+        "success_other": "{{count}} configurations supprimées."
+      },
+      "noData": "Aucune configuration de frais trouvée.",
+      "search": {
+        "error": "La recherche a échoué."
+      },
+      "update": {
+        "error": "La mise à jour a échoué.",
+        "success": "Mise à jour réussie."
+      }
+    },
+    "title": "Configurations de frais",
+    "totalCount_one": "1 configuration de frais",
+    "totalCount_other": "{{count}} configurations de frais"
+  },
+  "feetypes": {
+    "headers": {
+      "code": "Code",
+      "createdAt": "Créé le",
+      "description": "Description",
+      "isActive": "Actif",
+      "name": "Nom",
+      "transactionType": "Type de transaction"
+    }
+  },
+  "feeTypes": {
+    "actions": {
+      "add": "Ajouter un type de frais",
+      "delete": "Supprimer",
+      "edit": "Modifier",
+      "more": "Plus d'actions",
+      "view": "Voir"
+    },
+    "bulk": {
+      "delete_one": "Supprimer ce type ?",
+      "delete_other": "Supprimer ces types ?",
+      "deleteConfirm_one": "Êtes-vous sûr de vouloir supprimer ce type de frais ?",
+      "deleteConfirm_other": "Êtes-vous sûr de vouloir supprimer ces {{count}} types de frais ?",
+      "deleteError": "Erreur lors de la suppression.",
+      "deleteReason": "Motif de la suppression",
+      "deleting": "Suppression en cours...",
+      "partialError_one": "Une erreur partielle est survenue.",
+      "partialError_other": "{{count}} erreurs partielles sont survenues."
+    },
+    "create": "Créer un type de frais",
+    "edit": "Modifier le type de frais",
+    "form": {
+      "codeLabel": "Code",
+      "codePlaceholder": "Saisir le code",
+      "create": {
+        "description": "Ajouter un nouveau type de frais.",
+        "title": "Créer un type de frais"
+      },
+      "descriptionLabel": "Description",
+      "edit": {
+        "description": "Mettre à jour les détails de ce type de frais.",
+        "loadError": "Échec du chargement du type de frais.",
+        "submit": "Enregistrer les modifications",
+        "title": "Modifier le type de frais"
+      },
+      "isActiveLabel": "Actif",
+      "nameLabel": "Nom",
+      "namePlaceholder": "Saisir le nom",
+      "transactionType": {
+        "application": "Application",
+        "company": "Entreprise",
+        "placeholder": "Sélectionnez le type de transaction",
+        "receipt": "Reçu",
+        "system": "Système",
+        "transfer": "Transfert",
+        "withdrawal": "Retrait"
+      },
+      "transactionTypeLabel": "Type de transaction",
+      "transactionTypePlaceholder": "Sélectionnez un type de transaction"
+    },
+    "messages": {
+      "create": {
+        "error": "La création a échoué.",
+        "success": "Création réussie."
+      },
+      "delete": {
+        "confirm": "Êtes-vous sûr ?",
+        "error": "La suppression a échoué.",
+        "success": "Suppression réussie.",
+        "success_one": "1 type de frais supprimé.",
+        "success_other": "{{count}} types de frais supprimés."
+      },
+      "noData": "Aucun type de frais trouvé.",
+      "search": {
+        "error": "La recherche a échoué."
+      },
+      "update": {
+        "error": "La mise à jour a échoué.",
+        "success": "Mise à jour réussie."
+      }
+    },
+    "title": "Types de frais",
+    "totalCount_one": "1 type de frais",
+    "totalCount_other": "{{count}} types de frais"
+  },
+  "footer": {
+    "address": "Douala, Cameroun",
+    "bankWithdrawals": "Retraits bancaires",
+    "contact": "Contact",
+    "copyright": "© 2025 FujiPay. Tous droits réservés.",
+    "developedBy": "Développé par Graphics System SA",
+    "financialReporting": "Rapports financiers",
+    "kycManagement": "Gestion KYC",
+    "legal": "Légal",
+    "legalNotice": "Mentions légales",
+    "mobilePayments": "Paiements mobiles",
+    "moneyTransfers": "Transferts d'argent",
+    "privacyPolicy": "Politique de confidentialité",
+    "quickNav": "Navigation rapide",
+    "services": "Services",
+    "termsOfService": "Conditions de service"
+  },
+  "fronteventlogs": {
+    "headers": {
+      "action": "Action",
+      "additionalData": "Données supplémentaires",
+      "createdAt": "Créé le",
+      "date": "Date",
+      "environment": "Environnement",
+      "ipAddress": "Adresse IP",
+      "path": "Chemin",
+      "sessionId": "ID de session",
+      "type": "Type",
+      "userAgent": "Agent utilisateur",
+      "userId": "ID de l'utilisateur"
+    }
+  },
+  "frontEventLogs": {
+    "actions": {
+      "add": "Ajouter un événement",
+      "more": "Plus d'actions",
+      "view": "Voir"
+    },
+    "messages": {
+      "noData": "Aucun événement frontal trouvé.",
+      "search": {
+        "error": "La recherche a échoué."
+      }
+    },
+    "title": "Événements frontaux",
+    "totalCount_one": "1 événement",
+    "totalCount_other": "{{count}} événements"
+  },
+  "fundtransfersreadmodels": {
+    "headers": {
+      "amount": "Montant",
+      "companyName": "Entreprise",
+      "createdAt": "Créé le",
+      "createdByFirstName": "Créé par (Prénom)",
+      "createdByLastName": "Créé par (Nom)",
+      "createdByPhoneNumber": "Créé par (Téléphone)",
+      "currency": "Devise",
+      "currencySymbol": "Symbole de la devise",
+      "currentVersion": "Version actuelle",
+      "description": "Description",
+      "destinationApplicationName": "Application de destination",
+      "feeAppliedAmount": "Frais appliqués",
+      "internalFeeAmount": "Frais internes",
+      "netAmount": "Montant net",
+      "publicId": "ID public",
+      "reference": "Référence",
+      "sourceApplicationName": "Application source",
+      "status": "Statut",
+      "transferType": "Type de transfert",
+      "updatedByFirstName": "Mis à jour par (Prénom)",
+      "updatedByLastName": "Mis à jour par (Nom)"
+    }
+  },
+  "fundTransfersReadModels": {
+    "actions": {
+      "add": "Ajouter un transfert",
+      "delete": "Supprimer",
+      "edit": "Modifier",
+      "more": "Plus d'actions",
+      "view": "Voir"
+    },
+    "bulk": {
+      "delete_one": "Supprimer ce transfert ?",
+      "delete_other": "Supprimer ces transferts ?",
+      "deleteConfirm_one": "Êtes-vous sûr de vouloir supprimer ce transfert ?",
+      "deleteConfirm_other": "Êtes-vous sûr de vouloir supprimer ces {{count}} transferts ?",
+      "deleteError": "Erreur lors de la suppression.",
+      "deleteReason": "Motif de la suppression",
+      "deleting": "Suppression en cours...",
+      "partialError_one": "Une erreur partielle est survenue.",
+      "partialError_other": "{{count}} erreurs partielles sont survenues."
+    },
+    "messages": {
+      "create": {
+        "error": "La création a échoué.",
+        "success": "Création réussie."
+      },
+      "delete": {
+        "confirm": "Êtes-vous sûr ?",
+        "error": "La suppression a échoué.",
+        "success": "Suppression réussie.",
+        "success_one": "1 transfert supprimé.",
+        "success_other": "{{count}} transferts supprimés."
+      },
+      "noData": "Aucun transfert de fonds trouvé.",
+      "search": {
+        "error": "La recherche a échoué."
+      },
+      "update": {
+        "error": "La mise à jour a échoué.",
+        "success": "Mise à jour réussie."
+      }
+    },
+    "title": "Transferts de fonds",
+    "totalCount_one": "1 transfert",
+    "totalCount_other": "{{count}} transferts"
+  },
+  "goBack": "Retour",
+  "goHome": "Accueil",
+  "kycdocuments": {
+    "headers": {
+      "approvalBy": "Approuvé par",
+      "approvalByEmail": "Approuvé par (E-mail)",
+      "approvalByFirstName": "Approuvé par (Prénom)",
+      "approvalByLastName": "Approuvé par (Nom)",
+      "approvalByPhoneNumber": "Approuvé par (Téléphone)",
+      "approvalByStatus": "Approuvé par (Statut)",
+      "approvalDate": "Date d'approbation",
+      "companyEmail": "E-mail de l'entreprise",
+      "companyId": "ID de l'entreprise",
+      "companyName": "Entreprise",
+      "companyPhoneNumber": "Numéro de téléphone de l'entreprise",
+      "companyStatus": "Statut de l'entreprise",
+      "createdAt": "Créé le",
+      "documentTypeId": "ID du type de document",
+      "documentTypeName": "Nom du type de document",
+      "documentUrl": "URL du document",
+      "rejectionReason": "Motif du rejet",
+      "status": "Statut",
+      "submissionDate": "Date de soumission"
+    }
+  },
+  "kycDocuments": {
+    "actions": {
+      "add": "Ajouter un document",
+      "delete": "Supprimer",
+      "edit": "Modifier",
+      "more": "Plus d'actions",
+      "view": "Voir"
+    },
+    "bulk": {
+      "deleteError": "Erreur lors de la suppression.",
+      "deleteReason": "Motif de la suppression",
+      "partialError_one": "Une erreur partielle est survenue.",
+      "partialError_other": "{{count}} erreurs partielles sont survenues."
+    },
+    "form": {
+      "companyIdLabel": "Entreprise",
+      "companyIdPlaceholder": "Sélectionnez une entreprise",
+      "create": {
+        "description": "Ajouter un nouveau document KYC.",
+        "title": "Créer un document KYC"
+      },
+      "documentTypeIdLabel": "Type de document",
+      "documentTypeIdPlaceholder": "Sélectionnez un type de document",
+      "documentUrlLabel": "URL du document",
+      "documentUrlPlaceholder": "Saisir l'URL du document",
+      "edit": {
+        "description": "Mettre à jour les détails de ce document KYC.",
+        "submit": "Enregistrer les modifications",
+        "title": "Modifier le document KYC"
+      },
+      "statusLabel": "Statut",
+      "statusPlaceholder": "Sélectionnez un statut"
+    },
+    "messages": {
+      "create": {
+        "error": "La création a échoué.",
+        "success": "Création réussie."
+      },
+      "delete": {
+        "error": "La suppression a échoué.",
+        "success": "Suppression réussie.",
+        "success_one": "1 document supprimé.",
+        "success_other": "{{count}} documents supprimés."
+      },
+      "noData": "Aucun document KYC trouvé.",
+      "search": {
+        "error": "La recherche a échoué."
+      },
+      "update": {
+        "error": "La mise à jour a échoué.",
+        "success": "Mise à jour réussie."
+      }
+    },
+    "title": "Documents KYC",
+    "totalCount_one": "1 document",
+    "totalCount_other": "{{count}} documents"
+  },
+  "landingPage": {
+    "cta": {
+      "badge": "ESSAYEZ-LE MAINTENANT",
+      "cta1": "Commencez maintenant",
+      "cta2": "En savoir plus",
+      "subtitle": "Soutient les petites entreprises avec une facturation simple, des intégrations puissantes et des outils de gestion de trésorerie.",
+      "title1": "Prêt à améliorer votre",
+      "title2": "processus de paiement ?"
+    },
+    "features": {
+      "learnMore": "En savoir plus"
+    },
+    "hero": {
+      "active": "Actif",
+      "badge": "L'agrégateur ultime de Mobile Money",
+      "brand1": "Klarna.",
+      "brand2": "coinbase",
+      "brand3": "*instacart",
+      "cta": "Commencer",
+      "demoEmail": "dipainhouse@gmail.com",
+      "demoName": "Dipa Inhouse",
+      "invoice": "Facture",
+      "invoiceAmount": "1 876 580 $",
+      "invoiceDate": "21 avril 2024",
+      "mtnMobileMoney": "MTN Mobile Money",
+      "orangeMoney": "Orange Money",
+      "paid": "Payé",
+      "subtitle": "Soutient les petites entreprises avec une facturation simple, des intégrations puissantes et des outils de gestion de trésorerie.",
+      "title1": "Soyez payé plus tôt,",
+      "title2": "économisez automatiquement",
+      "title3": "sur tous vos paiements.",
+      "trustedBy": "Approuvé par des entreprises de premier plan",
+      "viewTransactions": "Voir les transactions"
+    },
+    "howItWorks": {
+      "badge": "COMMENT ÇA MARCHE",
+      "description": "Démarrez avec FujiPay en quelques minutes et transformez la façon dont vous gérez les paiements par mobile money au Cameroun.",
+      "step1": {
+        "description": "Inscrivez-vous à FujiPay et suivez notre processus de vérification KYC simplifié pour commencer.",
+        "title": "Créez votre compte"
+      },
+      "step2": {
+        "description": "Utilisez notre API bien documentée pour intégrer les paiements Orange Money et MTN Mobile Money dans votre application.",
+        "title": "Intégrez notre API"
+      },
+      "step3": {
+        "description": "Commencez à accepter les paiements, à gérer les retraits et à obtenir des informations en temps réel via notre tableau de bord.",
+        "title": "Acceptez les paiements et gérez les fonds"
+      },
+      "title": "Intégration simple, résultats puissants"
+    },
+    "industries": {
+      "badge": "SOLUTIONS PAR SECTEUR",
+      "description": "Quel que soit votre secteur d'activité, FujiPay s'adapte à vos besoins spécifiques avec des solutions de paiement flexibles.",
+      "learnMore": "En savoir plus",
+      "title": "Des solutions sur mesure pour chaque entreprise"
+    },
+    "mission": {
+      "badge": "NOTRE MISSION",
+      "stat1": {
+        "label": "Revenus des entreprises",
+        "value": "24%"
+      },
+      "stat2": {
+        "label": "En revenus annuels",
+        "value": "180K"
+      },
+      "subtitle": "Des centaines d'entreprises de toutes tailles et de tous secteurs ont réalisé de grandes améliorations avec nous.",
+      "title1": "Nous avons aidé",
+      "title2": "des entreprises innovantes"
+    },
+    "stats": {
+      "transactions": "5M+",
+      "transactionsLabel": "Transactions traitées",
+      "uptime": "99.9%",
+      "uptimeLabel": "Garantie de disponibilité"
+    }
+  },
+  "logs": {
+    "actions": {
+      "add": "Ajouter un journal",
+      "more": "Plus d'actions",
+      "view": "Voir"
+    },
+    "headers": {
+      "additionalData": "Données supplémentaires",
+      "applicationName": "Application",
+      "correlationId": "ID de corrélation",
+      "createdAt": "Créé le",
+      "environment": "Environnement",
+      "exceptionMessage": "Message d'exception",
+      "ipAddress": "Adresse IP",
+      "logLevel": "Niveau de journal",
+      "machineName": "Nom de la machine",
+      "message": "Message",
+      "requestUri": "URI de la requête",
+      "stackTrace": "Trace de la pile",
+      "userId": "ID de l'utilisateur",
+      "userName": "Nom de l'utilisateur"
+    },
+    "messages": {
+      "noData": "Aucun journal trouvé.",
+      "search": {
+        "error": "La recherche a échoué."
+      }
+    },
+    "title": "Journaux",
+    "totalCount_one": "1 journal",
+    "totalCount_other": "{{count}} journaux"
+  },
+  "menu": {
+    "Dashboard": "Tableau de bord",
+    "administration": "Administration",
+    "countries": "Pays",
+    "feeTypes": "Types de frais",
+    "paymentMethod": "Moyens de paiement",
+    "balanceType": "Types de solde",
+    "feeConfigurations": "Configurations de frais",
+    "documentType": "Types de documents",
+    "companyAppLimit": "Limites d'application",
+    "settings": "Paramètres",
+    "secureSettings": "Paramètres sécurisés",
+    "users": "Utilisateurs",
+    "userProfiles": "Profils utilisateur",
+    "permissions": "Permissions",
+    "companies": "Entreprises",
+    "applications": "Applications",
+    "transactions": "Transactions",
+    "all": "Toutes",
+    "payments": "Paiements",
+    "withdrawals": "Retraits",
+    "withdrawalMethod": "Méthodes de retrait",
+    "receipts": "Reçus",
+    "logs": "Journaux",
+    "frontEvents": "Événements frontaux",
+    "webHookLogs": "Journaux de Webhook",
+    "monitoring": "Surveillance",
+    "systemMetric": "Métrique système",
+    "currencies": "Devises",
+    "auditSecurity": "Audit et sécurité",
+    "allowedIps": "Adresses IP autorisées",
+    "blockedIps": "Adresses IP bloquées",
+    "auditLogs": "Journaux d'audit",
+    "userDevices": "Appareils des utilisateurs",
+    "webhooks": "Webhooks",
+    "addCountry": "Ajouter un pays",
+    "addFeeType": "Ajouter un type de frais",
+    "addPaymentMethod": "Ajouter un moyen de paiement",
+    "addBalanceType": "Ajouter un type de solde",
+    "addFeeConfiguration": "Ajouter une configuration de frais",
+    "addDocumentType": "Ajouter un type de document",
+    "addCompanyAppLimit": "Ajouter une limite d'application",
+    "addSetting": "Ajouter un paramètre",
+    "addSecureSetting": "Ajouter un paramètre sécurisé",
+    "addUser": "Ajouter un utilisateur",
+    "addUserProfile": "Ajouter un profil",
+    "addCompany": "Ajouter une entreprise",
+    "addApplication": "Ajouter une application",
+    "addWebhook": "Ajouter un Webhook"
+  },
+  "navigation": {
+    "about": "À propos",
+    "contact": "Contact",
+    "dashboard": "Tableau de bord",
+    "developers": "Développeurs",
+    "faq": "FAQ",
+    "features": "Fonctionnalités",
+    "home": "Accueil",
+    "login": "Connexion",
+    "requestDemo": "Demander une démo",
+    "solutions": "Solutions"
+  },
+  "noPermission": "Vous n'avez pas la permission d'accéder à cette ressource",
+  "noRessource": "Aucune ressource disponible",
+  "notification": {
+    "actions": {
+      "add": "Ajouter",
+      "delete": "Supprimer",
+      "edit": "Modifier",
+      "more": "Plus",
+      "view": "Voir"
+    },
+    "bulk": {
+      "delete_one": "Supprimer cette notification ?",
+      "delete_other": "Supprimer ces notifications ?",
+      "deleteConfirm_one": "Êtes-vous sûr de vouloir supprimer cette notification ?",
+      "deleteConfirm_other": "Êtes-vous sûr de vouloir supprimer ces {{count}} notifications ?",
+      "deleteError": "Erreur lors de la suppression.",
+      "deleteReason": "Motif de la suppression",
+      "deleting": "Suppression en cours...",
+      "partialError_one": "Une erreur partielle est survenue.",
+      "partialError_other": "{{count}} erreurs partielles sont survenues."
+    },
+    "messages": {
+      "create": {
+        "error": "La création a échoué.",
+        "success": "Création réussie."
+      },
+      "delete": {
+        "confirm": "Êtes-vous sûr ?",
+        "error": "La suppression a échoué.",
+        "success": "Suppression réussie.",
+        "success_one": "1 notification supprimée.",
+        "success_other": "{{count}} notifications supprimées."
+      },
+      "noData": "Aucune notification.",
+      "search": {
+        "error": "La recherche a échoué."
+      },
+      "update": {
+        "error": "La mise à jour a échoué.",
+        "success": "Mise à jour réussie."
+      }
+    },
+    "title": "Notifications",
+    "totalCount_one": "1 notification",
+    "totalCount_other": "{{count}} notifications"
+  },
+  "notifications": {
+    "headers": {
+      "canal": "Canal",
+      "companyName": "Entreprise",
+      "createdAt": "Créé le",
+      "createdBy": "Créé par",
+      "data": "Données",
+      "expiresAt": "Expire le",
+      "isRead": "Lu",
+      "message": "Message",
+      "priority": "Priorité",
+      "readAt": "Lu le",
+      "templateType": "Type de modèle",
+      "title": "Titre",
+      "type": "Type",
+      "updatedAt": "Mis à jour le",
+      "userEmail": "E-mail de l'utilisateur",
+      "userFirstName": "Prénom de l'utilisateur",
+      "userLastName": "Nom de famille de l'utilisateur",
+      "userPhoneNumber": "Numéro de téléphone de l'utilisateur",
+      "userStatus": "Statut de l'utilisateur"
+    }
+  },
+  "pageNotfound": "Page non trouvée",
+  "paymentmethods": {
+    "headers": {
+      "code": "Code",
+      "createdAt": "Créé le",
+      "description": "Description",
+      "isActive": "Actif",
+      "logoUrl": "URL du logo",
+      "maximumAmount": "Montant maximum",
+      "minimumAmount": "Montant minimum",
+      "name": "Nom",
+      "requiresPhoneNumber": "Nécessite un numéro de téléphone",
+      "settlementPeriod": "Période de règlement",
+      "sortOrder": "Ordre de tri"
+    }
+  },
+  "paymentMethods": {
+    "actions": {
+      "add": "Ajouter un moyen de paiement",
+      "delete": "Supprimer",
+      "edit": "Modifier",
+      "more": "Plus d'actions",
+      "view": "Voir"
+    },
+    "bulk": {
+      "delete_one": "Supprimer ce moyen de paiement ?",
+      "delete_other": "Supprimer ces moyens de paiement ?",
+      "deleteConfirm_one": "Êtes-vous sûr de vouloir supprimer ce moyen de paiement ?",
+      "deleteConfirm_other": "Êtes-vous sûr de vouloir supprimer ces {{count}} moyens de paiement ?",
+      "deleteError": "Erreur lors de la suppression.",
+      "deleteReason": "Motif de la suppression",
+      "deleting": "Suppression en cours...",
+      "partialError_one": "Une erreur partielle est survenue.",
+      "partialError_other": "{{count}} erreurs partielles sont survenues."
+    },
+    "create": "Créer un moyen de paiement",
+    "edit": "Modifier le moyen de paiement",
+    "form": {
+      "codeLabel": "Code",
+      "codePlaceholder": "Saisir le code",
+      "create": {
+        "description": "Ajouter un nouveau moyen de paiement.",
+        "title": "Créer un moyen de paiement"
+      },
+      "descriptionLabel": "Description",
+      "descriptionPlaceholder": "Saisir la description",
+      "edit": {
+        "description": "Mettre à jour les détails de ce moyen de paiement.",
+        "loadError": "Échec du chargement du moyen de paiement.",
+        "submit": "Enregistrer les modifications",
+        "title": "Modifier le moyen de paiement"
+      },
+      "isActiveLabel": "Actif",
+      "maximumAmountLabel": "Montant maximum",
+      "maximumAmountPlaceholder": "Saisir le montant maximum",
+      "minimumAmountLabel": "Montant minimum",
+      "nameLabel": "Nom",
+      "namePlaceholder": "Saisir le nom",
+      "requiresPhoneNumberLabel": "Nécessite un numéro de téléphone",
+      "sortOrderLabel": "Ordre de tri",
+      "sortOrderPlaceholder": "Saisir l'ordre de tri"
+    },
+    "formsettlementLabel": "Règlement",
+    "formsettlementPlaceholder": "Saisir la période de règlement",
+    "messages": {
+      "create": {
+        "error": "La création a échoué.",
+        "success": "Création réussie."
+      },
+      "delete": {
+        "confirm": "Êtes-vous sûr ?",
+        "error": "La suppression a échoué.",
+        "success": "Suppression réussie.",
+        "success_one": "1 moyen de paiement supprimé.",
+        "success_other": "{{count}} moyens de paiement supprimés."
+      },
+      "noData": "Aucun moyen de paiement trouvé.",
+      "search": {
+        "error": "La recherche a échoué."
+      },
+      "update": {
+        "error": "La mise à jour a échoué.",
+        "success": "Mise à jour réussie."
+      }
+    },
+    "title": "Moyens de paiement",
+    "totalCount_one": "1 moyen de paiement",
+    "totalCount_other": "{{count}} moyens de paiement"
+  },
+  "receipts": {
+    "actions": {
+      "more": "Plus d'actions",
+      "view": "Voir"
+    },
+    "messages": {
+      "noData": "Aucun reçu trouvé."
+    }
+  },
+  "receiptsreadmodels": {
+    "headers": {
+      "amount": "Montant",
+      "applicationName": "Application",
+      "companyName": "Entreprise",
+      "createdAt": "Créé le",
+      "currency": "Devise",
+      "externalReference": "Référence externe",
+      "feeAppliedAmount": "Frais appliqués",
+      "internalFeeAmount": "Frais internes",
+      "netAmount": "Montant net",
+      "paymentMethodCode": "Code du moyen de paiement",
+      "phoneNumberEncrypted": "Téléphone (chiffré)",
+      "providerFeeAmount": "Frais du fournisseur",
+      "providerReference": "Référence du fournisseur",
+      "status": "Statut",
+      "transactionId": "ID de la transaction"
+    }
+  },
+  "receiptsReadModels": {
+    "actions": {
+      "add": "Ajouter",
+      "delete": "Supprimer",
+      "edit": "Modifier",
+      "more": "Plus d'actions",
+      "view": "Voir"
+    },
+    "bulk": {
+      "delete_one": "Supprimer ce reçu ?",
+      "delete_other": "Supprimer ces reçus ?",
+      "deleteConfirm_one": "Êtes-vous sûr de vouloir supprimer ce reçu ?",
+      "deleteConfirm_other": "Êtes-vous sûr de vouloir supprimer ces {{count}} reçus ?",
+      "deleteError": "Erreur lors de la suppression.",
+      "deleteReason": "Motif de la suppression",
+      "deleting": "Suppression en cours...",
+      "partialError_one": "Une erreur partielle est survenue.",
+      "partialError_other": "{{count}} erreurs partielles sont survenues."
+    },
+    "messages": {
+      "delete": {
+        "confirm": "Êtes-vous sûr ?",
+        "error": "La suppression a échoué.",
+        "success": "Suppression réussie.",
+        "success_one": "1 reçu supprimé.",
+        "success_other": "{{count}} reçus supprimés."
+      },
+      "noData": "Aucun reçu trouvé.",
+      "search": {
+        "error": "La recherche a échoué."
+      }
+    },
+    "title": "Reçus",
+    "totalCount_one": "1 reçu",
+    "totalCount_other": "{{count}} reçus"
+  },
+  "securesettings": {
+    "headers": {
+      "createdAt": "Créé le",
+      "description": "Description",
+      "systemName": "Nom du système"
+    }
+  },
+  "secureSettings": {
+    "actions": {
+      "add": "Ajouter un paramètre sécurisé"
+    },
+    "create": "Créer un paramètre sécurisé",
+    "form": {
+      "create": {
+        "description": "Ajouter un nouveau paramètre sécurisé.",
+        "submit": "Créer",
+        "title": "Créer un paramètre sécurisé"
+      },
+      "descriptionLabel": "Description",
+      "descriptionPlaceholder": "Saisir la description",
+      "edit": {
+        "description": "Mettre à jour les détails de ce paramètre sécurisé.",
+        "submit": "Enregistrer les modifications",
+        "title": "Modifier le paramètre sécurisé"
+      },
+      "elementsTitle": "Éléments",
+      "keyLabel": "Clé",
+      "keyPlaceholder": "Saisir la clé",
+      "nameLabel": "Nom",
+      "namePlaceholder": "Saisir le nom",
+      "secureValueLabel": "Valeur sécurisée",
+      "secureValuePlaceholder": "Saisir la valeur sécurisée"
+    },
+    "messages": {
+      "create": {
+        "error": "La création a échoué.",
+        "success": "Création réussie."
+      },
+      "noData": "Aucun paramètre sécurisé trouvé.",
+      "search": {
+        "error": "La recherche a échoué."
+      },
+      "update": {
+        "error": "La mise à jour a échoué.",
+        "success": "Mise à jour réussie."
+      }
+    },
+    "title": "Paramètres sécurisés",
+    "totalCount_one": "1 paramètre sécurisé",
+    "totalCount_other": "{{count}} paramètres sécurisés"
+  },
+  "sessions": {
+    "access_denied": "Accès refusé",
+    "network_error": "Erreur réseau",
+    "session_expired": "Session expirée"
+  },
+  "settings": {
+    "actions": {
+      "add": "Ajouter un paramètre",
+      "delete": "Supprimer",
+      "edit": "Modifier",
+      "more": "Plus d'actions",
+      "view": "Voir"
+    },
+    "bulk": {
+      "delete_one": "Supprimer ce paramètre ?",
+      "delete_other": "Supprimer ces paramètres ?",
+      "deleteConfirm_one": "Êtes-vous sûr de vouloir supprimer ce paramètre ?",
+      "deleteConfirm_other": "Êtes-vous sûr de vouloir supprimer ces {{count}} paramètres ?",
+      "deleteError": "Erreur lors de la suppression.",
+      "deleteReason": "Motif de la suppression",
+      "deleting": "Suppression en cours...",
+      "partialError_one": "Une erreur partielle est survenue.",
+      "partialError_other": "{{count}} erreurs partielles sont survenues."
+    },
+    "create": "Créer un paramètre",
+    "edit": "Modifier le paramètre",
+    "form": {
+      "allowedValuesLabel": "Valeurs autorisées",
+      "allowedValuesPlaceholder": "Saisir les valeurs autorisées, séparées par des virgules",
+      "applicationLabel": "Application",
+      "applicationPlaceholder": "Sélectionnez une application",
+      "categoryLabel": "Catégorie",
+      "categoryPlaceholder": "Saisir la catégorie",
+      "companyLabel": "Entreprise",
+      "companyPlaceholder": "Sélectionnez une entreprise",
+      "create": {
+        "description": "Ajouter un nouveau paramètre.",
+        "submit": "Créer",
+        "title": "Créer un paramètre"
+      },
+      "dataType": {
+        "bool": "Booléen",
+        "char": "Caractère",
+        "double": "Double",
+        "float": "Flottant",
+        "int": "Entier",
+        "placeholder": "Sélectionnez un type de données",
+        "string": "Chaîne de caractères"
+      },
+      "dataTypeLabel": "Type de données",
+      "descriptionLabel": "Description",
+      "descriptionPlaceholder": "Saisir la description",
+      "edit": {
+        "description": "Mettre à jour les détails de ce paramètre.",
+        "loadError": "Échec du chargement du paramètre.",
+        "submit": "Enregistrer les modifications",
+        "title": "Modifier le paramètre"
+      },
+      "isEncryptedLabel": "Est chiffré",
+      "isReadOnlyLabel": "Lecture seule",
+      "isSystemSettingLabel": "Paramètre système",
+      "validationRegexLabel": "Regex de validation",
+      "valueLabel": "Valeur",
+      "valuePlaceholder": "Saisir la valeur"
+    },
+    "headers": {
+      "allowedValues": "Valeurs autorisées",
+      "applicationName": "Application",
+      "category": "Catégorie",
+      "companyName": "Entreprise",
+      "createdAt": "Créé le",
+      "dataType": "Type de données",
+      "description": "Description",
+      "isEncrypted": "Chiffré",
+      "isReadOnly": "Lecture seule",
+      "isSystemSetting": "Paramètre système",
+      "validationRegex": "Regex de validation",
+      "value": "Valeur"
+    },
+    "messages": {
+      "create": {
+        "error": "La création a échoué.",
+        "success": "Création réussie."
+      },
+      "delete": {
+        "confirm": "Êtes-vous sûr de vouloir supprimer ce paramètre ?",
+        "error": "La suppression a échoué.",
+        "success": "Suppression réussie.",
+        "success_one": "1 paramètre supprimé.",
+        "success_other": "{{count}} paramètres supprimés."
+      },
+      "noData": "Aucun paramètre trouvé.",
+      "search": {
+        "error": "La recherche a échoué."
+      },
+      "update": {
+        "error": "La mise à jour a échoué.",
+        "success": "Mise à jour réussie."
+      }
+    },
+    "title": "Paramètres",
+    "totalCount_one": "1 paramètre",
+    "totalCount_other": "{{count}} paramètres"
+  },
+  "smsmailtemplates": {
+    "headers": {
+      "body": "Corps",
+      "createdAt": "Créé le",
+      "isActive": "Actif",
+      "locale": "Locale",
+      "subject": "Sujet",
+      "type": "Type"
+    }
+  },
+  "smsmailTemplates": {
+    "actions": {
+      "add": "Ajouter un modèle",
+      "delete": "Supprimer",
+      "edit": "Modifier",
+      "more": "Plus d'actions",
+      "view": "Voir"
+    },
+    "bulk": {
+      "delete_one": "Supprimer ce modèle ?",
+      "delete_other": "Supprimer ces modèles ?",
+      "deleteConfirm_one": "Êtes-vous sûr de vouloir supprimer ce modèle ?",
+      "deleteConfirm_other": "Êtes-vous sûr de vouloir supprimer ces {{count}} modèles ?",
+      "deleteError": "Erreur lors de la suppression.",
+      "deleteReason": "Motif de la suppression",
+      "deleting": "Suppression en cours...",
+      "partialError_one": "Une erreur partielle est survenue.",
+      "partialError_other": "{{count}} erreurs partielles sont survenues."
+    },
+    "details": {
+      "title": "Détails du modèle"
+    },
+    "form": {
+      "bodyLabel": "Corps",
+      "bodyPlaceholder": "Saisir le corps du modèle",
+      "create": {
+        "description": "Ajouter un nouveau modèle.",
+        "title": "Créer un modèle"
+      },
+      "edit": {
+        "description": "Mettre à jour les détails de ce modèle.",
+        "submit": "Enregistrer les modifications",
+        "title": "Modifier le modèle"
+      },
+      "isActiveLabel": "Actif",
+      "localeLabel": "Locale",
+      "localePlaceholder": "Sélectionnez une locale",
+      "subjectLabel": "Sujet",
+      "subjectPlaceholder": "Saisir le sujet",
+      "typeLabel": "Type",
+      "typePlaceholder": "Sélectionnez un type"
+    },
+    "messages": {
+      "create": {
+        "error": "La création a échoué.",
+        "success": "Création réussie."
+      },
+      "delete": {
+        "confirm": "Êtes-vous sûr ?",
+        "error": "La suppression a échoué.",
+        "success": "Suppression réussie.",
+        "success_one": "1 modèle supprimé.",
+        "success_other": "{{count}} modèles supprimés."
+      },
+      "noData": "Aucun modèle trouvé.",
+      "search": {
+        "error": "La recherche a échoué."
+      },
+      "update": {
+        "error": "La mise à jour a échoué.",
+        "success": "Mise à jour réussie."
+      }
+    },
+    "title": "Modèles SMS/E-mail",
+    "totalCount_one": "1 modèle",
+    "totalCount_other": "{{count}} modèles"
+  },
+  "solutions": {
+    "benefitsLabel": "Avantages",
+    "customSolution": {
+      "cta": "Contactez-nous",
+      "description": "FujiPay est hautement adaptable. Contactez-nous pour discuter d'une solution personnalisée pour vos besoins spécifiques.",
+      "title": "Votre secteur n'est pas répertorié ?"
+    },
+    "ecommerce": {
+      "problem": "Forte dépendance au paiement mobile, rapprochement fastidieux des transactions par opérateur, besoin d'une expérience client fluide.",
+      "title": "E-commerce et boutiques en ligne"
+    },
+    "fintech": {
+      "problem": "Traitement des décaissements et des remboursements, gestion des soldes clients, conformité KYC.",
+      "title": "Services financiers et FinTech"
+    },
+    "intro": "Quelle que soit votre activité, FujiPay s'intègre pour optimiser vos processus de paiement mobile. Découvrez comment nous aidons nos clients à prospérer.",
+    "nonprofit": {
+      "problem": "Collecte de dons via mobile money, traçabilité des contributions, conformité.",
+      "title": "Organisations à but non lucratif et associations"
+    },
+    "problemLabel": "Le défi",
+    "solutionLabel": "La solution FujiPay",
+    "title": "FujiPay : Des solutions sur mesure pour chaque secteur"
+  },
+  "themeMode": {
+    "dark": "Sombre",
+    "light": "Clair",
+    "system": "Système"
+  },
+  "userdevices": {
+    "headers": {
+      "browser": "Navigateur",
+      "createdAt": "Créé le",
+      "deviceType": "Type d'appareil",
+      "ipaddress": "Adresse IP",
+      "language": "Langue",
+      "os": "Système d'exploitation",
+      "screenResolution": "Résolution de l'écran",
+      "status": "Statut",
+      "userAgent": "Agent utilisateur",
+      "userEmail": "E-mail de l'utilisateur",
+      "userFirstName": "Prénom de l'utilisateur",
+      "userId": "ID de l'utilisateur",
+      "userLastName": "Nom de famille de l'utilisateur",
+      "userPhoneNumber": "Numéro de téléphone de l'utilisateur",
+      "userStatus": "Statut de l'utilisateur"
+    }
+  },
+  "userDevices": {
+    "actions": {
+      "more": "Plus d'actions",
+      "view": "Voir"
+    },
+    "messages": {
+      "noData": "Aucun appareil utilisateur trouvé.",
+      "search": {
+        "error": "La recherche a échoué."
+      }
+    },
+    "title": "Appareils des utilisateurs",
+    "totalCount_one": "1 appareil",
+    "totalCount_other": "{{count}} appareils"
+  },
+  "userProfile": {
+    "actions": {
+      "add": "Nouveau profil utilisateur",
+      "delete": "Supprimer",
+      "edit": "Modifier",
+      "more": "Plus d'actions",
+      "view": "Voir"
+    },
+    "bulk": {
+      "delete_one": "Supprimer ce profil ?",
+      "delete_other": "Supprimer ces profils ?",
+      "deleteConfirm_one": "Êtes-vous sûr de vouloir supprimer ce profil ?",
+      "deleteConfirm_other": "Êtes-vous sûr de vouloir supprimer ces {{count}} profils ?",
+      "deleteError": "Erreur lors de la suppression.",
+      "deleteReason": "Motif de la suppression",
+      "deleting": "Suppression en cours...",
+      "partialError_one": "Une erreur partielle est survenue.",
+      "partialError_other": "{{count}} erreurs partielles sont survenues."
+    },
+    "create": "Créer un profil",
+    "edit": "Modifier le profil",
+    "form": {
+      "create": {
+        "description": "Ajouter un nouveau profil utilisateur.",
+        "submit": "Créer",
+        "title": "Créer un profil utilisateur"
+      },
+      "edit": {
+        "loadError": "Échec du chargement du profil.",
+        "submit": "Enregistrer les modifications"
+      }
+    },
+    "messages": {
+      "create": {
+        "error": "La création a échoué.",
+        "success": "Création réussie."
+      },
+      "delete": {
+        "confirm": "Êtes-vous sûr ?",
+        "error": "La suppression a échoué.",
+        "success": "Suppression réussie.",
+        "success_one": "1 profil supprimé.",
+        "success_other": "{{count}} profils supprimés."
+      },
+      "noData": "Aucun profil trouvé.",
+      "search": {
+        "error": "La recherche a échoué."
+      },
+      "update": {
+        "error": "La mise à jour a échoué.",
+        "success": "Mise à jour réussie."
+      }
+    },
+    "title": "Profils utilisateur",
+    "totalCount_one": "1 profil",
+    "totalCount_other": "{{count}} profils"
+  },
+  "userprofiles": {
+    "headers": {
+      "createdAt": "Créé le",
+      "description": "Description",
+      "isActive": "Actif",
+      "isSystemProfile": "Profil système",
+      "name": "Nom",
+      "permissions": "Permissions"
+    }
+  },
+  "userProfiles": {
+    "form": {
+      "descriptionLabel": "Description",
+      "descriptionPlaceholder": "Saisir la description",
+      "edit": {
+        "description": "Mettre à jour les détails de ce profil.",
+        "title": "Modifier le profil"
+      },
+      "isActiveLabel": "Actif",
+      "isSystemProfileLabel": "Profil système",
+      "nameLabel": "Nom",
+      "namePlaceholder": "Saisir le nom du profil",
+      "permissionsLabel": "Permissions",
+      "permissionsPlaceholder": "Sélectionnez les permissions"
+    },
+    "title": "Profils utilisateur"
+  },
+  "users": {
+    "actions": {
+      "addCompanyUser": "Ajouter un utilisateur d'entreprise",
+      "addSystemUser": "Ajouter un utilisateur système",
+      "addTitle": "Ajouter un utilisateur",
+      "delete": "Supprimer",
+      "edit": "Modifier",
+      "more": "Plus d'actions",
+      "view": "Voir"
+    },
+    "bulk": {
+      "delete_one": "Supprimer cet utilisateur ?",
+      "delete_other": "Supprimer ces utilisateurs ?",
+      "deleteConfirm_one": "Êtes-vous sûr de vouloir supprimer cet utilisateur ?",
+      "deleteConfirm_other": "Êtes-vous sûr de vouloir supprimer ces {{count}} utilisateurs ?",
+      "deleteError": "Erreur lors de la suppression.",
+      "deleteReason": "Motif de la suppression",
+      "deleting": "Suppression en cours...",
+      "partialError_one": "Une erreur partielle est survenue.",
+      "partialError_other": "{{count}} erreurs partielles sont survenues."
+    },
+    "form": {
+      "companyIdLabel": "Entreprise",
+      "companyIdPlaceholder": "Sélectionnez une entreprise",
+      "create": {
+        "description": "Ajouter un nouvel utilisateur.",
+        "submit": "Créer",
+        "title": "Créer un utilisateur"
+      },
+      "edit": {
+        "description": "Mettre à jour les détails de cet utilisateur.",
+        "submit": "Enregistrer les modifications",
+        "title": "Modifier l'utilisateur"
+      },
+      "emailLabel": "E-mail",
+      "emailPlaceholder": "Saisir l'e-mail",
+      "firstNameLabel": "Prénom",
+      "firstNamePlaceholder": "Saisir le prénom",
+      "initialPasswordLabel": "Mot de passe initial",
+      "initialPasswordPlaceholder": "Saisir le mot de passe initial",
+      "lastNameLabel": "Nom de famille",
+      "lastNamePlaceholder": "Saisir le nom de famille",
+      "phoneNumberLabel": "Numéro de téléphone",
+      "phoneNumberPlaceholder": "Saisir le numéro de téléphone",
+      "profileIdLabel": "Profil",
+      "profileIdPlaceholder": "Sélectionnez un profil",
+      "statusLabel": "Statut",
+      "statusPlaceholder": "Sélectionnez un statut",
+      "userTypeLabel": "Type d'utilisateur",
+      "userTypePlaceholder": "Sélectionnez un type d'utilisateur"
+    },
+    "headers": {
+      "companyName": "Entreprise",
+      "createdAt": "Créé le",
+      "email": "E-mail",
+      "firstName": "Prénom",
+      "lastName": "Nom de famille",
+      "phoneNumber": "Numéro de téléphone",
+      "profileName": "Nom du profil",
+      "publicId": "ID public",
+      "status": "Statut",
+      "userType": "Type d'utilisateur"
+    },
+    "messages": {
+      "create": {
+        "error": "La création a échoué.",
+        "success": "Création réussie."
+      },
+      "delete": {
+        "confirm": "Êtes-vous sûr de vouloir supprimer cet utilisateur ?",
+        "error": "La suppression a échoué.",
+        "success": "Suppression réussie.",
+        "success_one": "1 utilisateur supprimé.",
+        "success_other": "{{count}} utilisateurs supprimés."
+      },
+      "noData": "Aucun utilisateur trouvé.",
+      "search": {
+        "error": "La recherche a échoué."
+      },
+      "update": {
+        "error": "La mise à jour a échoué.",
+        "success": "Mise à jour réussie."
+      }
+    },
+    "title": "Utilisateurs",
+    "totalCount_one": "1 utilisateur",
+    "totalCount_other": "{{count}} utilisateurs"
+  },
+  "vwtransactionssummaries": {
+    "headers": {
+      "aggregateId": "ID d'agrégat",
+      "aggregateType": "Type d'agrégat",
+      "amount": "Montant",
+      "applicationName": "Application",
+      "companyName": "Entreprise",
+      "createdAt": "Créé le",
+      "currency": "Devise",
+      "externalReference": "Référence externe",
+      "paymentMethodCode": "Code du moyen de paiement",
+      "paymentMethodName": "Nom du moyen de paiement",
+      "providerFinalReference": "Référence finale du fournisseur",
+      "providerInitialReference": "Référence initiale du fournisseur",
+      "status": "Statut",
+      "updatedAt": "Mis à jour le"
+    }
+  },
+  "vwTransactionsSummarys": {
+    "actions": {
+      "more": "Plus d'actions",
+      "view": "Voir"
+    },
+    "messages": {
+      "noData": "Aucun résumé de transaction trouvé.",
+      "search": {
+        "error": "La recherche a échoué."
+      }
+    },
+    "title": "Résumés des transactions",
+    "totalCount_one": "1 résumé",
+    "totalCount_other": "{{count}} résumés"
+  },
+  "webhookLog": {
+    "actions": {
+      "more": "Plus d'actions",
+      "view": "Voir"
+    },
+    "messages": {
+      "noData": "Aucun journal de webhook trouvé.",
+      "search": {
+        "error": "La recherche a échoué."
+      }
+    },
+    "title": "Journaux de Webhook",
+    "totalCount_one": "1 journal",
+    "totalCount_other": "{{count}} journaux"
+  },
+  "webhooklogs": {
+    "headers": {
+      "attemptNumber": "Numéro de tentative",
+      "createdAt": "Créé le",
+      "errorMessage": "Message d'erreur",
+      "requestBody": "Corps de la requête",
+      "responseBody": "Corps de la réponse",
+      "responseStatusCode": "Code de statut de la réponse",
+      "webhookId": "ID du Webhook",
+      "webhookName": "Nom du Webhook"
+    }
+  },
+  "webhooks": {
+    "actions": {
+      "add": "Ajouter un Webhook",
+      "more": "Plus d'actions",
+      "view": "Voir"
+    },
+    "bulk": {
+      "deleteError": "Erreur lors de la suppression.",
+      "deleteReason": "Motif de la suppression",
+      "partialError_one": "Une erreur partielle est survenue.",
+      "partialError_other": "{{count}} erreurs partielles sont survenues."
+    },
+    "form": {
+      "applicationIdLabel": "Application",
+      "applicationIdPlaceholder": "Sélectionnez une application",
+      "create": {
+        "description": "Ajouter un nouveau webhook.",
+        "title": "Créer un Webhook"
+      },
+      "edit": {
+        "description": "Mettre à jour les détails de ce webhook.",
+        "submit": "Enregistrer les modifications",
+        "title": "Modifier le Webhook"
+      },
+      "maxRetriesIdLabel": "Nombre maximal de tentatives",
+      "maxRetriesIdPlaceholder": "Saisir le nombre maximal de tentatives",
+      "urlLabel": "URL",
+      "urlPlaceholder": "Saisir l'URL"
+    },
+    "headers": {
+      "applicationName": "Application",
+      "createdAt": "Créé le",
+      "eventType": "Type d'événement",
+      "isActive": "Actif",
+      "lastSecretGenerated": "Dernier secret généré",
+      "maxRetries": "Nombre maximal de tentatives",
+      "timeoutSeconds": "Délai d'attente (secondes)",
+      "url": "URL"
+    },
+    "messages": {
+      "create": {
+        "error": "La création a échoué.",
+        "success": "Création réussie."
+      },
+      "delete": {
+        "error": "La suppression a échoué.",
+        "success": "Suppression réussie.",
+        "success_one": "1 webhook supprimé.",
+        "success_other": "{{count}} webhooks supprimés."
+      },
+      "dropdown": {
+        "error": "Le chargement a échoué."
+      },
+      "fetch": {
+        "error": "La récupération a échoué."
+      },
+      "noData": "Aucun webhook trouvé.",
+      "search": {
+        "error": "La recherche a échoué."
+      },
+      "update": {
+        "error": "La mise à jour a échoué.",
+        "success": "Mise à jour réussie."
+      }
+    },
+    "title": "Webhooks",
+    "totalCount_one": "1 webhook",
+    "totalCount_other": "{{count}} webhooks"
+  },
+  "withdrawalMethod": {
+    "actions": {
+      "delete": "Supprimer",
+      "edit": "Modifier",
+      "more": "Plus",
+      "view": "Voir"
+    },
+    "bulk": {
+      "deleteError": "Erreur lors de la suppression.",
+      "deleteReason": "Motif de la suppression",
+      "partialError_one": "Une erreur partielle est survenue.",
+      "partialError_other": "{{count}} erreurs partielles sont survenues."
+    },
+    "create": "Créer une méthode de retrait",
+    "edit": "Modifier la méthode de retrait",
+    "form": {
+      "create": {
+        "submit": "Créer"
+      },
+      "edit": {
+        "loadError": "Le chargement a échoué.",
+        "submit": "Enregistrer les modifications"
+      }
+    },
+    "messages": {
+      "create": {
+        "error": "La création a échoué.",
+        "success": "Création réussie."
+      },
+      "delete": {
+        "confirm": "Êtes-vous sûr ?",
+        "error": "La suppression a échoué.",
+        "success": "Suppression réussie.",
+        "success_one": "1 méthode supprimée.",
+        "success_other": "{{count}} méthodes supprimées."
+      },
+      "noData": "Aucune méthode de retrait trouvée.",
+      "search": {
+        "error": "La recherche a échoué."
+      },
+      "update": {
+        "error": "La mise à jour a échoué.",
+        "success": "Mise à jour réussie."
+      }
+    },
+    "title": "Méthodes de retrait"
+  },
+  "withdrawalmethods": {
+    "headers": {
+      "companyName": "Entreprise",
+      "createdAt": "Créé le",
+      "dailyLimit": "Limite quotidienne",
+      "isDefault": "Par défaut",
+      "isVerified": "Vérifié",
+      "monthlyLimit": "Limite mensuelle",
+      "name": "Nom",
+      "paymentMethodName": "Nom du moyen de paiement",
+      "phoneNumber": "Numéro de téléphone",
+      "singleWithdrawalLimit": "Limite de retrait unique",
+      "verificationDate": "Date de vérification",
+      "verificationReference": "Référence de vérification"
+    }
+  },
+  "withdrawalMethods": {
+    "actions": {
+      "add": "Nouvelle méthode de retrait"
+    },
+    "form": {
+      "companyIdLabel": "Entreprise",
+      "companyIdPlaceholder": "Sélectionnez une entreprise",
+      "create": {
+        "description": "Ajouter une nouvelle méthode de retrait.",
+        "title": "Créer une méthode de retrait"
+      },
+      "dailyLimitLabel": "Limite quotidienne",
+      "dailyLimitPlaceholder": "Saisir la limite quotidienne",
+      "edit": {
+        "description": "Mettre à jour les détails de cette méthode.",
+        "title": "Modifier la méthode de retrait"
+      },
+      "fields": {
+        "isDefault": "Par défaut",
+        "isVerified": "Vérifié"
+      },
+      "isDefaultLabel": "Par défaut",
+      "isVerifiedLabel": "Vérifié",
+      "monthlyLimitLabel": "Limite mensuelle",
+      "monthlyLimitPlaceholder": "Saisir la limite mensuelle",
+      "nameLabel": "Nom",
+      "namePlaceholder": "Saisir le nom",
+      "paymentMethodIdLabel": "Moyen de paiement",
+      "paymentMethodIdPlaceholder": "Sélectionnez un moyen de paiement",
+      "phoneNumberLabel": "Numéro de téléphone",
+      "phoneNumberPlaceholder": "Saisir le numéro de téléphone",
+      "singleWithdrawalLimitLabel": "Limite de retrait unique",
+      "singleWithdrawalLimitPlaceholder": "Saisir la limite de retrait unique",
+      "verificationDateLabel": "Date de vérification",
+      "verificationDatePlaceholder": "Saisir la date de vérification",
+      "verificationReferenceLabel": "Référence de vérification",
+      "verificationReferencePlaceholder": "Saisir la référence de vérification"
+    },
+    "messages": {
+      "noData": "Aucune méthode de retrait trouvée."
+    },
+    "title": "Méthodes de retrait",
+    "totalCount_one": "1 méthode",
+    "totalCount_other": "{{count}} méthodes"
+  },
+  "withdrawals": {
+    "actions": {
+      "view": "Voir"
+    },
+    "messages": {
+      "noData": "Aucun retrait trouvé."
+    }
+  },
+  "withdrawalsreadmodels": {
+    "headers": {
+      "accountNumber": "Numéro de compte",
+      "amount": "Montant",
+      "applicationName": "Application",
+      "companyName": "Entreprise",
+      "createdAt": "Créé le",
+      "currencySymbol": "Symbole de la devise",
+      "feeAppliedAmount": "Frais appliqués",
+      "internalFeeAmount": "Frais internes",
+      "netAmount": "Montant net",
+      "paymentMethodName": "Nom du moyen de paiement",
+      "providerFeeAmount": "Frais du fournisseur",
+      "providerReference": "Référence du fournisseur",
+      "status": "Statut",
+      "transactionId": "ID de la transaction",
+      "verificationAttempts": "Tentatives de vérification",
+      "withdrawalMethodName": "Nom de la méthode de retrait"
+    }
+  },
+  "withdrawalsReadModels": {
+    "actions": {
+      "more": "Plus d'actions",
+      "view": "Voir"
+    },
+    "messages": {
+      "noData": "Aucun retrait trouvé.",
+      "search": {
+        "error": "La recherche a échoué."
+      }
+    },
+    "title": "Retraits",
+    "totalCount_one": "1 retrait",
+    "totalCount_other": "{{count}} retraits"
+  }
+}

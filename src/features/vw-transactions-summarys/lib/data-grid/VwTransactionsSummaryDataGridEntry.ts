@@ -1,0 +1,36 @@
+import { DataGridRowEntry } from "@/shared/types/data-grid"
+// import { formatDate, formatDateTime } from '@/shared/lib/date-utils'
+import { VwTransactionsSummaryDto } from "@/shared/api/types.gen"
+// import { zSearchVwTransactionsSummaryRequest } from '@/shared/api/zod.gen'
+
+export class VwTransactionsSummaryDataGridEntry implements DataGridRowEntry {
+  constructor(private vwTransactionsSummary: VwTransactionsSummaryDto) {}
+
+  getId(): string {
+    return this.vwTransactionsSummary.id?.toString() || ""
+  }
+
+  getTextFor(columnKey: string): string {
+    // const schemaShape = zVwTransactionsSummary._def.shape()
+    // const zodType = schemaShape[columnKey]
+    // const value = this.vwTransactionsSummary[columnKey]
+    //
+    // if (!zodType) return '-'
+    // const typeName = zodType?._def?.typeName
+    //
+    // if (typeName === 'ZodDate') {
+    //   return value ? formatDate(value) : '-'
+    // }
+    // if (typeName === 'ZodString' && columnKey.toLowerCase().includes('date')) {
+    //   return value ? formatDateTime(value) : '-'
+    // }
+    // if (typeName === 'ZodNumber' || typeName === 'ZodBigInt') {
+    //   return value?.toString() || '-'
+    // }
+    // if (typeName === 'ZodObject' && value && value.name) {
+    //   return value.name
+    // }
+    // return value || '-'
+    return this.vwTransactionsSummary[columnKey as keyof VwTransactionsSummaryDto]?.toString() || ""
+  }
+}
