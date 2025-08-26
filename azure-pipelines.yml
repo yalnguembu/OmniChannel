@@ -32,7 +32,7 @@ jobs:
       targetType: 'inline'
       script: |
         # Copie le template pour créer le fichier .env
-        Copy-Item -Path "$(System.DefaultWorkingDirectory)/env.example" -Destination "$(System.DefaultWorkingDirectory)/.env"
+        Copy-Item -Path "$(System.DefaultWorkingDirectory)/.env.example" -Destination "$(System.DefaultWorkingDirectory)/.env"
         
         # Lit le contenu du .env et remplace le token par la variable
         $content = Get-Content "$(System.DefaultWorkingDirectory)/.env"
@@ -90,7 +90,7 @@ jobs:
     inputs:
       targetType: 'inline'
       script: |
-        Copy-Item -Path "$(System.DefaultWorkingDirectory)/env.example" -Destination "$(System.DefaultWorkingDirectory)/.env"
+        Copy-Item -Path "$(System.DefaultWorkingDirectory)/.env.example" -Destination "$(System.DefaultWorkingDirectory)/.env"
         $content = Get-Content "$(System.DefaultWorkingDirectory)/.env"
         $newContent = $content -replace '__ApiBaseUrl__', '$(apiUrl)'
         Set-Content -Path "$(System.DefaultWorkingDirectory)/.env" -Value $newContent
