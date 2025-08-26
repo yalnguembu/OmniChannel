@@ -1,54 +1,124 @@
 trigger:
-- main
+  branches:
+    include:
+    - main
+    - develop
 
 pool:
   vmImage: 'windows-latest'
 
-steps:
-# Étape 1 : Installer la version de Node.js requise
-- task: NodeTool@0
-  displayName: 'Install Node.js'
-  inputs:
-    versionSpec: '22.x' 
+# --- DÉFINITION DES JOBS ---
 
-# Étape 2 : Installer les dépendances avec 'npm install'
-- task: Npm@1
-  displayName: 'Install Project Dependencies (npm install)'
-  inputs:
-    command: 'install'
+jobs:
+# --- JOB 1 : Build pour la Production (branche main) ---
+- job: Build_Production
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+  displayName: 'Build Production Artifact (main branch)'
+
+  variables:
+    # URL de l'API pour la production
+    apiUrl: 'https://api.fujisatpay.com/api'
+
+  steps:
+  - task: NodeTool@0
+    displayName: 'Install Node.js'
+    inputs:
+      versionSpec: '22.x'
+
+  # ÉTAPE CLÉ : Préparation du fichier .env
+  - task: PowerShell@2
+    displayName: 'Prepare .env file for Production'
+    inputs:
+      targetType: 'inline'
+      script: |
+        # Copie le template pour créer le fichier .env
+        Copy-Item -Path "$(System.DefaultWorkingDirectory)/env.example" -Destination "$(System.DefaultWorkingDirectory)/.env"
+        
+        # Lit le contenu du .env et remplace le token par la variable
+        $content = Get-Content "$(System.DefaultWorkingDirectory)/.env"
+        $newContent = $content -replace '__ApiBaseUrl__', '$(apiUrl)'
+        Set-Content -Path "$(System.DefaultWorkingDirectory)/.env" -Value $newContent
+        
+        Write-Host "Le fichier .env a été configuré pour la Production."
+
+  - task: Npm@1
+    displayName: 'Install Dependencies (npm install)'
+    inputs:
+      command: 'install'
+
+  - task: Npm@1
+    displayName: 'Build React App for Production'
+    inputs:
+      command: 'custom'
+      customCommand: 'run build:prod'
+
+  # Archivage du résultat (uniquement le dossier 'build')
+  - task: ArchiveFiles@2
+    displayName: 'Archive Production build'
+    inputs:
+      rootFolderOrFile: '$(System.DefaultWorkingDirectory)/build'
+      includeRootFolder: false
+      archiveType: 'zip'
+      archiveFile: '$(Build.ArtifactStagingDirectory)/drop-prod.zip'
+
+  # Publication de l'artefact pré-configuré pour la prod
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Production Artifact'
+    inputs:
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)/drop-prod.zip'
+      ArtifactName: 'drop-prod'
 
 
-# Étape 3 : Construire l'application React
-- task: Npm@1
-  displayName: 'Build React App (npm run build:prod)'
-  inputs:
-    command: 'custom'
-    customCommand: 'run build:prod'
+# --- JOB 2 : Build pour le Sandbox (branche develop) ---
+- job: Build_Sandbox
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/develop'))
+  displayName: 'Build Sandbox Artifact (develop branch)'
 
+  variables:
+    # URL de l'API pour le sandbox
+    apiUrl: 'https://test-api.fujisatpay.com/api'
 
-# Étape 4 : Préparer les fichiers pour l'archivage
-- task: CopyFiles@2
-  displayName: 'Prepare files for archive'
-  inputs:
-    SourceFolder: '$(System.DefaultWorkingDirectory)'
-    Contents: |
-      build/**
-      .env.example
-    TargetFolder: '$(Build.ArtifactStagingDirectory)/publish'
+  steps:
+  - task: NodeTool@0
+    displayName: 'Install Node.js'
+    inputs:
+      versionSpec: '22.x'
 
-# Étape 5 : Archiver les fichiers préparés
-- task: ArchiveFiles@2
-  displayName: 'Archive Files'
-  inputs:
-    rootFolderOrFile: '$(Build.ArtifactStagingDirectory)/publish'
-    includeRootFolder: false
-    archiveType: 'zip'
-    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
-    replaceExistingArchive: true
+  # ÉTAPE CLÉ : Préparation du fichier .env
+  - task: PowerShell@2
+    displayName: 'Prepare .env file for Sandbox'
+    inputs:
+      targetType: 'inline'
+      script: |
+        Copy-Item -Path "$(System.DefaultWorkingDirectory)/env.example" -Destination "$(System.DefaultWorkingDirectory)/.env"
+        $content = Get-Content "$(System.DefaultWorkingDirectory)/.env"
+        $newContent = $content -replace '__ApiBaseUrl__', '$(apiUrl)'
+        Set-Content -Path "$(System.DefaultWorkingDirectory)/.env" -Value $newContent
+        Write-Host "Le fichier .env a été configuré pour le Sandbox."
 
-# Étape 6 : Publier l'artefact
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifact'
-  inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
-    ArtifactName: 'drop-frontend'
+  - task: Npm@1
+    displayName: 'Install Dependencies (npm install)'
+    inputs:
+      command: 'install'
+
+  - task: Npm@1
+    displayName: 'Build React App for Sandbox'
+    inputs:
+      command: 'custom'
+      customCommand: 'run build' # ou build:sandbox si différent
+
+  # Archivage du résultat
+  - task: ArchiveFiles@2
+    displayName: 'Archive Sandbox build'
+    inputs:
+      rootFolderOrFile: '$(System.DefaultWorkingDirectory)/build'
+      includeRootFolder: false
+      archiveType: 'zip'
+      archiveFile: '$(Build.ArtifactStagingDirectory)/drop-sandbox.zip'
+
+  # Publication de l'artefact pré-configuré pour le sandbox
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Sandbox Artifact'
+    inputs:
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)/drop-sandbox.zip'
+      ArtifactName: 'drop-sandbox'
