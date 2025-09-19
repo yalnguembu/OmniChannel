@@ -41,14 +41,18 @@ export default function Navbar() {
   return (
     <header className="fixed top-0 left-0 z-50 w-full border-b bg-background">
       <div className="container mx-auto flex items-center justify-between px-4 py-4">
-        <div className="flex items-center space-x-8">
-          <Link to="/" className="flex items-center space-x-2">
-            <img src="/images/icon.png" alt="FujiPay logo" width={45} height={45} />
-            <span className="text-xl font-medium">FujiPay</span>
+        <div className="flex items-center gap-x-8">
+          <Link to="/" className="flex items-center gap-x-2">
+            <img src="/images/icon.png" alt="FujiPay logo" width={45} height={45} className="size-8" />
+            <span className="text-lg lg:text-xl font-medium lg:hidden xl:inline">FujiPay</span>
           </Link>
-          <nav className="hidden items-center space-x-6 lg:flex">
+          <nav className="hidden items-center gap-x-3 xl:gap-x-6 lg:flex">
             {publicNavItems.map((item) => (
-              <Link key={item.label} to={item.href} className={`${pathname === item.href || pathname.startsWith(`${item.href}/`) ? "font-semibold text-primary" : ""}`}>
+              <Link
+                key={item.label}
+                to={item.href}
+                className={` lg:text-sm xl:text-lg ${pathname === item.href || pathname.startsWith(`${item.href}/`) ? "font-semibold text-primary" : ""}`}
+              >
                 {item.label}
               </Link>
             ))}
@@ -83,13 +87,13 @@ export default function Navbar() {
       {/* Mobile Menu */}
       {mobileMenuOpen && (
         <div className="fixed inset-x-0 top-16 z-50 bg-background p-4 shadow-lg lg:hidden">
-          <nav className="flex flex-col space-y-4">
+          <nav className="flex flex-col gap-y-4">
             {publicNavItems.map((item) => (
               <Link key={item.label} to={item.href} onClick={() => setMobileMenuOpen(false)} className={`${pathname === item.href ? "font-semibold text-primary" : ""}`}>
                 {item.label}
               </Link>
             ))}
-            <div className="flex flex-col space-y-2 pt-4">
+            <div className="flex flex-col gap-y-2 pt-4">
               {unauthenticatedNavItems.map((item) => (
                 <Link key={item.label} to={item.href} onClick={() => setMobileMenuOpen(false)}>
                   <Button variant={item.variant} className={`w-full ${item.extraClass || ""}`}>

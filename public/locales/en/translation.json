@@ -1,11 +1,11 @@
 {
   "about": {
-    "cta": "Join the FujiPay revolution. Contact our team today to learn more.",
+    "cta": "Join the Fujisat Pay revolution. Contact our team today to learn more.",
     "storyMission": {
-      "content": "FujiPay is the result of the expertise and vision of Graphics System SA, a Cameroonian technology company with a mission to revolutionize mobile payment management in Africa. With our deep knowledge of the local market and business challenges, we have developed a robust, secure platform that complies with international standards.",
+      "content": "Fujisat Pay is the result of the expertise and vision of Graphics System SA, a Cameroonian technology company with a mission to revolutionize mobile payment management in Africa. With our deep knowledge of the local market and business challenges, we have developed a robust, secure platform that complies with international standards.",
       "title": "Our Story & Mission"
     },
-    "title": "About FujiPay: Your Strategic Partner in Mobile Payment Solutions in Cameroon",
+    "title": "About Fujisat Pay: Your Strategic Partner in Mobile Payment Solutions in Cameroon",
     "values": {
       "title": "Our Core Values"
     },
@@ -660,8 +660,8 @@
       "subject": "Subject of your message",
       "submit": "Send your Request"
     },
-    "intro": "Do you have questions, need a demo, or want to get a FujiPay account? Our sales team is ready to assist you. Please note that opening an account is done through direct contact with our sales representatives.",
-    "title": "Contact the FujiPay Team: We're here for you"
+    "intro": "Do you have questions, need a demo, or want to get a Fujisat Pay account? Our sales team is ready to assist you. Please note that opening an account is done through direct contact with our sales representatives.",
+    "title": "Contact the Fujisat Pay Team: We're here for you"
   },
   "countries": {
     "actions": {
@@ -829,7 +829,7 @@
       "method": "Method",
       "title": "Key API Endpoints"
     },
-    "intro": "The FujiPay API is designed for quick and seamless integration with your applications, websites, or existing systems. Access all our features via secure and reliable endpoints.",
+    "intro": "The Fujisat Pay API is designed for quick and seamless integration with your applications, websites, or existing systems. Access all our features via secure and reliable endpoints.",
     "resources": {
       "apiDocs": "Access API Documentation",
       "quickstart": "Quick Start Guide",
@@ -839,7 +839,7 @@
     },
     "security": {
       "auth": {
-        "description": "FujiPay uses multi-level authentication with API Keys and JWT tokens for secure access to our API endpoints.",
+        "description": "Fujisat Pay uses multi-level authentication with API Keys and JWT tokens for secure access to our API endpoints.",
         "title": "Authentication Methods"
       },
       "encryption": {
@@ -857,7 +857,7 @@
       },
       "title": "API Security"
     },
-    "title": "FujiPay Integration: A Powerful, Flexible, and Documented API",
+    "title": "Fujisat Pay Integration: A Powerful, Flexible, and Documented API",
     "whyIntegrate": {
       "documentation": {
         "description": "Clear guides and code examples.",
@@ -879,7 +879,7 @@
         "description": "API Key and JWT authentication, data encryption.",
         "title": "Robust Security"
       },
-      "title": "Why Integrate FujiPay?",
+      "title": "Why Integrate Fujisat Pay?",
       "webhooks": {
         "description": "Receive real-time notifications for all key events.",
         "title": "Webhooks"
@@ -958,7 +958,7 @@
   },
   "features": {
     "badge": "FEATURES",
-    "intro": "FujiPay is designed to offer total control over your mobile financial operations in Cameroon, thanks to a suite of advanced and secure features.",
+    "intro": "Fujisat Pay is designed to offer total control over your mobile financial operations in Cameroon, thanks to a suite of advanced and secure features.",
     "paymentManagement": {
       "benefit1": "Unified Orange Money and MTN Mobile Money Integration",
       "benefit2": "Comprehensive Transaction Lifecycle Management",
@@ -985,7 +985,7 @@
       "title": "Security"
     },
     "subtitle": "Power at your service",
-    "title": "FujiPay's Complete Features",
+    "title": "Fujisat Pay's Complete Features",
     "title1": "Power at your service",
     "title2": "",
     "withdrawalManagement": {
@@ -993,7 +993,7 @@
       "benefit2": "Support for Orange Money and MTN Mobile Money",
       "benefit3": "Batch Processing for High Volumes",
       "benefit4": "Flexible Approval Processes",
-      "description": "Initiate and process fund withdrawal requests with optimal security. Whether via mobile money or bank transfer, FujiPay adapts to your needs.",
+      "description": "Initiate and process fund withdrawal requests with optimal security. Whether via mobile money or bank transfer, Fujisat Pay adapts to your needs.",
       "title": "Withdrawal Management"
     }
   },
@@ -1192,7 +1192,7 @@
     "address": "Douala, Cameroon",
     "bankWithdrawals": "Bank Withdrawals",
     "contact": "Contact",
-    "copyright": "© 2025 FujiPay. All rights reserved.",
+    "copyright": "© 2025 FujiSat Pay. All rights reserved.",
     "developedBy": "Developed by Graphics System SA",
     "financialReporting": "Financial Reporting",
     "kycManagement": "KYC Management",
@@ -1423,9 +1423,9 @@
     },
     "howItWorks": {
       "badge": "HOW IT WORKS",
-      "description": "Get started with FujiPay in minutes and transform how you handle mobile money payments in Cameroon.",
+      "description": "Get started with Fujisat Pay in minutes and transform how you handle mobile money payments in Cameroon.",
       "step1": {
-        "description": "Sign up for FujiPay and complete our streamlined KYC verification process to get started.",
+        "description": "Sign up for Fujisat Pay and complete our streamlined KYC verification process to get started.",
         "title": "Create your account"
       },
       "step2": {
@@ -1440,7 +1440,7 @@
     },
     "industries": {
       "badge": "SOLUTIONS BY INDUSTRY",
-      "description": "No matter what industry you operate in, FujiPay adapts to your specific needs with flexible payment solutions.",
+      "description": "No matter what industry you operate in, Fujisat Pay adapts to your specific needs with flexible payment solutions.",
       "learnMore": "Learn More",
       "title": "Tailored solutions for every business"
     },
@@ -1545,7 +1545,12 @@
     "addUserProfile": "Add Profile",
     "addCompany": "Add Company",
     "addApplication": "Add Application",
-    "addWebhook": "Add Webhook"
+    "addWebhook": "Add Webhook",
+    "access-control": "Control Access",
+    "support": "Support",
+    "it": "Technical",
+    "system": "System",
+    "general": "General"
   },
   "navigation": {
     "about": "About",
@@ -2040,7 +2045,7 @@
     "benefitsLabel": "Benefits",
     "customSolution": {
       "cta": "Contact Us",
-      "description": "FujiPay is highly adaptable. Contact us to discuss a customized solution for your specific needs.",
+      "description": "Fujisat Pay is highly adaptable. Contact us to discuss a customized solution for your specific needs.",
       "title": "Your sector not listed?"
     },
     "ecommerce": {
@@ -2051,14 +2056,14 @@
       "problem": "Processing of disbursements and repayments, management of customer balances, KYC compliance.",
       "title": "Financial Services & FinTech"
     },
-    "intro": "Whatever your business, FujiPay integrates to optimize your mobile payment processes. Discover how we help our clients thrive.",
+    "intro": "Whatever your business, Fujisat Pay integrates to optimize your mobile payment processes. Discover how we help our clients thrive.",
     "nonprofit": {
       "problem": "Collection of donations via mobile money, traceability of contributions, compliance.",
       "title": "Non-profit Organizations & Associations"
     },
     "problemLabel": "The Challenge",
-    "solutionLabel": "The FujiPay Solution",
-    "title": "FujiPay: Tailored Solutions for Every Sector"
+    "solutionLabel": "The Fujisat Pay Solution",
+    "title": "Fujisat Pay: Tailored Solutions for Every Sector"
   },
   "themeMode": {
     "dark": "Dark",

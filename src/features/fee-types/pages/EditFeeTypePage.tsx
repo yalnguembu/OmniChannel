@@ -1,4 +1,3 @@
-import { useEffect } from "react"
 import { useTranslation } from "react-i18next"
 import { useNavigate, useParams } from "@tanstack/react-router"
 import { StandardListPageLayout } from "@/shared/components/layouts/ListPageLayout"
@@ -12,8 +11,8 @@ import { UpdateFeeTypeRequest } from "@/shared/api"
 export function EditFeeTypePage() {
   const navigate = useNavigate()
   const { t } = useTranslation()
-  const { id } = useParams({ from: `/_protected/administration/fee-types/$id/` })
-  const { selectedFeeType: data, updateMutation, getFeeTypeQuery, isLoading } = useFeeType()
+  const { id } = useParams({ from: `/_protected/administration/fee-types/$id/edit` })
+  const { updateMutation, getFeeTypeQuery } = useFeeType()
 
   const handleSubmit = (data: UpdateFeeTypeRequest) => {
     updateMutation.mutate(
@@ -26,11 +25,7 @@ export function EditFeeTypePage() {
     )
   }
 
-  useEffect(() => {
-    if (id) {
-      getFeeTypeQuery(id)
-    }
-  }, [])
+  const { data: succesResponse, isLoading } = getFeeTypeQuery(id)
 
   const handleCancel = () => {
     navigate({ to: `/administration/fee-types` })
@@ -44,7 +39,7 @@ export function EditFeeTypePage() {
     )
   }
 
-  if (!data) {
+  if (!succesResponse?.data) {
     return (
       <div className="container mx-auto py-6 text-center">
         <p>{t("feeTypes.form.edit.loadError")}</p>
@@ -61,10 +56,10 @@ export function EditFeeTypePage() {
       header={
         <CreatePageHeader
           title={t("feeTypes.edit")}
-          breadcrumbs={[{ label: t("navigation.dashboard"), href: "/dashboard" }, { label: t("feeTypes.title"), href: "/feeType" }, { label: t("feeTypes.edit") }]}
+          breadcrumbs={[{ label: t("navigation.dashboard"), href: "/dashboard" }, { label: t("feeTypes.title"), href: "/administration/fee-types" }, { label: t("feeTypes.edit") }]}
         />
       }
-      content={<FeeTypeEditForm feeTypeId={id} initialData={data} onSubmit={handleSubmit} onCancel={handleCancel} isLoading={false} />}
+      content={<FeeTypeEditForm feeTypeId={id} initialData={succesResponse.data} onSubmit={handleSubmit} onCancel={handleCancel} isLoading={false} />}
     />
   )
 }

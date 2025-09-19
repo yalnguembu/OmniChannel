@@ -1,0 +1,239 @@
+DailyMetricDto:
+  required:
+    - metricDate
+  type: object
+  properties:
+    id:
+      type: string
+      format: uuid
+    createdAt:
+      type: string
+      format: date-time
+    companyId:
+      type: string
+      format: uuid
+      nullable: true
+    applicationId:
+      type: string
+      format: uuid
+      nullable: true
+    metricDate:
+      type: string
+      format: date
+    metricType:
+      maxLength: 1000
+      minLength: 0
+      type: string
+      nullable: true
+    totalReceipts:
+      type: integer
+      format: int32
+    successfulReceipts:
+      type: integer
+      format: int32
+    failedReceipts:
+      type: integer
+      format: int32
+    pendingReceipts:
+      type: integer
+      format: int32
+    receiptsSuccessRate:
+      type: number
+      format: double
+    totalWithdrawals:
+      type: integer
+      format: int32
+    successfulWithdrawals:
+      type: integer
+      format: int32
+    failedWithdrawals:
+      type: integer
+      format: int32
+    pendingWithdrawals:
+      type: integer
+      format: int32
+    withdrawalsSuccessRate:
+      type: number
+      format: double
+    totalFundTransfers:
+      type: integer
+      format: int32
+    successfulFundTransfers:
+      type: integer
+      format: int32
+    failedFundTransfers:
+      type: integer
+      format: int32
+    pendingFundTransfers:
+      type: integer
+      format: int32
+    fundTransfersSuccessRate:
+      type: number
+      format: double
+    totalVolume:
+      type: number
+      format: double
+    netRevenue:
+      type: number
+      format: double
+    activeUsers:
+      type: integer
+      format: int32
+    newUsers:
+      type: integer
+      format: int32
+    apiCallsCount:
+      type: integer
+      format: int32
+    errorsCount:
+      type: integer
+      format: int32
+    failureRate:
+      type: number
+      format: double
+    companyName:
+      maxLength: 200
+      minLength: 0
+      type: string
+      nullable: true
+    applicationName:
+      maxLength: 200
+      minLength: 0
+      type: string
+      nullable: true
+    calculationDuration:
+      type: integer
+      format: int32
+      nullable: true
+    isRecalculated:
+      type: boolean
+    recalculatedAt:
+      type: string
+      format: date-time
+      nullable: true
+    currency:
+      maxLength: 3
+      minLength: 0
+      pattern: ^[A-Z]{3}$
+      type: string
+      nullable: true
+    totalReceiptsAmount:
+      minimum: 0
+      type: number
+      format: double
+    totalReceiptsFees:
+      type: number
+      format: double
+    totalReceiptsProviderFees:
+      type: number
+      format: double
+    totalWithdrawalsAmount:
+      minimum: 0
+      type: number
+      format: double
+    totalWithdrawalsFees:
+      type: number
+      format: double
+    totalWithdrawalsProviderFees:
+      type: number
+      format: double
+    totalFundTransfersAmount:
+      minimum: 0
+      type: number
+      format: double
+    totalFundTransfersFees:
+      type: number
+      format: double
+    totalFees:
+      type: number
+      format: double
+    totalProviderFees:
+      type: number
+      format: double
+    updatedAt:
+      type: string
+      format: date-time
+      nullable: true
+    createdBy:
+      type: string
+      format: uuid
+      nullable: true
+    updatedBy:
+      type: string
+      format: uuid
+      nullable: true
+  additionalProperties: false
+DailyMetricsByPaymentMethodDto:
+  required:
+    - metricDate
+  type: object
+  properties:
+    id:
+      type: string
+      format: uuid
+    createdAt:
+      type: string
+      format: date-time
+    paymentMethodId:
+      type: string
+      format: uuid
+    companyId:
+      type: string
+      format: uuid
+      nullable: true
+    applicationId:
+      type: string
+      format: uuid
+      nullable: true
+    metricDate:
+      type: string
+      format: date
+    transactionCount:
+      type: integer
+      format: int32
+    successfulTransactions:
+      type: integer
+      format: int32
+    failedTransactions:
+      type: integer
+      format: int32
+    successRate:
+      type: number
+      format: double
+    paymentMethodName:
+      maxLength: 200
+      minLength: 0
+      type: string
+      nullable: true
+    paymentMethodCode:
+      maxLength: 1000
+      minLength: 0
+      type: string
+      nullable: true
+    currency:
+      maxLength: 3
+      minLength: 0
+      pattern: ^[A-Z]{3}$
+      type: string
+      nullable: true
+    totalAmount:
+      minimum: 0
+      type: number
+      format: double
+    averageAmount:
+      minimum: 0
+      type: number
+      format: double
+    updatedAt:
+      type: string
+      format: date-time
+      nullable: true
+    createdBy:
+      type: string
+      format: uuid
+      nullable: true
+    updatedBy:
+      type: string
+      format: uuid
+      nullable: true
+  additionalProperties: false

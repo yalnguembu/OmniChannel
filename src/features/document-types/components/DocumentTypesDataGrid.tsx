@@ -1,11 +1,8 @@
 import React, { useEffect, useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { DataGrid } from "@/shared/components/data-grid/data-grid"
-import { DataGridColumnHeader, DataGridRowEntry, DataGridSort } from "@/shared/types"
+import { ACTION, DataGridColumnHeader, DataGridSort } from "@/shared/types"
 import { SortDirection } from "@/shared/enums/data-grid"
-import { Button } from "@/shared/components/ui/button"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/shared/components/ui/dropdown-menu"
-import { MoreHorizontal, Eye, Edit, Trash2 } from "lucide-react"
 import { useDocumentsType } from "../hooks/useDocumentTypes"
 import { DocumentTypeDataGridEntry } from "../lib/data-grid/DocumentTypeDataGridEntry"
 import { DocumentsTypeDto, UpdateDocumentsTypeRequest } from "@/shared"
@@ -128,37 +125,22 @@ export const DocumentsTypeDataGrid: React.FC = () => {
     </ModalWrapper>
   )
 
-  const renderCell = (item: DataGridRowEntry, columnKey: string) => {
-    switch (columnKey) {
-      case "actions":
-        return (
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-8 w-8 p-0">
-                <span className="sr-only">Open menu</span>
-                <MoreHorizontal className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={() => handleView(item.getId())}>
-                <Eye className="mr-2 h-4 w-4" />
-                {t("kycDocuments.actions.view")}
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => handleEdit(item.getId())}>
-                <Edit className="mr-2 h-4 w-4" />
-                {t("kycDocuments.actions.edit")}
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => handleDelete(item.getId())} className="text-red-600">
-                <Trash2 className="mr-2 h-4 w-4" />
-                {t("kycDocuments.actions.delete")}
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        )
+  const handleDispatch = (action: ACTION, id: string) => {
+    switch (action) {
+      case "view":
+        handleView(id)
+        break
+      case "edit":
+        handleEdit(id)
+        break
+      case "delete":
+        handleDelete(id)
+        break
       default:
-        return item.getTextFor(columnKey) || "N/A"
+        return
     }
   }
+
   const sortConfig: DataGridSort | undefined = sortBy
     ? {
         column: sortBy,
@@ -209,7 +191,8 @@ export const DocumentsTypeDataGrid: React.FC = () => {
         enableColumnVisibility={true}
         hiddenColumns={[]}
         onColumnVisibilityChange={() => {}}
-        renderCell={renderCell}
+        actions={["view", "edit", "delete"]}
+        dispatch={handleDispatch}
       />
       {showEditModal && !!selectedItem && (
         <DocumentsTypeEditForm initialData={selectedItem} documentTypeId={selectedItem.id ?? ""} onSubmit={handleSubmit} onCancel={toggleShowEditModal} isLoading={false} />

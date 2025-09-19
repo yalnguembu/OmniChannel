@@ -1,14 +1,18 @@
-import React, { useMemo } from "react"
+import React, { ReactNode, useMemo } from "react"
 import { useTranslation } from "react-i18next"
 import { useNavigate } from "@tanstack/react-router"
 import { DataGrid } from "@/shared/components/data-grid/data-grid"
-import { DataGridColumnHeader, DataGridRowEntry, DataGridSort } from "@/shared/types"
+import { ACTION, DataGridColumnHeader, DataGridRowEntry, DataGridSort, ViewMode } from "@/shared/types/data-grid"
 import { SortDirection } from "@/shared/enums/data-grid"
 import { Button } from "@/shared/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/shared/components/ui/dropdown-menu"
-import { MoreHorizontal, Eye, Edit, Trash2 } from "lucide-react"
+import { MoreHorizontal, Eye, Edit, Trash2, Mail, PhoneCall } from "lucide-react"
 import { useUser } from "../hooks/useUser"
 import { UserDataGridEntry } from "../lib/data-grid/UserDataGridEntry"
+import StatusBadge from "@/shared/components/StatusBadge"
+import { BadgeStyles } from "@/shared/types/enums"
+import ActionButtonGroup from "@/shared/components/data-grid/ActionButtonGroup"
+import DetailsCardItem from "@/shared/components/DetailsCardItem"
 
 export const UserDataGrid: React.FC = () => {
   const { t } = useTranslation()
@@ -33,50 +37,8 @@ export const UserDataGrid: React.FC = () => {
 
   const columnHeaders: DataGridColumnHeader[] = [
     {
-      key: "createdAt",
-      label: t("users.headers.createdAt"),
-      sortable: true,
-      resizable: true,
-    },
-    {
-      key: "companyName",
-      label: t("users.headers.companyName"),
-      sortable: true,
-      resizable: true,
-    },
-    {
-      key: "profileName",
-      label: t("users.headers.profileName"),
-      sortable: true,
-      resizable: true,
-    },
-    {
-      key: "publicId",
-      label: t("users.headers.publicId"),
-      sortable: true,
-      resizable: true,
-    },
-    {
-      key: "firstName",
-      label: t("users.headers.firstName"),
-      sortable: true,
-      resizable: true,
-    },
-    {
-      key: "lastName",
-      label: t("users.headers.lastName"),
-      sortable: true,
-      resizable: true,
-    },
-    {
-      key: "email",
-      label: t("users.headers.email"),
-      sortable: true,
-      resizable: true,
-    },
-    {
-      key: "phoneNumber",
-      label: t("users.headers.phoneNumber"),
+      key: "fullName",
+      label: t("users.headers.fullName"),
       sortable: true,
       resizable: true,
     },
@@ -85,14 +47,34 @@ export const UserDataGrid: React.FC = () => {
       label: t("users.headers.userType"),
       sortable: true,
       resizable: true,
+      isBadge: true,
+    },
+    {
+      key: "profileName",
+      label: t("users.headers.profileName"),
+      sortable: true,
+      resizable: true,
+      isBadge: true,
+    },
+    {
+      key: "contact",
+      label: t("users.headers.contact"),
+      sortable: true,
+      resizable: true,
     },
     {
       key: "status",
       label: t("users.headers.status"),
       sortable: true,
       resizable: true,
+      isBadge: true,
     },
-
+    {
+      key: "createdAt",
+      label: t("users.headers.createdAt"),
+      sortable: true,
+      resizable: true,
+    },
     {
       key: "actions",
       label: t("common.actions.more"),
@@ -106,11 +88,11 @@ export const UserDataGrid: React.FC = () => {
   }, [users])
 
   const handleView = (id: string) => {
-    navigate({ to: `/access-control/user/${id}` })
+    navigate({ to: `/access-control/users/${id}` })
   }
 
   const handleEdit = (id: string) => {
-    navigate({ to: `/access-control/user/${id}/edit` })
+    navigate({ to: `/access-control/users/${id}/edit` })
   }
 
   const handleDelete = (id: string) => {
@@ -125,35 +107,162 @@ export const UserDataGrid: React.FC = () => {
     }
   }
 
-  const renderCell = (item: DataGridRowEntry, columnKey: string) => {
-    switch (columnKey) {
-      case "actions":
-        return (
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-8 w-8 p-0">
-                <span className="sr-only">Open menu</span>
-                <MoreHorizontal className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={() => handleView(item.getId())}>
-                <Eye className="mr-2 h-4 w-4" />
-                {t("common.actions.view")}
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => handleEdit(item.getId())}>
-                <Edit className="mr-2 h-4 w-4" />
-                {t("common.actions.edit")}
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => handleDelete(item.getId())} className="text-red-600">
-                <Trash2 className="mr-2 h-4 w-4" />
-                {t("common.actions.delete")}
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        )
+  const handleDispatch = (action: ACTION, id: string) => {
+    switch (action) {
+      case "view":
+        handleView(id)
+        break
+      case "edit":
+        handleEdit(id)
+        break
+      case "delete":
+        handleDelete(id)
+        break
       default:
-        return item.getTextFor(columnKey) || "N/A"
+        return
+    }
+  }
+
+  const actions = ["view", "edit", "delete"]
+
+  const renderCell = (item: DataGridRowEntry, column: DataGridColumnHeader, view: ViewMode): ReactNode => {
+    if (view == "list") {
+      switch (column.key) {
+        case "actions":
+          return actions.length < 3 ? (
+            <div>
+              <></>
+            </div>
+          ) : (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="h-8 w-8 p-0">
+                  <span className="sr-only">Open menu</span>
+                  <MoreHorizontal className="h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem onClick={() => handleDispatch?.("view", item.getId())}>
+                  <Eye className="mr-2 h-4 w-4" />
+                  {t("countries.actions.view")}
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => handleDispatch?.("edit", item.getId())}>
+                  <Edit className="mr-2 h-4 w-4" />
+                  {t("countries.actions.edit")}
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => handleDispatch?.("delete", item.getId())} className="text-red-600">
+                  <Trash2 className="mr-2 h-4 w-4" />
+                  {t("countries.actions.delete")}
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )
+        case "fullName":
+          return (
+            <span className="font-semibold text-sm lg:text-base">
+              {(item.getTextFor("firstName") ? `${item.getTextFor("firstName")} ` : "") + (item.getTextFor("lastName") || "")}
+            </span>
+          )
+        case "company":
+          return (
+            <div className="flex flex-col gap-y-1">
+              <span className="text-blue-500 font-bold">{item.getTextFor("campanyName")}</span>
+              <span className="text-gray-500 font-bold">{item.getTextFor("campanyEmail")}</span>
+            </div>
+          )
+        case "contact":
+          return (
+            <div className="flex flex-col gap-y-1">
+              <span>
+                <Mail className="inline size-4 mr-1" /> {item.getTextFor("email")}
+              </span>
+              <span>
+                <PhoneCall className="inline size-4 mr-1" />
+                {item.getTextFor("phoneNumber")}
+              </span>
+            </div>
+          )
+        case "profileName":
+          return <StatusBadge theme={BadgeStyles.BLUE} text={item.getTextFor(column.key) as string} />
+        case "userType":
+          return <StatusBadge theme={BadgeStyles.YELLOW} text={item.getTextFor(column.key) as string} />
+        default:
+          return column?.isBadge ? (
+            <StatusBadge text={item.getTextFor(column.key) as string} />
+          ) : (
+            <span className="text-muted-foreground/70"> {item.getTextFor(column.key) || "N/A"}</span>
+          )
+      }
+    } else {
+      const rowItem = {
+        label: column.label,
+        value: item.getTextFor(column.key),
+        key: column.key,
+        isBadge: column.isBadge,
+        theme: column.badgeTheme,
+        shouldClick: column.shouldClick,
+      }
+      if (rowItem.key === "actions")
+        return (
+          <div className="flex flex-row justify-between px-4 pt-2 border-t-[1.5px]">
+            <span className="px-2 h-min text-sm font-semibold block min-w-14">{rowItem.label}</span>
+            <ActionButtonGroup view={view} isLoading={isLoading} row={item} actions={actions as ACTION[]} dispatch={handleDispatch} />
+          </div>
+        )
+      else if (rowItem.key === "id") return <></>
+      else if (rowItem.key === "contact")
+        return (
+          <DetailsCardItem
+            onClick={() => rowItem.shouldClick && handleDispatch("ROW_CLICK", item.getId())}
+            shouldClick={rowItem.shouldClick}
+            key={rowItem.key}
+            label={rowItem.label ?? ""}
+            value={
+              <div className="flex flex-col gap-y-1">
+                <span>
+                  <Mail className="inline size-4 mr-1" /> {item.getTextFor("email")}
+                </span>
+                <span>
+                  <PhoneCall className="inline size-4 mr-1" />
+                  {item.getTextFor("phoneNumber")}
+                </span>
+              </div>
+            }
+            isBadge={rowItem.isBadge}
+            theme={rowItem.theme}
+            className={`mx-3 border-b border-b-base-300`}
+          />
+        )
+      else if (rowItem.key === "fullName")
+        return (
+          <DetailsCardItem
+            onClick={() => rowItem.shouldClick && handleDispatch("ROW_CLICK", item.getId())}
+            shouldClick={rowItem.shouldClick}
+            key={rowItem.key}
+            label={rowItem.label ?? ""}
+            value={
+              <span className="font-semibold text-sm lg:text-base">
+                {(item.getTextFor("firstName") ? `${item.getTextFor("firstName")} ` : "") + (item.getTextFor("lastName") || "")}
+              </span>
+            }
+            isBadge={rowItem.isBadge}
+            theme={rowItem.theme}
+            className={`mx-3 border-b border-b-base-300`}
+          />
+        )
+      else
+        return (
+          <DetailsCardItem
+            onClick={() => rowItem.shouldClick && handleDispatch("ROW_CLICK", item.getId())}
+            shouldClick={rowItem.shouldClick}
+            key={rowItem.key}
+            label={rowItem.label ?? ""}
+            value={`${rowItem.value || "N/A"}`}
+            isBadge={rowItem.isBadge}
+            theme={rowItem.theme}
+            className={`mx-3 border-b border-b-base-300`}
+          />
+        )
     }
   }
 
@@ -210,6 +319,8 @@ export const UserDataGrid: React.FC = () => {
         hiddenColumns={[]}
         onColumnVisibilityChange={() => {}}
         bulkActions={bulkActions}
+        actions={actions as ACTION}
+        dispatch={handleDispatch}
         renderCell={renderCell}
       />
     </div>

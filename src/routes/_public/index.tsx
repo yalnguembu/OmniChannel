@@ -24,7 +24,7 @@ function LandingPage() {
         <div className="grid items-center gap-6 md:grid-cols-2 md:gap-8 lg:gap-10 xl:gap-12">
           <motion.div className="space-y-4 md:space-y-6" initial="hidden" animate="visible" variants={fadeInUp}>
             <Badge className="bg-primary-muted px-3 py-1 text-primary hover:bg-primary-muted">{t("landingPage.hero.badge")}</Badge>
-            <h1 className="text-3xl font-bold tracking-tight md:text-4xl lg:text-5xl xl:text-6xl">
+            <h1 className="text-3xl font-bold tracking-wider md:text-4xl lg:text-5xl xl:text-6xl">
               {t("landingPage.hero.title1")}
               <span className="text-primary"> {t("landingPage.hero.title2")}</span>
               <br />
@@ -467,8 +467,8 @@ function LandingPage() {
               <pre className="w-full overflow-x-auto text-xs text-gray-300 md:text-sm">
                 <code className="language-javascript">
                   {`
-// Initialize FujiPay client
-const fujiPay = new FujiPay.Client({
+// Initialize FujisatPay client
+const fujiPay = new FujisatPay.Client({
   apiKey: 'YOUR_API_KEY',
   environment: 'production'
 });

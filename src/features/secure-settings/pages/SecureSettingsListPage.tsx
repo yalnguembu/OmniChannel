@@ -11,7 +11,7 @@ import { useSecureSetting } from "../hooks/useSecureSetting"
 export function SecureSettingsListPage() {
   const navigate = useNavigate()
   const { t } = useTranslation()
-  const { isLoading, totalItems, viewMode, setViewMode, refreshData, hasSelection, selectedRows, applyFilters, clearFilters } = useSecureSetting()
+  const { isLoading, viewMode, setViewMode, refreshData, hasSelection, selectedRows, applyFilters, clearFilters } = useSecureSetting()
 
   const handleCreate = () => {
     navigate({ to: `/administration/secure-settings/add` })
@@ -22,10 +22,8 @@ export function SecureSettingsListPage() {
       header={
         <ListPageHeader
           title={t("secureSettings.title")}
-          totalCountText={t("secureSettings.totalCount", { count: totalItems })}
           addButtonText={t("secureSettings.actions.add")}
-          breadcrumbs={[{ label: t("navigation.dashboard"), href: "/dashboard" }, { label: t("secureSettings.title") }]}
-          totalItems={totalItems}
+          breadcrumbs={[{ label: t("menu.administration"), href: "/dashboard" }, { label: t("secureSettings.title") }]}
           onCreate={handleCreate}
         />
       }

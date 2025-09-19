@@ -12,7 +12,7 @@ import { useFeeConfiguration } from "../hooks/useFeeConfiguration"
 export function FeeConfigurationsListPage() {
   const navigate = useNavigate()
   const { t } = useTranslation()
-  const { isLoading, totalItems, viewMode, setViewMode, refreshData, hasSelection, selectedRows, applyFilters, clearFilters } = useFeeConfiguration()
+  const { isLoading, viewMode, setViewMode, refreshData, hasSelection, selectedRows, applyFilters, clearFilters } = useFeeConfiguration()
 
   const handleCreate = () => {
     navigate({ to: `/administration/fee-configurations/add` })
@@ -31,10 +31,8 @@ export function FeeConfigurationsListPage() {
       header={
         <ListPageHeader
           title={t("feeConfigurations.title")}
-          totalCountText={t("feeConfigurations.totalCount", { count: totalItems })}
           addButtonText={t("feeConfigurations.actions.add")}
-          breadcrumbs={[{ label: t("navigation.dashboard"), href: "/dashboard" }, { label: t("feeConfigurations.title") }]}
-          totalItems={totalItems}
+          breadcrumbs={[{ label: t("menu.administration"), href: "/dashboard" }, { label: t("feeConfigurations.title") }]}
           onCreate={handleCreate}
         />
       }

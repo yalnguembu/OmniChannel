@@ -15,7 +15,7 @@ export const Route = createFileRoute("/_public/auth/login")({
       <div className="w-full max-w-md">
         <div className="flex flex-col items-center mb-8">
           <img src={AppLogo} alt="Logo" className="h-12 w-auto mb-4" />
-          <h2 className="text-2xl font-bold">FujiPay Platform</h2>
+          <h2 className="text-2xl font-bold">Fujisat Pay Platform</h2>
         </div>
         <LoginForm />
       </div>

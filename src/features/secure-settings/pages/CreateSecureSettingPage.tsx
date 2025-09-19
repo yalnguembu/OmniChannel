@@ -32,7 +32,7 @@ export function CreateSecureSettingPage() {
         <CreatePageHeader
           title={t("secureSettings.create")}
           breadcrumbs={[
-            { label: t("navigation.dashboard"), href: "/dashboard" },
+            { label: t("menu.administration"), href: "/dashboard" },
             { label: t("secureSettings.title"), href: "/administration/secure-settings" },
             { label: t("secureSettings.create") },
           ]}

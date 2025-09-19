@@ -1,0 +1,33 @@
+.ACTIVATE,
+.APPROVE,
+.UNBLOCK,
+.TRANSACTION_REUSSIT_FORCER,
+.KIT_ACTIVATE
+ {
+    /* @apply bg-green-500 text-white hover:bg-green-700 hover:border hover:border-green-700 hover:shadow-md */
+}
+
+.EDIT,
+.PRINT,
+.OPERATION_REUSSIT_FORCER, 
+.UTILISATEUR_REINITIALISER_MDP {
+    /* @apply bg-blue-600 text-white hover:bg-blue-700 hover:border hover:border-blue-700 hover:shadow-md */
+}
+
+.VIEW {
+    /* @apply bg-yellow-400 text-black hover:bg-yellow-300 hover:border hover:border-yellow-300 hover:shadow-md */
+}
+
+.DELETE,
+.BLOCK,
+.DISABLE,
+.DEACTIVATE {
+    /* @apply bg-red-500 text-white hover:bg-red-700 hover:border hover:border-red-700 hover:shadow-md */
+}
+
+.RENEW,
+.UPDATE,
+.CONFIG,
+.OPERATION_RELANCER {
+    /* @apply bg-neutral text-neutral-content hover:bg-neutral; */
+}

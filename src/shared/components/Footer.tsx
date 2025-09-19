@@ -11,8 +11,8 @@ export default function Footer() {
         <div className="grid gap-8 md:grid-cols-3 lg:grid-cols-5">
           <div>
             <div className="mb-4 flex items-center space-x-2">
-              <img src="/images/icon.png" alt="FujiPay logo" width={45} height={45} />
-              <span className="text-xl font-semibold">FujiPay</span>
+              <img src="/images/icon.png" alt="Fujisat Pay logo" width={45} height={45} />
+              <span className="text-xl font-semibold">Fujisat Pay</span>
             </div>
             <p className="text-sm text-muted-foreground">{t("footer.developedBy")}</p>
           </div>

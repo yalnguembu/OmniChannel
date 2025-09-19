@@ -46,8 +46,8 @@ const SideBarMenuItems: React.FC<SideBarMenuItemsProps> = ({ items }) => {
   }, [currentPath, items, updateMenuProperty])
 
   return (
-    <SidebarGroup className="group-data-[collapsible=icon]:hidden text-muted-foreground">
-      <SidebarMenu>
+    <SidebarGroup className="text-muted-foreground group-data-[collapsible=icon]:p-0">
+      <SidebarMenu className="gap-y-3">
         {items.map((item, index) => {
           const isActive = !!item.path && currentPath.includes(item.path)
           const menuState = getMenuProperty(`sidebar.${item.label}`) || {}
@@ -57,43 +57,32 @@ const SideBarMenuItems: React.FC<SideBarMenuItemsProps> = ({ items }) => {
             updateMenuProperty(`sidebar.${item.label}`, { isOpen: open })
           }
 
-          return (
+          return item.children ? (
             <Collapsible key={`menu.${item.label} ${index}`} asChild className="group/collapsible" open={isOpen} onOpenChange={handleToggle}>
               <SidebarMenuItem data-active={isActive}>
                 <CollapsibleTrigger asChild>
-                  <SidebarMenuButton isActive={isActive}>
-                    {item.children?.length ? (
-                      <div className="w-full flex justify-between px-2 py-1">
-                        <div className="inline-lock">
-                          {item.icon && <item.icon className="inline size-5" />}
-                          <span className="pl-2">{t(item.label as any)}</span>
-                        </div>
-                        <ChevronRight className="ml-auto transition-transform size-5 -400 duration-200 group-data-[state=open]/collapsible:rotate-90" />
-                      </div>
-                    ) : (
-                      <div className="flex w-full justify-between px-2 items-center hover:children:inline">
-                        <Link to={item.path} className={`inline-lock ${isActive ? "font-semibold text-primary" : ""}`}>
-                          {item.icon && <item.icon className="inline size-5" />}
-                          <span className="pl-2">{t(item.label as any)}</span>
-                        </Link>
-                      </div>
-                    )}
+                  <SidebarMenuButton variant="outline" isActive={isActive} className="w-full flex justify-between items-center px-2 xl:px-4 py-1">
+                    <div className="flex items-center">
+                      {item.icon && <item.icon className="inline size-4" />}
+                      <span className="pl-2 font-medium group-data-[collapsible=icon]:hidden">{t(item.label as any)}</span>
+                    </div>
+                    <ChevronRight className="ml-auto transition-transform size-5 -400 duration-200 group-data-[state=open]/collapsible:rotate-90" />
                   </SidebarMenuButton>
                 </CollapsibleTrigger>
-                <CollapsibleContent>
-                  <SidebarMenuSub>
+                <CollapsibleContent className="group-data-[collapsible=icon]:hidden">
+                  <SidebarMenuSub className="pt-2">
                     {item.children?.map((subItem) => {
                       const isSubActive = subItem.path && currentPath.toLocaleLowerCase() === subItem.path.toLocaleLowerCase()
                       return (
                         <SidebarMenuSubItem
-                          className={`text-muted-foreground ${isSubActive ? "border-r-4 rounded-l rounded-r bg-accent/5 border-r-primary text-primary" : ""}`}
+                          className={`text-muted-foreground ${isSubActive ? "border-r-4 rounded-l rounded-r-xs bg-accent/5 border-r-primary text-primary" : ""}`}
                           key={subItem.label}
                           data-active={isSubActive}
                         >
                           <SidebarMenuSubButton className="text-base" size="sm" asChild>
                             <div className="w-full py-4 flex justify-between items-center">
                               <Link to={subItem.path} className={`inline-block py-3 text-sm truncate w-full ${isSubActive ? "font-semibold text-primary" : ""}`}>
-                                {subItem.icon && <subItem.icon className="inline size-4" />}
+                                {/*subItem.icon && <subItem.icon className="inline size-4" />*/}
                                 <span className="pl-2 py-3">{t(subItem.label as any)}</span>
                               </Link>
                             </div>
@@ -105,6 +94,15 @@ const SideBarMenuItems: React.FC<SideBarMenuItemsProps> = ({ items }) => {
                 </CollapsibleContent>
               </SidebarMenuItem>
             </Collapsible>
+          ) : (
+            <SidebarMenuItem key={`menu.${item.label} ${index}`} data-active={isActive}>
+              <SidebarMenuButton variant="outline" isActive={isActive} asChild>
+                <Link to={item.path} className={`truncate w-full flex items-center xl:px-4 ${isActive ? "font-semibold" : ""}`}>
+                  {item.icon && <item.icon className="inline size-4" />}
+                  <span className="pl-2 font-medium group-data-[collapsible=icon]:hidden">{t(item.label as any)}</span>
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
           )
         })}
       </SidebarMenu>

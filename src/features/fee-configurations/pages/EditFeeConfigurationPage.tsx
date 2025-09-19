@@ -13,7 +13,7 @@ export function EditFeeConfigurationPage() {
   const navigate = useNavigate()
   const { t } = useTranslation()
   const { id } = useParams({ from: "/_protected/administration/fee-configurations/$id/edit" })
-  const { selectedFeeConfiguration: data, updateMutation, getFeeConfigurationQuery, isLoading } = useFeeConfiguration()
+  const { updateMutation, getFeeConfigurationQuery, isLoading } = useFeeConfiguration()
 
   const handleSubmit = (data: UpdateFeeConfigurationRequest) => {
     updateMutation.mutate(
@@ -26,11 +26,7 @@ export function EditFeeConfigurationPage() {
     )
   }
 
-  useEffect(() => {
-    if (id) {
-      getFeeConfigurationQuery(id)
-    }
-  }, [])
+  const { data: response } = getFeeConfigurationQuery(id)
 
   const handleCancel = () => {
     navigate({ to: `/administration/fee-configurations` })
@@ -44,7 +40,7 @@ export function EditFeeConfigurationPage() {
     )
   }
 
-  if (!data) {
+  if (!response?.data) {
     return (
       <div className="container mx-auto py-6 text-center">
         <p>{t("feeConfigurations.form.edit.loadError")}</p>
@@ -62,13 +58,13 @@ export function EditFeeConfigurationPage() {
         <CreatePageHeader
           title={t("feeConfigurations.edit")}
           breadcrumbs={[
-            { label: t("navigation.dashboard"), href: "/dashboard" },
+            { label: t("menu.administration"), href: "/dashboard" },
             { label: t("feeConfigurations.title"), href: "/administration/document-types" },
             { label: t("feeConfigurations.edit") },
           ]}
         />
       }
-      content={<FeeConfigurationEditForm feeConfigurationId={id} initialData={data} onSubmit={handleSubmit} onCancel={handleCancel} isLoading={false} />}
+      content={<FeeConfigurationEditForm feeConfigurationId={id} initialData={response.data} onSubmit={handleSubmit} onCancel={handleCancel} isLoading={false} />}
     />
   )
 }

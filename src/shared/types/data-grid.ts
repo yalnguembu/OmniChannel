@@ -1,7 +1,9 @@
 import type { SortDirection } from "../enums/data-grid"
 import { ReactNode } from "react"
+import { BadgeStyles } from "./enums"
 
-// Data Grid types
+export type BadgeTheme = "active" | "deactive" | "true" | "false" | "failed" | "cancelled" | "completed" | "success" | "warn" | ""
+
 export interface DataGridColumnHeader {
   key: string
   label: string
@@ -10,11 +12,13 @@ export interface DataGridColumnHeader {
   minWidth?: number
   resizable?: boolean
   isBadge?: boolean
+  badgeTheme?: BadgeStyles
+  shouldClick?: boolean
+  style?: string
 }
 
 export interface DataGridRowEntry {
   getId: () => string
-  getCandidateId?: () => string
   getTextFor: (columnKey: string) => string | string[]
 }
 
@@ -23,7 +27,6 @@ export interface DataGridSort {
   direction: SortDirection | null
 }
 
-// Component-specific types for DataGrid
 export interface BulkAction {
   label: string
   action: () => void
@@ -31,7 +34,12 @@ export interface BulkAction {
   loading?: boolean
 }
 
-type ACTION = "view" | "delete" | "edit" | "activate" | "deactivate"
+export type ACTION = "view" | "delete" | "edit" | "activate" | "deactivate" | "ROW_CLICK"
+
+export type BreakPoint = "sm" | "md" | "lg" | "xl" | "xl2"
+export type ViewMode = "list" | "grid"
+
+export type DataGridViewMode = Record<BreakPoint, ViewMode> | ViewMode
 
 export interface DataGridProps {
   columnHeaders: DataGridColumnHeader[]
@@ -53,13 +61,14 @@ export interface DataGridProps {
   hiddenColumns?: string[]
   onColumnVisibilityChange?: (hiddenColumns: string[]) => void
   bulkActions?: BulkAction[]
-  renderCell?: (item: DataGridRowEntry, columnKey: string) => ReactNode
-  dispatch?: (action: ACTION, id: string) => void
+  renderCell?: (item: DataGridRowEntry, column: DataGridColumnHeader, view: ViewMode) => ReactNode
+  dispatch: (action: ACTION, id: string) => void
   actions?: ACTION[]
   showTitle?: boolean
+  viewMode?: DataGridViewMode
+  gridSize?: string
 }
 
-// Common component props
 export interface BaseComponentProps {
   className?: string
   children?: React.ReactNode
@@ -68,6 +77,8 @@ export interface BaseComponentProps {
 export interface LoadingProps {
   isLoading: boolean
   loadingText?: string
+  isProcessing?: boolean
+  processingRowId: string
 }
 
 export interface PaginationProps {

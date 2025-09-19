@@ -3,19 +3,20 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Globe } from "lucide-react"
 import { useUIStore } from "../stores"
 
-export default function LanguageToggle() {
+export default function LanguageToggle({ variant = "default", direction = "bottom" }: { variant?: "default" | "expanded"; direction?: "left" | "bottom" | "top" | "right" }) {
   const { language, setLanguage } = useUIStore()
 
   return (
     <div>
       <DropdownMenu>
-        <DropdownMenuTrigger asChild className="flex items-center space-x-1 px-2">
-          <Button variant="ghost">
+        <DropdownMenuTrigger asChild>
+          <Button variant="ghost" className={`flex items-center space-x-0.5 ${variant === "expanded" ? "w-full justify-start" : ""}`}>
             <Globe className="h-4 w-4" />
-            <span className="uppercase">Lang ({language})</span>
+            {variant === "expanded" && "Language"}
+            <span className="uppercase">{language}</span>
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="start" side="bottom">
+        <DropdownMenuContent align="start" side={direction}>
           <DropdownMenuItem onClick={() => setLanguage("en")}>
             <span className={language === "en" ? "font-semibold text-secondary" : ""}>English</span>
           </DropdownMenuItem>

@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next"
 import { StandardListPageLayout } from "@/shared/components/layouts/ListPageLayout"
-import { ListPageHeader } from "../../../shared/components/ListPageHeader"
+import { ListPageHeader } from "@/shared/components/ListPageHeader"
 import { DocumentsTypeDataGrid } from "../components/DocumentTypesDataGrid"
 import { useDocumentsType } from "../hooks/useDocumentTypes"
 import { BaseFilter } from "@/shared/components/filter/base-filter"
@@ -11,7 +11,7 @@ import { useState } from "react"
 
 export function DocumentTypesListPage() {
   const { t } = useTranslation()
-  const { isLoading, totalItems, viewMode, setViewMode, refreshData, hasSelection, selectedRows, applyFilters, clearFilters, createMutation } = useDocumentsType()
+  const { isLoading, viewMode, setViewMode, refreshData, hasSelection, selectedRows, applyFilters, clearFilters, createMutation } = useDocumentsType()
 
   const [showCreateModal, setShowCreateModal] = useState(false)
   const toggleShowCreateModal = () => setShowCreateModal((prev) => !prev)
@@ -29,10 +29,8 @@ export function DocumentTypesListPage() {
       header={
         <ListPageHeader
           title={t("documentsTypes.title")}
-          totalCountText={t("documentsTypes.totalCount", { count: totalItems })}
           addButtonText={t("documentsTypes.actions.add")}
-          breadcrumbs={[{ label: t("navigation.dashboard"), href: "/dashboard" }, { label: t("documentsTypes.title") }]}
-          totalItems={totalItems}
+          breadcrumbs={[{ label: t("menu.administration"), href: "/dashboard" }, { label: t("documentsTypes.title") }]}
           onCreate={toggleShowCreateModal}
         />
       }

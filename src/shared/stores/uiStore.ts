@@ -30,7 +30,7 @@ export const useUIStore = create<UIStore>()(
         modalOpen: false,
         themeMode: "system",
         isDarkMode: getSystemTheme(),
-
+        pageTitle: "",
         language: localStorage.getItem("lang") || "fr",
 
         isLoading: false,
@@ -64,6 +64,10 @@ export const useUIStore = create<UIStore>()(
           localStorage.setItem("lang", lang)
           i18n.changeLanguage(lang)
           set({ language: lang }, false, "ui/setLanguage")
+        },
+
+        setPageTitle: (title) => {
+          set({ pageTitle: title }, false, "ui/setPageTitle")
         },
 
         setIsLoading: (loading) => set({ isLoading: loading }, false, "ui/setIsLoading"),

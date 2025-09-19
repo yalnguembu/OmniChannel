@@ -1,4 +1,3 @@
-import { useEffect } from "react"
 import { useNavigate, useParams } from "@tanstack/react-router"
 import { Button } from "@/shared/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/shared/components/ui/card"
@@ -16,7 +15,7 @@ const DetailItem = ({ label, value }: { label: string; value: React.ReactNode })
 export function FeeConfigurationDetailsPage() {
   const navigate = useNavigate()
   const { id } = useParams({ from: "/_protected/administration/fee-configurations/$id/" })
-  const { selectedFeeConfiguration: data, getFeeConfigurationQuery, isLoading, isError } = useFeeConfiguration()
+  const { getFeeConfigurationQuery, isLoading, isError } = useFeeConfiguration()
 
   const handleEdit = () => {
     navigate({ to: `/administration/fee-configurations/${id}/edit` })
@@ -26,11 +25,7 @@ export function FeeConfigurationDetailsPage() {
     navigate({ to: `/administration/fee-configurations` })
   }
 
-  useEffect(() => {
-    if (id) {
-      getFeeConfigurationQuery(id)
-    }
-  }, [])
+  const { data: response } = getFeeConfigurationQuery(id)
 
   if (isLoading) {
     return (
@@ -40,7 +35,7 @@ export function FeeConfigurationDetailsPage() {
     )
   }
 
-  if (isError || !data) {
+  if (isError || !response?.data) {
     return (
       <div className="container mx-auto py-6 text-center">
         <p>FeeConfiguration not found.</p>
@@ -70,7 +65,7 @@ export function FeeConfigurationDetailsPage() {
           <CardTitle>FeeConfiguration Details</CardTitle>
         </CardHeader>
         <CardContent className="space-y-2">
-          {Object.entries(data).map(([key, value]) => {
+          {Object.entries(response.data).map(([key, value]) => {
             if (key === "id") return null // Don't show ID by default
             const formattedKey = key.replace(/([A-Z])/g, " $1").replace(/^./, (str) => str.toUpperCase())
             return <DetailItem key={key} label={formattedKey} value={value} />

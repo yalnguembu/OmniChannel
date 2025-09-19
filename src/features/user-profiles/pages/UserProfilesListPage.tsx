@@ -11,7 +11,7 @@ import { useUserProfile } from "../hooks/useUserProfile"
 export function UserProfilesListPage() {
   const navigate = useNavigate()
   const { t } = useTranslation()
-  const { isLoading, totalItems, viewMode, setViewMode, refreshData, hasSelection, selectedRows, applyFilters, clearFilters } = useUserProfile()
+  const { isLoading, viewMode, setViewMode, refreshData, hasSelection, selectedRows, applyFilters, clearFilters } = useUserProfile()
 
   const handleCreate = () => {
     navigate({ to: `/access-control/user-profiles/add` })
@@ -22,10 +22,8 @@ export function UserProfilesListPage() {
       header={
         <ListPageHeader
           title={t("userProfiles.title")}
-          totalCountText={t("userProfile.totalCount", { count: totalItems })}
           addButtonText={t("userProfile.actions.add")}
-          breadcrumbs={[{ label: t("navigation.dashboard"), href: "/dashboard" }, { label: t("userProfiles.title") }]}
-          totalItems={totalItems}
+          breadcrumbs={[{ label: t("menu.access-control"), href: "/dashboard" }, { label: t("userProfiles.title") }]}
           onCreate={handleCreate}
         />
       }

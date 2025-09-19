@@ -1,7 +1,11 @@
 import { ElementType } from "react"
 
 export type SideBarMenuItem = SideBarMenuItemWithAddButton
-// | SideBarMenuItemWithoutAddButton;
+
+export type BaseMenus = {
+  groupTitle: string
+  elements: SideBarMenuItem[]
+}
 
 export type SideBarMenuItemWithAddButton = {
   label: string

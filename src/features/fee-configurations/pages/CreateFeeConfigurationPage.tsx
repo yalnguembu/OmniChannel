@@ -17,7 +17,7 @@ export function CreateFeeConfigurationPage() {
       { body: data },
       {
         onSuccess: () => {
-          navigate({ to: `/administration/document-types` })
+          navigate({ to: `/administration/fee-configurations` })
         },
         onError: () => {
           // toast.error(t(error))
@@ -27,7 +27,7 @@ export function CreateFeeConfigurationPage() {
   }
 
   const handleCancel = () => {
-    navigate({ to: `/administration/document-types` })
+    navigate({ to: `/administration/fee-configurations` })
   }
 
   return (
@@ -36,8 +36,8 @@ export function CreateFeeConfigurationPage() {
         <CreatePageHeader
           title={t("feeConfigurations.create")}
           breadcrumbs={[
-            { label: t("navigation.dashboard"), href: "/dashboard" },
-            { label: t("feeConfigurations.title"), href: "/administration/document-types" },
+            { label: t("menu.administration"), href: "/dashboard" },
+            { label: t("feeConfigurations.title"), href: "/administration/fee-configurations" },
             { label: t("feeConfigurations.create") },
           ]}
         />

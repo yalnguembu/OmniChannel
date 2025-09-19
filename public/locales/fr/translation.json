@@ -1,11 +1,11 @@
 {
   "about": {
-    "cta": "Rejoignez la révolution FujiPay. Contactez notre équipe dès aujourd'hui pour en savoir plus.",
+    "cta": "Rejoignez la révolution Fujisat Pay. Contactez notre équipe dès aujourd'hui pour en savoir plus.",
     "storyMission": {
-      "content": "FujiPay est le fruit de l'expertise et de la vision de Graphics System SA, une entreprise technologique camerounaise dont la mission est de révolutionner la gestion des paiements mobiles en Afrique. Grâce à notre connaissance approfondie du marché local et des défis commerciaux, nous avons développé une plateforme robuste, sécurisée et conforme aux normes internationales.",
+      "content": "Fujisat Pay est le fruit de l'expertise et de la vision de Graphics System SA, une entreprise technologique camerounaise dont la mission est de révolutionner la gestion des paiements mobiles en Afrique. Grâce à notre connaissance approfondie du marché local et des défis commerciaux, nous avons développé une plateforme robuste, sécurisée et conforme aux normes internationales.",
       "title": "Notre histoire et notre mission"
     },
-    "title": "À propos de FujiPay : Votre partenaire stratégique en solutions de paiement mobile au Cameroun",
+    "title": "À propos de Fujisat Pay : Votre partenaire stratégique en solutions de paiement mobile au Cameroun",
     "values": {
       "title": "Nos valeurs fondamentales"
     },
@@ -29,7 +29,7 @@
       "add": "Ajouter une IP autorisée",
       "delete": "Supprimer",
       "edit": "Modifier",
-      "more": "Plus d'actions",
+      "more": "Actions",
       "view": "Voir"
     },
     "bulk": {
@@ -85,7 +85,7 @@
       "add": "Ajouter une application",
       "delete": "Supprimer",
       "edit": "Modifier",
-      "more": "Plus d'actions",
+      "more": "Actions",
       "view": "Voir"
     },
     "bulk": {
@@ -185,7 +185,7 @@
   "auditLogs": {
     "actions": {
       "add": "Ajouter un journal",
-      "more": "Plus d'actions",
+      "more": "Actions",
       "view": "Voir"
     },
     "bulk": {
@@ -283,7 +283,7 @@
       "add": "Ajouter un solde",
       "delete": "Supprimer",
       "edit": "Modifier",
-      "more": "Plus d'actions",
+      "more": "Actions",
       "view": "Voir"
     },
     "bulk": {
@@ -327,7 +327,7 @@
       "add": "Ajouter une IP bloquée",
       "delete": "Supprimer",
       "edit": "Modifier",
-      "more": "Plus d'actions",
+      "more": "Actions",
       "view": "Voir"
     },
     "bulk": {
@@ -402,7 +402,7 @@
     "actions": {
       "delete": "Supprimer",
       "edit": "Modifier",
-      "more": "Plus d'actions",
+      "more": "Actions",
       "view": "Voir"
     },
     "cancel": "Annuler",
@@ -438,7 +438,7 @@
       "add": "Ajouter une entreprise",
       "delete": "Supprimer l'entreprise",
       "edit": "Modifier l'entreprise",
-      "more": "Plus d'actions",
+      "more": "Actions",
       "view": "Voir l'entreprise"
     },
     "bulk": {
@@ -579,7 +579,7 @@
       "add": "Ajouter une limite",
       "delete": "Supprimer",
       "edit": "Modifier",
-      "more": "Plus d'actions",
+      "more": "Actions",
       "view": "Voir"
     },
     "bulk": {
@@ -660,15 +660,15 @@
       "subject": "Sujet de votre message",
       "submit": "Envoyer votre demande"
     },
-    "intro": "Avez-vous des questions, besoin d'une démo ou souhaitez-vous obtenir un compte FujiPay ? Notre équipe commerciale est prête à vous aider. Veuillez noter que l'ouverture d'un compte se fait par contact direct avec nos représentants commerciaux.",
-    "title": "Contactez l'équipe FujiPay : Nous sommes là pour vous"
+    "intro": "Avez-vous des questions, besoin d'une démo ou souhaitez-vous obtenir un compte Fujisat Pay ? Notre équipe commerciale est prête à vous aider. Veuillez noter que l'ouverture d'un compte se fait par contact direct avec nos représentants commerciaux.",
+    "title": "Contactez l'équipe Fujisat Pay : Nous sommes là pour vous"
   },
   "countries": {
     "actions": {
       "add": "Ajouter un pays",
       "delete": "Supprimer",
       "edit": "Modifier",
-      "more": "Plus d'actions",
+      "more": "Actions",
       "view": "Voir"
     },
     "bulk": {
@@ -736,7 +736,7 @@
       "add": "Ajouter une devise",
       "delete": "Supprimer",
       "edit": "Modifier",
-      "more": "Plus d'actions",
+      "more": "Actions",
       "view": "Voir"
     },
     "bulk": {
@@ -829,7 +829,7 @@
       "method": "Méthode",
       "title": "Points de terminaison clés de l'API"
     },
-    "intro": "L'API FujiPay est conçue pour une intégration rapide et transparente avec vos applications, sites web ou systèmes existants. Accédez à toutes nos fonctionnalités via des points de terminaison sécurisés et fiables.",
+    "intro": "L'API Fujisat Pay est conçue pour une intégration rapide et transparente avec vos applications, sites web ou systèmes existants. Accédez à toutes nos fonctionnalités via des points de terminaison sécurisés et fiables.",
     "resources": {
       "apiDocs": "Accéder à la documentation de l'API",
       "quickstart": "Guide de démarrage rapide",
@@ -839,7 +839,7 @@
     },
     "security": {
       "auth": {
-        "description": "FujiPay utilise une authentification à plusieurs niveaux avec des clés API et des jetons JWT pour un accès sécurisé à nos points de terminaison API.",
+        "description": "Fujisat Pay utilise une authentification à plusieurs niveaux avec des clés API et des jetons JWT pour un accès sécurisé à nos points de terminaison API.",
         "title": "Méthodes d'authentification"
       },
       "encryption": {
@@ -857,7 +857,7 @@
       },
       "title": "Sécurité de l'API"
     },
-    "title": "Intégration FujiPay : Une API puissante, flexible et documentée",
+    "title": "Intégration Fujisat Pay : Une API puissante, flexible et documentée",
     "whyIntegrate": {
       "documentation": {
         "description": "Guides clairs et exemples de code.",
@@ -879,7 +879,7 @@
         "description": "Authentification par clé API et JWT, chiffrement des données.",
         "title": "Sécurité robuste"
       },
-      "title": "Pourquoi intégrer FujiPay ?",
+      "title": "Pourquoi intégrer Fujisat Pay ?",
       "webhooks": {
         "description": "Recevez des notifications en temps réel pour tous les événements clés.",
         "title": "Webhooks"
@@ -889,7 +889,7 @@
   "documentsTypes": {
     "actions": {
       "add": "Ajouter un type",
-      "more": "Plus d'actions"
+      "more": "Actions"
     },
     "bulk": {
       "deleteError": "Erreur lors de la suppression.",
@@ -958,7 +958,7 @@
   },
   "features": {
     "badge": "FONCTIONNALITÉS",
-    "intro": "FujiPay est conçu pour offrir un contrôle total sur vos opérations financières mobiles au Cameroun, grâce à une suite de fonctionnalités avancées et sécurisées.",
+    "intro": "Fujisat Pay est conçu pour offrir un contrôle total sur vos opérations financières mobiles au Cameroun, grâce à une suite de fonctionnalités avancées et sécurisées.",
     "paymentManagement": {
       "benefit1": "Intégration unifiée Orange Money et MTN Mobile Money",
       "benefit2": "Gestion complète du cycle de vie des transactions",
@@ -985,7 +985,7 @@
       "title": "Sécurité"
     },
     "subtitle": "La puissance à votre service",
-    "title": "Les fonctionnalités complètes de FujiPay",
+    "title": "Les fonctionnalités complètes de Fujisat Pay",
     "title1": "La puissance à votre service",
     "title2": "",
     "withdrawalManagement": {
@@ -993,7 +993,7 @@
       "benefit2": "Prise en charge d'Orange Money et de MTN Mobile Money",
       "benefit3": "Traitement par lots pour les volumes élevés",
       "benefit4": "Processus d'approbation flexibles",
-      "description": "Initiez et traitez les demandes de retrait de fonds avec une sécurité optimale. Que ce soit via mobile money ou virement bancaire, FujiPay s'adapte à vos besoins.",
+      "description": "Initiez et traitez les demandes de retrait de fonds avec une sécurité optimale. Que ce soit via mobile money ou virement bancaire, Fujisat Pay s'adapte à vos besoins.",
       "title": "Gestion des retraits"
     }
   },
@@ -1024,7 +1024,7 @@
       "add": "Nouveaux frais",
       "delete": "Supprimer",
       "edit": "Modifier",
-      "more": "Plus d'actions",
+      "more": "Actions",
       "view": "Voir"
     },
     "bulk": {
@@ -1118,7 +1118,7 @@
       "add": "Ajouter un type de frais",
       "delete": "Supprimer",
       "edit": "Modifier",
-      "more": "Plus d'actions",
+      "more": "Actions",
       "view": "Voir"
     },
     "bulk": {
@@ -1192,7 +1192,7 @@
     "address": "Douala, Cameroun",
     "bankWithdrawals": "Retraits bancaires",
     "contact": "Contact",
-    "copyright": "© 2025 FujiPay. Tous droits réservés.",
+    "copyright": "© 2025 FujiSat Pay. Tous droits réservés.",
     "developedBy": "Développé par Graphics System SA",
     "financialReporting": "Rapports financiers",
     "kycManagement": "Gestion KYC",
@@ -1223,7 +1223,7 @@
   "frontEventLogs": {
     "actions": {
       "add": "Ajouter un événement",
-      "more": "Plus d'actions",
+      "more": "Actions",
       "view": "Voir"
     },
     "messages": {
@@ -1266,7 +1266,7 @@
       "add": "Ajouter un transfert",
       "delete": "Supprimer",
       "edit": "Modifier",
-      "more": "Plus d'actions",
+      "more": "Actions",
       "view": "Voir"
     },
     "bulk": {
@@ -1335,7 +1335,7 @@
       "add": "Ajouter un document",
       "delete": "Supprimer",
       "edit": "Modifier",
-      "more": "Plus d'actions",
+      "more": "Actions",
       "view": "Voir"
     },
     "bulk": {
@@ -1415,17 +1415,17 @@
       "orangeMoney": "Orange Money",
       "paid": "Payé",
       "subtitle": "Soutient les petites entreprises avec une facturation simple, des intégrations puissantes et des outils de gestion de trésorerie.",
-      "title1": "Soyez payé plus tôt,",
-      "title2": "économisez automatiquement",
-      "title3": "sur tous vos paiements.",
+      "title1": "Encaissez vos payment,",
+      "title2": "Sans stress",
+      "title3": "A tous moment.",
       "trustedBy": "Approuvé par des entreprises de premier plan",
       "viewTransactions": "Voir les transactions"
     },
     "howItWorks": {
       "badge": "COMMENT ÇA MARCHE",
-      "description": "Démarrez avec FujiPay en quelques minutes et transformez la façon dont vous gérez les paiements par mobile money au Cameroun.",
+      "description": "Démarrez avec Fujisat Pay en quelques minutes et transformez la façon dont vous gérez les paiements par mobile money au Cameroun.",
       "step1": {
-        "description": "Inscrivez-vous à FujiPay et suivez notre processus de vérification KYC simplifié pour commencer.",
+        "description": "Inscrivez-vous à Fujisat Pay et suivez notre processus de vérification KYC simplifié pour commencer.",
         "title": "Créez votre compte"
       },
       "step2": {
@@ -1440,7 +1440,7 @@
     },
     "industries": {
       "badge": "SOLUTIONS PAR SECTEUR",
-      "description": "Quel que soit votre secteur d'activité, FujiPay s'adapte à vos besoins spécifiques avec des solutions de paiement flexibles.",
+      "description": "Quel que soit votre secteur d'activité, Fujisat Pay s'adapte à vos besoins spécifiques avec des solutions de paiement flexibles.",
       "learnMore": "En savoir plus",
       "title": "Des solutions sur mesure pour chaque entreprise"
     },
@@ -1468,7 +1468,7 @@
   "logs": {
     "actions": {
       "add": "Ajouter un journal",
-      "more": "Plus d'actions",
+      "more": "Actions",
       "view": "Voir"
     },
     "headers": {
@@ -1545,7 +1545,12 @@
     "addUserProfile": "Ajouter un profil",
     "addCompany": "Ajouter une entreprise",
     "addApplication": "Ajouter une application",
-    "addWebhook": "Ajouter un Webhook"
+    "addWebhook": "Ajouter un Webhook",
+    "access-control": "Control Access",
+    "support": "Support",
+    "it": "Technique",
+    "system": "Systeme",
+    "general": "General"
   },
   "navigation": {
     "about": "À propos",
@@ -1556,7 +1561,7 @@
     "features": "Fonctionnalités",
     "home": "Accueil",
     "login": "Connexion",
-    "requestDemo": "Demander une démo",
+    "requestDemo": "Démo",
     "solutions": "Solutions"
   },
   "noPermission": "Vous n'avez pas la permission d'accéder à cette ressource",
@@ -1649,7 +1654,7 @@
       "add": "Ajouter un moyen de paiement",
       "delete": "Supprimer",
       "edit": "Modifier",
-      "more": "Plus d'actions",
+      "more": "Actions",
       "view": "Voir"
     },
     "bulk": {
@@ -1719,7 +1724,7 @@
   },
   "receipts": {
     "actions": {
-      "more": "Plus d'actions",
+      "more": "Actions",
       "view": "Voir"
     },
     "messages": {
@@ -1750,7 +1755,7 @@
       "add": "Ajouter",
       "delete": "Supprimer",
       "edit": "Modifier",
-      "more": "Plus d'actions",
+      "more": "Actions",
       "view": "Voir"
     },
     "bulk": {
@@ -1842,7 +1847,7 @@
       "add": "Ajouter un paramètre",
       "delete": "Supprimer",
       "edit": "Modifier",
-      "more": "Plus d'actions",
+      "more": "Actions",
       "view": "Voir"
     },
     "bulk": {
@@ -1951,7 +1956,7 @@
       "add": "Ajouter un modèle",
       "delete": "Supprimer",
       "edit": "Modifier",
-      "more": "Plus d'actions",
+      "more": "Actions",
       "view": "Voir"
     },
     "bulk": {
@@ -2017,7 +2022,7 @@
     "benefitsLabel": "Avantages",
     "customSolution": {
       "cta": "Contactez-nous",
-      "description": "FujiPay est hautement adaptable. Contactez-nous pour discuter d'une solution personnalisée pour vos besoins spécifiques.",
+      "description": "Fujisat Pay est hautement adaptable. Contactez-nous pour discuter d'une solution personnalisée pour vos besoins spécifiques.",
       "title": "Votre secteur n'est pas répertorié ?"
     },
     "ecommerce": {
@@ -2028,14 +2033,14 @@
       "problem": "Traitement des décaissements et des remboursements, gestion des soldes clients, conformité KYC.",
       "title": "Services financiers et FinTech"
     },
-    "intro": "Quelle que soit votre activité, FujiPay s'intègre pour optimiser vos processus de paiement mobile. Découvrez comment nous aidons nos clients à prospérer.",
+    "intro": "Quelle que soit votre activité, Fujisat Pay s'intègre pour optimiser vos processus de paiement mobile. Découvrez comment nous aidons nos clients à prospérer.",
     "nonprofit": {
       "problem": "Collecte de dons via mobile money, traçabilité des contributions, conformité.",
       "title": "Organisations à but non lucratif et associations"
     },
     "problemLabel": "Le défi",
-    "solutionLabel": "La solution FujiPay",
-    "title": "FujiPay : Des solutions sur mesure pour chaque secteur"
+    "solutionLabel": "La solution Fujisat Pay",
+    "title": "Fujisat Pay : Des solutions sur mesure pour chaque secteur"
   },
   "themeMode": {
     "dark": "Sombre",
@@ -2063,7 +2068,7 @@
   },
   "userDevices": {
     "actions": {
-      "more": "Plus d'actions",
+      "more": "Actions",
       "view": "Voir"
     },
     "messages": {
@@ -2081,7 +2086,7 @@
       "add": "Nouveau profil utilisateur",
       "delete": "Supprimer",
       "edit": "Modifier",
-      "more": "Plus d'actions",
+      "more": "Actions",
       "view": "Voir"
     },
     "bulk": {
@@ -2167,7 +2172,7 @@
       "addTitle": "Ajouter un utilisateur",
       "delete": "Supprimer",
       "edit": "Modifier",
-      "more": "Plus d'actions",
+      "more": "Actions",
       "view": "Voir"
     },
     "bulk": {
@@ -2217,6 +2222,7 @@
       "email": "E-mail",
       "firstName": "Prénom",
       "lastName": "Nom de famille",
+      "fullName": "Nom complet",
       "phoneNumber": "Numéro de téléphone",
       "profileName": "Nom du profil",
       "publicId": "ID public",
@@ -2268,7 +2274,7 @@
   },
   "vwTransactionsSummarys": {
     "actions": {
-      "more": "Plus d'actions",
+      "more": "Actions",
       "view": "Voir"
     },
     "messages": {
@@ -2283,7 +2289,7 @@
   },
   "webhookLog": {
     "actions": {
-      "more": "Plus d'actions",
+      "more": "Actions",
       "view": "Voir"
     },
     "messages": {
@@ -2311,7 +2317,7 @@
   "webhooks": {
     "actions": {
       "add": "Ajouter un Webhook",
-      "more": "Plus d'actions",
+      "more": "Actions",
       "view": "Voir"
     },
     "bulk": {
@@ -2515,7 +2521,7 @@
   },
   "withdrawalsReadModels": {
     "actions": {
-      "more": "Plus d'actions",
+      "more": "Actions",
       "view": "Voir"
     },
     "messages": {

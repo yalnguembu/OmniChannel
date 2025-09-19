@@ -2,7 +2,7 @@ import React, { useEffect, useMemo } from "react"
 import { useTranslation } from "react-i18next"
 import { useNavigate } from "@tanstack/react-router"
 import { DataGrid } from "@/shared/components/data-grid/data-grid"
-import { DataGridColumnHeader, DataGridRowEntry, DataGridSort } from "@/shared/types"
+import { ACTION, DataGridColumnHeader, DataGridRowEntry, DataGridSort } from "@/shared/types"
 import { SortDirection } from "@/shared/enums/data-grid"
 import { Button } from "@/shared/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/shared/components/ui/dropdown-menu"
@@ -38,12 +38,6 @@ export const FeeTypeDataGrid: React.FC = () => {
 
   const columnHeaders: DataGridColumnHeader[] = [
     {
-      key: "createdAt",
-      label: t("feetypes.headers.createdAt"),
-      sortable: true,
-      resizable: true,
-    },
-    {
       key: "code",
       label: t("feetypes.headers.code"),
       sortable: true,
@@ -54,22 +48,33 @@ export const FeeTypeDataGrid: React.FC = () => {
       label: t("feetypes.headers.name"),
       sortable: true,
       resizable: true,
-    },
-    {
-      key: "description",
-      label: t("feetypes.headers.description"),
-      sortable: true,
-      resizable: true,
+      style: "max-w-[100px]",
+      width: 150,
     },
     {
       key: "transactionType",
       label: t("feetypes.headers.transactionType"),
       sortable: true,
       resizable: true,
+      isBadge: true,
+    },
+    {
+      key: "description",
+      label: t("feetypes.headers.description"),
+      sortable: true,
+      resizable: true,
+      width: 150,
     },
     {
       key: "isActive",
       label: t("feetypes.headers.isActive"),
+      sortable: true,
+      resizable: true,
+      isBadge: true,
+    },
+    {
+      key: "createdAt",
+      label: t("feetypes.headers.createdAt"),
       sortable: true,
       resizable: true,
     },
@@ -85,12 +90,8 @@ export const FeeTypeDataGrid: React.FC = () => {
     return feeTypes.map((item) => new FeeTypeDataGridEntry(item))
   }, [feeTypes])
 
-  const handleView = (id: string) => {
-    navigate({ to: `/feeType/${id}` })
-  }
-
   const handleEdit = (id: string) => {
-    navigate({ to: `/feeType/${id}/edit` })
+    navigate({ to: `/administration/fee-types/${id}/edit` })
   }
 
   const handleDelete = (id: string) => {
@@ -105,35 +106,16 @@ export const FeeTypeDataGrid: React.FC = () => {
     }
   }
 
-  const renderCell = (item: DataGridRowEntry, columnKey: string) => {
-    switch (columnKey) {
-      case "actions":
-        return (
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-8 w-8 p-0">
-                <span className="sr-only">Open menu</span>
-                <MoreHorizontal className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={() => handleView(item.getId())}>
-                <Eye className="mr-2 h-4 w-4" />
-                {t("feeTypes.actions.view")}
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => handleEdit(item.getId())}>
-                <Edit className="mr-2 h-4 w-4" />
-                {t("feeTypes.actions.edit")}
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => handleDelete(item.getId())} className="text-red-600">
-                <Trash2 className="mr-2 h-4 w-4" />
-                {t("feeTypes.actions.delete")}
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        )
+  const handleDispatch = (action: ACTION, id: string) => {
+    switch (action) {
+      case "edit":
+        handleEdit(id)
+        break
+      case "delete":
+        handleDelete(id)
+        break
       default:
-        return item.getTextFor(columnKey) || "N/A"
+        return
     }
   }
 
@@ -180,7 +162,7 @@ export const FeeTypeDataGrid: React.FC = () => {
         onPageChange={handlePageChange}
         isLoading={isLoading}
         emptyMessage={t("feeTypes.messages.noData")}
-        enableSelection={true}
+        enableSelection={false}
         selectedRows={selectedRows}
         onSelectionChange={handleSelectionChange}
         enableSorting={true}
@@ -190,7 +172,8 @@ export const FeeTypeDataGrid: React.FC = () => {
         hiddenColumns={[]}
         onColumnVisibilityChange={() => {}}
         bulkActions={bulkActions}
-        renderCell={renderCell}
+        actions={["edit", "delete"]}
+        dispatch={handleDispatch}
       />
     </div>
   )

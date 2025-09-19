@@ -11,7 +11,7 @@ import { usePaymentMethod } from "../hooks/usePayMentmethod"
 export function PaymentMethodsListPage() {
   const navigate = useNavigate()
   const { t } = useTranslation()
-  const { isLoading, totalItems, viewMode, setViewMode, refreshData, hasSelection, selectedRows, applyFilters, clearFilters } = usePaymentMethod()
+  const { isLoading, viewMode, setViewMode, refreshData, hasSelection, selectedRows, applyFilters, clearFilters } = usePaymentMethod()
 
   const handleCreate = () => {
     navigate({ to: `/administration/payment-methods/add` })
@@ -30,10 +30,8 @@ export function PaymentMethodsListPage() {
       header={
         <ListPageHeader
           title={t("paymentMethods.title")}
-          totalCountText={t("paymentMethods.totalCount", { count: totalItems })}
           addButtonText={t("paymentMethods.actions.add")}
-          breadcrumbs={[{ label: t("navigation.dashboard"), href: "/dashboard" }, { label: t("paymentMethods.title") }]}
-          totalItems={totalItems}
+          breadcrumbs={[{ label: t("menu.administration"), href: "/dashboard" }, { label: t("paymentMethods.title") }]}
           onCreate={handleCreate}
         />
       }

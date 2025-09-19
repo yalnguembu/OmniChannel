@@ -2,13 +2,16 @@ import React, { useEffect, useMemo } from "react"
 import { useTranslation } from "react-i18next"
 import { useNavigate } from "@tanstack/react-router"
 import { DataGrid } from "@/shared/components/data-grid/data-grid"
-import { DataGridColumnHeader, DataGridRowEntry, DataGridSort } from "@/shared/types"
+import { ACTION, DataGridColumnHeader, DataGridRowEntry, DataGridSort } from "@/shared/types"
 import { SortDirection } from "@/shared/enums/data-grid"
-import { Button } from "@/shared/components/ui/button"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/shared/components/ui/dropdown-menu"
-import { MoreHorizontal, Eye, Edit, Trash2 } from "lucide-react"
 import { useSetting } from "../hooks/useSetting"
 import { SettingDataGridEntry } from "../lib/data-grid/SettingDataGridEntry"
+import { useViewMode } from "@/shared/hooks/use-view-mode"
+import ActionButtonGroup from "@/shared/components/data-grid/ActionButtonGroup"
+import { Badge } from "lucide-react"
+import DetailsCardItem from "@/shared/components/DetailsCardItem"
+import StatusBadge from "@/shared/components/StatusBadge"
+import { BadgeStyles } from "@/shared/types/enums"
 
 export const SettingDataGrid: React.FC = () => {
   const { t } = useTranslation()
@@ -38,32 +41,8 @@ export const SettingDataGrid: React.FC = () => {
 
   const columnHeaders: DataGridColumnHeader[] = [
     {
-      key: "companyName",
-      label: t("settings.headers.companyName"),
-      sortable: true,
-      resizable: true,
-    },
-    {
-      key: "applicationName",
-      label: t("settings.headers.applicationName"),
-      sortable: true,
-      resizable: true,
-    },
-    {
       key: "value",
       label: t("settings.headers.value"),
-      sortable: true,
-      resizable: true,
-    },
-    {
-      key: "dataType",
-      label: t("settings.headers.dataType"),
-      sortable: true,
-      resizable: true,
-    },
-    {
-      key: "isEncrypted",
-      label: t("settings.headers.isEncrypted"),
       sortable: true,
       resizable: true,
     },
@@ -72,34 +51,17 @@ export const SettingDataGrid: React.FC = () => {
       label: t("settings.headers.description"),
       sortable: true,
       resizable: true,
+      style: "max-w-[100px] xl:max-w-[150px] 2xl:max-w-[300px] overflow-hidden text-ellipsis whitespace-nowrap",
+    },
+    {
+      key: "dataType",
+      label: t("settings.headers.dataType"),
+      sortable: true,
+      resizable: true,
     },
     {
       key: "category",
       label: t("settings.headers.category"),
-      sortable: true,
-      resizable: true,
-    },
-    {
-      key: "isReadOnly",
-      label: t("settings.headers.isReadOnly"),
-      sortable: true,
-      resizable: true,
-    },
-    {
-      key: "isSystemSetting",
-      label: t("settings.headers.isSystemSetting"),
-      sortable: true,
-      resizable: true,
-    },
-    {
-      key: "allowedValues",
-      label: t("settings.headers.allowedValues"),
-      sortable: true,
-      resizable: true,
-    },
-    {
-      key: "validationRegex",
-      label: t("settings.headers.validationRegex"),
       sortable: true,
       resizable: true,
     },
@@ -113,7 +75,7 @@ export const SettingDataGrid: React.FC = () => {
       key: "actions",
       label: t("settings.actions.more"),
       sortable: false,
-      width: 70,
+      width: 150,
     },
   ]
 
@@ -141,35 +103,110 @@ export const SettingDataGrid: React.FC = () => {
     }
   }
 
-  const renderCell = (item: DataGridRowEntry, columnKey: string) => {
-    switch (columnKey) {
-      case "actions":
-        return (
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-8 w-8 p-0">
-                <span className="sr-only">Open menu</span>
-                <MoreHorizontal className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={() => handleView(item.getId())}>
-                <Eye className="mr-2 h-4 w-4" />
-                {t("common.actions.view")}
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => handleEdit(item.getId())}>
-                <Edit className="mr-2 h-4 w-4" />
-                {t("common.actions.edit")}
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => handleDelete(item.getId())} className="text-red-600">
-                <Trash2 className="mr-2 h-4 w-4" />
-                {t("common.actions.delete")}
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        )
+  const handleDispatch = (action: ACTION, id: string) => {
+    switch (action) {
+      case "view":
+        handleView(id)
+        break
+      case "edit":
+        handleEdit(id)
+        break
+      case "delete":
+        handleDelete(id)
+        break
       default:
-        return item.getTextFor(columnKey) || "N/A"
+        return
+    }
+  }
+
+  const view = useViewMode()
+  const actions = ["edit", "delete"] as ACTION[]
+
+  const renderCell = (item: DataGridRowEntry, column: DataGridColumnHeader) => {
+    if (view == "list") {
+      switch (column.key) {
+        case "actions":
+          return <ActionButtonGroup isLoading={isLoading} row={item} actions={actions} dispatch={handleDispatch} view={view} />
+        case "value":
+          return (
+            <div className="flex flex-col">
+              <span className="text-blue-700 font-semibold">{item.getTextFor("value")}</span>
+            </div>
+          )
+        case "dataType":
+          return (
+            <div className="flex flex-wrap gap-x-2 gap-y-1">
+              <div className="w-min">
+                <StatusBadge theme={BadgeStyles.BLUE} text={item.getTextFor("dataType") as string} />
+              </div>
+
+              {JSON.parse(item.getTextFor("isEncrypted") as string) && (
+                <div className="w-min">
+                  <StatusBadge theme={BadgeStyles.BLUE} text={t("encrypted")} />
+                </div>
+              )}
+              {JSON.parse(item.getTextFor("isSystemSetting") as string) && (
+                <div className="w-min">
+                  <StatusBadge theme={BadgeStyles.GREEN} text={t("system")} />
+                </div>
+              )}
+              {JSON.parse(item.getTextFor("isReadOnly") as string) && (
+                <div className="w-min">
+                  <StatusBadge theme={BadgeStyles.YELLOW} text={t("readonly")} />
+                </div>
+              )}
+            </div>
+          )
+        case "category":
+          return (
+            <div className="flex flex-col gap-y-1">
+              <span className="flex gap-x-1 xl:gap-x-2">
+                <span className="text-foreground/50">Cat:</span>
+                <span className="text-green-500 font-semibold"> {item.getTextFor("category")}</span>
+              </span>
+              <span className="flex justify-between gap-x-1">
+                <span className="text-foreground/50">Regex:</span>
+                <span className="text-blue-500"> {item.getTextFor("validationRegex")}</span>
+              </span>
+              <span className="flex justify-between gap-x-1">
+                <span className="text-foreground/50">Vals:</span>
+                <span className="text-orange-500 font-semibold"> {item.getTextFor("allowedValues")}</span>
+              </span>
+            </div>
+          )
+        default:
+          return item.getTextFor(column.key) || "N/A"
+      }
+    } else {
+      const rowItem = {
+        label: column.label,
+        value: item.getTextFor(column.key),
+        key: column.key,
+        isBadge: column.isBadge,
+        theme: column.badgeTheme,
+        shouldClick: column.shouldClick,
+      }
+      if (rowItem.key === "actions")
+        return (
+          <div className="flex flex-row justify-end px-4 pt-2 border-t">
+            {/* <span className="px-2 h-min text-sm font-semibold block min-w-14">{rowItem.label}</span> */}
+            <ActionButtonGroup isLoading={isLoading} row={item} actions={actions} dispatch={handleDispatch} view={view} />
+          </div>
+        )
+      else if (rowItem.key === "id") return <></>
+      else
+        return (
+          <DetailsCardItem
+            onClick={() => rowItem.shouldClick && handleDispatch("ROW_CLICK", item.getId())}
+            shouldClick={rowItem.shouldClick}
+            key={rowItem.key}
+            label={rowItem.label ?? ""}
+            value={`${rowItem.value || "N/A"}`}
+            isBadge={rowItem.isBadge}
+            theme={rowItem.theme}
+            className={`mx-3 border-b border-b-foreground/5`}
+          />
+        )
     }
   }
 
@@ -205,7 +242,7 @@ export const SettingDataGrid: React.FC = () => {
     : undefined
 
   return (
-    <div className="w-full max-w-full overflow-hidden">
+    <div className="w-full overflow-hidden">
       <DataGrid
         columnHeaders={columnHeaders}
         items={gridItems}
@@ -226,6 +263,8 @@ export const SettingDataGrid: React.FC = () => {
         hiddenColumns={[]}
         onColumnVisibilityChange={() => {}}
         bulkActions={bulkActions}
+        actions={actions}
+        dispatch={handleDispatch}
         renderCell={renderCell}
       />
     </div>

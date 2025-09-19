@@ -27,10 +27,8 @@ export function CountriesListPage() {
       header={
         <ListPageHeader
           title={t("countries.title")}
-          totalCountText={t("countries.totalCount", { count: totalItems })}
           addButtonText={t("countries.actions.add")}
-          breadcrumbs={[{ label: t("navigation.dashboard"), href: "/dashboard" }, { label: t("countries.title") }]}
-          totalItems={totalItems}
+          breadcrumbs={[{ label: t("menu.administration"), href: "/dashboard" }, { label: t("countries.title") }]}
           onCreate={handleCreate}
         />
       }

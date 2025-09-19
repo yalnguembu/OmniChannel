@@ -117,31 +117,33 @@ export const CurrencyEditForm: React.FC<CurrencyEditFormProps> = ({ currencyId, 
                 )}
               />
 
-              <FormField
-                control={form.control}
-                name="isBaseCurrency"
-                render={({ field }) => (
-                  <FormItem className="flex items-center">
-                    <FormControl>
-                      <Checkbox checked={field.value || false} onCheckedChange={field.onChange} />
-                    </FormControl>
-                    <FormLabel>{t("currencies.form.fields.isBaseCurrency")}</FormLabel>
-                  </FormItem>
-                )}
-              />
+              <div className="flex gap-x-4 flex-col md:flex-row">
+                <FormField
+                  control={form.control}
+                  name="isBaseCurrency"
+                  render={({ field }) => (
+                    <FormItem className="flex items-center">
+                      <FormControl>
+                        <Checkbox checked={field.value || false} onCheckedChange={field.onChange} />
+                      </FormControl>
+                      <FormLabel>{t("currencies.form.fields.isBaseCurrency")}</FormLabel>
+                    </FormItem>
+                  )}
+                />
 
-              <FormField
-                control={form.control}
-                name="isActive"
-                render={({ field }) => (
-                  <FormItem className="flex items-center">
-                    <FormControl>
-                      <Checkbox checked={field.value || false} onCheckedChange={field.onChange} />
-                    </FormControl>
-                    <FormLabel>{t("currencies.form.fields.isActive")}</FormLabel>
-                  </FormItem>
-                )}
-              />
+                <FormField
+                  control={form.control}
+                  name="isActive"
+                  render={({ field }) => (
+                    <FormItem className="flex items-center">
+                      <FormControl>
+                        <Checkbox checked={field.value || false} defaultChecked onCheckedChange={field.onChange} />
+                      </FormControl>
+                      <FormLabel>{t("currencies.form.fields.isActive")}</FormLabel>
+                    </FormItem>
+                  )}
+                />
+              </div>
             </div>
             <div className="flex justify-end space-x-4 pt-6">
               <Button type="button" variant="outline" onClick={onCancel} disabled={isLoading}>

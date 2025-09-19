@@ -1,4 +1,3 @@
-import { useEffect } from "react"
 import { useTranslation } from "react-i18next"
 import { useNavigate, useParams } from "@tanstack/react-router"
 import { StandardListPageLayout } from "@/shared/components/layouts/ListPageLayout"
@@ -12,7 +11,7 @@ export function EditCurrencyPage() {
   const navigate = useNavigate()
   const { t } = useTranslation()
   const { id } = useParams({ from: "/_protected/administration/currencies/$id/edit" })
-  const { selectedCurrency: data, updateMutation, getCurrencyQuery, isLoading } = useCurrency()
+  const { updateMutation, getCurrencyQuery, isLoading } = useCurrency()
 
   const handleSubmit = (data: UpdateCurrencyRequest) => {
     updateMutation.mutate(
@@ -25,11 +24,7 @@ export function EditCurrencyPage() {
     )
   }
 
-  useEffect(() => {
-    if (id) {
-      getCurrencyQuery(id)
-    }
-  }, [])
+  const { data: succesResponse } = getCurrencyQuery(id)
 
   const handleCancel = () => {
     navigate({ to: `/administration/currencies` })
@@ -43,17 +38,13 @@ export function EditCurrencyPage() {
     )
   }
 
-  if (!data) {
+  if (!succesResponse?.data) {
     return (
       <div className="container mx-auto py-6 text-center">
         <p>{t("currencies.form.edit.loadError")}</p>
       </div>
     )
   }
-
-  // if (isError && error) {
-  //     // toast.error(t(error))
-  //   }
 
   return (
     <StandardListPageLayout
@@ -63,7 +54,7 @@ export function EditCurrencyPage() {
           breadcrumbs={[{ label: t("navigation.dashboard"), href: "/dashboard" }, { label: t("currencies.title"), href: "/currency" }, { label: t("currencies.edit") }]}
         />
       }
-      content={<CurrencyEditForm currencyId={id} initialData={data} onSubmit={handleSubmit} onCancel={handleCancel} isLoading={false} />}
+      content={<CurrencyEditForm currencyId={id} initialData={succesResponse.data} onSubmit={handleSubmit} onCancel={handleCancel} isLoading={false} />}
     />
   )
 }

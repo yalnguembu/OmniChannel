@@ -45,7 +45,7 @@ export const SettingEditForm: React.FC<SettingEditFormProps> = ({ settingId, ini
       <CardContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 gap-6">
               <FormField
                 control={form.control}
                 name="value"

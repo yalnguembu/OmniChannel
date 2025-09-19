@@ -105,12 +105,12 @@ export const FeeTypeEditForm: React.FC<FeeTypeEditFormProps> = ({ feeTypeId, ini
                     <FormControl>
                       <Select onValueChange={(value) => field.onChange(value)} value={field.value ?? undefined}>
                         <SelectTrigger className="h-8 w-full">
-                          <SelectValue placeholder={t("feeTypes.form.transactionTypePlaceholder")} />
+                          <SelectValue defaultValue={field.value ?? ""} placeholder={t("feeTypes.form.transactionTypePlaceholder")} />
                         </SelectTrigger>
                         <SelectContent>
                           <SelectItem value="RECEIPT">{t("feeTypes.form.transactionType.receipt")}</SelectItem>
-                          <SelectItem value="WITHDRWAL">{t("feeTypes.form.transactionType.withdrawal")}</SelectItem>
-                          <SelectItem value="TRANSFER">{t("feeTypes.form.transactionType.transfer")}</SelectItem>
+                          <SelectItem value="WITHDRAWAL">{t("feeTypes.form.transactionType.withdrawal")}</SelectItem>
+                          <SelectItem value="FUND_TRANSFER">{t("feeTypes.form.transactionType.transfer")}</SelectItem>
                         </SelectContent>
                       </Select>
                     </FormControl>

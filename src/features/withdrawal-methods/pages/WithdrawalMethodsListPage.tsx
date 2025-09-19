@@ -6,22 +6,25 @@ import { SearchWithdrawalMethodRequest } from "@/shared/api/types.gen"
 import { zSearchWithdrawalMethodRequest } from "@/shared/api/zod.gen"
 import { WithdrawalMethodDataGrid } from "../components/WithdrawalMethodDataGrid"
 import { useWithdrawalMethod } from "../hooks/useWithdrawalMethod"
+import { useNavigate } from "@tanstack/react-router"
 
 export function WithdrawalMethodsListPage() {
   const { t } = useTranslation()
-  const { isLoading, totalItems, viewMode, setViewMode, refreshData, hasSelection, selectedRows, applyFilters, clearFilters } = useWithdrawalMethod()
+  const navigate = useNavigate()
 
-  const handleCreate = () => {}
+  const { isLoading, viewMode, setViewMode, refreshData, hasSelection, selectedRows, applyFilters, clearFilters } = useWithdrawalMethod()
+
+  const handleCreate = () => {
+    navigate({ to: `/administration/withdrawal-methods/add` })
+  }
 
   return (
     <StandardListPageLayout
       header={
         <ListPageHeader
           title={t("withdrawalMethods.title")}
-          totalCountText={t("withdrawalMethods.totalCount", { count: totalItems })}
           addButtonText={t("withdrawalMethods.actions.add")}
-          breadcrumbs={[{ label: t("navigation.dashboard"), href: "/dashboard" }, { label: t("withdrawalMethods.title") }]}
-          totalItems={totalItems}
+          breadcrumbs={[{ label: t("menu.administration"), href: "/dashboard" }, { label: t("withdrawalMethods.title") }]}
           onCreate={handleCreate}
         />
       }

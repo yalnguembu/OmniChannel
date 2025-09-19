@@ -11,7 +11,7 @@ import { useFeeType } from "../hooks/useFeeType"
 export function FeeTypesListPage() {
   const navigate = useNavigate()
   const { t } = useTranslation()
-  const { isLoading, totalItems, viewMode, setViewMode, refreshData, hasSelection, selectedRows, applyFilters, clearFilters } = useFeeType()
+  const { isLoading, viewMode, setViewMode, refreshData, hasSelection, selectedRows, applyFilters, clearFilters } = useFeeType()
 
   const handleCreate = () => {
     navigate({ to: `/administration/fee-types/add` })
@@ -22,10 +22,8 @@ export function FeeTypesListPage() {
       header={
         <ListPageHeader
           title={t("feeTypes.title")}
-          totalCountText={t("feeTypes.totalCount", { count: totalItems })}
           addButtonText={t("feeTypes.actions.add")}
-          breadcrumbs={[{ label: t("navigation.dashboard"), href: "/dashboard" }, { label: t("feeTypes.title") }]}
-          totalItems={totalItems}
+          breadcrumbs={[{ label: t("menu.administration"), href: "/dashboard" }, { label: t("feeTypes.title") }]}
           onCreate={handleCreate}
         />
       }

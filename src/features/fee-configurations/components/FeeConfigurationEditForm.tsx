@@ -101,7 +101,7 @@ export const FeeConfigurationEditForm: React.FC<FeeConfigurationEditFormProps> =
                 control={form.control}
                 name="feeTypeId"
                 render={({ field }) => (
-                  <FormItem>
+                  <FormItem className="w-full overflow-hidden">
                     <FormLabel>{t("feeConfigurations.form.fields.feeTypeId")}</FormLabel>
                     <FormControl>
                       <SearchDropdown

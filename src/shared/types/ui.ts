@@ -9,16 +9,7 @@ interface UIState {
   modalOpen: boolean
   menuState: MenuNode
   context: CONTEXT
-  setContext: (context: CONTEXT) => void
-  setThemeMode: (mode: ThemeMode) => void
-  toggleTheme: () => void
-  setLanguage: (lang: string) => void
-  setIsLoading: (loading: boolean) => void
-  toggleSidebar: () => void
-  setSidebarOpen: (open: boolean) => void
-  setModalOpen: (open: boolean) => void
-  updateMenuProperty: (path: string, data: Record<string, any>) => void
-  getMenuProperty: (path: string) => Record<string, any> | undefined
+  pageTitle: string
 }
 
 export type ThemeMode = "light" | "dark" | "system"
@@ -28,6 +19,14 @@ export type MenuNode = {
 }
 
 interface UIActions {
+  setContext: (context: CONTEXT) => void
+  setThemeMode: (mode: ThemeMode) => void
+  setLanguage: (lang: string) => void
+  setPageTitle: (lang: string) => void
+  setIsLoading: (loading: boolean) => void
+  setSidebarOpen: (open: boolean) => void
+  updateMenuProperty: (path: string, data: Record<string, any>) => void
+  getMenuProperty: (path: string) => Record<string, any> | undefined
   toggleTheme: () => void
   toggleSidebar: () => void
   setModalOpen: (open: boolean) => void

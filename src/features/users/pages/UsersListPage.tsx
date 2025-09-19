@@ -10,26 +10,15 @@ import { SystemUserCreateForm } from "../components/SystemUserCreateForm"
 import { useEffect, useState } from "react"
 import { Button } from "@/shared/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/shared/components/ui/dropdown-menu"
-import { Building, ChevronDown, Cog } from "lucide-react"
+import { Building, ChevronDown, Cog, Plus } from "lucide-react"
 import { CompanyUserCreateForm } from "../components/CompanyUserCreateForm"
 import { ModalWrapper } from "@/shared/components/ModalWrapper"
+import { UserStatisticCards } from "../components/UserStatisticCards"
 
 export function UsersListPage() {
   const { t } = useTranslation()
-  const {
-    isLoading,
-    totalItems,
-    viewMode,
-    setViewMode,
-    refreshData,
-    hasSelection,
-    selectedRows,
-    applyFilters,
-    clearFilters,
-    createSystemMutation,
-    createCompanyMutation,
-    searchUsers,
-  } = useUser()
+  const { isLoading, viewMode, setViewMode, refreshData, hasSelection, selectedRows, applyFilters, clearFilters, createSystemMutation, createCompanyMutation, searchUsers } =
+    useUser()
 
   const [showCreateSystemUserModal, setShowCreateSystemUserModal] = useState(false)
   const toggleShowCreateSystemUserModal = () => setShowCreateSystemUserModal((prev) => !prev)
@@ -64,14 +53,13 @@ export function UsersListPage() {
       header={
         <ListPageHeader
           title={t("users.title")}
-          totalCountText={t("users.totalCount", { count: totalItems })}
-          breadcrumbs={[{ label: t("navigation.dashboard"), href: "/dashboard" }, { label: t("users.title") }]}
-          totalItems={totalItems}
+          breadcrumbs={[{ label: t("menu.access-control"), href: "/dashboard" }, { label: t("users.title") }]}
           actions={
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button className="gap-x-2">
-                  <span>{t("users.actions.addTitle")}</span>
+                  <span className="hidden lg:inline">{t("users.actions.addTitle")}</span>
+                  <Plus className="h-4 w-4 lg:hidden" />
                   <ChevronDown className="h-4 w-4" />
                 </Button>
               </DropdownMenuTrigger>
@@ -89,6 +77,7 @@ export function UsersListPage() {
           }
         />
       }
+      statistic={<UserStatisticCards />}
       filter={
         <BaseFilter<SearchUserRequest>
           schema={zSearchUserRequest}

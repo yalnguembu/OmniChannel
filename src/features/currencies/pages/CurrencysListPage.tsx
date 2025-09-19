@@ -11,7 +11,7 @@ import { zSearchCurrencyRequest } from "@/shared/api/zod.gen"
 export function CurrencysListPage() {
   const navigate = useNavigate()
   const { t } = useTranslation()
-  const { isLoading, totalItems, viewMode, setViewMode, refreshData, hasSelection, selectedRows, applyFilters, clearFilters } = useCurrency()
+  const { isLoading, viewMode, setViewMode, refreshData, hasSelection, selectedRows, applyFilters, clearFilters } = useCurrency()
 
   const handleCreate = () => {
     navigate({ to: `/administration/currencies/add` })
@@ -22,10 +22,8 @@ export function CurrencysListPage() {
       header={
         <ListPageHeader
           title={t("currencies.title")}
-          totalCountText={t("currencies.totalCount", { count: totalItems })}
           addButtonText={t("currencies.actions.add")}
-          breadcrumbs={[{ label: t("navigation.dashboard"), href: "/dashboard" }, { label: t("currencies.title") }]}
-          totalItems={totalItems}
+          breadcrumbs={[{ label: t("menu.administration"), href: "/dashboard" }, { label: t("currencies.title") }]}
           onCreate={handleCreate}
         />
       }

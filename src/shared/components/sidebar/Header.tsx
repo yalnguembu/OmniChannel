@@ -4,13 +4,13 @@ import AppLogo from "@/assets/images/logo/icon.png"
 
 const Header: React.FC = () => {
   return (
-    <SidebarHeader>
-      <Link to="/" className="flex items-center gap-2 px-2 py-0">
+    <SidebarHeader className="group-data-[collapsible=icon]:p-0">
+      <Link to="/" className="flex items-center gap-2 py-0">
         <div>
-          <img src={AppLogo} title="FujiPay" className="size-8" />
+          <img src={AppLogo} title="FujiPay" className="size-7" />
         </div>
-        <div className="grid flex-1 text-left text-sm leading-tight">
-          <span className="truncate font-semibold text-primary text-xl uppercase">FujiPay</span>
+        <div className="grid flex-1 text-left text-sm leading-tight group-data-[collapsible=icon]:hidden">
+          <span className="truncate font-medium text-primary text-lg">FujiSat Pay</span>
         </div>
       </Link>
     </SidebarHeader>

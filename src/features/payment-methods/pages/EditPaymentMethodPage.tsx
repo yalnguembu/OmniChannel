@@ -52,8 +52,8 @@ export function EditPaymentMethodPage() {
         <CreatePageHeader
           title={t("paymentMethods.edit")}
           breadcrumbs={[
-            { label: t("navigation.dashboard"), href: "/dashboard" },
-            { label: t("paymentMethods.title"), href: "/paymentMethod" },
+            { label: t("menu.administration"), href: "/dashboard" },
+            { label: t("paymentMethods.title"), href: "/administration/payment-methods" },
             { label: t("paymentMethods.edit") },
           ]}
         />

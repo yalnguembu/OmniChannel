@@ -1,7 +1,7 @@
 import { useNavigate, useParams, useSearch } from "@tanstack/react-router"
 import { Button } from "@/shared/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/components/ui/card"
-import { Edit, ArrowLeft, Loader2, Home, DollarSign, AppWindow, Users, Settings, FileText, Link, Key, CheckCircle, Mail, PhoneCall, EyeClosed, Eye, CreditCard } from "lucide-react"
+import { Edit, ArrowLeft, Loader2, Home, DollarSign, AppWindow, Users, Settings, FileText, Link, Key, CheckCircle, Mail, PhoneCall, EyeClosed, Eye } from "lucide-react"
 import { useCompany } from "../hooks/useCompany"
 import { Label } from "@/shared/components/ui/label"
 import { ListPageHeader } from "@/shared/components/ListPageHeader"
@@ -180,94 +180,69 @@ export function CompanyDetailsPage() {
       }
       content={
         <div className="space-y-4">
-          <div className="grid justify-between gap-4 md:grid-cols-3">
-            <Card className="grid md:grid-cols-5 md:col-span-2 divide-x-4 divide-muted/20">
-              <div className="flex lg:col-span-3 px-4 gap-x-4">
+          <Card className="grid md:col-span-2 divide-x-4 divide-muted/20">
+            <div className="w-fu1/2 flex flex-col">
+              <CardHeader className="flex items-center border border-red-500">
                 <div className="w-24 h-24 rounded-lg block bg-muted">
                   <img src={/*companyDetails. || */ FujiPayLogo} alt="" className="w-full h-full object-contain object-center rounded-lg" />
                 </div>
-                <div className="w-max flex flex-col">
-                  <CardHeader className="px-0 pb-4">
-                    <CardTitle className="text-primary text-2xl">
-                      <span className="capitalize">{companyDetails.name}</span>
-                      {companyDetails.isVerified && (
-                        <Tooltip>
-                          <TooltipTrigger>
-                            <CheckCircle className="h-6 w-6 inline ml-3 text-green-500 stroke-2" />
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            <span>Verified Company</span>
-                          </TooltipContent>
-                        </Tooltip>
-                      )}
-                    </CardTitle>
+                <div>
+                  <CardTitle className="text-primary text-2xl mb-2">
+                    <span className="capitalize">{companyDetails.name}</span>
+                    {companyDetails.isVerified && (
+                      <Tooltip>
+                        <TooltipTrigger>
+                          <CheckCircle className="h-6 w-6 inline ml-3 text-green-500 stroke-2" />
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <span>Verified Company</span>
+                        </TooltipContent>
+                      </Tooltip>
+                    )}
+                  </CardTitle>
+                  <div className="2xl gap-2 grid grid-cols-2 text-gray-500">
                     <CardDescription className="text-blue-400 hover:text-blue-600 flex gap-x-2">
                       <a href={companyDetails.website || ""} className="link hover:underline" target="_blank" rel="noopener noreferrer">
                         {companyDetails.website || "https://fujisatpay.com"}
                       </a>
                       <Link className="h-4 w-4" />
                     </CardDescription>
-                  </CardHeader>
-                  <div className="gap-y 2xl gap-y-2 flex flex-col text-gray-500">
                     <DetailItem Icon={Home} value={companyDetails.address} />
-                    <DetailItem Icon={Mail} value={companyDetails.email} />
+                  </div>
+                  <div className="2xl gap-2 grid grid-cols-2 text-gray-500">
                     <DetailItem Icon={PhoneCall} value={companyDetails.phoneNumber} />
-                    <ApiKeyDetailItem Icon={Key} value={companyDetails.companieApiKey} />
+                    <DetailItem Icon={Mail} value={companyDetails.email} />
                   </div>
                 </div>
-              </div>
-              <CardContent className="px-0 mt-4 lg:col-span-2 pr-4 space-y-4">
-                <div className="grid grid-cols-2 gap-x-2 divide-x border-b-2 border-b-muted/20 pb-4 items-center">
-                  <div className="pl-2">
-                    <Label className="font-semibold text-sm text-muted-foreground">Size</Label>
-                    <div className="text-xs">{companyDetails.companySize}</div>
-                  </div>
-                  <div className="pl-2">
-                    <Label className="font-semibold text-sm text-muted-foreground">Type</Label>
-                    <div className="text-xs">{companyDetails.companyType}</div>
-                  </div>
-                </div>
-                <div className="grid grid-cols-2 gap-x-2 divide-x border-b-2 border-b-muted/20 pb-4 items-center">
-                  <div>
-                    <Label className="font-semibold text-sm text-muted-foreground">NUI</Label>
-                    <div className="text-xs">{companyDetails.taxNumber}</div>
-                  </div>
-                  <div>
-                    <Label className="font-semibold text-sm text-muted-foreground">RCCM</Label>
-                    <div className="text-xs">{companyDetails.businessRegistrationNumber}</div>
-                  </div>
-                </div>
-                <div className="grid grid-cols-2 gap-x-2 divide-x pt-4 items-center">
-                  <div className="pl-2">
-                    <Label className="font-semibold text-sm text-muted-foreground">Represent</Label>
-                    <div className="text-xs">{companyDetails.contactPerson}</div>
-                  </div>
-                  <div className="pl-2">
-                    <Label className="font-semibold text-sm text-muted-foreground">Phone</Label>
-                    <div className="text-xs">{companyDetails.contactPhone}</div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader>
-                <CardTitle className="font-semibold text-lg">Balance</CardTitle>
-                <CardContent className="pl-0 flex flex-col gap-y-2">
-                  {Array.from({ length: 3 }).map((_, index) => (
-                    <div key={index} className="rounded-lg px-2 flex-col justify-between">
-                      <div className="text-muted text-sm">Total Balance</div>
-                      <div className="flex justify-between item-center mt-2">
-                        <div className="text-lg font-semibold">
-                          <CreditCard className="inline h-5 w-5 mr-1" />
-                          {/* {companyDetails.totalBalance} */}100.000 XAF
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </CardContent>
               </CardHeader>
-            </Card>
-          </div>
+            </div>
+            <CardContent className="flex gap-2 px-0 mt-4 pr-4 space-y-4">
+              <div className="pl-2">
+                <Label className="font-semibold text-sm text-muted-foreground">Size</Label>
+                <div className="text-xs">{companyDetails.companySize}</div>
+              </div>
+              <div className="pl-2">
+                <Label className="font-semibold text-sm text-muted-foreground">Type</Label>
+                <div className="text-xs">{companyDetails.companyType}</div>
+              </div>
+              <div>
+                <Label className="font-semibold text-sm text-muted-foreground">NUI</Label>
+                <div className="text-xs">{companyDetails.taxNumber}</div>
+              </div>
+              <div>
+                <Label className="font-semibold text-sm text-muted-foreground">RCCM</Label>
+                <div className="text-xs">{companyDetails.businessRegistrationNumber}</div>
+              </div>
+              <div className="pl-2">
+                <Label className="font-semibold text-sm text-muted-foreground">Represent</Label>
+                <div className="text-xs">{companyDetails.contactPerson}</div>
+              </div>
+              <div className="pl-2">
+                <Label className="font-semibold text-sm text-muted-foreground">Phone</Label>
+                <div className="text-xs">{companyDetails.contactPhone}</div>
+              </div>
+            </CardContent>
+          </Card>
 
           <Tabs value={activeTab} onValueChange={handleTabChange} defaultValue={activeTab} className="w-full">
             <div className="sticky -top-4 z-20 pt-3 rounded bg-background">

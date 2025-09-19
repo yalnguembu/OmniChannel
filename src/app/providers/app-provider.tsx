@@ -1,8 +1,19 @@
 import { QueryProvider } from "./query-provider"
 import { I18nProvider } from "./i18n-provider"
 import { RouterProviderWrapper } from "./router-provider"
+import { setupAxiosInterceptors } from "@/shared/lib/api/config"
+import { useEffect, useState } from "react"
 
 export function AppProvider() {
+  const [isAppInitiated, setIsAppIniated] = useState<boolean>(false)
+
+  useEffect(() => {
+    if (isAppInitiated) return
+
+    setupAxiosInterceptors()
+    setIsAppIniated(true)
+  }, [])
+
   return (
     <QueryProvider>
       <I18nProvider>

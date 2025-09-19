@@ -1,7 +1,7 @@
 import { useNavigate } from "@tanstack/react-router"
 import { useTranslation } from "react-i18next"
 import { StandardListPageLayout } from "@/shared/components/layouts/ListPageLayout"
-import { ListPageHeader } from "../../../shared/components/ListPageHeader"
+import { ListPageHeader } from "@/shared/components/ListPageHeader"
 import { BaseFilter } from "@/shared/components/filter"
 import { SearchSettingRequest } from "@/shared/api/types.gen"
 import { zSearchSettingRequest } from "@/shared/api/zod.gen"
@@ -11,7 +11,7 @@ import { useSetting } from "../hooks/useSetting"
 export function SettingsListPage() {
   const navigate = useNavigate()
   const { t } = useTranslation()
-  const { isLoading, totalItems, viewMode, setViewMode, refreshData, hasSelection, selectedRows, applyFilters, clearFilters } = useSetting()
+  const { isLoading, viewMode, setViewMode, refreshData, hasSelection, selectedRows, applyFilters, clearFilters } = useSetting()
 
   const handleCreate = () => {
     navigate({ to: `/administration/settings/add` })
@@ -22,10 +22,8 @@ export function SettingsListPage() {
       header={
         <ListPageHeader
           title={t("settings.title")}
-          totalCountText={t("settings.totalCount", { count: totalItems })}
           addButtonText={t("settings.actions.add")}
-          breadcrumbs={[{ label: t("navigation.dashboard"), href: "/dashboard" }, { label: t("settings.title") }]}
-          totalItems={totalItems}
+          breadcrumbs={[{ label: t("menu.administration"), href: "/dashboard" }, { label: t("settings.title") }]}
           onCreate={handleCreate}
         />
       }

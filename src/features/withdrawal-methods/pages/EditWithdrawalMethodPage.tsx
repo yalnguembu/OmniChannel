@@ -58,8 +58,8 @@ export function EditWithdrawalMethodPage() {
         <CreatePageHeader
           title={t("withdrawalMethod.edit")}
           breadcrumbs={[
-            { label: t("navigation.dashboard"), href: "/dashboard" },
-            { label: t("withdrawalMethod.title"), href: "/withdrawalMethod" },
+            { label: t("menu.administration"), href: "/dashboard" },
+            { label: t("withdrawalMethod.title"), href: "/administration/withdrawal-methods" },
             { label: t("withdrawalMethod.edit") },
           ]}
         />

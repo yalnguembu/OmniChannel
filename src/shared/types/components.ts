@@ -11,10 +11,8 @@ export interface CreatePageHeaderProps {
 
 export interface ListPageHeaderProps {
   title: string
-  totalCountText?: string
   addButtonText?: string
-  breadcrumbs: BreadcrumbItem[]
-  totalItems?: number
+  breadcrumbs?: BreadcrumbItem[]
   onCreate?: () => void
   actions?: React.ReactNode
 }

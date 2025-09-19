@@ -1,4 +1,4 @@
-import { BadgeCheck, Bell, ChevronRight, ChevronsUpDown, GalleryVerticalEnd, LogOut, Settings, Wheat } from "lucide-react"
+import { BadgeCheck, Bell, ChevronRight, GalleryVerticalEnd, LogOut, Settings, Wheat } from "lucide-react"
 
 import { Avatar, AvatarFallback } from "@/shared/components/ui/avatar"
 import {
@@ -31,6 +31,11 @@ export function UserDropdown() {
     navigate({ to: `/` })
   }
 
+  const avatar = user?.fullName
+    .split(" ")
+    .map((user) => user.at(0))
+    ?.join("")
+    .toLocaleUpperCase()
   return (
     <SidebarMenu>
       <SidebarMenuItem>
@@ -39,21 +44,21 @@ export function UserDropdown() {
             <SidebarMenuButton size="lg" className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground">
               <Avatar className="h-8 w-8 rounded-lg">
                 {/* <AvatarImage src={user?.photo ?? ""} alt={user?.fullName} /> */}
-                <AvatarFallback className="rounded-lg">US</AvatarFallback>
+                <AvatarFallback className="rounded-full text-secondary">{avatar}</AvatarFallback>
               </Avatar>
-              <div className="grid flex-1 text-left text-sm leading-tight">
+              <div className="hidden lg:grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-medium">{user?.fullName}</span>
-                <span className="truncate text-xs">{user?.email}</span>
+                {/* <span className="truncate text-xs">{user?.email}</span> */}
               </div>
-              <ChevronsUpDown className="ml-auto size-4" />
+              <ChevronRight className="ml-auto size-4 rotate-90" />
             </SidebarMenuButton>
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg ml-2" side={isMobile ? "bottom" : "right"} align="end" sideOffset={4}>
+          <DropdownMenuContent className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg ml-2" side="bottom" align="end" sideOffset={4}>
             <DropdownMenuLabel className="p-0 font-normal">
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                 <Avatar className="h-8 w-8 rounded-lg">
                   {/* <AvatarImage src={user?.photo ?? ""} alt={user?.fullName} /> */}
-                  <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+                  <AvatarFallback className="rounded-lg">{avatar}</AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-medium">{user?.fullName}</span>
@@ -66,7 +71,7 @@ export function UserDropdown() {
               <ThemeModeToggle size="default" />
             </DropdownMenuItem>
             <DropdownMenuItem asChild>
-              <LanguageToggle />
+              <LanguageToggle variant="expanded" direction="right" />
             </DropdownMenuItem>
             <DropdownMenuItem asChild>
               <DropdownMenu>
@@ -74,7 +79,7 @@ export function UserDropdown() {
                   <Button
                     variant="outline"
                     size="lg"
-                    className="shadow-none h-12 data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground justify-between w-full"
+                    className="shadow-none h-12 data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground justify-between w-full border-transparent"
                   >
                     <GalleryVerticalEnd className="ml-auto size-5" />
                     <div className="grid w-full gap-y-1 text-left leading-tight">
