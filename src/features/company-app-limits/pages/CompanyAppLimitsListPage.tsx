@@ -12,7 +12,7 @@ export function CompanyAppLimitsListPage() {
   const navigate = useNavigate()
   const { t } = useTranslation()
 
-  const { totalItems, applyFilters, clearFilters, viewMode, setViewMode, refreshData, isLoading, hasSelection, selectedRows } = useCompanyAppLimit()
+  const { applyFilters, clearFilters, viewMode, setViewMode, refreshData, isLoading, hasSelection, selectedRows } = useCompanyAppLimit()
 
   const handleCreate = () => {
     navigate({ to: `/administration/company-app-limits/add` })
@@ -23,10 +23,8 @@ export function CompanyAppLimitsListPage() {
       header={
         <ListPageHeader
           title={t("companyAppLimits.title")}
-          totalCountText={t("companyAppLimits.totalCount", { count: totalItems })}
           addButtonText={t("companyAppLimits.actions.add")}
           breadcrumbs={[{ label: t("navigation.dashboard"), href: "/dashboard" }, { label: t("companyAppLimits.title") }]}
-          totalItems={totalItems}
           onCreate={handleCreate}
         />
       }

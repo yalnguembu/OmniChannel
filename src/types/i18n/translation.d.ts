@@ -1,2488 +1,2603 @@
 export default {
-  "about": {
-    "cta": "Join the FujiPay revolution. Contact our team today to learn more.",
-    "storyMission": {
-      "content": "FujiPay is the result of the expertise and vision of Graphics System SA, a Cameroonian technology company with a mission to revolutionize mobile payment management in Africa. With our deep knowledge of the local market and business challenges, we have developed a robust, secure platform that complies with international standards.",
-      "title": "Our Story & Mission"
-    },
-    "title": "About FujiPay: Your Strategic Partner in Mobile Payment Solutions in Cameroon",
-    "values": {
-      "title": "Our Core Values"
-    },
-    "vision": {
-      "content": "To become the undisputed leader in mobile payment aggregation in Africa, actively contributing to financial inclusion and digital transformation of businesses.",
-      "title": "Our Vision"
-    }
-  },
-  "accessDenied": "Access denied",
-  "allowedips": {
-    "headers": {
-      "applicationId": "Application ID",
-      "applicationName": "Application Name",
-      "applicationStatus": "Application Status",
-      "createdAt": "Created At",
-      "ipAddress": "IP Address"
-    }
-  },
-  "allowedIps": {
-    "actions": {
-      "add": "Add Allowed IP",
-      "delete": "Delete",
-      "edit": "Edit",
-      "more": "More Actions",
-      "view": "View"
-    },
-    "bulk": {
-      "deleteError": "Error deleting selected IPs.",
-      "deleteReason": "Reason for bulk deletion",
-      "partialError_one": "A partial error occurred.",
-      "partialError_other": "{{count}} partial errors occurred."
-    },
-    "details": {
-      "title": "Allowed IP Details"
-    },
-    "form": {
-      "applicationIdLabel": "Application",
-      "applicationIdPlaceholder": "Select an application",
-      "create": {
-        "description": "Add a new allowed IP address.",
-        "title": "Create Allowed IP"
-      },
-      "edit": {
-        "description": "Update the details for this allowed IP address.",
-        "submit": "Save Changes",
-        "title": "Edit Allowed IP"
-      },
-      "ipAddressLabel": "IP Address",
-      "ipAddressPlaceholder": "Enter IP address"
-    },
-    "messages": {
-      "create": {
-        "error": "Failed to create allowed IP.",
-        "success": "Allowed IP created successfully."
-      },
-      "delete": {
-        "error": "Failed to delete allowed IP.",
-        "success": "Allowed IP deleted successfully.",
-        "success_one": "1 allowed IP deleted successfully.",
-        "success_other": "{{count}} allowed IPs deleted successfully."
-      },
-      "noData": "No allowed IPs found.",
-      "search": {
-        "error": "Failed to search allowed IPs."
-      },
-      "update": {
-        "error": "Failed to update allowed IP.",
-        "success": "Allowed IP updated successfully."
-      }
-    },
-    "title": "Allowed IPs",
-    "totalCount_one": "1 allowed IP",
-    "totalCount_other": "{{count}} allowed IPs"
-  },
-  "applications": {
-    "actions": {
-      "add": "Add Application",
-      "delete": "Delete",
-      "edit": "Edit",
-      "more": "More Actions",
-      "view": "View"
-    },
-    "bulk": {
-      "delete_one": "Delete this application?",
-      "delete_other": "Delete these applications?",
-      "deleteConfirm_one": "Are you sure you want to delete this application?",
-      "deleteConfirm_other": "Are you sure you want to delete these {{count}} applications?",
-      "deleteError": "Error deleting applications.",
-      "deleteReason": "Reason for bulk deletion",
-      "deleting": "Deleting...",
-      "partialError_one": "A partial error occurred.",
-      "partialError_other": "{{count}} partial errors occurred."
-    },
-    "create": "Create Application",
-    "details": "Application Details",
-    "edit": "Edit Application",
-    "form": {
-      "companyIdLabel": "Company",
-      "companyIdPlaceholder": "Select a company",
-      "create": {
-        "description": "Add a new application.",
-        "submit": "Create",
-        "title": "Create Application"
-      },
-      "descriptionLabel": "Description",
-      "descriptionPlaceholder": "Enter description",
-      "edit": {
-        "description": "Update the application details.",
-        "loadError": "Failed to load application.",
-        "submit": "Save Changes",
-        "title": "Edit Application"
-      },
-      "nameLabel": "Name",
-      "namePlaceholder": "Enter name"
-    },
-    "headers": {
-      "companyName": "Company Name",
-      "createdAt": "Created At",
-      "description": "Description",
-      "environment": "Environment",
-      "name": "Name",
-      "status": "Status"
-    },
-    "messages": {
-      "create": {
-        "error": "Failed to create application.",
-        "success": "Application created successfully."
-      },
-      "delete": {
-        "confirm": "Are you sure?",
-        "error": "Failed to delete application.",
-        "success": "Application deleted successfully.",
-        "success_one": "1 application deleted.",
-        "success_other": "{{count}} applications deleted."
-      },
-      "noData": "No applications found.",
-      "search": {
-        "error": "Failed to search applications."
-      },
-      "update": {
-        "error": "Failed to update application.",
-        "success": "Application updated successfully."
-      }
-    },
-    "title": "Applications",
-    "totalCount_one": "1 application",
-    "totalCount_other": "{{count}} applications"
-  },
-  "auditlogs": {
-    "headers": {
-      "action": "Action",
-      "changedColumn": "Changed Column",
-      "changeReason": "Change Reason",
-      "companyEmail": "Company Email",
-      "companyId": "Company ID",
-      "companyName": "Company Name",
-      "companyPhoneNumber": "Company Phone Number",
-      "companyStatus": "Company Status",
-      "createdAt": "Created At",
-      "entityDisplayName": "Entity Display Name",
-      "entityId": "Entity ID",
-      "entityName": "Entity Name",
-      "entityType": "Entity Type",
-      "ipAddress": "IP Address",
-      "newValues": "New Values",
-      "oldValues": "Old Values",
-      "riskLevel": "Risk Level",
-      "userAgent": "User Agent",
-      "userEmail": "User Email",
-      "userFirstName": "User First Name",
-      "userId": "User ID",
-      "userLastName": "User Last Name",
-      "userPhoneNumber": "User Phone Number",
-      "userStatus": "User Status"
-    }
-  },
-  "auditLogs": {
-    "actions": {
-      "add": "Add Log",
-      "more": "More Actions",
-      "view": "View"
-    },
-    "bulk": {
-      "deleteError": "Error deleting logs.",
-      "deleteReason": "Reason for deletion",
-      "partialError_one": "A partial error occurred.",
-      "partialError_other": "{{count}} partial errors occurred."
-    },
-    "details": {
-      "title": "Audit Log Details"
-    },
-    "messages": {
-      "create": {
-        "error": "Failed to create log.",
-        "success": "Log created successfully."
-      },
-      "delete": {
-        "error": "Failed to delete log.",
-        "success": "Log deleted successfully.",
-        "success_one": "1 log deleted.",
-        "success_other": "{{count}} logs deleted."
-      },
-      "noData": "No audit logs found.",
-      "search": {
-        "error": "Search failed."
-      },
-      "update": {
-        "error": "Update failed.",
-        "success": "Update successful."
-      }
-    },
-    "title": "Audit Logs",
-    "totalCount_one": "1 log",
-    "totalCount_other": "{{count}} logs"
-  },
-  "auth": {
-    "login": {
-      "description": "Log in by entering your credentials.",
-      "email": "Email",
-      "emailPlaceholder": "Enter your email",
-      "password": "Password",
-      "passwordPlaceholder": "••••••••",
-      "signIn": "Sign In",
-      "title": "Sign in to your account"
-    }
-  },
-  "balancesreadmodels": {
-    "headers": {
-      "availableBalance": "Available Balance",
-      "balanceType": "Balance Type",
-      "balanceTypeCode": "Balance Type Code",
-      "balanceTypeName": "Balance Type Name",
-      "createdAt": "Created At",
-      "createdByEmail": "Created By (Email)",
-      "createdByFirstName": "Created By (First Name)",
-      "createdByLastName": "Created By (Last Name)",
-      "createdByPhoneNumber": "Created By (Phone)",
-      "createdByStatus": "Created By (Status)",
-      "currency": "Currency",
-      "currencyCode": "Currency Code",
-      "currencyName": "Currency Name",
-      "currencySymbol": "Currency Symbol",
-      "currentBalance": "Current Balance",
-      "currentVersion": "Current Version",
-      "lastCreditDate": "Last Credit Date",
-      "lastDebitDate": "Last Debit Date",
-      "lastReconciliationBy": "Last Reconciliation By",
-      "lastReconciliationByEmail": "Last Rec. By (Email)",
-      "lastReconciliationByFirstName": "Last Rec. By (First Name)",
-      "lastReconciliationByLastName": "Last Rec. By (Last Name)",
-      "lastReconciliationByPhoneNumber": "Last Rec. By (Phone)",
-      "lastReconciliationByStatus": "Last Rec. By (Status)",
-      "lastReconciliationDate": "Last Reconciliation Date",
-      "ownerId": "Owner ID",
-      "ownerName": "Owner Name",
-      "ownerType": "Owner Type",
-      "paymentMethodCode": "Payment Method Code",
-      "paymentMethodId": "Payment Method ID",
-      "paymentMethodName": "Payment Method Name",
-      "reconciliationNotes": "Reconciliation Notes",
-      "reconciliationStatus": "Reconciliation Status",
-      "reservedBalance": "Reserved Balance",
-      "totalCredits": "Total Credits",
-      "totalDebits": "Total Debits",
-      "transactionCount": "Transaction Count",
-      "updatedByEmail": "Updated By (Email)",
-      "updatedByFirstName": "Updated By (First Name)",
-      "updatedByLastName": "Updated By (Last Name)",
-      "updatedByPhoneNumber": "Updated By (Phone)",
-      "updatedByStatus": "Updated By (Status)"
-    }
-  },
-  "balancesReadModels": {
-    "actions": {
-      "add": "Add Balance",
-      "delete": "Delete",
-      "edit": "Edit",
-      "more": "More Actions",
-      "view": "View"
-    },
-    "bulk": {
-      "delete_one": "Delete this balance?",
-      "delete_other": "Delete these balances?",
-      "deleteConfirm_one": "Are you sure you want to delete this balance?",
-      "deleteConfirm_other": "Are you sure you want to delete these {{count}} balances?",
-      "deleteError": "Error deleting balances.",
-      "deleteReason": "Reason for deletion",
-      "deleting": "Deleting...",
-      "partialError_one": "A partial error occurred.",
-      "partialError_other": "{{count}} partial errors occurred."
-    },
-    "messages": {
-      "create": {
-        "error": "Failed to create balance.",
-        "success": "Balance created successfully."
-      },
-      "delete": {
-        "confirm": "Are you sure?",
-        "error": "Failed to delete balance.",
-        "success": "Balance deleted successfully.",
-        "success_one": "1 balance deleted.",
-        "success_other": "{{count}} balances deleted."
-      },
-      "noData": "No balances found.",
-      "search": {
-        "error": "Search failed."
-      },
-      "update": {
-        "error": "Update failed.",
-        "success": "Update successful."
-      }
-    },
-    "title": "Balances",
-    "totalCount_one": "1 balance",
-    "totalCount_other": "{{count}} balances"
-  },
-  "blockedIp": {
-    "actions": {
-      "add": "Add Blocked IP",
-      "delete": "Delete",
-      "edit": "Edit",
-      "more": "More Actions",
-      "view": "View"
-    },
-    "bulk": {
-      "deleteError": "Error deleting IPs.",
-      "deleteReason": "Reason for deletion",
-      "partialError_one": "A partial error occurred.",
-      "partialError_other": "{{count}} partial errors occurred."
-    },
-    "details": {
-      "title": "Blocked IP Details"
-    },
-    "form": {
-      "create": {
-        "description": "Add a new IP to block.",
-        "submit": "Create",
-        "title": "Block IP"
-      },
-      "edit": {
-        "submit": "Save Changes"
-      }
-    },
-    "messages": {
-      "create": {
-        "error": "Failed to block IP.",
-        "success": "IP blocked successfully."
-      },
-      "delete": {
-        "confirm": "Are you sure?",
-        "error": "Unblock failed.",
-        "success": "Unblock successful.",
-        "success_one": "_success",
-        "success_other": "_success"
-      },
-      "noData": "No blocked IPs found.",
-      "search": {
-        "error": "Search failed."
-      },
-      "update": {
-        "error": "Update failed.",
-        "success": "Update successful."
-      }
-    },
-    "title": "Blocked IPs",
-    "totalCount_one": "1 blocked IP",
-    "totalCount_other": "{{count}} blocked IPs"
-  },
-  "blockedips": {
-    "headers": {
-      "applicationId": "Application ID",
-      "applicationName": "Application Name",
-      "applicationStatus": "Application Status",
-      "createdAt": "Created At",
-      "ipAddress": "IP Address",
-      "reason": "Reason"
-    }
-  },
-  "blockedIps": {
-    "form": {
-      "applicationIdLabel": "Application",
-      "applicationIdPlaceholder": "Select an application",
-      "edit": {
-        "description": "Update the details of this blocked IP.",
-        "title": "Edit Blocked IP"
-      },
-      "ipdAdressLabel": "IP Address",
-      "ipdAdressPlaceholder": "Enter IP address",
-      "reasonLabel": "Reason",
-      "reasonPlaceholder": "Enter reason"
-    }
-  },
-  "common": {
-    "actions": {
-      "delete": "Delete",
-      "edit": "Edit",
-      "more": "More Actions",
-      "view": "View"
-    },
-    "cancel": "Cancel",
-    "dataGrid": {
-      "items": "Items",
-      "total": "Total"
-    },
-    "filter": {
-      "actions": {
-        "clear": "_clear",
-        "export": "_export",
-        "filter": "Filter",
-        "import": "_import",
-        "more": "_more",
-        "refresh": "Refresh",
-        "reset": "Reset"
-      },
-      "selection": {
-        "count_one": "1 selected",
-        "count_other": "{{count}} selected"
-      },
-      "view": {
-        "grid": "_grid",
-        "list": "_list"
-      }
-    },
-    "form": {
-      "valueLabel": "Value"
-    }
-  },
-  "companies": {
-    "actions": {
-      "add": "Add Company",
-      "delete": "Delete Company",
-      "edit": "Edit Company",
-      "more": "More Actions",
-      "view": "View Company"
-    },
-    "bulk": {
-      "delete_one": "Delete this company?",
-      "delete_other": "Delete these companies?",
-      "deleteConfirm_one": "Are you sure you want to delete this company?",
-      "deleteConfirm_other": "Are you sure you want to delete these {{count}} companies?",
-      "deleteError": "Error during deletion.",
-      "deleteReason": "Reason for deletion",
-      "deleting": "Deleting...",
-      "partialError_one": "A partial error occurred.",
-      "partialError_other": "{{count}} partial errors occurred."
-    },
-    "create": "Create Company",
-    "details": "Company Details",
-    "edit": "Edit Company",
-    "fields": {
-      "address": "Address",
-      "businessRegistrationNumber": "Business Registration Number",
-      "companySize": "Size",
-      "companyType": "Type",
-      "contactPerson": "Contact Person",
-      "countryCode": "Country Code",
-      "createdAt": "Creation Date",
-      "email": "Email",
-      "isVerified": "Verified",
-      "name": "Name",
-      "phoneNumber": "Phone Number",
-      "status": "Status",
-      "taxNumber": "Tax Number"
-    },
-    "form": {
-      "adressLabel": "Address",
-      "adressPlaceholder": "Enter address",
-      "businessRegistrationNumberLabel": "RCCM Number",
-      "businessRegistrationNumberPlaceholder": "Enter RCCM number",
-      "companySizeLabel": "Company Size",
-      "companySizePlaceholder": "Select size",
-      "companyTypeLabel": "Company Type",
-      "companyTypePlaceholder": "Select type",
-      "conctactPhoneLabel": "Contact Phone",
-      "contactPersonLabel": "Contact Person",
-      "contactPersonPlaceholder": "Enter contact person",
-      "contactPhonePlaceholder": "Enter contact phone",
-      "countryIdLabel": "Country",
-      "countryIdPlaceholder": "Select a country",
-      "create": {
-        "description": "Add a new company.",
-        "submit": "Create"
-      },
-      "edit": {
-        "description": "Update company details.",
-        "loadError": "Failed to load company.",
-        "submit": "Save Changes",
-        "title": "Edit Company"
-      },
-      "emailLabel": "Email",
-      "emailPlaceholder": "Enter email",
-      "nameLabel": "Company Name",
-      "namePlaceholder": "Enter company name",
-      "phoneNumberLabel": "Phone Number",
-      "phoneNumberPlaceholder": "Enter phone number",
-      "statusLabel": "Status",
-      "statusPlaceholder": "Select a status",
-      "taxNumberLabel": "Tax Number",
-      "taxNumberPlaceholder": "Enter tax number",
-      "websiteLabel": "Website",
-      "websitePlaceholder": "Enter website URL"
-    },
-    "headers": {
-      "contactPhone": "Contact Phone",
-      "countryId": "Country ID",
-      "countryName": "Country Name",
-      "website": "Website"
-    },
-    "messages": {
-      "create": {
-        "error": "Failed to create company.",
-        "success": "Company created successfully."
-      },
-      "delete": {
-        "confirm": "Are you sure?",
-        "error": "Deletion failed.",
-        "success": "Deletion successful.",
-        "success_one": "1 company deleted.",
-        "success_other": "{{count}} companies deleted."
-      },
-      "dropdown": {
-        "error": "Failed to load companies."
-      },
-      "fetch": {
-        "error": "Failed to fetch companies."
-      },
-      "noData": "No companies found.",
-      "search": {
-        "error": "Search failed."
-      },
-      "update": {
-        "error": "Update failed.",
-        "success": "Update successful."
-      }
-    },
-    "tabs": {
-      "settings": {
-        "description": "Manage company settings."
-      }
-    },
-    "title": "Companies",
-    "totalCount_one": "1 company",
-    "totalCount_other": "{{count}} companies"
-  },
-  "company": {
-    "messages": {
-      "dropdown": {
-        "error": "Failed to load companies."
-      }
-    }
-  },
-  "companyapplimits": {
-    "headers": {
-      "apiRequestsLimit": "API Requests Limit",
-      "applicationId": "Application ID",
-      "applicationName": "Application Name",
-      "applicationStatus": "Application Status",
-      "companyEmail": "Company Email",
-      "companyId": "Company ID",
-      "companyName": "Company Name",
-      "companyPhoneNumber": "Company Phone Number",
-      "companyStatus": "Company Status",
-      "createdAt": "Created At",
-      "defaultDailyLimit": "Default Daily Limit",
-      "defaultMonthlyLimit": "Default Monthly Limit",
-      "defaultSingleTransactionLimit": "Default Single Transaction Limit"
-    }
-  },
-  "companyAppLimits": {
-    "actions": {
-      "add": "Add Limit",
-      "delete": "Delete",
-      "edit": "Edit",
-      "more": "More Actions",
-      "view": "View"
-    },
-    "bulk": {
-      "delete_one": "Delete this limit?",
-      "delete_other": "Delete these limits?",
-      "deleteConfirm_one": "Are you sure you want to delete this limit?",
-      "deleteConfirm_other": "Are you sure you want to delete these {{count}} limits?",
-      "deleteError": "Error during deletion.",
-      "deleteReason": "Reason for deletion",
-      "deleting": "Deleting...",
-      "partialError_one": "A partial error occurred.",
-      "partialError_other": "{{count}} partial errors occurred."
-    },
-    "create": "Create Company App Limit",
-    "edit": "Edit Company App Limit",
-    "form": {
-      "apiRequestsLimitLabel": "API Requests Limit",
-      "apiRequestsLimitPlaceholder": "Enter API requests limit",
-      "applicationIdLabel": "Application",
-      "applicationIdPlaceholder": "Select an application",
-      "companyIdLabel": "Company",
-      "companyIdPlaceholder": "Select a company",
-      "create": {
-        "description": "Add a new app limit for a company.",
-        "submit": "Create",
-        "title": "Create Company App Limit"
-      },
-      "defaultDailyLimitLabel": "Default Daily Limit",
-      "defaultDailyLimitPlaceholder": "Enter default daily limit",
-      "edit": {
-        "description": "Update the details of this company app limit.",
-        "loadError": "Failed to load limit.",
-        "submit": "Save Changes",
-        "title": "Edit Company App Limit"
-      }
-    },
-    "messages": {
-      "create": {
-        "error": "Creation failed.",
-        "success": "Creation successful."
-      },
-      "delete": {
-        "confirm": "Are you sure you want to delete this limit?",
-        "error": "Deletion failed.",
-        "success": "Deletion successful.",
-        "success_one": "1 limit deleted.",
-        "success_other": "{{count}} limits deleted."
-      },
-      "noData": "No limits found.",
-      "search": {
-        "error": "Search failed."
-      },
-      "update": {
-        "error": "Update failed.",
-        "success": "Update successful."
-      }
-    },
-    "title": "Company App Limits",
-    "totalCount_one": "1 limit",
-    "totalCount_other": "{{count}} limits"
-  },
-  "contact": {
-    "contactInfo": {
-      "address": "Address",
-      "email": "Commercial Email",
-      "hours": "Office Hours: Monday - Friday, 8:00 AM - 5:00 PM (WAT - West Africa Time)",
-      "phone": "Phone",
-      "title": "Direct Contact Information"
-    },
-    "form": {
-      "companyName": "Company Name",
-      "companyType": "Company Type",
-      "consent": "I have read and accept the Privacy Policy and Terms of Service.",
-      "email": "Professional Email",
-      "fullName": "Full Name",
-      "message": "Your Message",
-      "phone": "Phone Number",
-      "subject": "Subject of your message",
-      "submit": "Send your Request"
-    },
-    "intro": "Do you have questions, need a demo, or want to get a FujiPay account? Our sales team is ready to assist you. Please note that opening an account is done through direct contact with our sales representatives.",
-    "title": "Contact the FujiPay Team: We're here for you"
-  },
-  "countries": {
-    "actions": {
-      "add": "Add Country",
-      "delete": "Delete",
-      "edit": "Edit",
-      "more": "More Actions",
-      "view": "View"
-    },
-    "bulk": {
-      "deleteError": "Failed to delete selected countries",
-      "deleteReason": "Bulk delete operation",
-      "partialError_one": "1 partial error occurred.",
-      "partialError_other": "{{count}} partial errors occurred."
-    },
-    "create": "Create Country",
-    "edit": "Edit Country",
-    "form": {
-      "codeLabel": "Code",
-      "codePlaceholder": "Enter country code",
-      "create": {
-        "description": "Add a new country.",
-        "submit": "Create",
-        "title": "Create Country"
-      },
-      "edit": {
-        "description": "Update the details of this country.",
-        "loadError": "Failed to load country.",
-        "submit": "Save Changes",
-        "title": "Edit Country"
-      },
-      "fields": {
-        "isActive": "Active",
-        "isVerified": "Verified"
-      },
-      "nameLabel": "Name",
-      "namePlaceholder": "Enter country name"
-    },
-    "headers": {
-      "code": "Code",
-      "createdAt": "Created At",
-      "isActive": "Active",
-      "name": "Name"
-    },
-    "messages": {
-      "create": {
-        "error": "Failed to create country.",
-        "success": "Country created successfully."
-      },
-      "delete": {
-        "confirm": "Are you sure you want to delete this country?",
-        "error": "Failed to delete country.",
-        "success": "Country deleted successfully.",
-        "success_one": "1 country deleted.",
-        "success_other": "{{count}} countries deleted."
-      },
-      "noData": "No countries found.",
-      "search": {
-        "error": "Failed to search countries."
-      },
-      "update": {
-        "error": "Failed to update country.",
-        "success": "Country updated successfully."
-      }
-    },
-    "title": "Countries",
-    "totalCount_one": "1 country",
-    "totalCount_other": "{{count}} countries"
-  },
-  "currencies": {
-    "actions": {
-      "add": "Add Currency",
-      "delete": "Delete",
-      "edit": "Edit",
-      "more": "More Actions",
-      "view": "View"
-    },
-    "bulk": {
-      "delete_one": "Delete this currency?",
-      "delete_other": "Delete these currencies?",
-      "deleteConfirm_one": "Are you sure you want to delete this currency?",
-      "deleteConfirm_other": "Are you sure you want to delete these {{count}} currencies?",
-      "deleteError": "Error during deletion.",
-      "deleteReason": "Reason for deletion",
-      "deleting": "Deleting...",
-      "partialError_one": "A partial error occurred.",
-      "partialError_other": "{{count}} partial errors occurred."
-    },
-    "create": "Create Currency",
-    "edit": "Edit Currency",
-    "form": {
-      "codeLabel": "Code",
-      "codePlaceholder": "Enter code",
-      "create": {
-        "description": "Fill in the details to create a new currency.",
-        "title": "Create Currency"
-      },
-      "decimalPlacesLabel": "Decimal Places",
-      "decimalPlacesPlaceholder": "Enter number of decimal places",
-      "edit": {
-        "description": "Update the currency details.",
-        "loadError": "Failed to load currency.",
-        "submit": "Save Changes",
-        "title": "Edit Currency"
-      },
-      "exchangeRateLabel": "Exchange Rate",
-      "fields": {
-        "isActive": "Active",
-        "isBaseCurrency": "Base Currency"
-      },
-      "nameLabel": "Name",
-      "namePlaceholder": "Enter name",
-      "symbolLabel": "Symbol",
-      "symbolPlaceholder": "Enter symbol"
-    },
-    "headers": {
-      "code": "Code",
-      "createdAt": "Created At",
-      "decimalPlaces": "Decimal Places",
-      "exchangeRate": "Exchange Rate",
-      "isActive": "Active",
-      "isBaseCurrency": "Base Currency",
-      "name": "Name",
-      "symbol": "Symbol"
-    },
-    "messages": {
-      "create": {
-        "error": "Creation failed.",
-        "success": "Creation successful."
-      },
-      "delete": {
-        "confirm": "Are you sure?",
-        "error": "Deletion failed.",
-        "success": "Deletion successful.",
-        "success_one": "1 currency deleted.",
-        "success_other": "{{count}} currencies deleted."
-      },
-      "noData": "No currencies found.",
-      "search": {
-        "error": "Search failed."
-      },
-      "update": {
-        "error": "Update failed.",
-        "success": "Update successful."
-      }
-    },
-    "title": "Currencies",
-    "totalCount_one": "1 currency",
-    "totalCount_other": "{{count}} currencies"
-  },
-  "dataGrid": {
-    "emptyMessage": "No items to display"
-  },
-  "developers": {
-    "badge": "DEVELOPERS FIRST",
-    "cta": {
-      "description": "Our developer support team is here to help you with any technical questions or integration challenges you may face.",
-      "primary": "Contact Developer Support",
-      "secondary": "Join Our Developer Community",
-      "title": "Technical Questions?"
-    },
-    "endpoints": {
-      "description": "Description",
-      "endpoint": "Endpoint",
-      "method": "Method",
-      "title": "Key API Endpoints"
-    },
-    "intro": "The FujiPay API is designed for quick and seamless integration with your applications, websites, or existing systems. Access all our features via secure and reliable endpoints.",
-    "resources": {
-      "apiDocs": "Access API Documentation",
-      "quickstart": "Quick Start Guide",
-      "sandbox": "Developer Portal / Sandbox",
-      "sdkLibraries": "Client Libraries (SDKs)",
-      "title": "Our Developer Resources"
-    },
-    "security": {
-      "auth": {
-        "description": "FujiPay uses multi-level authentication with API Keys and JWT tokens for secure access to our API endpoints.",
-        "title": "Authentication Methods"
-      },
-      "encryption": {
-        "description": "Sensitive data is encrypted using AES-256-GCM, with keys managed through Azure Key Vault for maximum security.",
-        "title": "Data Encryption"
-      },
-      "ip": {
-        "description": "For added security, you can restrict API access to specific IP addresses or ranges approved for your account.",
-        "title": "IP Restrictions"
-      },
-      "tabs": {
-        "auth": "Authentication",
-        "encryption": "Encryption",
-        "ip": "IP Restrictions"
-      },
-      "title": "API Security"
-    },
-    "title": "FujiPay Integration: A Powerful, Flexible, and Documented API",
-    "whyIntegrate": {
-      "documentation": {
-        "description": "Clear guides and code examples.",
-        "title": "Complete Documentation"
-      },
-      "restful": {
-        "description": "Easy to understand and use.",
-        "title": "Intuitive RESTful API"
-      },
-      "sandbox": {
-        "description": "Test your integrations risk-free.",
-        "title": "Sandbox Environment"
-      },
-      "sdks": {
-        "description": "Available for Python, Node.js, PHP, and more.",
-        "title": "Client Libraries (SDKs)"
-      },
-      "security": {
-        "description": "API Key and JWT authentication, data encryption.",
-        "title": "Robust Security"
-      },
-      "title": "Why Integrate FujiPay?",
-      "webhooks": {
-        "description": "Receive real-time notifications for all key events.",
-        "title": "Webhooks"
-      }
-    }
-  },
-  "documentsTypes": {
-    "actions": {
-      "add": "Add Type",
-      "more": "More Actions"
-    },
-    "bulk": {
-      "deleteError": "Error during deletion.",
-      "deleteReason": "Reason for deletion",
-      "partialError_one": "A partial error occurred.",
-      "partialError_other": "{{count}} partial errors occurred."
-    },
-    "form": {
-      "create": {
-        "description": "Add a new document type.",
-        "submit": "Create",
-        "title": "Create Document Type"
-      },
-      "descriptionLabel": "Description",
-      "descriptionPlaceholder": "Enter description",
-      "edit": {
-        "description": "Update the details of this document type.",
-        "submit": "Save Changes",
-        "title": "Edit Document Type"
-      },
-      "nameLabel": "Name",
-      "namePlaceholder": "Enter name"
-    },
-    "messages": {
-      "create": {
-        "error": "Creation failed.",
-        "success": "Creation successful."
-      },
-      "delete": {
-        "error": "Deletion failed.",
-        "success": "Deletion successful.",
-        "success_one": "1 document type deleted.",
-        "success_other": "{{count}} document types deleted."
-      },
-      "noData": "No document types found.",
-      "search": {
-        "error": "Search failed."
-      },
-      "update": {
-        "error": "Update failed.",
-        "success": "Update successful."
-      }
-    },
-    "title": "Document Types",
-    "totalCount_one": "1 document type",
-    "totalCount_other": "{{count}} document types"
-  },
-  "documentTypes": {
-    "headers": {
-      "createdAt": "Created At",
-      "description": "Description",
-      "name": "Name"
-    }
-  },
-  "FAQ": {
-    "clearSearch": "Clear Search",
-    "intro": "We've compiled the most frequently asked questions from our users and prospects. If you can't find the answer here, don't hesitate to contact us.",
-    "noResults": "No matching questions found",
-    "notFound": {
-      "cta": "Contact Us",
-      "description": "Our team is ready to help you with any specific questions.",
-      "title": "Didn't find your answer?"
-    },
-    "searchPlaceholder": "Search for questions...",
-    "title": "Frequently Asked Questions"
-  },
-  "features": {
-    "badge": "FEATURES",
-    "intro": "FujiPay is designed to offer total control over your mobile financial operations in Cameroon, thanks to a suite of advanced and secure features.",
-    "paymentManagement": {
-      "benefit1": "Unified Orange Money and MTN Mobile Money Integration",
-      "benefit2": "Comprehensive Transaction Lifecycle Management",
-      "benefit3": "Automated Reconciliation and Reporting",
-      "benefit4": "Customizable Payment Pages and Links",
-      "description": "Efficiently process incoming payments via Orange Money and MTN Mobile Money. Manage the complete lifecycle of each transaction (creation, processing, completion).",
-      "title": "Payment Management"
-    },
-    "reporting": {
-      "benefit1": "Real-time transaction dashboards",
-      "benefit2": "Custom report generation",
-      "benefit3": "Data export capabilities (CSV, Excel)",
-      "benefit4": "Payment method analysis",
-      "description": "Gain valuable insights through comprehensive reporting and analysis tools for better decision-making.",
-      "title": "Analytics & Reporting"
-    },
-    "requestDemo": "Request a Demo",
-    "security": {
-      "benefit1": "Multi-level authentication (API Key, JWT)",
-      "benefit2": "AES-256-GCM encryption for sensitive data",
-      "benefit3": "IP address restriction capabilities",
-      "benefit4": "Comprehensive audit logging",
-      "description": "Protect your business and customers with enterprise-grade security features designed for the financial sector.",
-      "title": "Security"
-    },
-    "subtitle": "Power at your service",
-    "title": "FujiPay's Complete Features",
-    "title1": "Power at your service",
-    "title2": "",
-    "withdrawalManagement": {
-      "benefit1": "Two-Factor Verification for Security",
-      "benefit2": "Support for Orange Money and MTN Mobile Money",
-      "benefit3": "Batch Processing for High Volumes",
-      "benefit4": "Flexible Approval Processes",
-      "description": "Initiate and process fund withdrawal requests with optimal security. Whether via mobile money or bank transfer, FujiPay adapts to your needs.",
-      "title": "Withdrawal Management"
-    }
-  },
-  "feeconfigurations": {
-    "headers": {
-      "createdAt": "Created At",
-      "currency": "Currency",
-      "currencyCode": "Currency Code",
-      "currencyName": "Currency Name",
-      "currencySymbol": "Currency Symbol",
-      "endDate": "End Date",
-      "feeTypeCode": "Fee Type Code",
-      "feeTypeId": "Fee Type ID",
-      "feeTypeName": "Fee Type Name",
-      "feeTypeTransactionType": "Fee Type Transaction Type",
-      "fixedAmount": "Fixed Amount",
-      "isActive": "Active",
-      "maxAmount": "Maximum Amount",
-      "minAmount": "Minimum Amount",
-      "ownerId": "Owner ID",
-      "ownerType": "Owner Type",
-      "percentageRate": "Percentage Rate",
-      "startDate": "Start Date"
-    }
-  },
-  "feeConfigurations": {
-    "actions": {
-      "add": "_add",
-      "delete": "Delete",
-      "edit": "Edit",
-      "more": "More Actions",
-      "view": "View"
-    },
-    "bulk": {
-      "delete_one": "Delete this configuration?",
-      "delete_other": "Delete these configurations?",
-      "deleteConfirm_one": "Are you sure you want to delete this configuration?",
-      "deleteConfirm_other": "Are you sure you want to delete these {{count}} configurations?",
-      "deleteError": "Error during deletion.",
-      "deleteReason": "Reason for deletion",
-      "deleting": "Deleting...",
-      "partialError_one": "A partial error occurred.",
-      "partialError_other": "{{count}} partial errors occurred."
-    },
-    "create": "Create Fee Configuration",
-    "edit": "Edit Fee Configuration",
-    "form": {
-      "companyId": {
-        "placeholder": "Select a company"
-      },
-      "create": {
-        "description": "Add a new fee configuration.",
-        "submit": "Create",
-        "title": "Create Fee Configuration"
-      },
-      "edit": {
-        "loadError": "Failed to load configuration."
-      },
-      "fields": {
-        "currency": "Currency",
-        "endDate": "End Date",
-        "feeTypeId": "Fee Type",
-        "fixedAmount": "Fixed Amount",
-        "isActive": "Active",
-        "maxAmount": "Maximum Amount",
-        "minAmount": "Minimum Amount",
-        "ownerId": "Owner ID",
-        "ownerType": "Owner Type",
-        "percentageRate": "Percentage Rate",
-        "startDate": "Start Date"
-      },
-      "placeholders": {
-        "fixedAmount": "Enter fixed amount",
-        "maxAmount": "Enter maximum amount",
-        "minAmount": "Enter minimum amount",
-        "percentageRate": "Enter percentage rate"
-      }
-    },
-    "forms": {
-      "edit": {
-        "description": "Update the details of this configuration.",
-        "title": "Edit Fee Configuration"
-      }
-    },
-    "messages": {
-      "create": {
-        "error": "Creation failed.",
-        "success": "Creation successful."
-      },
-      "delete": {
-        "confirm": "Are you sure you want to delete this configuration?",
-        "error": "Deletion failed.",
-        "success": "Deletion successful.",
-        "success_one": "1 configuration deleted.",
-        "success_other": "{{count}} configurations deleted."
-      },
-      "noData": "No fee configurations found.",
-      "search": {
-        "error": "Search failed."
-      },
-      "update": {
-        "error": "Update failed.",
-        "success": "Update successful."
-      }
-    },
-    "title": "Fee Configurations",
-    "totalCount_one": "_totalCount",
-    "totalCount_other": "_totalCount"
-  },
-  "feetypes": {
-    "headers": {
-      "code": "Code",
-      "createdAt": "Created At",
-      "description": "Description",
-      "isActive": "Active",
-      "name": "Name",
-      "transactionType": "Transaction Type"
-    }
-  },
-  "feeTypes": {
-    "actions": {
-      "add": "Add Fee Type",
-      "delete": "Delete",
-      "edit": "Edit",
-      "more": "More Actions",
-      "view": "View"
-    },
-    "bulk": {
-      "delete_one": "Delete this type?",
-      "delete_other": "Delete these types?",
-      "deleteConfirm_one": "Are you sure you want to delete this fee type?",
-      "deleteConfirm_other": "Are you sure you want to delete these {{count}} fee types?",
-      "deleteError": "Error during deletion.",
-      "deleteReason": "Reason for deletion",
-      "deleting": "Deleting...",
-      "partialError_one": "A partial error occurred.",
-      "partialError_other": "{{count}} partial errors occurred."
-    },
-    "create": "Create Fee Type",
-    "edit": "Edit Fee Type",
-    "form": {
-      "codeLabel": "Code",
-      "codePlaceholder": "Enter code",
-      "create": {
-        "description": "Add a new fee type.",
-        "title": "Create Fee Type"
-      },
-      "descriptionLabel": "Description",
-      "edit": {
-        "description": "Update the details of this fee type.",
-        "loadError": "Failed to load fee type.",
-        "submit": "Save Changes",
-        "title": "Edit Fee Type"
-      },
-      "isActiveLabel": "Active",
-      "nameLabel": "Name",
-      "namePlaceholder": "Enter name",
-      "transactionType": {
-        "application": "_application",
-        "company": "_company",
-        "placeholder": "Select transaction type",
-        "receipt": "_receipt",
-        "system": "_system",
-        "transfer": "_transfer",
-        "withdrawal": "_withdrawal"
-      },
-      "transactionTypeLabel": "_transactionTypeLabel",
-      "transactionTypePlaceholder": "_transactionTypePlaceholder"
-    },
-    "messages": {
-      "create": {
-        "error": "Creation failed.",
-        "success": "Creation successful."
-      },
-      "delete": {
-        "confirm": "Are you sure?",
-        "error": "Deletion failed.",
-        "success": "Deletion successful.",
-        "success_one": "1 fee type deleted.",
-        "success_other": "{{count}} fee types deleted."
-      },
-      "noData": "No fee types found.",
-      "search": {
-        "error": "Search failed."
-      },
-      "update": {
-        "error": "Update failed.",
-        "success": "Update successful."
-      }
-    },
-    "title": "Fee Types",
-    "totalCount_one": "1 fee type",
-    "totalCount_other": "{{count}} fee types"
-  },
-  "footer": {
-    "address": "Douala, Cameroon",
-    "bankWithdrawals": "Bank Withdrawals",
-    "contact": "Contact",
-    "copyright": "© 2025 FujiPay. All rights reserved.",
-    "developedBy": "Developed by Graphics System SA",
-    "financialReporting": "Financial Reporting",
-    "kycManagement": "KYC Management",
-    "legal": "Legal",
-    "legalNotice": "Legal Notice",
-    "mobilePayments": "Mobile Payments",
-    "moneyTransfers": "Money Transfers",
-    "privacyPolicy": "Privacy Policy",
-    "quickNav": "Quick Navigation",
-    "services": "Services",
-    "termsOfService": "Terms of Service"
-  },
-  "fronteventlogs": {
-    "headers": {
-      "action": "Action",
-      "additionalData": "Additional Data",
-      "createdAt": "Created At",
-      "date": "Date",
-      "environment": "Environment",
-      "ipAddress": "IP Address",
-      "path": "Path",
-      "sessionId": "Session ID",
-      "type": "Type",
-      "userAgent": "User Agent",
-      "userId": "User ID"
-    }
-  },
-  "frontEventLogs": {
-    "actions": {
-      "add": "Add Event",
-      "more": "More Actions",
-      "view": "View"
-    },
-    "messages": {
-      "noData": "No frontend events found.",
-      "search": {
-        "error": "Search failed."
-      }
-    },
-    "title": "Frontend Events",
-    "totalCount_one": "1 event",
-    "totalCount_other": "{{count}} events"
-  },
-  "fundtransfersreadmodels": {
-    "headers": {
-      "amount": "Amount",
-      "companyName": "Company Name",
-      "createdAt": "Created At",
-      "createdByFirstName": "Created By (First Name)",
-      "createdByLastName": "Created By (Last Name)",
-      "createdByPhoneNumber": "Created By (Phone)",
-      "currency": "Currency",
-      "currencySymbol": "Currency Symbol",
-      "currentVersion": "Current Version",
-      "description": "Description",
-      "destinationApplicationName": "Destination Application",
-      "feeAppliedAmount": "Fee Applied",
-      "internalFeeAmount": "Internal Fee",
-      "netAmount": "Net Amount",
-      "publicId": "Public ID",
-      "reference": "Reference",
-      "sourceApplicationName": "Source Application",
-      "status": "Status",
-      "transferType": "Transfer Type",
-      "updatedByFirstName": "Updated By (First Name)",
-      "updatedByLastName": "Updated By (Last Name)"
-    }
-  },
-  "fundTransfersReadModels": {
-    "actions": {
-      "add": "Add Transfer",
-      "delete": "Delete",
-      "edit": "Edit",
-      "more": "More Actions",
-      "view": "View"
-    },
-    "bulk": {
-      "delete_one": "Delete this transfer?",
-      "delete_other": "Delete these transfers?",
-      "deleteConfirm_one": "Are you sure you want to delete this transfer?",
-      "deleteConfirm_other": "Are you sure you want to delete these {{count}} transfers?",
-      "deleteError": "Error during deletion.",
-      "deleteReason": "Reason for deletion",
-      "deleting": "Deleting...",
-      "partialError_one": "A partial error occurred.",
-      "partialError_other": "{{count}} partial errors occurred."
-    },
-    "messages": {
-      "create": {
-        "error": "Creation failed.",
-        "success": "Creation successful."
-      },
-      "delete": {
-        "confirm": "Are you sure?",
-        "error": "Deletion failed.",
-        "success": "Deletion successful.",
-        "success_one": "1 transfer deleted.",
-        "success_other": "{{count}} transfers deleted."
-      },
-      "noData": "No fund transfers found.",
-      "search": {
-        "error": "Search failed."
-      },
-      "update": {
-        "error": "Update failed.",
-        "success": "Update successful."
-      }
-    },
-    "title": "Fund Transfers",
-    "totalCount_one": "1 transfer",
-    "totalCount_other": "{{count}} transfers"
-  },
-  "goBack": "Go back",
-  "goHome": "Go Home",
-  "kycdocuments": {
-    "headers": {
-      "approvalBy": "Approved By",
-      "approvalByEmail": "Approved By (Email)",
-      "approvalByFirstName": "Approved By (First Name)",
-      "approvalByLastName": "Approved By (Last Name)",
-      "approvalByPhoneNumber": "Approved By (Phone)",
-      "approvalByStatus": "Approved By (Status)",
-      "approvalDate": "Approval Date",
-      "companyEmail": "Company Email",
-      "companyId": "Company ID",
-      "companyName": "Company Name",
-      "companyPhoneNumber": "Company Phone Number",
-      "companyStatus": "Company Status",
-      "createdAt": "Created At",
-      "documentTypeId": "Document Type ID",
-      "documentTypeName": "Document Type Name",
-      "documentUrl": "Document URL",
-      "rejectionReason": "Rejection Reason",
-      "status": "Status",
-      "submissionDate": "Submission Date"
-    }
-  },
-  "kycDocuments": {
-    "actions": {
-      "add": "Add Document",
-      "delete": "Delete",
-      "edit": "Edit",
-      "more": "More Actions",
-      "view": "View"
-    },
-    "bulk": {
-      "deleteError": "Error during deletion.",
-      "deleteReason": "Reason for deletion",
-      "partialError_one": "A partial error occurred.",
-      "partialError_other": "{{count}} partial errors occurred."
-    },
-    "form": {
-      "companyIdLabel": "Company",
-      "companyIdPlaceholder": "Select a company",
-      "create": {
-        "description": "Add a new KYC document.",
-        "title": "Create KYC Document"
-      },
-      "documentTypeIdLabel": "Document Type",
-      "documentTypeIdPlaceholder": "Select a document type",
-      "documentUrlLabel": "Document URL",
-      "documentUrlPlaceholder": "Enter document URL",
-      "edit": {
-        "description": "Update the details of this KYC document.",
-        "submit": "Save Changes",
-        "title": "Edit KYC Document"
-      },
-      "statusLabel": "Status",
-      "statusPlaceholder": "Select a status"
-    },
-    "messages": {
-      "create": {
-        "error": "Creation failed.",
-        "success": "Creation successful."
-      },
-      "delete": {
-        "error": "Deletion failed.",
-        "success": "Deletion successful.",
-        "success_one": "1 document deleted.",
-        "success_other": "{{count}} documents deleted."
-      },
-      "noData": "No KYC documents found.",
-      "search": {
-        "error": "Search failed."
-      },
-      "update": {
-        "error": "Update failed.",
-        "success": "Update successful."
-      }
-    },
-    "title": "KYC Documents",
-    "totalCount_one": "1 document",
-    "totalCount_other": "{{count}} documents"
-  },
-  "landingPage": {
-    "cta": {
-      "badge": "TRY IT NOW",
-      "cta1": "Get Started Now",
-      "cta2": "Learn More",
-      "subtitle": "Supports small businesses with simple invoicing, powerful integrations, and cash flow management tools.",
-      "title1": "Ready to level up your",
-      "title2": "payment process?"
-    },
-    "features": {
-      "learnMore": "Learn More"
-    },
-    "hero": {
-      "active": "Active",
-      "badge": "The Ultimate Mobile Money Aggregator",
-      "brand1": "Klarna.",
-      "brand2": "coinbase",
-      "brand3": "*instacart",
-      "cta": "Get Started",
-      "demoEmail": "dipainhouse@gmail.com",
-      "demoName": "Dipa Inhouse",
-      "invoice": "Invoice",
-      "invoiceAmount": "$1,876,580",
-      "invoiceDate": "April 21, 2024",
-      "mtnMobileMoney": "MTN Mobile Money",
-      "orangeMoney": "Orange Money",
-      "paid": "Paid",
-      "subtitle": "Supports small businesses with simple invoicing, powerful integrations, and cash flow management tools.",
-      "title1": "Get paid early,",
-      "title2": "save automatically",
-      "title3": "on all your payments.",
-      "trustedBy": "Trusted by leading businesses",
-      "viewTransactions": "View Transactions"
-    },
-    "howItWorks": {
-      "badge": "HOW IT WORKS",
-      "description": "Get started with FujiPay in minutes and transform how you handle mobile money payments in Cameroon.",
-      "step1": {
-        "description": "Sign up for FujiPay and complete our streamlined KYC verification process to get started.",
-        "title": "Create your account"
-      },
-      "step2": {
-        "description": "Use our well-documented API to integrate Orange Money and MTN Mobile Money payments into your application.",
-        "title": "Integrate our API"
-      },
-      "step3": {
-        "description": "Start accepting payments, managing withdrawals, and getting real-time insights through our dashboard.",
-        "title": "Accept payments & manage funds"
-      },
-      "title": "Simple integration, powerful results"
-    },
-    "industries": {
-      "badge": "SOLUTIONS BY INDUSTRY",
-      "description": "No matter what industry you operate in, FujiPay adapts to your specific needs with flexible payment solutions.",
-      "learnMore": "Learn More",
-      "title": "Tailored solutions for every business"
-    },
-    "mission": {
-      "badge": "OUR MISSION",
-      "stat1": {
-        "label": "Business Revenue",
-        "value": "24%"
-      },
-      "stat2": {
-        "label": "In annual revenue",
-        "value": "180K"
-      },
-      "subtitle": "Hundreds of businesses of all sizes and across all industries have made big improvements with us.",
-      "title1": "We've helped",
-      "title2": "innovative companies"
-    },
-    "stats": {
-      "transactions": "5M+",
-      "transactionsLabel": "Transactions Processed",
-      "uptime": "99.9%",
-      "uptimeLabel": "Uptime Guarantee"
-    }
-  },
-  "logs": {
-    "actions": {
-      "add": "Add Log",
-      "more": "More Actions",
-      "view": "View"
-    },
-    "headers": {
-      "additionalData": "Additional Data",
-      "applicationName": "Application Name",
-      "correlationId": "Correlation ID",
-      "createdAt": "Created At",
-      "environment": "Environment",
-      "exceptionMessage": "Exception Message",
-      "ipAddress": "IP Address",
-      "logLevel": "Log Level",
-      "machineName": "Machine Name",
-      "message": "Message",
-      "requestUri": "Request URI",
-      "stackTrace": "Stack Trace",
-      "userId": "User ID",
-      "userName": "User Name"
-    },
-    "messages": {
-      "noData": "No logs found.",
-      "search": {
-        "error": "Search failed."
-      }
-    },
-    "title": "Logs",
-    "totalCount_one": "1 log",
-    "totalCount_other": "{{count}} logs"
-  },
-  "menu": {
-    "Dashboard": "Dashboard"
-  },
-  "navigation": {
-    "about": "About",
-    "contact": "Contact",
-    "dashboard": "Dashboard",
-    "developers": "Developers",
-    "faq": "FAQ",
-    "features": "Features",
-    "home": "Home",
-    "login": "Login",
-    "requestDemo": "Request a Demo",
-    "solutions": "Solutions"
-  },
-  "noPermission": "You don't have permission to access this resource",
-  "noRessource": "No resource available",
-  "notification": {
-    "actions": {
-      "add": "_add",
-      "delete": "Delete",
-      "edit": "Edit",
-      "more": "More",
-      "view": "View"
-    },
-    "bulk": {
-      "delete_one": "Delete this notification?",
-      "delete_other": "Delete these notifications?",
-      "deleteConfirm_one": "Are you sure you want to delete this notification?",
-      "deleteConfirm_other": "Are you sure you want to delete these {{count}} notifications?",
-      "deleteError": "Error during deletion.",
-      "deleteReason": "Reason for deletion",
-      "deleting": "Deleting...",
-      "partialError_one": "A partial error occurred.",
-      "partialError_other": "{{count}} partial errors occurred."
-    },
-    "messages": {
-      "create": {
-        "error": "Creation failed.",
-        "success": "Creation successful."
-      },
-      "delete": {
-        "confirm": "Are you sure?",
-        "error": "Deletion failed.",
-        "success": "Deletion successful.",
-        "success_one": "1 notification deleted.",
-        "success_other": "{{count}} notifications deleted."
-      },
-      "noData": "No notifications.",
-      "search": {
-        "error": "Search failed."
-      },
-      "update": {
-        "error": "Update failed.",
-        "success": "Update successful."
-      }
-    },
-    "title": "_title",
-    "totalCount_one": "_totalCount",
-    "totalCount_other": "_totalCount"
-  },
-  "notifications": {
-    "headers": {
-      "canal": "Channel",
-      "companyName": "Company Name",
-      "createdAt": "Created At",
-      "createdBy": "Created By",
-      "data": "Data",
-      "expiresAt": "Expires At",
-      "isRead": "Read",
-      "message": "Message",
-      "priority": "Priority",
-      "readAt": "Read At",
-      "templateType": "Template Type",
-      "title": "Title",
-      "type": "Type",
-      "updatedAt": "Updated At",
-      "userEmail": "User Email",
-      "userFirstName": "User First Name",
-      "userLastName": "User Last Name",
-      "userPhoneNumber": "User Phone Number",
-      "userStatus": "User Status"
-    }
-  },
-  "pageNotfound": "Page not found",
-  "paymentmethods": {
-    "headers": {
-      "code": "Code",
-      "createdAt": "Created At",
-      "description": "Description",
-      "isActive": "Active",
-      "logoUrl": "Logo URL",
-      "maximumAmount": "Maximum Amount",
-      "minimumAmount": "Minimum Amount",
-      "name": "Name",
-      "requiresPhoneNumber": "Requires Phone",
-      "settlementPeriod": "Settlement Period",
-      "sortOrder": "Sort Order"
-    }
-  },
-  "paymentMethods": {
-    "actions": {
-      "add": "_add",
-      "delete": "Delete",
-      "edit": "Edit",
-      "more": "More Actions",
-      "view": "View"
-    },
-    "bulk": {
-      "delete_one": "Delete this payment method?",
-      "delete_other": "Delete these payment methods?",
-      "deleteConfirm_one": "Are you sure you want to delete this payment method?",
-      "deleteConfirm_other": "Are you sure you want to delete these {{count}} payment methods?",
-      "deleteError": "Error during deletion.",
-      "deleteReason": "Reason for deletion",
-      "deleting": "Deleting...",
-      "partialError_one": "A partial error occurred.",
-      "partialError_other": "{{count}} partial errors occurred."
-    },
-    "create": "Create Payment Method",
-    "edit": "Edit Payment Method",
-    "form": {
-      "codeLabel": "Code",
-      "codePlaceholder": "Enter code",
-      "create": {
-        "description": "Add a new payment method.",
-        "title": "Create Payment Method"
-      },
-      "descriptionLabel": "Description",
-      "descriptionPlaceholder": "Enter description",
-      "edit": {
-        "description": "Update the details of this payment method.",
-        "loadError": "Failed to load payment method.",
-        "submit": "Save Changes",
-        "title": "Edit Payment Method"
-      },
-      "isActiveLabel": "Active",
-      "maximumAmountLabel": "Maximum Amount",
-      "maximumAmountPlaceholder": "Enter maximum amount",
-      "minimumAmountLabel": "Minimum Amount",
-      "nameLabel": "Name",
-      "namePlaceholder": "Enter name",
-      "requiresPhoneNumberLabel": "Requires Phone Number",
-      "sortOrderLabel": "Sort Order",
-      "sortOrderPlaceholder": "Enter sort order"
-    },
-    "formsettlementLabel": "Settlement",
-    "formsettlementPlaceholder": "Enter settlement period",
-    "messages": {
-      "create": {
-        "error": "Creation failed.",
-        "success": "Creation successful."
-      },
-      "delete": {
-        "confirm": "Are you sure?",
-        "error": "Deletion failed.",
-        "success": "Deletion successful.",
-        "success_one": "1 payment method deleted.",
-        "success_other": "{{count}} payment methods deleted."
-      },
-      "noData": "No payment methods found.",
-      "search": {
-        "error": "Search failed."
-      },
-      "update": {
-        "error": "Update failed.",
-        "success": "Update successful."
-      }
-    },
-    "title": "Payment Methods",
-    "totalCount_one": "_totalCount",
-    "totalCount_other": "_totalCount"
-  },
-  "receipts": {
-    "actions": {
-      "more": "More Actions",
-      "view": "View"
-    },
-    "messages": {
-      "noData": "No receipts found."
-    }
-  },
-  "receiptsreadmodels": {
-    "headers": {
-      "amount": "Amount",
-      "applicationName": "Application Name",
-      "companyName": "Company Name",
-      "createdAt": "Created At",
-      "currency": "Currency",
-      "externalReference": "External Reference",
-      "feeAppliedAmount": "Fee Applied",
-      "internalFeeAmount": "Internal Fee",
-      "netAmount": "Net Amount",
-      "paymentMethodCode": "Payment Method Code",
-      "phoneNumberEncrypted": "Phone (Encrypted)",
-      "providerFeeAmount": "Provider Fee",
-      "providerReference": "Provider Reference",
-      "status": "Status",
-      "transactionId": "Transaction ID"
-    }
-  },
-  "receiptsReadModels": {
-    "actions": {
-      "add": "_add",
-      "delete": "Delete",
-      "edit": "Edit",
-      "more": "More Actions",
-      "view": "View"
-    },
-    "bulk": {
-      "delete_one": "Delete this receipt?",
-      "delete_other": "Delete these receipts?",
-      "deleteConfirm_one": "Are you sure you want to delete this receipt?",
-      "deleteConfirm_other": "Are you sure you want to delete these {{count}} receipts?",
-      "deleteError": "Error during deletion.",
-      "deleteReason": "Reason for deletion",
-      "deleting": "Deleting...",
-      "partialError_one": "A partial error occurred.",
-      "partialError_other": "{{count}} partial errors occurred."
-    },
-    "messages": {
-      "delete": {
-        "confirm": "Are you sure?",
-        "error": "Deletion failed.",
-        "success": "Deletion successful.",
-        "success_one": "1 receipt deleted.",
-        "success_other": "{{count}} receipts deleted."
-      },
-      "noData": "No receipts found.",
-      "search": {
-        "error": "Search failed."
-      }
-    },
-    "title": "_title",
-    "totalCount_one": "_totalCount",
-    "totalCount_other": "_totalCount"
-  },
-  "securesettings": {
-    "headers": {
-      "createdAt": "Created At",
-      "description": "Description",
-      "systemName": "System Name"
-    }
-  },
-  "secureSettings": {
-    "actions": {
-      "add": "Add Secure Setting"
-    },
-    "create": "Create Secure Setting",
-    "form": {
-      "create": {
-        "description": "Add a new secure setting.",
-        "submit": "Create",
-        "title": "Create Secure Setting"
-      },
-      "descriptionLabel": "Description",
-      "descriptionPlaceholder": "Enter description",
-      "edit": {
-        "description": "Update the details of this secure setting.",
-        "submit": "Save Changes",
-        "title": "Edit Secure Setting"
-      },
-      "elementsTitle": "Elements",
-      "keyLabel": "Key",
-      "keyPlaceholder": "Enter key",
-      "nameLabel": "Name",
-      "namePlaceholder": "Enter name",
-      "secureValueLabel": "Secure Value",
-      "secureValuePlaceholder": "Enter secure value"
-    },
-    "messages": {
-      "create": {
-        "error": "Creation failed.",
-        "success": "Creation successful."
-      },
-      "noData": "No secure settings found.",
-      "search": {
-        "error": "Search failed."
-      },
-      "update": {
-        "error": "Update failed.",
-        "success": "Update successful."
-      }
-    },
-    "title": "Secure Settings",
-    "totalCount_one": "1 secure setting",
-    "totalCount_other": "{{count}} secure settings"
-  },
-  "sessions": {
-    "access_denied": "Access denied",
-    "network_error": "Network error",
-    "session_expired": "Session expired"
-  },
-  "settings": {
-    "actions": {
-      "add": "Add Setting",
-      "delete": "Delete",
-      "edit": "Edit",
-      "more": "More Actions",
-      "view": "View"
-    },
-    "bulk": {
-      "delete_one": "Delete this setting?",
-      "delete_other": "Delete these settings?",
-      "deleteConfirm_one": "Are you sure you want to delete this setting?",
-      "deleteConfirm_other": "Are you sure you want to delete these {{count}} settings?",
-      "deleteError": "Error during deletion.",
-      "deleteReason": "Reason for deletion",
-      "deleting": "Deleting...",
-      "partialError_one": "A partial error occurred.",
-      "partialError_other": "{{count}} partial errors occurred."
-    },
-    "create": "Create Setting",
-    "edit": "Edit Setting",
-    "form": {
-      "allowedValuesLabel": "Allowed Values",
-      "allowedValuesPlaceholder": "Enter allowed values, separated by commas",
-      "applicationLabel": "Application",
-      "applicationPlaceholder": "Select an application",
-      "categoryLabel": "Category",
-      "categoryPlaceholder": "Enter category",
-      "companyLabel": "Company",
-      "companyPlaceholder": "Select a company",
-      "create": {
-        "description": "Add a new setting.",
-        "submit": "Create",
-        "title": "Create Setting"
-      },
-      "dataType": {
-        "bool": "Boolean",
-        "char": "Character",
-        "double": "Double",
-        "float": "Float",
-        "int": "Integer",
-        "placeholder": "Select a data type",
-        "string": "String"
-      },
-      "dataTypeLabel": "Data Type",
-      "descriptionLabel": "Description",
-      "descriptionPlaceholder": "Enter description",
-      "edit": {
-        "description": "Update the details of this setting.",
-        "loadError": "Failed to load setting.",
-        "submit": "Save Changes",
-        "title": "Edit Setting"
-      },
-      "isEncryptedLabel": "Is Encrypted",
-      "isReadOnlyLabel": "Read Only",
-      "isSystemSettingLabel": "System Setting",
-      "validationRegexLabel": "Validation Regex",
-      "valueLabel": "Value",
-      "valuePlaceholder": "Enter value"
-    },
-    "headers": {
-      "allowedValues": "Allowed Values",
-      "applicationName": "Application Name",
-      "category": "Category",
-      "companyName": "Company Name",
-      "createdAt": "Created At",
-      "dataType": "Data Type",
-      "description": "Description",
-      "isEncrypted": "Encrypted",
-      "isReadOnly": "Read Only",
-      "isSystemSetting": "System Setting",
-      "validationRegex": "Validation Regex",
-      "value": "Value"
-    },
-    "messages": {
-      "create": {
-        "error": "Creation failed.",
-        "success": "Creation successful."
-      },
-      "delete": {
-        "confirm": "Are you sure you want to delete this setting?",
-        "error": "Deletion failed.",
-        "success": "Deletion successful.",
-        "success_one": "1 setting deleted.",
-        "success_other": "{{count}} settings deleted."
-      },
-      "noData": "No settings found.",
-      "search": {
-        "error": "Search failed."
-      },
-      "update": {
-        "error": "Update failed.",
-        "success": "Update successful."
-      }
-    },
-    "title": "Settings",
-    "totalCount_one": "1 setting",
-    "totalCount_other": "{{count}} settings"
-  },
-  "smsmailtemplates": {
-    "headers": {
-      "body": "Body",
-      "createdAt": "Created At",
-      "isActive": "Active",
-      "locale": "Locale",
-      "subject": "Subject",
-      "type": "Type"
-    }
-  },
-  "smsmailTemplates": {
-    "actions": {
-      "add": "Add Template",
-      "delete": "Delete",
-      "edit": "Edit",
-      "more": "More Actions",
-      "view": "View"
-    },
-    "bulk": {
-      "delete_one": "Delete this template?",
-      "delete_other": "Delete these templates?",
-      "deleteConfirm_one": "Are you sure you want to delete this template?",
-      "deleteConfirm_other": "Are you sure you want to delete these {{count}} templates?",
-      "deleteError": "Error during deletion.",
-      "deleteReason": "Reason for deletion",
-      "deleting": "Deleting...",
-      "partialError_one": "A partial error occurred.",
-      "partialError_other": "{{count}} partial errors occurred."
-    },
-    "details": {
-      "title": "Template Details"
-    },
-    "form": {
-      "bodyLabel": "Body",
-      "bodyPlaceholder": "Enter template body",
-      "create": {
-        "description": "Add a new template.",
-        "title": "Create Template"
-      },
-      "edit": {
-        "description": "Update the details of this template.",
-        "submit": "Save Changes",
-        "title": "Edit Template"
-      },
-      "isActiveLabel": "Active",
-      "localeLabel": "Locale",
-      "localePlaceholder": "Select a locale",
-      "subjectLabel": "Subject",
-      "subjectPlaceholder": "Enter subject",
-      "typeLabel": "Type",
-      "typePlaceholder": "Select a type"
-    },
-    "messages": {
-      "create": {
-        "error": "Creation failed.",
-        "success": "Creation successful."
-      },
-      "delete": {
-        "confirm": "Are you sure?",
-        "error": "Deletion failed.",
-        "success": "Deletion successful.",
-        "success_one": "1 template deleted.",
-        "success_other": "{{count}} templates deleted."
-      },
-      "noData": "No templates found.",
-      "search": {
-        "error": "Search failed."
-      },
-      "update": {
-        "error": "Update failed.",
-        "success": "Update successful."
-      }
-    },
-    "title": "SMS/Email Templates",
-    "totalCount_one": "1 template",
-    "totalCount_other": "{{count}} templates"
-  },
-  "solutions": {
-    "benefitsLabel": "Benefits",
-    "customSolution": {
-      "cta": "Contact Us",
-      "description": "FujiPay is highly adaptable. Contact us to discuss a customized solution for your specific needs.",
-      "title": "Your sector not listed?"
-    },
-    "ecommerce": {
-      "problem": "Strong dependence on mobile payment, tedious reconciliation of transactions by operator, need for a smooth customer experience.",
-      "title": "E-commerce & Online Shops"
-    },
-    "fintech": {
-      "problem": "Processing of disbursements and repayments, management of customer balances, KYC compliance.",
-      "title": "Financial Services & FinTech"
-    },
-    "intro": "Whatever your business, FujiPay integrates to optimize your mobile payment processes. Discover how we help our clients thrive.",
-    "nonprofit": {
-      "problem": "Collection of donations via mobile money, traceability of contributions, compliance.",
-      "title": "Non-profit Organizations & Associations"
-    },
-    "problemLabel": "The Challenge",
-    "solutionLabel": "The FujiPay Solution",
-    "title": "FujiPay: Tailored Solutions for Every Sector"
-  },
-  "themeMode": {
-    "dark": "Dark",
-    "light": "Light",
-    "system": "System"
-  },
-  "userdevices": {
-    "headers": {
-      "browser": "Browser",
-      "createdAt": "Created At",
-      "deviceType": "Device Type",
-      "ipaddress": "IP Address",
-      "language": "Language",
-      "os": "Operating System",
-      "screenResolution": "Screen Resolution",
-      "status": "Status",
-      "userAgent": "User Agent",
-      "userEmail": "User Email",
-      "userFirstName": "User First Name",
-      "userId": "User ID",
-      "userLastName": "User Last Name",
-      "userPhoneNumber": "User Phone Number",
-      "userStatus": "User Status"
-    }
-  },
-  "userDevices": {
-    "actions": {
-      "add": "_add",
-      "more": "More Actions",
-      "view": "View"
-    },
-    "messages": {
-      "noData": "No user devices found.",
-      "search": {
-        "error": "Search failed."
-      }
-    },
-    "title": "_title",
-    "totalCount_one": "_totalCount",
-    "totalCount_other": "_totalCount"
-  },
-  "userProfile": {
-    "actions": {
-      "add": "_add",
-      "delete": "Delete",
-      "edit": "Edit",
-      "more": "More Actions",
-      "view": "View"
-    },
-    "bulk": {
-      "delete_one": "Delete this profile?",
-      "delete_other": "Delete these profiles?",
-      "deleteConfirm_one": "Are you sure you want to delete this profile?",
-      "deleteConfirm_other": "Are you sure you want to delete these {{count}} profiles?",
-      "deleteError": "Error during deletion.",
-      "deleteReason": "Reason for deletion",
-      "deleting": "Deleting...",
-      "partialError_one": "A partial error occurred.",
-      "partialError_other": "{{count}} partial errors occurred."
-    },
-    "create": "Create Profile",
-    "edit": "Edit Profile",
-    "form": {
-      "create": {
-        "description": "Add a new user profile.",
-        "submit": "Create",
-        "title": "Create User Profile"
-      },
-      "edit": {
-        "loadError": "Failed to load profile.",
-        "submit": "Save Changes"
-      }
-    },
-    "messages": {
-      "create": {
-        "error": "Creation failed.",
-        "success": "Creation successful."
-      },
-      "delete": {
-        "confirm": "Are you sure?",
-        "error": "Deletion failed.",
-        "success": "Deletion successful.",
-        "success_one": "1 profile deleted.",
-        "success_other": "{{count}} profiles deleted."
-      },
-      "noData": "No profiles found.",
-      "search": {
-        "error": "Search failed."
-      },
-      "update": {
-        "error": "Update failed.",
-        "success": "Update successful."
-      }
-    },
-    "title": "User Profiles",
-    "totalCount_one": "_totalCount",
-    "totalCount_other": "_totalCount"
-  },
-  "userprofiles": {
-    "headers": {
-      "createdAt": "Created At",
-      "description": "Description",
-      "isActive": "Active",
-      "isSystemProfile": "System Profile",
-      "name": "Name",
-      "permissions": "Permissions"
-    }
-  },
-  "userProfiles": {
-    "form": {
-      "descriptionLabel": "Description",
-      "descriptionPlaceholder": "Enter description",
-      "edit": {
-        "description": "Update the details of this profile.",
-        "title": "Edit Profile"
-      },
-      "isActiveLabel": "Active",
-      "isSystemProfileLabel": "System Profile",
-      "nameLabel": "Name",
-      "namePlaceholder": "Enter profile name",
-      "permissionsLabel": "Permissions",
-      "permissionsPlaceholder": "Select permissions"
-    },
-    "title": "_title"
-  },
-  "users": {
-    "actions": {
-      "addCompanyUser": "Add Company User",
-      "addSystemUser": "Add System User",
-      "addTitle": "Add User",
-      "delete": "Delete",
-      "edit": "Edit",
-      "more": "More Actions",
-      "view": "View"
-    },
-    "bulk": {
-      "delete_one": "Delete this user?",
-      "delete_other": "Delete these users?",
-      "deleteConfirm_one": "Are you sure you want to delete this user?",
-      "deleteConfirm_other": "Are you sure you want to delete these {{count}} users?",
-      "deleteError": "Error during deletion.",
-      "deleteReason": "Reason for deletion",
-      "deleting": "Deleting...",
-      "partialError_one": "A partial error occurred.",
-      "partialError_other": "{{count}} partial errors occurred."
-    },
-    "form": {
-      "companyIdLabel": "Company",
-      "companyIdPlaceholder": "Select a company",
-      "create": {
-        "description": "Add a new user.",
-        "submit": "Create",
-        "title": "Create User"
-      },
-      "edit": {
-        "description": "Update the details of this user.",
-        "submit": "Save Changes",
-        "title": "Edit User"
-      },
-      "emailLabel": "Email",
-      "emailPlaceholder": "Enter email",
-      "firstNameLabel": "First Name",
-      "firstNamePlaceholder": "Enter first name",
-      "initialPasswordLabel": "Initial Password",
-      "initialPasswordPlaceholder": "Enter initial password",
-      "lastNameLabel": "Last Name",
-      "lastNamePlaceholder": "Enter last name",
-      "phoneNumberLabel": "Phone Number",
-      "phoneNumberPlaceholder": "Enter phone number",
-      "profileIdLabel": "Profile",
-      "profileIdPlaceholder": "Select a profile",
-      "statusLabel": "Status",
-      "statusPlaceholder": "Select a status",
-      "userTypeLabel": "User Type",
-      "userTypePlaceholder": "Select a user type"
-    },
-    "headers": {
-      "companyName": "Company Name",
-      "createdAt": "Created At",
-      "email": "Email",
-      "firstName": "First Name",
-      "lastName": "Last Name",
-      "phoneNumber": "Phone Number",
-      "profileName": "Profile Name",
-      "publicId": "Public ID",
-      "status": "Status",
-      "userType": "User Type"
-    },
-    "messages": {
-      "create": {
-        "error": "Creation failed.",
-        "success": "Creation successful."
-      },
-      "delete": {
-        "confirm": "Are you sure you want to delete this user?",
-        "error": "Deletion failed.",
-        "success": "Deletion successful.",
-        "success_one": "1 user deleted.",
-        "success_other": "{{count}} users deleted."
-      },
-      "noData": "No users found.",
-      "search": {
-        "error": "Search failed."
-      },
-      "update": {
-        "error": "Update failed.",
-        "success": "Update successful."
-      }
-    },
-    "title": "Users",
-    "totalCount_one": "1 user",
-    "totalCount_other": "{{count}} users"
-  },
-  "vwtransactionssummaries": {
-    "headers": {
-      "aggregateId": "Aggregate ID",
-      "aggregateType": "Aggregate Type",
-      "amount": "Amount",
-      "applicationName": "Application Name",
-      "companyName": "Company Name",
-      "createdAt": "Created At",
-      "currency": "Currency",
-      "externalReference": "External Reference",
-      "paymentMethodCode": "Payment Method Code",
-      "paymentMethodName": "Payment Method Name",
-      "providerFinalReference": "Provider Final Reference",
-      "providerInitialReference": "Provider Initial Reference",
-      "status": "Status",
-      "updatedAt": "Updated At"
-    }
-  },
-  "vwTransactionsSummarys": {
-    "actions": {
-      "add": "_add",
-      "more": "More Actions",
-      "view": "View"
-    },
-    "messages": {
-      "noData": "No transaction summaries found.",
-      "search": {
-        "error": "Search failed."
-      }
-    },
-    "title": "_title",
-    "totalCount_one": "_totalCount",
-    "totalCount_other": "_totalCount"
-  },
-  "webhookLog": {
-    "actions": {
-      "add": "_add",
-      "more": "More Actions",
-      "view": "View"
-    },
-    "messages": {
-      "noData": "No webhook logs found.",
-      "search": {
-        "error": "Search failed."
-      }
-    },
-    "title": "_title",
-    "totalCount_one": "_totalCount",
-    "totalCount_other": "_totalCount"
-  },
-  "webhooklogs": {
-    "headers": {
-      "attemptNumber": "Attempt Number",
-      "createdAt": "Created At",
-      "errorMessage": "Error Message",
-      "requestBody": "Request Body",
-      "responseBody": "Response Body",
-      "responseStatusCode": "Response Status Code",
-      "webhookId": "Webhook ID",
-      "webhookName": "Webhook Name"
-    }
-  },
-  "webhooks": {
-    "actions": {
-      "add": "Add Webhook",
-      "more": "More Actions",
-      "view": "View"
-    },
-    "bulk": {
-      "deleteError": "Error during deletion.",
-      "deleteReason": "Reason for deletion",
-      "partialError_one": "A partial error occurred.",
-      "partialError_other": "{{count}} partial errors occurred."
-    },
-    "form": {
-      "applicationIdLabel": "Application",
-      "applicationIdPlaceholder": "Select an application",
-      "create": {
-        "description": "Add a new webhook.",
-        "title": "Create Webhook"
-      },
-      "edit": {
-        "description": "Update the details of this webhook.",
-        "submit": "Save Changes",
-        "title": "Edit Webhook"
-      },
-      "maxRetriesIdLabel": "Max Retries",
-      "maxRetriesIdPlaceholder": "Enter max number of retries",
-      "urlLabel": "URL",
-      "urlPlaceholder": "Enter URL"
-    },
-    "headers": {
-      "applicationName": "Application Name",
-      "createdAt": "Created At",
-      "eventType": "Event Type",
-      "isActive": "Active",
-      "lastSecretGenerated": "Last Secret Generated",
-      "maxRetries": "Max Retries",
-      "timeoutSeconds": "Timeout (seconds)",
-      "url": "URL"
-    },
-    "messages": {
-      "create": {
-        "error": "Creation failed.",
-        "success": "Creation successful."
-      },
-      "delete": {
-        "error": "Deletion failed.",
-        "success": "Deletion successful.",
-        "success_one": "1 webhook deleted.",
-        "success_other": "{{count}} webhooks deleted."
-      },
-      "dropdown": {
-        "error": "Load failed."
-      },
-      "fetch": {
-        "error": "Fetch failed."
-      },
-      "noData": "No webhooks found.",
-      "search": {
-        "error": "Search failed."
-      },
-      "update": {
-        "error": "Update failed.",
-        "success": "Update successful."
-      }
-    },
-    "title": "Webhooks",
-    "totalCount_one": "1 webhook",
-    "totalCount_other": "{{count}} webhooks"
-  },
-  "withdrawalMethod": {
-    "actions": {
-      "delete": "Delete",
-      "edit": "Edit",
-      "more": "More",
-      "view": "View"
-    },
-    "bulk": {
-      "deleteError": "Error during deletion.",
-      "deleteReason": "Reason for deletion",
-      "partialError_one": "A partial error occurred.",
-      "partialError_other": "{{count}} partial errors occurred."
-    },
-    "create": "Create Withdrawal Method",
-    "edit": "Edit Withdrawal Method",
-    "form": {
-      "create": {
-        "submit": "Create"
-      },
-      "edit": {
-        "loadError": "Load failed.",
-        "submit": "Save Changes"
-      }
-    },
-    "messages": {
-      "create": {
-        "error": "Creation failed.",
-        "success": "Creation successful."
-      },
-      "delete": {
-        "confirm": "Are you sure?",
-        "error": "Deletion failed.",
-        "success": "Deletion successful.",
-        "success_one": "1 method deleted.",
-        "success_other": "{{count}} methods deleted."
-      },
-      "noData": "No withdrawal methods found.",
-      "search": {
-        "error": "Search failed."
-      },
-      "update": {
-        "error": "Update failed.",
-        "success": "Update successful."
-      }
-    },
-    "title": "Withdrawal Methods"
-  },
-  "withdrawalmethods": {
-    "headers": {
-      "companyName": "Company Name",
-      "createdAt": "Created At",
-      "dailyLimit": "Daily Limit",
-      "isDefault": "Default",
-      "isVerified": "Verified",
-      "monthlyLimit": "Monthly Limit",
-      "name": "Name",
-      "paymentMethodName": "Payment Method Name",
-      "phoneNumber": "Phone Number",
-      "singleWithdrawalLimit": "Single Withdrawal Limit",
-      "verificationDate": "Verification Date",
-      "verificationReference": "Verification Reference"
-    }
-  },
-  "withdrawalMethods": {
-    "actions": {
-      "add": "_add"
-    },
-    "form": {
-      "companyIdLabel": "Company",
-      "companyIdPlaceholder": "Select a company",
-      "create": {
-        "description": "Add a new withdrawal method.",
-        "title": "Create Withdrawal Method"
-      },
-      "dailyLimitLabel": "Daily Limit",
-      "dailyLimitPlaceholder": "Enter daily limit",
-      "edit": {
-        "description": "Update the details of this method.",
-        "title": "Edit Withdrawal Method"
-      },
-      "fields": {
-        "isDefault": "Default",
-        "isVerified": "Verified"
-      },
-      "isDefaultLabel": "Default",
-      "isVerifiedLabel": "Verified",
-      "monthlyLimitLabel": "Monthly Limit",
-      "monthlyLimitPlaceholder": "Enter monthly limit",
-      "nameLabel": "Name",
-      "namePlaceholder": "Enter name",
-      "paymentMethodIdLabel": "Payment Method",
-      "paymentMethodIdPlaceholder": "Select a payment method",
-      "phoneNumberLabel": "Phone Number",
-      "phoneNumberPlaceholder": "Enter phone number",
-      "singleWithdrawalLimitLabel": "Single Withdrawal Limit",
-      "singleWithdrawalLimitPlaceholder": "Enter single withdrawal limit",
-      "verificationDateLabel": "Verification Date",
-      "verificationDatePlaceholder": "Enter verification date",
-      "verificationReferenceLabel": "Verification Reference",
-      "verificationReferencePlaceholder": "Enter verification reference"
-    },
-    "messages": {
-      "noData": "No withdrawal methods found."
-    },
-    "title": "_title",
-    "totalCount_one": "_totalCount",
-    "totalCount_other": "_totalCount"
-  },
-  "withdrawals": {
-    "actions": {
-      "view": "View"
-    },
-    "messages": {
-      "noData": "No withdrawals found."
-    }
-  },
-  "withdrawalsreadmodels": {
-    "headers": {
-      "accountNumber": "Account Number",
-      "amount": "Amount",
-      "applicationName": "Application Name",
-      "companyName": "Company Name",
-      "createdAt": "Created At",
-      "currencySymbol": "Currency Symbol",
-      "feeAppliedAmount": "Fee Applied",
-      "internalFeeAmount": "Internal Fee",
-      "netAmount": "Net Amount",
-      "paymentMethodName": "Payment Method Name",
-      "providerFeeAmount": "Provider Fee",
-      "providerReference": "Provider Reference",
-      "status": "Status",
-      "transactionId": "Transaction ID",
-      "verificationAttempts": "Verification Attempts",
-      "withdrawalMethodName": "Withdrawal Method Name"
-    }
-  },
-  "withdrawalsReadModels": {
-    "actions": {
-      "add": "_add",
-      "more": "More Actions",
-      "view": "View"
-    },
-    "messages": {
-      "noData": "No withdrawals found.",
-      "search": {
-        "error": "Search failed."
-      }
-    },
-    "title": "_title",
-    "totalCount_one": "_totalCount",
-    "totalCount_other": "_totalCount"
-  }
+  about: {
+    cta: "Join the Fujisat Pay revolution. Contact our team today to learn more.",
+    storyMission: {
+      content:
+        "Fujisat Pay is the result of the expertise and vision of Graphics System SA, a Cameroonian technology company with a mission to revolutionize mobile payment management in Africa. With our deep knowledge of the local market and business challenges, we have developed a robust, secure platform that complies with international standards.",
+      title: "Our Story & Mission",
+    },
+    title: "About Fujisat Pay: Your Strategic Partner in Mobile Payment Solutions in Cameroon",
+    values: {
+      title: "Our Core Values",
+    },
+    vision: {
+      content: "To become the undisputed leader in mobile payment aggregation in Africa, actively contributing to financial inclusion and digital transformation of businesses.",
+      title: "Our Vision",
+    },
+  },
+  accessDenied: "Access denied",
+  actions: {
+    openMenu: "_openMenu",
+  },
+  allowedips: {
+    headers: {
+      applicationId: "Application ID",
+      applicationName: "Application Name",
+      applicationStatus: "Application Status",
+      createdAt: "Created At",
+      ipAddress: "IP Address",
+    },
+  },
+  allowedIps: {
+    actions: {
+      add: "Add Allowed IP",
+      delete: "Delete",
+      edit: "Edit",
+      more: "More Actions",
+      view: "View",
+    },
+    bulk: {
+      deleteError: "Error deleting selected IPs.",
+      deleteReason: "Reason for bulk deletion",
+      partialError_one: "A partial error occurred.",
+      partialError_other: "{{count}} partial errors occurred.",
+    },
+    details: {
+      title: "Allowed IP Details",
+    },
+    form: {
+      applicationIdLabel: "Application",
+      applicationIdPlaceholder: "Select an application",
+      create: {
+        description: "Add a new allowed IP address.",
+        title: "Create Allowed IP",
+      },
+      edit: {
+        description: "Update the details for this allowed IP address.",
+        submit: "Save Changes",
+        title: "Edit Allowed IP",
+      },
+      ipAddressLabel: "IP Address",
+      ipAddressPlaceholder: "Enter IP address",
+    },
+    messages: {
+      create: {
+        error: "Failed to create allowed IP.",
+        success: "Allowed IP created successfully.",
+      },
+      delete: {
+        error: "Failed to delete allowed IP.",
+        success: "Allowed IP deleted successfully.",
+        success_one: "1 allowed IP deleted successfully.",
+        success_other: "{{count}} allowed IPs deleted successfully.",
+      },
+      noData: "No allowed IPs found.",
+      search: {
+        error: "Failed to search allowed IPs.",
+      },
+      update: {
+        error: "Failed to update allowed IP.",
+        success: "Allowed IP updated successfully.",
+      },
+    },
+    title: "Allowed IPs",
+    totalCount_one: "1 allowed IP",
+    totalCount_other: "{{count}} allowed IPs",
+  },
+  applications: {
+    actions: {
+      add: "Add Application",
+      delete: "Delete",
+      edit: "Edit",
+      more: "More Actions",
+      view: "View",
+    },
+    bulk: {
+      delete_one: "Delete this application?",
+      delete_other: "Delete these applications?",
+      deleteConfirm_one: "Are you sure you want to delete this application?",
+      deleteConfirm_other: "Are you sure you want to delete these {{count}} applications?",
+      deleteError: "Error deleting applications.",
+      deleteReason: "Reason for bulk deletion",
+      deleting: "Deleting...",
+      partialError_one: "A partial error occurred.",
+      partialError_other: "{{count}} partial errors occurred.",
+    },
+    create: "Create Application",
+    details: "Application Details",
+    edit: "Edit Application",
+    form: {
+      companyIdLabel: "Company",
+      companyIdPlaceholder: "Select a company",
+      create: {
+        description: "Add a new application.",
+        submit: "Create",
+        title: "Create Application",
+      },
+      descriptionLabel: "Description",
+      descriptionPlaceholder: "Enter description",
+      edit: {
+        description: "Update the application details.",
+        loadError: "Failed to load application.",
+        submit: "Save Changes",
+        title: "Edit Application",
+      },
+      nameLabel: "Name",
+      namePlaceholder: "Enter name",
+    },
+    headers: {
+      companyName: "Company Name",
+      createdAt: "Created At",
+      description: "Description",
+      environment: "Environment",
+      name: "Name",
+      status: "Status",
+    },
+    messages: {
+      create: {
+        error: "Failed to create application.",
+        success: "Application created successfully.",
+      },
+      delete: {
+        confirm: "Are you sure?",
+        error: "Failed to delete application.",
+        success: "Application deleted successfully.",
+        success_one: "1 application deleted.",
+        success_other: "{{count}} applications deleted.",
+      },
+      noData: "No applications found.",
+      search: {
+        error: "Failed to search applications.",
+      },
+      update: {
+        error: "Failed to update application.",
+        success: "Application updated successfully.",
+      },
+    },
+    title: "Applications",
+    totalCount_one: "1 application",
+    totalCount_other: "{{count}} applications",
+  },
+  auditlogs: {
+    headers: {
+      action: "Action",
+      changedColumn: "Changed Column",
+      changeReason: "Change Reason",
+      companyEmail: "Company Email",
+      companyId: "Company ID",
+      companyName: "Company Name",
+      companyPhoneNumber: "Company Phone Number",
+      companyStatus: "Company Status",
+      createdAt: "Created At",
+      entityDisplayName: "Entity Display Name",
+      entityId: "Entity ID",
+      entityName: "Entity Name",
+      entityType: "Entity Type",
+      ipAddress: "IP Address",
+      newValues: "New Values",
+      oldValues: "Old Values",
+      riskLevel: "Risk Level",
+      userAgent: "User Agent",
+      userEmail: "User Email",
+      userFirstName: "User First Name",
+      userId: "User ID",
+      userLastName: "User Last Name",
+      userPhoneNumber: "User Phone Number",
+      userStatus: "User Status",
+    },
+  },
+  auditLogs: {
+    actions: {
+      add: "Add Log",
+      more: "More Actions",
+      view: "View",
+    },
+    bulk: {
+      deleteError: "Error deleting logs.",
+      deleteReason: "Reason for deletion",
+      partialError_one: "A partial error occurred.",
+      partialError_other: "{{count}} partial errors occurred.",
+    },
+    details: {
+      title: "Audit Log Details",
+    },
+    messages: {
+      create: {
+        error: "Failed to create log.",
+        success: "Log created successfully.",
+      },
+      delete: {
+        error: "Failed to delete log.",
+        success: "Log deleted successfully.",
+        success_one: "1 log deleted.",
+        success_other: "{{count}} logs deleted.",
+      },
+      noData: "No audit logs found.",
+      search: {
+        error: "Search failed.",
+      },
+      update: {
+        error: "Update failed.",
+        success: "Update successful.",
+      },
+    },
+    title: "Audit Logs",
+    totalCount_one: "1 log",
+    totalCount_other: "{{count}} logs",
+  },
+  auth: {
+    login: {
+      description: "Log in by entering your credentials.",
+      email: "Email",
+      emailPlaceholder: "Enter your email",
+      password: "Password",
+      passwordPlaceholder: "••••••••",
+      signIn: "Sign In",
+      title: "Sign in to your account",
+    },
+  },
+  balancesreadmodels: {
+    headers: {
+      availableBalance: "Available Balance",
+      balanceType: "Balance Type",
+      balanceTypeCode: "Balance Type Code",
+      balanceTypeName: "Balance Type Name",
+      createdAt: "Created At",
+      createdByEmail: "Created By (Email)",
+      createdByFirstName: "Created By (First Name)",
+      createdByLastName: "Created By (Last Name)",
+      createdByPhoneNumber: "Created By (Phone)",
+      createdByStatus: "Created By (Status)",
+      currency: "Currency",
+      currencyCode: "Currency Code",
+      currencyName: "Currency Name",
+      currencySymbol: "Currency Symbol",
+      currentBalance: "Current Balance",
+      currentVersion: "Current Version",
+      lastCreditDate: "Last Credit Date",
+      lastDebitDate: "Last Debit Date",
+      lastReconciliationBy: "Last Reconciliation By",
+      lastReconciliationByEmail: "Last Rec. By (Email)",
+      lastReconciliationByFirstName: "Last Rec. By (First Name)",
+      lastReconciliationByLastName: "Last Rec. By (Last Name)",
+      lastReconciliationByPhoneNumber: "Last Rec. By (Phone)",
+      lastReconciliationByStatus: "Last Rec. By (Status)",
+      lastReconciliationDate: "Last Reconciliation Date",
+      ownerId: "Owner ID",
+      ownerName: "Owner Name",
+      ownerType: "Owner Type",
+      paymentMethodCode: "Payment Method Code",
+      paymentMethodId: "Payment Method ID",
+      paymentMethodName: "Payment Method Name",
+      reconciliationNotes: "Reconciliation Notes",
+      reconciliationStatus: "Reconciliation Status",
+      reservedBalance: "Reserved Balance",
+      totalCredits: "Total Credits",
+      totalDebits: "Total Debits",
+      transactionCount: "Transaction Count",
+      updatedByEmail: "Updated By (Email)",
+      updatedByFirstName: "Updated By (First Name)",
+      updatedByLastName: "Updated By (Last Name)",
+      updatedByPhoneNumber: "Updated By (Phone)",
+      updatedByStatus: "Updated By (Status)",
+    },
+  },
+  balancesReadModels: {
+    actions: {
+      add: "Add Balance",
+      delete: "Delete",
+      edit: "Edit",
+      more: "More Actions",
+      view: "View",
+    },
+    bulk: {
+      delete_one: "Delete this balance?",
+      delete_other: "Delete these balances?",
+      deleteConfirm_one: "Are you sure you want to delete this balance?",
+      deleteConfirm_other: "Are you sure you want to delete these {{count}} balances?",
+      deleteError: "Error deleting balances.",
+      deleteReason: "Reason for deletion",
+      deleting: "Deleting...",
+      partialError_one: "A partial error occurred.",
+      partialError_other: "{{count}} partial errors occurred.",
+    },
+    messages: {
+      create: {
+        error: "Failed to create balance.",
+        success: "Balance created successfully.",
+      },
+      delete: {
+        confirm: "Are you sure?",
+        error: "Failed to delete balance.",
+        success: "Balance deleted successfully.",
+        success_one: "1 balance deleted.",
+        success_other: "{{count}} balances deleted.",
+      },
+      noData: "No balances found.",
+      search: {
+        error: "Search failed.",
+      },
+      update: {
+        error: "Update failed.",
+        success: "Update successful.",
+      },
+    },
+    title: "Balances",
+    totalCount_one: "1 balance",
+    totalCount_other: "{{count}} balances",
+  },
+  blockedIp: {
+    actions: {
+      add: "Add Blocked IP",
+      delete: "Delete",
+      edit: "Edit",
+      more: "More Actions",
+      view: "View",
+    },
+    bulk: {
+      deleteError: "Error deleting IPs.",
+      deleteReason: "Reason for deletion",
+      partialError_one: "A partial error occurred.",
+      partialError_other: "{{count}} partial errors occurred.",
+    },
+    details: {
+      title: "Blocked IP Details",
+    },
+    form: {
+      create: {
+        description: "Add a new IP to block.",
+        submit: "Create",
+        title: "Block IP",
+      },
+      edit: {
+        submit: "Save Changes",
+      },
+    },
+    messages: {
+      create: {
+        error: "Failed to block IP.",
+        success: "IP blocked successfully.",
+      },
+      delete: {
+        confirm: "Are you sure?",
+        error: "Unblock failed.",
+        success: "Unblock successful.",
+        success_one: "Success",
+        success_other: "Success",
+      },
+      noData: "No blocked IPs found.",
+      search: {
+        error: "Search failed.",
+      },
+      update: {
+        error: "Update failed.",
+        success: "Update successful.",
+      },
+    },
+    title: "Blocked IPs",
+    totalCount_one: "1 blocked IP",
+    totalCount_other: "{{count}} blocked IPs",
+  },
+  blockedips: {
+    headers: {
+      applicationId: "Application ID",
+      applicationName: "Application Name",
+      applicationStatus: "Application Status",
+      createdAt: "Created At",
+      ipAddress: "IP Address",
+      reason: "Reason",
+    },
+  },
+  blockedIps: {
+    form: {
+      applicationIdLabel: "Application",
+      applicationIdPlaceholder: "Select an application",
+      edit: {
+        description: "Update the details of this blocked IP.",
+        title: "Edit Blocked IP",
+      },
+      ipdAdressLabel: "IP Address",
+      ipdAdressPlaceholder: "Enter IP address",
+      reasonLabel: "Reason",
+      reasonPlaceholder: "Enter reason",
+    },
+  },
+  common: {
+    actions: {
+      delete: "Delete",
+      edit: "Edit",
+      more: "More Actions",
+      view: "View",
+    },
+    cancel: "Cancel",
+    dataGrid: {
+      items: "Items",
+      total: "Total",
+    },
+    filter: {
+      actions: {
+        clear: "Clear",
+        export: "Export",
+        filter: "Filter",
+        import: "Import",
+        more: "More",
+        refresh: "Refresh",
+        reset: "Reset",
+      },
+      selection: {
+        count_one: "1 selected",
+        count_other: "{{count}} selected",
+      },
+      view: {
+        grid: "Grid",
+        list: "List",
+      },
+    },
+    form: {
+      valueLabel: "Value",
+    },
+  },
+  companies: {
+    actions: {
+      add: "Add Company",
+      delete: "Delete Company",
+      edit: "Edit Company",
+      more: "More Actions",
+      view: "View Company",
+    },
+    bulk: {
+      delete_one: "Delete this company?",
+      delete_other: "Delete these companies?",
+      deleteConfirm_one: "Are you sure you want to delete this company?",
+      deleteConfirm_other: "Are you sure you want to delete these {{count}} companies?",
+      deleteError: "Error during deletion.",
+      deleteReason: "Reason for deletion",
+      deleting: "Deleting...",
+      partialError_one: "A partial error occurred.",
+      partialError_other: "{{count}} partial errors occurred.",
+    },
+    create: "Create Company",
+    details: "Company Details",
+    edit: "Edit Company",
+    fields: {
+      address: "Address",
+      businessRegistrationNumber: "Business Registration Number",
+      companySize: "Size",
+      companyType: "Type",
+      contact: "_contact",
+      contactPerson: "Contact Person",
+      countryCode: "Country Code",
+      createdAt: "Creation Date",
+      email: "Email",
+      isVerified: "Verified",
+      name: "Name",
+      phoneNumber: "Phone Number",
+      status: "Status",
+      taxNumber: "Tax Number",
+    },
+    form: {
+      adressLabel: "Address",
+      adressPlaceholder: "Enter address",
+      businessRegistrationNumberLabel: "RCCM Number",
+      businessRegistrationNumberPlaceholder: "Enter RCCM number",
+      companySizeLabel: "Company Size",
+      companySizePlaceholder: "Select size",
+      companyTypeLabel: "Company Type",
+      companyTypePlaceholder: "Select type",
+      conctactPhoneLabel: "Contact Phone",
+      contactPersonLabel: "Contact Person",
+      contactPersonPlaceholder: "Enter contact person",
+      contactPhonePlaceholder: "Enter contact phone",
+      countryIdLabel: "Country",
+      countryIdPlaceholder: "Select a country",
+      create: {
+        description: "Add a new company.",
+        submit: "Create",
+      },
+      edit: {
+        description: "Update company details.",
+        loadError: "Failed to load company.",
+        submit: "Save Changes",
+        title: "Edit Company",
+      },
+      emailLabel: "Email",
+      emailPlaceholder: "Enter email",
+      nameLabel: "Company Name",
+      namePlaceholder: "Enter company name",
+      phoneNumberLabel: "Phone Number",
+      phoneNumberPlaceholder: "Enter phone number",
+      statusLabel: "Status",
+      statusPlaceholder: "Select a status",
+      taxNumberLabel: "Tax Number",
+      taxNumberPlaceholder: "Enter tax number",
+      websiteLabel: "Website",
+      websitePlaceholder: "Enter website URL",
+    },
+    headers: {
+      contactPhone: "Contact Phone",
+      countryId: "Country ID",
+      countryName: "Country Name",
+      website: "Website",
+    },
+    messages: {
+      create: {
+        error: "Failed to create company.",
+        success: "Company created successfully.",
+      },
+      delete: {
+        confirm: "Are you sure?",
+        error: "Deletion failed.",
+        success: "Deletion successful.",
+        success_one: "1 company deleted.",
+        success_other: "{{count}} companies deleted.",
+      },
+      dropdown: {
+        error: "Failed to load companies.",
+      },
+      fetch: {
+        error: "Failed to fetch companies.",
+      },
+      noData: "No companies found.",
+      search: {
+        error: "Search failed.",
+      },
+      update: {
+        error: "Update failed.",
+        success: "Update successful.",
+      },
+    },
+    tabs: {
+      settings: {
+        description: "Manage company settings.",
+      },
+    },
+    title: "Companies",
+    totalCount_one: "1 company",
+    totalCount_other: "{{count}} companies",
+  },
+  company: {
+    messages: {
+      dropdown: {
+        error: "Failed to load companies.",
+      },
+    },
+  },
+  companyapplimits: {
+    headers: {
+      apiRequestsLimit: "API Requests Limit",
+      applicationId: "Application ID",
+      applicationName: "Application Name",
+      applicationStatus: "Application Status",
+      companyEmail: "Company Email",
+      companyId: "Company ID",
+      companyName: "Company Name",
+      companyPhoneNumber: "Company Phone Number",
+      companyStatus: "Company Status",
+      createdAt: "Created At",
+      defaultDailyLimit: "Default Daily Limit",
+      defaultMonthlyLimit: "Default Monthly Limit",
+      defaultSingleTransactionLimit: "Default Single Transaction Limit",
+    },
+  },
+  companyAppLimits: {
+    actions: {
+      add: "Add Limit",
+      delete: "Delete",
+      edit: "Edit",
+      more: "More Actions",
+      view: "View",
+    },
+    bulk: {
+      delete_one: "Delete this limit?",
+      delete_other: "Delete these limits?",
+      deleteConfirm_one: "Are you sure you want to delete this limit?",
+      deleteConfirm_other: "Are you sure you want to delete these {{count}} limits?",
+      deleteError: "Error during deletion.",
+      deleteReason: "Reason for deletion",
+      deleting: "Deleting...",
+      partialError_one: "A partial error occurred.",
+      partialError_other: "{{count}} partial errors occurred.",
+    },
+    create: "Create Company App Limit",
+    edit: "Edit Company App Limit",
+    form: {
+      apiRequestsLimitLabel: "API Requests Limit",
+      apiRequestsLimitPlaceholder: "Enter API requests limit",
+      applicationIdLabel: "Application",
+      applicationIdPlaceholder: "Select an application",
+      companyIdLabel: "Company",
+      companyIdPlaceholder: "Select a company",
+      create: {
+        description: "Add a new app limit for a company.",
+        submit: "Create",
+        title: "Create Company App Limit",
+      },
+      defaultDailyLimitLabel: "Default Daily Limit",
+      defaultDailyLimitPlaceholder: "Enter default daily limit",
+      edit: {
+        description: "Update the details of this company app limit.",
+        loadError: "Failed to load limit.",
+        submit: "Save Changes",
+        title: "Edit Company App Limit",
+      },
+    },
+    messages: {
+      create: {
+        error: "Creation failed.",
+        success: "Creation successful.",
+      },
+      delete: {
+        confirm: "Are you sure you want to delete this limit?",
+        error: "Deletion failed.",
+        success: "Deletion successful.",
+        success_one: "1 limit deleted.",
+        success_other: "{{count}} limits deleted.",
+      },
+      noData: "No limits found.",
+      search: {
+        error: "Search failed.",
+      },
+      update: {
+        error: "Update failed.",
+        success: "Update successful.",
+      },
+    },
+    title: "Company App Limits",
+    totalCount_one: "1 limit",
+    totalCount_other: "{{count}} limits",
+  },
+  contact: {
+    contactInfo: {
+      address: "Address",
+      email: "Commercial Email",
+      hours: "Office Hours: Monday - Friday, 8:00 AM - 5:00 PM (WAT - West Africa Time)",
+      phone: "Phone",
+      title: "Direct Contact Information",
+    },
+    form: {
+      companyName: "Company Name",
+      companyType: "Company Type",
+      consent: "I have read and accept the Privacy Policy and Terms of Service.",
+      email: "Professional Email",
+      fullName: "Full Name",
+      message: "Your Message",
+      phone: "Phone Number",
+      subject: "Subject of your message",
+      submit: "Send your Request",
+    },
+    intro:
+      "Do you have questions, need a demo, or want to get a Fujisat Pay account? Our sales team is ready to assist you. Please note that opening an account is done through direct contact with our sales representatives.",
+    title: "Contact the Fujisat Pay Team: We're here for you",
+  },
+  countries: {
+    actions: {
+      add: "Add Country",
+      delete: "Delete",
+      edit: "Edit",
+      more: "More Actions",
+      view: "View",
+    },
+    bulk: {
+      deleteError: "Failed to delete selected countries",
+      deleteReason: "Bulk delete operation",
+      partialError_one: "1 partial error occurred.",
+      partialError_other: "{{count}} partial errors occurred.",
+    },
+    create: "Create Country",
+    edit: "Edit Country",
+    form: {
+      codeLabel: "Code",
+      codePlaceholder: "Enter country code",
+      create: {
+        description: "Add a new country.",
+        submit: "Create",
+        title: "Create Country",
+      },
+      edit: {
+        description: "Update the details of this country.",
+        loadError: "Failed to load country.",
+        submit: "Save Changes",
+        title: "Edit Country",
+      },
+      fields: {
+        isActive: "Active",
+        isVerified: "Verified",
+      },
+      nameLabel: "Name",
+      namePlaceholder: "Enter country name",
+    },
+    headers: {
+      code: "Code",
+      createdAt: "Created At",
+      isActive: "Active",
+      name: "Name",
+    },
+    messages: {
+      create: {
+        error: "Failed to create country.",
+        success: "Country created successfully.",
+      },
+      delete: {
+        confirm: "Are you sure you want to delete this country?",
+        error: "Failed to delete country.",
+        success: "Country deleted successfully.",
+        success_one: "1 country deleted.",
+        success_other: "{{count}} countries deleted.",
+      },
+      noData: "No countries found.",
+      search: {
+        error: "Failed to search countries.",
+      },
+      update: {
+        error: "Failed to update country.",
+        success: "Country updated successfully.",
+      },
+    },
+    title: "Countries",
+    totalCount_one: "1 country",
+    totalCount_other: "{{count}} countries",
+  },
+  currencies: {
+    actions: {
+      add: "Add Currency",
+      delete: "Delete",
+      edit: "Edit",
+      more: "More Actions",
+      view: "View",
+    },
+    bulk: {
+      delete_one: "Delete this currency?",
+      delete_other: "Delete these currencies?",
+      deleteConfirm_one: "Are you sure you want to delete this currency?",
+      deleteConfirm_other: "Are you sure you want to delete these {{count}} currencies?",
+      deleteError: "Error during deletion.",
+      deleteReason: "Reason for deletion",
+      deleting: "Deleting...",
+      partialError_one: "A partial error occurred.",
+      partialError_other: "{{count}} partial errors occurred.",
+    },
+    create: "Create Currency",
+    edit: "Edit Currency",
+    form: {
+      codeLabel: "Code",
+      codePlaceholder: "Enter code",
+      create: {
+        description: "Fill in the details to create a new currency.",
+        title: "Create Currency",
+      },
+      decimalPlacesLabel: "Decimal Places",
+      decimalPlacesPlaceholder: "Enter number of decimal places",
+      edit: {
+        description: "Update the currency details.",
+        loadError: "Failed to load currency.",
+        submit: "Save Changes",
+        title: "Edit Currency",
+      },
+      exchangeRateLabel: "Exchange Rate",
+      fields: {
+        isActive: "Active",
+        isBaseCurrency: "Base Currency",
+      },
+      nameLabel: "Name",
+      namePlaceholder: "Enter name",
+      symbolLabel: "Symbol",
+      symbolPlaceholder: "Enter symbol",
+    },
+    headers: {
+      code: "Code",
+      createdAt: "Created At",
+      decimalPlaces: "Decimal Places",
+      exchangeRate: "Exchange Rate",
+      isActive: "Active",
+      isBaseCurrency: "Base Currency",
+      name: "Name",
+      symbol: "Symbol",
+    },
+    messages: {
+      create: {
+        error: "Creation failed.",
+        success: "Creation successful.",
+      },
+      delete: {
+        confirm: "Are you sure?",
+        error: "Deletion failed.",
+        success: "Deletion successful.",
+        success_one: "1 currency deleted.",
+        success_other: "{{count}} currencies deleted.",
+      },
+      noData: "No currencies found.",
+      search: {
+        error: "Search failed.",
+      },
+      update: {
+        error: "Update failed.",
+        success: "Update successful.",
+      },
+    },
+    title: "Currencies",
+    totalCount_one: "1 currency",
+    totalCount_other: "{{count}} currencies",
+  },
+  dataGrid: {
+    emptyMessage: "No items to display",
+  },
+  developers: {
+    badge: "DEVELOPERS FIRST",
+    cta: {
+      description: "Our developer support team is here to help you with any technical questions or integration challenges you may face.",
+      primary: "Contact Developer Support",
+      secondary: "Join Our Developer Community",
+      title: "Technical Questions?",
+    },
+    endpoints: {
+      description: "Description",
+      endpoint: "Endpoint",
+      method: "Method",
+      title: "Key API Endpoints",
+    },
+    intro:
+      "The Fujisat Pay API is designed for quick and seamless integration with your applications, websites, or existing systems. Access all our features via secure and reliable endpoints.",
+    resources: {
+      apiDocs: "Access API Documentation",
+      quickstart: "Quick Start Guide",
+      sandbox: "Developer Portal / Sandbox",
+      sdkLibraries: "Client Libraries (SDKs)",
+      title: "Our Developer Resources",
+    },
+    security: {
+      auth: {
+        description: "Fujisat Pay uses multi-level authentication with API Keys and JWT tokens for secure access to our API endpoints.",
+        title: "Authentication Methods",
+      },
+      encryption: {
+        description: "Sensitive data is encrypted using AES-256-GCM, with keys managed through Azure Key Vault for maximum security.",
+        title: "Data Encryption",
+      },
+      ip: {
+        description: "For added security, you can restrict API access to specific IP addresses or ranges approved for your account.",
+        title: "IP Restrictions",
+      },
+      tabs: {
+        auth: "Authentication",
+        encryption: "Encryption",
+        ip: "IP Restrictions",
+      },
+      title: "API Security",
+    },
+    title: "Fujisat Pay Integration: A Powerful, Flexible, and Documented API",
+    whyIntegrate: {
+      documentation: {
+        description: "Clear guides and code examples.",
+        title: "Complete Documentation",
+      },
+      restful: {
+        description: "Easy to understand and use.",
+        title: "Intuitive RESTful API",
+      },
+      sandbox: {
+        description: "Test your integrations risk-free.",
+        title: "Sandbox Environment",
+      },
+      sdks: {
+        description: "Available for Python, Node.js, PHP, and more.",
+        title: "Client Libraries (SDKs)",
+      },
+      security: {
+        description: "API Key and JWT authentication, data encryption.",
+        title: "Robust Security",
+      },
+      title: "Why Integrate Fujisat Pay?",
+      webhooks: {
+        description: "Receive real-time notifications for all key events.",
+        title: "Webhooks",
+      },
+    },
+  },
+  documentsTypes: {
+    actions: {
+      add: "Add Type",
+      more: "More Actions",
+    },
+    bulk: {
+      deleteError: "Error during deletion.",
+      deleteReason: "Reason for deletion",
+      partialError_one: "A partial error occurred.",
+      partialError_other: "{{count}} partial errors occurred.",
+    },
+    form: {
+      create: {
+        description: "Add a new document type.",
+        submit: "Create",
+        title: "Create Document Type",
+      },
+      descriptionLabel: "Description",
+      descriptionPlaceholder: "Enter description",
+      edit: {
+        description: "Update the details of this document type.",
+        submit: "Save Changes",
+        title: "Edit Document Type",
+      },
+      nameLabel: "Name",
+      namePlaceholder: "Enter name",
+    },
+    messages: {
+      create: {
+        error: "Creation failed.",
+        success: "Creation successful.",
+      },
+      delete: {
+        error: "Deletion failed.",
+        success: "Deletion successful.",
+        success_one: "1 document type deleted.",
+        success_other: "{{count}} document types deleted.",
+      },
+      noData: "No document types found.",
+      search: {
+        error: "Search failed.",
+      },
+      update: {
+        error: "Update failed.",
+        success: "Update successful.",
+      },
+    },
+    title: "Document Types",
+    totalCount_one: "1 document type",
+    totalCount_other: "{{count}} document types",
+  },
+  documentTypes: {
+    headers: {
+      createdAt: "Created At",
+      description: "Description",
+      name: "Name",
+    },
+  },
+  encrypted: "_encrypted",
+  FAQ: {
+    clearSearch: "Clear Search",
+    intro: "We've compiled the most frequently asked questions from our users and prospects. If you can't find the answer here, don't hesitate to contact us.",
+    noResults: "No matching questions found",
+    notFound: {
+      cta: "Contact Us",
+      description: "Our team is ready to help you with any specific questions.",
+      title: "Didn't find your answer?",
+    },
+    searchPlaceholder: "Search for questions...",
+    title: "Frequently Asked Questions",
+  },
+  features: {
+    badge: "FEATURES",
+    intro: "Fujisat Pay is designed to offer total control over your mobile financial operations in Cameroon, thanks to a suite of advanced and secure features.",
+    paymentManagement: {
+      benefit1: "Unified Orange Money and MTN Mobile Money Integration",
+      benefit2: "Comprehensive Transaction Lifecycle Management",
+      benefit3: "Automated Reconciliation and Reporting",
+      benefit4: "Customizable Payment Pages and Links",
+      description:
+        "Efficiently process incoming payments via Orange Money and MTN Mobile Money. Manage the complete lifecycle of each transaction (creation, processing, completion).",
+      title: "Payment Management",
+    },
+    reporting: {
+      benefit1: "Real-time transaction dashboards",
+      benefit2: "Custom report generation",
+      benefit3: "Data export capabilities (CSV, Excel)",
+      benefit4: "Payment method analysis",
+      description: "Gain valuable insights through comprehensive reporting and analysis tools for better decision-making.",
+      title: "Analytics & Reporting",
+    },
+    requestDemo: "Request a Demo",
+    security: {
+      benefit1: "Multi-level authentication (API Key, JWT)",
+      benefit2: "AES-256-GCM encryption for sensitive data",
+      benefit3: "IP address restriction capabilities",
+      benefit4: "Comprehensive audit logging",
+      description: "Protect your business and customers with enterprise-grade security features designed for the financial sector.",
+      title: "Security",
+    },
+    subtitle: "Power at your service",
+    title: "Fujisat Pay's Complete Features",
+    title1: "Power at your service",
+    title2: "",
+    withdrawalManagement: {
+      benefit1: "Two-Factor Verification for Security",
+      benefit2: "Support for Orange Money and MTN Mobile Money",
+      benefit3: "Batch Processing for High Volumes",
+      benefit4: "Flexible Approval Processes",
+      description: "Initiate and process fund withdrawal requests with optimal security. Whether via mobile money or bank transfer, Fujisat Pay adapts to your needs.",
+      title: "Withdrawal Management",
+    },
+  },
+  feeconfigurations: {
+    headers: {
+      createdAt: "Created At",
+      currency: "Currency",
+      currencyCode: "Currency Code",
+      currencyName: "Currency Name",
+      currencySymbol: "Currency Symbol",
+      endDate: "End Date",
+      feeTypeCode: "Fee Type Code",
+      feeTypeId: "Fee Type ID",
+      feeTypeName: "Fee Type Name",
+      feeTypeTransactionType: "Fee Type Transaction Type",
+      fixedAmount: "Fixed Amount",
+      isActive: "Active",
+      maxAmount: "Maximum Amount",
+      minAmount: "Minimum Amount",
+      ownerId: "Owner ID",
+      ownerType: "Owner Type",
+      percentageRate: "Percentage Rate",
+      startDate: "Start Date",
+    },
+  },
+  feeConfigurations: {
+    actions: {
+      add: "New Fee",
+      delete: "Delete",
+      edit: "Edit",
+      more: "More Actions",
+      view: "View",
+    },
+    bulk: {
+      delete_one: "Delete this configuration?",
+      delete_other: "Delete these configurations?",
+      deleteConfirm_one: "Are you sure you want to delete this configuration?",
+      deleteConfirm_other: "Are you sure you want to delete these {{count}} configurations?",
+      deleteError: "Error during deletion.",
+      deleteReason: "Reason for deletion",
+      deleting: "Deleting...",
+      partialError_one: "A partial error occurred.",
+      partialError_other: "{{count}} partial errors occurred.",
+    },
+    create: "Create Fee Configuration",
+    edit: "Edit Fee Configuration",
+    form: {
+      companyId: {
+        placeholder: "Select a company",
+      },
+      create: {
+        description: "Add a new fee configuration.",
+        submit: "Create",
+        title: "Create Fee Configuration",
+      },
+      edit: {
+        loadError: "Failed to load configuration.",
+      },
+      fields: {
+        currency: "Currency",
+        endDate: "End Date",
+        feeTypeId: "Fee Type",
+        fixedAmount: "Fixed Amount",
+        isActive: "Active",
+        maxAmount: "Maximum Amount",
+        minAmount: "Minimum Amount",
+        ownerId: "Owner ID",
+        ownerType: "Owner Type",
+        percentageRate: "Percentage Rate",
+        startDate: "Start Date",
+      },
+      placeholders: {
+        fixedAmount: "Enter fixed amount",
+        maxAmount: "Enter maximum amount",
+        minAmount: "Enter minimum amount",
+        percentageRate: "Enter percentage rate",
+      },
+    },
+    forms: {
+      edit: {
+        description: "Update the details of this configuration.",
+        title: "Edit Fee Configuration",
+      },
+    },
+    messages: {
+      create: {
+        error: "Creation failed.",
+        success: "Creation successful.",
+      },
+      delete: {
+        confirm: "Are you sure you want to delete this configuration?",
+        error: "Deletion failed.",
+        success: "Deletion successful.",
+        success_one: "1 configuration deleted.",
+        success_other: "{{count}} configurations deleted.",
+      },
+      noData: "No fee configurations found.",
+      search: {
+        error: "Search failed.",
+      },
+      update: {
+        error: "Update failed.",
+        success: "Update successful.",
+      },
+    },
+    title: "Fee Configurations",
+    totalCount_one: "1 fee configuration",
+    totalCount_other: "{{count}} fee configurations",
+  },
+  feetypes: {
+    headers: {
+      code: "Code",
+      createdAt: "Created At",
+      description: "Description",
+      isActive: "Active",
+      name: "Name",
+      transactionType: "Transaction Type",
+    },
+  },
+  feeTypes: {
+    actions: {
+      add: "Add Fee Type",
+      delete: "Delete",
+      edit: "Edit",
+      more: "More Actions",
+      view: "View",
+    },
+    bulk: {
+      delete_one: "Delete this type?",
+      delete_other: "Delete these types?",
+      deleteConfirm_one: "Are you sure you want to delete this fee type?",
+      deleteConfirm_other: "Are you sure you want to delete these {{count}} fee types?",
+      deleteError: "Error during deletion.",
+      deleteReason: "Reason for deletion",
+      deleting: "Deleting...",
+      partialError_one: "A partial error occurred.",
+      partialError_other: "{{count}} partial errors occurred.",
+    },
+    create: "Create Fee Type",
+    edit: "Edit Fee Type",
+    form: {
+      codeLabel: "Code",
+      codePlaceholder: "Enter code",
+      create: {
+        description: "Add a new fee type.",
+        title: "Create Fee Type",
+      },
+      descriptionLabel: "Description",
+      edit: {
+        description: "Update the details of this fee type.",
+        loadError: "Failed to load fee type.",
+        submit: "Save Changes",
+        title: "Edit Fee Type",
+      },
+      isActiveLabel: "Active",
+      nameLabel: "Name",
+      namePlaceholder: "Enter name",
+      transactionType: {
+        application: "Application",
+        company: "Company",
+        placeholder: "Select transaction type",
+        receipt: "Receipt",
+        system: "System",
+        transfer: "Transfer",
+        withdrawal: "Withdrawal",
+      },
+      transactionTypeLabel: "Transaction Type",
+      transactionTypePlaceholder: "Select a transaction type",
+    },
+    messages: {
+      create: {
+        error: "Creation failed.",
+        success: "Creation successful.",
+      },
+      delete: {
+        confirm: "Are you sure?",
+        error: "Deletion failed.",
+        success: "Deletion successful.",
+        success_one: "1 fee type deleted.",
+        success_other: "{{count}} fee types deleted.",
+      },
+      noData: "No fee types found.",
+      search: {
+        error: "Search failed.",
+      },
+      update: {
+        error: "Update failed.",
+        success: "Update successful.",
+      },
+    },
+    title: "Fee Types",
+    totalCount_one: "1 fee type",
+    totalCount_other: "{{count}} fee types",
+  },
+  footer: {
+    address: "Douala, Cameroon",
+    bankWithdrawals: "Bank Withdrawals",
+    contact: "Contact",
+    copyright: "© 2025 FujiSat Pay. All rights reserved.",
+    developedBy: "Developed by Graphics System SA",
+    financialReporting: "Financial Reporting",
+    kycManagement: "KYC Management",
+    legal: "Legal",
+    legalNotice: "Legal Notice",
+    mobilePayments: "Mobile Payments",
+    moneyTransfers: "Money Transfers",
+    privacyPolicy: "Privacy Policy",
+    quickNav: "Quick Navigation",
+    services: "Services",
+    termsOfService: "Terms of Service",
+  },
+  fronteventlogs: {
+    headers: {
+      action: "Action",
+      additionalData: "Additional Data",
+      createdAt: "Created At",
+      date: "Date",
+      environment: "Environment",
+      ipAddress: "IP Address",
+      path: "Path",
+      sessionId: "Session ID",
+      type: "Type",
+      userAgent: "User Agent",
+      userId: "User ID",
+    },
+  },
+  frontEventLogs: {
+    actions: {
+      add: "Add Event",
+      more: "More Actions",
+      view: "View",
+    },
+    messages: {
+      noData: "No frontend events found.",
+      search: {
+        error: "Search failed.",
+      },
+    },
+    title: "Frontend Events",
+    totalCount_one: "1 event",
+    totalCount_other: "{{count}} events",
+  },
+  fundtransfersreadmodels: {
+    headers: {
+      amount: "Amount",
+      companyName: "Company Name",
+      createdAt: "Created At",
+      createdByFirstName: "Created By (First Name)",
+      createdByLastName: "Created By (Last Name)",
+      createdByPhoneNumber: "Created By (Phone)",
+      currency: "Currency",
+      currencySymbol: "Currency Symbol",
+      currentVersion: "Current Version",
+      description: "Description",
+      destinationApplicationName: "Destination Application",
+      feeAppliedAmount: "Fee Applied",
+      internalFeeAmount: "Internal Fee",
+      netAmount: "Net Amount",
+      publicId: "Public ID",
+      reference: "Reference",
+      sourceApplicationName: "Source Application",
+      status: "Status",
+      transferType: "Transfer Type",
+      updatedByFirstName: "Updated By (First Name)",
+      updatedByLastName: "Updated By (Last Name)",
+    },
+  },
+  fundTransfersReadModels: {
+    actions: {
+      add: "Add Transfer",
+      delete: "Delete",
+      edit: "Edit",
+      more: "More Actions",
+      view: "View",
+    },
+    bulk: {
+      delete_one: "Delete this transfer?",
+      delete_other: "Delete these transfers?",
+      deleteConfirm_one: "Are you sure you want to delete this transfer?",
+      deleteConfirm_other: "Are you sure you want to delete these {{count}} transfers?",
+      deleteError: "Error during deletion.",
+      deleteReason: "Reason for deletion",
+      deleting: "Deleting...",
+      partialError_one: "A partial error occurred.",
+      partialError_other: "{{count}} partial errors occurred.",
+    },
+    messages: {
+      create: {
+        error: "Creation failed.",
+        success: "Creation successful.",
+      },
+      delete: {
+        confirm: "Are you sure?",
+        error: "Deletion failed.",
+        success: "Deletion successful.",
+        success_one: "1 transfer deleted.",
+        success_other: "{{count}} transfers deleted.",
+      },
+      noData: "No fund transfers found.",
+      search: {
+        error: "Search failed.",
+      },
+      update: {
+        error: "Update failed.",
+        success: "Update successful.",
+      },
+    },
+    title: "Fund Transfers",
+    totalCount_one: "1 transfer",
+    totalCount_other: "{{count}} transfers",
+  },
+  goBack: "Go back",
+  goHome: "Go Home",
+  kycdocuments: {
+    headers: {
+      approvalBy: "Approved By",
+      approvalByEmail: "Approved By (Email)",
+      approvalByFirstName: "Approved By (First Name)",
+      approvalByLastName: "Approved By (Last Name)",
+      approvalByPhoneNumber: "Approved By (Phone)",
+      approvalByStatus: "Approved By (Status)",
+      approvalDate: "Approval Date",
+      companyEmail: "Company Email",
+      companyId: "Company ID",
+      companyName: "Company Name",
+      companyPhoneNumber: "Company Phone Number",
+      companyStatus: "Company Status",
+      createdAt: "Created At",
+      documentTypeId: "Document Type ID",
+      documentTypeName: "Document Type Name",
+      documentUrl: "Document URL",
+      rejectionReason: "Rejection Reason",
+      status: "Status",
+      submissionDate: "Submission Date",
+    },
+  },
+  kycDocuments: {
+    actions: {
+      add: "Add Document",
+      delete: "Delete",
+      edit: "Edit",
+      more: "More Actions",
+      view: "View",
+    },
+    bulk: {
+      deleteError: "Error during deletion.",
+      deleteReason: "Reason for deletion",
+      partialError_one: "A partial error occurred.",
+      partialError_other: "{{count}} partial errors occurred.",
+    },
+    form: {
+      companyIdLabel: "Company",
+      companyIdPlaceholder: "Select a company",
+      create: {
+        description: "Add a new KYC document.",
+        title: "Create KYC Document",
+      },
+      documentTypeIdLabel: "Document Type",
+      documentTypeIdPlaceholder: "Select a document type",
+      documentUrlLabel: "Document URL",
+      documentUrlPlaceholder: "Enter document URL",
+      edit: {
+        description: "Update the details of this KYC document.",
+        submit: "Save Changes",
+        title: "Edit KYC Document",
+      },
+      statusLabel: "Status",
+      statusPlaceholder: "Select a status",
+    },
+    messages: {
+      create: {
+        error: "Creation failed.",
+        success: "Creation successful.",
+      },
+      delete: {
+        error: "Deletion failed.",
+        success: "Deletion successful.",
+        success_one: "1 document deleted.",
+        success_other: "{{count}} documents deleted.",
+      },
+      noData: "No KYC documents found.",
+      search: {
+        error: "Search failed.",
+      },
+      update: {
+        error: "Update failed.",
+        success: "Update successful.",
+      },
+    },
+    title: "KYC Documents",
+    totalCount_one: "1 document",
+    totalCount_other: "{{count}} documents",
+  },
+  landingPage: {
+    cta: {
+      badge: "TRY IT NOW",
+      cta1: "Get Started Now",
+      cta2: "Learn More",
+      subtitle: "Supports small businesses with simple invoicing, powerful integrations, and cash flow management tools.",
+      title1: "Ready to level up your",
+      title2: "payment process?",
+    },
+    features: {
+      learnMore: "Learn More",
+    },
+    hero: {
+      active: "Active",
+      badge: "The Ultimate Mobile Money Aggregator",
+      brand1: "Klarna.",
+      brand2: "coinbase",
+      brand3: "*instacart",
+      cta: "Get Started",
+      demoEmail: "dipainhouse@gmail.com",
+      demoName: "Dipa Inhouse",
+      invoice: "Invoice",
+      invoiceAmount: "$1,876,580",
+      invoiceDate: "April 21, 2024",
+      mtnMobileMoney: "MTN Mobile Money",
+      orangeMoney: "Orange Money",
+      paid: "Paid",
+      subtitle: "Supports small businesses with simple invoicing, powerful integrations, and cash flow management tools.",
+      title1: "Get paid early,",
+      title2: "save automatically",
+      title3: "on all your payments.",
+      trustedBy: "Trusted by leading businesses",
+      viewTransactions: "View Transactions",
+    },
+    howItWorks: {
+      badge: "HOW IT WORKS",
+      description: "Get started with Fujisat Pay in minutes and transform how you handle mobile money payments in Cameroon.",
+      step1: {
+        description: "Sign up for Fujisat Pay and complete our streamlined KYC verification process to get started.",
+        title: "Create your account",
+      },
+      step2: {
+        description: "Use our well-documented API to integrate Orange Money and MTN Mobile Money payments into your application.",
+        title: "Integrate our API",
+      },
+      step3: {
+        description: "Start accepting payments, managing withdrawals, and getting real-time insights through our dashboard.",
+        title: "Accept payments & manage funds",
+      },
+      title: "Simple integration, powerful results",
+    },
+    industries: {
+      badge: "SOLUTIONS BY INDUSTRY",
+      description: "No matter what industry you operate in, Fujisat Pay adapts to your specific needs with flexible payment solutions.",
+      learnMore: "Learn More",
+      title: "Tailored solutions for every business",
+    },
+    mission: {
+      badge: "OUR MISSION",
+      stat1: {
+        label: "Business Revenue",
+        value: "24%",
+      },
+      stat2: {
+        label: "In annual revenue",
+        value: "180K",
+      },
+      subtitle: "Hundreds of businesses of all sizes and across all industries have made big improvements with us.",
+      title1: "We've helped",
+      title2: "innovative companies",
+    },
+    stats: {
+      transactions: "5M+",
+      transactionsLabel: "Transactions Processed",
+      uptime: "99.9%",
+      uptimeLabel: "Uptime Guarantee",
+    },
+  },
+  logs: {
+    actions: {
+      add: "Add Log",
+      more: "More Actions",
+      view: "View",
+    },
+    headers: {
+      additionalData: "Additional Data",
+      applicationName: "Application Name",
+      correlationId: "Correlation ID",
+      createdAt: "Created At",
+      environment: "Environment",
+      exceptionMessage: "Exception Message",
+      ipAddress: "IP Address",
+      logLevel: "Log Level",
+      machineName: "Machine Name",
+      message: "Message",
+      requestUri: "Request URI",
+      stackTrace: "Stack Trace",
+      userId: "User ID",
+      userName: "User Name",
+    },
+    messages: {
+      noData: "No logs found.",
+      search: {
+        error: "Search failed.",
+      },
+    },
+    title: "Logs",
+    totalCount_one: "1 log",
+    totalCount_other: "{{count}} logs",
+  },
+  menu: {
+    "access-control": "Control Access",
+    addApplication: "Add Application",
+    addBalanceType: "Add Balance Type",
+    addCompany: "Add Company",
+    addCompanyAppLimit: "Add App Limit",
+    addCountry: "Add Country",
+    addDocumentType: "Add Document Type",
+    addFeeConfiguration: "Add Fee Config",
+    addFeeType: "Add Fee Type",
+    addPaymentMethod: "Add Payment Method",
+    addSecureSetting: "Add Secure Setting",
+    addSetting: "Add Setting",
+    addUser: "Add User",
+    addUserProfile: "Add Profile",
+    addWebhook: "Add Webhook",
+    administration: "Administration",
+    all: "All",
+    allowedIps: "Allowed IPs",
+    applications: "Applications",
+    auditLogs: "Audit Logs",
+    auditSecurity: "Audit & Security",
+    balanceType: "Balance Types",
+    blockedIps: "Blocked IPs",
+    companies: "Companies",
+    companyAppLimit: "App Limits",
+    countries: "Countries",
+    currencies: "Currencies",
+    Dashboard: "Dashboard",
+    documentType: "Document Types",
+    feeConfigurations: "Fee Configs",
+    feeTypes: "Fee Types",
+    frontEvents: "Frontend Events",
+    general: "General",
+    it: "Technical",
+    logs: "Logs",
+    monitoring: "Monitoring",
+    paymentMethod: "Payment Methods",
+    payments: "Payments",
+    permissions: "Permissions",
+    receipts: "Receipts",
+    secureSettings: "Secure Settings",
+    settings: "Settings",
+    support: "Support",
+    system: "System",
+    systemMetric: "System Metrics",
+    transactions: "Transactions",
+    userDevices: "User Devices",
+    userProfiles: "User Profiles",
+    users: "Users",
+    webHookLogs: "Webhook Logs",
+    webhooks: "Webhooks",
+    withdrawalMethod: "Withdrawal Methods",
+    withdrawals: "Withdrawals",
+  },
+  navigation: {
+    about: "About",
+    contact: "Contact",
+    dashboard: "Dashboard",
+    developers: "Developers",
+    faq: "FAQ",
+    features: "Features",
+    home: "Home",
+    login: "Login",
+    requestDemo: "Request a Demo",
+    solutions: "Solutions",
+  },
+  noPermission: "You don't have permission to access this resource",
+  noRessource: "No resource available",
+  notification: {
+    actions: {
+      add: "Add Notification",
+      delete: "Delete",
+      edit: "Edit",
+      more: "More",
+      view: "View",
+    },
+    bulk: {
+      delete_one: "Delete this notification?",
+      delete_other: "Delete these notifications?",
+      deleteConfirm_one: "Are you sure you want to delete this notification?",
+      deleteConfirm_other: "Are you sure you want to delete these {{count}} notifications?",
+      deleteError: "Error during deletion.",
+      deleteReason: "Reason for deletion",
+      deleting: "Deleting...",
+      partialError_one: "A partial error occurred.",
+      partialError_other: "{{count}} partial errors occurred.",
+    },
+    messages: {
+      create: {
+        error: "Creation failed.",
+        success: "Creation successful.",
+      },
+      delete: {
+        confirm: "Are you sure?",
+        error: "Deletion failed.",
+        success: "Deletion successful.",
+        success_one: "1 notification deleted.",
+        success_other: "{{count}} notifications deleted.",
+      },
+      noData: "No notifications.",
+      search: {
+        error: "Search failed.",
+      },
+      update: {
+        error: "Update failed.",
+        success: "Update successful.",
+      },
+    },
+    title: "Notifications",
+    totalCount_one: "1 notification",
+    totalCount_other: "{{count}} notifications",
+  },
+  notifications: {
+    headers: {
+      canal: "Channel",
+      companyName: "Company Name",
+      createdAt: "Created At",
+      createdBy: "Created By",
+      data: "Data",
+      expiresAt: "Expires At",
+      isRead: "Read",
+      message: "Message",
+      priority: "Priority",
+      readAt: "Read At",
+      templateType: "Template Type",
+      title: "Title",
+      type: "Type",
+      updatedAt: "Updated At",
+      userEmail: "User Email",
+      userFirstName: "User First Name",
+      userLastName: "User Last Name",
+      userPhoneNumber: "User Phone Number",
+      userStatus: "User Status",
+    },
+  },
+  pageNotfound: "Page not found",
+  paymentmethods: {
+    headers: {
+      code: "Code",
+      createdAt: "Created At",
+      description: "Description",
+      isActive: "Active",
+      logoUrl: "Logo URL",
+      maximumAmount: "Maximum Amount",
+      minimumAmount: "Minimum Amount",
+      name: "Name",
+      requiresPhoneNumber: "Requires Phone",
+      settlementPeriod: "Settlement Period",
+      sortOrder: "Sort Order",
+    },
+  },
+  paymentMethods: {
+    actions: {
+      add: "Add Payment Method",
+      delete: "Delete",
+      edit: "Edit",
+      more: "More Actions",
+      view: "View",
+    },
+    bulk: {
+      delete_one: "Delete this payment method?",
+      delete_other: "Delete these payment methods?",
+      deleteConfirm_one: "Are you sure you want to delete this payment method?",
+      deleteConfirm_other: "Are you sure you want to delete these {{count}} payment methods?",
+      deleteError: "Error during deletion.",
+      deleteReason: "Reason for deletion",
+      deleting: "Deleting...",
+      partialError_one: "A partial error occurred.",
+      partialError_other: "{{count}} partial errors occurred.",
+    },
+    create: "Create Payment Method",
+    edit: "Edit Payment Method",
+    form: {
+      codeLabel: "Code",
+      codePlaceholder: "Enter code",
+      create: {
+        description: "Add a new payment method.",
+        title: "Create Payment Method",
+      },
+      descriptionLabel: "Description",
+      descriptionPlaceholder: "Enter description",
+      edit: {
+        description: "Update the details of this payment method.",
+        loadError: "Failed to load payment method.",
+        submit: "Save Changes",
+        title: "Edit Payment Method",
+      },
+      isActiveLabel: "Active",
+      maximumAmountLabel: "Maximum Amount",
+      maximumAmountPlaceholder: "Enter maximum amount",
+      minimumAmountLabel: "Minimum Amount",
+      nameLabel: "Name",
+      namePlaceholder: "Enter name",
+      requiresPhoneNumberLabel: "Requires Phone Number",
+      sortOrderLabel: "Sort Order",
+      sortOrderPlaceholder: "Enter sort order",
+    },
+    formsettlementLabel: "Settlement",
+    formsettlementPlaceholder: "Enter settlement period",
+    messages: {
+      create: {
+        error: "Creation failed.",
+        success: "Creation successful.",
+      },
+      delete: {
+        confirm: "Are you sure?",
+        error: "Deletion failed.",
+        success: "Deletion successful.",
+        success_one: "1 payment method deleted.",
+        success_other: "{{count}} payment methods deleted.",
+      },
+      noData: "No payment methods found.",
+      search: {
+        error: "Search failed.",
+      },
+      update: {
+        error: "Update failed.",
+        success: "Update successful.",
+      },
+    },
+    title: "Payment Methods",
+    totalCount_one: "1 payment method",
+    totalCount_other: "{{count}} payment methods",
+  },
+  readonly: "_readonly",
+  receipts: {
+    actions: {
+      more: "More Actions",
+      view: "View",
+    },
+    messages: {
+      noData: "No receipts found.",
+    },
+  },
+  receiptsreadmodels: {
+    headers: {
+      amount: "Amount",
+      applicationName: "Application Name",
+      companyName: "Company Name",
+      createdAt: "Created At",
+      currency: "Currency",
+      externalReference: "External Reference",
+      feeAppliedAmount: "Fee Applied",
+      internalFeeAmount: "Internal Fee",
+      netAmount: "Net Amount",
+      paymentMethodCode: "Payment Method Code",
+      phoneNumberEncrypted: "Phone (Encrypted)",
+      providerFeeAmount: "Provider Fee",
+      providerReference: "Provider Reference",
+      status: "Status",
+      transactionId: "Transaction ID",
+    },
+  },
+  receiptsReadModels: {
+    actions: {
+      add: "Add Receipt",
+      delete: "Delete",
+      edit: "Edit",
+      more: "More Actions",
+      view: "View",
+    },
+    bulk: {
+      delete_one: "Delete this receipt?",
+      delete_other: "Delete these receipts?",
+      deleteConfirm_one: "Are you sure you want to delete this receipt?",
+      deleteConfirm_other: "Are you sure you want to delete these {{count}} receipts?",
+      deleteError: "Error during deletion.",
+      deleteReason: "Reason for deletion",
+      deleting: "Deleting...",
+      partialError_one: "A partial error occurred.",
+      partialError_other: "{{count}} partial errors occurred.",
+    },
+    form: {
+      applicationIdLabel: "Application ID",
+      applicationNameLabel: "Application Name",
+      companyIdLabel: "Company ID",
+      companyNameLabel: "Company Name",
+      createdFromLabel: "From",
+      createdToLabel: "To",
+      currencyLabel: "Currency",
+      customerEmailLabel: "Customer Email",
+      customerIpAddressLabel: "Customer Ip Address",
+      customerNameLabel: "Customer Name",
+      externalReferenceLabel: "External Reference",
+      idsLabel: "Ids",
+      internalReferenceLabel: "Internal Reference",
+      paymentMethodCodeLabel: "Payment Method Code",
+      paymentMethodNameLabel: "Payment Method Name",
+      phoneNumberEncryptedLabel: "Phone (Encrypted)",
+      providerFinalReferenceLabel: "Provider Final Reference",
+      providerInitialReferenceLabel: "Provider Initial Reference",
+      providerMessageLabel: "Provider Message",
+      searchTermLabel: "Search...",
+      statusLabel: "status",
+    },
+    messages: {
+      delete: {
+        confirm: "Are you sure?",
+        error: "Deletion failed.",
+        success: "Deletion successful.",
+        success_one: "1 receipt deleted.",
+        success_other: "{{count}} receipts deleted.",
+      },
+      noData: "No receipts found.",
+      search: {
+        error: "Search failed.",
+      },
+    },
+    title: "Receipts",
+    totalCount_one: "1 receipt",
+    totalCount_other: "{{count}} receipts",
+  },
+  securesettings: {
+    headers: {
+      createdAt: "Created At",
+      description: "Description",
+      systemName: "System Name",
+    },
+  },
+  secureSettings: {
+    actions: {
+      add: "Add Secure Setting",
+    },
+    create: "Create Secure Setting",
+    form: {
+      create: {
+        description: "Add a new secure setting.",
+        submit: "Create",
+        title: "Create Secure Setting",
+      },
+      descriptionLabel: "Description",
+      descriptionPlaceholder: "Enter description",
+      edit: {
+        description: "Update the details of this secure setting.",
+        submit: "Save Changes",
+        title: "Edit Secure Setting",
+      },
+      elementsTitle: "Elements",
+      keyLabel: "Key",
+      keyPlaceholder: "Enter key",
+      nameLabel: "Name",
+      namePlaceholder: "Enter name",
+      secureValueLabel: "Secure Value",
+      secureValuePlaceholder: "Enter secure value",
+    },
+    messages: {
+      create: {
+        error: "Creation failed.",
+        success: "Creation successful.",
+      },
+      noData: "No secure settings found.",
+      search: {
+        error: "Search failed.",
+      },
+      update: {
+        error: "Update failed.",
+        success: "Update successful.",
+      },
+    },
+    title: "Secure Settings",
+    totalCount_one: "1 secure setting",
+    totalCount_other: "{{count}} secure settings",
+  },
+  sessions: {
+    access_denied: "Access denied",
+    network_error: "Network error",
+    session_expired: "Session expired",
+  },
+  settings: {
+    actions: {
+      add: "Add Setting",
+      delete: "Delete",
+      edit: "Edit",
+      more: "More Actions",
+      view: "View",
+    },
+    bulk: {
+      delete_one: "Delete this setting?",
+      delete_other: "Delete these settings?",
+      deleteConfirm_one: "Are you sure you want to delete this setting?",
+      deleteConfirm_other: "Are you sure you want to delete these {{count}} settings?",
+      deleteError: "Error during deletion.",
+      deleteReason: "Reason for deletion",
+      deleting: "Deleting...",
+      partialError_one: "A partial error occurred.",
+      partialError_other: "{{count}} partial errors occurred.",
+    },
+    create: "Create Setting",
+    edit: "Edit Setting",
+    form: {
+      allowedValuesLabel: "Allowed Values",
+      allowedValuesPlaceholder: "Enter allowed values, separated by commas",
+      applicationLabel: "Application",
+      applicationPlaceholder: "Select an application",
+      categoryLabel: "Category",
+      categoryPlaceholder: "Enter category",
+      companyLabel: "Company",
+      companyPlaceholder: "Select a company",
+      create: {
+        description: "Add a new setting.",
+        submit: "Create",
+        title: "Create Setting",
+      },
+      dataType: {
+        bool: "Boolean",
+        char: "Character",
+        double: "Double",
+        float: "Float",
+        int: "Integer",
+        placeholder: "Select a data type",
+        string: "String",
+      },
+      dataTypeLabel: "Data Type",
+      descriptionLabel: "Description",
+      descriptionPlaceholder: "Enter description",
+      edit: {
+        description: "Update the details of this setting.",
+        loadError: "Failed to load setting.",
+        submit: "Save Changes",
+        title: "Edit Setting",
+      },
+      isEncryptedLabel: "Is Encrypted",
+      isReadOnlyLabel: "Read Only",
+      isSystemSettingLabel: "System Setting",
+      validationRegexLabel: "Validation Regex",
+      valueLabel: "Value",
+      valuePlaceholder: "Enter value",
+    },
+    headers: {
+      allowedValues: "Allowed Values",
+      applicationName: "Application Name",
+      category: "Category",
+      companyName: "Company Name",
+      createdAt: "Created At",
+      dataType: "Data Type",
+      description: "Description",
+      isEncrypted: "Encrypted",
+      isReadOnly: "Read Only",
+      isSystemSetting: "System Setting",
+      validationRegex: "Validation Regex",
+      value: "Value",
+    },
+    messages: {
+      create: {
+        error: "Creation failed.",
+        success: "Creation successful.",
+      },
+      delete: {
+        confirm: "Are you sure you want to delete this setting?",
+        error: "Deletion failed.",
+        success: "Deletion successful.",
+        success_one: "1 setting deleted.",
+        success_other: "{{count}} settings deleted.",
+      },
+      noData: "No settings found.",
+      search: {
+        error: "Search failed.",
+      },
+      update: {
+        error: "Update failed.",
+        success: "Update successful.",
+      },
+    },
+    title: "Settings",
+    totalCount_one: "1 setting",
+    totalCount_other: "{{count}} settings",
+  },
+  smsmailtemplates: {
+    headers: {
+      body: "Body",
+      createdAt: "Created At",
+      isActive: "Active",
+      locale: "Locale",
+      subject: "Subject",
+      type: "Type",
+    },
+  },
+  smsmailTemplates: {
+    actions: {
+      add: "Add Template",
+      delete: "Delete",
+      edit: "Edit",
+      more: "More Actions",
+      view: "View",
+    },
+    bulk: {
+      delete_one: "Delete this template?",
+      delete_other: "Delete these templates?",
+      deleteConfirm_one: "Are you sure you want to delete this template?",
+      deleteConfirm_other: "Are you sure you want to delete these {{count}} templates?",
+      deleteError: "Error during deletion.",
+      deleteReason: "Reason for deletion",
+      deleting: "Deleting...",
+      partialError_one: "A partial error occurred.",
+      partialError_other: "{{count}} partial errors occurred.",
+    },
+    details: {
+      title: "Template Details",
+    },
+    form: {
+      bodyLabel: "Body",
+      bodyPlaceholder: "Enter template body",
+      create: {
+        description: "Add a new template.",
+        title: "Create Template",
+      },
+      edit: {
+        description: "Update the details of this template.",
+        submit: "Save Changes",
+        title: "Edit Template",
+      },
+      isActiveLabel: "Active",
+      localeLabel: "Locale",
+      localePlaceholder: "Select a locale",
+      subjectLabel: "Subject",
+      subjectPlaceholder: "Enter subject",
+      typeLabel: "Type",
+      typePlaceholder: "Select a type",
+    },
+    messages: {
+      create: {
+        error: "Creation failed.",
+        success: "Creation successful.",
+      },
+      delete: {
+        confirm: "Are you sure?",
+        error: "Deletion failed.",
+        success: "Deletion successful.",
+        success_one: "1 template deleted.",
+        success_other: "{{count}} templates deleted.",
+      },
+      noData: "No templates found.",
+      search: {
+        error: "Search failed.",
+      },
+      update: {
+        error: "Update failed.",
+        success: "Update successful.",
+      },
+    },
+    title: "SMS/Email Templates",
+    totalCount_one: "1 template",
+    totalCount_other: "{{count}} templates",
+  },
+  solutions: {
+    benefitsLabel: "Benefits",
+    customSolution: {
+      cta: "Contact Us",
+      description: "Fujisat Pay is highly adaptable. Contact us to discuss a customized solution for your specific needs.",
+      title: "Your sector not listed?",
+    },
+    ecommerce: {
+      problem: "Strong dependence on mobile payment, tedious reconciliation of transactions by operator, need for a smooth customer experience.",
+      title: "E-commerce & Online Shops",
+    },
+    fintech: {
+      problem: "Processing of disbursements and repayments, management of customer balances, KYC compliance.",
+      title: "Financial Services & FinTech",
+    },
+    intro: "Whatever your business, Fujisat Pay integrates to optimize your mobile payment processes. Discover how we help our clients thrive.",
+    nonprofit: {
+      problem: "Collection of donations via mobile money, traceability of contributions, compliance.",
+      title: "Non-profit Organizations & Associations",
+    },
+    problemLabel: "The Challenge",
+    solutionLabel: "The Fujisat Pay Solution",
+    title: "Fujisat Pay: Tailored Solutions for Every Sector",
+  },
+  system: "_system",
+  themeMode: {
+    dark: "Dark",
+    light: "Light",
+    system: "System",
+  },
+  userdevices: {
+    headers: {
+      browser: "Browser",
+      createdAt: "Created At",
+      deviceType: "Device Type",
+      ipaddress: "IP Address",
+      language: "Language",
+      os: "Operating System",
+      screenResolution: "Screen Resolution",
+      status: "Status",
+      userAgent: "User Agent",
+      userEmail: "User Email",
+      userFirstName: "User First Name",
+      userId: "User ID",
+      userLastName: "User Last Name",
+      userPhoneNumber: "User Phone Number",
+      userStatus: "User Status",
+    },
+  },
+  userDevices: {
+    actions: {
+      more: "More Actions",
+      view: "View",
+    },
+    messages: {
+      noData: "No user devices found.",
+      search: {
+        error: "Search failed.",
+      },
+    },
+    title: "User Devices",
+    totalCount_one: "1 device",
+    totalCount_other: "{{count}} devices",
+  },
+  userProfile: {
+    actions: {
+      add: "New User Profile",
+      delete: "Delete",
+      edit: "Edit",
+      more: "More Actions",
+      view: "View",
+    },
+    bulk: {
+      delete_one: "Delete this profile?",
+      delete_other: "Delete these profiles?",
+      deleteConfirm_one: "Are you sure you want to delete this profile?",
+      deleteConfirm_other: "Are you sure you want to delete these {{count}} profiles?",
+      deleteError: "Error during deletion.",
+      deleteReason: "Reason for deletion",
+      deleting: "Deleting...",
+      partialError_one: "A partial error occurred.",
+      partialError_other: "{{count}} partial errors occurred.",
+    },
+    create: "Create Profile",
+    edit: "Edit Profile",
+    form: {
+      create: {
+        description: "Add a new user profile.",
+        submit: "Create",
+        title: "Create User Profile",
+      },
+      edit: {
+        loadError: "Failed to load profile.",
+        submit: "Save Changes",
+      },
+    },
+    messages: {
+      create: {
+        error: "Creation failed.",
+        success: "Creation successful.",
+      },
+      delete: {
+        confirm: "Are you sure?",
+        error: "Deletion failed.",
+        success: "Deletion successful.",
+        success_one: "1 profile deleted.",
+        success_other: "{{count}} profiles deleted.",
+      },
+      noData: "No profiles found.",
+      search: {
+        error: "Search failed.",
+      },
+      update: {
+        error: "Update failed.",
+        success: "Update successful.",
+      },
+    },
+    title: "User Profiles",
+    totalCount_one: "1 profile",
+    totalCount_other: "{{count}} profiles",
+  },
+  userprofiles: {
+    headers: {
+      createdAt: "Created At",
+      description: "Description",
+      isActive: "Active",
+      isSystemProfile: "System Profile",
+      name: "Name",
+      permissions: "Permissions",
+    },
+  },
+  userProfiles: {
+    form: {
+      descriptionLabel: "Description",
+      descriptionPlaceholder: "Enter description",
+      edit: {
+        description: "Update the details of this profile.",
+        title: "Edit Profile",
+      },
+      isActiveLabel: "Active",
+      isSystemProfileLabel: "System Profile",
+      nameLabel: "Name",
+      namePlaceholder: "Enter profile name",
+      permissionsLabel: "Permissions",
+      permissionsPlaceholder: "Select permissions",
+    },
+    title: "User Profiles",
+  },
+  users: {
+    actions: {
+      addCompanyUser: "Add Company User",
+      addSystemUser: "Add System User",
+      addTitle: "Add User",
+      delete: "Delete",
+      edit: "Edit",
+      more: "More Actions",
+      view: "View",
+    },
+    bulk: {
+      delete_one: "Delete this user?",
+      delete_other: "Delete these users?",
+      deleteConfirm_one: "Are you sure you want to delete this user?",
+      deleteConfirm_other: "Are you sure you want to delete these {{count}} users?",
+      deleteError: "Error during deletion.",
+      deleteReason: "Reason for deletion",
+      deleting: "Deleting...",
+      partialError_one: "A partial error occurred.",
+      partialError_other: "{{count}} partial errors occurred.",
+    },
+    details: {
+      title: "_title",
+    },
+    form: {
+      companyIdLabel: "Company",
+      companyIdPlaceholder: "Select a company",
+      create: {
+        description: "Add a new user.",
+        submit: "Create",
+        title: "Create User",
+      },
+      edit: {
+        description: "Update the details of this user.",
+        submit: "Save Changes",
+        title: "Edit User",
+      },
+      emailLabel: "Email",
+      emailPlaceholder: "Enter email",
+      firstNameLabel: "First Name",
+      firstNamePlaceholder: "Enter first name",
+      initialPasswordLabel: "Initial Password",
+      initialPasswordPlaceholder: "Enter initial password",
+      lastNameLabel: "Last Name",
+      lastNamePlaceholder: "Enter last name",
+      phoneNumberLabel: "Phone Number",
+      phoneNumberPlaceholder: "Enter phone number",
+      profileIdLabel: "Profile",
+      profileIdPlaceholder: "Select a profile",
+      statusLabel: "Status",
+      statusPlaceholder: "Select a status",
+      userTypeLabel: "User Type",
+      userTypePlaceholder: "Select a user type",
+    },
+    headers: {
+      companyName: "Company Name",
+      contact: "_contact",
+      createdAt: "Created At",
+      email: "Email",
+      firstName: "First Name",
+      fullName: "_fullName",
+      lastName: "Last Name",
+      phoneNumber: "Phone Number",
+      profileName: "Profile Name",
+      publicId: "Public ID",
+      status: "Status",
+      userType: "User Type",
+    },
+    messages: {
+      create: {
+        error: "Creation failed.",
+        success: "Creation successful.",
+      },
+      delete: {
+        confirm: "Are you sure you want to delete this user?",
+        error: "Deletion failed.",
+        success: "Deletion successful.",
+        success_one: "1 user deleted.",
+        success_other: "{{count}} users deleted.",
+      },
+      noData: "No users found.",
+      search: {
+        error: "Search failed.",
+      },
+      update: {
+        error: "Update failed.",
+        success: "Update successful.",
+      },
+    },
+    title: "Users",
+    totalCount_one: "1 user",
+    totalCount_other: "{{count}} users",
+  },
+  vwtransactionssummaries: {
+    headers: {
+      aggregateId: "Aggregate ID",
+      aggregateType: "Aggregate Type",
+      amount: "Amount",
+      applicationName: "Application Name",
+      companyName: "Company Name",
+      createdAt: "Created At",
+      currency: "Currency",
+      externalReference: "External Reference",
+      paymentMethodCode: "Payment Method Code",
+      paymentMethodName: "Payment Method Name",
+      providerFinalReference: "Provider Final Reference",
+      providerInitialReference: "Provider Initial Reference",
+      status: "Status",
+      updatedAt: "Updated At",
+    },
+  },
+  vwTransactionsSummarys: {
+    actions: {
+      more: "More Actions",
+      view: "View",
+    },
+    messages: {
+      noData: "No transaction summaries found.",
+      search: {
+        error: "Search failed.",
+      },
+    },
+    title: "Transaction Summaries",
+    totalCount_one: "1 summary",
+    totalCount_other: "{{count}} summaries",
+  },
+  webhookLog: {
+    actions: {
+      more: "More Actions",
+      view: "View",
+    },
+    messages: {
+      noData: "No webhook logs found.",
+      search: {
+        error: "Search failed.",
+      },
+    },
+    title: "Webhook Logs",
+    totalCount_one: "1 log",
+    totalCount_other: "{{count}} logs",
+  },
+  webhooklogs: {
+    headers: {
+      attemptNumber: "Attempt Number",
+      createdAt: "Created At",
+      errorMessage: "Error Message",
+      requestBody: "Request Body",
+      responseBody: "Response Body",
+      responseStatusCode: "Response Status Code",
+      webhookId: "Webhook ID",
+      webhookName: "Webhook Name",
+    },
+  },
+  webhooks: {
+    actions: {
+      add: "Add Webhook",
+      more: "More Actions",
+      view: "View",
+    },
+    bulk: {
+      deleteError: "Error during deletion.",
+      deleteReason: "Reason for deletion",
+      partialError_one: "A partial error occurred.",
+      partialError_other: "{{count}} partial errors occurred.",
+    },
+    form: {
+      applicationIdLabel: "Application",
+      applicationIdPlaceholder: "Select an application",
+      create: {
+        description: "Add a new webhook.",
+        title: "Create Webhook",
+      },
+      edit: {
+        description: "Update the details of this webhook.",
+        submit: "Save Changes",
+        title: "Edit Webhook",
+      },
+      maxRetriesIdLabel: "Max Retries",
+      maxRetriesIdPlaceholder: "Enter max number of retries",
+      urlLabel: "URL",
+      urlPlaceholder: "Enter URL",
+    },
+    headers: {
+      applicationName: "Application Name",
+      createdAt: "Created At",
+      eventType: "Event Type",
+      isActive: "Active",
+      lastSecretGenerated: "Last Secret Generated",
+      maxRetries: "Max Retries",
+      timeoutSeconds: "Timeout (seconds)",
+      url: "URL",
+    },
+    messages: {
+      create: {
+        error: "Creation failed.",
+        success: "Creation successful.",
+      },
+      delete: {
+        error: "Deletion failed.",
+        success: "Deletion successful.",
+        success_one: "1 webhook deleted.",
+        success_other: "{{count}} webhooks deleted.",
+      },
+      dropdown: {
+        error: "Load failed.",
+      },
+      fetch: {
+        error: "Fetch failed.",
+      },
+      noData: "No webhooks found.",
+      search: {
+        error: "Search failed.",
+      },
+      update: {
+        error: "Update failed.",
+        success: "Update successful.",
+      },
+    },
+    title: "Webhooks",
+    totalCount_one: "1 webhook",
+    totalCount_other: "{{count}} webhooks",
+  },
+  withdrawalMethod: {
+    actions: {
+      delete: "Delete",
+      edit: "Edit",
+      more: "More",
+      view: "View",
+    },
+    bulk: {
+      deleteError: "Error during deletion.",
+      deleteReason: "Reason for deletion",
+      partialError_one: "A partial error occurred.",
+      partialError_other: "{{count}} partial errors occurred.",
+    },
+    create: "Create Withdrawal Method",
+    edit: "Edit Withdrawal Method",
+    form: {
+      create: {
+        submit: "Create",
+      },
+      edit: {
+        loadError: "Load failed.",
+        submit: "Save Changes",
+      },
+    },
+    messages: {
+      create: {
+        error: "Creation failed.",
+        success: "Creation successful.",
+      },
+      delete: {
+        confirm: "Are you sure?",
+        error: "Deletion failed.",
+        success: "Deletion successful.",
+        success_one: "1 method deleted.",
+        success_other: "{{count}} methods deleted.",
+      },
+      noData: "No withdrawal methods found.",
+      search: {
+        error: "Search failed.",
+      },
+      update: {
+        error: "Update failed.",
+        success: "Update successful.",
+      },
+    },
+    title: "Withdrawal Methods",
+  },
+  withdrawalmethods: {
+    headers: {
+      companyName: "Company Name",
+      createdAt: "Created At",
+      dailyLimit: "Daily Limit",
+      isDefault: "Default",
+      isVerified: "Verified",
+      monthlyLimit: "Monthly Limit",
+      name: "Name",
+      paymentMethodName: "Payment Method Name",
+      phoneNumber: "Phone Number",
+      singleWithdrawalLimit: "Single Withdrawal Limit",
+      verificationDate: "Verification Date",
+      verificationReference: "Verification Reference",
+    },
+  },
+  withdrawalMethods: {
+    actions: {
+      add: "New Withdrals Method",
+    },
+    form: {
+      companyIdLabel: "Company",
+      companyIdPlaceholder: "Select a company",
+      create: {
+        description: "Add a new withdrawal method.",
+        title: "Create Withdrawal Method",
+      },
+      dailyLimitLabel: "Daily Limit",
+      dailyLimitPlaceholder: "Enter daily limit",
+      edit: {
+        description: "Update the details of this method.",
+        title: "Edit Withdrawal Method",
+      },
+      fields: {
+        isDefault: "Default",
+        isVerified: "Verified",
+      },
+      isDefaultLabel: "Default",
+      isVerifiedLabel: "Verified",
+      monthlyLimitLabel: "Monthly Limit",
+      monthlyLimitPlaceholder: "Enter monthly limit",
+      nameLabel: "Name",
+      namePlaceholder: "Enter name",
+      paymentMethodIdLabel: "Payment Method",
+      paymentMethodIdPlaceholder: "Select a payment method",
+      phoneNumberLabel: "Phone Number",
+      phoneNumberPlaceholder: "Enter phone number",
+      singleWithdrawalLimitLabel: "Single Withdrawal Limit",
+      singleWithdrawalLimitPlaceholder: "Enter single withdrawal limit",
+      verificationDateLabel: "Verification Date",
+      verificationDatePlaceholder: "Enter verification date",
+      verificationReferenceLabel: "Verification Reference",
+      verificationReferencePlaceholder: "Enter verification reference",
+    },
+    messages: {
+      noData: "No withdrawal methods found.",
+    },
+    title: "Withdrawal Methods",
+    totalCount_one: "1 method",
+    totalCount_other: "{{count}} methods",
+  },
+  withdrawals: {
+    actions: {
+      view: "View",
+    },
+    messages: {
+      noData: "No withdrawals found.",
+    },
+  },
+  withdrawalsreadmodels: {
+    headers: {
+      accountNumber: "Account Number",
+      amount: "Amount",
+      applicationName: "Application Name",
+      companyName: "Company Name",
+      createdAt: "Created At",
+      currencySymbol: "Currency Symbol",
+      feeAppliedAmount: "Fee Applied",
+      internalFeeAmount: "Internal Fee",
+      netAmount: "Net Amount",
+      paymentMethodName: "Payment Method Name",
+      providerFeeAmount: "Provider Fee",
+      providerReference: "Provider Reference",
+      status: "Status",
+      transactionId: "Transaction ID",
+      verificationAttempts: "Verification Attempts",
+      withdrawalMethodName: "Withdrawal Method Name",
+    },
+  },
+  withdrawalsReadModels: {
+    actions: {
+      add: "New Withdral",
+      more: "More Actions",
+      view: "View",
+    },
+    form: {
+      applicationIdLabel: "Application ID",
+      applicationNameLabel: "Application Name",
+      companyIdLabel: "Company ID",
+      companyNameLabel: "Company Name",
+      createdFromLabel: "From",
+      createdToLabel: "To",
+      currencyLabel: "Currency",
+      customerEmailLabel: "Customer Email",
+      customerIpAddressLabel: "Customer Ip Address",
+      customerNameLabel: "Customer Name",
+      externalReferenceLabel: "External Reference",
+      idsLabel: "Ids",
+      internalReferenceLabel: "Internal Reference",
+      paymentMethodCodeLabel: "Payment Method Code",
+      paymentMethodNameLabel: "Payment Method Name",
+      phoneNumberEncryptedLabel: "Phone (Encrypted)",
+      processedByNameLabel: "Processed By Name",
+      providerFinalReferenceLabel: "Provider Final Reference",
+      providerInitialReferenceLabel: "Provider Initial Reference",
+      providerMessageLabel: "Provider Message",
+      providerReferenceLabel: "Provider Reference",
+      searchTermLabel: "Search...",
+      statusLabel: "status",
+      verifiedByNameLabel: "Verified By Name",
+      withdrawalMethodIdLabel: "Withdrawal Method",
+    },
+    messages: {
+      noData: "No withdrawals found.",
+      search: {
+        error: "Search failed.",
+      },
+    },
+    title: "Withdrawals",
+    totalCount_one: "1 withdrawal",
+    totalCount_other: "{{count}} withdrawals",
+  },
 } as const

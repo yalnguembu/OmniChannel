@@ -15,6 +15,9 @@
     }
   },
   "accessDenied": "Accès refusé",
+  "actions": {
+    "openMenu": "_openMenu"
+  },
   "allowedips": {
     "headers": {
       "applicationId": "ID de l'application",
@@ -36,6 +39,7 @@
       "deleteError": "Erreur lors de la suppression des adresses IP sélectionnées.",
       "deleteReason": "Motif de la suppression groupée",
       "partialError_one": "Une erreur partielle est survenue.",
+      "partialError_many": "_partialError",
       "partialError_other": "{{count}} erreurs partielles sont survenues."
     },
     "details": {
@@ -65,6 +69,7 @@
         "error": "Échec de la suppression de l'IP autorisée.",
         "success": "IP autorisée supprimée avec succès.",
         "success_one": "1 IP autorisée supprimée avec succès.",
+        "success_many": "_success",
         "success_other": "{{count}} adresses IP autorisées supprimées avec succès."
       },
       "noData": "Aucune IP autorisée trouvée.",
@@ -78,6 +83,7 @@
     },
     "title": "Adresses IP autorisées",
     "totalCount_one": "1 IP autorisée",
+    "totalCount_many": "_totalCount",
     "totalCount_other": "{{count}} adresses IP autorisées"
   },
   "applications": {
@@ -90,13 +96,16 @@
     },
     "bulk": {
       "delete_one": "Supprimer cette application ?",
+      "delete_many": "_delete",
       "delete_other": "Supprimer ces applications ?",
       "deleteConfirm_one": "Êtes-vous sûr de vouloir supprimer cette application ?",
+      "deleteConfirm_many": "_deleteConfirm",
       "deleteConfirm_other": "Êtes-vous sûr de vouloir supprimer ces {{count}} applications ?",
       "deleteError": "Erreur lors de la suppression des applications.",
       "deleteReason": "Motif de la suppression groupée",
       "deleting": "Suppression en cours...",
       "partialError_one": "Une erreur partielle est survenue.",
+      "partialError_many": "_partialError",
       "partialError_other": "{{count}} erreurs partielles sont survenues."
     },
     "create": "Créer une application",
@@ -139,6 +148,7 @@
         "error": "Échec de la suppression de l'application.",
         "success": "Application supprimée avec succès.",
         "success_one": "1 application supprimée.",
+        "success_many": "_success",
         "success_other": "{{count}} applications supprimées."
       },
       "noData": "Aucune application trouvée.",
@@ -152,6 +162,7 @@
     },
     "title": "Applications",
     "totalCount_one": "1 application",
+    "totalCount_many": "_totalCount",
     "totalCount_other": "{{count}} applications"
   },
   "auditlogs": {
@@ -192,6 +203,7 @@
       "deleteError": "Erreur lors de la suppression des journaux.",
       "deleteReason": "Motif de la suppression",
       "partialError_one": "Une erreur partielle est survenue.",
+      "partialError_many": "_partialError",
       "partialError_other": "{{count}} erreurs partielles sont survenues."
     },
     "details": {
@@ -206,6 +218,7 @@
         "error": "Échec de la suppression du journal.",
         "success": "Journal supprimé avec succès.",
         "success_one": "1 journal supprimé.",
+        "success_many": "_success",
         "success_other": "{{count}} journaux supprimés."
       },
       "noData": "Aucun journal d'audit trouvé.",
@@ -219,6 +232,7 @@
     },
     "title": "Journaux d'audit",
     "totalCount_one": "1 journal",
+    "totalCount_many": "_totalCount",
     "totalCount_other": "{{count}} journaux"
   },
   "auth": {
@@ -288,13 +302,16 @@
     },
     "bulk": {
       "delete_one": "Supprimer ce solde ?",
+      "delete_many": "_delete",
       "delete_other": "Supprimer ces soldes ?",
       "deleteConfirm_one": "Êtes-vous sûr de vouloir supprimer ce solde ?",
+      "deleteConfirm_many": "_deleteConfirm",
       "deleteConfirm_other": "Êtes-vous sûr de vouloir supprimer ces {{count}} soldes ?",
       "deleteError": "Erreur lors de la suppression des soldes.",
       "deleteReason": "Motif de la suppression",
       "deleting": "Suppression en cours...",
       "partialError_one": "Une erreur partielle est survenue.",
+      "partialError_many": "_partialError",
       "partialError_other": "{{count}} erreurs partielles sont survenues."
     },
     "messages": {
@@ -307,6 +324,7 @@
         "error": "Échec de la suppression du solde.",
         "success": "Solde supprimé avec succès.",
         "success_one": "1 solde supprimé.",
+        "success_many": "_success",
         "success_other": "{{count}} soldes supprimés."
       },
       "noData": "Aucun solde trouvé.",
@@ -320,6 +338,7 @@
     },
     "title": "Soldes",
     "totalCount_one": "1 solde",
+    "totalCount_many": "_totalCount",
     "totalCount_other": "{{count}} soldes"
   },
   "blockedIp": {
@@ -334,6 +353,7 @@
       "deleteError": "Erreur lors de la suppression des adresses IP.",
       "deleteReason": "Motif de la suppression",
       "partialError_one": "Une erreur partielle est survenue.",
+      "partialError_many": "_partialError",
       "partialError_other": "{{count}} erreurs partielles sont survenues."
     },
     "details": {
@@ -359,6 +379,7 @@
         "error": "Le déblocage a échoué.",
         "success": "Déblocage réussi.",
         "success_one": "Succès",
+        "success_many": "_success",
         "success_other": "Succès"
       },
       "noData": "Aucune IP bloquée trouvée.",
@@ -372,6 +393,7 @@
     },
     "title": "Adresses IP bloquées",
     "totalCount_one": "1 IP bloquée",
+    "totalCount_many": "_totalCount",
     "totalCount_other": "{{count}} adresses IP bloquées"
   },
   "blockedips": {
@@ -422,6 +444,7 @@
       },
       "selection": {
         "count_one": "1 sélectionné",
+        "count_many": "_count",
         "count_other": "{{count}} sélectionnés"
       },
       "view": {
@@ -443,13 +466,16 @@
     },
     "bulk": {
       "delete_one": "Supprimer cette entreprise ?",
+      "delete_many": "_delete",
       "delete_other": "Supprimer ces entreprises ?",
       "deleteConfirm_one": "Êtes-vous sûr de vouloir supprimer cette entreprise ?",
+      "deleteConfirm_many": "_deleteConfirm",
       "deleteConfirm_other": "Êtes-vous sûr de vouloir supprimer ces {{count}} entreprises ?",
       "deleteError": "Erreur lors de la suppression.",
       "deleteReason": "Motif de la suppression",
       "deleting": "Suppression en cours...",
       "partialError_one": "Une erreur partielle est survenue.",
+      "partialError_many": "_partialError",
       "partialError_other": "{{count}} erreurs partielles sont survenues."
     },
     "create": "Créer une entreprise",
@@ -460,6 +486,7 @@
       "businessRegistrationNumber": "Numéro de registre du commerce",
       "companySize": "Taille",
       "companyType": "Type",
+      "contact": "_contact",
       "contactPerson": "Personne de contact",
       "countryCode": "Code du pays",
       "createdAt": "Date de création",
@@ -524,6 +551,7 @@
         "error": "La suppression a échoué.",
         "success": "Suppression réussie.",
         "success_one": "1 entreprise supprimée.",
+        "success_many": "_success",
         "success_other": "{{count}} entreprises supprimées."
       },
       "dropdown": {
@@ -548,6 +576,7 @@
     },
     "title": "Entreprises",
     "totalCount_one": "1 entreprise",
+    "totalCount_many": "_totalCount",
     "totalCount_other": "{{count}} entreprises"
   },
   "company": {
@@ -584,13 +613,16 @@
     },
     "bulk": {
       "delete_one": "Supprimer cette limite ?",
+      "delete_many": "_delete",
       "delete_other": "Supprimer ces limites ?",
       "deleteConfirm_one": "Êtes-vous sûr de vouloir supprimer cette limite ?",
+      "deleteConfirm_many": "_deleteConfirm",
       "deleteConfirm_other": "Êtes-vous sûr de vouloir supprimer ces {{count}} limites ?",
       "deleteError": "Erreur lors de la suppression.",
       "deleteReason": "Motif de la suppression",
       "deleting": "Suppression en cours...",
       "partialError_one": "Une erreur partielle est survenue.",
+      "partialError_many": "_partialError",
       "partialError_other": "{{count}} erreurs partielles sont survenues."
     },
     "create": "Créer une limite d'application d'entreprise",
@@ -626,6 +658,7 @@
         "error": "La suppression a échoué.",
         "success": "Suppression réussie.",
         "success_one": "1 limite supprimée.",
+        "success_many": "_success",
         "success_other": "{{count}} limites supprimées."
       },
       "noData": "Aucune limite trouvée.",
@@ -639,6 +672,7 @@
     },
     "title": "Limites d'application d'entreprise",
     "totalCount_one": "1 limite",
+    "totalCount_many": "_totalCount",
     "totalCount_other": "{{count}} limites"
   },
   "contact": {
@@ -675,6 +709,7 @@
       "deleteError": "Échec de la suppression des pays sélectionnés",
       "deleteReason": "Opération de suppression groupée",
       "partialError_one": "1 erreur partielle est survenue.",
+      "partialError_many": "_partialError",
       "partialError_other": "{{count}} erreurs partielles sont survenues."
     },
     "create": "Créer un pays",
@@ -716,6 +751,7 @@
         "error": "Échec de la suppression du pays.",
         "success": "Pays supprimé avec succès.",
         "success_one": "1 pays supprimé.",
+        "success_many": "_success",
         "success_other": "{{count}} pays supprimés."
       },
       "noData": "Aucun pays trouvé.",
@@ -741,13 +777,16 @@
     },
     "bulk": {
       "delete_one": "Supprimer cette devise ?",
+      "delete_many": "_delete",
       "delete_other": "Supprimer ces devises ?",
       "deleteConfirm_one": "Êtes-vous sûr de vouloir supprimer cette devise ?",
+      "deleteConfirm_many": "_deleteConfirm",
       "deleteConfirm_other": "Êtes-vous sûr de vouloir supprimer ces {{count}} devises ?",
       "deleteError": "Erreur lors de la suppression.",
       "deleteReason": "Motif de la suppression",
       "deleting": "Suppression en cours...",
       "partialError_one": "Une erreur partielle est survenue.",
+      "partialError_many": "_partialError",
       "partialError_other": "{{count}} erreurs partielles sont survenues."
     },
     "create": "Créer une devise",
@@ -797,6 +836,7 @@
         "error": "La suppression a échoué.",
         "success": "Suppression réussie.",
         "success_one": "1 devise supprimée.",
+        "success_many": "_success",
         "success_other": "{{count}} devises supprimées."
       },
       "noData": "Aucune devise trouvée.",
@@ -895,6 +935,7 @@
       "deleteError": "Erreur lors de la suppression.",
       "deleteReason": "Motif de la suppression",
       "partialError_one": "Une erreur partielle est survenue.",
+      "partialError_many": "_partialError",
       "partialError_other": "{{count}} erreurs partielles sont survenues."
     },
     "form": {
@@ -922,6 +963,7 @@
         "error": "La suppression a échoué.",
         "success": "Suppression réussie.",
         "success_one": "1 type de document supprimé.",
+        "success_many": "_success",
         "success_other": "{{count}} types de documents supprimés."
       },
       "noData": "Aucun type de document trouvé.",
@@ -944,7 +986,99 @@
       "name": "Nom"
     }
   },
+  "encrypted": "_encrypted",
   "FAQ": {
+    "categories": {
+      "account": {
+        "questions": {
+          "fees": {
+            "answer": "Fujisat Pay propose une structure tarifaire transparente et compétitive. Les frais varient selon le type de transaction et le volume. Nous proposons des tarifs préférentiels pour les entreprises à fort volume. Contactez notre équipe commerciale pour obtenir un devis personnalisé adapté à vos besoins spécifiques.",
+            "question": "Quels sont les frais associés à l'utilisation de Fujisat Pay ?"
+          },
+          "openAccount": {
+            "answer": "L'ouverture d'un compte Fujisat Pay se fait exclusivement par contact direct avec notre équipe commerciale. Cela nous permet de personnaliser votre solution selon vos besoins spécifiques et de vous accompagner dans le processus de vérification KYC. Contactez-nous via notre formulaire de contact ou appelez-nous directement.",
+            "question": "Comment ouvrir un compte Fujisat Pay ?"
+          }
+        },
+        "title": "Compte et tarification"
+      },
+      "features": {
+        "questions": {
+          "automaticWithdrawals": {
+            "answer": "Oui, Fujisat Pay prend en charge les retraits automatisés vers Orange Money et MTN Mobile Money. Vous pouvez configurer des règles de retrait automatique basées sur des seuils de solde, des horaires programmés, ou des déclencheurs spécifiques. Tous les retraits sont sécurisés par une authentification à deux facteurs.",
+            "question": "Puis-je automatiser les retraits de fonds ?"
+          },
+          "moneyTransfers": {
+            "answer": "Absolument ! Fujisat Pay permet les transferts d'argent sécurisés entre différents comptes, applications, et même entre entreprises. Tous les transferts sont tracés en temps réel avec une transparence totale sur les frais. Les transferts inter-entreprises nécessitent des autorisations spécifiques pour garantir la sécurité.",
+            "question": "Puis-je effectuer des transferts d'argent entre comptes ?"
+          },
+          "multipleCompanies": {
+            "answer": "Oui, notre solution multi-entreprise permet de gérer plusieurs entités depuis une seule plateforme. Chaque entreprise conserve ses données séparées et sécurisées, tout en bénéficiant de rapports consolidés et d'une gestion centralisée. C'est idéal pour les groupes d'entreprises ou les franchises.",
+            "question": "Puis-je gérer plusieurs entreprises avec un seul compte ?"
+          },
+          "supportedPaymentMethods": {
+            "answer": "Fujisat Pay prend en charge les deux principales méthodes de paiement mobile au Cameroun : Orange Money et MTN Mobile Money. Notre plateforme unifie ces services pour offrir une expérience de paiement fluide à vos clients, quel que soit leur opérateur mobile préféré.",
+            "question": "Quels moyens de paiement sont pris en charge ?"
+          },
+          "trackPerformance": {
+            "answer": "Oui, Fujisat Pay fournit des tableaux de bord en temps réel et des outils d'analyse avancés. Vous pouvez suivre les transactions, analyser les tendances, générer des rapports personnalisés, et exporter vos données. Les métriques incluent les volumes, les taux de réussite, les moyens de paiement préférés, et bien plus.",
+            "question": "Puis-je suivre les performances de mes transactions ?"
+          }
+        },
+        "title": "Fonctionnalités et capacités"
+      },
+      "general": {
+        "questions": {
+          "availableInCameroon": {
+            "answer": "Fujisat Pay est spécifiquement conçu pour le marché camerounais et est parfaitement adapté aux réglementations locales. Nous sommes basés à Douala et comprenons les spécificités du marché des paiements mobiles au Cameroun. Notre solution est optimisée pour Orange Money et MTN Mobile Money.",
+            "question": "Fujisat Pay est-il disponible au Cameroun ?"
+          },
+          "whatIsFujipay": {
+            "answer": "Fujisat Pay est une plateforme d'agrégation de paiements mobiles qui permet aux entreprises camerounaises d'accepter, de gérer et de traiter les paiements via Orange Money et MTN Mobile Money. Notre solution offre une API unifiée, des outils de gestion avancés, et une sécurité de niveau bancaire.",
+            "question": "Qu'est-ce que Fujisat Pay ?"
+          },
+          "whoIsGraphicsSystem": {
+            "answer": "Graphics System SA est une entreprise technologique camerounaise établie, spécialisée dans le développement de solutions digitales innovantes. Nous sommes les créateurs et opérateurs de Fujisat Pay, apportant notre expertise locale et notre connaissance approfondie du marché camerounais des paiements mobiles.",
+            "question": "Qui est Graphics System SA ?"
+          }
+        },
+        "title": "Questions générales"
+      },
+      "integration": {
+        "questions": {
+          "easyIntegration": {
+            "answer": "Oui ! Notre API RESTful est conçue pour une intégration rapide et simple. Nous fournissons une documentation complète, des SDKs pour les langages populaires, un environnement sandbox pour les tests, et des exemples de code. La plupart des intégrations de base peuvent être réalisées en quelques heures.",
+            "question": "L'intégration de Fujisat Pay est-elle facile ?"
+          },
+          "technicalSupport": {
+            "answer": "Absolument ! Notre équipe de support technique est composée d'experts qui vous accompagnent depuis l'intégration initiale jusqu'au support continu. Nous offrons un support via email, téléphone, et chat. Pour les entreprises importantes, nous proposons également un support dédié et des sessions de formation personnalisées.",
+            "question": "Offrez-vous un support technique pour l'intégration ?"
+          },
+          "testBefore": {
+            "answer": "Oui, nous fournissons un environnement sandbox complet qui simule tous les aspects de la production. Vous pouvez tester toutes les fonctionnalités, simuler différents scénarios de paiement, et valider votre intégration sans aucun risque. Cet environnement est gratuit et disponible immédiatement après inscription.",
+            "question": "Puis-je tester la solution avant de la déployer en production ?"
+          }
+        },
+        "title": "Intégration et support technique"
+      },
+      "security": {
+        "questions": {
+          "dataSecured": {
+            "answer": "La sécurité est notre priorité absolue. Nous utilisons un chiffrement AES-256-GCM pour toutes les données sensibles, une authentification multi-niveaux (API keys + JWT), des restrictions IP configurables, et une journalisation d'audit complète. Nos serveurs sont hébergés dans des centres de données certifiés avec des mesures de sécurité physique strictes.",
+            "question": "Comment mes données sont-elles sécurisées ?"
+          },
+          "regulatoryCompliance": {
+            "answer": "Oui, Fujisat Pay respecte toutes les réglementations financières camerounaises et internationales. Nous sommes conformes aux exigences de la COBAC (Commission Bancaire de l'Afrique Centrale), aux standards PCI DSS pour les paiements, et aux réglementations GDPR pour la protection des données. Nos processus sont régulièrement audités.",
+            "question": "Êtes-vous conformes aux réglementations financières ?"
+          },
+          "whatIsKyc": {
+            "answer": "KYC (Know Your Customer) est un processus de vérification d'identité obligatoire pour toutes les entreprises utilisant des services financiers. Fujisat Pay simplifie ce processus avec un système automatisé qui vérifie l'identité de vos entreprises clientes, garantit la conformité réglementaire, et réduit les risques de fraude.",
+            "question": "Qu'est-ce que le processus KYC et pourquoi est-il important ?"
+          }
+        },
+        "title": "Sécurité et conformité"
+      }
+    },
     "clearSearch": "Effacer la recherche",
     "intro": "Nous avons compilé les questions les plus fréquemment posées par nos utilisateurs et prospects. Si vous ne trouvez pas la réponse ici, n'hésitez pas à nous contacter.",
     "noResults": "Aucune question correspondante trouvée",
@@ -957,31 +1091,73 @@
     "title": "Foire aux questions"
   },
   "features": {
+    "administration": {
+      "benefits": "Gestion complète des utilisateurs, Contrôle des permissions granulaire, Journalisation d'audit avancée, Configuration système centralisée",
+      "description": "Administrez votre plateforme Fujisat Pay avec des outils de gestion avancés pour utilisateurs, permissions, et configuration système.",
+      "details": "Gestion des utilisateurs, Permissions et rôles, Configuration système, Journaux d'audit, Paramètres de sécurité",
+      "title": "Administration"
+    },
     "badge": "FONCTIONNALITÉS",
+    "balanceManagement": {
+      "benefits": "Suivi en temps réel des soldes, Rapprochement automatisé, Gestion multi-devises, Historique complet des transactions",
+      "description": "Gérez et surveillez tous vos soldes de compte en temps réel avec des outils de rapprochement automatisés et des rapports détaillés.",
+      "details": "Soldes en temps réel, Rapprochement automatique, Multi-devises, Historique des transactions, Alertes de seuil",
+      "title": "Gestion des soldes"
+    },
     "intro": "Fujisat Pay est conçu pour offrir un contrôle total sur vos opérations financières mobiles au Cameroun, grâce à une suite de fonctionnalités avancées et sécurisées.",
+    "kyc": {
+      "benefits": "Vérification automatisée d'identité, Conformité réglementaire, Processus de validation flexible, Sécurité renforcée",
+      "description": "Respectez les exigences KYC (Know Your Customer) avec notre système de vérification d'identité automatisé et conforme aux réglementations.",
+      "details": "Vérification d'identité, Documents KYC, Validation automatique, Conformité réglementaire, Processus sécurisé",
+      "title": "KYC (Know Your Customer)"
+    },
+    "moneyTransfers": {
+      "benefits": "Transferts instantanés entre comptes, Sécurité maximale des fonds, Traçabilité complète, Frais transparents",
+      "description": "Effectuez des transferts d'argent sécurisés entre comptes, applications ou entreprises avec une traçabilité complète et des frais transparents.",
+      "details": "Transferts instantanés, Sécurité maximale, Traçabilité complète, Frais transparents, Multi-plateformes",
+      "title": "Transferts d'argent"
+    },
+    "multiEnterprise": {
+      "benefits": "Gestion centralisée multi-entreprises, Séparation des données sécurisée, Rapports consolidés, Configuration flexible",
+      "description": "Gérez plusieurs entreprises depuis une seule plateforme avec une séparation sécurisée des données et des rapports consolidés.",
+      "details": "Multi-entreprises, Séparation des données, Rapports consolidés, Configuration flexible, Gestion centralisée",
+      "title": "Gestion multi-entreprise"
+    },
+    "notifications": {
+      "benefits": "Notifications en temps réel, Canaux multiples (SMS, Email), Personnalisation complète, Historique des notifications",
+      "description": "Recevez et gérez toutes vos notifications importantes via multiple canaux avec un système de personnalisation avancé.",
+      "details": "Temps réel, SMS et Email, Personnalisation, Historique, Filtres avancés",
+      "title": "Système de notifications"
+    },
     "paymentManagement": {
-      "benefit1": "Intégration unifiée Orange Money et MTN Mobile Money",
-      "benefit2": "Gestion complète du cycle de vie des transactions",
-      "benefit3": "Rapprochement et rapports automatisés",
-      "benefit4": "Pages et liens de paiement personnalisables",
+      "benefit1": "_benefit1",
+      "benefit2": "_benefit2",
+      "benefit3": "_benefit3",
+      "benefit4": "_benefit4",
+      "benefits": "Intégration unifiée Orange Money et MTN Mobile Money, Gestion complète du cycle de vie des transactions, Rapprochement et rapports automatisés, Pages et liens de paiement personnalisables",
       "description": "Traitez efficacement les paiements entrants via Orange Money et MTN Mobile Money. Gérez le cycle de vie complet de chaque transaction (création, traitement, achèvement).",
+      "details": "Orange Money, MTN Mobile Money, Cycle de vie complet, Rapprochement automatique, Pages personnalisables",
       "title": "Gestion des paiements"
     },
     "reporting": {
-      "benefit1": "Tableaux de bord des transactions en temps réel",
-      "benefit2": "Génération de rapports personnalisés",
-      "benefit3": "Capacités d'exportation de données (CSV, Excel)",
-      "benefit4": "Analyse des moyens de paiement",
+      "benefit1": "_benefit1",
+      "benefit2": "_benefit2",
+      "benefit3": "_benefit3",
+      "benefit4": "_benefit4",
+      "benefits": "Tableaux de bord des transactions en temps réel, Génération de rapports personnalisés, Capacités d'exportation de données (CSV, Excel), Analyse des moyens de paiement",
       "description": "Obtenez des informations précieuses grâce à des outils de reporting et d'analyse complets pour une meilleure prise de décision.",
+      "details": "Tableaux de bord temps réel, Rapports personnalisés, Export CSV/Excel, Analyses détaillées, KPI avancés",
       "title": "Analyses et rapports"
     },
     "requestDemo": "Demander une démo",
     "security": {
-      "benefit1": "Authentification à plusieurs niveaux (clé API, JWT)",
-      "benefit2": "Chiffrement AES-256-GCM pour les données sensibles",
-      "benefit3": "Capacités de restriction d'adresse IP",
-      "benefit4": "Journalisation d'audit complète",
+      "benefit1": "_benefit1",
+      "benefit2": "_benefit2",
+      "benefit3": "_benefit3",
+      "benefit4": "_benefit4",
+      "benefits": "Authentification à plusieurs niveaux (clé API, JWT), Chiffrement AES-256-GCM pour les données sensibles, Capacités de restriction d'adresse IP, Journalisation d'audit complète",
       "description": "Protégez votre entreprise et vos clients avec des fonctionnalités de sécurité de niveau entreprise conçues pour le secteur financier.",
+      "details": "Authentification multi-niveaux, Chiffrement AES-256-GCM, Restrictions IP, Audit complet, Sécurité bancaire",
       "title": "Sécurité"
     },
     "subtitle": "La puissance à votre service",
@@ -989,11 +1165,13 @@
     "title1": "La puissance à votre service",
     "title2": "",
     "withdrawalManagement": {
-      "benefit1": "Vérification à deux facteurs pour la sécurité",
-      "benefit2": "Prise en charge d'Orange Money et de MTN Mobile Money",
-      "benefit3": "Traitement par lots pour les volumes élevés",
-      "benefit4": "Processus d'approbation flexibles",
+      "benefit1": "_benefit1",
+      "benefit2": "_benefit2",
+      "benefit3": "_benefit3",
+      "benefit4": "_benefit4",
+      "benefits": "Vérification à deux facteurs pour la sécurité, Prise en charge d'Orange Money et de MTN Mobile Money, Traitement par lots pour les volumes élevés, Processus d'approbation flexibles",
       "description": "Initiez et traitez les demandes de retrait de fonds avec une sécurité optimale. Que ce soit via mobile money ou virement bancaire, Fujisat Pay s'adapte à vos besoins.",
+      "details": "Authentification 2FA, Orange Money et MTN, Traitement par lots, Approbations flexibles, Sécurité optimale",
       "title": "Gestion des retraits"
     }
   },
@@ -1029,13 +1207,16 @@
     },
     "bulk": {
       "delete_one": "Supprimer cette configuration ?",
+      "delete_many": "_delete",
       "delete_other": "Supprimer ces configurations ?",
       "deleteConfirm_one": "Êtes-vous sûr de vouloir supprimer cette configuration ?",
+      "deleteConfirm_many": "_deleteConfirm",
       "deleteConfirm_other": "Êtes-vous sûr de vouloir supprimer ces {{count}} configurations ?",
       "deleteError": "Erreur lors de la suppression.",
       "deleteReason": "Motif de la suppression",
       "deleting": "Suppression en cours...",
       "partialError_one": "Une erreur partielle est survenue.",
+      "partialError_many": "_partialError",
       "partialError_other": "{{count}} erreurs partielles sont survenues."
     },
     "create": "Créer une configuration de frais",
@@ -1088,6 +1269,7 @@
         "error": "La suppression a échoué.",
         "success": "Suppression réussie.",
         "success_one": "1 configuration supprimée.",
+        "success_many": "_success",
         "success_other": "{{count}} configurations supprimées."
       },
       "noData": "Aucune configuration de frais trouvée.",
@@ -1123,13 +1305,16 @@
     },
     "bulk": {
       "delete_one": "Supprimer ce type ?",
+      "delete_many": "_delete",
       "delete_other": "Supprimer ces types ?",
       "deleteConfirm_one": "Êtes-vous sûr de vouloir supprimer ce type de frais ?",
+      "deleteConfirm_many": "_deleteConfirm",
       "deleteConfirm_other": "Êtes-vous sûr de vouloir supprimer ces {{count}} types de frais ?",
       "deleteError": "Erreur lors de la suppression.",
       "deleteReason": "Motif de la suppression",
       "deleting": "Suppression en cours...",
       "partialError_one": "Une erreur partielle est survenue.",
+      "partialError_many": "_partialError",
       "partialError_other": "{{count}} erreurs partielles sont survenues."
     },
     "create": "Créer un type de frais",
@@ -1173,6 +1358,7 @@
         "error": "La suppression a échoué.",
         "success": "Suppression réussie.",
         "success_one": "1 type de frais supprimé.",
+        "success_many": "_success",
         "success_other": "{{count}} types de frais supprimés."
       },
       "noData": "Aucun type de frais trouvé.",
@@ -1234,6 +1420,7 @@
     },
     "title": "Événements frontaux",
     "totalCount_one": "1 événement",
+    "totalCount_many": "_totalCount",
     "totalCount_other": "{{count}} événements"
   },
   "fundtransfersreadmodels": {
@@ -1271,13 +1458,16 @@
     },
     "bulk": {
       "delete_one": "Supprimer ce transfert ?",
+      "delete_many": "_delete",
       "delete_other": "Supprimer ces transferts ?",
       "deleteConfirm_one": "Êtes-vous sûr de vouloir supprimer ce transfert ?",
+      "deleteConfirm_many": "_deleteConfirm",
       "deleteConfirm_other": "Êtes-vous sûr de vouloir supprimer ces {{count}} transferts ?",
       "deleteError": "Erreur lors de la suppression.",
       "deleteReason": "Motif de la suppression",
       "deleting": "Suppression en cours...",
       "partialError_one": "Une erreur partielle est survenue.",
+      "partialError_many": "_partialError",
       "partialError_other": "{{count}} erreurs partielles sont survenues."
     },
     "messages": {
@@ -1290,6 +1480,7 @@
         "error": "La suppression a échoué.",
         "success": "Suppression réussie.",
         "success_one": "1 transfert supprimé.",
+        "success_many": "_success",
         "success_other": "{{count}} transferts supprimés."
       },
       "noData": "Aucun transfert de fonds trouvé.",
@@ -1303,6 +1494,7 @@
     },
     "title": "Transferts de fonds",
     "totalCount_one": "1 transfert",
+    "totalCount_many": "_totalCount",
     "totalCount_other": "{{count}} transferts"
   },
   "goBack": "Retour",
@@ -1342,6 +1534,7 @@
       "deleteError": "Erreur lors de la suppression.",
       "deleteReason": "Motif de la suppression",
       "partialError_one": "Une erreur partielle est survenue.",
+      "partialError_many": "_partialError",
       "partialError_other": "{{count}} erreurs partielles sont survenues."
     },
     "form": {
@@ -1372,6 +1565,7 @@
         "error": "La suppression a échoué.",
         "success": "Suppression réussie.",
         "success_one": "1 document supprimé.",
+        "success_many": "_success",
         "success_other": "{{count}} documents supprimés."
       },
       "noData": "Aucun document KYC trouvé.",
@@ -1385,6 +1579,7 @@
     },
     "title": "Documents KYC",
     "totalCount_one": "1 document",
+    "totalCount_many": "_totalCount",
     "totalCount_other": "{{count}} documents"
   },
   "landingPage": {
@@ -1414,10 +1609,10 @@
       "mtnMobileMoney": "MTN Mobile Money",
       "orangeMoney": "Orange Money",
       "paid": "Payé",
-      "subtitle": "Soutient les petites entreprises avec une facturation simple, des intégrations puissantes et des outils de gestion de trésorerie.",
-      "title1": "Encaissez vos payment,",
-      "title2": "Sans stress",
-      "title3": "A tous moment.",
+      "subtitle": "Soutient les petites et grandes entreprises avec une facturation simple, des intégrations puissantes et des outils de gestion de trésorerie.",
+      "title1": "Encaissement fiable,",
+      "title2": "Et securise",
+      "title3": "",
       "trustedBy": "Approuvé par des entreprises de premier plan",
       "viewTransactions": "Voir les transactions"
     },
@@ -1495,62 +1690,63 @@
     },
     "title": "Journaux",
     "totalCount_one": "1 journal",
+    "totalCount_many": "_totalCount",
     "totalCount_other": "{{count}} journaux"
   },
   "menu": {
-    "Dashboard": "Tableau de bord",
-    "administration": "Administration",
-    "countries": "Pays",
-    "feeTypes": "Types de frais",
-    "paymentMethod": "Moyens de paiement",
-    "balanceType": "Types de solde",
-    "feeConfigurations": "Configurations de frais",
-    "documentType": "Types de documents",
-    "companyAppLimit": "Limites d'application",
-    "settings": "Paramètres",
-    "secureSettings": "Paramètres sécurisés",
-    "users": "Utilisateurs",
-    "userProfiles": "Profils utilisateur",
-    "permissions": "Permissions",
-    "companies": "Entreprises",
-    "applications": "Applications",
-    "transactions": "Transactions",
-    "all": "Toutes",
-    "payments": "Paiements",
-    "withdrawals": "Retraits",
-    "withdrawalMethod": "Méthodes de retrait",
-    "receipts": "Reçus",
-    "logs": "Journaux",
-    "frontEvents": "Événements frontaux",
-    "webHookLogs": "Journaux de Webhook",
-    "monitoring": "Surveillance",
-    "systemMetric": "Métrique système",
-    "currencies": "Devises",
-    "auditSecurity": "Audit et sécurité",
-    "allowedIps": "Adresses IP autorisées",
-    "blockedIps": "Adresses IP bloquées",
-    "auditLogs": "Journaux d'audit",
-    "userDevices": "Appareils des utilisateurs",
-    "webhooks": "Webhooks",
+    "access-control": "Control Access",
+    "addApplication": "Ajouter une application",
+    "addBalanceType": "Ajouter un type de solde",
+    "addCompany": "Ajouter une entreprise",
+    "addCompanyAppLimit": "Ajouter une limite d'application",
     "addCountry": "Ajouter un pays",
+    "addDocumentType": "Ajouter un type de document",
+    "addFeeConfiguration": "Ajouter une configuration de frais",
     "addFeeType": "Ajouter un type de frais",
     "addPaymentMethod": "Ajouter un moyen de paiement",
-    "addBalanceType": "Ajouter un type de solde",
-    "addFeeConfiguration": "Ajouter une configuration de frais",
-    "addDocumentType": "Ajouter un type de document",
-    "addCompanyAppLimit": "Ajouter une limite d'application",
-    "addSetting": "Ajouter un paramètre",
     "addSecureSetting": "Ajouter un paramètre sécurisé",
+    "addSetting": "Ajouter un paramètre",
     "addUser": "Ajouter un utilisateur",
     "addUserProfile": "Ajouter un profil",
-    "addCompany": "Ajouter une entreprise",
-    "addApplication": "Ajouter une application",
     "addWebhook": "Ajouter un Webhook",
-    "access-control": "Control Access",
-    "support": "Support",
+    "administration": "Administration",
+    "all": "Toutes",
+    "allowedIps": "Adresses IP autorisées",
+    "applications": "Applications",
+    "auditLogs": "Journaux d'audit",
+    "auditSecurity": "Audit et sécurité",
+    "balanceType": "Types de solde",
+    "blockedIps": "Adresses IP bloquées",
+    "companies": "Entreprises",
+    "companyAppLimit": "Limites d'application",
+    "countries": "Pays",
+    "currencies": "Devises",
+    "Dashboard": "Tableau de bord",
+    "documentType": "Types de documents",
+    "feeConfigurations": "Configurations de frais",
+    "feeTypes": "Types de frais",
+    "frontEvents": "Événements frontaux",
+    "general": "General",
     "it": "Technique",
+    "logs": "Journaux",
+    "monitoring": "Surveillance",
+    "paymentMethod": "Moyens de paiement",
+    "payments": "Paiements",
+    "permissions": "Permissions",
+    "receipts": "Reçus",
+    "secureSettings": "Paramètres sécurisés",
+    "settings": "Paramètres",
+    "support": "Support",
     "system": "Systeme",
-    "general": "General"
+    "systemMetric": "Métrique système",
+    "transactions": "Transactions",
+    "userDevices": "Appareils des utilisateurs",
+    "userProfiles": "Profils utilisateur",
+    "users": "Utilisateurs",
+    "webHookLogs": "Journaux de Webhook",
+    "webhooks": "Webhooks",
+    "withdrawalMethod": "Méthodes de retrait",
+    "withdrawals": "Retraits"
   },
   "navigation": {
     "about": "À propos",
@@ -1576,13 +1772,16 @@
     },
     "bulk": {
       "delete_one": "Supprimer cette notification ?",
+      "delete_many": "_delete",
       "delete_other": "Supprimer ces notifications ?",
       "deleteConfirm_one": "Êtes-vous sûr de vouloir supprimer cette notification ?",
+      "deleteConfirm_many": "_deleteConfirm",
       "deleteConfirm_other": "Êtes-vous sûr de vouloir supprimer ces {{count}} notifications ?",
       "deleteError": "Erreur lors de la suppression.",
       "deleteReason": "Motif de la suppression",
       "deleting": "Suppression en cours...",
       "partialError_one": "Une erreur partielle est survenue.",
+      "partialError_many": "_partialError",
       "partialError_other": "{{count}} erreurs partielles sont survenues."
     },
     "messages": {
@@ -1595,6 +1794,7 @@
         "error": "La suppression a échoué.",
         "success": "Suppression réussie.",
         "success_one": "1 notification supprimée.",
+        "success_many": "_success",
         "success_other": "{{count}} notifications supprimées."
       },
       "noData": "Aucune notification.",
@@ -1608,6 +1808,7 @@
     },
     "title": "Notifications",
     "totalCount_one": "1 notification",
+    "totalCount_many": "_totalCount",
     "totalCount_other": "{{count}} notifications"
   },
   "notifications": {
@@ -1659,13 +1860,16 @@
     },
     "bulk": {
       "delete_one": "Supprimer ce moyen de paiement ?",
+      "delete_many": "_delete",
       "delete_other": "Supprimer ces moyens de paiement ?",
       "deleteConfirm_one": "Êtes-vous sûr de vouloir supprimer ce moyen de paiement ?",
+      "deleteConfirm_many": "_deleteConfirm",
       "deleteConfirm_other": "Êtes-vous sûr de vouloir supprimer ces {{count}} moyens de paiement ?",
       "deleteError": "Erreur lors de la suppression.",
       "deleteReason": "Motif de la suppression",
       "deleting": "Suppression en cours...",
       "partialError_one": "Une erreur partielle est survenue.",
+      "partialError_many": "_partialError",
       "partialError_other": "{{count}} erreurs partielles sont survenues."
     },
     "create": "Créer un moyen de paiement",
@@ -1707,6 +1911,7 @@
         "error": "La suppression a échoué.",
         "success": "Suppression réussie.",
         "success_one": "1 moyen de paiement supprimé.",
+        "success_many": "_success",
         "success_other": "{{count}} moyens de paiement supprimés."
       },
       "noData": "Aucun moyen de paiement trouvé.",
@@ -1722,6 +1927,7 @@
     "totalCount_one": "1 moyen de paiement",
     "totalCount_other": "{{count}} moyens de paiement"
   },
+  "readonly": "_readonly",
   "receipts": {
     "actions": {
       "more": "Actions",
@@ -1760,13 +1966,16 @@
     },
     "bulk": {
       "delete_one": "Supprimer ce reçu ?",
+      "delete_many": "_delete",
       "delete_other": "Supprimer ces reçus ?",
       "deleteConfirm_one": "Êtes-vous sûr de vouloir supprimer ce reçu ?",
+      "deleteConfirm_many": "_deleteConfirm",
       "deleteConfirm_other": "Êtes-vous sûr de vouloir supprimer ces {{count}} reçus ?",
       "deleteError": "Erreur lors de la suppression.",
       "deleteReason": "Motif de la suppression",
       "deleting": "Suppression en cours...",
       "partialError_one": "Une erreur partielle est survenue.",
+      "partialError_many": "_partialError",
       "partialError_other": "{{count}} erreurs partielles sont survenues."
     },
     "messages": {
@@ -1775,6 +1984,7 @@
         "error": "La suppression a échoué.",
         "success": "Suppression réussie.",
         "success_one": "1 reçu supprimé.",
+        "success_many": "_success",
         "success_other": "{{count}} reçus supprimés."
       },
       "noData": "Aucun reçu trouvé.",
@@ -1784,6 +1994,7 @@
     },
     "title": "Reçus",
     "totalCount_one": "1 reçu",
+    "totalCount_many": "_totalCount",
     "totalCount_other": "{{count}} reçus"
   },
   "securesettings": {
@@ -1852,13 +2063,16 @@
     },
     "bulk": {
       "delete_one": "Supprimer ce paramètre ?",
+      "delete_many": "_delete",
       "delete_other": "Supprimer ces paramètres ?",
       "deleteConfirm_one": "Êtes-vous sûr de vouloir supprimer ce paramètre ?",
+      "deleteConfirm_many": "_deleteConfirm",
       "deleteConfirm_other": "Êtes-vous sûr de vouloir supprimer ces {{count}} paramètres ?",
       "deleteError": "Erreur lors de la suppression.",
       "deleteReason": "Motif de la suppression",
       "deleting": "Suppression en cours...",
       "partialError_one": "Une erreur partielle est survenue.",
+      "partialError_many": "_partialError",
       "partialError_other": "{{count}} erreurs partielles sont survenues."
     },
     "create": "Créer un paramètre",
@@ -1926,6 +2140,7 @@
         "error": "La suppression a échoué.",
         "success": "Suppression réussie.",
         "success_one": "1 paramètre supprimé.",
+        "success_many": "_success",
         "success_other": "{{count}} paramètres supprimés."
       },
       "noData": "Aucun paramètre trouvé.",
@@ -1961,13 +2176,16 @@
     },
     "bulk": {
       "delete_one": "Supprimer ce modèle ?",
+      "delete_many": "_delete",
       "delete_other": "Supprimer ces modèles ?",
       "deleteConfirm_one": "Êtes-vous sûr de vouloir supprimer ce modèle ?",
+      "deleteConfirm_many": "_deleteConfirm",
       "deleteConfirm_other": "Êtes-vous sûr de vouloir supprimer ces {{count}} modèles ?",
       "deleteError": "Erreur lors de la suppression.",
       "deleteReason": "Motif de la suppression",
       "deleting": "Suppression en cours...",
       "partialError_one": "Une erreur partielle est survenue.",
+      "partialError_many": "_partialError",
       "partialError_other": "{{count}} erreurs partielles sont survenues."
     },
     "details": {
@@ -2003,6 +2221,7 @@
         "error": "La suppression a échoué.",
         "success": "Suppression réussie.",
         "success_one": "1 modèle supprimé.",
+        "success_many": "_success",
         "success_other": "{{count}} modèles supprimés."
       },
       "noData": "Aucun modèle trouvé.",
@@ -2016,6 +2235,7 @@
     },
     "title": "Modèles SMS/E-mail",
     "totalCount_one": "1 modèle",
+    "totalCount_many": "_totalCount",
     "totalCount_other": "{{count}} modèles"
   },
   "solutions": {
@@ -2042,6 +2262,7 @@
     "solutionLabel": "La solution Fujisat Pay",
     "title": "Fujisat Pay : Des solutions sur mesure pour chaque secteur"
   },
+  "system": "_system",
   "themeMode": {
     "dark": "Sombre",
     "light": "Clair",
@@ -2079,6 +2300,7 @@
     },
     "title": "Appareils des utilisateurs",
     "totalCount_one": "1 appareil",
+    "totalCount_many": "_totalCount",
     "totalCount_other": "{{count}} appareils"
   },
   "userProfile": {
@@ -2091,13 +2313,16 @@
     },
     "bulk": {
       "delete_one": "Supprimer ce profil ?",
+      "delete_many": "_delete",
       "delete_other": "Supprimer ces profils ?",
       "deleteConfirm_one": "Êtes-vous sûr de vouloir supprimer ce profil ?",
+      "deleteConfirm_many": "_deleteConfirm",
       "deleteConfirm_other": "Êtes-vous sûr de vouloir supprimer ces {{count}} profils ?",
       "deleteError": "Erreur lors de la suppression.",
       "deleteReason": "Motif de la suppression",
       "deleting": "Suppression en cours...",
       "partialError_one": "Une erreur partielle est survenue.",
+      "partialError_many": "_partialError",
       "partialError_other": "{{count}} erreurs partielles sont survenues."
     },
     "create": "Créer un profil",
@@ -2123,6 +2348,7 @@
         "error": "La suppression a échoué.",
         "success": "Suppression réussie.",
         "success_one": "1 profil supprimé.",
+        "success_many": "_success",
         "success_other": "{{count}} profils supprimés."
       },
       "noData": "Aucun profil trouvé.",
@@ -2177,14 +2403,20 @@
     },
     "bulk": {
       "delete_one": "Supprimer cet utilisateur ?",
+      "delete_many": "_delete",
       "delete_other": "Supprimer ces utilisateurs ?",
       "deleteConfirm_one": "Êtes-vous sûr de vouloir supprimer cet utilisateur ?",
+      "deleteConfirm_many": "_deleteConfirm",
       "deleteConfirm_other": "Êtes-vous sûr de vouloir supprimer ces {{count}} utilisateurs ?",
       "deleteError": "Erreur lors de la suppression.",
       "deleteReason": "Motif de la suppression",
       "deleting": "Suppression en cours...",
       "partialError_one": "Une erreur partielle est survenue.",
+      "partialError_many": "_partialError",
       "partialError_other": "{{count}} erreurs partielles sont survenues."
+    },
+    "details": {
+      "title": "_title"
     },
     "form": {
       "companyIdLabel": "Entreprise",
@@ -2218,11 +2450,12 @@
     },
     "headers": {
       "companyName": "Entreprise",
+      "contact": "_contact",
       "createdAt": "Créé le",
       "email": "E-mail",
       "firstName": "Prénom",
-      "lastName": "Nom de famille",
       "fullName": "Nom complet",
+      "lastName": "Nom de famille",
       "phoneNumber": "Numéro de téléphone",
       "profileName": "Nom du profil",
       "publicId": "ID public",
@@ -2239,6 +2472,7 @@
         "error": "La suppression a échoué.",
         "success": "Suppression réussie.",
         "success_one": "1 utilisateur supprimé.",
+        "success_many": "_success",
         "success_other": "{{count}} utilisateurs supprimés."
       },
       "noData": "Aucun utilisateur trouvé.",
@@ -2253,6 +2487,13 @@
     "title": "Utilisateurs",
     "totalCount_one": "1 utilisateur",
     "totalCount_other": "{{count}} utilisateurs"
+  },
+  "values": {
+    "compliance": "Nous respectons rigoureusement toutes les réglementations financières locales et internationales pour assurer votre conformité.",
+    "excellence": "Nous nous engageons à fournir des solutions de paiement mobile de la plus haute qualité, en innovant constamment pour dépasser les attentes de nos clients.",
+    "security": "La sécurité est au cœur de tout ce que nous faisons. Nous protégeons vos données et transactions avec les technologies de chiffrement les plus avancées.",
+    "support": "Notre équipe d'experts est disponible pour vous accompagner à chaque étape, depuis l'intégration jusqu'au support technique continu.",
+    "transparency": "Nous croyons en la transparence totale : tarifs clairs, processus ouverts et communication honnête avec tous nos partenaires."
   },
   "vwtransactionssummaries": {
     "headers": {
@@ -2285,6 +2526,7 @@
     },
     "title": "Résumés des transactions",
     "totalCount_one": "1 résumé",
+    "totalCount_many": "_totalCount",
     "totalCount_other": "{{count}} résumés"
   },
   "webhookLog": {
@@ -2300,6 +2542,7 @@
     },
     "title": "Journaux de Webhook",
     "totalCount_one": "1 journal",
+    "totalCount_many": "_totalCount",
     "totalCount_other": "{{count}} journaux"
   },
   "webhooklogs": {
@@ -2324,6 +2567,7 @@
       "deleteError": "Erreur lors de la suppression.",
       "deleteReason": "Motif de la suppression",
       "partialError_one": "Une erreur partielle est survenue.",
+      "partialError_many": "_partialError",
       "partialError_other": "{{count}} erreurs partielles sont survenues."
     },
     "form": {
@@ -2362,6 +2606,7 @@
         "error": "La suppression a échoué.",
         "success": "Suppression réussie.",
         "success_one": "1 webhook supprimé.",
+        "success_many": "_success",
         "success_other": "{{count}} webhooks supprimés."
       },
       "dropdown": {
@@ -2381,6 +2626,7 @@
     },
     "title": "Webhooks",
     "totalCount_one": "1 webhook",
+    "totalCount_many": "_totalCount",
     "totalCount_other": "{{count}} webhooks"
   },
   "withdrawalMethod": {
@@ -2394,6 +2640,7 @@
       "deleteError": "Erreur lors de la suppression.",
       "deleteReason": "Motif de la suppression",
       "partialError_one": "Une erreur partielle est survenue.",
+      "partialError_many": "_partialError",
       "partialError_other": "{{count}} erreurs partielles sont survenues."
     },
     "create": "Créer une méthode de retrait",
@@ -2417,6 +2664,7 @@
         "error": "La suppression a échoué.",
         "success": "Suppression réussie.",
         "success_one": "1 méthode supprimée.",
+        "success_many": "_success",
         "success_other": "{{count}} méthodes supprimées."
       },
       "noData": "Aucune méthode de retrait trouvée.",
@@ -2521,6 +2769,7 @@
   },
   "withdrawalsReadModels": {
     "actions": {
+      "add": "_add",
       "more": "Actions",
       "view": "Voir"
     },
@@ -2532,6 +2781,7 @@
     },
     "title": "Retraits",
     "totalCount_one": "1 retrait",
+    "totalCount_many": "_totalCount",
     "totalCount_other": "{{count}} retraits"
   }
 }

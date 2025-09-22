@@ -11,7 +11,7 @@ import { AllowedIpCreateForm } from "../components/AllowedIpCreateForm"
 
 export function AllowedIpsListPage() {
   const { t } = useTranslation()
-  const { isLoading, applyFilters, clearFilters, totalItems, viewMode, setViewMode, refreshData, hasSelection, selectedRows, createMutation } = useAllowedIp()
+  const { isLoading, applyFilters, clearFilters, viewMode, setViewMode, refreshData, hasSelection, selectedRows, createMutation } = useAllowedIp()
 
   const [showCreateModal, setShowCreateModal] = useState(false)
   const toggleShowCreateModal = () => setShowCreateModal((prev) => !prev)
@@ -30,10 +30,8 @@ export function AllowedIpsListPage() {
       header={
         <ListPageHeader
           title={t("allowedIps.title")}
-          totalCountText={t("allowedIps.totalCount", { count: totalItems })}
           addButtonText={t("allowedIps.actions.add")}
           breadcrumbs={[{ label: t("navigation.dashboard"), href: "/dashboard" }, { label: t("allowedIps.title") }]}
-          totalItems={totalItems}
           onCreate={toggleShowCreateModal}
         />
       }

@@ -246,7 +246,12 @@ export function CompanyAppLimitsTab({ companyId }: { companyId: string }) {
           />
         </CardContent>
       </Card>
-      <ModalWrapper title={t("companyAppLimits.form.create.title")} description={t("companyAppLimits.form.create.title")} open={showCreateModal} onOpenChange={toggleShowCreateModal}>
+      <ModalWrapper
+        title={t("companyAppLimits.form.create.title")}
+        description={t("companyAppLimits.form.create.title")}
+        open={showCreateModal}
+        onOpenChange={toggleShowCreateModal}
+      >
         <CompanyAppLimitCreateForm companyId={companyId} onSubmit={handleSubmit} onCancel={toggleShowCreateModal} isLoading={false} />
       </ModalWrapper>
     </div>

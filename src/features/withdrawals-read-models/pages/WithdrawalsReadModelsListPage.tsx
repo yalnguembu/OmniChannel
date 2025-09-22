@@ -9,7 +9,7 @@ import { useWithdrawalsReadModel } from "../hooks/useWithdrawalsReadModel"
 
 export function WithdrawalsReadModelsListPage() {
   const { t } = useTranslation()
-  const { isLoading, isError, error, totalItems, viewMode, setViewMode, refreshData, hasSelection, selectedRows, applyFilters, clearFilters } = useWithdrawalsReadModel()
+  const { isLoading, isError, error, viewMode, setViewMode, refreshData, hasSelection, selectedRows, applyFilters, clearFilters } = useWithdrawalsReadModel()
 
   const handleCreate = () => {
     // navigate({ to: `/transactions/withdrawals/` })
@@ -36,10 +36,8 @@ export function WithdrawalsReadModelsListPage() {
       header={
         <ListPageHeader
           title={t("withdrawalsReadModels.title")}
-          totalCountText={t("withdrawalsReadModels.totalCount", { count: totalItems })}
           addButtonText={t("withdrawalsReadModels.actions.add")}
           breadcrumbs={[{ label: t("navigation.dashboard"), href: "/dashboard" }, { label: t("withdrawalsReadModels.title") }]}
-          totalItems={totalItems}
           onCreate={handleCreate}
         />
       }

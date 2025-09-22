@@ -9,17 +9,15 @@ import { useNotification } from "../hooks/useNotification"
 
 export function NotificationsListPage() {
   const { t } = useTranslation()
-  const { isLoading, totalItems, viewMode, setViewMode, refreshData, hasSelection, selectedRows, applyFilters, clearFilters } = useNotification()
+  const { isLoading, viewMode, setViewMode, refreshData, hasSelection, selectedRows, applyFilters, clearFilters } = useNotification()
 
   return (
     <StandardListPageLayout
       header={
         <ListPageHeader
           title={t("notification.title")}
-          totalCountText={t("notification.totalCount", { count: totalItems })}
           addButtonText={t("notification.actions.add")}
           breadcrumbs={[{ label: t("navigation.dashboard"), href: "/dashboard" }, { label: t("notification.title") }]}
-          totalItems={totalItems}
         />
       }
       filter={

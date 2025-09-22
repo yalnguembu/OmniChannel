@@ -12,7 +12,7 @@ import { useEffect } from "react"
 export function CompanysListPage() {
   const navigate = useNavigate()
   const { t } = useTranslation()
-  const { isLoading, searchCompanys, totalItems, viewMode, setViewMode, refreshData, hasSelection, selectedRows, applyFilters, clearFilters } = useCompany()
+  const { isLoading, searchCompanys, viewMode, setViewMode, refreshData, hasSelection, selectedRows, applyFilters, clearFilters } = useCompany()
 
   useEffect(() => searchCompanys(), [])
 
@@ -25,10 +25,8 @@ export function CompanysListPage() {
       header={
         <ListPageHeader
           title={t("companies.title")}
-          totalCountText={t("companies.totalCount", { count: totalItems })}
           addButtonText={t("companies.actions.add")}
           breadcrumbs={[{ label: t("navigation.dashboard"), href: "/dashboard" }, { label: t("companies.title") }]}
-          totalItems={totalItems}
           onCreate={handleCreate}
         />
       }

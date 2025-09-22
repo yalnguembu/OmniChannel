@@ -11,7 +11,7 @@ import { SearchApplicationRequest } from "@/shared"
 export function ApplicationsListPage() {
   const navigate = useNavigate()
   const { t } = useTranslation()
-  const { isLoading, totalItems, viewMode, setViewMode, refreshData, hasSelection, selectedRows, applyFilters, clearFilters } = useApplication()
+  const { isLoading, viewMode, setViewMode, refreshData, hasSelection, selectedRows, applyFilters, clearFilters } = useApplication()
 
   const handleCreate = () => {
     navigate({ to: `/applications/add` })
@@ -22,10 +22,8 @@ export function ApplicationsListPage() {
       header={
         <ListPageHeader
           title={t("applications.title")}
-          totalCountText={t("applications.totalCount", { count: totalItems })}
           addButtonText={t("applications.actions.add")}
           breadcrumbs={[{ label: t("navigation.dashboard"), href: "/dashboard" }, { label: t("applications.title") }]}
-          totalItems={totalItems}
           onCreate={handleCreate}
         />
       }

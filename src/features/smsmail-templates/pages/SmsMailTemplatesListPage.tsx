@@ -32,7 +32,7 @@ export function SmsmailTemplatesListPage() {
     setSelectedRows,
     deleteSmsmailTemplate,
     isLoading,
-    totalItems,
+
     viewMode,
     setViewMode,
     refreshData,
@@ -222,10 +222,8 @@ export function SmsmailTemplatesListPage() {
       header={
         <ListPageHeader
           title={t("smsmailTemplates.title")}
-          totalCountText={t("smsmailTemplates.totalCount", { count: totalItems })}
           addButtonText={t("smsmailTemplates.actions.add")}
           breadcrumbs={[{ label: t("navigation.dashboard"), href: "/dashboard" }, { label: t("smsmailTemplates.title") }]}
-          totalItems={totalItems}
           onCreate={toggleShowCreateModal}
         />
       }

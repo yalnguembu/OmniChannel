@@ -9,17 +9,15 @@ import { zSearchFrontEventLogRequest } from "@/shared/api/zod.gen"
 
 export function FrontEventLogsListPage() {
   const { t } = useTranslation()
-  const { isLoading, totalItems, viewMode, setViewMode, refreshData, hasSelection, selectedRows, applyFilters, clearFilters } = useFrontEventLog()
+  const { isLoading, viewMode, setViewMode, refreshData, hasSelection, selectedRows, applyFilters, clearFilters } = useFrontEventLog()
 
   return (
     <StandardListPageLayout
       header={
         <ListPageHeader
           title={t("frontEventLogs.title")}
-          totalCountText={t("frontEventLogs.totalCount", { count: totalItems })}
           addButtonText={t("frontEventLogs.actions.add")}
           breadcrumbs={[{ label: t("navigation.dashboard"), href: "/dashboard" }, { label: t("frontEventLogs.title") }]}
-          totalItems={totalItems}
         />
       }
       filter={

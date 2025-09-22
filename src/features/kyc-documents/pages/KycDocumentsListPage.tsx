@@ -11,7 +11,7 @@ import { KycDocumentCreateForm } from "../components/KycDocumentCreateForm"
 
 export function KycDocumentsListPage() {
   const { t } = useTranslation()
-  const { isLoading, totalItems, viewMode, setViewMode, refreshData, hasSelection, selectedRows, applyFilters, clearFilters, createMutation } = useKycDocument()
+  const { isLoading, viewMode, setViewMode, refreshData, hasSelection, selectedRows, applyFilters, clearFilters, createMutation } = useKycDocument()
 
   const [showCreateModal, setShowCreateModal] = useState(false)
   const toggleShowCreateModal = () => setShowCreateModal((prev) => !prev)
@@ -30,10 +30,8 @@ export function KycDocumentsListPage() {
       header={
         <ListPageHeader
           title={t("kycDocuments.title")}
-          totalCountText={t("kycDocuments.totalCount", { count: totalItems })}
           addButtonText={t("kycDocuments.actions.add")}
           breadcrumbs={[{ label: t("navigation.dashboard"), href: "/dashboard" }, { label: t("kycDocuments.title") }]}
-          totalItems={totalItems}
           onCreate={toggleShowCreateModal}
         />
       }

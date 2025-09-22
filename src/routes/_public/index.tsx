@@ -113,27 +113,27 @@ function LandingPage() {
             <Badge variant="outline" className="mb-4 border-primary text-primary">
               {t("landingPage.howItWorks.badge")}
             </Badge>
-            <h2 className="mb-3 text-2xl font-bold md:mb-4 md:text-3xl lg:text-4xl">{t("landingPage.howItWorks.title")}</h2>
-            <p className="text-sm text-foreground md:text-base">{t("landingPage.howItWorks.description")}</p>
+            <h2 className="mb-3 text-2xl font-bold md:mb-4 md:text-3xl lg:text-4xl text-primary">{t("landingPage.howItWorks.title")}</h2>
+            <p className="text-sm text-foreground/60 md:text-base">{t("landingPage.howItWorks.description")}</p>
           </div>
 
           <div className="grid gap-4 md:grid-cols-3 md:gap-6 lg:gap-8">
             <div className="relative rounded-xl border bg-background p-8 shadow-sm">
               <div className="absolute -top-5 left-8 flex h-10 w-10 items-center justify-center rounded-full bg-primary font-bold text-background">1</div>
               <h3 className="mt-4 mb-3 text-xl font-bold">{t("landingPage.howItWorks.step1.title")}</h3>
-              <p className="text-foreground">{t("landingPage.howItWorks.step1.description")}</p>
+              <p className="text-foreground/60">{t("landingPage.howItWorks.step1.description")}</p>
             </div>
 
             <div className="relative rounded-xl border bg-background p-8 shadow-sm">
               <div className="absolute -top-5 left-8 flex h-10 w-10 items-center justify-center rounded-full bg-primary font-bold text-background">2</div>
               <h3 className="mt-4 mb-3 text-xl font-bold">{t("landingPage.howItWorks.step2.title")}</h3>
-              <p className="text-foreground">{t("landingPage.howItWorks.step2.description")}</p>
+              <p className="text-foreground/60">{t("landingPage.howItWorks.step2.description")}</p>
             </div>
 
             <div className="relative rounded-xl border bg-background p-8 shadow-sm">
               <div className="absolute -top-5 left-8 flex h-10 w-10 items-center justify-center rounded-full bg-primary font-bold text-background">3</div>
               <h3 className="mt-4 mb-3 text-xl font-bold">{t("landingPage.howItWorks.step3.title")}</h3>
-              <p className="text-foreground">{t("landingPage.howItWorks.step3.description")}</p>
+              <p className="text-foreground/60">{t("landingPage.howItWorks.step3.description")}</p>
             </div>
           </div>
         </div>
@@ -149,7 +149,7 @@ function LandingPage() {
             <h2 className="mb-3 text-2xl font-bold md:mb-4 md:text-3xl lg:text-4xl">
               {t("features.title1")} <span className="text-primary">{t("features.title2")}</span>
             </h2>
-            <p className="mx-auto max-w-3xl text-sm text-foreground md:text-base">{t("features.subtitle")}</p>
+            <p className="mx-auto max-w-3xl text-sm text-foreground/60 md:text-base">{t("features.subtitle")}</p>
           </div>
 
           {/* Feature tabs and content */}
@@ -367,7 +367,7 @@ function LandingPage() {
           <div className="mb-10 text-center md:mb-16">
             <Badge className="mb-4 bg-primary-muted px-3 py-1 text-primary hover:bg-primary-muted">{t("landingPage.industries.badge")}</Badge>
             <h2 className="mb-3 text-2xl font-bold md:mb-4 md:text-3xl lg:text-4xl">{t("landingPage.industries.title")}</h2>
-            <p className="mx-auto max-w-3xl text-sm text-foreground md:text-base">{t("landingPage.industries.description")}</p>
+            <p className="mx-auto max-w-3xl text-sm text-foreground/60 md:text-base">{t("landingPage.industries.description")}</p>
           </div>
 
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -380,7 +380,7 @@ function LandingPage() {
                   </div>
                   <h3 className="text-lg font-bold">{t("solutions.ecommerce.title")}</h3>
                 </div>
-                <p className="mb-4 text-foreground">{t("solutions.ecommerce.problem")}</p>
+                <p className="mb-4 text-foreground/60">{t("solutions.ecommerce.problem")}</p>
                 <Button variant="outline" size="sm" className="mt-2">
                   {t("landingPage.industries.learnMore")}
                   <ArrowRight className="ml-2 h-4 w-4" />
@@ -397,7 +397,7 @@ function LandingPage() {
                   </div>
                   <h3 className="text-lg font-bold">{t("solutions.fintech.title")}</h3>
                 </div>
-                <p className="mb-4 text-foreground">{t("solutions.fintech.problem")}</p>
+                <p className="mb-4 text-foreground/60">{t("solutions.fintech.problem")}</p>
                 <Button variant="outline" size="sm" className="mt-2">
                   {t("landingPage.industries.learnMore")}
                   <ArrowRight className="ml-2 h-4 w-4" />
@@ -414,7 +414,7 @@ function LandingPage() {
                   </div>
                   <h3 className="text-lg font-bold">{t("solutions.nonprofit.title")}</h3>
                 </div>
-                <p className="mb-4 text-foreground">{t("solutions.nonprofit.problem")}</p>
+                <p className="mb-4 text-foreground/60">{t("solutions.nonprofit.problem")}</p>
                 <Button variant="outline" size="sm" className="mt-2">
                   {t("landingPage.industries.learnMore")}
                   <ArrowRight className="ml-2 h-4 w-4" />
@@ -511,25 +511,25 @@ async function createPayment() {
               {t("landingPage.mission.title1")}
               <span className="text-primary"> {t("landingPage.mission.title2")}</span>
             </h2>
-            <p className="mx-auto max-w-3xl text-foreground">{t("landingPage.mission.subtitle")}</p>
+            <p className="mx-auto max-w-3xl text-foreground/60">{t("landingPage.mission.subtitle")}</p>
           </div>
 
           <div className="grid grid-cols-2 gap-8 text-center md:grid-cols-4">
             <div>
               <p className="text-4xl font-bold text-primary">{t("landingPage.stats.transactions")}</p>
-              <p className="text-foreground">{t("landingPage.stats.transactionsLabel")}</p>
+              <p className="text-foreground/60">{t("landingPage.stats.transactionsLabel")}</p>
             </div>
             <div>
               <p className="text-4xl font-bold text-primary">{t("landingPage.mission.stat1.value")}</p>
-              <p className="text-foreground">{t("landingPage.mission.stat1.label")}</p>
+              <p className="text-foreground/60">{t("landingPage.mission.stat1.label")}</p>
             </div>
             <div>
               <p className="text-4xl font-bold text-primary">{t("landingPage.mission.stat2.value")}</p>
-              <p className="text-foreground">{t("landingPage.mission.stat2.label")}</p>
+              <p className="text-foreground/60">{t("landingPage.mission.stat2.label")}</p>
             </div>
             <div>
               <p className="text-4xl font-bold text-primary">{t("landingPage.stats.uptime")}</p>
-              <p className="text-foreground">{t("landingPage.stats.uptimeLabel")}</p>
+              <p className="text-foreground/60">{t("landingPage.stats.uptimeLabel")}</p>
             </div>
           </div>
         </div>
@@ -543,12 +543,12 @@ async function createPayment() {
             <h2 className="mb-4 text-2xl font-bold md:mb-6 md:text-3xl lg:text-4xl">
               {t("landingPage.cta.title1")} <span className="text-yellow-300">{t("landingPage.cta.title2")}</span>
             </h2>
-            <p className="mb-6 text-base text-background/80 md:mb-8 md:text-lg">{t("landingPage.cta.subtitle")}</p>
+            <p className="mb-6 text-base text-background md:mb-8 md:text-lg">{t("landingPage.cta.subtitle")}</p>
             <div className="flex flex-col justify-center gap-4 sm:flex-row">
               <Button size="lg" className="bg-background text-sm text-primary hover:bg-muted/30 md:text-base">
                 {t("landingPage.cta.cta1")}
               </Button>
-              <Button size="lg" variant="outline" className="border-background text-sm text-background hover:bg-background/10 md:text-base">
+              <Button size="lg" variant="default">
                 {t("landingPage.cta.cta2")} <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             </div>

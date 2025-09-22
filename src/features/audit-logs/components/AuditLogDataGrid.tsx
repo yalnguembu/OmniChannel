@@ -261,10 +261,6 @@ export const AuditLogDataGrid: React.FC = () => {
     </ModalWrapper>
   )
 
-  {
-    showDetailsModal && !!selectedItem && <BlockedIpDetails data={selectedItem} open={showDetailsModal} onCancel={toggleShowDetailsModal} />
-  }
-
   return (
     <div className="w-full max-w-full overflow-hidden">
       <DataGrid
@@ -288,6 +284,7 @@ export const AuditLogDataGrid: React.FC = () => {
         onColumnVisibilityChange={() => {}}
         renderCell={renderCell}
       />
+      {showDetailsModal && !!selectedItem && <BlockedIpDetails data={selectedItem} open={showDetailsModal} onCancel={toggleShowDetailsModal} />}
     </div>
   )
 }

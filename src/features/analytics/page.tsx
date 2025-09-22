@@ -254,10 +254,12 @@ export function AnalyticsPage() {
         const searchCriteria = {
           pageNumber: 1,
           pageSize: 30,
-          ...(dateRange && {
-            startDate: dateRange.from?.toISOString(),
-            endDate: dateRange.to?.toISOString(),
-          }),
+          ...(dateRange
+            ? {
+                startDate: dateRange.from?.toISOString(),
+                endDate: dateRange.to?.toISOString(),
+              }
+            : {}),
         }
 
         const [metricsResponse, paymentMethodResponse] = await Promise.all([
@@ -281,14 +283,14 @@ export function AnalyticsPage() {
     }
 
     fetchMetrics()
-    
+
     // Using mock data for now
     // setMetrics(mockDailyMetrics)
     // setPaymentMethodMetrics(mockPaymentMethodMetrics)
   }, [dateRange, timeRange])
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 overflow-y-auto h-max">
       {/* Header */}
       <div className="flex justify-between items-center">
         <div>

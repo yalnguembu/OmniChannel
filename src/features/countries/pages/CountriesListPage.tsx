@@ -12,7 +12,7 @@ import { useEffect } from "react"
 export function CountriesListPage() {
   const navigate = useNavigate()
   const { t } = useTranslation()
-  const { isLoading, searchCountries, totalItems, viewMode, setViewMode, refreshData, hasSelection, selectedRows, applyFilters, clearFilters } = useCountry()
+  const { isLoading, searchCountries, viewMode, setViewMode, refreshData, hasSelection, selectedRows, applyFilters, clearFilters } = useCountry()
 
   const handleCreate = () => {
     navigate({ to: `/administration/countries/add` })

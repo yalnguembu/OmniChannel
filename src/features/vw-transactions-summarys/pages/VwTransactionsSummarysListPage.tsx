@@ -9,7 +9,7 @@ import { useVwTransactionsSummary } from "../hooks/useVwTransactionsSummary"
 
 export function VwTransactionsSummarysListPage() {
   const { t } = useTranslation()
-  const { isLoading, totalItems, viewMode, setViewMode, refreshData, hasSelection, selectedRows, applyFilters, clearFilters } = useVwTransactionsSummary()
+  const { isLoading, viewMode, setViewMode, refreshData, hasSelection, selectedRows, applyFilters, clearFilters } = useVwTransactionsSummary()
 
   const handleImport = () => {
     // Implement import logic
@@ -24,9 +24,7 @@ export function VwTransactionsSummarysListPage() {
       header={
         <ListPageHeader
           title={t("vwTransactionsSummarys.title")}
-          totalCountText={t("vwTransactionsSummarys.totalCount", { count: totalItems })}
           breadcrumbs={[{ label: t("navigation.dashboard"), href: "/dashboard" }, { label: t("vwTransactionsSummarys.title") }]}
-          totalItems={totalItems}
         />
       }
       filter={

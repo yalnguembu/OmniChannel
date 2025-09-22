@@ -9,17 +9,15 @@ import { useBalancesReadModel } from "../hooks/useBalancesReadModel"
 
 export function BalancesReadModelsListPage() {
   const { t } = useTranslation()
-  const { isLoading, totalItems, viewMode, setViewMode, refreshData, hasSelection, selectedRows, applyFilters, clearFilters } = useBalancesReadModel()
+  const { isLoading, viewMode, setViewMode, refreshData, hasSelection, selectedRows, applyFilters, clearFilters } = useBalancesReadModel()
 
   return (
     <StandardListPageLayout
       header={
         <ListPageHeader
           title={t("balancesReadModels.title")}
-          totalCountText={t("balancesReadModels.totalCount", { count: totalItems })}
           addButtonText={t("balancesReadModels.actions.add")}
           breadcrumbs={[{ label: t("navigation.dashboard"), href: "/dashboard" }, { label: t("balancesReadModels.title") }]}
-          totalItems={totalItems}
         />
       }
       filter={

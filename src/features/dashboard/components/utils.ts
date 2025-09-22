@@ -197,16 +197,13 @@ export const createChartTheme = (variant: "light" | "dark"): ChartTheme => {
 export const generateChartConfig = (keys: string[], colors?: string[]): ChartConfig => {
   const configColors = colors || defaultColors
 
-  return keys.reduce(
-    (config, key, index) => {
-      config[key] = {
-        label: key.charAt(0).toUpperCase() + key.slice(1),
-        color: configColors[index % configColors.length],
-      }
-      return config
-    },
-    {} as ChartConfig,
-  )
+  return keys.reduce((config, key, index) => {
+    config[key] = {
+      label: key.charAt(0).toUpperCase() + key.slice(1),
+      color: configColors[index % configColors.length],
+    }
+    return config
+  }, {} as ChartConfig)
 }
 
 export const debounce = <T extends (...args: any[]) => any>(func: T, delay: number): ((...args: Parameters<T>) => void) => {

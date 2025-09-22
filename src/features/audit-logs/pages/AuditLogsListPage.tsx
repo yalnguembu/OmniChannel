@@ -9,17 +9,15 @@ import { zSearchAuditLogRequest } from "@/shared/api/zod.gen"
 
 export function AuditLogsListPage() {
   const { t } = useTranslation()
-  const { isLoading, totalItems, viewMode, setViewMode, refreshData, hasSelection, selectedRows, applyFilters, clearFilters } = useAuditLog()
+  const { isLoading, viewMode, setViewMode, refreshData, hasSelection, selectedRows, applyFilters, clearFilters } = useAuditLog()
 
   return (
     <StandardListPageLayout
       header={
         <ListPageHeader
           title={t("auditLogs.title")}
-          totalCountText={t("auditLogs.totalCount", { count: totalItems })}
           addButtonText={t("auditLogs.actions.add")}
           breadcrumbs={[{ label: t("navigation.dashboard"), href: "/dashboard" }, { label: t("auditLogs.title") }]}
-          totalItems={totalItems}
         />
       }
       filter={

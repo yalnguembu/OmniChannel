@@ -35,7 +35,11 @@ export function CreateFeeTypePage() {
       header={
         <CreatePageHeader
           title={t("feeTypes.create")}
-          breadcrumbs={[{ label: t("navigation.dashboard"), href: "/dashboard" }, { label: t("feeTypes.title"), href: `/administration/fee-types` }, { label: t("feeTypes.create") }]}
+          breadcrumbs={[
+            { label: t("navigation.dashboard"), href: "/dashboard" },
+            { label: t("feeTypes.title"), href: `/administration/fee-types` },
+            { label: t("feeTypes.create") },
+          ]}
         />
       }
       content={<FeeTypeCreateForm onSubmit={handleSubmit} onCancel={handleCancel} isLoading={false} />}

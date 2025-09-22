@@ -9,17 +9,15 @@ import { zSearchLogRequest } from "@/shared/api/zod.gen"
 
 export function LogsListPage() {
   const { t } = useTranslation()
-  const { isLoading, totalItems, viewMode, setViewMode, refreshData, hasSelection, selectedRows, applyFilters, clearFilters } = useLog()
+  const { isLoading, viewMode, setViewMode, refreshData, hasSelection, selectedRows, applyFilters, clearFilters } = useLog()
 
   return (
     <StandardListPageLayout
       header={
         <ListPageHeader
           title={t("logs.title")}
-          totalCountText={t("logs.totalCount", { count: totalItems })}
           addButtonText={t("logs.actions.add")}
           breadcrumbs={[{ label: t("navigation.dashboard"), href: "/dashboard" }, { label: t("logs.title") }]}
-          totalItems={totalItems}
         />
       }
       filter={

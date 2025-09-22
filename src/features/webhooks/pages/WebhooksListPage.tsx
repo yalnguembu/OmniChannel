@@ -11,7 +11,7 @@ import { useState } from "react"
 
 export function WebhooksListPage() {
   const { t } = useTranslation()
-  const { isLoading, totalItems, viewMode, setViewMode, refreshData, hasSelection, selectedRows, applyFilters, clearFilters, createMutation } = useWebhook()
+  const { isLoading, viewMode, setViewMode, refreshData, hasSelection, selectedRows, applyFilters, clearFilters, createMutation } = useWebhook()
 
   const [showCreateModal, setShowCreateModal] = useState(false)
   const toggleShowCreateModal = () => setShowCreateModal((prev) => !prev)
@@ -30,10 +30,8 @@ export function WebhooksListPage() {
       header={
         <ListPageHeader
           title={t("webhooks.title")}
-          totalCountText={t("webhooks.totalCount", { count: totalItems })}
           addButtonText={t("webhooks.actions.add")}
           breadcrumbs={[{ label: t("navigation.dashboard"), href: "/dashboard" }, { label: t("webhooks.title") }]}
-          totalItems={totalItems}
           onCreate={toggleShowCreateModal}
         />
       }

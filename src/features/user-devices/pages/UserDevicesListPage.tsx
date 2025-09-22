@@ -9,18 +9,11 @@ import { useUserDevice } from "../hooks/useUserDevice"
 
 export function UserDevicesListPage() {
   const { t } = useTranslation()
-  const { isLoading, totalItems, viewMode, setViewMode, refreshData, hasSelection, selectedRows, applyFilters, clearFilters } = useUserDevice()
+  const { isLoading, viewMode, setViewMode, refreshData, hasSelection, selectedRows, applyFilters, clearFilters } = useUserDevice()
 
   return (
     <StandardListPageLayout
-      header={
-        <ListPageHeader
-          title={t("userDevices.title")}
-          totalCountText={t("userDevices.totalCount", { count: totalItems })}
-          breadcrumbs={[{ label: t("navigation.dashboard"), href: "/dashboard" }, { label: t("userDevices.title") }]}
-          totalItems={totalItems}
-        />
-      }
+      header={<ListPageHeader title={t("userDevices.title")} breadcrumbs={[{ label: t("navigation.dashboard"), href: "/dashboard" }, { label: t("userDevices.title") }]} />}
       filter={
         <BaseFilter<SearchUserDeviceRequest>
           schema={zSearchUserDeviceRequest}

@@ -11,7 +11,7 @@ import { BlockedIpCreateForm } from "../components/BlockedIpCreateForm"
 
 export function BlockedIpsListPage() {
   const { t } = useTranslation()
-  const { isLoading, totalItems, viewMode, setViewMode, refreshData, hasSelection, selectedRows, applyFilters, createMutation, clearFilters } = useBlockedIp()
+  const { isLoading, viewMode, setViewMode, refreshData, hasSelection, selectedRows, applyFilters, createMutation, clearFilters } = useBlockedIp()
 
   const [showCreateModal, setShowCreateModal] = useState(false)
   const toggleShowCreateModal = () => setShowCreateModal((prev) => !prev)
@@ -30,10 +30,8 @@ export function BlockedIpsListPage() {
       header={
         <ListPageHeader
           title={t("blockedIp.title")}
-          totalCountText={t("blockedIp.totalCount", { count: totalItems })}
           addButtonText={t("blockedIp.actions.add")}
           breadcrumbs={[{ label: t("navigation.dashboard"), href: "/dashboard" }, { label: t("blockedIp.title") }]}
-          totalItems={totalItems}
           onCreate={toggleShowCreateModal}
         />
       }

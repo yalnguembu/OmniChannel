@@ -10,7 +10,7 @@ import { useEffect } from "react"
 
 export function ReceiptsReadModelsListPage() {
   const { t } = useTranslation()
-  const { isLoading, totalItems, viewMode, setViewMode, refreshData, hasSelection, selectedRows, applyFilters, clearFilters, searchReceiptsReadModels } = useReceiptsReadModel()
+  const { isLoading, viewMode, setViewMode, refreshData, hasSelection, selectedRows, applyFilters, clearFilters, searchReceiptsReadModels } = useReceiptsReadModel()
 
   const handleImport = () => {
     // Implement import logic
@@ -27,12 +27,7 @@ export function ReceiptsReadModelsListPage() {
   return (
     <StandardListPageLayout
       header={
-        <ListPageHeader
-          title={t("receiptsReadModels.title")}
-          totalCountText={t("receiptsReadModels.totalCount", { count: totalItems })}
-          breadcrumbs={[{ label: t("navigation.dashboard"), href: "/dashboard" }, { label: t("receiptsReadModels.title") }]}
-          totalItems={totalItems}
-        />
+        <ListPageHeader title={t("receiptsReadModels.title")} breadcrumbs={[{ label: t("navigation.dashboard"), href: "/dashboard" }, { label: t("receiptsReadModels.title") }]} />
       }
       filter={
         <BaseFilter<SearchReceiptsReadModelRequest>

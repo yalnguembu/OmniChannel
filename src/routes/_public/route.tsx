@@ -1,6 +1,7 @@
 import { createFileRoute, Outlet } from "@tanstack/react-router"
 import Navbar from "@/shared/components/Navbar"
 import Footer from "@/shared/components/Footer"
+import { ScrollToTopButton } from "@/shared/components/ScrollToTopButton"
 
 export const Route = createFileRoute("/_public")({
   component: () => (
@@ -10,6 +11,7 @@ export const Route = createFileRoute("/_public")({
         <Outlet />
       </main>
       <Footer />
+      <ScrollToTopButton />
     </div>
   ),
 })

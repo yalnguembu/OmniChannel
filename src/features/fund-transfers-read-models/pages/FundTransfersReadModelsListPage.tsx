@@ -9,17 +9,15 @@ import { zSearchFundTransfersReadModelRequest } from "@/shared/api/zod.gen"
 
 export function FundTransfersReadModelsListPage() {
   const { t } = useTranslation()
-  const { isLoading, applyFilters, clearFilters, totalItems, viewMode, setViewMode, refreshData, hasSelection, selectedRows } = useFundTransfersReadModel()
+  const { isLoading, applyFilters, clearFilters, viewMode, setViewMode, refreshData, hasSelection, selectedRows } = useFundTransfersReadModel()
 
   return (
     <StandardListPageLayout
       header={
         <ListPageHeader
           title={t("fundTransfersReadModels.title")}
-          totalCountText={t("fundTransfersReadModels.totalCount", { count: totalItems })}
           addButtonText={t("fundTransfersReadModels.actions.add")}
           breadcrumbs={[{ label: t("navigation.dashboard"), href: "/dashboard" }, { label: t("fundTransfersReadModels.title") }]}
-          totalItems={totalItems}
         />
       }
       filter={

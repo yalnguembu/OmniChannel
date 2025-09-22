@@ -22,9 +22,11 @@ export const ListPageLayout: React.FC<ListPageLayoutProps> = ({ header, filter, 
         {statistic && <div className="flex-shrink-0 mb-1 mt-2">{statistic}</div>}
         {filter && <div className="flex-shrink-0 mb-1 sticky top-0 shadow z-10">{filter}</div>}
 
-        <div className="pt-4 min-h-3/5">{content}</div>
-        <div className="mt-4 border-t py-4 text-center text-muted-foreground">
-          <p>{t("footer.copyright")}</p>
+        <div className="pt-4 min-h-3/5 h-content">
+          {content}
+          <div className="mt-4 block border-t py-4 text-center text-muted-foreground">
+            <p>{t("footer.copyright")}</p>
+          </div>
         </div>
       </div>
       {/* </div> */}

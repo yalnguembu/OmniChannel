@@ -9,18 +9,11 @@ import { useWebhookLog } from "../hooks/useWebhookLog"
 
 export function WebhookLogsListPage() {
   const { t } = useTranslation()
-  const { isLoading, totalItems, viewMode, setViewMode, refreshData, hasSelection, selectedRows, applyFilters, clearFilters } = useWebhookLog()
+  const { isLoading, viewMode, setViewMode, refreshData, hasSelection, selectedRows, applyFilters, clearFilters } = useWebhookLog()
 
   return (
     <StandardListPageLayout
-      header={
-        <ListPageHeader
-          title={t("webhookLog.title")}
-          totalCountText={t("webhookLog.totalCount", { count: totalItems })}
-          breadcrumbs={[{ label: t("navigation.dashboard"), href: "/dashboard" }, { label: t("webhookLog.title") }]}
-          totalItems={totalItems}
-        />
-      }
+      header={<ListPageHeader title={t("webhookLog.title")} breadcrumbs={[{ label: t("navigation.dashboard"), href: "/dashboard" }, { label: t("webhookLog.title") }]} />}
       filter={
         <BaseFilter<SearchWebhookLogRequest>
           schema={zSearchWebhookLogRequest}

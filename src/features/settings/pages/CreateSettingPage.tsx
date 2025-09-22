@@ -31,7 +31,11 @@ export function CreateSettingPage() {
       header={
         <CreatePageHeader
           title={t("settings.create")}
-          breadcrumbs={[{ label: t("navigation.dashboard"), href: "/dashboard" }, { label: t("settings.title"), href: "/administration/settings" }, { label: t("settings.create") }]}
+          breadcrumbs={[
+            { label: t("navigation.dashboard"), href: "/dashboard" },
+            { label: t("settings.title"), href: "/administration/settings" },
+            { label: t("settings.create") },
+          ]}
         />
       }
       content={<SettingCreateForm onSubmit={handleSubmit} onCancel={handleCancel} isLoading={false} />}

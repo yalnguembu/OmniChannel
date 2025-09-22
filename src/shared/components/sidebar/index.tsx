@@ -1,4 +1,4 @@
-import { Sidebar, SidebarContent, SidebarHeader, SidebarRail, SidebarSeparator, SidebarGroup, SidebarGroupLabel, SidebarMenuItem } from "@/shared/components/ui/sidebar"
+import { Sidebar, SidebarContent, SidebarHeader, SidebarRail, SidebarSeparator, SidebarGroup, SidebarGroupLabel } from "@/shared/components/ui/sidebar"
 import SideBarMenuItems from "./SideBarMenuItems"
 import Header from "./Header"
 import { adminMenus } from "@/shared/lib/menu"
@@ -16,7 +16,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarContent className="bg-background">
         {adminMenus.map((admin, index) => (
           <SidebarGroup key={admin.groupTitle + index}>
-            {admin.groupTitle.length > 0 && <SidebarGroupLabel>{t(admin.groupTitle)}</SidebarGroupLabel>}
+            {admin.groupTitle.length > 0 && <SidebarGroupLabel>{t(admin.groupTitle as any)}</SidebarGroupLabel>}
             <SideBarMenuItems items={admin.elements} />
           </SidebarGroup>
         ))}

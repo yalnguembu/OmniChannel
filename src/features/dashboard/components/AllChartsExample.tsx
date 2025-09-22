@@ -4,7 +4,7 @@ import {
   AreaChartStacked,
   AreaChartGradient,
   BarChart,
-  BarChartStacked, 
+  BarChartStacked,
   BarChartHorizontal,
   LineChart,
   LineChartSmooth,
@@ -21,7 +21,7 @@ import {
   RadialChart,
   RadialProgressChart,
   RadialStackedChart,
-  generateChartConfig
+  generateChartConfig,
 } from "@/features/dashboard/components"
 
 // Sample data
@@ -53,9 +53,7 @@ const radarData = [
   { name: "Support", A: 99, B: 100 },
 ]
 
-const progressData = [
-  { name: "Progress", value: 75 }
-]
+const progressData = [{ name: "Progress", value: 75 }]
 
 // Configs
 const basicConfig = generateChartConfig(["value"])
@@ -68,40 +66,22 @@ export function AllChartsExample() {
   return (
     <div className="space-y-8 p-6">
       <h2 className="text-2xl font-bold mb-6">All Chart Components Examples</h2>
-      
+
       {/* Area Charts */}
       <section>
         <h3 className="text-xl font-semibold mb-4">Area Charts</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          
           <CardWrapper title="Basic Area Chart">
-            <AreaChart
-              data={basicData}
-              config={basicConfig}
-              dataKey="value"
-              height={200}
-            />
+            <AreaChart data={basicData} config={basicConfig} dataKey="value" height={200} />
           </CardWrapper>
 
           <CardWrapper title="Stacked Area Chart">
-            <AreaChartStacked
-              data={multiData}
-              config={multiConfig}
-              dataKeys={["desktop", "mobile"]}
-              height={200}
-            />
+            <AreaChartStacked data={multiData} config={multiConfig} dataKeys={["desktop", "mobile"]} height={200} />
           </CardWrapper>
 
           <CardWrapper title="Gradient Area Chart">
-            <AreaChartGradient
-              data={basicData}
-              config={basicConfig}
-              dataKey="value"
-              height={200}
-              fillOpacity={0.8}
-            />
+            <AreaChartGradient data={basicData} config={basicConfig} dataKey="value" height={200} fillOpacity={0.8} />
           </CardWrapper>
-
         </div>
       </section>
 
@@ -109,34 +89,17 @@ export function AllChartsExample() {
       <section>
         <h3 className="text-xl font-semibold mb-4">Bar Charts</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          
           <CardWrapper title="Basic Bar Chart">
-            <BarChart
-              data={multiData}
-              config={multiConfig}
-              dataKey="desktop"
-              height={200}
-            />
+            <BarChart data={multiData} config={multiConfig} dataKey="desktop" height={200} />
           </CardWrapper>
 
           <CardWrapper title="Stacked Bar Chart">
-            <BarChartStacked
-              data={multiData}
-              config={multiConfig}
-              dataKeys={["desktop", "mobile", "tablet"]}
-              height={200}
-            />
+            <BarChartStacked data={multiData} config={multiConfig} dataKeys={["desktop", "mobile", "tablet"]} height={200} />
           </CardWrapper>
 
           <CardWrapper title="Horizontal Bar Chart">
-            <BarChartHorizontal
-              data={multiData.slice(0, 3)}
-              config={multiConfig}
-              dataKey="desktop"
-              height={200}
-            />
+            <BarChartHorizontal data={multiData.slice(0, 3)} config={multiConfig} dataKey="desktop" height={200} />
           </CardWrapper>
-
         </div>
       </section>
 
@@ -144,43 +107,21 @@ export function AllChartsExample() {
       <section>
         <h3 className="text-xl font-semibold mb-4">Line Charts</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          
           <CardWrapper title="Basic Line Chart">
-            <LineChart
-              data={basicData}
-              config={basicConfig}
-              dataKey="value"
-              height={200}
-            />
+            <LineChart data={basicData} config={basicConfig} dataKey="value" height={200} />
           </CardWrapper>
 
           <CardWrapper title="Smooth Line Chart">
-            <LineChartSmooth
-              data={basicData}
-              config={basicConfig}
-              dataKey="value"
-              height={200}
-            />
+            <LineChartSmooth data={basicData} config={basicConfig} dataKey="value" height={200} />
           </CardWrapper>
 
           <CardWrapper title="Step Line Chart">
-            <LineChartStep
-              data={basicData}
-              config={basicConfig}
-              dataKey="value"
-              height={200}
-            />
+            <LineChartStep data={basicData} config={basicConfig} dataKey="value" height={200} />
           </CardWrapper>
 
           <CardWrapper title="Multi-Axis Line Chart">
-            <LineChartMultiAxis
-              data={multiData}
-              config={multiConfig}
-              dataKeys={["desktop", "mobile"]}
-              height={200}
-            />
+            <LineChartMultiAxis data={multiData} config={multiConfig} dataKeys={["desktop", "mobile"]} height={200} />
           </CardWrapper>
-
         </div>
       </section>
 
@@ -188,59 +129,25 @@ export function AllChartsExample() {
       <section>
         <h3 className="text-xl font-semibold mb-4">Pie Charts</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          
           <CardWrapper title="Basic Pie Chart">
-            <PieChart
-              data={pieData}
-              config={pieConfig}
-              dataKey="value"
-              nameKey="name"
-              height={200}
-            />
+            <PieChart data={pieData} config={pieConfig} dataKey="value" nameKey="name" height={200} />
           </CardWrapper>
 
           <CardWrapper title="Donut Chart">
-            <DonutChart
-              data={pieData}
-              config={pieConfig}
-              dataKey="value"
-              nameKey="name"
-              height={200}
-              centerLabel="Total"
-            />
+            <DonutChart data={pieData} config={pieConfig} dataKey="value" nameKey="name" height={200} centerLabel="Total" />
           </CardWrapper>
 
           <CardWrapper title="Pie Chart with Labels">
-            <PieChartWithLabels
-              data={pieData}
-              config={pieConfig}
-              dataKey="value"
-              nameKey="name"
-              height={200}
-            />
+            <PieChartWithLabels data={pieData} config={pieConfig} dataKey="value" nameKey="name" height={200} />
           </CardWrapper>
 
           <CardWrapper title="Half Pie Chart">
-            <HalfPieChart
-              data={pieData}
-              config={pieConfig}
-              dataKey="value"
-              nameKey="name"
-              height={150}
-            />
+            <HalfPieChart data={pieData} config={pieConfig} dataKey="value" nameKey="name" height={150} />
           </CardWrapper>
 
           <CardWrapper title="Half Donut Chart">
-            <HalfDonutChart
-              data={pieData}
-              config={pieConfig}
-              dataKey="value"
-              nameKey="name"
-              height={150}
-              centerLabel="Total"
-            />
+            <HalfDonutChart data={pieData} config={pieConfig} dataKey="value" nameKey="name" height={150} centerLabel="Total" />
           </CardWrapper>
-
         </div>
       </section>
 
@@ -248,34 +155,17 @@ export function AllChartsExample() {
       <section>
         <h3 className="text-xl font-semibold mb-4">Radar Charts</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          
           <CardWrapper title="Basic Radar Chart">
-            <RadarChart
-              data={radarData}
-              config={radarConfig}
-              dataKey="A"
-              height={200}
-            />
+            <RadarChart data={radarData} config={radarConfig} dataKey="A" height={200} />
           </CardWrapper>
 
           <CardWrapper title="Multi-Series Radar">
-            <RadarChartMultiSeries
-              data={radarData}
-              config={radarConfig}
-              dataKeys={["A", "B"]}
-              height={200}
-            />
+            <RadarChartMultiSeries data={radarData} config={radarConfig} dataKeys={["A", "B"]} height={200} />
           </CardWrapper>
 
           <CardWrapper title="Simple Radar Chart">
-            <RadarChartSimple
-              data={radarData}
-              config={radarConfig}
-              dataKey="A"
-              height={200}
-            />
+            <RadarChartSimple data={radarData} config={radarConfig} dataKey="A" height={200} />
           </CardWrapper>
-
         </div>
       </section>
 
@@ -283,38 +173,19 @@ export function AllChartsExample() {
       <section>
         <h3 className="text-xl font-semibold mb-4">Radial Charts</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          
           <CardWrapper title="Basic Radial Chart">
-            <RadialChart
-              data={progressData}
-              config={progressConfig}
-              dataKey="value"
-              height={200}
-            />
+            <RadialChart data={progressData} config={progressConfig} dataKey="value" height={200} />
           </CardWrapper>
 
           <CardWrapper title="Radial Progress Chart">
-            <RadialProgressChart
-              data={progressData}
-              config={progressConfig}
-              dataKey="value"
-              height={200}
-              centerLabel="Progress"
-            />
+            <RadialProgressChart data={progressData} config={progressConfig} dataKey="value" height={200} centerLabel="Progress" />
           </CardWrapper>
 
           <CardWrapper title="Radial Stacked Chart">
-            <RadialStackedChart
-              data={multiData.slice(0, 1)}
-              config={multiConfig}
-              dataKeys={["desktop", "mobile"]}
-              height={200}
-            />
+            <RadialStackedChart data={multiData.slice(0, 1)} config={multiConfig} dataKeys={["desktop", "mobile"]} height={200} />
           </CardWrapper>
-
         </div>
       </section>
-
     </div>
   )
 }
