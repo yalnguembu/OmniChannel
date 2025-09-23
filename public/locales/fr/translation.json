@@ -1746,7 +1746,8 @@
     "webHookLogs": "Journaux de Webhook",
     "webhooks": "Webhooks",
     "withdrawalMethod": "Méthodes de retrait",
-    "withdrawals": "Retraits"
+    "withdrawals": "Retraits",
+    "analytics": "Analyses"
   },
   "navigation": {
     "about": "À propos",
@@ -2783,5 +2784,449 @@
     "totalCount_one": "1 retrait",
     "totalCount_many": "_totalCount",
     "totalCount_other": "{{count}} retraits"
+  },
+  "analytics": {
+    "title": "Tableau de bord d'analyse",
+    "description": "Mesures analyses de performance",
+    "loading": "Chargement des données d'analyse...",
+    "loadingTab": "Chargement du contenu de l'onglet...",
+    "noData": "Aucune donnée disponible",
+    "selectRange": "Sélectionner la plage",
+    "timeRange": {
+      "7days": "7 derniers jours",
+      "30days": "30 derniers jours",
+      "90days": "90 derniers jours"
+    },
+    "tabs": {
+      "overview": "Aperçu",
+      "transactions": "Transactions",
+      "financial": "Financier",
+      "business": "Intelligence d'affaires",
+      "mathematical": "Analyse mathématique",
+      "crossTable": "Analyse d'entreprise",
+      "technical": "Analyse technique",
+      "geolocation": "Analyse géographique"
+    },
+    "overview": {
+      "totalVolume": "Volume total",
+      "netRevenue": "Revenu net",
+      "overallSuccessRate": "Taux de réussite global",
+      "failureRate": "Taux d'échec",
+      "profitMargin": "Marge bénéficiaire",
+      "net": "Net",
+      "activeUsers": "Utilisateurs actifs",
+      "newUsers": "Nouveaux utilisateurs",
+      "transactionBreakdown": {
+        "title": "Répartition des transactions",
+        "description": "Mesures détaillées des transactions par type",
+        "type": "Type",
+        "total": "Total",
+        "success": "Succès",
+        "rate": "Taux",
+        "receipts": "Reçus",
+        "withdrawals": "Retraits",
+        "fundTransfers": "Transferts de fonds"
+      },
+      "paymentMethods": {
+        "title": "Performance des méthodes de paiement",
+        "description": "Taux de réussite et volumes par fournisseur",
+        "provider": "Fournisseur",
+        "volume": "Volume",
+        "amount": "Montant",
+        "rate": "Taux"
+      }
+    },
+    "transactions": {
+      "volumeByType": {
+        "title": "Volume des transactions par type",
+        "description": "Comptes quotidiens des transactions pour tous les types de services"
+      },
+      "successRateMonitoring": {
+        "title": "Suivi du taux de réussite",
+        "description": "Taux de réussite par type de transaction au fil du temps"
+      },
+      "paymentMethods": {
+        "title": "Distribution des méthodes de paiement",
+        "description": "Volume des transactions par fournisseur de paiement",
+        "operatorDetails": "Détails de l'opérateur",
+        "operatorDetailsDesc": "Informations détaillées pour chaque fournisseur de paiement",
+        "operatorCode": "Code d'opérateur",
+        "transactions": "Transactions",
+        "successRate": "Taux de réussite",
+        "totalVolume": "Volume total",
+        "avgAmount": "Montant moyen",
+        "failures": "Échecs",
+        "noOperators": "Aucune donnée de méthode de paiement disponible",
+        "performanceSummary": "Résumé de la performance des méthodes de paiement",
+        "performanceSummaryDesc": "Comparaison exhaustive de tous les fournisseurs de paiement",
+        "provider": "Fournisseur",
+        "volume": "Volume",
+        "amount": "Montant",
+        "rate": "Taux",
+        "avgTicket": "Ticket moyen",
+        "marketShare": "Part de marché"
+      },
+      "totalVolume": "Volume total",
+      "receipts": "Reçus",
+      "counts": "Opérations",
+      "withdrawals": "Retraits",
+      "fundTransfers": "Transferts de fonds"
+    },
+    "financial": {
+      "revenueAnalysis": {
+        "title": "Analyse des revenus et des frais",
+        "description": "Total des frais vs coûts du fournisseur avec le revenu net"
+      },
+      "profitability": {
+        "title": "Aperçu de la rentabilité",
+        "description": "Mesures de rentabilité de la période actuelle",
+        "margin": "Marge bénéficiaire",
+        "totalFees": "Total des frais perçus",
+        "providerCosts": "Coûts du fournisseur",
+        "netProfit": "Bénéfice net"
+      },
+      "costBenefit": {
+        "costEfficiency": "Efficacité des coûts",
+        "costToProfitRatio": "Ratio coût-bénéfice",
+        "revenueFocus": "Orientation des revenus",
+        "fromReceipts": "Des reçus",
+        "processingCapacity": "Capacité de traitement",
+        "apiCallsPerHour": "Appels API/heure",
+        "userEconomics": "Économie des utilisateurs",
+        "revenuePerUser": "Revenu XAF/utilisateur"
+      },
+      "revenueBreakdown": {
+        "title": "Répartition des revenus par service",
+        "description": "Analyse des revenus et des marges par type de service",
+        "receipts": "Services de reçus",
+        "withdrawals": "Services de retrait",
+        "transfers": "Services de transfert",
+        "margin": "Marge"
+      }
+    },
+    "business": {
+      "title": "Intelligence d'affaires",
+      "operationalEfficiency": {
+        "title": "Score d'efficacité opérationnelle",
+        "description": "Performance globale et fiabilité de la plateforme",
+        "transactionSuccess": "Succès des transactions",
+        "apiReliability": "Fiabilité API",
+        "processingLoad": "Charge de traitement",
+        "txPerDay": "tx/jour"
+      },
+      "revenuePerTransaction": {
+        "title": "Revenu par transaction",
+        "description": "Efficacité moyenne de la génération de revenus",
+        "receiptsRPT": "RPT des reçus",
+        "withdrawalsRPT": "RPT des retraits",
+        "transfersRPT": "RPT des transferts"
+      },
+      "customerEngagement": {
+        "title": "Engagement client",
+        "description": "Activité des utilisateurs et mesures de croissance",
+        "transactionsPerUser": "Transactions par utilisateur actif",
+        "growthRate": "Taux de croissance",
+        "apiUsage": "Utilisation API",
+        "callsPerUser": "appels/utilisateur"
+      },
+      "riskAssessment": {
+        "title": "Tableau de bord d'évaluation des risques",
+        "description": "Modèles d'échec des transactions et indicateurs de risque",
+        "failedReceipts": "Reçus échoués",
+        "failedWithdrawals": "Retraits échoués",
+        "apiErrors": "Erreurs API",
+        "overallRiskLevel": "Niveau de risque global",
+        "high": "ÉLEVÉ",
+        "medium": "MOYEN",
+        "low": "FAIBLE"
+      },
+      "growthIndicators": {
+        "title": "Indicateurs de croissance commerciale",
+        "description": "Mesures clés pour la prise de décision stratégique",
+        "xafPer1kUsers": "XAF pour 1K utilisateurs",
+        "revenueMargin": "Marge de revenu",
+        "marketPenetration": "Pénétration du marché",
+        "serviceDiversification": "Diversification des services",
+        "operationalScalability": "Évolutivité opérationnelle"
+      }
+    },
+    "mathematical": {
+      "title": "Analyse mathématique avancée",
+      "transactionStatus": {
+        "title": "Distribution de l'état des transactions",
+        "description": "Répartition mathématique des résultats des transactions et des modèles de succès",
+        "successRatesAnalysis": "Analyse des taux de réussite",
+        "receiptsSuccessRate": "Taux de réussite des reçus",
+        "withdrawalsSuccessRate": "Taux de réussite des retraits",
+        "transfersSuccessRate": "Taux de réussite des transferts",
+        "failureImpactAnalysis": "Analyse de l'impact des échecs",
+        "receiptFailures": "Échecs des reçus",
+        "withdrawalFailures": "Échecs des retraits",
+        "transferFailures": "Échecs des transferts",
+        "transactions": "transactions",
+        "receipts": "Reçus",
+        "withdrawals": "Retraits",
+        "fundTransfers": "Transferts de fonds",
+        "transactionVolumeBands": "Bandes de distribution du volume des transactions",
+        "successRateBands": "Bandes de performance du taux de réussite",
+        "total": "Total",
+        "successful": "Réussite",
+        "failed": "Échoué",
+        "successRate": "Taux de réussite",
+        "statisticalVarianceAnalysis": "Analyse de la variance statistique",
+        "successRateStdDev": "Écart-type du taux de réussite",
+        "successRateConsistencyMeasure": "Mesure de la cohérence du taux de réussite",
+        "transactionCoefficientVariation": "Coefficient de variation des transactions",
+        "volumeDistributionVariability": "Variabilité de la distribution du volume"
+      },
+      "operationFee": {
+        "title": "Analyse des frais d'opération",
+        "description": "Corrélation des frais internes et des frais du fournisseur et mesures de rentabilité",
+        "feeDistributionOverview": "Aperçu de la distribution des frais",
+        "totalFeesCollected": "Total des frais perçus",
+        "providerCosts": "Coûts du fournisseur",
+        "netMargin": "Marge nette",
+        "profitabilityRatios": "Ratios de rentabilité",
+        "grossMargin": "Marge brute",
+        "profitMarginAfterProviderCosts": "Marge bénéficiaire après les coûts du fournisseur",
+        "revenueVolumeRatio": "Ratio revenu/volume",
+        "feeCollectionEfficiency": "Efficacité de la collecte des frais",
+        "costEfficiencyMultiplier": "Multiplicateur d'efficacité des coûts",
+        "revenuePerCostUnit": "Revenu par unité de coût"
+      },
+      "crossCorrelation": {
+        "title": "Analyse de la corrélation croisée et de l'engagement des utilisateurs",
+        "description": "Analyse des relations entre les métriques clés et les modèles de comportement des utilisateurs",
+        "userEngagementMetrics": "Mesures d'engagement des utilisateurs",
+        "transactionsPerUser": "Transactions par utilisateur",
+        "transactionsUserUnit": "transactions/utilisateur",
+        "apiCallsPerUser": "Appels API par utilisateur",
+        "callsUserUnit": "appels/utilisateur",
+        "revenuePerUser": "Revenu par utilisateur",
+        "xafUserUnit": "XAF/utilisateur",
+        "volumeVsSuccessRateCorrelation": "Corrélation volume vs taux de réussite",
+        "receiptsVolumeSuccessCorrelation": "Reçus : Corrélation volume-succès",
+        "correlationCoefficientReceipt": "Coefficient de corrélation pour les transactions de reçus",
+        "withdrawalsVolumeSuccessCorrelation": "Retraits : Corrélation volume-succès",
+        "correlationCoefficientWithdrawal": "Coefficient de corrélation pour les transactions de retrait",
+        "errorPatternAnalysis": "Analyse des modèles d'erreur",
+        "errorToVolumeRatio": "Ratio erreur/volume",
+        "percentageTransactionsWithErrors": "Pourcentage de transactions avec erreurs",
+        "overallFailureDistribution": "Distribution globale des échecs",
+        "totalFailureRateAllTransactionTypes": "Taux d'échec total pour tous les types de transactions"
+      },
+      "growthOperationalEfficiency": {
+        "title": "Analyse de la croissance et de l'efficacité opérationnelle",
+        "description": "Tendances temporelles, modèles de croissance et indicateurs de performance opérationnelle",
+        "growthVelocityMetrics": "Mesures de croissance et de vitesse",
+        "dailyUserGrowthRate": "Taux de croissance quotidien des utilisateurs",
+        "newUsersPerDay": "nouveaux utilisateurs/jour",
+        "volumeVelocity": "Vitesse du volume",
+        "xafPerSecond": "XAF/seconde",
+        "transactionRate": "Taux de transaction",
+        "transactionsPerHour": "transactions/heure",
+        "advancedPerformanceIndicators": "Indicateurs de performance avancés",
+        "growthMomentumIndex": "Indice d'élan de croissance",
+        "compositeGrowthIndicator": "Indicateur de croissance composite",
+        "riskAssessmentScore": "Score d'évaluation des risques",
+        "operationalRiskLevel": "Niveau de risque opérationnel",
+        "platformStabilityIndex": "Indice de stabilité de la plateforme",
+        "overallSystemStability": "Stabilité globale du système"
+      }
+    },
+    "crossTable": {
+      "title": "Analyse des entreprises et applications",
+      "overview": {
+        "totalCompanies": "Total des entreprises",
+        "activeCompanies": "entreprises actives",
+        "totalApplications": "Total des applications",
+        "activeApplications": "applications actives",
+        "avgAppsPerCompany": "Moyenne d'applications/entreprise",
+        "applicationsPerCompany": "applications par entreprise",
+        "totalEcosystemVolume": "Volume total de l'écosystème"
+      },
+      "companyVolumeDistribution": {
+        "title": "Distribution du volume par entreprise",
+        "description": "Top des entreprises par volume de transactions"
+      },
+      "revenueDistribution": {
+        "title": "Distribution des revenus",
+        "description": "Part des revenus par entreprise"
+      },
+      "rankings": {
+        "mostDominant": {
+          "title": "Entreprises les plus dominantes",
+          "description": "Entreprises avec les volumes de transactions les plus élevés"
+        },
+        "mostProfitable": {
+          "title": "Entreprises les plus rentables",
+          "description": "Entreprises avec les marges bénéficiaires les plus élevées"
+        },
+        "mostUsers": {
+          "title": "Utilisateurs les plus actifs"
+        },
+        "mostEfficient": {
+          "title": "Les plus efficaces en frais"
+        },
+        "mostTransactions": {
+          "title": "Le plus de transactions"
+        },
+        "applications": "applications",
+        "transactions": "transactions",
+        "revenue": "revenu",
+        "profitMargin": "marge bénéficiaire"
+      },
+      "topApplications": {
+        "title": "Performance des meilleures applications",
+        "description": "Applications les plus performantes toutes entreprises confondues",
+        "rank": "Rang",
+        "company": "Entreprise",
+        "application": "Application",
+        "volume": "Volume (XAF)",
+        "revenue": "Revenu (XAF)",
+        "transactions": "Transactions",
+        "users": "Utilisateurs",
+        "successRate": "Taux de réussite"
+      },
+      "companyMatrix": {
+        "title": "Matrice entreprise-application",
+        "description": "Aperçu complet des performances de l'entreprise",
+        "company": "Entreprise",
+        "applications": "Applications",
+        "totalVolume": "Volume total (XAF)",
+        "totalRevenue": "Revenu total (XAF)",
+        "avgProfitMargin": "Marge bénéficiaire moyenne",
+        "totalUsers": "Total des utilisateurs",
+        "avgSuccessRate": "Taux de réussite moyen"
+      }
+    },
+    "technical": {
+      "title": "Analyse technique pour les opérations système",
+      "overview": {
+        "totalApiCalls": "Total des appels API",
+        "weeklyTotal": "total hebdomadaire",
+        "avgUptime": "Temps de disponibilité moyen",
+        "reliability": "fiabilité du système",
+        "avgResponseTime": "Temps de réponse moyen",
+        "performance": "performance du système",
+        "errorRate": "Taux d'erreur",
+        "totalErrors": "erreurs totales"
+      },
+      "charts": {
+        "apiCalls": {
+          "title": "Volume quotidien des appels API",
+          "description": "Charge système et modèles de trafic API par jour"
+        },
+        "errorRate": {
+          "title": "Tendances du taux d'erreur",
+          "description": "Suivi quotidien du taux d'erreur pour la santé du système"
+        },
+        "responseTime": {
+          "title": "Analyse du temps de réponse",
+          "description": "Performance moyenne du temps de réponse par jour"
+        },
+        "uptime": {
+          "title": "Suivi du temps de disponibilité du système",
+          "description": "Pourcentage de temps de disponibilité quotidien et disponibilité du système"
+        }
+      },
+      "analysis": {
+        "peakPerformance": {
+          "title": "Jours de performance maximale",
+          "description": "Jours les plus performants selon les métriques clés"
+        },
+        "issues": {
+          "title": "Problèmes et incidents",
+          "description": "Jours avec les taux d'erreur les plus élevés et les problèmes de performance"
+        },
+        "busiestDay": "Jour le plus chargé",
+        "fastestDay": "Jour de réponse la plus rapide",
+        "bestUptimeDay": "Meilleur jour de disponibilité",
+        "worstErrorDay": "Pire jour d'erreur",
+        "slowestDay": "Jour de réponse la plus lente",
+        "mostDowntimeDay": "Jour de plus longue indisponibilité",
+        "apiCalls": "Appels API",
+        "avgResponse": "réponse moyenne",
+        "uptime": "disponibilité",
+        "errorRate": "taux d'erreur",
+        "downtime": "temps d'arrêt"
+      },
+      "summary": {
+        "title": "Résumé hebdomadaire des performances techniques",
+        "description": "Aperçu complet des métriques techniques pour la surveillance du système",
+        "day": "Jour",
+        "apiCalls": "Appels API",
+        "errors": "Erreurs",
+        "errorRate": "Taux d'erreur",
+        "responseTime": "Temps de réponse",
+        "uptime": "Disponibilité",
+        "status": "Statut",
+        "excellent": "Excellent",
+        "good": "Bon",
+        "issues": "Problèmes"
+      }
+    },
+    "enhanced": {
+      "totalEcosystemValue": "Valeur totale de l'écosystème",
+      "combinedVolume": "transactions + soldes",
+      "liquidityHealth": "Santé de la liquidité",
+      "available": "Disponible",
+      "operationalRisk": "Risque opérationnel",
+      "pendingReconciliations": "rapprochements en attente",
+      "systemEfficiency": "Efficacité du système",
+      "totalTransactions": "transactions totales",
+      "profitabilityTarget": "Objectif de rentabilité",
+      "profitabilityDesc": "Indicateur de performance de la marge de revenu",
+      "excellentMargin": "Excellente marge bénéficiaire",
+      "goodMargin": "Bonne marge bénéficiaire",
+      "improvementNeeded": "Amélioration de la marge nécessaire",
+      "liquidityRatio": "Ratio de liquidité",
+      "liquidityDesc": "Ratio solde disponible/total",
+      "reserved": "Réservé",
+      "balanceDistribution": "Distribution du solde",
+      "balanceDistributionDesc": "Allocation du solde entre les méthodes de paiement",
+      "transactionTrends": "Tendances des transactions",
+      "transactionTrendsDesc": "Modèles quotidiens de volume des transactions",
+      "performanceMetrics": "Mesures de performance",
+      "performanceMetricsDesc": "Taux de réussite et tendances des revenus",
+      "balanceHealthDashboard": "Tableau de bord de la santé du solde",
+      "balanceHealthDesc": "Surveillance complète et état du solde",
+      "provider": "Fournisseur",
+      "currentBalance": "Solde actuel",
+      "utilizationRate": "Taux d'utilisation",
+      "status": "Statut",
+      "volumeTrendAnalysis": "Analyse des tendances de volume",
+      "volumeTrendDesc": "Visualisation avancée du volume avec des effets de gradient"
+    },
+    "geo": {
+      "totalUsers": "Total des utilisateurs",
+      "acrossRegions": "dans toutes les régions",
+      "totalVolume": "Volume total",
+      "transactions": "transactions",
+      "avgGrowth": "Croissance moyenne",
+      "yearOverYear": "année par année",
+      "marketPenetration": "Pénétration du marché",
+      "avgPenetration": "pénétration moyenne",
+      "topRegionsByUsers": "Régions les plus importantes par utilisateurs",
+      "topRegionsDesc": "Régions avec l'adoption d'utilisateurs la plus élevée",
+      "fastestGrowingRegions": "Régions à la croissance la plus rapide",
+      "fastestGrowingDesc": "Régions avec les taux de croissance les plus élevés",
+      "userDistribution": "Distribution régionale des utilisateurs",
+      "userDistributionDesc": "Nombre d'utilisateurs et volume de transactions par région",
+      "geographicDistribution": "Distribution géographique",
+      "geographicDistributionDesc": "Utilisateurs par type de zone",
+      "regionalPerformance": "Tableau de bord de la performance régionale",
+      "regionalPerformanceDesc": "Mesures régionales complètes et indicateurs de performance",
+      "region": "Région",
+      "capital": "Capitale",
+      "users": "Utilisateurs",
+      "volume": "Volume",
+      "growth": "Croissance",
+      "penetration": "Pénétration",
+      "status": "Statut",
+      "cameroonRegionsMap": "Carte des régions du Cameroun",
+      "cameroonRegionsMapDesc": "Représentation visuelle de la distribution des utilisateurs à travers le Cameroun",
+      "userDensity": "Densité d'utilisateurs"
+    }
   }
 }

@@ -25,6 +25,7 @@ import {
   CheckCircle,
   Zap,
   Gauge,
+  ChartColumnIcon,
 } from "lucide-react"
 
 export const adminMenus: BaseMenus[] = [
@@ -35,6 +36,11 @@ export const adminMenus: BaseMenus[] = [
         label: "menu.Dashboard",
         path: "/dashboard",
         icon: Gauge,
+      },
+      {
+        label: "menu.analytics",
+        path: "/analytics",
+        icon: ChartColumnIcon,
       },
     ],
   },

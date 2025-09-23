@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from "react"
+import { useCallback, useMemo, useEffect, useState } from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
@@ -36,6 +36,47 @@ export function BaseFilter<T extends Record<string, unknown>>({
   sections,
   fieldTranslationPrefix = "common",
 }: BaseFilterProps<T>) {
+  // Simple auto-collapse state
+  const [isCollapsed, setIsCollapsed] = useState(defaultCollapsed)
+  const [wasAutoCollapsed, setWasAutoCollapsed] = useState(false)
+
+  // Auto-collapse on scroll functionality
+  useEffect(() => {
+    if (!collapsible) return
+
+    let lastScrollY = window.scrollY
+
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY
+
+      // Scrolling down and past threshold - auto collapse if not already collapsed
+      if (currentScrollY > lastScrollY && currentScrollY > 100 && !isCollapsed) {
+        setIsCollapsed(true)
+        setWasAutoCollapsed(true)
+      }
+
+      // Scrolling up to near top - reopen if was auto-collapsed and originally expanded
+      if (currentScrollY < lastScrollY && currentScrollY <= 50 && wasAutoCollapsed && !defaultCollapsed) {
+        setIsCollapsed(false)
+        setWasAutoCollapsed(false)
+      }
+
+      lastScrollY = currentScrollY
+    }
+
+    window.addEventListener('scroll', handleScroll, { passive: true })
+
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [collapsible, isCollapsed, wasAutoCollapsed, defaultCollapsed])
+
+  // Handle manual toggle
+  const handleCollapsedChange = useCallback((collapsed: boolean) => {
+    setIsCollapsed(collapsed)
+    // Reset auto-collapse flag when manually expanded
+    if (!collapsed) {
+      setWasAutoCollapsed(false)
+    }
+  }, [])
   const filteredSchema = useMemo(() => {
     if (!("shape" in schema)) {
       return schema
@@ -150,7 +191,14 @@ export function BaseFilter<T extends Record<string, unknown>>({
   )
 
   return (
-    <CollapsibleContainer isCollapsible={collapsible} defaultCollapsed={defaultCollapsed} className={className} header={filterHeader}>
+    <CollapsibleContainer
+      isCollapsible={collapsible}
+      defaultCollapsed={defaultCollapsed}
+      collapsed={isCollapsed}
+      onCollapsedChange={handleCollapsedChange}
+      className={className}
+      header={filterHeader}
+    >
       {filterContent}
     </CollapsibleContainer>
   )

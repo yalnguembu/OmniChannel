@@ -11,7 +11,7 @@ import { AreaChartGradient, BarChartStacked, LineChartMultiAxis, HalfDonutChart,
 import { TrendingUp, Activity, CreditCard, Wallet, PiggyBank, Zap, ArrowDown, ArrowUp, TrendingDown, ArrowLeftRight } from "lucide-react"
 import { DailyMetricDto, DailyMetricsByPaymentMethodDto, BalancesReadModelDto } from "@/shared/api/types.gen"
 
-export function DashboardPage() {
+export function AnalyticsPage() {
   const { t } = useTranslation()
   const [dateRange, setDateRange] = useState()
   const [timeRange, setTimeRange] = useState("7d")
@@ -23,6 +23,7 @@ export function DashboardPage() {
   const totalTransactions = currentMetrics ? currentMetrics.totalReceipts + currentMetrics.totalWithdrawals + currentMetrics.totalFundTransfers : 0
   const totalSuccessfulTransactions = currentMetrics ? currentMetrics.successfulReceipts + currentMetrics.successfulWithdrawals + currentMetrics.successfulFundTransfers : 0
   const overallSuccessRate = totalTransactions > 0 ? (totalSuccessfulTransactions / totalTransactions) * 100 : 0
+  const profitMargin = currentMetrics && currentMetrics.totalFees > 0 ? ((currentMetrics.totalFees - currentMetrics.totalProviderFees) / currentMetrics.totalFees) * 100 : 0
 
   useEffect(() => {
     const loadSampleData = async () => {
@@ -69,7 +70,7 @@ export function DashboardPage() {
 
   // Generate sample balance data when none available
   const effectiveBalances = useMemo(() => {
-    // if (balances.length > 0) return balances
+    if (balances.length > 0) return balances
 
     return [
       {
@@ -109,7 +110,7 @@ export function DashboardPage() {
         reconciliationStatus: "PENDING",
       },
     ] as BalancesReadModelDto[]
-  }, [])
+  }, [balances])
 
   // Advanced analytics calculations
   const analytics = useMemo(() => {
@@ -166,20 +167,22 @@ export function DashboardPage() {
   const performanceConfig = generateChartConfig(["successRate", "revenue", "users"])
 
   return (
-    <div className="space-y-4 sm:space-y-6 overflow-y-auto h-max">
+    <div className="space-y-4 sm:space-y-6 overflow-y-auto h-max px-4 sm:px-6 lg:px-8">
       {/* Header */}
-      <div className="flex flex-col gap-4 lg:flex-row lg:justify-between lg:items-center">
-        <p className="flex-1 min-w-0 text-muted-foreground text-sm xl:text-base">{t("analytics.description")}</p>
-
+      <div className="flex flex-col gap-4 lg:flex-row lg:justify-between lg:items-center mt-4">
+        <div className="flex-1 min-w-0">
+          {/* <h1 className="text-2xl md:text-3xl font-bold tracking-tight truncate">{t("analytics.title")}</h1> */}
+          <p className="text-muted-foreground text-sm md:text-base">{t("analytics.description")}</p>
+        </div>
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4 flex-shrink-0">
-          <ToggleGroup type="single" value={timeRange} onValueChange={setTimeRange} variant="outline" className="flex-wrap bg-background">
-            <ToggleGroupItem value="7d" className="text-xs xl:text-sm">
+          <ToggleGroup type="single" value={timeRange} onValueChange={setTimeRange} variant="outline" className="flex-wrap">
+            <ToggleGroupItem value="7d" className="text-xs sm:text-sm">
               {t("analytics.timeRange.7days")}
             </ToggleGroupItem>
-            <ToggleGroupItem value="30d" className="text-xs xl:text-sm">
+            <ToggleGroupItem value="30d" className="text-xs sm:text-sm">
               {t("analytics.timeRange.30days")}
             </ToggleGroupItem>
-            <ToggleGroupItem value="90d" className="text-xs xl:text-sm">
+            <ToggleGroupItem value="90d" className="text-xs sm:text-sm">
               {t("analytics.timeRange.90days")}
             </ToggleGroupItem>
           </ToggleGroup>
@@ -429,6 +432,7 @@ export function DashboardPage() {
                         <th className="text-right p-2 font-medium">{t("analytics.enhanced.available")}</th>
                         <th className="text-right p-2 font-medium">{t("analytics.enhanced.reserved")}</th>
                         <th className="text-right p-2 font-medium">{t("analytics.enhanced.utilizationRate")}</th>
+                        <th className="text-right p-2 font-medium">{t("analytics.enhanced.status")}</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -459,6 +463,20 @@ export function DashboardPage() {
                                 </div>
                                 <span className="text-xs font-medium w-10 text-right">{utilizationRate.toFixed(1)}%</span>
                               </div>
+                            </td>
+                            <td className="p-2 text-right">
+                              <Badge
+                                variant="outline"
+                                className={
+                                  balance.reconciliationStatus === "RECONCILED"
+                                    ? "bg-green-50 text-green-600"
+                                    : balance.reconciliationStatus === "PENDING"
+                                      ? "bg-yellow-50 text-yellow-600"
+                                      : "bg-red-50 text-red-600"
+                                }
+                              >
+                                {balance.reconciliationStatus || "UNKNOWN"}
+                              </Badge>
                             </td>
                           </tr>
                         )

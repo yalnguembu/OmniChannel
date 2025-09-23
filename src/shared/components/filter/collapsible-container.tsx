@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { ChevronDown, ChevronUp } from "lucide-react"
 import { Button } from "@/shared/components/ui/button"
 import { cn } from "@/shared/lib/utils"
@@ -6,16 +6,35 @@ import { cn } from "@/shared/lib/utils"
 interface CollapsibleContainerProps {
   isCollapsible?: boolean
   defaultCollapsed?: boolean
+  collapsed?: boolean
+  onCollapsedChange?: (collapsed: boolean) => void
   children: React.ReactNode
   className?: string
   header: React.ReactNode
 }
 
-export const CollapsibleContainer: React.FC<CollapsibleContainerProps> = ({ isCollapsible = true, defaultCollapsed = false, children, className, header }) => {
+export const CollapsibleContainer: React.FC<CollapsibleContainerProps> = ({
+  isCollapsible = true,
+  defaultCollapsed = false,
+  collapsed,
+  onCollapsedChange,
+  children,
+  className,
+  header
+}) => {
   const [isCollapsed, setIsCollapsed] = useState(defaultCollapsed)
 
+  // Update internal state when external collapsed prop changes
+  useEffect(() => {
+    if (collapsed !== undefined) {
+      setIsCollapsed(collapsed)
+    }
+  }, [collapsed])
+
   const toggleCollapse = () => {
-    setIsCollapsed(!isCollapsed)
+    const newCollapsed = !isCollapsed
+    setIsCollapsed(newCollapsed)
+    onCollapsedChange?.(newCollapsed)
   }
 
   return (

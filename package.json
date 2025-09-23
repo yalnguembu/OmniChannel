@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "generate:route": "tsr generate",
-    "build": "tsc -b && vite build",
+    "build": "vite build",
     "build:prod": "npm run generate:route && npm run build",
     "lint": "eslint .",
     "preview": "vite preview",
