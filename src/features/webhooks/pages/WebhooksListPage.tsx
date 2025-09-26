@@ -8,6 +8,7 @@ import { WebhookDataGrid } from "../components/WebhookDataGrid"
 import { useWebhook } from "../hooks/useWebhook"
 import { WebhookCreateForm } from "../components/WebhookCreateForm"
 import { useState } from "react"
+import { ModalWrapper } from "@/shared/components/ModalWrapper"
 
 export function WebhooksListPage() {
   const { t } = useTranslation()
@@ -16,7 +17,7 @@ export function WebhooksListPage() {
   const [showCreateModal, setShowCreateModal] = useState(false)
   const toggleShowCreateModal = () => setShowCreateModal((prev) => !prev)
 
-  const handleSubmit = (data: CreateWebhookRequest) => {
+  const handleCreate = (data: CreateWebhookRequest) => {
     createMutation.mutate(
       { body: data },
       {
@@ -52,7 +53,13 @@ export function WebhooksListPage() {
       content={
         <>
           <WebhookDataGrid />
-          {showCreateModal && <WebhookCreateForm onSubmit={handleSubmit} onCancel={toggleShowCreateModal} isLoading={false} />}
+          {showCreateModal && (
+            <ModalWrapper title="" description="" open={showCreateModal} onOpenChange={toggleShowCreateModal}>
+              <div className="-m-6">
+                <WebhookCreateForm onSubmit={handleCreate} onCancel={toggleShowCreateModal} isLoading={false} />
+              </div>
+            </ModalWrapper>
+          )}
         </>
       }
     />

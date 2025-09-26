@@ -6,6 +6,7 @@ import { SearchVwTransactionsSummaryRequest } from "@/shared/api/types.gen"
 import { zSearchVwTransactionsSummaryRequest } from "@/shared/api/zod.gen"
 import { VwTransactionsSummaryDataGrid } from "../components/VwTransactionsSummaryDataGrid"
 import { useVwTransactionsSummary } from "../hooks/useVwTransactionsSummary"
+import { TransactionStatisticCards } from "../components/TransactionStatisticCards"
 
 export function VwTransactionsSummarysListPage() {
   const { t } = useTranslation()
@@ -27,6 +28,7 @@ export function VwTransactionsSummarysListPage() {
           breadcrumbs={[{ label: t("navigation.dashboard"), href: "/dashboard" }, { label: t("vwTransactionsSummarys.title") }]}
         />
       }
+      statistic={<TransactionStatisticCards />}
       filter={
         <BaseFilter<SearchVwTransactionsSummaryRequest>
           schema={zSearchVwTransactionsSummaryRequest}

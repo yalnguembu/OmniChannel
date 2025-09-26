@@ -126,38 +126,6 @@ export function CompanyAppLimitsTab({ companyId }: { companyId: string }) {
     }
   }
 
-  const renderCell = (item: DataGridRowEntry, columnKey: string) => {
-    switch (columnKey) {
-      case "actions":
-        return (
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-8 w-8 p-0">
-                <span className="sr-only">Open menu</span>
-                <MoreHorizontal className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={() => handleView(item.getId())}>
-                <Eye className="mr-2 h-4 w-4" />
-                {t("companyAppLimits.actions.view")}
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => handleEdit(item.getId())}>
-                <Edit className="mr-2 h-4 w-4" />
-                {t("companyAppLimits.actions.edit")}
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => handleDelete(item.getId())} className="text-red-600">
-                <Trash2 className="mr-2 h-4 w-4" />
-                {t("companyAppLimits.actions.delete")}
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        )
-      default:
-        return item.getTextFor(columnKey) || "N/A"
-    }
-  }
-
   const sortConfig: DataGridSort | undefined = sortBy
     ? {
         column: sortBy,
@@ -242,7 +210,6 @@ export function CompanyAppLimitsTab({ companyId }: { companyId: string }) {
             hiddenColumns={[]}
             onColumnVisibilityChange={() => {}}
             bulkActions={bulkActions}
-            renderCell={renderCell}
           />
         </CardContent>
       </Card>

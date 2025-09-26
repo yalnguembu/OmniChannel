@@ -97,14 +97,18 @@ export function UsersListPage() {
         <>
           <UserDataGrid />
           {showCreateSystemUserModal && (
-            <ModalWrapper size="xl" open={showCreateSystemUserModal} onOpenChange={toggleShowCreateSystemUserModal}>
-              <SystemUserCreateForm onSubmit={handleSubmitSystemUser} onCancel={toggleShowCreateSystemUserModal} isLoading={false} />
+            <ModalWrapper title="" size="xl" open={showCreateSystemUserModal} onOpenChange={toggleShowCreateSystemUserModal}>
+              <div className="-m-6">
+                <SystemUserCreateForm onSubmit={handleSubmitSystemUser} onCancel={toggleShowCreateSystemUserModal} isLoading={false} />
+              </div>
             </ModalWrapper>
           )}
 
           {showCreateCompanyUserModal && (
-            <ModalWrapper size="xl" open={showCreateCompanyUserModal} onOpenChange={toggleShowCreateCompanyUserModal}>
-              <CompanyUserCreateForm onSubmit={handleSubmitCompanyUser} onCancel={toggleShowCreateCompanyUserModal} isLoading={false} />
+            <ModalWrapper title="" size="xl" open={showCreateCompanyUserModal} onOpenChange={toggleShowCreateCompanyUserModal}>
+              <div className="-m-6">
+                <CompanyUserCreateForm onSubmit={handleSubmitCompanyUser} onCancel={toggleShowCreateCompanyUserModal} isLoading={false} />
+              </div>
             </ModalWrapper>
           )}
         </>

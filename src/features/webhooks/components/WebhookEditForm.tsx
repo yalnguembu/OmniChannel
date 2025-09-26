@@ -48,20 +48,6 @@ export const WebhookEditForm: React.FC<WebhookEditFormProps> = ({ webhookId, ini
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <FormField
                 control={form.control}
-                name="applicationId"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t("webhooks.form.applicationIdLabel")}</FormLabel>
-                    <FormControl>
-                      <Input type="text" placeholder={t("webhooks.form.applicationIdPlaceholder")} {...field} value={field.value || ""} required={false} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
                 name="url"
                 render={({ field }) => (
                   <FormItem>

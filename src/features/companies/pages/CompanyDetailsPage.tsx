@@ -1,22 +1,22 @@
 import { useNavigate, useParams, useSearch } from "@tanstack/react-router"
 import { Button } from "@/shared/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/components/ui/card"
-import { Edit, ArrowLeft, Loader2, Home, DollarSign, AppWindow, Users, Settings, FileText, Link, Key, CheckCircle, Mail, PhoneCall, EyeClosed, Eye } from "lucide-react"
+import { Edit, ArrowLeft, Loader2, Home, DollarSign, AppWindow, Verified, Users, User, Settings, FileText, Link, MapPin, Mail, PhoneCall } from "lucide-react"
 import { useCompany } from "../hooks/useCompany"
-import { Label } from "@/shared/components/ui/label"
 import { ListPageHeader } from "@/shared/components/ListPageHeader"
 import { ListPageLayout, StandardListPageLayout } from "@/shared/components/layouts/ListPageLayout"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/shared/components/ui/tabs"
 import { DocumentsTypeDataGrid } from "@/features/document-types/components/DocumentTypesDataGrid"
 import { useTranslation } from "react-i18next"
+import { DashboardPage } from "@/features/dashboard/page"
 import { ApplicationsTab } from "../components/tabs/Applications"
 import { UsersTab } from "../components/tabs/Users"
 import { ReceiptsTab } from "../components/tabs/Receipts"
 import { CompanySettingsTab } from "../components/tabs/settings"
-import { ElementType, useState } from "react"
+import { useState } from "react"
 import FujiPayLogo from "@/assets/images/logo/icon.png"
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/shared/components/ui/tooltip"
-import { OverviewTab } from "../components/tabs/Overview"
+import StatusBadge from "@/shared/components/StatusBadge"
+import { BadgeStyles } from "@/shared/types/enums"
 
 declare module "@tanstack/react-router" {
   interface Register {
@@ -46,35 +46,6 @@ export function CompanyDetailsPage() {
   const { data, isPending } = getCompanyQuery(id)
 
   const companyDetails = data?.data
-
-  type DetailItemProps = { label?: string; value?: string | null; Icon: ElementType }
-
-  const DetailItem = ({ value, Icon }: DetailItemProps) => (
-    <div className="flex my-1 border-b border-b-muted/50 items-center 2xl:py-1">
-      {Icon && (
-        <div className="w-5 h-5 flex items-center mr-2">
-          <Icon className="h-4 w-4" />
-        </div>
-      )}
-      <div className="md:col-span-3 text-sm flex gap-x-2">{typeof value === "boolean" ? (value ? "Yes" : "No") : String(value ?? "N/A")}</div>
-    </div>
-  )
-
-  const ApiKeyDetailItem = ({ value = "N/A", Icon }: DetailItemProps) => {
-    const [visible, setVisible] = useState(false)
-    const toggleVisibility = () => setVisible((prev) => !prev)
-    return (
-      <div className="flex gap-2 py-1 items-center">
-        {Icon && <Icon className="h-4 w-4 mr-2" />}
-        <div className=" text-sm flex items-center">
-          <span className="mr-2">{visible ? value : value?.replace(/./g, "*")}</span>
-          <Button variant="ghost" size="sm" className="h-5" onClick={toggleVisibility}>
-            {visible ? <EyeClosed className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-          </Button>
-        </div>
-      </div>
-    )
-  }
 
   const handleTabChange = (value: string) => {
     setActiveTab(value)
@@ -118,7 +89,7 @@ export function CompanyDetailsPage() {
       title: "Overview",
       value: "overview",
       icon: Home,
-      component: OverviewTab,
+      component: DashboardPage,
     },
     {
       title: "Receipts",
@@ -180,66 +151,80 @@ export function CompanyDetailsPage() {
       }
       content={
         <div className="space-y-4">
-          <Card className="grid md:col-span-2 divide-x-4 divide-muted/20">
-            <div className="w-fu1/2 flex flex-col">
-              <CardHeader className="flex items-center border border-red-500">
-                <div className="w-24 h-24 rounded-lg block bg-muted">
-                  <img src={/*companyDetails. || */ FujiPayLogo} alt="" className="w-full h-full object-contain object-center rounded-lg" />
-                </div>
-                <div>
-                  <CardTitle className="text-primary text-2xl mb-2">
-                    <span className="capitalize">{companyDetails.name}</span>
-                    {companyDetails.isVerified && (
-                      <Tooltip>
-                        <TooltipTrigger>
-                          <CheckCircle className="h-6 w-6 inline ml-3 text-green-500 stroke-2" />
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <span>Verified Company</span>
-                        </TooltipContent>
-                      </Tooltip>
-                    )}
-                  </CardTitle>
-                  <div className="2xl gap-2 grid grid-cols-2 text-gray-500">
-                    <CardDescription className="text-blue-400 hover:text-blue-600 flex gap-x-2">
-                      <a href={companyDetails.website || ""} className="link hover:underline" target="_blank" rel="noopener noreferrer">
-                        {companyDetails.website || "https://fujisatpay.com"}
-                      </a>
-                      <Link className="h-4 w-4" />
-                    </CardDescription>
-                    <DetailItem Icon={Home} value={companyDetails.address} />
+          <Card className="grid lg:grid-cols-3 gap-2 mt-4 gap-y-4">
+            <CardHeader className="flex items-center">
+              <div className="w-24 h-24 rounded-lg block bg-muted">
+                <img src={/*companyDetails. || */ FujiPayLogo} alt="" className="w-full h-full object-contain object-center rounded-lg" />
+              </div>
+              <div className="flex flex-col gap-y-1">
+                {companyDetails.isVerified && (
+                  <div className="">
+                    <StatusBadge Icon={Verified} theme={BadgeStyles.BLUE} text={t("companies.fields.isVerified")} />
                   </div>
-                  <div className="2xl gap-2 grid grid-cols-2 text-gray-500">
-                    <DetailItem Icon={PhoneCall} value={companyDetails.phoneNumber} />
-                    <DetailItem Icon={Mail} value={companyDetails.email} />
-                  </div>
+                )}
+                <CardTitle className="text-primary text-2xl mb-1 flex gap-x-2">
+                  <span className="capitalize">{companyDetails.name}</span>
+                </CardTitle>
+                <CardDescription className="text-blue-400 hover:text-blue-600 flex gap-x-2">
+                  <Link className="h-4 w-4" />
+                  <a href={companyDetails.website || ""} className="link hover:underline" target="_blank" rel="noopener noreferrer">
+                    {companyDetails.website || "https://fujisatpay.com"}
+                  </a>
+                </CardDescription>
+              </div>
+            </CardHeader>
+            <CardContent className="lg:col-span-2 grid lg:grid-cols-3 gap-2 mt-4 gap-y-4">
+              <div className="flex flex-col gap-y-1 text-muted-foreground/80">
+                <div className="flex gap-x-1.5 lg:text-md">
+                  <span className="font-semibold">{t("companies.fields.name")} :</span>
+                  <span className="text-primary">{companyDetails.name}</span>
                 </div>
-              </CardHeader>
-            </div>
-            <CardContent className="flex gap-2 px-0 mt-4 pr-4 space-y-4">
-              <div className="pl-2">
-                <Label className="font-semibold text-sm text-muted-foreground">Size</Label>
-                <div className="text-xs">{companyDetails.companySize}</div>
+                <div className="flex gap-x-1.5">
+                  <span className="font-semibold">{t("companies.fields.companyType")} :</span>
+                  <span className="">{companyDetails.companyType}</span>
+                </div>
+                <div className="flex gap-x-1.5">
+                  <span className="font-semibold">{t("companies.fields.companySize")} :</span>
+                  <span className="">{companyDetails.companySize}</span>
+                </div>
+                <div className="flex flex-wrap gap-2 items-center">
+                  <StatusBadge theme={BadgeStyles.GREEN} text={companyDetails.status} />
+                </div>
               </div>
-              <div className="pl-2">
-                <Label className="font-semibold text-sm text-muted-foreground">Type</Label>
-                <div className="text-xs">{companyDetails.companyType}</div>
+              <div className="flex flex-col gap-y-1 text-muted-foreground/80">
+                <span className="font-semibold">
+                  <User className="inline size-4 mr-1" /> {companyDetails.contactPerson}
+                </span>
+
+                <span className="font-light">
+                  <MapPin className="inline size-4 mr-1" />
+                  {companyDetails.address}
+                </span>
+                <span>
+                  <Mail className="inline size-4 mr-1" /> {companyDetails.email}
+                </span>
+                <span>
+                  <PhoneCall className="inline size-4 mr-1" />
+                  {companyDetails.phoneNumber}
+                </span>
               </div>
-              <div>
-                <Label className="font-semibold text-sm text-muted-foreground">NUI</Label>
-                <div className="text-xs">{companyDetails.taxNumber}</div>
-              </div>
-              <div>
-                <Label className="font-semibold text-sm text-muted-foreground">RCCM</Label>
-                <div className="text-xs">{companyDetails.businessRegistrationNumber}</div>
-              </div>
-              <div className="pl-2">
-                <Label className="font-semibold text-sm text-muted-foreground">Represent</Label>
-                <div className="text-xs">{companyDetails.contactPerson}</div>
-              </div>
-              <div className="pl-2">
-                <Label className="font-semibold text-sm text-muted-foreground">Phone</Label>
-                <div className="text-xs">{companyDetails.contactPhone}</div>
+              <div className="flex flex-col gap-y-1 text-muted-foreground/80">
+                <div className="flex gap-x-1.5 lg:text-md">
+                  <span className="font-semibold">{t("companies.fields.countryName")} :</span>
+                  <span>{companyDetails.countryName}</span>
+                </div>
+                <div className="flex gap-x-1.5 lg:text-md">
+                  <span className="font-semibold">{t("companies.fields.businessRegistrationNumber")} :</span>
+                  <span>{companyDetails.businessRegistrationNumber}</span>
+                </div>
+                <div className="flex gap-x-1.5 lg:text-md">
+                  <span className="font-semibold">{t("companies.fields.taxNumber")} :</span>
+                  <span>{companyDetails.taxNumber}</span>
+                </div>
+                <div className="flex gap-x-1.5 lg:text-md">
+                  <span className="font-semibold">{t("companies.fields.website")} :</span>
+                  <span>{companyDetails.website}</span>
+                </div>
               </div>
             </CardContent>
           </Card>

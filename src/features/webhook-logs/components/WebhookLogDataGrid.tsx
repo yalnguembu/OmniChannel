@@ -1,20 +1,20 @@
-import React, { useMemo } from "react"
+import React, { useMemo, useState, useEffect } from "react"
 import { useTranslation } from "react-i18next"
-import { useNavigate } from "@tanstack/react-router"
 import { DataGrid } from "@/shared/components/data-grid/data-grid"
-import { DataGridColumnHeader, DataGridRowEntry, DataGridSort } from "@/shared/types"
+import { DataGridColumnHeader, ACTION, DataGridSort } from "@/shared/types"
 import { SortDirection } from "@/shared/enums/data-grid"
-import { Button } from "@/shared/components/ui/button"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/shared/components/ui/dropdown-menu"
-import { MoreHorizontal, Eye } from "lucide-react"
 import { useWebhookLog } from "../hooks/useWebhookLog"
 import { WebhookLogDataGridEntry } from "../lib/data-grid/WebhookLogDataGridEntry"
+import { WebhookLogDto } from "@/shared/api/types.gen"
+import { Card, CardContent, CardHeader, CardTitle } from "@/shared/components/ui/card"
+import { Label } from "@/shared/components/ui/label"
+import { ModalWrapper } from "@/shared/components/ModalWrapper"
 
 export const WebhookLogDataGrid: React.FC = () => {
   const { t } = useTranslation()
-  const navigate = useNavigate()
 
-  const { webhookLogs, currentPage, pageSize, totalItems, sortBy, sortDirection, selectedRows, isLoading, changePage, changeSort, setSelectedRows } = useWebhookLog()
+  const { webhookLogs, currentPage, pageSize, totalItems, sortBy, sortDirection, selectedRows, isLoading, changePage, changeSort, setSelectedRows, searchWebhookLogs } =
+    useWebhookLog()
 
   const columnHeaders: DataGridColumnHeader[] = [
     {
@@ -24,26 +24,21 @@ export const WebhookLogDataGrid: React.FC = () => {
       resizable: true,
     },
     {
-      key: "webhookId",
-      label: t("webhooklogs.headers.webhookId"),
-      sortable: true,
-      resizable: true,
-    },
-    {
-      key: "requestBody",
-      label: t("webhooklogs.headers.requestBody"),
-      sortable: true,
-      resizable: true,
-    },
-    {
       key: "responseStatusCode",
       label: t("webhooklogs.headers.responseStatusCode"),
       sortable: true,
       resizable: true,
+      isBadge: true,
     },
+    // {
+    //   key: "webhookId",
+    //   label: t("webhooklogs.headers.webhookId"),
+    //   sortable: true,
+    //   resizable: true,
+    // },
     {
-      key: "responseBody",
-      label: t("webhooklogs.headers.responseBody"),
+      key: "attemptNumber",
+      label: t("webhooklogs.headers.attemptNumber"),
       sortable: true,
       resizable: true,
     },
@@ -51,13 +46,8 @@ export const WebhookLogDataGrid: React.FC = () => {
       key: "errorMessage",
       label: t("webhooklogs.headers.errorMessage"),
       sortable: true,
-      resizable: true,
-    },
-    {
-      key: "attemptNumber",
-      label: t("webhooklogs.headers.attemptNumber"),
-      sortable: true,
-      resizable: true,
+      width: 100,
+      style: "w-24 word-breaks overflow-hidden",
     },
     {
       key: "createdAt",
@@ -71,39 +61,27 @@ export const WebhookLogDataGrid: React.FC = () => {
       sortable: false,
       width: 70,
     },
+    {
+      key: "requestBody",
+      label: t("webhooklogs.headers.requestBody"),
+      sortable: true,
+      resizable: true,
+    },
+    {
+      key: "responseBody",
+      label: t("webhooklogs.headers.responseBody"),
+      sortable: true,
+      resizable: true,
+    },
   ]
+
+  useEffect(() => {
+    searchWebhookLogs()
+  }, [])
 
   const gridItems = useMemo(() => {
     return webhookLogs.map((item) => new WebhookLogDataGridEntry(item))
   }, [webhookLogs])
-
-  const handleView = (id: string) => {
-    navigate({ to: `/webhookLog/${id}` })
-  }
-
-  const renderCell = (item: DataGridRowEntry, columnKey: string) => {
-    switch (columnKey) {
-      case "actions":
-        return (
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-8 w-8 p-0">
-                <span className="sr-only">Open menu</span>
-                <MoreHorizontal className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={() => handleView(item.getId())}>
-                <Eye className="mr-2 h-4 w-4" />
-                {t("webhookLog.actions.view")}
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        )
-      default:
-        return item.getTextFor(columnKey) || "N/A"
-    }
-  }
 
   const sortConfig: DataGridSort | undefined = sortBy
     ? {
@@ -125,7 +103,48 @@ export const WebhookLogDataGrid: React.FC = () => {
     changePage(page)
   }
 
-  const bulkActions = undefined
+  const handleDispacth = (action: ACTION, id: string) => {
+    if (action === "view") {
+      const selectedLog = webhookLogs.find((log) => log.id === id)
+      setSelectedItem(selectedLog ?? null)
+      toggleShowDetailsModal()
+    }
+  }
+
+  const DetailItem = ({ label, value }: { label: string; value: React.ReactNode }) => (
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-2 py-2 border-b">
+      <Label className="font-semibold text-muted-foreground">{label}</Label>
+      <div className="md:col-span-2 break-words">{typeof value === "boolean" ? (value ? "Yes" : "No") : String(value ?? "N/A")}</div>
+    </div>
+  )
+
+  interface LogDetailsProps {
+    onCancel: () => void
+    open: boolean
+    data: Partial<WebhookLogDto>
+  }
+
+  const LogDetails: React.FC<LogDetailsProps> = ({ onCancel, open, data }) => (
+    <ModalWrapper size="3xl" open={open} onOpenChange={onCancel} title={t("smsmailTemplates.details.title")}>
+      <Card className="max-w-4xl -m-6">
+        <CardHeader>
+          <CardTitle>Log Details</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-2 overflow-auto">
+          {Object.entries(data).map(([key, value]) => {
+            if (key === "id") return null
+            const formattedKey = key.replace(/([A-Z])/g, " $1").replace(/^./, (str) => str.toUpperCase())
+            return <DetailItem key={key} label={formattedKey} value={value} />
+          })}
+        </CardContent>
+      </Card>
+    </ModalWrapper>
+  )
+
+  const [selectedItem, setSelectedItem] = useState<WebhookLogDto | null>(null)
+
+  const [showDetailsModal, setShowDetailsModal] = useState(false)
+  const toggleShowDetailsModal = () => setShowDetailsModal((prev) => !prev)
 
   return (
     <div className="w-full max-w-full overflow-hidden">
@@ -146,11 +165,10 @@ export const WebhookLogDataGrid: React.FC = () => {
         sortConfig={sortConfig}
         onSortChange={handleSortChange}
         enableColumnVisibility={true}
-        hiddenColumns={[]}
-        onColumnVisibilityChange={() => {}}
-        bulkActions={bulkActions}
-        renderCell={renderCell}
+        actions={["view"]}
+        dispatch={handleDispacth}
       />
+      {showDetailsModal && !!selectedItem && <LogDetails data={selectedItem} open={showDetailsModal} onCancel={toggleShowDetailsModal} />}
     </div>
   )
 }

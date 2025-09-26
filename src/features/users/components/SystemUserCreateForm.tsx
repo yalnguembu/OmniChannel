@@ -31,9 +31,13 @@ export const SystemUserCreateForm: React.FC<SystemUserCreateFormProps> = ({ onSu
     },
   })
 
-  const { userProfiles, isLoading: isUserProfilesLoading } = useUserProfile()
+  const { getDropdownQuery: getUserProfiles } = useUserProfile()
+  const { data: userProfileResponse, isLoading: isUserProfilesLoading } = getUserProfiles()
 
-  const userProfileOptions = useMemo(() => userProfiles.map((userProfile) => ({ value: userProfile.id ?? "", label: userProfile.name ?? "" })) ?? [], [userProfiles])
+  const userProfileOptions = useMemo(
+    () => userProfileResponse?.data.map((userProfile) => ({ value: userProfile.id ?? "", label: userProfile.name ?? "" })) ?? [],
+    [userProfileResponse],
+  )
 
   const handleSubmit = (values: CreateSystemUserRequest) => {
     if (onSubmit) {
@@ -44,7 +48,7 @@ export const SystemUserCreateForm: React.FC<SystemUserCreateFormProps> = ({ onSu
   return (
     <Card className="w-full max-w-4xl mx-auto">
       <CardHeader>
-        <CardTitle>{t("users.form.create.title")}</CardTitle>
+        <CardTitle>{t("users.form.create.systemTitle")}</CardTitle>
         <CardDescription>{t("users.form.create.description")}</CardDescription>
       </CardHeader>
       <CardContent>

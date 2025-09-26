@@ -6,6 +6,10 @@ import AppLogo from "@/assets/images/logo/icon.png"
 export const Route = createFileRoute("/_public/auth/login")({
   beforeLoad: () => {
     const { getIsLoggedIn } = useSessionStore.getState()
+    const returnUrl = new URL(window.location.href).searchParams.get("returnUrl") || "/dashboard"
+    if (returnUrl && getIsLoggedIn()) {
+      throw redirect({ to: returnUrl })
+    }
     if (getIsLoggedIn()) {
       throw redirect({ to: "/dashboard" })
     }

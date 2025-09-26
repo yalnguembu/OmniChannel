@@ -13,13 +13,7 @@ export function LogsListPage() {
 
   return (
     <StandardListPageLayout
-      header={
-        <ListPageHeader
-          title={t("logs.title")}
-          addButtonText={t("logs.actions.add")}
-          breadcrumbs={[{ label: t("navigation.dashboard"), href: "/dashboard" }, { label: t("logs.title") }]}
-        />
-      }
+      header={<ListPageHeader title={t("logs.title")} breadcrumbs={[{ label: t("navigation.dashboard"), href: "/dashboard" }, { label: t("logs.title") }]} />}
       filter={
         <BaseFilter<SearchLogRequest>
           schema={zSearchLogRequest}

@@ -1,12 +1,9 @@
-import React, { useMemo } from "react"
+import React, { useMemo, useEffect } from "react"
 import { useTranslation } from "react-i18next"
 import { useNavigate } from "@tanstack/react-router"
 import { DataGrid } from "@/shared/components/data-grid/data-grid"
-import { DataGridColumnHeader, DataGridRowEntry, DataGridSort } from "@/shared/types"
+import { DataGridColumnHeader, DataGridSort, ACTION } from "@/shared/types"
 import { SortDirection } from "@/shared/enums/data-grid"
-import { Button } from "@/shared/components/ui/button"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/shared/components/ui/dropdown-menu"
-import { MoreHorizontal, Eye, Edit, Trash2 } from "lucide-react"
 import { useUserProfile } from "../hooks/useUserProfile"
 import { UserProfileDataGridEntry } from "../lib/data-grid/UserProfileDataGridEntry"
 
@@ -29,15 +26,10 @@ export const UserProfileDataGrid: React.FC = () => {
     setSelectedRows,
     deleteUserProfile,
     bulkDeleteMutation,
+    searchUserProfiles,
   } = useUserProfile()
 
   const columnHeaders: DataGridColumnHeader[] = [
-    {
-      key: "createdAt",
-      label: t("userprofiles.headers.createdAt"),
-      sortable: true,
-      resizable: true,
-    },
     {
       key: "name",
       label: t("userprofiles.headers.name"),
@@ -61,6 +53,7 @@ export const UserProfileDataGrid: React.FC = () => {
       label: t("userprofiles.headers.isSystemProfile"),
       sortable: true,
       resizable: true,
+      isBadge: true,
     },
     {
       key: "isActive",
@@ -68,7 +61,12 @@ export const UserProfileDataGrid: React.FC = () => {
       sortable: true,
       resizable: true,
     },
-
+    {
+      key: "createdAt",
+      label: t("userprofiles.headers.createdAt"),
+      sortable: true,
+      resizable: true,
+    },
     {
       key: "actions",
       label: t("userProfile.actions.more"),
@@ -81,12 +79,16 @@ export const UserProfileDataGrid: React.FC = () => {
     return userProfiles.map((item) => new UserProfileDataGridEntry(item))
   }, [userProfiles])
 
+  useEffect(() => {
+    searchUserProfiles()
+  }, [])
+
   const handleView = (id: string) => {
-    navigate({ to: `/userProfile/${id}` })
+    navigate({ to: `/access-control/user-profiles/${id}` })
   }
 
   const handleEdit = (id: string) => {
-    navigate({ to: `/userProfile/${id}/edit` })
+    navigate({ to: `/access-control/user-profiles/${id}/edit` })
   }
 
   const handleDelete = (id: string) => {
@@ -101,35 +103,17 @@ export const UserProfileDataGrid: React.FC = () => {
     }
   }
 
-  const renderCell = (item: DataGridRowEntry, columnKey: string) => {
-    switch (columnKey) {
-      case "actions":
-        return (
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-8 w-8 p-0">
-                <span className="sr-only">Open menu</span>
-                <MoreHorizontal className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={() => handleView(item.getId())}>
-                <Eye className="mr-2 h-4 w-4" />
-                {t("userProfile.actions.view")}
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => handleEdit(item.getId())}>
-                <Edit className="mr-2 h-4 w-4" />
-                {t("userProfile.actions.edit")}
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => handleDelete(item.getId())} className="text-red-600">
-                <Trash2 className="mr-2 h-4 w-4" />
-                {t("userProfile.actions.delete")}
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        )
-      default:
-        return item.getTextFor(columnKey) || "N/A"
+  const handleDispatch = (action: ACTION, id: string) => {
+    switch (action) {
+      case "view":
+        handleView(id)
+        break
+      case "edit":
+        handleEdit(id)
+        break
+      case "delete":
+        handleDelete(id)
+        break
     }
   }
 
@@ -183,10 +167,8 @@ export const UserProfileDataGrid: React.FC = () => {
         sortConfig={sortConfig}
         onSortChange={handleSortChange}
         enableColumnVisibility={true}
-        hiddenColumns={[]}
-        onColumnVisibilityChange={() => {}}
         bulkActions={bulkActions}
-        renderCell={renderCell}
+        dispatch={handleDispatch}
       />
     </div>
   )

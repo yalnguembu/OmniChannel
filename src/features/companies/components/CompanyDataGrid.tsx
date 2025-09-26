@@ -4,11 +4,9 @@ import { useNavigate } from "@tanstack/react-router"
 import { DataGrid } from "@/shared/components/data-grid/data-grid"
 import { ACTION, DataGridColumnHeader, DataGridRowEntry, DataGridSort, ViewMode } from "@/shared/types"
 import { SortDirection } from "@/shared/enums/data-grid"
-import { Button } from "@/shared/components/ui/button"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/shared/components/ui/dropdown-menu"
 import { useCompany } from "../hooks/useCompany"
 import { CompanyDataGridEntry } from "../lib/data-grid/CompanyDataGridEntry"
-import { MoreHorizontal, Eye, Edit, Trash2, Mail, PhoneCall } from "lucide-react"
+import { Mail, PhoneCall, User, MapPin, Verified } from "lucide-react"
 import StatusBadge from "@/shared/components/StatusBadge"
 import { BadgeStyles } from "@/shared/types/enums"
 import ActionButtonGroup from "@/shared/components/data-grid/ActionButtonGroup"
@@ -42,95 +40,23 @@ export const CompanyDataGrid: React.FC = () => {
 
   const columnHeaders: DataGridColumnHeader[] = [
     {
-      key: "name",
-      label: t("companies.fields.name"),
+      key: "basicInfo",
+      label: t("companies.groups.basicInfo"),
       sortable: true,
       resizable: true,
     },
     {
-      key: "email",
-      label: t("companies.fields.contact"),
+      key: "contactInfo",
+      label: t("companies.groups.contactInfo"),
       sortable: true,
       resizable: true,
     },
     {
-      key: "countryCode",
-      label: t("companies.fields.countryCode"),
+      key: "legalFinancial",
+      label: t("companies.groups.legalFinancial"),
       sortable: true,
       resizable: true,
     },
-    {
-      key: "address",
-      label: t("companies.fields.address"),
-      sortable: true,
-      resizable: true,
-    },
-    {
-      key: "businessRegistrationNumber",
-      label: t("companies.fields.businessRegistrationNumber"),
-      sortable: true,
-      resizable: true,
-    },
-    {
-      key: "taxNumber",
-      label: t("companies.fields.taxNumber"),
-      sortable: true,
-      resizable: true,
-    },
-
-    {
-      key: "companySize",
-      label: t("companies.fields.companySize"),
-      sortable: true,
-      resizable: true,
-    },
-    {
-      key: "companyType",
-      label: t("companies.fields.companyType"),
-      sortable: true,
-      resizable: true,
-    },
-    {
-      key: "isVerified",
-      label: t("companies.fields.isVerified"),
-      sortable: true,
-      resizable: true,
-    },
-    {
-      key: "status",
-      label: t("companies.fields.status"),
-      sortable: true,
-      resizable: true,
-    },
-    {
-      key: "contactPerson",
-      label: t("companies.fields.contactPerson"),
-      sortable: true,
-      resizable: true,
-    },
-    // {
-    //   key: "countryName",
-    //   label: t("companies.headers.countryName"),
-    //   sortable: true,
-    //   resizable: true,
-    // },
-    // {
-    //   key: "contactPhone",
-    //   label: t("companies.headers.contactPhone"),
-    //   sortable: true,
-    //   resizable: true,
-    // }, // {
-    //   key: "countryId",
-    //   label: t("companies.headers.countryId"),
-    //   sortable: true,
-    //   resizable: true,
-    // },
-    // {
-    //   key: "website",
-    //   label: t("companies.headers.website"),
-    //   sortable: true,
-    //   resizable: true,
-    // },
     {
       key: "createdAt",
       label: t("companies.fields.createdAt"),
@@ -141,7 +67,7 @@ export const CompanyDataGrid: React.FC = () => {
       key: "actions",
       label: t("companies.actions.more"),
       sortable: false,
-      width: 70,
+      width: 250,
     },
   ]
 
@@ -169,68 +95,43 @@ export const CompanyDataGrid: React.FC = () => {
     }
   }
 
-  const handleDispatch = (action: ACTION, id: string) => {
-    switch (action) {
-      case "view":
-        handleView(id)
-        break
-      case "edit":
-        handleEdit(id)
-        break
-      case "delete":
-        handleDelete(id)
-        break
-      default:
-        return
-    }
-  }
-
   const actions = ["view", "edit", "delete"]
 
   const renderCell = (item: DataGridRowEntry, column: DataGridColumnHeader, view: ViewMode): ReactNode => {
     if (view == "list") {
       switch (column.key) {
-        case "actions":
-          return actions.length < 3 ? (
-            <div>
-              <></>
-            </div>
-          ) : (
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="h-8 w-8 p-0">
-                  <span className="sr-only">Open menu</span>
-                  <MoreHorizontal className="h-4 w-4" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem onClick={() => handleDispatch?.("view", item.getId())}>
-                  <Eye className="mr-2 h-4 w-4" />
-                  {t("countries.actions.view")}
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => handleDispatch?.("edit", item.getId())}>
-                  <Edit className="mr-2 h-4 w-4" />
-                  {t("countries.actions.edit")}
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => handleDispatch?.("delete", item.getId())} className="text-red-600">
-                  <Trash2 className="mr-2 h-4 w-4" />
-                  {t("countries.actions.delete")}
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          )
-        case "name":
-          return <span className="font-semibold text-sm lg:text-base">{item.getTextFor("name")}</span>
-        case "company":
+        case "basicInfo":
           return (
-            <div className="flex flex-col gap-y-1">
-              <span className="text-blue-500 font-bold">{item.getTextFor("campanyName")}</span>
-              <span className="text-gray-500 font-bold">{item.getTextFor("campanyEmail")}</span>
+            <div className="flex flex-col gap-y-1 text-muted-foreground/80">
+              <div className="flex gap-x-1.5 lg:text-md">
+                <span className="font-semibold">{t("companies.fields.name")} :</span>
+                <span className="text-primary">{item.getTextFor("name")}</span>
+              </div>
+              <div className="flex gap-x-1.5">
+                <span className="font-semibold">{t("companies.fields.companyType")} :</span>
+                <span className="">{item.getTextFor("companyType")}</span>
+              </div>
+              <div className="flex gap-x-1.5">
+                <span className="font-semibold">{t("companies.fields.companySize")} :</span>
+                <span className="">{item.getTextFor("companySize")}</span>
+              </div>
+              <div className="flex flex-wrap gap-2 items-center">
+                <StatusBadge theme={BadgeStyles.GREEN} text={item.getTextFor("status")} />
+                {item.getTextFor("isVerified") === "true" && <StatusBadge Icon={Verified} theme={BadgeStyles.BLUE} text={t("companies.fields.isVerified")} />}
+              </div>
             </div>
           )
-        case "contact":
+        case "contactInfo":
           return (
-            <div className="flex flex-col gap-y-1">
+            <div className="flex flex-col gap-y-1 text-muted-foreground/80">
+              <span className="font-semibold">
+                <User className="inline size-4 mr-1" /> {item.getTextFor("contactPerson")}
+              </span>
+
+              <span className="font-light">
+                <MapPin className="inline size-4 mr-1" />
+                {item.getTextFor("address")}
+              </span>
               <span>
                 <Mail className="inline size-4 mr-1" /> {item.getTextFor("email")}
               </span>
@@ -240,10 +141,33 @@ export const CompanyDataGrid: React.FC = () => {
               </span>
             </div>
           )
-        case "profileName":
-          return <StatusBadge theme={BadgeStyles.BLUE} text={item.getTextFor(column.key) as string} />
-        case "userType":
-          return <StatusBadge theme={BadgeStyles.YELLOW} text={item.getTextFor(column.key) as string} />
+        case "legalFinancial":
+          return (
+            <div className="flex flex-col gap-y-1 text-muted-foreground/80">
+              <div className="flex gap-x-1.5 lg:text-md">
+                <span className="font-semibold">{t("companies.fields.countryName")} :</span>
+                <span>{item.getTextFor("countryName")}</span>
+              </div>
+              <div className="flex gap-x-1.5 lg:text-md">
+                <span className="font-semibold">{t("companies.fields.businessRegistrationNumber")} :</span>
+                <span>{item.getTextFor("businessRegistrationNumber")}</span>
+              </div>
+              <div className="flex gap-x-1.5 lg:text-md">
+                <span className="font-semibold">{t("companies.fields.taxNumber")} :</span>
+                <span>{item.getTextFor("taxNumber")}</span>
+              </div>
+              <div className="flex gap-x-1.5 lg:text-md">
+                <span className="font-semibold">{t("companies.fields.website")} :</span>
+                <span>{item.getTextFor("website")}</span>
+              </div>
+            </div>
+          )
+        case "createdAt":
+          return <span className="text-muted-foreground/70">{item.getTextFor("createdAt")}</span>
+
+        case "actions":
+          return <ActionButtonGroup view={view} isLoading={isLoading} row={item} actions={actions as ACTION[]} dispatch={handleDispatch} />
+
         default:
           return column?.isBadge ? (
             <StatusBadge text={item.getTextFor(column.key) as string} />
@@ -252,71 +176,57 @@ export const CompanyDataGrid: React.FC = () => {
           )
       }
     } else {
-      const rowItem = {
-        label: column.label,
-        value: item.getTextFor(column.key),
-        key: column.key,
-        isBadge: column.isBadge,
-        theme: column.badgeTheme,
-        shouldClick: column.shouldClick,
-      }
-      if (rowItem.key === "actions")
-        return (
-          <div className="flex flex-row justify-between px-4 pt-2 border-t-[1.5px]">
-            <span className="px-2 h-min text-sm font-semibold block min-w-14">{rowItem.label}</span>
-            <ActionButtonGroup view={view} isLoading={isLoading} row={item} actions={actions as ACTION[]} dispatch={handleDispatch} />
-          </div>
-        )
-      else if (rowItem.key === "id") return <></>
-      else if (rowItem.key === "contact")
-        return (
-          <DetailsCardItem
-            onClick={() => rowItem.shouldClick && handleDispatch("ROW_CLICK", item.getId())}
-            shouldClick={rowItem.shouldClick}
-            key={rowItem.key}
-            label={rowItem.label ?? ""}
-            value={
-              <div className="flex flex-col gap-y-1">
-                <span>
-                  <Mail className="inline size-4 mr-1" /> {item.getTextFor("email")}
-                </span>
-                <span>
-                  <PhoneCall className="inline size-4 mr-1" />
-                  {item.getTextFor("phoneNumber")}
-                </span>
+      switch (column.key) {
+        case "basicInfo":
+          return (
+            <div className="flex flex-col gap-y-1 px-4">
+              <div className="flex items-center gap-x-2">
+                <span className="font-semibold text-lg text-primary">{item.getTextFor("name")}</span>
+                <StatusBadge theme={BadgeStyles.GREEN} text={item.getTextFor("status")} />
+                {item.getTextFor("isVerified") === "true" && <StatusBadge Icon={Verified} theme={BadgeStyles.BLUE} text={t("companies.fields.isVerified")} />}
               </div>
-            }
-            isBadge={rowItem.isBadge}
-            theme={rowItem.theme}
-            className={`mx-3 border-b border-b-base-300`}
-          />
-        )
-      else if (rowItem.key === "name")
-        return (
-          <DetailsCardItem
-            onClick={() => rowItem.shouldClick && handleDispatch("ROW_CLICK", item.getId())}
-            shouldClick={rowItem.shouldClick}
-            key={rowItem.key}
-            label={rowItem.label ?? ""}
-            value={<span className="font-semibold text-sm lg:text-base">{item.getTextFor("name")}</span>}
-            isBadge={rowItem.isBadge}
-            theme={rowItem.theme}
-            className={`mx-3 border-b border-b-base-300`}
-          />
-        )
-      else
-        return (
-          <DetailsCardItem
-            onClick={() => rowItem.shouldClick && handleDispatch("ROW_CLICK", item.getId())}
-            shouldClick={rowItem.shouldClick}
-            key={rowItem.key}
-            label={rowItem.label ?? ""}
-            value={`${rowItem.value || "N/A"}`}
-            isBadge={rowItem.isBadge}
-            theme={rowItem.theme}
-            className={`mx-3 border-b border-b-base-300`}
-          />
-        )
+              <div className="flex flex-col gap-y-1 text-sm text-muted-foreground">
+                <DetailsCardItem Icon={User} label={t("companies.fields.companyType")} value={item.getTextFor("companyType")} />
+                <DetailsCardItem Icon={Mail} label={t("companies.fields.companySize")} value={item.getTextFor("companySize")} />
+              </div>
+            </div>
+          )
+        case "contactInfo":
+          return (
+            <div className="flex flex-col gap-y-1 px-4 text-sm text-muted-foreground">
+              <DetailsCardItem Icon={User} label={t("companies.fields.contactPerson")} value={item.getTextFor("contactPerson")} />
+              <DetailsCardItem Icon={Mail} label={t("companies.fields.email")} value={item.getTextFor("email")} />
+              <DetailsCardItem Icon={PhoneCall} label={t("companies.fields.phoneNumber")} value={item.getTextFor("phoneNumber")} />
+              <DetailsCardItem Icon={MapPin} label={t("companies.fields.address")} value={item.getTextFor("address")} />
+            </div>
+          )
+        case "legalFinancial":
+          return (
+            <div className="flex flex-col gap-y-1 px-4 text-sm text-muted-foreground">
+              <DetailsCardItem label={t("companies.fields.countryName")} value={item.getTextFor("countryName")} />
+              <DetailsCardItem label={t("companies.fields.businessRegistrationNumber")} value={item.getTextFor("businessRegistrationNumber")} />
+              <DetailsCardItem label={t("companies.fields.taxNumber")} value={item.getTextFor("taxNumber")} />
+              <DetailsCardItem label={t("companies.fields.website")} value={item.getTextFor("website")} />
+            </div>
+          )
+        case "createdAt":
+          return (
+            <div className="px-4 pt-1 text-xs text-muted-foreground/70">
+              <span>{t("companies.fields.createdAt")}: </span>
+              <span>{item.getTextFor("createdAt")}</span>
+            </div>
+          )
+        case "actions":
+          return (
+            <div className="flex flex-row justify-between px-4 pt-2 mt-auto border-t">
+              <DetailsCardItem label="#" value={1234} />
+              <ActionButtonGroup view={view} isLoading={isLoading} row={item} actions={actions as ACTION[]} dispatch={handleDispatch} />
+            </div>
+          )
+        default:
+          // This will prevent rendering any other individual fields that are now part of a group.
+          return null
+      }
     }
   }
 
@@ -351,6 +261,22 @@ export const CompanyDataGrid: React.FC = () => {
       ]
     : undefined
 
+  const handleDispatch = (action: ACTION, id: string) => {
+    switch (action) {
+      case "edit":
+        handleEdit(id)
+        break
+      case "view":
+        handleView(id)
+        break
+      case "delete":
+        handleDelete(id)
+        break
+      default:
+        return
+    }
+  }
+
   return (
     <div className="w-full max-w-full overflow-hidden">
       <DataGrid
@@ -374,6 +300,8 @@ export const CompanyDataGrid: React.FC = () => {
         onColumnVisibilityChange={() => {}}
         bulkActions={bulkActions}
         renderCell={renderCell}
+        actions={["edit", "delete", "view"]}
+        dispatch={handleDispatch}
       />
     </div>
   )

@@ -16,13 +16,13 @@
   },
   "accessDenied": "Access denied",
   "actions": {
-    "openMenu": "_openMenu"
+    "openMenu": "Open Menu"
   },
   "allowedips": {
     "headers": {
-      "applicationId": "Application ID",
-      "applicationName": "Application Name",
-      "applicationStatus": "Application Status",
+      "applicationId": "App ID",
+      "applicationName": "Application",
+      "applicationStatus": "App Status",
       "createdAt": "Created At",
       "ipAddress": "IP Address"
     }
@@ -125,12 +125,13 @@
       "namePlaceholder": "Enter name"
     },
     "headers": {
-      "companyName": "Company Name",
+      "companyName": "Company",
       "createdAt": "Created At",
       "description": "Description",
       "environment": "Environment",
       "name": "Name",
-      "status": "Status"
+      "status": "Status",
+      "keys": "Keys"
     },
     "messages": {
       "create": {
@@ -155,22 +156,23 @@
     },
     "title": "Applications",
     "totalCount_one": "1 application",
-    "totalCount_other": "{{count}} applications"
+    "totalCount_other": "{{count}} applications",
+    "apiKeyExpiresAtUtc": "Expires At"
   },
   "auditlogs": {
     "headers": {
       "action": "Action",
-      "changedColumn": "Changed Column",
-      "changeReason": "Change Reason",
+      "changedColumn": "Column Changed",
+      "changeReason": "Reason",
       "companyEmail": "Company Email",
       "companyId": "Company ID",
-      "companyName": "Company Name",
-      "companyPhoneNumber": "Company Phone Number",
+      "companyName": "Company",
+      "companyPhoneNumber": "Company Phone",
       "companyStatus": "Company Status",
       "createdAt": "Created At",
-      "entityDisplayName": "Entity Display Name",
+      "entityDisplayName": "Entity Name",
       "entityId": "Entity ID",
-      "entityName": "Entity Name",
+      "entityName": "Entity",
       "entityType": "Entity Type",
       "ipAddress": "IP Address",
       "newValues": "New Values",
@@ -181,7 +183,7 @@
       "userFirstName": "User First Name",
       "userId": "User ID",
       "userLastName": "User Last Name",
-      "userPhoneNumber": "User Phone Number",
+      "userPhoneNumber": "User Phone",
       "userStatus": "User Status"
     }
   },
@@ -250,30 +252,30 @@
       "currency": "Currency",
       "currencyCode": "Currency Code",
       "currencyName": "Currency Name",
-      "currencySymbol": "Currency Symbol",
+      "currencySymbol": "Symbol",
       "currentBalance": "Current Balance",
-      "currentVersion": "Current Version",
-      "lastCreditDate": "Last Credit Date",
-      "lastDebitDate": "Last Debit Date",
-      "lastReconciliationBy": "Last Reconciliation By",
-      "lastReconciliationByEmail": "Last Rec. By (Email)",
-      "lastReconciliationByFirstName": "Last Rec. By (First Name)",
-      "lastReconciliationByLastName": "Last Rec. By (Last Name)",
-      "lastReconciliationByPhoneNumber": "Last Rec. By (Phone)",
-      "lastReconciliationByStatus": "Last Rec. By (Status)",
-      "lastReconciliationDate": "Last Reconciliation Date",
+      "currentVersion": "Version",
+      "lastCreditDate": "Last Credit",
+      "lastDebitDate": "Last Debit",
+      "lastReconciliationBy": "Last Recon. By",
+      "lastReconciliationByEmail": "Last Recon. By (Email)",
+      "lastReconciliationByFirstName": "Last Recon. By (First Name)",
+      "lastReconciliationByLastName": "Last Recon. By (Last Name)",
+      "lastReconciliationByPhoneNumber": "Last Recon. By (Phone)",
+      "lastReconciliationByStatus": "Last Recon. By (Status)",
+      "lastReconciliationDate": "Last Recon. Date",
       "ownerId": "Owner ID",
-      "ownerName": "Owner Name",
+      "ownerName": "Owner",
       "ownerType": "Owner Type",
-      "paymentMethodCode": "Payment Method Code",
-      "paymentMethodId": "Payment Method ID",
-      "paymentMethodName": "Payment Method Name",
-      "reconciliationNotes": "Reconciliation Notes",
-      "reconciliationStatus": "Reconciliation Status",
+      "paymentMethodCode": "Pay Method Code",
+      "paymentMethodId": "Pay Method ID",
+      "paymentMethodName": "Payment Method",
+      "reconciliationNotes": "Recon. Notes",
+      "reconciliationStatus": "Recon. Status",
       "reservedBalance": "Reserved Balance",
       "totalCredits": "Total Credits",
       "totalDebits": "Total Debits",
-      "transactionCount": "Transaction Count",
+      "transactionCount": "Txn Count",
       "updatedByEmail": "Updated By (Email)",
       "updatedByFirstName": "Updated By (First Name)",
       "updatedByLastName": "Updated By (Last Name)",
@@ -345,7 +347,7 @@
     "form": {
       "create": {
         "description": "Add a new IP to block.",
-        "submit": "Create",
+        "submit": "Block IP",
         "title": "Block IP"
       },
       "edit": {
@@ -361,8 +363,8 @@
         "confirm": "Are you sure?",
         "error": "Unblock failed.",
         "success": "Unblock successful.",
-        "success_one": "Success",
-        "success_other": "Success"
+        "success_one": "1 IP successfully unblocked.",
+        "success_other": "{{count}} IPs successfully unblocked."
       },
       "noData": "No blocked IPs found.",
       "search": {
@@ -379,9 +381,9 @@
   },
   "blockedips": {
     "headers": {
-      "applicationId": "Application ID",
-      "applicationName": "Application Name",
-      "applicationStatus": "Application Status",
+      "applicationId": "App ID",
+      "applicationName": "Application",
+      "applicationStatus": "App Status",
       "createdAt": "Created At",
       "ipAddress": "IP Address",
       "reason": "Reason"
@@ -406,7 +408,9 @@
       "delete": "Delete",
       "edit": "Edit",
       "more": "More Actions",
-      "view": "View"
+      "view": "View",
+      "activate": "Activate",
+      "deactivate": "Deactivate"
     },
     "cancel": "Cancel",
     "dataGrid": {
@@ -460,10 +464,10 @@
     "edit": "Edit Company",
     "fields": {
       "address": "Address",
-      "businessRegistrationNumber": "Business Registration Number",
+      "businessRegistrationNumber": "BRN",
       "companySize": "Size",
       "companyType": "Type",
-      "contact": "_contact",
+      "contact": "Contact",
       "contactPerson": "Contact Person",
       "countryCode": "Country Code",
       "createdAt": "Creation Date",
@@ -472,7 +476,15 @@
       "name": "Name",
       "phoneNumber": "Phone Number",
       "status": "Status",
-      "taxNumber": "Tax Number"
+      "taxNumber": "Tax Number",
+      "countryName": "Country",
+      "website": "Website"
+    },
+    "groups": {
+      "basicInfo": "Basic Information",
+      "contactInfo": "Contact & Location",
+      "legalFinancial": "Legal & Financial",
+      "createdAt": "Creation Date"
     },
     "form": {
       "adressLabel": "Address",
@@ -515,7 +527,7 @@
     "headers": {
       "contactPhone": "Contact Phone",
       "countryId": "Country ID",
-      "countryName": "Country Name",
+      "countryName": "Country",
       "website": "Website"
     },
     "messages": {
@@ -563,19 +575,19 @@
   },
   "companyapplimits": {
     "headers": {
-      "apiRequestsLimit": "API Requests Limit",
-      "applicationId": "Application ID",
-      "applicationName": "Application Name",
-      "applicationStatus": "Application Status",
+      "apiRequestsLimit": "API Request Limit",
+      "applicationId": "App ID",
+      "applicationName": "Application",
+      "applicationStatus": "App Status",
       "companyEmail": "Company Email",
       "companyId": "Company ID",
-      "companyName": "Company Name",
-      "companyPhoneNumber": "Company Phone Number",
+      "companyName": "Company",
+      "companyPhoneNumber": "Company Phone",
       "companyStatus": "Company Status",
       "createdAt": "Created At",
       "defaultDailyLimit": "Default Daily Limit",
       "defaultMonthlyLimit": "Default Monthly Limit",
-      "defaultSingleTransactionLimit": "Default Single Transaction Limit"
+      "defaultSingleTransactionLimit": "Default Single Txn Limit"
     }
   },
   "companyAppLimits": {
@@ -948,7 +960,7 @@
       "name": "Name"
     }
   },
-  "encrypted": "_encrypted",
+  "encrypted": "Encrypted",
   "FAQ": {
     "clearSearch": "Clear Search",
     "intro": "We've compiled the most frequently asked questions from our users and prospects. If you can't find the answer here, don't hesitate to contact us.",
@@ -1008,16 +1020,16 @@
       "currency": "Currency",
       "currencyCode": "Currency Code",
       "currencyName": "Currency Name",
-      "currencySymbol": "Currency Symbol",
+      "currencySymbol": "Symbol",
       "endDate": "End Date",
       "feeTypeCode": "Fee Type Code",
       "feeTypeId": "Fee Type ID",
-      "feeTypeName": "Fee Type Name",
-      "feeTypeTransactionType": "Fee Type Transaction Type",
+      "feeTypeName": "Fee Type",
+      "feeTypeTransactionType": "Fee Txn Type",
       "fixedAmount": "Fixed Amount",
       "isActive": "Active",
-      "maxAmount": "Maximum Amount",
-      "minAmount": "Minimum Amount",
+      "maxAmount": "Max Amount",
+      "minAmount": "Min Amount",
       "ownerId": "Owner ID",
       "ownerType": "Owner Type",
       "percentageRate": "Percentage Rate",
@@ -1244,22 +1256,22 @@
   "fundtransfersreadmodels": {
     "headers": {
       "amount": "Amount",
-      "companyName": "Company Name",
+      "companyName": "Company",
       "createdAt": "Created At",
       "createdByFirstName": "Created By (First Name)",
       "createdByLastName": "Created By (Last Name)",
       "createdByPhoneNumber": "Created By (Phone)",
       "currency": "Currency",
-      "currencySymbol": "Currency Symbol",
-      "currentVersion": "Current Version",
+      "currencySymbol": "Symbol",
+      "currentVersion": "Version",
       "description": "Description",
-      "destinationApplicationName": "Destination Application",
+      "destinationApplicationName": "Destination App",
       "feeAppliedAmount": "Fee Applied",
       "internalFeeAmount": "Internal Fee",
       "netAmount": "Net Amount",
       "publicId": "Public ID",
       "reference": "Reference",
-      "sourceApplicationName": "Source Application",
+      "sourceApplicationName": "Source App",
       "status": "Status",
       "transferType": "Transfer Type",
       "updatedByFirstName": "Updated By (First Name)",
@@ -1323,12 +1335,12 @@
       "approvalDate": "Approval Date",
       "companyEmail": "Company Email",
       "companyId": "Company ID",
-      "companyName": "Company Name",
-      "companyPhoneNumber": "Company Phone Number",
+      "companyName": "Company",
+      "companyPhoneNumber": "Company Phone",
       "companyStatus": "Company Status",
       "createdAt": "Created At",
-      "documentTypeId": "Document Type ID",
-      "documentTypeName": "Document Type Name",
+      "documentTypeId": "Doc Type ID",
+      "documentTypeName": "Document Type",
       "documentUrl": "Document URL",
       "rejectionReason": "Rejection Reason",
       "status": "Status",
@@ -1478,7 +1490,7 @@
     },
     "headers": {
       "additionalData": "Additional Data",
-      "applicationName": "Application Name",
+      "applicationName": "Application",
       "correlationId": "Correlation ID",
       "createdAt": "Created At",
       "environment": "Environment",
@@ -1503,7 +1515,7 @@
     "totalCount_other": "{{count}} logs"
   },
   "menu": {
-    "access-control": "Control Access",
+    "access-control": "Access Control",
     "addApplication": "Add Application",
     "addBalanceType": "Add Balance Type",
     "addCompany": "Add Company",
@@ -1556,7 +1568,7 @@
     "webhooks": "Webhooks",
     "withdrawalMethod": "Withdrawal Methods",
     "withdrawals": "Withdrawals",
-    "analytics":"Analytics"
+    "analytics": "Analytics"
   },
   "navigation": {
     "about": "About",
@@ -1619,7 +1631,7 @@
   "notifications": {
     "headers": {
       "canal": "Channel",
-      "companyName": "Company Name",
+      "companyName": "Company",
       "createdAt": "Created At",
       "createdBy": "Created By",
       "data": "Data",
@@ -1635,7 +1647,7 @@
       "userEmail": "User Email",
       "userFirstName": "User First Name",
       "userLastName": "User Last Name",
-      "userPhoneNumber": "User Phone Number",
+      "userPhoneNumber": "User Phone",
       "userStatus": "User Status"
     }
   },
@@ -1647,8 +1659,8 @@
       "description": "Description",
       "isActive": "Active",
       "logoUrl": "Logo URL",
-      "maximumAmount": "Maximum Amount",
-      "minimumAmount": "Minimum Amount",
+      "maximumAmount": "Max Amount",
+      "minimumAmount": "Min Amount",
       "name": "Name",
       "requiresPhoneNumber": "Requires Phone",
       "settlementPeriod": "Settlement Period",
@@ -1728,7 +1740,7 @@
     "totalCount_one": "1 payment method",
     "totalCount_other": "{{count}} payment methods"
   },
-  "readonly": "_readonly",
+  "readonly": "Read-only",
   "receipts": {
     "actions": {
       "more": "More Actions",
@@ -1741,20 +1753,24 @@
   "receiptsreadmodels": {
     "headers": {
       "amount": "Amount",
-      "applicationName": "Application Name",
-      "companyName": "Company Name",
-      "createdAt": "Created At",
+      "applicationName": "Application",
+      "companyName": "Company",
+      "createdAt": "Date",
       "currency": "Currency",
-      "externalReference": "External Reference",
+      "externalReference": "External Ref.",
       "feeAppliedAmount": "Fee Applied",
       "internalFeeAmount": "Internal Fee",
       "netAmount": "Net Amount",
-      "paymentMethodCode": "Payment Method Code",
-      "phoneNumberEncrypted": "Phone (Encrypted)",
+      "paymentMethodCode": "Pay Method Code",
+      "phoneNumberEncrypted": "Phone",
       "providerFeeAmount": "Provider Fee",
-      "providerReference": "Provider Reference",
+      "providerReference": "Provider Ref.",
       "status": "Status",
-      "transactionId": "Transaction ID"
+      "transactionId": "Txn ID",
+      "fee": "Fees",
+      "context": "Context",
+      "references": "References",
+      "coreDetails": "Core"
     }
   },
   "receiptsReadModels": {
@@ -1785,10 +1801,10 @@
       "createdToLabel": "To",
       "currencyLabel": "Currency",
       "customerEmailLabel": "Customer Email",
-      "customerIpAddressLabel": "Customer Ip Address",
+      "customerIpAddressLabel": "Customer IP Address",
       "customerNameLabel": "Customer Name",
       "externalReferenceLabel": "External Reference",
-      "idsLabel": "Ids",
+      "idsLabel": "IDs",
       "internalReferenceLabel": "Internal Reference",
       "paymentMethodCodeLabel": "Payment Method Code",
       "paymentMethodNameLabel": "Payment Method Name",
@@ -1797,7 +1813,7 @@
       "providerInitialReferenceLabel": "Provider Initial Reference",
       "providerMessageLabel": "Provider Message",
       "searchTermLabel": "Search...",
-      "statusLabel": "status"
+      "statusLabel": "Status"
     },
     "messages": {
       "delete": {
@@ -1934,9 +1950,9 @@
     },
     "headers": {
       "allowedValues": "Allowed Values",
-      "applicationName": "Application Name",
+      "applicationName": "Application",
       "category": "Category",
-      "companyName": "Company Name",
+      "companyName": "Company",
       "createdAt": "Created At",
       "dataType": "Data Type",
       "description": "Description",
@@ -2072,7 +2088,7 @@
     "solutionLabel": "The Fujisat Pay Solution",
     "title": "Fujisat Pay: Tailored Solutions for Every Sector"
   },
-  "system": "_system",
+  "system": "System",
   "themeMode": {
     "dark": "Dark",
     "light": "Light",
@@ -2093,7 +2109,7 @@
       "userFirstName": "User First Name",
       "userId": "User ID",
       "userLastName": "User Last Name",
-      "userPhoneNumber": "User Phone Number",
+      "userPhoneNumber": "User Phone",
       "userStatus": "User Status"
     }
   },
@@ -2218,7 +2234,7 @@
       "partialError_other": "{{count}} partial errors occurred."
     },
     "details": {
-      "title": "_title"
+      "title": "User Details"
     },
     "form": {
       "companyIdLabel": "Company",
@@ -2251,15 +2267,15 @@
       "userTypePlaceholder": "Select a user type"
     },
     "headers": {
-      "companyName": "Company Name",
-      "contact": "_contact",
+      "companyName": "Company",
+      "contact": "Contact",
       "createdAt": "Created At",
       "email": "Email",
       "firstName": "First Name",
-      "fullName": "_fullName",
+      "fullName": "Full Name",
       "lastName": "Last Name",
       "phoneNumber": "Phone Number",
-      "profileName": "Profile Name",
+      "profileName": "Profile",
       "publicId": "Public ID",
       "status": "Status",
       "userType": "User Type"
@@ -2294,15 +2310,15 @@
       "aggregateId": "Aggregate ID",
       "aggregateType": "Aggregate Type",
       "amount": "Amount",
-      "applicationName": "Application Name",
-      "companyName": "Company Name",
+      "applicationName": "Application",
+      "companyName": "Company",
       "createdAt": "Created At",
       "currency": "Currency",
-      "externalReference": "External Reference",
-      "paymentMethodCode": "Payment Method Code",
-      "paymentMethodName": "Payment Method Name",
-      "providerFinalReference": "Provider Final Reference",
-      "providerInitialReference": "Provider Initial Reference",
+      "externalReference": "External Ref.",
+      "paymentMethodCode": "Pay Method Code",
+      "paymentMethodName": "Payment Method",
+      "providerFinalReference": "Provider Final Ref.",
+      "providerInitialReference": "Provider Initial Ref.",
       "status": "Status",
       "updatedAt": "Updated At"
     }
@@ -2339,12 +2355,12 @@
   },
   "webhooklogs": {
     "headers": {
-      "attemptNumber": "Attempt Number",
+      "attemptNumber": "Attempt #",
       "createdAt": "Created At",
       "errorMessage": "Error Message",
       "requestBody": "Request Body",
       "responseBody": "Response Body",
-      "responseStatusCode": "Response Status Code",
+      "responseStatusCode": "Response Status",
       "webhookId": "Webhook ID",
       "webhookName": "Webhook Name"
     }
@@ -2379,13 +2395,13 @@
       "urlPlaceholder": "Enter URL"
     },
     "headers": {
-      "applicationName": "Application Name",
+      "applicationName": "Application",
       "createdAt": "Created At",
       "eventType": "Event Type",
       "isActive": "Active",
-      "lastSecretGenerated": "Last Secret Generated",
+      "lastSecretGenerated": "Last Secret Gen.",
       "maxRetries": "Max Retries",
-      "timeoutSeconds": "Timeout (seconds)",
+      "timeoutSeconds": "Timeout (s)",
       "url": "URL"
     },
     "messages": {
@@ -2467,23 +2483,23 @@
   },
   "withdrawalmethods": {
     "headers": {
-      "companyName": "Company Name",
+      "companyName": "Company",
       "createdAt": "Created At",
       "dailyLimit": "Daily Limit",
       "isDefault": "Default",
       "isVerified": "Verified",
       "monthlyLimit": "Monthly Limit",
       "name": "Name",
-      "paymentMethodName": "Payment Method Name",
+      "paymentMethodName": "Payment Method",
       "phoneNumber": "Phone Number",
       "singleWithdrawalLimit": "Single Withdrawal Limit",
       "verificationDate": "Verification Date",
-      "verificationReference": "Verification Reference"
+      "verificationReference": "Verification Ref."
     }
   },
   "withdrawalMethods": {
     "actions": {
-      "add": "New Withdrals Method"
+      "add": "New Withdrawal Method"
     },
     "form": {
       "companyIdLabel": "Company",
@@ -2538,25 +2554,25 @@
     "headers": {
       "accountNumber": "Account Number",
       "amount": "Amount",
-      "applicationName": "Application Name",
-      "companyName": "Company Name",
+      "applicationName": "Application",
+      "companyName": "Company",
       "createdAt": "Created At",
-      "currencySymbol": "Currency Symbol",
+      "currencySymbol": "Currency",
       "feeAppliedAmount": "Fee Applied",
       "internalFeeAmount": "Internal Fee",
       "netAmount": "Net Amount",
-      "paymentMethodName": "Payment Method Name",
+      "paymentMethodName": "Payment Method",
       "providerFeeAmount": "Provider Fee",
-      "providerReference": "Provider Reference",
+      "providerReference": "Provider Ref.",
       "status": "Status",
       "transactionId": "Transaction ID",
       "verificationAttempts": "Verification Attempts",
-      "withdrawalMethodName": "Withdrawal Method Name"
+      "withdrawalMethodName": "Withdrawal Method"
     }
   },
   "withdrawalsReadModels": {
     "actions": {
-      "add": "New Withdral",
+      "add": "New Withdrawal",
       "more": "More Actions",
       "view": "View"
     },
@@ -2569,10 +2585,10 @@
       "createdToLabel": "To",
       "currencyLabel": "Currency",
       "customerEmailLabel": "Customer Email",
-      "customerIpAddressLabel": "Customer Ip Address",
+      "customerIpAddressLabel": "Customer IP Address",
       "customerNameLabel": "Customer Name",
       "externalReferenceLabel": "External Reference",
-      "idsLabel": "Ids",
+      "idsLabel": "IDs",
       "internalReferenceLabel": "Internal Reference",
       "paymentMethodCodeLabel": "Payment Method Code",
       "paymentMethodNameLabel": "Payment Method Name",
@@ -2583,7 +2599,7 @@
       "providerMessageLabel": "Provider Message",
       "providerReferenceLabel": "Provider Reference",
       "searchTermLabel": "Search...",
-      "statusLabel": "status",
+      "statusLabel": "Status",
       "verifiedByNameLabel": "Verified By Name",
       "withdrawalMethodIdLabel": "Withdrawal Method"
     },
@@ -2617,7 +2633,7 @@
       "mathematical": "Mathematical Analytics",
       "crossTable": "Company Analytics",
       "technical": "Technical Analytics",
-      "geolocation": "Geogrqphical Analytics"
+      "geolocation": "Geographical Analytics"
     },
     "overview": {
       "totalVolume": "Total Volume",
@@ -2987,6 +3003,7 @@
       "pendingReconciliations": "pending reconciliations",
       "systemEfficiency": "System Efficiency",
       "totalTransactions": "total transactions",
+      "balance": "Balance",
       "profitabilityTarget": "Profitability Target",
       "profitabilityDesc": "Revenue margin performance indicator",
       "excellentMargin": "Excellent profit margin",
@@ -3040,5 +3057,31 @@
       "cameroonRegionsMapDesc": "Visual representation of user distribution across Cameroon",
       "userDensity": "User Density"
     }
+  },
+  "statusBadges": {
+    "active": "Active",
+    "inactive": "Inactive",
+    "enabled": "Enabled",
+    "disabled": "Disabled",
+    "OM": "OM",
+    "MOMO": "MOMO",
+    "MTN": "MTN",
+    "ORANGE": "ORANGE",
+    "PENDING": "PENDING",
+    "PROCESSING": "PROCESSING",
+    "VALIDATING": "VALIDATING",
+    "COMPLETED": "COMPLETED",
+    "FAILED": "FAILED",
+    "CANCELLED": "CANCELLED",
+    "REJECTED": "REJECTED",
+    "TIMEOUT": "TIMEOUT",
+    "SYSTEM": "SYSTEM",
+    "COMPANY": "COMPANY",
+    "APPLICATION": "APPLICATION",
+    "RECEIPT": "RECEIPT",
+    "WITHDRAWAL": "WITHDRAWAL",
+    "FUND_TRANSFER": "FUND_TRANSFER",
+    "true": "True",
+    "false": "False"
   }
 }

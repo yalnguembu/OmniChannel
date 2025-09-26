@@ -30,7 +30,7 @@ export const handleRequestError = (
 
   const handleRedirectRule = (rule: RedirectRule) => {
     if (errorStatus === rule.status) {
-      location.replace(rule.path)
+      location.replace(rule.path + "?returnUrl=" + encodeURIComponent(location.pathname))
     }
   }
 

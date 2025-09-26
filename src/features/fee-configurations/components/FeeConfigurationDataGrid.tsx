@@ -34,63 +34,59 @@ export const FeeConfigurationDataGrid: React.FC = () => {
   }, [])
 
   const columnHeaders: DataGridColumnHeader[] = [
-    {
-      key: "createdAt",
-      label: t("feeconfigurations.headers.createdAt"),
-      sortable: true,
-      resizable: true,
-    },
-    {
-      key: "currencyName",
-      label: t("feeconfigurations.headers.currencyName"),
-      sortable: true,
-      resizable: true,
-    },
-    {
-      key: "currencySymbol",
-      label: t("feeconfigurations.headers.currencySymbol"),
-      sortable: true,
-      resizable: true,
-    },
-    {
-      key: "currencyCode",
-      label: t("feeconfigurations.headers.currencyCode"),
-      sortable: true,
-      resizable: true,
-    },
-    {
-      key: "feeTypeName",
-      label: t("feeconfigurations.headers.feeTypeName"),
-      sortable: true,
-      resizable: true,
-    },
-    {
-      key: "feeTypeTransactionType",
-      label: t("feeconfigurations.headers.feeTypeTransactionType"),
-      sortable: true,
-      resizable: true,
-    },
-    {
-      key: "feeTypeCode",
-      label: t("feeconfigurations.headers.feeTypeCode"),
-      sortable: true,
-      resizable: true,
-    },
-    {
-      key: "feeTypeId",
-      label: t("feeconfigurations.headers.feeTypeId"),
-      sortable: true,
-      resizable: true,
-    },
+    // {
+    //   key: "currencyName",
+    //   label: t("feeconfigurations.headers.currencyName"),
+    //   sortable: true,
+    //   resizable: true,
+    // },
+    // {
+    //   key: "currencyCode",
+    //   label: t("feeconfigurations.headers.currencyCode"),
+    //   sortable: true,
+    //   resizable: true,
+    // },
+    // {
+    //   key: "feeTypeName",
+    //   label: t("feeconfigurations.headers.feeTypeName"),
+    //   sortable: true,
+    //   resizable: true,
+    // },
+    // {
+    //   key: "feeTypeTransactionType",
+    //   label: t("feeconfigurations.headers.feeTypeTransactionType"),
+    //   sortable: true,
+    //   resizable: true,
+    // },
+    // {
+    //   key: "feeTypeCode",
+    //   label: t("feeconfigurations.headers.feeTypeCode"),
+    //   sortable: true,
+    //   resizable: true,
+    // },
+    // {
+    //   key: "feeTypeId",
+    //   label: t("feeconfigurations.headers.feeTypeId"),
+    //   sortable: true,
+    //   resizable: true,
+    // },
     {
       key: "ownerType",
       label: t("feeconfigurations.headers.ownerType"),
       sortable: true,
       resizable: true,
+      isBadge: true,
     },
+    // {
+    //   key: "ownerId",
+    //   label: t("feeconfigurations.headers.ownerId"),
+    //   sortable: true,
+    //   resizable: true,
+    // },
+
     {
-      key: "ownerId",
-      label: t("feeconfigurations.headers.ownerId"),
+      key: "currencySymbol",
+      label: t("feeconfigurations.headers.currencySymbol"),
       sortable: true,
       resizable: true,
     },
@@ -118,12 +114,12 @@ export const FeeConfigurationDataGrid: React.FC = () => {
       sortable: true,
       resizable: true,
     },
-    {
-      key: "currency",
-      label: t("feeconfigurations.headers.currency"),
-      sortable: true,
-      resizable: true,
-    },
+    // {
+    //   key: "currency",
+    //   label: t("feeconfigurations.headers.currency"),
+    //   sortable: true,
+    //   resizable: true,
+    // },
     {
       key: "startDate",
       label: t("feeconfigurations.headers.startDate"),
@@ -139,6 +135,12 @@ export const FeeConfigurationDataGrid: React.FC = () => {
     {
       key: "isActive",
       label: t("feeconfigurations.headers.isActive"),
+      sortable: true,
+      resizable: true,
+    },
+    {
+      key: "createdAt",
+      label: t("feeconfigurations.headers.createdAt"),
       sortable: true,
       resizable: true,
     },

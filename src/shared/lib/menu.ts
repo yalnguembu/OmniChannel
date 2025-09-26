@@ -140,14 +140,14 @@ export const adminMenus: BaseMenus[] = [
           },
           {
             label: "menu.userProfiles",
-            path: "/access-control/users/user-profiles",
+            path: "/access-control/user-profiles",
             icon: UserCircle,
-            addPagePath: "/access-control/users/user-profiles/add",
+            addPagePath: "/access-control/user-profiles/add",
             addButtonLabel: "menu.addUserProfile",
           },
           {
             label: "menu.permissions",
-            path: "/access-control/users/permissions",
+            path: "/access-control/permissions",
             icon: Key,
           },
         ],

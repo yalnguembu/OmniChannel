@@ -62,7 +62,10 @@ export const useSession = () => {
       }
 
       toast.success("Successfully logged in")
-      router.navigate({ to: "/dashboard" })
+
+      const returnUrl = new URL(window.location.href).searchParams.get("returnUrl") || "/dashboard"
+      if (returnUrl) router.navigate({ to: returnUrl })
+      else router.navigate({ to: "/dashboard" })
     },
     onError: (error) => {
       const errorMessage = error.response?.data?.detail || error.message || "Login failed"

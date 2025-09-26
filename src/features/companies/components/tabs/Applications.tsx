@@ -2,17 +2,17 @@ import { useNavigate } from "@tanstack/react-router"
 import { useTranslation } from "react-i18next"
 import { useMemo, useState, useEffect } from "react"
 import { DataGrid } from "@/shared/components/data-grid/data-grid"
-import { DataGridColumnHeader, DataGridRowEntry, DataGridSort } from "@/shared/types"
+import { ACTION, DataGridColumnHeader, DataGridSort } from "@/shared/types"
 import { SortDirection } from "@/shared/enums/data-grid"
 import { Button } from "@/shared/components/ui/button"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/shared/components/ui/dropdown-menu"
-import { MoreHorizontal, Eye, Edit, Trash2, Plus } from "lucide-react"
+import { Plus } from "lucide-react"
 import { useApplication } from "../../hooks/useApplication"
 import { UpdateApplicationRequest } from "@/shared"
 import { ApplicationDataGridEntry } from "../../lib/data-grid/ApplicationDataGridEntry"
 import { Card, CardContent } from "@/shared/components/ui/card"
 import { ModalWrapper } from "@/shared/components/ModalWrapper"
 import { ApplicationCreateForm } from "../ApplicationCreateForm"
+import { BadgeStyles } from "@/shared/types/enums"
 
 export function ApplicationsTab({ companyId }: { companyId: string }) {
   const navigate = useNavigate()
@@ -62,12 +62,15 @@ export function ApplicationsTab({ companyId }: { companyId: string }) {
       label: "Status",
       sortable: true,
       resizable: true,
+      isBadge: true,
     },
     {
       key: "environment",
       label: "Environment",
       sortable: true,
       resizable: true,
+      isBadge: true,
+      badgeTheme: BadgeStyles.PURPLE,
     },
     {
       key: "createdAt",
@@ -88,7 +91,7 @@ export function ApplicationsTab({ companyId }: { companyId: string }) {
   }, [applications])
 
   const handleView = (id: string) => {
-    navigate({ to: `/application/${id}` })
+    navigate({ to: `/applications/${id}` })
   }
 
   const handleEdit = (id: string) => {
@@ -104,38 +107,6 @@ export function ApplicationsTab({ companyId }: { companyId: string }) {
   const handleBulkDelete = () => {
     if (confirm(t("applications.bulk.deleteConfirm", { count: selectedRows.length }))) {
       bulkDeleteMutation.mutate(selectedRows)
-    }
-  }
-
-  const renderCell = (item: DataGridRowEntry, columnKey: string) => {
-    switch (columnKey) {
-      case "actions":
-        return (
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-8 w-8 p-0">
-                <span className="sr-only">Open menu</span>
-                <MoreHorizontal className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={() => handleView(item.getId())}>
-                <Eye className="mr-2 h-4 w-4" />
-                {t("applications.actions.view")}
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => handleEdit(item.getId())}>
-                <Edit className="mr-2 h-4 w-4" />
-                {t("applications.actions.edit")}
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => handleDelete(item.getId())} className="text-red-600">
-                <Trash2 className="mr-2 h-4 w-4" />
-                {t("applications.actions.delete")}
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        )
-      default:
-        return item.getTextFor(columnKey) || "N/A"
     }
   }
 
@@ -181,6 +152,22 @@ export function ApplicationsTab({ companyId }: { companyId: string }) {
     )
   }
 
+  const handleDispatch = (action: ACTION, id: string) => {
+    switch (action) {
+      case "edit":
+        handleEdit(id)
+        break
+      case "view":
+        handleView(id)
+        break
+      case "delete":
+        handleDelete(id)
+        break
+      default:
+        return
+    }
+  }
+
   return (
     <>
       <Card className="flex flex-col gap-y-4 mt-4 xl:mt-6">
@@ -205,10 +192,9 @@ export function ApplicationsTab({ companyId }: { companyId: string }) {
             sortConfig={sortConfig}
             onSortChange={handleSortChange}
             enableColumnVisibility={false}
-            hiddenColumns={[]}
-            onColumnVisibilityChange={() => {}}
             bulkActions={bulkActions}
-            renderCell={renderCell}
+            dispatch={handleDispatch}
+            actions={["view", "edit", "delete"]}
           />
         </CardContent>
       </Card>

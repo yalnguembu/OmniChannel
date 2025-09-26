@@ -76,11 +76,12 @@ export const useUserProfile = () => {
       },
     })
 
-  const dropdownQuery = useQuery({
-    ...getApiUserProfileDropdownOptions(),
-    enabled: false,
-    staleTime: 10 * 60 * 1000,
-  })
+  const getDropdownQuery = () =>
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    useQuery({
+      ...getApiUserProfileDropdownOptions(),
+      staleTime: 10 * 60 * 1000,
+    })
 
   const createUserProfileMutation = useMutation({
     ...postApiUserProfileMutation(),
@@ -230,9 +231,6 @@ export const useUserProfile = () => {
   const refreshData = () => {
     searchUserProfiles()
   }
-  const enableDropdownQuery = () => {
-    dropdownQuery.refetch()
-  }
 
   return {
     ...store,
@@ -241,7 +239,7 @@ export const useUserProfile = () => {
     updateMutation: updateUserProfileMutation,
     deleteMutation: deleteUserProfileMutation,
     bulkDeleteMutation,
-    dropdownQuery,
+    getDropdownQuery,
     getUserProfileQuery,
     searchUserProfiles,
     onCreateUserProfile,
@@ -254,7 +252,6 @@ export const useUserProfile = () => {
     applyFilters,
     clearFilters,
     refreshData,
-    enableDropdownQuery,
     deleteUserProfile,
     hasData: store.userProfiles.length > 0,
     hasSelection: store.selectedRows.length > 0,

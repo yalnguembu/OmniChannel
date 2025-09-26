@@ -10,6 +10,7 @@ import { LoaderIcon } from "lucide-react"
 import { CreateCompanyUserRequest } from "@/shared/api"
 import { zCreateCompanyUserRequest } from "@/shared/api/zod.gen"
 import { useUserProfile } from "@/features/user-profiles/hooks/useUserProfile"
+import { useCompany } from "@/features/companies/hooks/useCompany"
 import { SearchDropdown } from "@/shared/components/dropdowns/search-dropdown"
 
 interface CompanyUserCreateFormProps {
@@ -33,9 +34,17 @@ export const CompanyUserCreateForm: React.FC<CompanyUserCreateFormProps> = ({ on
     },
   })
 
-  const { userProfiles, isLoading: isUserProfilesLoading } = useUserProfile()
+  const { getDropdownQuery: getUserProfiles } = useUserProfile()
+  const { dropdownQuery: getCompanies } = useCompany()
 
-  const userProfileOptions = useMemo(() => userProfiles.map((userProfile) => ({ value: userProfile.id ?? "", label: userProfile.name ?? "" })) ?? [], [userProfiles])
+  const { data: companiesResponse, isLoading: isCompaniesLoading } = getCompanies()
+  const { data: userProfileResponse, isLoading: isUserProfilesLoading } = getUserProfiles()
+
+  const userProfileOptions = useMemo(
+    () => userProfileResponse?.data.map((userProfile) => ({ value: userProfile.id ?? "", label: userProfile.name ?? "" })) ?? [],
+    [userProfileResponse],
+  )
+  const userCompanyOptions = useMemo(() => companiesResponse?.data?.map((app) => ({ value: app.id ?? "", label: app.name ?? "" })) ?? [], [companiesResponse])
 
   const handleSubmit = (values: CreateCompanyUserRequest) => {
     if (onSubmit) {
@@ -46,13 +55,33 @@ export const CompanyUserCreateForm: React.FC<CompanyUserCreateFormProps> = ({ on
   return (
     <Card className="w-full max-w-4xl mx-auto">
       <CardHeader>
-        <CardTitle>{t("users.form.create.title")}</CardTitle>
+        <CardTitle>{t("users.form.create.systemTitle")}</CardTitle>
         <CardDescription>{t("users.form.create.description")}</CardDescription>
       </CardHeader>
       <CardContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <FormField
+                control={form.control}
+                name="companyId"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{t("users.form.companyIdLabel")}</FormLabel>
+                    <FormControl>
+                      <SearchDropdown
+                        value={field.value || null}
+                        onChange={(val) => field.onChange(val)}
+                        options={userCompanyOptions}
+                        placeholder={t("users.form.companyIdPlaceholder")}
+                        disabled={isCompaniesLoading}
+                        isLoading={isCompaniesLoading}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
               <FormField
                 control={form.control}
                 name="profileId"

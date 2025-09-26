@@ -58,8 +58,15 @@ class AuthPersistence implements IAuthPersistence {
   }
 
   clearAuthData(): void {
-    this.storage.clearLocale()
     this.storage.clearSession()
+    this.storage.removeLocaleItem(this.KEYS.USER_DATA)
+    this.storage.removeLocaleItem(this.KEYS.AUTH_TOKEN)
+    this.storage.removeLocaleItem(this.KEYS.AUTH_TOKEN_EXPIRATION_DATE)
+    this.storage.removeLocaleItem(this.KEYS.REFRESH_TOKEN)
+    this.storage.removeLocaleItem(this.KEYS.REFRESH_TOKEN_EXPIRATION_DATE)
+    this.storage.removeLocaleItem(this.KEYS.USER_PERMISSIONS)
+    this.storage.removeLocaleItem(this.KEYS.USER_TYPE)
+    this.storage.removeLocaleItem(this.KEYS.USER_PROFILE)
   }
 
   storeUserSessionData(session: SessionData): void {

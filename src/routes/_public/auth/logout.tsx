@@ -9,9 +9,9 @@ export const Route = createFileRoute("/_public/auth/logout")({
   beforeLoad: () => {
     const { resetSession } = useSessionStore.getState()
     resetSession()
-    sessionStorage.clear()
     authPersistence.clearAuthData()
-    throw redirect({ to: "/auth/login" })
+    const returnUrl = new URL(window.location.href).searchParams.get("returnUrl") || "/dashboard"
+    throw redirect({ to: "/auth/login" + "?returnUrl=" + encodeURIComponent(returnUrl) })
   },
   component: Logout,
 })

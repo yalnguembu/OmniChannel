@@ -1,19 +1,54 @@
-import React, { useMemo } from "react"
+import React, { useMemo, useEffect, useState } from "react"
 import { useTranslation } from "react-i18next"
-import { useNavigate } from "@tanstack/react-router"
 import { DataGrid } from "@/shared/components/data-grid/data-grid"
-import { DataGridColumnHeader, DataGridRowEntry, DataGridSort } from "@/shared/types"
+import { DataGridColumnHeader, DataGridSort, ACTION } from "@/shared/types"
 import { SortDirection } from "@/shared/enums/data-grid"
-import { Button } from "@/shared/components/ui/button"
-import { Eye } from "lucide-react"
+import { UpdateWebhookRequest } from "@/shared/api/types.gen"
 import { useWebhook } from "../hooks/useWebhook"
 import { WebhookDataGridEntry } from "../lib/data-grid/WebhookDataGridEntry"
+import { Label } from "@/shared/components/ui/label"
+import { Card, CardHeader, CardTitle, CardContent } from "@/shared/components/ui/card"
+import { WebhookEditForm } from "../components/WebhookEditForm"
+import { ModalWrapper } from "@/shared/components/ModalWrapper"
+
+const DetailItem = ({ label, value }: { label: string; value: React.ReactNode }) => (
+  <div className="grid grid-cols-1 md:grid-cols-3 gap-2 py-2 border-b break-words">
+    <Label className="font-semibold text-muted-foreground">{label}</Label>
+    <div className="md:col-span-2">{typeof value === "boolean" ? (value ? "Yes" : "No") : String(value ?? "N/A")}</div>
+  </div>
+)
 
 export const WebhookDataGrid: React.FC = () => {
   const { t } = useTranslation()
-  const navigate = useNavigate()
 
-  const { webhooks, currentPage, pageSize, totalItems, sortBy, sortDirection, selectedRows, isLoading, changePage, changeSort, setSelectedRows } = useWebhook()
+  const {
+    webhooks,
+    currentPage,
+    pageSize,
+    totalItems,
+    sortBy,
+    sortDirection,
+    selectedRows,
+    isLoading,
+    changePage,
+    changeSort,
+    setSelectedRows,
+    searchWebhooks,
+    updateMutation,
+    deleteMutation,
+  } = useWebhook()
+
+  useEffect(() => {
+    searchWebhooks()
+  }, [])
+
+  const [showEditModal, setShowEditModal] = useState(false)
+  const toggleShowEditModal = () => setShowEditModal((prev) => !prev)
+
+  const [showDetailsModal, setShowDetailsModal] = useState(false)
+  const toggleShowDetailsModal = () => setShowDetailsModal((prev) => !prev)
+
+  const [selectedItem, setSelectedItem] = useState(false)
 
   const columnHeaders: DataGridColumnHeader[] = [
     {
@@ -27,6 +62,7 @@ export const WebhookDataGrid: React.FC = () => {
       label: t("webhooks.headers.eventType"),
       sortable: true,
       resizable: true,
+      isBadge: true,
     },
     {
       key: "url",
@@ -76,24 +112,6 @@ export const WebhookDataGrid: React.FC = () => {
     return webhooks.map((item) => new WebhookDataGridEntry(item))
   }, [webhooks])
 
-  const handleView = (id: string) => {
-    navigate({ to: `/webhooka/${id}` })
-  }
-
-  const renderCell = (item: DataGridRowEntry, columnKey: string) => {
-    switch (columnKey) {
-      case "actions":
-        return (
-          <Button onClick={() => handleView(item.getId())}>
-            <Eye className="mr-2 h-4 w-4" />
-            {t("webhooks.actions.view")}
-          </Button>
-        )
-      default:
-        return item.getTextFor(columnKey) || "N/A"
-    }
-  }
-
   const sortConfig: DataGridSort | undefined = sortBy
     ? {
         column: sortBy,
@@ -112,6 +130,36 @@ export const WebhookDataGrid: React.FC = () => {
 
   const handlePageChange = (page: number) => {
     changePage(page)
+  }
+
+  const handleDelete = (id: string) => {
+    deleteMutation.mutate(
+      { path: id },
+      {
+        onSuccess: () => toggleShowEditModal(),
+      },
+    )
+  }
+
+  const handleEdit = (data: UpdateWebhookRequest) => {
+    updateMutation.mutate(
+      { body: data },
+      {
+        onSuccess: () => toggleShowEditModal(),
+      },
+    )
+  }
+
+  const handleDispatch = (action: ACTION, id: string) => {
+    const selectedWebhook = webhooks.find((webhook) => webhook.id === id)
+    setSelectedItem(selectedWebhook)
+    if (action === "view") {
+      toggleShowDetailsModal()
+    } else if (action === "edit") {
+      toggleShowEditModal()
+    } else if (action === "delete") {
+      confirm(handleDelete(id))
+    }
   }
 
   return (
@@ -133,10 +181,35 @@ export const WebhookDataGrid: React.FC = () => {
         sortConfig={sortConfig}
         onSortChange={handleSortChange}
         enableColumnVisibility={true}
-        hiddenColumns={[]}
-        onColumnVisibilityChange={() => {}}
-        renderCell={renderCell}
+        actions={["view", "edit", "regen-secret"]}
+        dispatch={handleDispatch}
       />
+
+      {showEditModal && (
+        <ModalWrapper title="" description="" open={showEditModal} onOpenChange={toggleShowEditModal}>
+          <div className="-m-6">
+            <WebhookEditForm onSubmit={handleEdit} onCancel={toggleShowEditModal} isLoading={false} />
+          </div>
+        </ModalWrapper>
+      )}
+      {showDetailsModal && selectedItem && (
+        <ModalWrapper size="2xl" title="" description="" open={showDetailsModal} onOpenChange={toggleShowDetailsModal}>
+          <div className="-m-6">
+            <Card className="max-w-4xl mx-auto">
+              <CardHeader>
+                <CardTitle>FeeConfiguration Details</CardTitle>
+              </CardHeader>
+              <CardContent className="grid lg:grid-cols-2 gap-2">
+                {Object.entries(selectedItem).map(([key, value]) => {
+                  if (key === "id") return null // Don't show ID by default
+                  const formattedKey = key.replace(/([A-Z])/g, " $1").replace(/^./, (str) => str.toUpperCase())
+                  return <DetailItem key={key} label={formattedKey} value={value} />
+                })}
+              </CardContent>
+            </Card>
+          </div>
+        </ModalWrapper>
+      )}
     </div>
   )
 }

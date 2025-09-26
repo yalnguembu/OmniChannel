@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useMemo } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useTranslation } from "react-i18next"
@@ -9,6 +9,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/sha
 import { LoaderIcon } from "lucide-react"
 import { CreateWebhookRequest } from "@/shared/api"
 import { zCreateWebhookRequest } from "@/shared/api/zod.gen"
+import { useApplication } from "@/features/companies/hooks/useApplication"
+import { SearchDropdown } from "@/shared/components/dropdowns/search-dropdown"
 
 interface WebhookCreateFormProps {
   onSubmit: (data: CreateWebhookRequest) => void
@@ -34,6 +36,12 @@ export const WebhookCreateForm: React.FC<WebhookCreateFormProps> = ({ onSubmit, 
     }
   }
 
+  const { dropdownQuery } = useApplication()
+
+  const { data: response, isLoading: isApplicationsLoading } = dropdownQuery()
+
+  const applicationOptions = useMemo(() => response?.data?.map((app) => ({ value: app.id ?? "", label: app.name ?? "" })) ?? [], [response])
+
   return (
     <Card className="w-full max-w-4xl mx-auto">
       <CardHeader>
@@ -43,7 +51,7 @@ export const WebhookCreateForm: React.FC<WebhookCreateFormProps> = ({ onSubmit, 
       <CardContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid gap-6">
               <FormField
                 control={form.control}
                 name="applicationId"
@@ -51,7 +59,14 @@ export const WebhookCreateForm: React.FC<WebhookCreateFormProps> = ({ onSubmit, 
                   <FormItem>
                     <FormLabel>{t("webhooks.form.applicationIdLabel")}</FormLabel>
                     <FormControl>
-                      <Input type="text" placeholder={t("webhooks.form.applicationIdPlaceholder")} {...field} value={field.value || ""} required={false} />
+                      <SearchDropdown
+                        value={field.value || null}
+                        onChange={(val) => field.onChange(val)}
+                        options={applicationOptions}
+                        placeholder={t("webhooks.form.applicationIdPlaceholder")}
+                        disabled={isApplicationsLoading}
+                        isLoading={isApplicationsLoading}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

@@ -7,7 +7,16 @@ import { DashboardPage } from "@/features/dashboard/page"
 const QuickActionsPage = () => {
   const { t } = useTranslation()
 
-  return <StandardListPageLayout header={<ListPageHeader title={t("menu.Dashboard")} />} content={<DashboardPage />} />
+  return (
+    <StandardListPageLayout
+      header={<ListPageHeader title={t("menu.Dashboard")} />}
+      content={
+        <div className="lg:-mt-4 xl:-mt-5">
+          <DashboardPage />
+        </div>
+      }
+    />
+  )
 }
 
 export const Route = createFileRoute("/_protected/dashboard")({

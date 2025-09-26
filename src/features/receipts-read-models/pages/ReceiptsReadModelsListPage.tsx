@@ -7,6 +7,7 @@ import { zSearchReceiptsReadModelRequest } from "@/shared/api/zod.gen"
 import { ReceiptsReadModelDataGrid } from "../components/ReceiptsReadModelDataGrid"
 import { useReceiptsReadModel } from "../hooks/useReceiptsReadModel"
 import { useEffect } from "react"
+import { TransactionStatisticCards } from "../components/TransactionStatisticCards"
 
 export function ReceiptsReadModelsListPage() {
   const { t } = useTranslation()
@@ -29,6 +30,7 @@ export function ReceiptsReadModelsListPage() {
       header={
         <ListPageHeader title={t("receiptsReadModels.title")} breadcrumbs={[{ label: t("navigation.dashboard"), href: "/dashboard" }, { label: t("receiptsReadModels.title") }]} />
       }
+      statistic={<TransactionStatisticCards />}
       filter={
         <BaseFilter<SearchReceiptsReadModelRequest>
           schema={zSearchReceiptsReadModelRequest}

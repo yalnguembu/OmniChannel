@@ -10,6 +10,8 @@ import {
   putApiApplicationMutation,
   deleteApiApplicationByIdMutation,
   getApiApplicationByIdOptions,
+  getApiApplicationGetApiKeyByIdOptions,
+  patchApiApplicationRenegereApiSecretByIdMutation,
 } from "@/shared/api/@tanstack/react-query.gen"
 import { CreateApplicationRequest, UpdateApplicationRequest } from "@/shared"
 
@@ -87,6 +89,34 @@ export const useApplication = () => {
         return data
       },
     })
+
+  const getApplicationKeysById = (id: string) =>
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    useQuery({
+      ...getApiApplicationGetApiKeyByIdOptions({ path: { id } }),
+      enabled: !!id,
+      staleTime: 5 * 60 * 1000,
+    })
+
+  const regenerateApplicationSecretsMutation = useMutation({
+    ...patchApiApplicationRenegereApiSecretByIdMutation(),
+    onMutate: () => {
+      store.setLoading(true)
+      store.setError(null)
+    },
+    onError: (error) => {
+      const message = error.message || t("applications.messages.search.error")
+      store.setError(message)
+      toast.error(message)
+    },
+    onSettled: () => {
+      store.setLoading(false)
+    },
+  })
+
+  const regenerateApplicationSecretsMutationById = (id: string) => {
+    regenerateApplicationSecretsMutation.mutate({ path: { id } })
+  }
 
   const dropdownQuery = () =>
     // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -271,5 +301,7 @@ export const useApplication = () => {
     isLoading: searchApplicationsMutation.isPending || store.isLoading,
     isError: searchApplicationsMutation.isError,
     error: searchApplicationsMutation.error || store.error,
+    getApplicationKeysById,
+    regenerateApplicationSecretsMutationById,
   }
 }

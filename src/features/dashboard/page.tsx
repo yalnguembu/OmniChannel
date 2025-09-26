@@ -8,7 +8,7 @@ import { useMemo } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/components/ui/card"
 import { Badge } from "@/shared/components/ui/badge"
 import { AreaChartGradient, BarChartStacked, LineChartMultiAxis, HalfDonutChart, generateChartConfig } from "@/features/dashboard/components"
-import { TrendingUp, Activity, CreditCard, Wallet, PiggyBank, Zap, ArrowDown, ArrowUp, TrendingDown, ArrowLeftRight } from "lucide-react"
+import { TrendingUp, Activity, CreditCard, Wallet, PiggyBank, Zap, ArrowDown, ArrowUp, TrendingDown, ArrowLeftRight, DollarSign } from "lucide-react"
 import { DailyMetricDto, DailyMetricsByPaymentMethodDto, BalancesReadModelDto } from "@/shared/api/types.gen"
 
 export function DashboardPage() {
@@ -219,8 +219,22 @@ export function DashboardPage() {
                 <div className="text-2xl font-bold text-primary">{((currentMetrics?.totalVolume || 0) / 1000000).toFixed(1)}M XAF</div>
                 <div className="flex items-center gap-1 text-xs text-muted-foreground">
                   <TrendingUp className="h-3 w-3 text-green-600" />
-                  <span className="font-semibold">{currentMetrics?.totalReceipts + currentMetrics?.totalWithdrawals + currentMetrics?.totalFundTransfers || 0}</span>{" "}
+                  <span className="font-semibold">{currentMetrics?.totalReceipts + currentMetrics?.totalWithdrawals + currentMetrics?.totalFundTransfers || 0}</span>
                   {t("analytics.transactions.counts")}
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">{t("analytics.enhanced.balance")}</CardTitle>
+                <Zap className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">{overallSuccessRate.toFixed(1)}%</div>
+                <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                  <DollarSign className="h-3 w-3 text-purple-600" />
+                  {((analytics.totalBalance || 0) / 1000000).toFixed(1)}M XAF {t("analytics.enhanced.totalTransactions")}
                 </div>
               </CardContent>
             </Card>
@@ -264,20 +278,6 @@ export function DashboardPage() {
                   <TrendingUp className="h-3 w-3 text-green-600" />
                   <span className="font-semibold">{currentMetrics?.totalFundTransfers || 0} </span>
                   {t("analytics.transactions.counts")}
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">{t("analytics.enhanced.systemEfficiency")}</CardTitle>
-                <Zap className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">{overallSuccessRate.toFixed(1)}%</div>
-                <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                  <Activity className="h-3 w-3 text-purple-600" />
-                  {totalTransactions.toLocaleString()} {t("analytics.enhanced.totalTransactions")}
                 </div>
               </CardContent>
             </Card>

@@ -1,7 +1,7 @@
-import { useNavigate, useParams, useSearch } from "@tanstack/react-router"
+import { Link, useNavigate, useParams, useSearch } from "@tanstack/react-router"
 import { Button } from "@/shared/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/shared/components/ui/card"
-import { Edit, ArrowLeft, Loader2, Home, DollarSign, Users, Settings, CheckCircle, CreditCard, Zap } from "lucide-react"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardAction } from "@/shared/components/ui/card"
+import { Edit, ArrowLeft, Loader2, Home, DollarSign, Users, Building, Settings, Key, Zap, EyeClosed, Eye, Calendar, RotateCcwKey, Copy } from "lucide-react"
 import { useApplication } from "../hooks/useApplication"
 import { ListPageHeader } from "@/shared/components/ListPageHeader"
 import { ListPageLayout, StandardListPageLayout } from "@/shared/components/layouts/ListPageLayout"
@@ -10,11 +10,15 @@ import { useTranslation } from "react-i18next"
 import { UsersTab } from "../components/tabs/Users"
 import { ReceiptsTab } from "../components/tabs/Receipts"
 import { CompanySettingsTab } from "../components/tabs/settings"
+import { DashboardPage } from "@/features/dashboard/page"
 import { useState } from "react"
 import FujiPayLogo from "@/assets/images/logo/icon.png"
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/shared/components/ui/tooltip"
-import { OverviewTab } from "../components/tabs/Overview"
 import { WebhooksTab } from "../components/tabs/Webhook"
+import StatusBadge from "@/shared/components/StatusBadge"
+import { BadgeStyles } from "@/shared/types/enums"
+import { formatDate } from "@/shared/lib/date"
+import { toast } from "sonner"
+import { DateFormat } from "@/shared/enums/common"
 
 declare module "@tanstack/react-router" {
   interface Register {
@@ -30,7 +34,7 @@ export function ApplicationDetailsPage() {
   const search = useSearch({ from: "/_protected/applications/$id/" })
 
   const [activeTab, setActiveTab] = useState(search.tab || "overview")
-  const { getApplicationQuery, isError } = useApplication()
+  const { getApplicationQuery, isError, getApplicationKeysById, regenerateApplicationSecretsMutationById } = useApplication()
   const { t } = useTranslation()
 
   const handleEdit = () => {
@@ -42,6 +46,8 @@ export function ApplicationDetailsPage() {
   }
 
   const { data, isPending } = getApplicationQuery(id)
+
+  const { data: keys, isPending: isKepending } = getApplicationKeysById(id)
 
   const companyDetails = data?.data
 
@@ -87,7 +93,7 @@ export function ApplicationDetailsPage() {
       title: "Overview",
       value: "overview",
       icon: Home,
-      component: OverviewTab,
+      component: DashboardPage,
     },
     {
       title: "Receipts",
@@ -121,6 +127,33 @@ export function ApplicationDetailsPage() {
     },
   ]
 
+  const handleCopy = () => {
+    if (keys?.data?.apiKey) {
+      navigator.clipboard.writeText(keys.data.apiKey)
+      toast.success("API Key copied to clipboard")
+    }
+  }
+  type DetailItemProps = { label?: string; value?: string | null }
+
+  const ApiKeyDetailItem = ({ value = "N/A", label }: DetailItemProps) => {
+    const [visible, setVisible] = useState(false)
+    const toggleVisibility = () => setVisible((prev) => !prev)
+    return (
+      <div className="flex gap-2 py-1 items-center justify-between">
+        <span className=" text-sm  text-muted-foreground/80 mr-2">{label}</span>
+        <div className=" text-sm flex items-center">
+          <span className="mr-2 rounded-md pt-1 px-2 min-w-20 bg-muted w-full wrap-anywhere">{visible ? value : "*********"}</span>
+          <Button variant="ghost" size="sm" className="h-5" onClick={toggleVisibility}>
+            {visible ? <EyeClosed className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+          </Button>
+          <Button variant="ghost" size="sm" className="h-5" onClick={handleCopy}>
+            <Copy className="h-4 w-4" />
+          </Button>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <StandardListPageLayout
       header={
@@ -143,48 +176,63 @@ export function ApplicationDetailsPage() {
       }
       content={
         <div className="space-y-4">
-          <div className="grid justify-between gap-4 md:grid-cols-3">
-            <Card className="grid md:grid-cols-5 md:col-span-2 divide-x-4 divide-muted/20">
-              <div className="flex lg:col-span-3 px-4 gap-x-4">
-                <div className="w-24 h-24 rounded-lg block bg-muted">
-                  <img src={/*companyDetails. || */ FujiPayLogo} alt="" className="w-full h-full object-contain object-center rounded-lg" />
+          <div className="grid lg:grid-cols-5 gap-4">
+            <Card className="lg:col-span-3 grid lg:grid-cols-2 gap-2 gap-y-4 items-end">
+              <CardHeader className="grid grid-cols-2 items-end h-full">
+                {/* <div className=" border rounded-lg block  border border-green-500 bg-muted">
+                </div> */}
+                <img src={/*companyDetails. || */ FujiPayLogo} alt="" className="w-full h-full object-contain object-center rounded-lg" />
+                <div className="flex flex-col gap-y-1">
+                  <CardTitle className="text-primary text-2xl mb-1 flex gap-x-2">
+                    <span className="capitalize">{companyDetails.name}</span>
+                  </CardTitle>
+                  <CardDescription className="text-blue-400 hover:text-blue-600 flex gap-x-2">
+                    <Building className="h-4 w-4" />
+                    <Link href={`/companies/${companyDetails.companyId || ""}`} className="link hover:underline" target="_blank" rel="noopener noreferrer">
+                      {companyDetails.companyName || "https://fujisatpay.com"}
+                    </Link>
+                  </CardDescription>
+                  <div className="flex flex-wrap gap-2 items-center pt-2">
+                    <StatusBadge theme={BadgeStyles.GREEN} text={companyDetails.status} />
+                  </div>
                 </div>
-                <div className="w-max flex flex-col">
-                  <CardHeader className="px-0 pb-4">
-                    <CardTitle className="text-primary text-2xl">
-                      <span className="capitalize">{companyDetails.name}</span>
-                      {companyDetails.environment && (
-                        <Tooltip>
-                          <TooltipTrigger>
-                            <CheckCircle className="h-6 w-6 inline ml-3 text-green-500 stroke-2" />
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            <span>Production</span>
-                          </TooltipContent>
-                        </Tooltip>
-                      )}
-                    </CardTitle>
-                  </CardHeader>
-                </div>
-              </div>
-            </Card>
-            <Card>
-              <CardHeader>
-                <CardTitle className="font-semibold text-lg">Balance</CardTitle>
-                <CardContent className="pl-0 flex flex-col gap-y-2">
-                  {Array.from({ length: 3 }).map((_, index) => (
-                    <div key={index} className="rounded-lg px-2 flex-col justify-between">
-                      <div className="text-muted text-sm">Total Balance</div>
-                      <div className="flex justify-between item-center mt-2">
-                        <div className="text-lg font-semibold">
-                          <CreditCard className="inline h-5 w-5 mr-1" />
-                          {/* {companyDetails.totalBalance} */}100.000 XAF
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </CardContent>
               </CardHeader>
+              <CardContent className="flex flex-col  gap-x-4 gap-2 gap-y-4 text-muted-foreground/80 pb-4 text-sm">
+                <div className="flex gap-x-1.5">
+                  <span className="font-semibold">{t("applications.headers.createdAt")} :</span>
+                  <span className="">{formatDate(companyDetails.createdAt ?? "2025/12/11")}</span>
+                </div>
+                <div className="flex gap-x-1.5">
+                  <span className="font-semibold">{t("applications.headers.environment")} :</span>
+                  <span className="">{companyDetails.environment}</span>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="lg:col-span-2">
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">
+                  <Key className="h-4 w-4 text-muted-foreground inline mr-2" />
+                  {t("applications.headers.keys")}
+                </CardTitle>
+                <CardAction>
+                  <Button variant="outline" size="sm" className="h-8 rounded-lg" disabled={isKepending} onClick={() => regenerateApplicationSecretsMutationById(id)}>
+                    {isKepending ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <RotateCcwKey className="h-4 w-4 mr-2" />}
+                    Regenerate
+                  </Button>
+                </CardAction>
+              </CardHeader>
+              <CardContent>
+                <ApiKeyDetailItem label="Key:" value={keys?.data.apiKey} Icon={Key} />
+                <ApiKeyDetailItem label="Secret:" value={keys?.data.apiSecret} Icon={Key} />
+
+                <div className=" text-xs flex items-center mt-2">
+                  <span className="text-muted-foreground/80">
+                    <Calendar className="h-3.5 w-3.5 inline mr-1" /> {t("applications.apiKeyExpiresAtUtc")} :
+                  </span>
+                  <span className="ml-2">{formatDate(keys?.data.apiKeyExpiresAtUtc, DateFormat.DATETIME_SHORT)}</span>
+                </div>
+              </CardContent>
             </Card>
           </div>
 

@@ -13,6 +13,7 @@ import DetailsCardItem from "../DetailsCardItem"
 import { useViewMode } from "@/shared/hooks/use-view-mode"
 import ActionButtonGroup from "./ActionButtonGroup"
 import StatusBadge from "../StatusBadge"
+import { BadgeStyles } from "../../types/enums"
 
 const defaultViewMode: DataGridViewMode = {
   sm: "grid",
@@ -121,8 +122,11 @@ export const DataGrid: React.FC<DataGridProps> = ({
       switch (column.key) {
         case "actions":
           return <ActionButtonGroup isLoading={isLoading} row={item} actions={actions} dispatch={dispatch} view={view} />
+        case "isActive":
+          const isActive = item.getTextFor("isActive") == "true"
+          return <StatusBadge text={isActive ? t("statusBadges.active") : t("statusBadges.inactive")} theme={isActive ? BadgeStyles.OLD_GREEN : BadgeStyles.OLD_YELLOW} />
         default:
-          return column?.isBadge ? <StatusBadge text={item.getTextFor(column.key) as string} theme={column.badgeTheme} /> : item.getTextFor(column.key) || "N/A"
+          return column?.isBadge ? <StatusBadge t={t} text={item.getTextFor(column.key) as string} theme={column.badgeTheme} /> : item.getTextFor(column.key) || "N/A"
       }
     } else {
       const rowItem = {
@@ -286,7 +290,7 @@ export const DataGrid: React.FC<DataGridProps> = ({
     return (
       <div className={`grid ${gridSize}`}>
         {items.map((item) => (
-          <div key={item.getId()} data-test={item.getId()} className="w-full mb-4 justify-between rounded-xl relative gap-x-4 gap-y-1 pt-4 pb-1 bg-background">
+          <div key={item.getId()} data-test={item.getId()} className="w-full mb-4 flex flex-col justify-between rounded-xl relative gap-x-4 gap-y-2 pt-4 pb-1 bg-background">
             {columnHeaders.map((columnHeader, index) => (
               <div key={index}>{renderCell ? renderCell(item, columnHeader, view) : defaultRenderCell(item, columnHeader)}</div>
             ))}
