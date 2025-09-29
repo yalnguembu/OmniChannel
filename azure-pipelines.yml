@@ -76,7 +76,7 @@ jobs:
 
   variables:
     # URL de l'API pour le sandbox
-    apiUrl: 'https://test-api.fujisatpay.com/'
+    apiUrl: 'https://test-api.fujisatpay.com/api'
 
   steps:
   - task: NodeTool@0
