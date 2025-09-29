@@ -94,7 +94,15 @@ export const WebhookCreateForm: React.FC<WebhookCreateFormProps> = ({ onSubmit, 
                   <FormItem>
                     <FormLabel>{t("webhooks.form.maxRetriesIdLabel")}</FormLabel>
                     <FormControl>
-                      <Input type="number" placeholder={t("webhooks.form.maxRetriesIdPlaceholder")} {...field} value={field.value || ""} required={false} />
+                      <Input
+                        type="number"
+                        placeholder={t("webhooks.form.maxRetriesIdPlaceholder")}
+                        {...field}
+                        value={field.value !== undefined ? field.value?.toString() : ""}
+                        onChange={(e) => field.onChange(e.target.value === "" ? undefined : Number(e.target.value))}
+                        ref={field.ref}
+                        required={false}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

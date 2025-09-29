@@ -1,4 +1,4 @@
-import React, { useEffect } from "react"
+import React, { useEffect, useMemo } from "react"
 import { useForm, useFieldArray } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useTranslation } from "react-i18next"
@@ -74,10 +74,10 @@ export const SecureSettingEditForm: React.FC<SecureSettingEditFormProps> = ({ on
     }
   }
 
-  const areAllSettingsValid = () => {
+  const areAllSettingsValid = useMemo(() => {
     const values = form.getValues()
     return values.settings.every((setting) => setting.key && setting.value)
-  }
+  }, [form])
 
   return (
     <Card className="w-full max-w-4xl mx-auto">
@@ -105,7 +105,7 @@ export const SecureSettingEditForm: React.FC<SecureSettingEditFormProps> = ({ on
             <div className="mb-6 mt-4">
               <div className="flex justify-between items-center mb-4">
                 <h3 className="font-semibold text-lg">{t("secureSettings.form.elementsTitle", "Elements")}</h3>
-                {areAllSettingsValid() && (
+                {areAllSettingsValid && (
                   <Button type="button" variant="outline" size="icon" onClick={addSetting}>
                     <PlusCircleIcon className="h-5 w-5" />
                   </Button>
@@ -205,7 +205,7 @@ export const SecureSettingEditForm: React.FC<SecureSettingEditFormProps> = ({ on
               <Button type="button" variant="outline" onClick={onCancel} disabled={isLoading}>
                 {t("common.cancel")}
               </Button>
-              <Button type="submit" disabled={isLoading || !areAllSettingsValid()}>
+              <Button type="submit" disabled={isLoading || !areAllSettingsValid}>
                 {isLoading && <LoaderIcon className="mr-2 h-4 w-4 animate-spin" />}
                 {t("secureSettings.form.edit.submit")}
               </Button>
