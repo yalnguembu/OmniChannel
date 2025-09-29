@@ -54,7 +54,7 @@ export const ApplicationCreateForm: React.FC<ApplicationCreateFormProps> = ({ on
         <Form {...form}>
           <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
             <div className="grid grid-cols-1 gap-6">
-              {companyId ? (
+              {!companyId ? (
                 <FormField
                   control={form.control}
                   name="companyId"
