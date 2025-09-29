@@ -17,7 +17,7 @@ jobs:
 
   variables:
     # URL de l'API pour la production
-    apiUrl: 'https://api.fujisatpay.com/api'
+    apiUrl: 'https://api.fujisatpay.com/'
 
   steps:
   - task: NodeTool@0
