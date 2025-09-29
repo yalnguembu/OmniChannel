@@ -200,7 +200,7 @@ export function ApplicationDetailsPage() {
               <CardContent className="flex flex-col  gap-x-4 gap-2 gap-y-4 text-muted-foreground/80 pb-4 text-sm">
                 <div className="flex gap-x-1.5">
                   <span className="font-semibold">{t("applications.headers.createdAt")} :</span>
-                  <span className="">{formatDate(companyDetails.createdAt ?? "2025/12/11")}</span>
+                  <span className="">{companyDetails.createdAt ? formatDate(companyDetails.createdAt) : "-"}</span>
                 </div>
                 <div className="flex gap-x-1.5">
                   <span className="font-semibold">{t("applications.headers.environment")} :</span>
@@ -230,7 +230,7 @@ export function ApplicationDetailsPage() {
                   <span className="text-muted-foreground/80">
                     <Calendar className="h-3.5 w-3.5 inline mr-1" /> {t("applications.apiKeyExpiresAtUtc")} :
                   </span>
-                  <span className="ml-2">{formatDate(keys?.data.apiKeyExpiresAtUtc, DateFormat.DATETIME_SHORT)}</span>
+                  <span className="ml-2">{keys?.data.apiKeyExpiresAtUtc ? formatDate(keys?.data.apiKeyExpiresAtUtc, DateFormat.DATETIME_SHORT) : "-"}</span>
                 </div>
               </CardContent>
             </Card>

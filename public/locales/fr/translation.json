@@ -1087,6 +1087,16 @@
         "maxAmount": "Saisir le montant maximum",
         "minAmount": "Saisir le montant minimum",
         "percentageRate": "Saisir le taux en pourcentage"
+      },
+      "feeTypeId": {
+        "placeholder": "Sélectionnez un type de frais"
+      },
+      "ownerType": {
+        "label": "Type de propriétaire",
+        "placeholder": "Sélectionnez un type de propriétaire",
+        "system": "System",
+        "company": "Entreprise",
+        "application": "Application"
       }
     },
     "forms": {

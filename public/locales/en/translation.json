@@ -1087,6 +1087,16 @@
         "maxAmount": "Enter maximum amount",
         "minAmount": "Enter minimum amount",
         "percentageRate": "Enter percentage rate"
+      },
+      "feeTypeId": {
+        "placeholder": "Select fee type"
+      },
+      "ownerType": {
+        "label": "Owner Type",
+        "placeholder": "Select a Owner Type",
+        "system": "System",
+        "company": "Company",
+        "application": "Application"
       }
     },
     "forms": {

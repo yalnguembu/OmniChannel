@@ -71,7 +71,7 @@ export const FeeConfigurationCreateForm: React.FC<FeeConfigurationCreateFormProp
   const { dropdownQuery: currencyDropdownQuery } = useCurrency()
   const { data: currencyDropdownData, isLoading: isCurrenciesLoading } = currencyDropdownQuery()
   const currencyOptions = currencyDropdownData && currencyDropdownData.data ? currencyDropdownData.data.map((c) => ({ value: c.code, label: c.name })) : []
-
+  console.log({ companyId, applicationId })
   return (
     <Card className="w-full max-w-4xl mx-auto">
       <CardHeader>
@@ -93,7 +93,7 @@ export const FeeConfigurationCreateForm: React.FC<FeeConfigurationCreateFormProp
                         value={field.value || null}
                         onChange={(val) => field.onChange(val)}
                         options={feeTypeOptions}
-                        placeholder={t("feeConfigurations.form.companyId.placeholder") || "Select company"}
+                        placeholder={t("feeConfigurations.form.feeTypeId.placeholder") || "Select company"}
                         disabled={isFeeTypeLoading}
                         isLoading={isFeeTypeLoading}
                       />
@@ -102,7 +102,8 @@ export const FeeConfigurationCreateForm: React.FC<FeeConfigurationCreateFormProp
                   </FormItem>
                 )}
               />
-              {!!(companyId || applicationId) && (
+              {JSON.stringify(companyId)} {JSON.stringify(companyId || applicationId)}
+              {!(companyId || applicationId) && (
                 <FormField
                   control={form.control}
                   name="ownerType"
@@ -118,12 +119,12 @@ export const FeeConfigurationCreateForm: React.FC<FeeConfigurationCreateFormProp
                           value={field.value ?? undefined}
                         >
                           <SelectTrigger className="h-8 w-full">
-                            <SelectValue placeholder={t("feeTypes.form.transactionType.placeholder")} />
+                            <SelectValue placeholder={t("feeConfigurations.form.ownerType.placeholder")} />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value={OWNER_TYPE.SYSTEM}>{t("feeTypes.form.transactionType.system")}</SelectItem>
-                            <SelectItem value={OWNER_TYPE.COMPANY}>{t("feeTypes.form.transactionType.company")}</SelectItem>
-                            <SelectItem value={OWNER_TYPE.APPLICATION}>{t("feeTypes.form.transactionType.application")}</SelectItem>
+                            <SelectItem value={OWNER_TYPE.SYSTEM}>{t("feeConfigurations.form.ownerType.system")}</SelectItem>
+                            <SelectItem value={OWNER_TYPE.COMPANY}>{t("feeConfigurations.form.ownerType.company")}</SelectItem>
+                            <SelectItem value={OWNER_TYPE.APPLICATION}>{t("feeConfigurations.form.ownerType.application")}</SelectItem>
                           </SelectContent>
                         </Select>
                       </FormControl>
@@ -132,35 +133,41 @@ export const FeeConfigurationCreateForm: React.FC<FeeConfigurationCreateFormProp
                   )}
                 />
               )}
-
               {ownerType !== OWNER_TYPE.SYSTEM ? (
                 <FormField
                   control={form.control}
                   name="ownerId"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>{t("feeConfigurations.form.fields.ownerId")}</FormLabel>
-                      <FormControl>
-                        {ownerType === OWNER_TYPE.COMPANY ? (
-                          <SearchDropdown
-                            value={field.value || null}
-                            onChange={(val) => field.onChange(val)}
-                            options={companyOptions}
-                            placeholder={t("feeConfigurations.form.companyId.placeholder") || "Select company"}
-                            disabled={isCompanyLoading}
-                            isLoading={isCompanyLoading}
-                          />
-                        ) : (
-                          <SearchDropdown
-                            value={field.value || null}
-                            onChange={(val) => field.onChange(val)}
-                            options={applicationOptions}
-                            placeholder={t("feeConfigurations.form.companyId.placeholder") || "Select company"}
-                            disabled={isApplicationLoading}
-                            isLoading={isApplicationLoading}
-                          />
-                        )}
-                      </FormControl>
+                      {ownerType === OWNER_TYPE.COMPANY ? (
+                        <>
+                          <FormLabel>{t("feeConfigurations.form.fields.companyId")}</FormLabel>
+                          <FormControl>
+                            <SearchDropdown
+                              value={field.value || null}
+                              onChange={(val) => field.onChange(val)}
+                              options={companyOptions}
+                              placeholder={t("feeConfigurations.form.companyId.placeholder")}
+                              disabled={isCompanyLoading}
+                              isLoading={isCompanyLoading}
+                            />
+                          </FormControl>
+                        </>
+                      ) : (
+                        <>
+                          <FormLabel>{t("feeConfigurations.form.fields.applicationId")}</FormLabel>
+                          <FormControl>
+                            <SearchDropdown
+                              value={field.value || null}
+                              onChange={(val) => field.onChange(val)}
+                              options={applicationOptions}
+                              placeholder={t("feeConfigurations.form.applicationId.placeholder")}
+                              disabled={isApplicationLoading}
+                              isLoading={isApplicationLoading}
+                            />
+                          </FormControl>
+                        </>
+                      )}
                       <FormMessage />
                     </FormItem>
                   )}
@@ -168,7 +175,6 @@ export const FeeConfigurationCreateForm: React.FC<FeeConfigurationCreateFormProp
               ) : (
                 <></>
               )}
-
               <FormField
                 control={form.control}
                 name="fixedAmount"
@@ -189,7 +195,6 @@ export const FeeConfigurationCreateForm: React.FC<FeeConfigurationCreateFormProp
                   </FormItem>
                 )}
               />
-
               <FormField
                 control={form.control}
                 name="percentageRate"
@@ -210,7 +215,6 @@ export const FeeConfigurationCreateForm: React.FC<FeeConfigurationCreateFormProp
                   </FormItem>
                 )}
               />
-
               <FormField
                 control={form.control}
                 name="minAmount"
@@ -231,7 +235,6 @@ export const FeeConfigurationCreateForm: React.FC<FeeConfigurationCreateFormProp
                   </FormItem>
                 )}
               />
-
               <FormField
                 control={form.control}
                 name="maxAmount"
@@ -252,7 +255,6 @@ export const FeeConfigurationCreateForm: React.FC<FeeConfigurationCreateFormProp
                   </FormItem>
                 )}
               />
-
               <FormField
                 control={form.control}
                 name="currency"
@@ -264,7 +266,7 @@ export const FeeConfigurationCreateForm: React.FC<FeeConfigurationCreateFormProp
                         value={field.value || null}
                         onChange={(val) => field.onChange(val)}
                         options={currencyOptions}
-                        placeholder={t("feeConfigurations.form.companyId.placeholder") || "Select company"}
+                        placeholder={t("feeConfigurations.form.currency.placeholder")}
                         disabled={isApplicationLoading}
                         isLoading={isCurrenciesLoading}
                       />
@@ -273,7 +275,6 @@ export const FeeConfigurationCreateForm: React.FC<FeeConfigurationCreateFormProp
                   </FormItem>
                 )}
               />
-
               <FormField
                 control={form.control}
                 name="startDate"
@@ -301,7 +302,6 @@ export const FeeConfigurationCreateForm: React.FC<FeeConfigurationCreateFormProp
                   </FormItem>
                 )}
               />
-
               <FormField
                 control={form.control}
                 name="endDate"
@@ -329,7 +329,6 @@ export const FeeConfigurationCreateForm: React.FC<FeeConfigurationCreateFormProp
                   </FormItem>
                 )}
               />
-
               <FormField
                 control={form.control}
                 name="isActive"
