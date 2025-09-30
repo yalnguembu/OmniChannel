@@ -17,6 +17,8 @@ import {
   getApiWebhookDropdownQueryKey,
   postApiWebhookLogSearchQueryKey,
   postApiWebhookSearchQueryKey,
+  getApiWebhookGetWebhookSecretByIdOptions,
+  patchApiWebhookRenegereWebhookSecretByIdMutation,
 } from "@/shared/api/@tanstack/react-query.gen"
 import { SearchWebhookResponseIPagedListFujiPayApiResponse } from "@/shared/api/types.gen"
 
@@ -130,6 +132,34 @@ export const useWebhook = () => {
       showToast: false,
     }),
   })
+
+  const getApiWebhookGetWebhookSecretById = (id: string) =>
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    useQuery({
+      ...getApiWebhookGetWebhookSecretByIdOptions({ path: { id } }),
+      enabled: !!id,
+      staleTime: 5 * 60 * 1000,
+    })
+
+  const regenerateWebhookSecretByIdMutation = useMutation({
+    ...patchApiWebhookRenegereWebhookSecretByIdMutation(),
+    onMutate: () => {
+      store.setLoading(true)
+      store.setError(null)
+    },
+    onError: (error) => {
+      const message = error.message || t("applications.messages.search.error")
+      store.setError(message)
+      toast.error(message)
+    },
+    onSettled: () => {
+      store.setLoading(false)
+    },
+  })
+
+  const regenerateWebhookSecretById = (id: string) => {
+    regenerateWebhookSecretByIdMutation.mutate({ path: { id } })
+  }
 
   const createWebhookMutation = useMutation({
     ...postApiWebhookMutation(),
@@ -339,5 +369,7 @@ export const useWebhook = () => {
     isLoading: searchWebhooksMutation.isPending || store.isLoading,
     isError: searchWebhooksMutation.isError,
     error: searchWebhooksMutation.error || store.error,
+    getApiWebhookGetWebhookSecretById,
+    regenerateWebhookSecretById,
   }
 }

@@ -8,6 +8,7 @@ import {
   getApiReceiptsReadModelDropdownOptions,
   deleteApiReceiptsReadModelByIdMutation,
   getApiReceiptsReadModelByIdOptions,
+  getApiReceiptsReadModelGetAllStatusOptions,
 } from "@/shared/api/@tanstack/react-query.gen"
 
 export const receiptsReadModelQueryKeys = {
@@ -72,6 +73,13 @@ export const useReceiptsReadModel = () => {
         }
         return data
       },
+    })
+
+  const getApiReceiptsReadModelGetAllStatus = () =>
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    useQuery({
+      ...getApiReceiptsReadModelGetAllStatusOptions(),
+      staleTime: 5 * 60 * 1000,
     })
 
   const dropdownQuery = useQuery({
@@ -203,5 +211,6 @@ export const useReceiptsReadModel = () => {
     isLoading: searchReceiptsReadModelsMutation.isPending || store.isLoading,
     isError: searchReceiptsReadModelsMutation.isError,
     error: searchReceiptsReadModelsMutation.error || store.error,
+    getApiReceiptsReadModelGetAllStatus,
   }
 }

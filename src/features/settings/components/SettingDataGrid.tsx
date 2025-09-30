@@ -74,7 +74,7 @@ export const SettingDataGrid: React.FC = () => {
       key: "actions",
       label: t("settings.actions.more"),
       sortable: false,
-      width: 150,
+      width: 110,
     },
   ]
 

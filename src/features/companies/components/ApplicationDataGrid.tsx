@@ -73,7 +73,7 @@ export const ApplicationDataGrid: React.FC = () => {
       key: "actions",
       label: t("applications.actions.more"),
       sortable: false,
-      width: 70,
+      width: 110,
     },
   ]
 

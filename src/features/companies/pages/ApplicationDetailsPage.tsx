@@ -127,9 +127,9 @@ export function ApplicationDetailsPage() {
     },
   ]
 
-  const handleCopy = () => {
-    if (keys?.data?.apiKey) {
-      navigator.clipboard.writeText(keys.data.apiKey)
+  const handleCopy = (value: string) => {
+    if (value && value !== "N/A") {
+      navigator.clipboard.writeText(value)
       toast.success("API Key copied to clipboard")
     }
   }
@@ -146,7 +146,7 @@ export function ApplicationDetailsPage() {
           <Button variant="ghost" size="sm" className="h-5" onClick={toggleVisibility}>
             {visible ? <EyeClosed className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
           </Button>
-          <Button variant="ghost" size="sm" className="h-5" onClick={handleCopy}>
+          <Button variant="ghost" size="sm" className="h-5" onClick={() => handleCopy(value)}>
             <Copy className="h-4 w-4" />
           </Button>
         </div>

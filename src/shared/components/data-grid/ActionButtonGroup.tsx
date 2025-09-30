@@ -22,6 +22,8 @@ const DataGridRowActionIcon: Record<ACTION, ElementType> = {
   deactivate: X,
   ROW_CLICK: EyeIcon,
   "regen-secret": RotateCcw,
+  checkStatus: RotateCcw,
+  changeStatus: PencilIcon,
 }
 
 const ActionButtonGroup = ({ row, actions, dispatch, isLoading, shouldCollapseTextOnMobile = true, view = "grid" }: ActionButtonGroupType) => {
@@ -36,8 +38,28 @@ const ActionButtonGroup = ({ row, actions, dispatch, isLoading, shouldCollapseTe
 
   return (
     <div className="rounded-lg">
-      {view === "list" && actions?.length > 3 ? (
-        <div className="grid grid-cols-3 gap-x-2 gap-y-1 items-center">
+      {view === "grid" ? (
+        <div className="flex gap-x-2 gap-y-1 items-center pb-2">
+          {actions
+            ?.map((action) => ({
+              icon: DataGridRowActionIcon[action],
+              key: action,
+              tooltip: t(`actions.tooltip.${action}` as any),
+            }))
+            .map((action, index) => (
+              <DataGridActionButton
+                row={row}
+                key={index}
+                action={action}
+                disabled={activeAction === action.key && isLoading}
+                isLoading={isLoading}
+                dispatch={handleDispatch}
+                shouldCollapseTextOnMobile={shouldCollapseTextOnMobile}
+              />
+            ))}
+        </div>
+      ) : view === "list" && actions?.length > 3 ? (
+        <div className="grid grid-cols-3 gap-x-2 gap-y-1 justify-center items-center">
           {actions
             .slice(0, 2)
             ?.map((action) => ({
@@ -77,7 +99,7 @@ const ActionButtonGroup = ({ row, actions, dispatch, isLoading, shouldCollapseTe
           </DropdownMenu>
         </div>
       ) : (
-        <div className="grid grid-cols-3 gap-x-2 gap-y-1 items-center">
+        <div className="grid grid-cols-3 gap-x-2 gap-y-1 justify-center items-center">
           {actions
             ?.map((action) => ({
               icon: DataGridRowActionIcon[action],

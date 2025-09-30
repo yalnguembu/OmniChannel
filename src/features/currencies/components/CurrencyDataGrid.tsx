@@ -68,6 +68,7 @@ export const CurrencyDataGrid: React.FC = () => {
       label: t("currencies.headers.isBaseCurrency"),
       sortable: true,
       resizable: true,
+      isBadge: true,
     },
     {
       key: "isActive",
@@ -86,7 +87,7 @@ export const CurrencyDataGrid: React.FC = () => {
       key: "actions",
       label: t("currencies.actions.more"),
       sortable: false,
-      width: 70,
+      width: 100,
     },
   ]
 

@@ -7,9 +7,12 @@ import { UpdateWebhookRequest } from "@/shared/api/types.gen"
 import { useWebhook } from "../hooks/useWebhook"
 import { WebhookDataGridEntry } from "../lib/data-grid/WebhookDataGridEntry"
 import { Label } from "@/shared/components/ui/label"
-import { Card, CardHeader, CardTitle, CardContent } from "@/shared/components/ui/card"
+import { Card, CardHeader, CardTitle, CardContent, CardAction } from "@/shared/components/ui/card"
 import { WebhookEditForm } from "../components/WebhookEditForm"
 import { ModalWrapper } from "@/shared/components/ModalWrapper"
+import { toast } from "sonner"
+import { Button } from "@/shared"
+import { EyeClosed, Loader2, RotateCcwKey, Key, Eye, Copy } from "lucide-react"
 
 const DetailItem = ({ label, value }: { label: string; value: React.ReactNode }) => (
   <div className="grid grid-cols-1 md:grid-cols-3 gap-2 py-2 border-b break-words">
@@ -36,6 +39,8 @@ export const WebhookDataGrid: React.FC = () => {
     searchWebhooks,
     updateMutation,
     deleteMutation,
+    getApiWebhookGetWebhookSecretById,
+    regenerateWebhookSecretById,
   } = useWebhook()
 
   useEffect(() => {
@@ -48,7 +53,7 @@ export const WebhookDataGrid: React.FC = () => {
   const [showDetailsModal, setShowDetailsModal] = useState(false)
   const toggleShowDetailsModal = () => setShowDetailsModal((prev) => !prev)
 
-  const [selectedItem, setSelectedItem] = useState(false)
+  const [selectedItem, setSelectedItem] = useState(null)
 
   const columnHeaders: DataGridColumnHeader[] = [
     {
@@ -108,6 +113,8 @@ export const WebhookDataGrid: React.FC = () => {
     },
   ]
 
+  const { data: keys, isPending: isKepending } = getApiWebhookGetWebhookSecretById(selectedItem?.id || "")
+
   const gridItems = useMemo(() => {
     return webhooks.map((item) => new WebhookDataGridEntry(item))
   }, [webhooks])
@@ -162,6 +169,34 @@ export const WebhookDataGrid: React.FC = () => {
     }
   }
 
+  const handleCopy = (value: string) => {
+    if (value && value !== "N/A") {
+      navigator.clipboard.writeText(value)
+      toast.success("API Key copied to clipboard")
+    }
+  }
+
+  type DetailItemProps = { label?: string; value?: string | null }
+
+  const ApiKeyDetailItem = ({ value = "N/A", label }: DetailItemProps) => {
+    const [visible, setVisible] = useState(false)
+    const toggleVisibility = () => setVisible((prev) => !prev)
+    return (
+      <div className="flex gap-2 py-1 items-center justify-between">
+        <span className=" text-sm  text-muted-foreground/80 mr-2">{label}</span>
+        <div className=" text-sm flex items-center">
+          <span className="mr-2 rounded-md pt-1 px-2 min-w-20 bg-muted w-full wrap-anywhere">{visible ? value : "*********"}</span>
+          <Button variant="ghost" size="sm" className="h-5" onClick={toggleVisibility}>
+            {visible ? <EyeClosed className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+          </Button>
+          <Button variant="ghost" size="sm" className="h-5" onClick={() => handleCopy(value || "")}>
+            <Copy className="h-4 w-4" />
+          </Button>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="w-full max-w-full overflow-hidden">
       <DataGrid
@@ -188,7 +223,7 @@ export const WebhookDataGrid: React.FC = () => {
       {showEditModal && (
         <ModalWrapper title="" description="" open={showEditModal} onOpenChange={toggleShowEditModal}>
           <div className="-m-6">
-            <WebhookEditForm onSubmit={handleEdit} onCancel={toggleShowEditModal} isLoading={false} />
+            <WebhookEditForm webhookId={selectedItem.id} initialData={selectedItem} onSubmit={handleEdit} onCancel={toggleShowEditModal} isLoading={false} />
           </div>
         </ModalWrapper>
       )}
@@ -200,6 +235,21 @@ export const WebhookDataGrid: React.FC = () => {
                 <CardTitle>FeeConfiguration Details</CardTitle>
               </CardHeader>
               <CardContent className="grid lg:grid-cols-2 gap-2">
+                <div className="flex flex-col lg:flex-row justify-between">
+                  <CardTitle className="text-sm font-medium">
+                    <Key className="h-4 w-4 text-muted-foreground inline mr-2" />
+                    {t("applications.headers.keys")}
+                  </CardTitle>
+
+                  <CardAction>
+                    <Button variant="outline" size="sm" className="h-8 rounded-lg" disabled={isKepending} onClick={() => regenerateWebhookSecretById(selectedItem.id)}>
+                      {isKepending ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <RotateCcwKey className="h-4 w-4 mr-2" />}
+                      Regenerate
+                    </Button>
+                  </CardAction>
+                </div>
+                <ApiKeyDetailItem label="Key:" value={keys?.data?.webhookSecret} Icon={Key} />
+
                 {Object.entries(selectedItem).map(([key, value]) => {
                   if (key === "id") return null // Don't show ID by default
                   const formattedKey = key.replace(/([A-Z])/g, " $1").replace(/^./, (str) => str.toUpperCase())

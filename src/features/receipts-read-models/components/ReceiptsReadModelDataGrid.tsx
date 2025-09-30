@@ -1,4 +1,4 @@
-import React, { ReactNode, useMemo } from "react"
+import React, { ReactNode, useMemo, useEffect } from "react"
 import { useTranslation } from "react-i18next"
 import { useNavigate } from "@tanstack/react-router"
 import { DataGrid } from "@/shared/components/data-grid/data-grid"
@@ -11,6 +11,7 @@ import StatusBadge from "@/shared/components/StatusBadge"
 import { BadgeStyles } from "@/shared/types/enums"
 import ActionButtonGroup from "@/shared/components/data-grid/ActionButtonGroup"
 import DetailsCardItem from "@/shared/components/DetailsCardItem"
+import { getApiReceiptsReadModelCheckPaymentStatusById } from "@/shared/api/sdk.gen"
 
 export const ReceiptsReadModelDataGrid: React.FC = () => {
   const { t } = useTranslation()
@@ -30,6 +31,8 @@ export const ReceiptsReadModelDataGrid: React.FC = () => {
     changeSort,
     setSelectedRows,
     bulkDeleteMutation,
+    searchReceiptsReadModels,
+    // getApiReceiptsReadModelGetAllStatus,
   } = useReceiptsReadModel()
 
   const columnHeaders: DataGridColumnHeader[] = [
@@ -73,9 +76,21 @@ export const ReceiptsReadModelDataGrid: React.FC = () => {
       key: "actions",
       label: t("receiptsReadModels.actions.more"),
       sortable: false,
-      width: 70,
+      width: 110,
     },
   ]
+
+  const getCheckStatus = async (id: string) => {
+    const response = await getApiReceiptsReadModelCheckPaymentStatusById({ path: { id } })
+    if (response.status === 200 && response.data) searchReceiptsReadModels()
+  }
+
+  // const { data: allStatusData, isLoading: loadingStatus } = getApiReceiptsReadModelGetAllStatus()
+  // const feeTypeOptions = feeTypeDropdownData && feeTypeDropdownData.data ? feeTypeDropdownData.data.map((c) => ({ value: c.id, label: c.name })) : []
+
+  useEffect(() => {
+    searchReceiptsReadModels()
+  }, [])
 
   const enum paymentMethodCode {
     MTN_MOMO = "/icons/momo.png",
@@ -88,18 +103,6 @@ export const ReceiptsReadModelDataGrid: React.FC = () => {
 
   const handleView = (id: string) => {
     navigate({ to: `/payments/receipts/${id}` })
-  }
-
-  const handleEdit = (id: string) => {
-    console.log(id)
-    // navigate({ to: `/payments/receipts/${id}/edit` })
-  }
-
-  const handleDelete = (id: string) => {
-    console.log(id)
-    if (confirm(t("receiptsReadModels.messages.delete.confirm"))) {
-      // deleteReceiptsReadModel(id)
-    }
   }
 
   const handleBulkDelete = () => {
@@ -139,7 +142,7 @@ export const ReceiptsReadModelDataGrid: React.FC = () => {
       ]
     : undefined
 
-  const actions = ["view", "edit", "delete"]
+  const actions: ACTION[] = ["checkStatus", "changeStatus"]
 
   const renderCell = (item: DataGridRowEntry, column: DataGridColumnHeader, view: ViewMode): ReactNode => {
     if (view == "list") {
@@ -286,14 +289,11 @@ export const ReceiptsReadModelDataGrid: React.FC = () => {
 
   const handleDispatch = (action: ACTION, id: string) => {
     switch (action) {
-      case "edit":
-        handleEdit(id)
+      case "checkStatus":
+        getCheckStatus(id)
         break
       case "view":
         handleView(id)
-        break
-      case "delete":
-        handleDelete(id)
         break
       default:
         return
@@ -321,7 +321,7 @@ export const ReceiptsReadModelDataGrid: React.FC = () => {
         enableColumnVisibility={true}
         bulkActions={bulkActions}
         renderCell={renderCell}
-        action={actions}
+        actions={actions}
         dispatch={handleDispatch}
       />
     </div>

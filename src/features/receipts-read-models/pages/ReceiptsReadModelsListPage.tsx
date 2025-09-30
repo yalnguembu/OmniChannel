@@ -21,10 +21,6 @@ export function ReceiptsReadModelsListPage() {
     // Implement export logic
   }
 
-  useEffect(() => {
-    searchReceiptsReadModels()
-  }, [])
-
   return (
     <StandardListPageLayout
       header={

@@ -72,6 +72,7 @@ export const FeeConfigurationCreateForm: React.FC<FeeConfigurationCreateFormProp
   const { data: currencyDropdownData, isLoading: isCurrenciesLoading } = currencyDropdownQuery()
   const currencyOptions = currencyDropdownData && currencyDropdownData.data ? currencyDropdownData.data.map((c) => ({ value: c.code, label: c.name })) : []
   console.log({ companyId, applicationId })
+
   return (
     <Card className="w-full max-w-4xl mx-auto">
       <CardHeader>

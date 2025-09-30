@@ -67,7 +67,7 @@ export const CompanyDataGrid: React.FC = () => {
       key: "actions",
       label: t("companies.actions.more"),
       sortable: false,
-      width: 250,
+      width: 100,
     },
   ]
 

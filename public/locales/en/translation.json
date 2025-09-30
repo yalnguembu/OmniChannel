@@ -796,7 +796,7 @@
     "headers": {
       "code": "Code",
       "createdAt": "Created At",
-      "decimalPlaces": "Decimal Places",
+      "decimalPlaces": "Decimal",
       "exchangeRate": "Exchange Rate",
       "isActive": "Active",
       "isBaseCurrency": "Base Currency",
