@@ -221,8 +221,12 @@ export const ReceiptsReadModelDataGrid: React.FC = () => {
                 <span className="text-blue-500 font-semibold">{item.getTextFor("internalReference")}</span>
               </div>
               <div className="flex gap-x-1.5">
-                <span className="font-medium">ID: </span>
-                <span className="">{item.getTextFor("id")}</span>
+                <span className="font-medium">{t("receiptsreadmodels.headers.providerInitialReference")}: </span>
+                <span className="">{item.getTextFor("providerInitialReference")}</span>
+              </div>
+              <div className="flex gap-x-1.5">
+                <span className="font-medium">{t("receiptsreadmodels.headers.providerFinalReference")}: </span>
+                <span className="">{item.getTextFor("providerFinalReference")}</span>
               </div>
             </div>
           )
@@ -259,6 +263,7 @@ export const ReceiptsReadModelDataGrid: React.FC = () => {
         case "fee":
           return (
             <div className="flex flex-col gap-y-1 px-4 text-sm text-muted-foreground">
+              <span className="font-medium border-t pt-2">{t("receiptsreadmodels.headers.fee")} </span>
               <DetailsCardItem
                 label={t("receiptsreadmodels.headers.providerFeeAmount")}
                 value={
@@ -295,6 +300,7 @@ export const ReceiptsReadModelDataGrid: React.FC = () => {
         case "references":
           return (
             <div className="flex flex-col gap-y-1 px-4 text-sm text-muted-foreground">
+              <span className="font-medium border-t pt-2">{t("receiptsreadmodels.headers.references")} </span>
               <DetailsCardItem
                 label={t("receiptsreadmodels.headers.externalReference")}
                 value={<span className="text-red-500 font-semibold">{item.getTextFor("externalReference")}</span>}
@@ -303,7 +309,14 @@ export const ReceiptsReadModelDataGrid: React.FC = () => {
                 label={t("receiptsreadmodels.headers.internalReference")}
                 value={<span className="text-blue-500 font-semibold">{item.getTextFor("internalReference")}</span>}
               />
-              <DetailsCardItem label="ID" value={item.getTextFor("id")} />
+              <DetailsCardItem
+                label={t("receiptsreadmodels.headers.providerInitialReference")}
+                value={<span className="font-semibold">{item.getTextFor("providerInitialReference")}</span>}
+              />
+              <DetailsCardItem
+                label={t("receiptsreadmodels.headers.providerFinalReference")}
+                value={<span className="font-semibold">{item.getTextFor("providerFinalReference")}</span>}
+              />
             </div>
           )
         case "actions":

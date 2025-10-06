@@ -86,7 +86,7 @@ const initialState: ApplicationState = {
   selectedApplications: [],
 
   currentPage: 1,
-  pageSize: 10,
+  pageSize: 10000,
   totalItems: 0,
   totalPages: 0,
 

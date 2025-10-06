@@ -1866,25 +1866,27 @@
   "receiptsreadmodels": {
     "headers": {
       "amount": "Montant",
-      "applicationName": "Application",
-      "companyName": "Entreprise",
+      "applicationName": "App",
+      "companyName": "Etpe",
       "createdAt": "Date",
       "currency": "Devise",
-      "externalReference": "Réf. Externe",
-      "feeAppliedAmount": "Frais Appliqués",
-      "internalFeeAmount": "Frais Internes",
+      "externalReference": "Réf. Ext.",
+      "feeAppliedAmount": "Appliq",
+      "internalFeeAmount": "Int",
       "netAmount": "Montant Net",
       "paymentMethodCode": "Code Méth. Paiement",
-      "phoneNumberEncrypted": "Téléphone",
-      "providerFeeAmount": "Frais Fournisseur",
-      "providerReference": "Réf. Fournisseur",
+      "phoneNumberEncrypted": "Tél",
+      "providerFeeAmount": "Four",
+      "providerReference": "Réf. Four",
       "status": "Statut",
       "transactionId": "ID Trans.",
       "fee": "Frais",
       "context": "Contexte",
       "references": "Références",
       "coreDetails": "Détails",
-      "internalReference": "Ref. Interne"
+      "internalReference": "Ref. Int.",
+      "providerInitialReference": "Réf. Init F.",
+      "providerFinalReference": "Réf. Fin F."
     }
   },
   "receiptsReadModels": {
@@ -2107,7 +2109,27 @@
     },
     "title": "Paramètres",
     "totalCount_one": "1 paramètre",
-    "totalCount_other": "{{count}} paramètres"
+    "totalCount_other": "{{count}} paramètres",
+    "userProfile": {
+      "title": "Profile",
+      "sections": {
+        "accountInfo": "Information du compte",
+        "profilePermissions": "Profile des permissions",
+        "permissions": "Permissions",
+        "personalInfo":"Information personnel"
+      },
+      "fields": {
+        "firstName": "Prénom",
+        "lastName": "Nom",
+        "email": "Email",
+        "publicId": "Ip Public",
+        "lastLogin": "Dernier Connexion",
+        "userType": "Type d'utilisateur",
+        "status": "Statut",
+        "profileName": "Profil",
+        "profileId": "Id profile"
+      }
+    }
   },
   "smsmailtemplates": {
     "headers": {
@@ -2330,6 +2352,10 @@
       "update": {
         "error": "La mise à jour a échoué.",
         "success": "Mise à jour réussie."
+      },
+      "assign": {
+        "succes": "Profile assigne avec succes",
+        "error": "Echec d'assignation des Profiles"
       }
     },
     "title": "Profils Utilisateurs",
@@ -2904,7 +2930,9 @@
       "receipts": "Reçus",
       "counts": "Opérations",
       "withdrawals": "Retraits",
-      "fundTransfers": "Transferts de Fonds"
+      "fundTransfers": "Transferts de Fonds",
+      "om": "OM",
+      "momo": "MOMO"
     },
     "financial": {
       "revenueAnalysis": {

@@ -13,6 +13,7 @@ import { Calendar } from "@/shared/components/ui/calendar"
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from "@/shared/components/ui/command"
 import { cn } from "@/shared/lib/utils"
 import { FilterFieldConfig } from "@/shared/types"
+import { SearchDropdown } from "@/shared/components/dropdowns/search-dropdown"
 
 interface FilterFieldControlProps {
   field: FilterFieldConfig
@@ -35,6 +36,9 @@ export const FilterFieldControl: React.FC<FilterFieldControlProps> = ({ field, f
 
     case "combobox":
       return <ComboboxFieldControl field={field} formField={formField} isLoading={isLoading} />
+
+    case "searchdropdown":
+      return <SearchDropdownFieldControl field={field} formField={formField} isLoading={isLoading} />
 
     case "checkbox":
       return <CheckboxFieldControl field={field} formField={formField} isLoading={isLoading} />
@@ -186,4 +190,15 @@ const DateRangeFieldControl: React.FC<FilterFieldControlProps> = ({ field, formF
       <Calendar initialFocus mode="range" defaultMonth={formField.value?.from} selected={formField.value} onSelect={formField.onChange} numberOfMonths={2} />
     </PopoverContent>
   </Popover>
+)
+
+const SearchDropdownFieldControl: React.FC<FilterFieldControlProps> = ({ field, formField, isLoading }) => (
+  <SearchDropdown
+    value={formField.value || null}
+    onChange={(val) => formField.onChange(val)}
+    options={field.options || []}
+    placeholder={field.placeholder || field.label}
+    disabled={field.disabled || isLoading}
+    isLoading={field.isLoadingOptions || isLoading}
+  />
 )

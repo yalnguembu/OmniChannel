@@ -1877,7 +1877,11 @@
       "context": "Context",
       "references": "References",
       "coreDetails": "Core",
-      "internalReference": "Internal Ref"
+      "internalReference": "Internal Ref",
+      "companyId": "Company",
+      "applicationId": "App",
+      "customerName": "Nom Client",
+      "customerEmail": "Email client"
     }
   },
   "receiptsReadModels": {
@@ -1901,26 +1905,44 @@
     },
     "form": {
       "applicationIdLabel": "Application ID",
+      "applicationIdPlaceholder": "Select an application",
       "applicationNameLabel": "Application Name",
       "companyIdLabel": "Company ID",
+      "companyIdPlaceholder": "Select a company",
       "companyNameLabel": "Company Name",
       "createdFromLabel": "From",
       "createdToLabel": "To",
       "currencyLabel": "Currency",
+      "currencyPlaceholder": "Enter currency code",
       "customerEmailLabel": "Customer Email",
+      "customerEmailPlaceholder": "Enter customer email",
       "customerIpAddressLabel": "Customer IP Address",
+      "customerIpAddressPlaceholder": "Enter customer IP address",
       "customerNameLabel": "Customer Name",
+      "customerNamePlaceholder": "Enter customer name",
       "externalReferenceLabel": "External Reference",
+      "externalReferencePlaceholder": "Enter external reference",
       "idsLabel": "IDs",
       "internalReferenceLabel": "Internal Reference",
+      "internalReferencePlaceholder": "Enter internal reference",
       "paymentMethodCodeLabel": "Payment Method Code",
+      "paymentMethodCodePlaceholder": "Select payment method",
       "paymentMethodNameLabel": "Payment Method Name",
       "phoneNumberEncryptedLabel": "Phone (Encrypted)",
+      "phoneNumberEncryptedPlaceholder": "Enter phone number",
       "providerFinalReferenceLabel": "Provider Final Reference",
+      "providerFinalReferencePlaceholder": "Enter provider final reference",
       "providerInitialReferenceLabel": "Provider Initial Reference",
+      "providerInitialReferencePlaceholder": "Enter provider initial reference",
       "providerMessageLabel": "Provider Message",
       "searchTermLabel": "Search...",
-      "statusLabel": "Status"
+      "statusLabel": "Status",
+      "statusPlaceholder": "Select status"
+    },
+    "filter": {
+      "identifiers": "Transaction References",
+      "customer": "Customer Information",
+      "transaction": "Transaction Details"
     },
     "messages": {
       "delete": {
@@ -2392,8 +2414,8 @@
         "description": "Add a new user.",
         "submit": "Create",
         "title": "Create User",
-        "systemTitle":"Create system User",
-        "companyTitle":"Create Company User"
+        "systemTitle": "Create system User",
+        "companyTitle": "Create Company User"
       },
       "edit": {
         "description": "Update the details of this user.",
@@ -2415,7 +2437,7 @@
       "statusLabel": "Status",
       "statusPlaceholder": "Select a status",
       "userTypeLabel": "User Type",
-      "userTypePlaceholder": "Select a user type",
+      "userTypePlaceholder": "Select a user type"
     },
     "headers": {
       "companyName": "Company",

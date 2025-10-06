@@ -10,4 +10,5 @@ export const enum FilterFieldType {
   CHECKBOX = "checkbox",
   CHECKBOXGROUP = "checkboxgroup",
   COMBOBOX = "combobox",
+  SEARCHDROPDOWN = "searchdropdown",
 }

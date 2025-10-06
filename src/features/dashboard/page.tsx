@@ -186,7 +186,7 @@ export function DashboardPage() {
                 </div>
               ) : (
                 <>
-                  <div className="text-xl lg:text-base xl:text-2xl font-bold">{formatCurrency(analytics?.totalBalance || 0)}M</div>
+                  <div className="text-xl lg:text-base xl:text-2xl font-bold">{formatCurrency(analytics?.totalBalance || 0)}</div>
                   <div className="flex items-center gap-1 text-xs text-muted-foreground">
                     <TrendingUp className="h-3 w-3 text-green-600" />
                     <span className="font-semibold">{currentMetrics?.totalReceipts + currentMetrics?.totalWithdrawals + currentMetrics?.totalFundTransfers || 0}</span>

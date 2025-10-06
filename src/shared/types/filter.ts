@@ -20,6 +20,8 @@ export interface FilterFieldConfig {
   validation?: z.ZodType<any>
   className?: string
   description?: string
+  fetchOptions?: () => any
+  isLoadingOptions?: boolean
 }
 
 export interface FilterSection {

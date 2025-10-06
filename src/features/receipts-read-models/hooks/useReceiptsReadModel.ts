@@ -9,6 +9,8 @@ import {
   deleteApiReceiptsReadModelByIdMutation,
   getApiReceiptsReadModelByIdOptions,
   getApiReceiptsReadModelGetAllStatusOptions,
+  getApiCompanyDropdownOptions,
+  getApiApplicationDropdownOptions,
 } from "@/shared/api/@tanstack/react-query.gen"
 
 export const receiptsReadModelQueryKeys = {
@@ -97,6 +99,18 @@ export const useReceiptsReadModel = () => {
     ...getApiReceiptsReadModelDropdownOptions(),
     enabled: false,
     staleTime: 10 * 60 * 1000,
+  })
+
+  const companyDropdownQuery = useQuery({
+    ...getApiCompanyDropdownOptions(),
+    staleTime: 10 * 60 * 1000,
+    gcTime: 30 * 60 * 1000,
+  })
+
+  const applicationDropdownQuery = useQuery({
+    ...getApiApplicationDropdownOptions(),
+    staleTime: 10 * 60 * 1000,
+    gcTime: 30 * 60 * 1000,
   })
 
   const deleteReceiptsReadModelMutation = useMutation({
@@ -205,12 +219,13 @@ export const useReceiptsReadModel = () => {
     deleteMutation: deleteReceiptsReadModelMutation,
     bulkDeleteMutation,
     dropdownQuery,
+    companyDropdownQuery,
+    applicationDropdownQuery,
     getReceiptsReadModelQuery,
     searchReceiptsReadModels,
     onDeleteReceiptsReadModel,
     search,
     changePage,
-    changePageSize,
     changePageSize,
     changeSort,
     applyFilters,

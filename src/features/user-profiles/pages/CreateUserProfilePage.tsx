@@ -35,7 +35,11 @@ export function CreateUserProfilePage() {
       header={
         <CreatePageHeader
           title={t("userProfile.create")}
-          breadcrumbs={[{ label: t("navigation.dashboard"), href: "/dashboard" }, { label: t("userProfile.title"), href: "/userProfile" }, { label: t("userProfile.create") }]}
+          breadcrumbs={[
+            { label: t("navigation.dashboard"), href: "/dashboard" },
+            { label: t("userProfile.title"), href: "/access-control/user-profiles" },
+            { label: t("userProfile.create") },
+          ]}
         />
       }
       content={<UserProfileCreateForm onSubmit={handleSubmit} onCancel={handleCancel} isLoading={false} />}

@@ -1,11 +1,9 @@
-import { useEffect } from "react"
 import { useTranslation } from "react-i18next"
 import { useNavigate, useParams } from "@tanstack/react-router"
 import { StandardListPageLayout } from "@/shared/components/layouts/ListPageLayout"
 import { CreatePageHeader } from "@/shared/components/CreatePageHeader"
 import { UserProfileEditForm } from "../components/UserProfileEditForm"
 import { Loader2 } from "lucide-react"
-// import { toast } from "sonner"
 import { useUserProfile } from "../hooks/useUserProfile"
 import { UpdateUserProfileRequest } from "@/shared/api"
 
@@ -13,7 +11,7 @@ export function EditUserProfilePage() {
   const navigate = useNavigate()
   const { t } = useTranslation()
   const { id } = useParams({ from: "/_protected/access-control/user-profiles/$id/edit" })
-  const { selectedUserProfile: data, updateMutation, getUserProfileQuery, isLoading } = useUserProfile()
+  const { updateMutation, getUserProfileQuery } = useUserProfile()
 
   const handleSubmit = (data: UpdateUserProfileRequest) => {
     updateMutation.mutate(
@@ -26,11 +24,7 @@ export function EditUserProfilePage() {
     )
   }
 
-  useEffect(() => {
-    if (id) {
-      getUserProfileQuery(id)
-    }
-  }, [])
+  const { data, isLoading } = getUserProfileQuery(id)
 
   const handleCancel = () => {
     navigate({ to: `/access-control/user-profiles` })
@@ -44,7 +38,7 @@ export function EditUserProfilePage() {
     )
   }
 
-  if (!data) {
+  if (!data || !data?.data) {
     return (
       <div className="container mx-auto py-6 text-center">
         <p>{t("userProfile.form.edit.loadError")}</p>
@@ -61,10 +55,14 @@ export function EditUserProfilePage() {
       header={
         <CreatePageHeader
           title={t("userProfile.edit")}
-          breadcrumbs={[{ label: t("navigation.dashboard"), href: "/dashboard" }, { label: t("userProfile.title"), href: "/userProfile" }, { label: t("userProfile.edit") }]}
+          breadcrumbs={[
+            { label: t("navigation.dashboard"), href: "/dashboard" },
+            { label: t("userProfile.title"), href: "/access-control/user-profiles" },
+            { label: t("userProfile.edit") },
+          ]}
         />
       }
-      content={<UserProfileEditForm userProfileId={id} initialData={data} onSubmit={handleSubmit} onCancel={handleCancel} isLoading={false} />}
+      content={<UserProfileEditForm userProfileId={id} initialData={data.data} onSubmit={handleSubmit} onCancel={handleCancel} isLoading={false} />}
     />
   )
 }
