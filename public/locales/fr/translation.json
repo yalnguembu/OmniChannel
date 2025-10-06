@@ -1886,7 +1886,11 @@
       "coreDetails": "Détails",
       "internalReference": "Ref. Int.",
       "providerInitialReference": "Réf. Init F.",
-      "providerFinalReference": "Réf. Fin F."
+      "providerFinalReference": "Réf. Fin F.",
+      "companyId": "Company",
+      "applicationId": "App",
+      "customerName": "Nom Client",
+      "customerEmail": "Email client"
     }
   },
   "receiptsReadModels": {
