@@ -5,7 +5,7 @@ import { DataGrid } from "@/shared/components/data-grid/data-grid"
 import { DataGridColumnHeader, ACTION, DataGridSort } from "@/shared/types"
 import { SortDirection } from "@/shared/enums/data-grid"
 import { Button } from "@/shared/components/ui/button"
-import {  Plus } from "lucide-react"
+import { Plus } from "lucide-react"
 import { useUser } from "@/features/users/hooks/useUser"
 import { BaseFilter } from "@/shared/components/filter/base-filter"
 import { zSearchUserRequest } from "@/shared/api/zod.gen"
@@ -14,6 +14,7 @@ import { CommonDataGridEntry, Entity } from "@/shared/components/data-grid/adapt
 import { Card, CardContent } from "@/shared/components/ui/card"
 import { ModalWrapper } from "@/shared/components/ModalWrapper"
 import { UserCreateForm } from "../UserCreateForm"
+import { ConfirmationModal } from "@/shared/components/ConfirmationModal"
 
 export function UsersTab({ companyId }: { companyId: string }) {
   const navigate = useNavigate()
@@ -21,6 +22,11 @@ export function UsersTab({ companyId }: { companyId: string }) {
 
   const [showCreateModal, setShowCreateModal] = useState(false)
   const toggleShowCreateModal = () => setShowCreateModal((prev) => !prev)
+
+  const [deleteConfirmation, setDeleteConfirmation] = useState<{ open: boolean; userId: string | null }>({
+    open: false,
+    userId: null,
+  })
 
   const {
     users,
@@ -38,52 +44,53 @@ export function UsersTab({ companyId }: { companyId: string }) {
     applyFilters,
     clearFilters,
     changePage,
+    changePageSize,
     changeSort,
     setSelectedRows,
     deleteUser,
-    createCompanyMutation,
+    createCompanyUserWithValidation,
   } = useUser()
 
   const columnHeaders: DataGridColumnHeader[] = [
     {
       key: "firstName",
-      label: "First Name",
+      label: t("users.headers.firstName"),
       sortable: true,
       resizable: true,
     },
     {
       key: "lastName",
-      label: "Last Name",
+      label: t("users.headers.lastName"),
       sortable: true,
       resizable: true,
     },
     {
       key: "email",
-      label: "Email",
+      label: t("users.headers.email"),
       sortable: true,
       resizable: true,
     },
     {
       key: "phoneNumber",
-      label: "Phone Number",
+      label: t("users.headers.phoneNumber"),
       sortable: true,
       resizable: true,
     },
     {
       key: "userType",
-      label: "User Type",
+      label: t("users.headers.userType"),
       sortable: true,
       resizable: true,
     },
     {
       key: "status",
-      label: "Status",
+      label: t("users.headers.status"),
       sortable: true,
       resizable: true,
     },
     {
       key: "createdAt",
-      label: "Created At",
+      label: t("users.headers.createdAt"),
       sortable: true,
       resizable: true,
     },
@@ -108,10 +115,16 @@ export function UsersTab({ companyId }: { companyId: string }) {
   }
 
   const handleDelete = (id: string) => {
-    if (confirm(t("users.messages.delete.confirm"))) {
-      deleteUser(id)
+    setDeleteConfirmation({ open: true, userId: id })
+  }
+
+  const confirmDelete = () => {
+    if (deleteConfirmation.userId) {
+      deleteUser(deleteConfirmation.userId)
+      setDeleteConfirmation({ open: false, userId: null })
     }
   }
+
   const handleDispatch = (action: ACTION, id: string) => {
     if (action === "view") handleView(id)
     else if (action === "edit") handleEdit(id)
@@ -134,17 +147,15 @@ export function UsersTab({ companyId }: { companyId: string }) {
     setSelectedRows(selectedIds)
   }
 
-  const handlePageChange = (page: number) => {
+  const handlePageChange = (page: number, size: number) => {
     changePage(page)
+    changePageSize(size)
   }
 
-  const handleSubmit = (data: CreateCompanyUserRequest) => {
-    createCompanyMutation.mutate(
-      { body: data },
-      {
-        onSuccess: () => toggleShowCreateModal(),
-      },
-    )
+  const handleSubmit = (data: CreateCompanyUserRequest, setError: any) => {
+    createCompanyUserWithValidation(data, setError, () => {
+      toggleShowCreateModal()
+    })
   }
 
   return (
@@ -195,6 +206,17 @@ export function UsersTab({ companyId }: { companyId: string }) {
       <ModalWrapper title={t("users.form.create.title")} description={t("users.form.create.title")} open={showCreateModal} onOpenChange={toggleShowCreateModal}>
         <UserCreateForm companyId={companyId} onSubmit={handleSubmit} onCancel={toggleShowCreateModal} isLoading={false} />
       </ModalWrapper>
+
+      <ConfirmationModal
+        open={deleteConfirmation.open}
+        onOpenChange={() => setDeleteConfirmation({ open: false, userId: null })}
+        onConfirm={confirmDelete}
+        title={t("users.confirmations.delete.title")}
+        description={t("users.confirmations.delete.description")}
+        confirmText={t("users.confirmations.delete.confirm")}
+        cancelText={t("users.confirmations.delete.cancel")}
+        variant="danger"
+      />
     </div>
   )
 }

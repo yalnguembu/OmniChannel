@@ -152,6 +152,7 @@ export const useSettingStore = create<SettingStore>()(
       setPageSize: (size) =>
         set((state: SettingState) => {
           state.pageSize = size
+
           state.currentPage = 1 // Reset to first page
         }),
 

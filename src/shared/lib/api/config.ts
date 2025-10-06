@@ -29,7 +29,7 @@ export const setupAxiosInterceptors = () => {
           },
           // {
           //   status: 403,
-          //   path: "/unauthorize",
+          //   path: "/unauthorized",
           // },
         ],
       })

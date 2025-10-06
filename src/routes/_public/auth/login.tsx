@@ -3,6 +3,7 @@ import { LoginForm } from "@/features/auth/components/LoginForm"
 import { useSessionStore } from "@/shared/stores/sessionStore"
 import AppLogo from "@/assets/images/logo/icon.png"
 
+import PageLoader from "@/shared/components/PageLoader"
 export const Route = createFileRoute("/_public/auth/login")({
   beforeLoad: () => {
     const { getIsLoggedIn } = useSessionStore.getState()
@@ -14,6 +15,7 @@ export const Route = createFileRoute("/_public/auth/login")({
       throw redirect({ to: "/dashboard" })
     }
   },
+  pendingComponent: PageLoader,
   component: () => (
     <div className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="w-full max-w-md">

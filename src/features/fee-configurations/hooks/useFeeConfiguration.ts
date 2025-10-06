@@ -11,6 +11,9 @@ import {
   deleteApiFeeConfigurationByIdMutation,
   getApiFeeConfigurationByIdOptions,
 } from "@/shared/api/@tanstack/react-query.gen"
+import { useErrorHandling } from "@/shared/hooks/useErrorHandling"
+import type { UseFormSetError } from "react-hook-form"
+import type { CreateFeeConfigurationRequest, UpdateFeeConfigurationRequest } from "@/shared/api/types.gen"
 
 export const feeConfigurationQueryKeys = {
   all: ["feeConfiguration"] as const,
@@ -25,9 +28,21 @@ export const useFeeConfiguration = () => {
   const { t } = useTranslation()
   const queryClient = useQueryClient()
   const store = useFeeConfigurationStore()
+  const { mapValidationErrorsToForm } = useErrorHandling()
 
   const searchFeeConfigurationsMutation = useMutation({
-    ...postApiFeeConfigurationSearchMutation(),
+    ...postApiFeeConfigurationSearchMutation({
+      body: {
+        pageNumber: store.currentPage,
+        pageSize: store.pageSize,
+        sortBy: store.sortBy,
+        sortDirection: store.sortDirection,
+        ids: store.filters.ids,
+        searchTerm: store.filters.searchTerm,
+        createdFrom: store.filters.createdFrom || "",
+        createdTo: store.filters.createdTo || "",
+      },
+    }),
     onMutate: () => {
       store.setLoading(true)
       store.setError(null)
@@ -132,6 +147,50 @@ export const useFeeConfiguration = () => {
 
   const onUpdateFeeConfiguration = (data: any) => {
     updateFeeConfigurationMutation.mutate({ body: data })
+  }
+
+  // Helper functions with validation
+  const createFeeConfigurationWithValidation = (data: CreateFeeConfigurationRequest, setError: UseFormSetError<CreateFeeConfigurationRequest>, onSuccess?: () => void) => {
+    createFeeConfigurationMutation.mutate(
+      { body: data },
+      {
+        onSuccess: () => {
+          toast.success(t("feeConfigurations.messages.create.success"))
+          queryClient.invalidateQueries({ queryKey: feeConfigurationQueryKeys.lists() })
+          searchFeeConfigurations()
+          onSuccess?.()
+        },
+        onError: (error: any) => {
+          const mapped = mapValidationErrorsToForm(error, setError)
+          if (!mapped) {
+            const message = error.message || t("feeConfigurations.messages.create.error")
+            store.setError(message)
+            toast.error(message)
+          }
+        },
+      },
+    )
+  }
+
+  const updateFeeConfigurationWithValidation = (data: UpdateFeeConfigurationRequest, setError: UseFormSetError<UpdateFeeConfigurationRequest>, onSuccess?: () => void) => {
+    updateFeeConfigurationMutation.mutate(
+      { body: data },
+      {
+        onSuccess: () => {
+          toast.success(t("feeConfigurations.messages.update.success"))
+          queryClient.invalidateQueries({ queryKey: feeConfigurationQueryKeys.lists() })
+          onSuccess?.()
+        },
+        onError: (error: any) => {
+          const mapped = mapValidationErrorsToForm(error, setError)
+          if (!mapped) {
+            const message = error.message || t("feeConfigurations.messages.update.error")
+            store.setError(message)
+            toast.error(message)
+          }
+        },
+      },
+    )
   }
 
   const deleteFeeConfigurationMutation = useMutation({
@@ -247,8 +306,11 @@ export const useFeeConfiguration = () => {
     onCreateFeeConfiguration,
     onUpdateFeeConfiguration,
     onDeleteFeeConfiguration,
+    createFeeConfigurationWithValidation,
+    updateFeeConfigurationWithValidation,
     search,
     changePage,
+    changePageSize,
     changePageSize,
     changeSort,
     applyFilters,

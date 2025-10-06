@@ -34,10 +34,11 @@ export const WebhookDataGrid: React.FC = () => {
     selectedRows,
     isLoading,
     changePage,
+    changePageSize,
     changeSort,
     setSelectedRows,
     searchWebhooks,
-    updateMutation,
+    updateWebhookWithValidation,
     deleteMutation,
     getApiWebhookGetWebhookSecretById,
     regenerateWebhookSecretById,
@@ -74,6 +75,7 @@ export const WebhookDataGrid: React.FC = () => {
       label: t("webhooks.headers.url"),
       sortable: true,
       resizable: true,
+      width: 100,
     },
     {
       key: "lastSecretGenerated",
@@ -135,8 +137,9 @@ export const WebhookDataGrid: React.FC = () => {
     setSelectedRows(selectedIds)
   }
 
-  const handlePageChange = (page: number) => {
+  const handlePageChange = (page: number, size: number) => {
     changePage(page)
+    changePageSize(size)
   }
 
   const handleDelete = (id: string) => {
@@ -148,13 +151,10 @@ export const WebhookDataGrid: React.FC = () => {
     )
   }
 
-  const handleEdit = (data: UpdateWebhookRequest) => {
-    updateMutation.mutate(
-      { body: data },
-      {
-        onSuccess: () => toggleShowEditModal(),
-      },
-    )
+  const handleEdit = (data: UpdateWebhookRequest, setError: any) => {
+    updateWebhookWithValidation(data, setError, () => {
+      toggleShowEditModal()
+    })
   }
 
   const handleDispatch = (action: ACTION, id: string) => {
@@ -164,8 +164,6 @@ export const WebhookDataGrid: React.FC = () => {
       toggleShowDetailsModal()
     } else if (action === "edit") {
       toggleShowEditModal()
-    } else if (action === "delete") {
-      confirm(handleDelete(id))
     }
   }
 
@@ -216,7 +214,7 @@ export const WebhookDataGrid: React.FC = () => {
         sortConfig={sortConfig}
         onSortChange={handleSortChange}
         enableColumnVisibility={true}
-        actions={["view", "edit", "regen-secret"]}
+        actions={["view", "edit"]}
         dispatch={handleDispatch}
       />
 

@@ -1,7 +1,7 @@
 import { Area, AreaChart, Line, LineChart, CartesianGrid, XAxis, YAxis, Cell, Pie, PieChart, LabelList } from "recharts"
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent, ChartLegend, ChartLegendContent } from "@/shared/components/ui/chart"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/components/ui/card"
-import { BarChart3, Activity, Phone, TrendingUp, ArrowDown, ArrowUp, ArrowLeftRight, TrendingDown } from "lucide-react"
+import { BarChart3, Activity, Phone, TrendingUp, ArrowDown, ArrowUp, ArrowLeftRight, TrendingDown, Loader } from "lucide-react"
 import { useTranslation } from "react-i18next"
 import { DailyMetricDto, DailyMetricsByPaymentMethodDto } from "@/shared/api/types.gen"
 
@@ -9,6 +9,18 @@ interface TransactionAnalyticsTabProps {
   metrics: DailyMetricDto[]
   paymentMethodMetrics: DailyMetricsByPaymentMethodDto[]
   currentMetrics?: DailyMetricDto
+  isLoading?: boolean
+}
+
+// Safe division helper to avoid NaN
+const safeDivide = (numerator: number, denominator: number, defaultValue = 0): number => {
+  if (!denominator || denominator === 0) return defaultValue
+  return numerator / denominator
+}
+
+// Safe percentage helper
+const safePercentage = (numerator: number, denominator: number, defaultValue = 0): number => {
+  return safeDivide(numerator, denominator, defaultValue) * 100
 }
 
 // Chart configurations
@@ -28,7 +40,7 @@ const paymentMethodChartConfig = {
   transactionCount: { label: "Transactions", color: "hsl(var(--chart-1))" },
 } satisfies ChartConfig
 
-export default function TransactionAnalyticsTab({ metrics, paymentMethodMetrics, currentMetrics }: TransactionAnalyticsTabProps) {
+export default function TransactionAnalyticsTab({ metrics, paymentMethodMetrics, currentMetrics, isLoading = false }: TransactionAnalyticsTabProps) {
   const { t } = useTranslation()
 
   // Use empty arrays when no data available to show empty charts with 0 values
@@ -44,12 +56,20 @@ export default function TransactionAnalyticsTab({ metrics, paymentMethodMetrics,
             <Activity className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-primary">{((currentMetrics?.totalVolume || 0) / 1000000).toFixed(1)}M XAF</div>
-            <div className="flex items-center gap-1 text-xs text-muted-foreground">
-              <TrendingUp className="h-3 w-3 text-green-600" />
-              <span className="font-semibold">{currentMetrics?.totalReceipts + currentMetrics?.totalWithdrawals + currentMetrics?.totalFundTransfers || 0}</span>{" "}
-              {t("analytics.transactions.counts")}
-            </div>
+            {isLoading ? (
+              <div className="flex items-center justify-center py-4">
+                <Loader className="h-6 w-6 animate-spin text-muted-foreground" />
+              </div>
+            ) : (
+              <>
+                <div className="text-2xl font-bold text-primary">{safeDivide(currentMetrics?.totalVolume || 0, 1000000).toFixed(1)}M XAF</div>
+                <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                  <TrendingUp className="h-3 w-3 text-green-600" />
+                  <span className="font-semibold">{(currentMetrics?.totalReceipts || 0) + (currentMetrics?.totalWithdrawals || 0) + (currentMetrics?.totalFundTransfers || 0)}</span>{" "}
+                  {t("analytics.transactions.counts")}
+                </div>
+              </>
+            )}
           </CardContent>
         </Card>
 
@@ -59,11 +79,19 @@ export default function TransactionAnalyticsTab({ metrics, paymentMethodMetrics,
             <ArrowDown className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-green-600">{((currentMetrics?.totalReceiptsAmount || 0) / 1000000).toFixed(1)}M XAF</div>
-            <div className="flex items-center gap-1 text-xs text-muted-foreground">
-              <TrendingUp className="h-3 w-3 text-green-600" />
-              <span className="font-semibold">{currentMetrics?.totalReceipts || 0}</span> {t("analytics.transactions.counts")}
-            </div>
+            {isLoading ? (
+              <div className="flex items-center justify-center py-4">
+                <Loader className="h-6 w-6 animate-spin text-muted-foreground" />
+              </div>
+            ) : (
+              <>
+                <div className="text-2xl font-bold text-green-600">{safeDivide(currentMetrics?.totalReceiptsAmount || 0, 1000000).toFixed(1)}M XAF</div>
+                <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                  <TrendingUp className="h-3 w-3 text-green-600" />
+                  <span className="font-semibold">{currentMetrics?.totalReceipts || 0}</span> {t("analytics.transactions.counts")}
+                </div>
+              </>
+            )}
           </CardContent>
         </Card>
 
@@ -73,11 +101,19 @@ export default function TransactionAnalyticsTab({ metrics, paymentMethodMetrics,
             <ArrowUp className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-orange-600">{((currentMetrics?.totalWithdrawalsAmount || 0) / 1000000).toFixed(1)}M XAF</div>
-            <div className="flex items-center gap-1 text-xs text-muted-foreground">
-              <TrendingDown className="h-3 w-3 text-orange-600" />
-              <span className="font-semibold">{currentMetrics?.totalWithdrawals || 0}</span> {t("analytics.transactions.counts")}
-            </div>
+            {isLoading ? (
+              <div className="flex items-center justify-center py-4">
+                <Loader className="h-6 w-6 animate-spin text-muted-foreground" />
+              </div>
+            ) : (
+              <>
+                <div className="text-2xl font-bold text-orange-600">{safeDivide(currentMetrics?.totalWithdrawalsAmount || 0, 1000000).toFixed(1)}M XAF</div>
+                <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                  <TrendingDown className="h-3 w-3 text-orange-600" />
+                  <span className="font-semibold">{currentMetrics?.totalWithdrawals || 0}</span> {t("analytics.transactions.counts")}
+                </div>
+              </>
+            )}
           </CardContent>
         </Card>
 
@@ -87,12 +123,20 @@ export default function TransactionAnalyticsTab({ metrics, paymentMethodMetrics,
             <ArrowLeftRight className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-blue-500">{((currentMetrics?.totalFundTransfersAmount || 0) / 1000000).toFixed(1)}M XAF</div>
-            <div className="flex items-center gap-1 text-xs text-muted-foreground">
-              <TrendingUp className="h-3 w-3 text-green-600" />
-              <span className="font-semibold">{currentMetrics?.totalFundTransfers || 0} </span>
-              {t("analytics.transactions.counts")}
-            </div>
+            {isLoading ? (
+              <div className="flex items-center justify-center py-4">
+                <Loader className="h-6 w-6 animate-spin text-muted-foreground" />
+              </div>
+            ) : (
+              <>
+                <div className="text-2xl font-bold text-blue-500">{safeDivide(currentMetrics?.totalFundTransfersAmount || 0, 1000000).toFixed(1)}M XAF</div>
+                <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                  <TrendingUp className="h-3 w-3 text-green-600" />
+                  <span className="font-semibold">{currentMetrics?.totalFundTransfers || 0} </span>
+                  {t("analytics.transactions.counts")}
+                </div>
+              </>
+            )}
           </CardContent>
         </Card>
       </div>
@@ -240,12 +284,12 @@ export default function TransactionAnalyticsTab({ metrics, paymentMethodMetrics,
 
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">{t("analytics.transactions.paymentMethods.totalVolume")}:</span>
-                    <span className="font-bold">{(method.totalAmount / 1000000).toFixed(1)}M XAF</span>
+                    <span className="font-bold">{safeDivide(method.totalAmount, 1000000).toFixed(1)}M XAF</span>
                   </div>
 
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">{t("analytics.transactions.paymentMethods.avgAmount")}:</span>
-                    <span className="font-mono">{method.averageAmount.toLocaleString()} XAF</span>
+                    <span className="font-mono">{(method.averageAmount || 0).toLocaleString()} XAF</span>
                   </div>
 
                   <div className="flex justify-between">
@@ -290,7 +334,7 @@ export default function TransactionAnalyticsTab({ metrics, paymentMethodMetrics,
                   .sort((a, b) => b.transactionCount - a.transactionCount)
                   .map((method, index) => {
                     const totalTransactions = effectivePaymentMethodMetrics.reduce((sum, m) => sum + m.transactionCount, 0)
-                    const marketShare = totalTransactions > 0 ? (method.transactionCount / totalTransactions) * 100 : 0
+                    const marketShare = safePercentage(method.transactionCount, totalTransactions)
 
                     return (
                       <tr key={method.paymentMethodId || index} className="border-b hover:bg-muted/50">
@@ -304,13 +348,13 @@ export default function TransactionAnalyticsTab({ metrics, paymentMethodMetrics,
                           </div>
                         </td>
                         <td className="p-2 text-right font-mono">{method.transactionCount.toLocaleString()}</td>
-                        <td className="p-2 text-right font-mono">{(method.totalAmount / 1000000).toFixed(1)}M</td>
+                        <td className="p-2 text-right font-mono">{safeDivide(method.totalAmount, 1000000).toFixed(1)}M</td>
                         <td className="p-2 text-right">
-                          <span className={`font-bold ${method.successRate >= 95 ? "text-green-600" : method.successRate >= 90 ? "text-yellow-600" : "text-red-600"}`}>
-                            {method.successRate.toFixed(1)}%
+                          <span className={`font-bold ${(method.successRate || 0) >= 95 ? "text-green-600" : (method.successRate || 0) >= 90 ? "text-yellow-600" : "text-red-600"}`}>
+                            {(method.successRate || 0).toFixed(1)}%
                           </span>
                         </td>
-                        <td className="p-2 text-right font-mono">{(method.averageAmount / 1000).toFixed(1)}K</td>
+                        <td className="p-2 text-right font-mono">{safeDivide(method.averageAmount || 0, 1000).toFixed(1)}K</td>
                         <td className="p-2 text-right">
                           <div className="flex items-center justify-end gap-2">
                             <div className="w-16 bg-gray-200 rounded-full h-2">

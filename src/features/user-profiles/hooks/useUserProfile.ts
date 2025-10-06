@@ -10,6 +10,9 @@ import {
   putApiUserProfileMutation,
   deleteApiUserProfileByIdMutation,
   getApiUserProfileByIdOptions,
+  getApiUserProfilePermissionsAllOptions,
+  getApiUserProfilePermissionsByProfileIdOptions,
+  putApiUserProfilePermissionsByProfileIdMutation,
 } from "@/shared/api/@tanstack/react-query.gen"
 
 export const userProfileQueryKeys = {
@@ -27,7 +30,18 @@ export const useUserProfile = () => {
   const store = useUserProfileStore()
 
   const searchUserProfilesMutation = useMutation({
-    ...postApiUserProfileSearchMutation(),
+    ...postApiUserProfileSearchMutation({
+      body: {
+        pageNumber: store.currentPage,
+        pageSize: store.pageSize,
+        sortBy: store.sortBy,
+        sortDirection: store.sortDirection,
+        ids: store.filters.ids,
+        searchTerm: store.filters.searchTerm,
+        createdFrom: store.filters.createdFrom || "",
+        createdTo: store.filters.createdTo || "",
+      },
+    }),
     onMutate: () => {
       store.setLoading(true)
       store.setError(null)
@@ -76,12 +90,60 @@ export const useUserProfile = () => {
       },
     })
 
+  const getPermissionsByUserProfileId = (profileId: string) =>
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    useQuery({
+      ...getApiUserProfilePermissionsByProfileIdOptions({ path: { profileId } }),
+      enabled: !!profileId,
+      staleTime: 5 * 60 * 1000,
+      select: (data) => {
+        if (data.success && data.data) {
+          // store.setSelectedItem(data.data)
+        }
+        return data
+      },
+    })
+
+  const getAllUserProfilePermissions = () =>
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    useQuery({
+      ...getApiUserProfilePermissionsAllOptions(),
+      staleTime: 5 * 60 * 1000,
+      select: (data) => {
+        if (data.success && data.data) {
+          // store.setSelectedItem(data.data)
+        }
+        return data
+      },
+    })
+
   const getDropdownQuery = () =>
     // eslint-disable-next-line react-hooks/rules-of-hooks
     useQuery({
       ...getApiUserProfileDropdownOptions(),
       staleTime: 10 * 60 * 1000,
     })
+
+  const assignPermissionToUserProfileByProfileIdMutation = useMutation({
+    ...putApiUserProfilePermissionsByProfileIdMutation(),
+    onMutate: () => {
+      store.setLoading(true)
+      store.setError(null)
+    },
+    onSuccess: () => {
+      toast.success(t("userProfile.messages.assign.success"))
+      queryClient.invalidateQueries({ queryKey: userProfileQueryKeys.lists() })
+      searchUserProfiles()
+    },
+    onError: (error) => {
+      const message = error.message || t("userProfile.messages.create.error")
+      store.setError(message)
+      toast.error(message)
+    },
+    onSettled: () => {
+      store.setLoading(false)
+    },
+  })
 
   const createUserProfileMutation = useMutation({
     ...postApiUserProfileMutation(),
@@ -234,10 +296,13 @@ export const useUserProfile = () => {
 
   return {
     ...store,
+    getPermissionsByUserProfileId,
+    getAllUserProfilePermissions,
     searchMutation: searchUserProfilesMutation,
     createMutation: createUserProfileMutation,
     updateMutation: updateUserProfileMutation,
     deleteMutation: deleteUserProfileMutation,
+    assignMutation: assignPermissionToUserProfileByProfileIdMutation,
     bulkDeleteMutation,
     getDropdownQuery,
     getUserProfileQuery,
@@ -247,6 +312,7 @@ export const useUserProfile = () => {
     onDeleteUserProfile,
     search,
     changePage,
+    changePageSize,
     changePageSize,
     changeSort,
     applyFilters,

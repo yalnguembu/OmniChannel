@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls:*)",
+      "Read(//c//**)",
+      "Bash(awk:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

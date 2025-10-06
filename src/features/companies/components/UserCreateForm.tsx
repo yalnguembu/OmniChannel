@@ -12,7 +12,7 @@ import { useUserProfile } from "@/features/user-profiles/hooks/useUserProfile"
 import { SearchDropdown } from "@/shared/components/dropdowns/search-dropdown"
 
 interface UserCreateFormProps {
-  onSubmit: (data: CreateCompanyUserRequest) => void
+  onSubmit: (data: CreateCompanyUserRequest, setError: any) => void
   onCancel: () => void
   isLoading?: boolean
 
@@ -39,7 +39,7 @@ export const UserCreateForm: React.FC<UserCreateFormProps> = ({ onSubmit, onCanc
 
   const handleSubmit = (values: CreateCompanyUserRequest) => {
     if (onSubmit) {
-      onSubmit(values)
+      onSubmit(values, form.setError)
     }
   }
 
@@ -73,9 +73,9 @@ export const UserCreateForm: React.FC<UserCreateFormProps> = ({ onSubmit, onCanc
             name="firstName"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>First Name</FormLabel>
+                <FormLabel>{t("users.form.firstNameLabel")}</FormLabel>
                 <FormControl>
-                  <Input type="text" placeholder="First Name" {...field} value={field.value || ""} required={false} />
+                  <Input type="text" placeholder={t("users.form.firstNamePlaceholder")} {...field} value={field.value || ""} required={false} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -87,9 +87,9 @@ export const UserCreateForm: React.FC<UserCreateFormProps> = ({ onSubmit, onCanc
             name="lastName"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Last Name</FormLabel>
+                <FormLabel>{t("users.form.lastNameLabel")}</FormLabel>
                 <FormControl>
-                  <Input type="text" placeholder="Last Name" {...field} value={field.value || ""} required={false} />
+                  <Input type="text" placeholder={t("users.form.lastNamePlaceholder")} {...field} value={field.value || ""} required={false} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -101,9 +101,9 @@ export const UserCreateForm: React.FC<UserCreateFormProps> = ({ onSubmit, onCanc
             name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Email</FormLabel>
+                <FormLabel>{t("users.form.emailLabel")}</FormLabel>
                 <FormControl>
-                  <Input type="text" placeholder="Email" {...field} value={field.value || ""} required={false} />
+                  <Input type="text" placeholder={t("users.form.emailPlaceholder")} {...field} value={field.value || ""} required={false} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -115,9 +115,9 @@ export const UserCreateForm: React.FC<UserCreateFormProps> = ({ onSubmit, onCanc
             name="phoneNumber"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Phone Number</FormLabel>
+                <FormLabel>{t("users.form.phoneNumberLabel")}</FormLabel>
                 <FormControl>
-                  <Input type="text" placeholder="Phone Number" {...field} value={field.value || ""} required={false} />
+                  <Input type="text" placeholder={t("users.form.phoneNumberPlaceholder")} {...field} value={field.value || ""} required={false} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -128,9 +128,9 @@ export const UserCreateForm: React.FC<UserCreateFormProps> = ({ onSubmit, onCanc
             name="initialPassword"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Initial Password</FormLabel>
+                <FormLabel>{t("users.form.initialPasswordLabel")}</FormLabel>
                 <FormControl>
-                  <Input type="password" placeholder="Initial Password" {...field} value={field.value || ""} required={false} />
+                  <Input type="password" placeholder={t("users.form.initialPasswordPlaceholder")} {...field} value={field.value || ""} required={false} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

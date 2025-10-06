@@ -1,6 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router"
 
+import PageLoader from "@/shared/components/PageLoader"
 export const Route = createFileRoute("/_public/legal-notice")({
+  pendingComponent: PageLoader,
   component: RouteComponent,
 })
 

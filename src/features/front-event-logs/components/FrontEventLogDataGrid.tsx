@@ -138,8 +138,9 @@ export const FrontEventLogDataGrid: React.FC = () => {
     setSelectedRows(selectedIds)
   }
 
-  const handlePageChange = (page: number) => {
+  const handlePageChange = (page: number, size: number) => {
     changePage(page)
+    changePageSize(size)
   }
 
   const [selectedItem, setSelectedItem] = useState<FrontEventLogDto | null>(null)

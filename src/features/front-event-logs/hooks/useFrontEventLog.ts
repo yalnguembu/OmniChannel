@@ -19,7 +19,18 @@ export const useFrontEventLog = () => {
   const store = useFrontEventLogStore()
 
   const searchFrontEventLogsMutation = useMutation({
-    ...postApiFrontEventLogSearchMutation(),
+    ...postApiFrontEventLogSearchMutation({
+      body: {
+        pageNumber: store.currentPage,
+        pageSize: store.pageSize,
+        sortBy: store.sortBy,
+        sortDirection: store.sortDirection,
+        ids: store.filters.ids,
+        searchTerm: store.filters.searchTerm,
+        createdFrom: store.filters.createdFrom || "",
+        createdTo: store.filters.createdTo || "",
+      },
+    }),
     onMutate: () => {
       store.setLoading(true)
       store.setError(null)
@@ -101,6 +112,7 @@ export const useFrontEventLog = () => {
     searchFrontEventLogs,
     search,
     changePage,
+    changePageSize,
     changePageSize,
     changeSort,
     applyFilters,

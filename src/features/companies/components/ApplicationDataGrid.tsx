@@ -22,6 +22,7 @@ export const ApplicationDataGrid: React.FC = () => {
     selectedRows,
     isLoading,
     changePage,
+    changePageSize,
     changeSort,
     setSelectedRows,
     deleteApplication,
@@ -111,8 +112,9 @@ export const ApplicationDataGrid: React.FC = () => {
     setSelectedRows(selectedIds)
   }
 
-  const handlePageChange = (page: number) => {
+  const handlePageChange = (page: number, size: number) => {
     changePage(page)
+    changePageSize(size)
   }
 
   const handleDispatch = (action: ACTION, id: string) => {

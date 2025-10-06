@@ -14,6 +14,7 @@ import {
   patchApiApplicationRenegereApiSecretByIdMutation,
 } from "@/shared/api/@tanstack/react-query.gen"
 import { CreateApplicationRequest, UpdateApplicationRequest } from "@/shared"
+import { useErrorHandling } from "@/shared/hooks/useErrorHandling"
 
 export const applicationQueryKeys = {
   all: ["application"] as const,
@@ -28,9 +29,21 @@ export const useApplication = () => {
   const { t } = useTranslation()
   const queryClient = useQueryClient()
   const store = useApplicationStore()
+  const { mapValidationErrorsToForm } = useErrorHandling()
 
   const searchApplicationsMutation = useMutation({
-    ...postApiApplicationSearchMutation(),
+    ...postApiApplicationSearchMutation({
+      body: {
+        pageNumber: store.currentPage,
+        pageSize: store.pageSize,
+        sortBy: store.sortBy,
+        sortDirection: store.sortDirection,
+        ids: store.filters.ids,
+        searchTerm: store.filters.searchTerm,
+        createdFrom: store.filters.createdFrom || "",
+        createdTo: store.filters.createdTo || "",
+      },
+    }),
     onMutate: () => {
       store.setLoading(true)
       store.setError(null)
@@ -247,6 +260,34 @@ export const useApplication = () => {
     onDeleteApplication(id)
   }
 
+  const createApplicationWithValidation = (data: CreateApplicationRequest, setError: any, onSuccess?: () => void) => {
+    createApplicationMutation.mutate(
+      { body: data },
+      {
+        onSuccess: () => {
+          onSuccess?.()
+        },
+        onError: (error: any) => {
+          mapValidationErrorsToForm(error, setError)
+        },
+      },
+    )
+  }
+
+  const updateApplicationWithValidation = (data: UpdateApplicationRequest, setError: any, onSuccess?: () => void) => {
+    updateApplicationMutation.mutate(
+      { body: data },
+      {
+        onSuccess: () => {
+          onSuccess?.()
+        },
+        onError: (error: any) => {
+          mapValidationErrorsToForm(error, setError)
+        },
+      },
+    )
+  }
+
   const search = () => {
     searchApplications()
   }
@@ -288,8 +329,11 @@ export const useApplication = () => {
     onCreateApplication,
     onUpdateApplication,
     onDeleteApplication,
+    createApplicationWithValidation,
+    updateApplicationWithValidation,
     search,
     changePage,
+    changePageSize,
     changePageSize,
     changeSort,
     applyFilters,

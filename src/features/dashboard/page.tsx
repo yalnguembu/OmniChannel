@@ -1,48 +1,36 @@
-import { useState, useEffect } from "react"
 import { useTranslation } from "react-i18next"
 import { ToggleGroup, ToggleGroupItem } from "@/shared/components/ui/toggle-group"
 import { DateRangeInput } from "@/shared/components/ui/date-range-input"
-import sampleData from "./data.json"
-
 import { useMemo } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/components/ui/card"
 import { Badge } from "@/shared/components/ui/badge"
 import { AreaChartGradient, BarChartStacked, LineChartMultiAxis, HalfDonutChart, generateChartConfig } from "@/features/dashboard/components"
-import { TrendingUp, Activity, CreditCard, Wallet, PiggyBank, Zap, ArrowDown, ArrowUp, TrendingDown, ArrowLeftRight, DollarSign } from "lucide-react"
-import { DailyMetricDto, DailyMetricsByPaymentMethodDto, BalancesReadModelDto } from "@/shared/api/types.gen"
+import { TrendingUp, Activity, CreditCard, Wallet, PiggyBank, Zap, ArrowDown, ArrowUp, TrendingDown, ArrowLeftRight, Loader } from "lucide-react"
+import { BalancesReadModelDto } from "@/shared/api/types.gen"
+import { useDashboard } from "./hooks/useDashboard"
+import { formatCurrency, formatAmount } from "@/shared/utils/formatCurrency"
 
 export function DashboardPage() {
   const { t } = useTranslation()
-  const [dateRange, setDateRange] = useState()
-  const [timeRange, setTimeRange] = useState("7d")
-  const [metrics, setMetrics] = useState<DailyMetricDto[]>([])
-  const [paymentMethodMetrics, setPaymentMethodMetrics] = useState<DailyMetricsByPaymentMethodDto[]>([])
-  const [loading, setLoading] = useState(true)
+  const {
+    metrics,
+    paymentMethodMetrics,
+    balances: apiBalances,
+    isLoadingMetrics,
+    isLoadingPaymentMethods,
+    isLoadingBalances,
+    dateRange,
+    setDateRange,
+    timeRange,
+    setTimeRange,
+  } = useDashboard()
+
+  const loading = isLoadingMetrics || isLoadingPaymentMethods || isLoadingBalances
 
   const currentMetrics = metrics[0]
   const totalTransactions = currentMetrics ? currentMetrics.totalReceipts + currentMetrics.totalWithdrawals + currentMetrics.totalFundTransfers : 0
   const totalSuccessfulTransactions = currentMetrics ? currentMetrics.successfulReceipts + currentMetrics.successfulWithdrawals + currentMetrics.successfulFundTransfers : 0
   const overallSuccessRate = totalTransactions > 0 ? (totalSuccessfulTransactions / totalTransactions) * 100 : 0
-
-  useEffect(() => {
-    const loadSampleData = async () => {
-      try {
-        setLoading(true)
-
-        await new Promise((resolve) => setTimeout(resolve, 500))
-        setMetrics(sampleData.dailyMetrics as DailyMetricDto[])
-        setPaymentMethodMetrics(sampleData.paymentMethodMetrics as DailyMetricsByPaymentMethodDto[])
-      } catch (error) {
-        console.error("Failed to load sample data:", error)
-        setMetrics([])
-        setPaymentMethodMetrics([])
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    loadSampleData()
-  }, [dateRange, timeRange])
 
   // Create default metrics for when no data is available
   const defaultMetrics = {
@@ -67,49 +55,10 @@ export function DashboardPage() {
   const effectiveMetrics = currentMetrics || defaultMetrics
   const effectiveMetricsArray = metrics.length > 0 ? metrics : []
 
-  // Generate sample balance data when none available
+  // Use API balances or fallback to empty array
   const effectiveBalances = useMemo(() => {
-    // if (balances.length > 0) return balances
-
-    return [
-      {
-        id: "bal-1",
-        paymentMethodName: "MTN Mobile Money",
-        paymentMethodCode: "MTN_MOMO",
-        currentBalance: 15750000,
-        availableBalance: 14250000,
-        reservedBalance: 1500000,
-        balanceType: "OPERATIONAL",
-        currency: "XAF",
-        ownerType: "SYSTEM",
-        reconciliationStatus: "RECONCILED",
-      },
-      {
-        id: "bal-2",
-        paymentMethodName: "Orange Money",
-        paymentMethodCode: "ORANGE_MONEY",
-        currentBalance: 8900000,
-        availableBalance: 8100000,
-        reservedBalance: 800000,
-        balanceType: "OPERATIONAL",
-        currency: "XAF",
-        ownerType: "SYSTEM",
-        reconciliationStatus: "RECONCILED",
-      },
-      {
-        id: "bal-3",
-        paymentMethodName: "Camtel Money",
-        paymentMethodCode: "CAMTEL_MONEY",
-        currentBalance: 3200000,
-        availableBalance: 2950000,
-        reservedBalance: 250000,
-        balanceType: "OPERATIONAL",
-        currency: "XAF",
-        ownerType: "SYSTEM",
-        reconciliationStatus: "PENDING",
-      },
-    ] as BalancesReadModelDto[]
-  }, [])
+    return apiBalances.length > 0 ? apiBalances : ([] as BalancesReadModelDto[])
+  }, [apiBalances])
 
   // Advanced analytics calculations
   const analytics = useMemo(() => {
@@ -199,98 +148,136 @@ export function DashboardPage() {
         </div>
       </div>
 
-      {loading ? (
-        <div className="flex items-center justify-center h-96">
-          <div className="text-center">
-            <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary mx-auto"></div>
-            <p className="mt-4 text-muted-foreground">{t("analytics.loading")}</p>
-          </div>
+      <div className="space-y-6">
+        {/* Enhanced KPI Cards with Advanced Metrics */}
+        <div className="grid gap-4 lg:gap-2 xl:gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+          <Card className="justify-between">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">{t("analytics.transactions.totalVolume")}</CardTitle>
+              <Activity className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              {loading ? (
+                <div className="flex items-center justify-center h-16">
+                  <Loader className="h-6 w-6 animate-spin text-muted-foreground" />
+                </div>
+              ) : (
+                <>
+                  <div className="text-xl lg:text-base xl:text-2xl font-bold text-primary">{formatCurrency(currentMetrics?.totalVolume || 0)}</div>
+                  <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                    <TrendingUp className="h-3 w-3 text-green-600" />
+                    <span className="font-semibold">{currentMetrics?.totalReceipts + currentMetrics?.totalWithdrawals + currentMetrics?.totalFundTransfers || 0}</span>
+                    {t("analytics.transactions.counts")}
+                  </div>
+                </>
+              )}
+            </CardContent>
+          </Card>
+
+          <Card className="justify-between">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">{t("analytics.enhanced.balance")}</CardTitle>
+              <Zap className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              {loading ? (
+                <div className="flex items-center justify-center h-16">
+                  <Loader className="h-6 w-6 animate-spin text-muted-foreground" />
+                </div>
+              ) : (
+                <>
+                  <div className="text-xl lg:text-base xl:text-2xl font-bold">{formatCurrency(analytics?.totalBalance || 0)}M</div>
+                  <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                    <TrendingUp className="h-3 w-3 text-green-600" />
+                    <span className="font-semibold">{currentMetrics?.totalReceipts + currentMetrics?.totalWithdrawals + currentMetrics?.totalFundTransfers || 0}</span>
+                    {t("analytics.transactions.counts")}
+                  </div>
+                </>
+              )}
+            </CardContent>
+          </Card>
+
+          <Card className="justify-between">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">{t("analytics.transactions.receipts")}</CardTitle>
+              <ArrowDown className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              {loading ? (
+                <div className="flex items-center justify-center h-16">
+                  <Loader className="h-6 w-6 animate-spin text-muted-foreground" />
+                </div>
+              ) : (
+                <>
+                  <div className="text-xl lg:text-base xl:text-2xl font-bold text-green-600">{formatCurrency(currentMetrics?.totalReceiptsAmount || 0)}</div>
+                  <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                    <TrendingUp className="h-3 w-3 text-green-600" />
+                    <span className="font-semibold">{currentMetrics?.totalReceipts || 0}</span> {t("analytics.transactions.counts")}
+                  </div>
+                </>
+              )}
+            </CardContent>
+          </Card>
+
+          <Card className="justify-between">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">{t("analytics.transactions.withdrawals")}</CardTitle>
+              <ArrowUp className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              {loading ? (
+                <div className="flex items-center justify-center h-16">
+                  <Loader className="h-6 w-6 animate-spin text-muted-foreground" />
+                </div>
+              ) : (
+                <>
+                  <div className="text-xl lg:text-base xl:text-2xl font-bold text-orange-600">{formatCurrency(currentMetrics?.totalWithdrawalsAmount || 0)}</div>
+                  <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                    <TrendingDown className="h-3 w-3 text-orange-600" />
+                    <span className="font-semibold">{currentMetrics?.totalWithdrawals || 0}</span> {t("analytics.transactions.counts")}
+                  </div>
+                </>
+              )}
+            </CardContent>
+          </Card>
+
+          <Card className="justify-between">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">{t("analytics.transactions.fundTransfers")}</CardTitle>
+              <ArrowLeftRight className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              {loading ? (
+                <div className="flex items-center justify-center h-16">
+                  <Loader className="h-6 w-6 animate-spin text-muted-foreground" />
+                </div>
+              ) : (
+                <>
+                  <div className="text-xl lg:text-base xl:text-2xl font-bold text-blue-500">{formatCurrency(currentMetrics?.totalFundTransfersAmount || 0)}</div>
+                  <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                    <TrendingUp className="h-3 w-3 text-green-600" />
+                    <span className="font-semibold">{currentMetrics?.totalFundTransfers || 0} </span>
+                    {t("analytics.transactions.counts")}
+                  </div>
+                </>
+              )}
+            </CardContent>
+          </Card>
         </div>
-      ) : (
-        <div className="space-y-6">
-          {/* Enhanced KPI Cards with Advanced Metrics */}
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-5">
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">{t("analytics.transactions.totalVolume")}</CardTitle>
-                <Activity className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold text-primary">{((currentMetrics?.totalVolume || 0) / 1000000).toFixed(1)}M XAF</div>
-                <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                  <TrendingUp className="h-3 w-3 text-green-600" />
-                  <span className="font-semibold">{currentMetrics?.totalReceipts + currentMetrics?.totalWithdrawals + currentMetrics?.totalFundTransfers || 0}</span>
-                  {t("analytics.transactions.counts")}
-                </div>
-              </CardContent>
-            </Card>
 
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">{t("analytics.enhanced.balance")}</CardTitle>
-                <Zap className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">{overallSuccessRate.toFixed(1)}%</div>
-                <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                  <DollarSign className="h-3 w-3 text-purple-600" />
-                  {((analytics.totalBalance || 0) / 1000000).toFixed(1)}M XAF {t("analytics.enhanced.totalTransactions")}
+        {/* Advanced Financial Visualizations */}
+        <div className="grid gap-6 xl:grid-cols-3">
+          <Card>
+            <CardHeader>
+              <CardTitle>{t("analytics.overview.transactionBreakdown.title")}</CardTitle>
+              <CardDescription>{t("analytics.overview.transactionBreakdown.description")}</CardDescription>
+            </CardHeader>
+            <CardContent>
+              {loading ? (
+                <div className="flex items-center justify-center h-48">
+                  <Loader className="h-8 w-8 animate-spin text-muted-foreground" />
                 </div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">{t("analytics.transactions.receipts")}</CardTitle>
-                <ArrowDown className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold text-green-600">{((currentMetrics?.totalReceiptsAmount || 0) / 1000000).toFixed(1)}M XAF</div>
-                <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                  <TrendingUp className="h-3 w-3 text-green-600" />
-                  <span className="font-semibold">{currentMetrics?.totalReceipts || 0}</span> {t("analytics.transactions.counts")}
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">{t("analytics.transactions.withdrawals")}</CardTitle>
-                <ArrowUp className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold text-orange-600">{((currentMetrics?.totalWithdrawalsAmount || 0) / 1000000).toFixed(1)}M XAF</div>
-                <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                  <TrendingDown className="h-3 w-3 text-orange-600" />
-                  <span className="font-semibold">{currentMetrics?.totalWithdrawals || 0}</span> {t("analytics.transactions.counts")}
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">{t("analytics.transactions.fundTransfers")}</CardTitle>
-                <ArrowLeftRight className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold text-blue-500">{((currentMetrics?.totalFundTransfersAmount || 0) / 1000000).toFixed(1)}M XAF</div>
-                <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                  <TrendingUp className="h-3 w-3 text-green-600" />
-                  <span className="font-semibold">{currentMetrics?.totalFundTransfers || 0} </span>
-                  {t("analytics.transactions.counts")}
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Advanced Financial Visualizations */}
-          <div className="grid gap-6 lg:grid-cols-3">
-            <Card>
-              <CardHeader>
-                <CardTitle>{t("analytics.overview.transactionBreakdown.title")}</CardTitle>
-                <CardDescription>{t("analytics.overview.transactionBreakdown.description")}</CardDescription>
-              </CardHeader>
-              <CardContent>
+              ) : (
                 <div className="space-y-4 text-sm">
                   <div className="grid grid-cols-4 gap-4 text-sm font-medium text-muted-foreground">
                     <div>{t("analytics.overview.transactionBreakdown.type")}</div>
@@ -331,16 +318,22 @@ export function DashboardPage() {
                     </div>
                   </div>
                 </div>
-              </CardContent>
-            </Card>
+              )}
+            </CardContent>
+          </Card>
 
-            {/* Payment Method Performance */}
-            <Card>
-              <CardHeader>
-                <CardTitle>{t("analytics.overview.paymentMethods.title")}</CardTitle>
-                <CardDescription>{t("analytics.overview.paymentMethods.description")}</CardDescription>
-              </CardHeader>
-              <CardContent>
+          {/* Payment Method Performance */}
+          <Card>
+            <CardHeader>
+              <CardTitle>{t("analytics.overview.paymentMethods.title")}</CardTitle>
+              <CardDescription>{t("analytics.overview.paymentMethods.description")}</CardDescription>
+            </CardHeader>
+            <CardContent>
+              {loading ? (
+                <div className="flex items-center justify-center h-48">
+                  <Loader className="h-8 w-8 animate-spin text-muted-foreground" />
+                </div>
+              ) : (
                 <div className="space-y-4">
                   <div className="grid grid-cols-4 gap-4 text-sm font-medium text-muted-foreground">
                     <div>{t("analytics.overview.paymentMethods.provider")}</div>
@@ -353,7 +346,7 @@ export function DashboardPage() {
                       <div key={method.paymentMethodId} className="grid grid-cols-4 gap-4 py-2">
                         <div className="font-medium">{method.paymentMethodName}</div>
                         <div>{method.transactionCount.toLocaleString()}</div>
-                        <div>{(method.totalAmount / 1000000).toFixed(1)}M</div>
+                        <div>{formatAmount(method.totalAmount)}</div>
                         <div>
                           <Badge variant="outline" className="bg-green-50 text-green-600">
                             {method.successRate.toFixed(1)}%
@@ -363,63 +356,87 @@ export function DashboardPage() {
                     ))}
                   </div>
                 </div>
-              </CardContent>
-            </Card>
+              )}
+            </CardContent>
+          </Card>
 
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <CreditCard className="h-5 w-5 text-purple-500" />
-                  {t("analytics.enhanced.balanceDistribution")}
-                </CardTitle>
-                <CardDescription>{t("analytics.enhanced.balanceDistributionDesc")}</CardDescription>
-              </CardHeader>
-              <CardContent className="min-h-[200px]">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <CreditCard className="h-5 w-5 text-purple-500" />
+                {t("analytics.enhanced.balanceDistribution")}
+              </CardTitle>
+              <CardDescription>{t("analytics.enhanced.balanceDistributionDesc")}</CardDescription>
+            </CardHeader>
+            <CardContent className="min-h-[200px]">
+              {loading ? (
+                <div className="flex items-center justify-center h-48">
+                  <Loader className="h-8 w-8 animate-spin text-muted-foreground" />
+                </div>
+              ) : (
                 <HalfDonutChart data={balanceDistributionData} config={balanceConfig} dataKey="value" nameKey="name" height={250} />
-              </CardContent>
-            </Card>
-          </div>
+              )}
+            </CardContent>
+          </Card>
+        </div>
 
-          {/* Enhanced Transaction Trends */}
-          <div className="grid gap-6 lg:grid-cols-2">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Activity className="h-5 w-5" />
-                  {t("analytics.enhanced.transactionTrends")}
-                </CardTitle>
-                <CardDescription>{t("analytics.enhanced.transactionTrendsDesc")}</CardDescription>
-              </CardHeader>
-              <CardContent>
+        {/* Enhanced Transaction Trends */}
+        <div className="grid gap-6 lg:grid-cols-2">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Activity className="h-5 w-5" />
+                {t("analytics.enhanced.transactionTrends")}
+              </CardTitle>
+              <CardDescription>{t("analytics.enhanced.transactionTrendsDesc")}</CardDescription>
+            </CardHeader>
+            <CardContent>
+              {loading ? (
+                <div className="flex items-center justify-center h-[300px]">
+                  <Loader className="h-8 w-8 animate-spin text-muted-foreground" />
+                </div>
+              ) : (
                 <BarChartStacked data={transactionTrendsData} config={trendsConfig} dataKeys={["receipts", "withdrawals", "transfers"]} height={300} />
-              </CardContent>
-            </Card>
+              )}
+            </CardContent>
+          </Card>
 
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <TrendingUp className="h-5 w-5" />
-                  {t("analytics.enhanced.performanceMetrics")}
-                </CardTitle>
-                <CardDescription>{t("analytics.enhanced.performanceMetricsDesc")}</CardDescription>
-              </CardHeader>
-              <CardContent>
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <TrendingUp className="h-5 w-5" />
+                {t("analytics.enhanced.performanceMetrics")}
+              </CardTitle>
+              <CardDescription>{t("analytics.enhanced.performanceMetricsDesc")}</CardDescription>
+            </CardHeader>
+            <CardContent>
+              {loading ? (
+                <div className="flex items-center justify-center h-[300px]">
+                  <Loader className="h-8 w-8 animate-spin text-muted-foreground" />
+                </div>
+              ) : (
                 <LineChartMultiAxis data={performanceMetricsData} config={performanceConfig} dataKeys={["successRate", "revenue"]} height={300} />
-              </CardContent>
-            </Card>
-          </div>
+              )}
+            </CardContent>
+          </Card>
+        </div>
 
-          {/* Balance Health Dashboard */}
-          <div className="grid grid-cols-3 gap-8">
-            <Card className="lg:col-span-2">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <PiggyBank className="h-5 w-5 text-indigo-500" />
-                  {t("analytics.enhanced.balanceHealthDashboard")}
-                </CardTitle>
-                <CardDescription>{t("analytics.enhanced.balanceHealthDesc")}</CardDescription>
-              </CardHeader>
-              <CardContent>
+        {/* Balance Health Dashboard */}
+        <div className="grid xl:grid-cols-3 gap-8">
+          <Card className="xl:col-span-2">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <PiggyBank className="h-5 w-5 text-indigo-500" />
+                {t("analytics.enhanced.balanceHealthDashboard")}
+              </CardTitle>
+              <CardDescription>{t("analytics.enhanced.balanceHealthDesc")}</CardDescription>
+            </CardHeader>
+            <CardContent>
+              {loading ? (
+                <div className="flex items-center justify-center h-64">
+                  <Loader className="h-8 w-8 animate-spin text-muted-foreground" />
+                </div>
+              ) : (
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm">
                     <thead>
@@ -446,9 +463,9 @@ export function DashboardPage() {
                                 </div>
                               </div>
                             </td>
-                            <td className="p-2 text-right font-mono">{((balance.currentBalance || 0) / 1000000).toFixed(2)}M</td>
-                            <td className="p-2 text-right font-mono">{((balance.availableBalance || 0) / 1000000).toFixed(2)}M</td>
-                            <td className="p-2 text-right font-mono">{((balance.reservedBalance || 0) / 1000000).toFixed(2)}M</td>
+                            <td className="p-2 text-right font-mono">{formatAmount(balance.currentBalance || 0)}</td>
+                            <td className="p-2 text-right font-mono">{formatAmount(balance.availableBalance || 0)}</td>
+                            <td className="p-2 text-right font-mono">{formatAmount(balance.reservedBalance || 0)}</td>
                             <td className="p-2 text-right">
                               <div className="flex items-center justify-end gap-2">
                                 <div className="w-16 bg-gray-200 rounded-full h-2">
@@ -466,48 +483,69 @@ export function DashboardPage() {
                     </tbody>
                   </table>
                 </div>
-              </CardContent>
-            </Card>
+              )}
+            </CardContent>
+          </Card>
 
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Wallet className="h-5 w-5 text-blue-500" />
-                  {t("analytics.enhanced.liquidityRatio")}
-                </CardTitle>
-                <CardDescription>{t("analytics.enhanced.liquidityDesc")}</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <HalfDonutChart data={liquidityData} config={liquidityConfig} dataKey="value" nameKey="name" height={150} centerLabel={`${analytics.liquidityRatio.toFixed(1)}%`} />
-                <div className="mt-4 space-y-2">
-                  <div className="flex justify-between text-sm">
-                    <span className="text-muted-foreground">{t("analytics.enhanced.available")}:</span>
-                    <span className="font-bold">{(analytics.totalAvailable / 1000000).toFixed(1)}M XAF</span>
-                  </div>
-                  <div className="flex justify-between text-sm">
-                    <span className="text-muted-foreground">{t("analytics.enhanced.reserved")}:</span>
-                    <span className="font-bold">{(analytics.totalReserved / 1000000).toFixed(1)}M XAF</span>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Volume Trend with Advanced Visualization */}
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <TrendingUp className="h-5 w-5" />
-                {t("analytics.enhanced.volumeTrendAnalysis")}
+                <Wallet className="h-5 w-5 text-blue-500" />
+                {t("analytics.enhanced.liquidityRatio")}
               </CardTitle>
-              <CardDescription>{t("analytics.enhanced.volumeTrendDesc")}</CardDescription>
+              <CardDescription>{t("analytics.enhanced.liquidityDesc")}</CardDescription>
             </CardHeader>
             <CardContent>
-              <AreaChartGradient data={transactionTrendsData} config={trendsConfig} dataKey="volume" height={300} fillOpacity={0.6} />
+              {loading ? (
+                <div className="flex items-center justify-center h-64">
+                  <Loader className="h-8 w-8 animate-spin text-muted-foreground" />
+                </div>
+              ) : (
+                <>
+                  <HalfDonutChart
+                    data={liquidityData}
+                    config={liquidityConfig}
+                    dataKey="value"
+                    nameKey="name"
+                    height={150}
+                    centerLabel={`${analytics.liquidityRatio.toFixed(1)}%`}
+                  />
+                  <div className="mt-4 space-y-2">
+                    <div className="flex justify-between text-sm">
+                      <span className="text-muted-foreground">{t("analytics.enhanced.available")}:</span>
+                      <span className="font-bold">{formatCurrency(analytics.totalAvailable)}</span>
+                    </div>
+                    <div className="flex justify-between text-sm">
+                      <span className="text-muted-foreground">{t("analytics.enhanced.reserved")}:</span>
+                      <span className="font-bold">{formatCurrency(analytics.totalReserved)}</span>
+                    </div>
+                  </div>
+                </>
+              )}
             </CardContent>
           </Card>
         </div>
-      )}
+
+        {/* Volume Trend with Advanced Visualization */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <TrendingUp className="h-5 w-5" />
+              {t("analytics.enhanced.volumeTrendAnalysis")}
+            </CardTitle>
+            <CardDescription>{t("analytics.enhanced.volumeTrendDesc")}</CardDescription>
+          </CardHeader>
+          <CardContent>
+            {loading ? (
+              <div className="flex items-center justify-center h-[300px]">
+                <Loader className="h-8 w-8 animate-spin text-muted-foreground" />
+              </div>
+            ) : (
+              <AreaChartGradient data={transactionTrendsData} config={trendsConfig} dataKey="volume" height={300} fillOpacity={0.6} />
+            )}
+          </CardContent>
+        </Card>
+      </div>
     </div>
   )
 }

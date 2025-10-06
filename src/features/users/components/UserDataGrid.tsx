@@ -1,4 +1,4 @@
-import React, { ReactNode, useMemo } from "react"
+import React, { ReactNode, useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { useNavigate } from "@tanstack/react-router"
 import { DataGrid } from "@/shared/components/data-grid/data-grid"
@@ -6,17 +6,28 @@ import { ACTION, DataGridColumnHeader, DataGridRowEntry, DataGridSort, ViewMode 
 import { SortDirection } from "@/shared/enums/data-grid"
 import { Button } from "@/shared/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/shared/components/ui/dropdown-menu"
-import { MoreHorizontal, Eye, Edit, Trash2, Mail, PhoneCall } from "lucide-react"
+import { MoreHorizontal, Eye, Edit, Trash2, Mail, PhoneCall, Power } from "lucide-react"
 import { useUser } from "../hooks/useUser"
 import { UserDataGridEntry } from "../lib/data-grid/UserDataGridEntry"
 import StatusBadge from "@/shared/components/StatusBadge"
 import { BadgeStyles } from "@/shared/types/enums"
 import ActionButtonGroup from "@/shared/components/data-grid/ActionButtonGroup"
 import DetailsCardItem from "@/shared/components/DetailsCardItem"
+import { ConfirmationModal } from "@/shared/components/ConfirmationModal"
 
 export const UserDataGrid: React.FC = () => {
   const { t } = useTranslation()
   const navigate = useNavigate()
+
+  const [deleteConfirmation, setDeleteConfirmation] = useState<{ open: boolean; userId: string | null }>({
+    open: false,
+    userId: null,
+  })
+  const [toggleStatusConfirmation, setToggleStatusConfirmation] = useState<{ open: boolean; userId: string | null }>({
+    open: false,
+    userId: null,
+  })
+  const [bulkDeleteConfirmation, setBulkDeleteConfirmation] = useState(false)
 
   const {
     users,
@@ -29,25 +40,27 @@ export const UserDataGrid: React.FC = () => {
     isLoading,
     hasSelection,
     changePage,
+    changePageSize,
     changeSort,
     setSelectedRows,
     deleteUser,
+    toggleUserStatus,
     bulkDeleteMutation,
   } = useUser()
 
   const columnHeaders: DataGridColumnHeader[] = [
-    {
-      key: "fullName",
-      label: t("users.headers.fullName"),
-      sortable: true,
-      resizable: true,
-    },
     {
       key: "userType",
       label: t("users.headers.userType"),
       sortable: true,
       resizable: true,
       isBadge: true,
+    },
+    {
+      key: "fullName",
+      label: t("users.headers.fullName"),
+      sortable: true,
+      resizable: true,
     },
     {
       key: "profileName",
@@ -96,15 +109,34 @@ export const UserDataGrid: React.FC = () => {
   }
 
   const handleDelete = (id: string) => {
-    if (confirm(t("users.messages.delete.confirm"))) {
-      deleteUser(id)
+    setDeleteConfirmation({ open: true, userId: id })
+  }
+
+  const confirmDelete = () => {
+    if (deleteConfirmation.userId) {
+      deleteUser(deleteConfirmation.userId)
+      setDeleteConfirmation({ open: false, userId: null })
+    }
+  }
+
+  const handleToggleStatus = (id: string) => {
+    setToggleStatusConfirmation({ open: true, userId: id })
+  }
+
+  const confirmToggleStatus = () => {
+    if (toggleStatusConfirmation.userId) {
+      toggleUserStatus(toggleStatusConfirmation.userId)
+      setToggleStatusConfirmation({ open: false, userId: null })
     }
   }
 
   const handleBulkDelete = () => {
-    if (confirm(t("users.bulk.deleteConfirm", { count: selectedRows.length }))) {
-      bulkDeleteMutation.mutate(selectedRows)
-    }
+    setBulkDeleteConfirmation(true)
+  }
+
+  const confirmBulkDelete = () => {
+    bulkDeleteMutation.mutate(selectedRows)
+    setBulkDeleteConfirmation(false)
   }
 
   const handleDispatch = (action: ACTION, id: string) => {
@@ -118,12 +150,15 @@ export const UserDataGrid: React.FC = () => {
       case "delete":
         handleDelete(id)
         break
+      case "toggle_status":
+        handleToggleStatus(id)
+        break
       default:
         return
     }
   }
 
-  const actions = ["view", "edit", "delete"]
+  const actions = ["view", "edit", "toggle_status", "delete"]
 
   const renderCell = (item: DataGridRowEntry, column: DataGridColumnHeader, view: ViewMode): ReactNode => {
     if (view == "list") {
@@ -150,6 +185,10 @@ export const UserDataGrid: React.FC = () => {
                   <Edit className="mr-2 h-4 w-4" />
                   {t("countries.actions.edit")}
                 </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => handleDispatch?.("toggle_status", item.getId())}>
+                  <Power className="mr-2 h-4 w-4" />
+                  {t("users.actions.toggleStatus")}
+                </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => handleDispatch?.("delete", item.getId())} className="text-red-600">
                   <Trash2 className="mr-2 h-4 w-4" />
                   {t("countries.actions.delete")}
@@ -159,9 +198,7 @@ export const UserDataGrid: React.FC = () => {
           )
         case "fullName":
           return (
-            <span className="font-semibold text-sm lg:text-base">
-              {(item.getTextFor("firstName") ? `${item.getTextFor("firstName")} ` : "") + (item.getTextFor("lastName") || "")}
-            </span>
+            <span className="font-semibold text-xs lg:sm">{(item.getTextFor("firstName") ? `${item.getTextFor("firstName")} ` : "") + (item.getTextFor("lastName") || "")}</span>
           )
         case "company":
           return (
@@ -174,10 +211,10 @@ export const UserDataGrid: React.FC = () => {
           return (
             <div className="flex flex-col gap-y-1">
               <span>
-                <Mail className="inline size-4 mr-1" /> {item.getTextFor("email")}
+                <Mail className="inline size-3.5 mr-1 text-muted-foreground/60" /> {item.getTextFor("email")}
               </span>
               <span>
-                <PhoneCall className="inline size-4 mr-1" />
+                <PhoneCall className="inline size-3.5 mr-1 text-muted-foreground/60" />
                 {item.getTextFor("phoneNumber")}
               </span>
             </div>
@@ -282,8 +319,9 @@ export const UserDataGrid: React.FC = () => {
     setSelectedRows(selectedIds)
   }
 
-  const handlePageChange = (page: number) => {
+  const handlePageChange = (page: number, size: number) => {
     changePage(page)
+    changePageSize(size)
   }
 
   const bulkActions = hasSelection
@@ -322,6 +360,40 @@ export const UserDataGrid: React.FC = () => {
         actions={actions as ACTION}
         dispatch={handleDispatch}
         renderCell={renderCell}
+      />
+
+      <ConfirmationModal
+        open={deleteConfirmation.open}
+        onOpenChange={() => setDeleteConfirmation({ open: false, userId: null })}
+        onConfirm={confirmDelete}
+        title={t("users.confirmations.delete.title")}
+        description={t("users.confirmations.delete.description")}
+        confirmText={t("users.confirmations.delete.confirm")}
+        cancelText={t("users.confirmations.delete.cancel")}
+        variant="danger"
+      />
+
+      <ConfirmationModal
+        open={toggleStatusConfirmation.open}
+        onOpenChange={() => setToggleStatusConfirmation({ open: false, userId: null })}
+        onConfirm={confirmToggleStatus}
+        title={t("users.confirmations.toggleStatus.title")}
+        description={t("users.confirmations.toggleStatus.description")}
+        confirmText={t("users.confirmations.toggleStatus.confirm")}
+        cancelText={t("users.confirmations.toggleStatus.cancel")}
+        variant="warning"
+      />
+
+      <ConfirmationModal
+        open={bulkDeleteConfirmation}
+        onOpenChange={() => setBulkDeleteConfirmation(false)}
+        onConfirm={confirmBulkDelete}
+        title={t("users.confirmations.bulkDelete.title")}
+        description={t("users.confirmations.bulkDelete.description", { count: selectedRows.length })}
+        confirmText={t("users.confirmations.bulkDelete.confirm")}
+        cancelText={t("users.confirmations.bulkDelete.cancel")}
+        variant="danger"
+        isLoading={bulkDeleteMutation.isPending}
       />
     </div>
   )

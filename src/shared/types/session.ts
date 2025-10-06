@@ -3,9 +3,18 @@ import { USER_TYPE } from "../enums/session"
 export type UserSession = {
   id: string
   email: string
-  fullName: string
-  userType: string
+  fullName?: string
   publicId?: string
+  firstName: string
+  lastName: string
+  status?: string
+  companyId?: string
+  companyName?: string
+  profileId?: string
+  profileName?: string
+  permissions?: string[]
+  createdAt?: string
+  lastLoginAt?: string
 }
 
 export type SessionData = {

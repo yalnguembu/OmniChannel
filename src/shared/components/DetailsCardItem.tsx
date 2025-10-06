@@ -22,7 +22,13 @@ const DetailsCardItem = ({ label, value, Icon, isBadge, theme, onClick, shouldCl
       </div>
       <div className="flex items-center gap-2 col-span-5 pl-2 text-[13px]">
         {Icon ? <Icon className="w-4 h-4 inline text-neutral" /> : <></>}
-        {isBadge ? <span className="py-1 md:py-0.5">{typeof value === "string" && <StatusBadge text={value} theme={theme} />}</span> : value}
+        {isBadge ? (
+          <span className="py-1 md:py-0.5">{typeof value === "string" && <StatusBadge text={value} theme={theme} />}</span>
+        ) : typeof value === "string" ? (
+          <span className="w-full break-words">{value}</span>
+        ) : (
+          value
+        )}
       </div>
     </div>
   )

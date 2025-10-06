@@ -14,6 +14,13 @@
       "title": "Our Vision"
     }
   },
+  "values": {
+    "compliance": "We adhere to the highest regulatory standards and compliance requirements, ensuring all transactions meet CEMAC regulations and international financial security protocols.",
+    "excellence": "We are committed to delivering exceptional service quality, innovative solutions, and continuous improvement in everything we do for our clients.",
+    "security": "We prioritize the protection of your financial data and transactions with enterprise-grade encryption, multi-level authentication, and comprehensive audit trails.",
+    "support": "We provide dedicated technical support and customer service to ensure your success, with expert assistance available whenever you need it.",
+    "transparency": "We believe in clear communication, honest pricing, and complete visibility into all transactions and operations on our platform."
+  },
   "accessDenied": "Access denied",
   "actions": {
     "openMenu": "Open Menu"
@@ -157,7 +164,21 @@
     "title": "Applications",
     "totalCount_one": "1 application",
     "totalCount_other": "{{count}} applications",
-    "apiKeyExpiresAtUtc": "Expires At"
+    "apiKeyExpiresAtUtc": "Expires At",
+    "confirmations": {
+      "delete": {
+        "title": "Delete Application",
+        "description": "Are you sure you want to delete this application? This action cannot be undone.",
+        "confirm": "Delete",
+        "cancel": "Cancel"
+      },
+      "bulkDelete": {
+        "title": "Delete Applications",
+        "description": "Are you sure you want to delete {{count}} applications? This action cannot be undone.",
+        "confirm": "Delete All",
+        "cancel": "Cancel"
+      }
+    }
   },
   "auditlogs": {
     "headers": {
@@ -841,6 +862,13 @@
     },
     "endpoints": {
       "description": "Description",
+      "descriptions": {
+        "configureNotifications": "Set up webhooks and notification preferences to receive real-time updates for payment events, withdrawals, and system alerts across multiple channels.",
+        "initiateAndTrackPayments": "Create payment requests, generate payment links, and track transaction status in real-time for Orange Money and MTN Mobile Money payments.",
+        "manageBalances": "Query account balances, wallet positions, and available funds across all mobile money operators and internal accounts with real-time accuracy.",
+        "manageFundTransfers": "Execute peer-to-peer transfers, cross-wallet movements, and operator transfers with configurable limits and automated reconciliation.",
+        "manageWithdrawalRequests": "Initiate withdrawal requests, process disbursements to mobile money accounts, and track withdrawal status with multi-level approval workflows."
+      },
       "endpoint": "Endpoint",
       "method": "Method",
       "title": "Key API Endpoints"
@@ -974,14 +1002,46 @@
     "title": "Frequently Asked Questions"
   },
   "features": {
+    "administration": {
+      "benefit1": "Centralized system configuration management",
+      "benefit2": "Multi-currency and country support",
+      "benefit3": "Flexible fee structure configuration",
+      "benefit4": "Payment method customization",
+      "benefits": "Centralized system configuration management\nMulti-currency and country support\nFlexible fee structure configuration\nPayment method customization",
+      "description": "Streamline your operations with powerful administrative tools. Manage settings, configure fees, set up payment methods, and control system parameters from a single unified interface.",
+      "details": "Our administration features provide comprehensive control over your entire payment ecosystem, allowing you to adapt the system to your specific business requirements.",
+      "title": "System Administration"
+    },
     "badge": "FEATURES",
     "intro": "Fujisat Pay is designed to offer total control over your mobile financial operations in Cameroon, thanks to a suite of advanced and secure features.",
+    "kyc": {
+      "benefit1": "Digital document collection and verification",
+      "benefit2": "Multi-level approval workflow",
+      "benefit3": "Secure document storage with encryption",
+      "benefit4": "Compliance with regulatory requirements",
+      "benefits": "Digital document collection and verification\nMulti-level approval workflow\nSecure document storage with encryption\nCompliance with regulatory requirements",
+      "description": "Ensure compliance and build trust with robust KYC (Know Your Customer) verification processes. Streamline customer onboarding while meeting regulatory requirements.",
+      "details": "Our KYC system helps you verify customer identities efficiently while maintaining the highest security standards and regulatory compliance.",
+      "title": "KYC Management"
+    },
+    "notifications": {
+      "benefit1": "Real-time event notifications",
+      "benefit2": "Multi-channel delivery (SMS, Email, In-App)",
+      "benefit3": "Customizable notification templates",
+      "benefit4": "Priority-based notification system",
+      "benefits": "Real-time event notifications\nMulti-channel delivery (SMS, Email, In-App)\nCustomizable notification templates\nPriority-based notification system",
+      "description": "Keep your team and customers informed with intelligent notification system. Send real-time alerts for transactions, security events, and important updates across multiple channels.",
+      "details": "Our notification engine ensures timely delivery of critical information through SMS, email, and in-app channels, with customizable templates for different event types.",
+      "title": "Smart Notifications"
+    },
     "paymentManagement": {
       "benefit1": "Unified Orange Money and MTN Mobile Money Integration",
       "benefit2": "Comprehensive Transaction Lifecycle Management",
       "benefit3": "Automated Reconciliation and Reporting",
       "benefit4": "Customizable Payment Pages and Links",
+      "benefits": "Unified Orange Money and MTN Mobile Money Integration\nComprehensive Transaction Lifecycle Management\nAutomated Reconciliation and Reporting\nCustomizable Payment Pages and Links",
       "description": "Efficiently process incoming payments via Orange Money and MTN Mobile Money. Manage the complete lifecycle of each transaction (creation, processing, completion).",
+      "details": "Our payment management system provides seamless integration with major mobile money operators in Cameroon, offering real-time transaction processing, automated status updates, and comprehensive tracking capabilities for all payment operations.",
       "title": "Payment Management"
     },
     "reporting": {
@@ -989,7 +1049,9 @@
       "benefit2": "Custom report generation",
       "benefit3": "Data export capabilities (CSV, Excel)",
       "benefit4": "Payment method analysis",
+      "benefits": "Real-time transaction dashboards\nCustom report generation\nData export capabilities (CSV, Excel)\nPayment method analysis",
       "description": "Gain valuable insights through comprehensive reporting and analysis tools for better decision-making.",
+      "details": "Access detailed analytics and generate custom reports to track performance, identify trends, and make data-driven decisions for your business growth.",
       "title": "Analytics & Reporting"
     },
     "requestDemo": "Request a Demo",
@@ -998,7 +1060,9 @@
       "benefit2": "AES-256-GCM encryption for sensitive data",
       "benefit3": "IP address restriction capabilities",
       "benefit4": "Comprehensive audit logging",
+      "benefits": "Multi-level authentication (API Key, JWT)\nAES-256-GCM encryption for sensitive data\nIP address restriction capabilities\nComprehensive audit logging",
       "description": "Protect your business and customers with enterprise-grade security features designed for the financial sector.",
+      "details": "Our security infrastructure includes multiple layers of protection, from encryption and authentication to audit logging and IP restrictions, ensuring your data and transactions remain secure.",
       "title": "Security"
     },
     "subtitle": "Power at your service",
@@ -1010,8 +1074,40 @@
       "benefit2": "Support for Orange Money and MTN Mobile Money",
       "benefit3": "Batch Processing for High Volumes",
       "benefit4": "Flexible Approval Processes",
+      "benefits": "Two-Factor Verification for Security\nSupport for Orange Money and MTN Mobile Money\nBatch Processing for High Volumes\nFlexible Approval Processes",
       "description": "Initiate and process fund withdrawal requests with optimal security. Whether via mobile money or bank transfer, Fujisat Pay adapts to your needs.",
+      "details": "Our withdrawal management system ensures secure fund disbursement with multi-level approval workflows, batch processing capabilities for high-volume operations, and comprehensive audit trails for regulatory compliance.",
       "title": "Withdrawal Management"
+    },
+    "moneyTransfers": {
+      "benefit1": "Peer-to-peer transfer capabilities",
+      "benefit2": "Cross-wallet and cross-operator transfers",
+      "benefit3": "Instant transfer processing",
+      "benefit4": "Transaction limit controls",
+      "benefits": "Peer-to-peer transfer capabilities\nCross-wallet and cross-operator transfers\nInstant transfer processing\nTransaction limit controls",
+      "description": "Enable seamless money transfers between users, wallets, and mobile money operators. Support both internal and external transfer operations with real-time processing.",
+      "details": "Our money transfer module facilitates instant fund movement across different mobile money operators and internal wallets, with configurable limits, fee structures, and comprehensive transaction tracking for complete visibility.",
+      "title": "Money Transfers"
+    },
+    "balanceManagement": {
+      "benefit1": "Real-time balance tracking",
+      "benefit2": "Multi-currency wallet support",
+      "benefit3": "Automated balance reconciliation",
+      "benefit4": "Balance alerts and notifications",
+      "benefits": "Real-time balance tracking\nMulti-currency wallet support\nAutomated balance reconciliation\nBalance alerts and notifications",
+      "description": "Maintain accurate real-time balances across all accounts, wallets, and mobile money operators. Track funds movement and ensure financial accuracy at all times.",
+      "details": "Our balance management system provides real-time visibility into all financial positions, automated reconciliation with mobile money operators, multi-currency support, and configurable alerts to prevent overdrafts and maintain operational liquidity.",
+      "title": "Balance Management"
+    },
+    "multiEnterprise": {
+      "benefit1": "Centralized multi-company management",
+      "benefit2": "Isolated data and permissions per company",
+      "benefit3": "Consolidated reporting across entities",
+      "benefit4": "Shared or independent configurations",
+      "benefits": "Centralized multi-company management\nIsolated data and permissions per company\nConsolidated reporting across entities\nShared or independent configurations",
+      "description": "Manage multiple businesses or subsidiaries from a single platform. Each company maintains its own data isolation while benefiting from centralized oversight and reporting.",
+      "details": "Our multi-enterprise architecture enables organizations to manage multiple business entities with complete data isolation, independent configurations, and role-based access control, while providing consolidated views and cross-company analytics for group-level insights.",
+      "title": "Multi-Enterprise Management"
     }
   },
   "feeconfigurations": {
@@ -1780,7 +1876,8 @@
       "fee": "Fees",
       "context": "Context",
       "references": "References",
-      "coreDetails": "Core"
+      "coreDetails": "Core",
+      "internalReference": "Internal Ref"
     }
   },
   "receiptsReadModels": {
@@ -1840,7 +1937,15 @@
     },
     "title": "Receipts",
     "totalCount_one": "1 receipt",
-    "totalCount_other": "{{count}} receipts"
+    "totalCount_other": "{{count}} receipts",
+    "confirmations": {
+      "bulkDelete": {
+        "title": "Delete Receipts",
+        "description": "Are you sure you want to delete {{count}} receipts? This action cannot be undone.",
+        "confirm": "Delete All",
+        "cancel": "Cancel"
+      }
+    }
   },
   "securesettings": {
     "headers": {
@@ -1995,7 +2100,10 @@
     },
     "title": "Settings",
     "totalCount_one": "1 setting",
-    "totalCount_other": "{{count}} settings"
+    "totalCount_other": "{{count}} settings",
+    "userProfile": {
+      "title": "Profile"
+    }
   },
   "smsmailtemplates": {
     "headers": {
@@ -2081,17 +2189,40 @@
       "description": "Fujisat Pay is highly adaptable. Contact us to discuss a customized solution for your specific needs.",
       "title": "Your sector not listed?"
     },
+    "delivery": {
+      "benefits": "Cash-on-delivery automation\nDriver payout management\nReal-time settlement tracking\nMulti-operator support",
+      "problem": "Managing cash collection from customers, processing driver payouts, reconciling transactions across multiple delivery agents and operators.",
+      "sector": "Logistics & Delivery",
+      "solution": "Automate cash-on-delivery payments, manage driver earnings, and reconcile all transactions in real-time across Orange Money and MTN Mobile Money.",
+      "title": "Delivery & Logistics Services"
+    },
     "ecommerce": {
+      "benefits": "Seamless checkout experience\nAutomated payment reconciliation\nMulti-operator integration\nReal-time transaction tracking",
       "problem": "Strong dependence on mobile payment, tedious reconciliation of transactions by operator, need for a smooth customer experience.",
+      "sector": "Retail & E-commerce",
+      "solution": "Provide a unified payment gateway for Orange Money and MTN Mobile Money with automated reconciliation, real-time notifications, and seamless customer checkout experience.",
       "title": "E-commerce & Online Shops"
     },
     "fintech": {
+      "benefits": "Automated disbursement processing\nDigital wallet management\nKYC compliance tools\nBalance reconciliation",
       "problem": "Processing of disbursements and repayments, management of customer balances, KYC compliance.",
+      "sector": "Financial Services",
+      "solution": "Streamline loan disbursements and repayments, manage customer wallets, ensure KYC compliance, and automate balance reconciliation with mobile money operators.",
       "title": "Financial Services & FinTech"
     },
     "intro": "Whatever your business, Fujisat Pay integrates to optimize your mobile payment processes. Discover how we help our clients thrive.",
+    "mobileApps": {
+      "benefits": "SDK integration libraries\nIn-app payment processing\nWebhook notifications\nSandbox testing environment",
+      "problem": "Integrating mobile money payments into mobile applications, handling transaction callbacks, ensuring secure payment processing.",
+      "sector": "Mobile Applications",
+      "solution": "Integrate Fujisat Pay's SDKs for seamless in-app payments with Orange Money and MTN Mobile Money, complete with webhook notifications and sandbox testing.",
+      "title": "Mobile App Developers"
+    },
     "nonprofit": {
+      "benefits": "Donation tracking and reporting\nMulti-channel collection\nDonor management\nCompliance documentation",
       "problem": "Collection of donations via mobile money, traceability of contributions, compliance.",
+      "sector": "Non-profit",
+      "solution": "Accept donations via Orange Money and MTN Mobile Money with complete traceability, donor management, automated receipts, and compliance reporting.",
       "title": "Non-profit Organizations & Associations"
     },
     "problemLabel": "The Challenge",
@@ -2168,6 +2299,10 @@
       "edit": {
         "loadError": "Failed to load profile.",
         "submit": "Save Changes"
+      },
+      "assignPermissions": {
+        "title": "Assign Permissions",
+        "description": "Permissions assigned to a profile will confer access to user, do it prudently"
       }
     },
     "messages": {
@@ -2193,7 +2328,11 @@
     },
     "title": "User Profiles",
     "totalCount_one": "1 profile",
-    "totalCount_other": "{{count}} profiles"
+    "totalCount_other": "{{count}} profiles",
+    "assignPermissions": {
+      "title": "Assign Permissions",
+      "description": "Permissions assigned to a profile will confer access to user, do it prudently"
+    }
   },
   "userprofiles": {
     "headers": {
@@ -2252,7 +2391,9 @@
       "create": {
         "description": "Add a new user.",
         "submit": "Create",
-        "title": "Create User"
+        "title": "Create User",
+        "systemTitle":"Create system User",
+        "companyTitle":"Create Company User"
       },
       "edit": {
         "description": "Update the details of this user.",
@@ -2274,7 +2415,7 @@
       "statusLabel": "Status",
       "statusPlaceholder": "Select a status",
       "userTypeLabel": "User Type",
-      "userTypePlaceholder": "Select a user type"
+      "userTypePlaceholder": "Select a user type",
     },
     "headers": {
       "companyName": "Company",
@@ -2309,11 +2450,35 @@
       "update": {
         "error": "Update failed.",
         "success": "Update successful."
+      },
+      "status": {
+        "success": "User status updated successfully.",
+        "error": "Failed to update user status."
       }
     },
     "title": "Users",
     "totalCount_one": "1 user",
-    "totalCount_other": "{{count}} users"
+    "totalCount_other": "{{count}} users",
+    "confirmations": {
+      "delete": {
+        "title": "Delete User",
+        "description": "Are you sure you want to delete this user? This action cannot be undone.",
+        "confirm": "Delete",
+        "cancel": "Cancel"
+      },
+      "toggleStatus": {
+        "title": "Change User Status",
+        "description": "Are you sure you want to change this user's status?",
+        "confirm": "Confirm",
+        "cancel": "Cancel"
+      },
+      "bulkDelete": {
+        "title": "Delete Users",
+        "description": "Are you sure you want to delete {{count}} users? This action cannot be undone.",
+        "confirm": "Delete All",
+        "cancel": "Cancel"
+      }
+    }
   },
   "vwtransactionssummaries": {
     "headers": {

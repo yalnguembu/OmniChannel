@@ -1,6 +1,7 @@
 import { Link, createFileRoute } from "@tanstack/react-router"
 import { Button } from "@/shared/components/ui/button"
 
+import PageLoader from "@/shared/components/PageLoader"
 export function NotFoundPage() {
   return (
     <div className="flex min-h-screen flex-col">
@@ -17,5 +18,6 @@ export function NotFoundPage() {
 }
 
 export const Route = createFileRoute("/_public/not-found")({
+  pendingComponent: PageLoader,
   component: NotFoundPage,
 })

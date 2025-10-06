@@ -28,7 +28,7 @@ const enum OWNER_TYPE {
 }
 
 interface FeeConfigurationCreateFormProps {
-  onSubmit: (data: CreateFeeConfigurationRequest) => void
+  onSubmit: (data: CreateFeeConfigurationRequest, setError: any) => void
   onCancel: () => void
   isLoading?: boolean
   defaultValues?: Partial<CreateFeeConfigurationRequest>
@@ -53,7 +53,7 @@ export const FeeConfigurationCreateForm: React.FC<FeeConfigurationCreateFormProp
 
   const handleSubmit = (values: CreateFeeConfigurationRequest) => {
     if (onSubmit) {
-      onSubmit(values)
+      onSubmit(values, form.setError)
     }
   }
   const { dropdownQuery: companyDropdownQuery } = useCompany()

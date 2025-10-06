@@ -46,7 +46,7 @@ export const CompanyCreateForm: React.FC<CompanyCreateFormProps> = ({ onSubmit, 
 
   const handleSubmit = (values: CreateCompanyRequest) => {
     if (onSubmit) {
-      onSubmit(values)
+      onSubmit(values, form.setError)
     }
   }
 

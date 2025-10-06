@@ -20,7 +20,8 @@ import {
   getApiCompanyGetAllTypeOptions,
   // postApiDailyMetricSearchMutation,
 } from "@/shared/api/@tanstack/react-query.gen"
-import { SearchCompanyResponseIPagedListFujiPayApiResponse } from "@/shared/api/types.gen"
+import { SearchCompanyResponseIPagedListFujiPayApiResponse, CreateCompanyRequest, UpdateCompanyRequest } from "@/shared/api/types.gen"
+import type { UseFormSetError } from "react-hook-form"
 
 const getCompanySearchQueryKey = (cacheKey: string) => ["company", "search", cacheKey]
 
@@ -37,10 +38,21 @@ export const useCompany = () => {
   const queryClient = useQueryClient()
   const store = useCompanyStore()
 
-  const { createQueryErrorConfig } = useErrorHandling()
+  const { createQueryErrorConfig, mapValidationErrorsToForm } = useErrorHandling()
 
   const searchCompanysMutation = useMutation({
-    ...postApiCompanySearchMutation(),
+    ...postApiCompanySearchMutation({
+      body: {
+        pageNumber: store.currentPage,
+        pageSize: store.pageSize,
+        sortBy: store.sortBy,
+        sortDirection: store.sortDirection,
+        ids: store.filters.ids,
+        searchTerm: store.filters.searchTerm,
+        createdFrom: store.filters.createdFrom || "",
+        createdTo: store.filters.createdTo || "",
+      },
+    }),
     onMutate: () => {
       store.setLoading(true)
       store.setError(null)
@@ -207,6 +219,69 @@ export const useCompany = () => {
     updateCompanyMutation.mutate({ body: data })
   }
 
+  // Helper function for creating company with form validation
+  const createCompanyWithValidation = (data: CreateCompanyRequest, setError: UseFormSetError<CreateCompanyRequest>, onSuccess?: () => void) => {
+    createCompanyMutation.mutate(
+      { body: data },
+      {
+        onSuccess: () => {
+          toast.success(t("companies.messages.create.success"))
+          queryClient.invalidateQueries({ queryKey: getApiCompanyDropdownQueryKey() })
+          queryClient.invalidateQueries({ queryKey: postApiCompanySearchQueryKey() })
+          queryClient.invalidateQueries({ queryKey: ["company", "search"] })
+          searchCompanys()
+          onSuccess?.()
+        },
+        onError: (error: any) => {
+          // Try to map validation errors to form fields
+          const mapped = mapValidationErrorsToForm(error, setError)
+
+          // If no validation errors were mapped, show the error via toast
+          if (!mapped) {
+            const message = error.message || t("companies.messages.create.error")
+            store.setError(message)
+            toast.error(message)
+          }
+        },
+      },
+    )
+  }
+
+  // Helper function for updating company with form validation
+  const updateCompanyWithValidation = (data: UpdateCompanyRequest, setError: UseFormSetError<UpdateCompanyRequest>, onSuccess?: () => void) => {
+    updateCompanyMutation.mutate(
+      { body: data },
+      {
+        onSuccess: (result, variables) => {
+          toast.success(t("companies.messages.update.success"))
+          queryClient.invalidateQueries({ queryKey: postApiCompanySearchQueryKey() })
+          queryClient.invalidateQueries({ queryKey: ["company", "search"] })
+
+          if (result.success === true && variables.body?.id) {
+            const id = variables.body.id
+            queryClient.invalidateQueries({ queryKey: getApiCompanyByIdQueryKey({ path: { id } }) })
+            queryClient.invalidateQueries({ queryKey: getApiCompanyDetailByIdQueryKey({ path: { id } }) })
+            store.updateItem(id, variables.body)
+          }
+
+          queryClient.invalidateQueries({ queryKey: getApiCompanyDropdownQueryKey() })
+          onSuccess?.()
+        },
+        onError: (error: any) => {
+          // Try to map validation errors to form fields
+          const mapped = mapValidationErrorsToForm(error, setError)
+
+          // If no validation errors were mapped, show the error via toast
+          if (!mapped) {
+            const message = error.message || t("companies.messages.update.error")
+            store.setError(message)
+            toast.error(message)
+          }
+        },
+      },
+    )
+  }
+
   const deleteCompanyMutation = useMutation({
     ...deleteApiCompanyByIdMutation(),
     onMutate: () => {
@@ -358,8 +433,11 @@ export const useCompany = () => {
     onCreateCompany,
     onUpdateCompany,
     onDeleteCompany,
+    createCompanyWithValidation,
+    updateCompanyWithValidation,
     search,
     changePage,
+    changePageSize,
     changePageSize,
     changeSort,
     applyFilters,

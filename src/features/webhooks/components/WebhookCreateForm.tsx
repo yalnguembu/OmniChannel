@@ -1,5 +1,5 @@
 import React, { useMemo } from "react"
-import { useForm } from "react-hook-form"
+import { useForm, UseFormSetError } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useTranslation } from "react-i18next"
 import { Button } from "@/shared/components/ui/button"
@@ -13,7 +13,7 @@ import { useApplication } from "@/features/companies/hooks/useApplication"
 import { SearchDropdown } from "@/shared/components/dropdowns/search-dropdown"
 
 interface WebhookCreateFormProps {
-  onSubmit: (data: CreateWebhookRequest) => void
+  onSubmit: (data: CreateWebhookRequest, setError: UseFormSetError<CreateWebhookRequest>) => void
   onCancel: () => void
   isLoading?: boolean
   defaultValues?: Partial<CreateWebhookRequest>
@@ -32,7 +32,7 @@ export const WebhookCreateForm: React.FC<WebhookCreateFormProps> = ({ onSubmit, 
 
   const handleSubmit = (values: CreateWebhookRequest) => {
     if (onSubmit) {
-      onSubmit(values)
+      onSubmit(values, form.setError)
     }
   }
 

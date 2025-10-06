@@ -5,6 +5,8 @@ import { useWebhookStore } from "../stores/webhookStore"
 import { SortDirection } from "@/shared/enums/data-grid"
 import { createErrorHandler } from "@/shared/lib/errorHandling"
 import { useErrorHandling } from "@/shared/hooks/useErrorHandling"
+import type { UseFormSetError } from "react-hook-form"
+import type { CreateWebhookRequest, UpdateWebhookRequest } from "@/shared/api/types.gen"
 import {
   postApiWebhookSearchMutation,
   getApiWebhookDropdownOptions,
@@ -37,10 +39,21 @@ export const useWebhook = () => {
   const queryClient = useQueryClient()
   const store = useWebhookStore()
 
-  const { createQueryErrorConfig } = useErrorHandling()
+  const { createQueryErrorConfig, mapValidationErrorsToForm } = useErrorHandling()
 
   const searchWebhooksMutation = useMutation({
-    ...postApiWebhookSearchMutation(),
+    ...postApiWebhookSearchMutation({
+      body: {
+        pageNumber: store.currentPage,
+        pageSize: store.pageSize,
+        sortBy: store.sortBy,
+        sortDirection: store.sortDirection,
+        ids: store.filters.ids,
+        searchTerm: store.filters.searchTerm,
+        createdFrom: store.filters.createdFrom || "",
+        createdTo: store.filters.createdTo || "",
+      },
+    }),
     onMutate: () => {
       store.setLoading(true)
       store.setError(null)
@@ -222,6 +235,58 @@ export const useWebhook = () => {
     updateWebhookMutation.mutate({ body: data })
   }
 
+  // Helper functions with validation
+  const createWebhookWithValidation = (data: CreateWebhookRequest, setError: UseFormSetError<CreateWebhookRequest>, onSuccess?: () => void) => {
+    createWebhookMutation.mutate(
+      { body: data },
+      {
+        onSuccess: () => {
+          toast.success(t("webhooks.messages.create.success"))
+          queryClient.invalidateQueries({ queryKey: getApiWebhookDropdownQueryKey() })
+          queryClient.invalidateQueries({ queryKey: postApiWebhookSearchQueryKey() })
+          queryClient.invalidateQueries({ queryKey: ["webhook", "search"] })
+          searchWebhooks()
+          onSuccess?.()
+        },
+        onError: (error: any) => {
+          const mapped = mapValidationErrorsToForm(error, setError)
+          if (!mapped) {
+            const message = error.message || t("webhooks.messages.create.error")
+            store.setError(message)
+            toast.error(message)
+          }
+        },
+      },
+    )
+  }
+
+  const updateWebhookWithValidation = (data: UpdateWebhookRequest, setError: UseFormSetError<UpdateWebhookRequest>, onSuccess?: () => void) => {
+    updateWebhookMutation.mutate(
+      { body: data },
+      {
+        onSuccess: () => {
+          toast.success(t("webhooks.messages.update.success"))
+          queryClient.invalidateQueries({ queryKey: postApiWebhookSearchQueryKey() })
+          queryClient.invalidateQueries({ queryKey: ["webhook", "search"] })
+          if (data.id) {
+            queryClient.invalidateQueries({ queryKey: getApiWebhookByIdQueryKey({ path: { id: data.id } }) })
+            queryClient.invalidateQueries({ queryKey: getApiWebhookDetailByIdQueryKey({ path: { id: data.id } }) })
+          }
+          queryClient.invalidateQueries({ queryKey: getApiWebhookDropdownQueryKey() })
+          onSuccess?.()
+        },
+        onError: (error: any) => {
+          const mapped = mapValidationErrorsToForm(error, setError)
+          if (!mapped) {
+            const message = error.message || t("webhooks.messages.update.error")
+            store.setError(message)
+            toast.error(message)
+          }
+        },
+      },
+    )
+  }
+
   const deleteWebhookMutation = useMutation({
     ...deleteApiWebhookByIdMutation(),
     onMutate: () => {
@@ -355,8 +420,11 @@ export const useWebhook = () => {
     onCreateWebhook,
     onUpdateWebhook,
     onDeleteWebhook,
+    createWebhookWithValidation,
+    updateWebhookWithValidation,
     search,
     changePage,
+    changePageSize,
     changePageSize,
     changeSort,
     applyFilters,

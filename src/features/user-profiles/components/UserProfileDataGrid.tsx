@@ -22,6 +22,7 @@ export const UserProfileDataGrid: React.FC = () => {
     isLoading,
     hasSelection,
     changePage,
+    changePageSize,
     changeSort,
     setSelectedRows,
     deleteUserProfile,
@@ -42,12 +43,12 @@ export const UserProfileDataGrid: React.FC = () => {
       sortable: true,
       resizable: true,
     },
-    {
-      key: "permissions",
-      label: t("userprofiles.headers.permissions"),
-      sortable: true,
-      resizable: true,
-    },
+    // {
+    //   key: "permissions",
+    //   label: t("userprofiles.headers.permissions"),
+    //   sortable: true,
+    //   resizable: true,
+    // },
     {
       key: "isSystemProfile",
       label: t("userprofiles.headers.isSystemProfile"),
@@ -71,7 +72,7 @@ export const UserProfileDataGrid: React.FC = () => {
       key: "actions",
       label: t("userProfile.actions.more"),
       sortable: false,
-      width: 70,
+      width: 100,
     },
   ]
 
@@ -89,6 +90,10 @@ export const UserProfileDataGrid: React.FC = () => {
 
   const handleEdit = (id: string) => {
     navigate({ to: `/access-control/user-profiles/${id}/edit` })
+  }
+
+  const handleConfig = (id: string) => {
+    navigate({ to: `/access-control/user-profiles/${id}/assign` })
   }
 
   const handleDelete = (id: string) => {
@@ -114,6 +119,9 @@ export const UserProfileDataGrid: React.FC = () => {
       case "delete":
         handleDelete(id)
         break
+      case "config":
+        handleConfig(id)
+        break
     }
   }
 
@@ -133,8 +141,9 @@ export const UserProfileDataGrid: React.FC = () => {
     setSelectedRows(selectedIds)
   }
 
-  const handlePageChange = (page: number) => {
+  const handlePageChange = (page: number, size: number) => {
     changePage(page)
+    changePageSize(size)
   }
 
   const bulkActions = hasSelection
@@ -169,6 +178,7 @@ export const UserProfileDataGrid: React.FC = () => {
         enableColumnVisibility={true}
         bulkActions={bulkActions}
         dispatch={handleDispatch}
+        actions={["view", "edit", "delete", "config"]}
       />
     </div>
   )

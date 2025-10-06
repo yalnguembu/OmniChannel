@@ -27,7 +27,18 @@ export const useCompanyAppLimit = () => {
   const store = useCompanyAppLimitStore()
 
   const searchCompanyAppLimitsMutation = useMutation({
-    ...postApiCompanyAppLimitSearchMutation(),
+    ...postApiCompanyAppLimitSearchMutation({
+      body: {
+        pageNumber: store.currentPage,
+        pageSize: store.pageSize,
+        sortBy: store.sortBy,
+        sortDirection: store.sortDirection,
+        ids: store.filters.ids,
+        searchTerm: store.filters.searchTerm,
+        createdFrom: store.filters.createdFrom || "",
+        createdTo: store.filters.createdTo || "",
+      },
+    }),
     onMutate: () => {
       store.setLoading(true)
       store.setError(null)
@@ -249,6 +260,7 @@ export const useCompanyAppLimit = () => {
     onDeleteCompanyAppLimit,
     search,
     changePage,
+    changePageSize,
     changePageSize,
     changeSort,
     applyFilters,

@@ -40,6 +40,7 @@ export function CompanyAppLimitsTab({ companyId }: { companyId: string }) {
     applyFilters,
     clearFilters,
     changePage,
+    changePageSize,
     changeSort,
     setSelectedRows,
     deleteCompanyAppLimit,
@@ -142,8 +143,9 @@ export function CompanyAppLimitsTab({ companyId }: { companyId: string }) {
     setSelectedRows(selectedIds)
   }
 
-  const handlePageChange = (page: number) => {
+  const handlePageChange = (page: number, size: number) => {
     changePage(page)
+    changePageSize(size)
   }
 
   const bulkActions = hasSelection

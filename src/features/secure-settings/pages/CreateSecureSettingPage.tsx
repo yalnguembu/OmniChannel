@@ -9,17 +9,12 @@ import { SecureSettingRequest } from "@/shared/api"
 export function CreateSecureSettingPage() {
   const navigate = useNavigate()
   const { t } = useTranslation()
-  const { createMutation } = useSecureSetting()
+  const { createSecureSettingWithValidation } = useSecureSetting()
 
-  const handleSubmit = (data: SecureSettingRequest[]) => {
-    createMutation.mutate(
-      { body: data },
-      {
-        onSuccess: () => {
-          navigate({ to: `/administration/secure-settings` })
-        },
-      },
-    )
+  const handleSubmit = (data: SecureSettingRequest[], setError: any) => {
+    createSecureSettingWithValidation(data, setError, () => {
+      navigate({ to: `/administration/secure-settings` })
+    })
   }
 
   const handleCancel = () => {

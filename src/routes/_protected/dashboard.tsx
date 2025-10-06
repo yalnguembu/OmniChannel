@@ -4,6 +4,7 @@ import { StandardListPageLayout } from "@/shared/components/layouts/ListPageLayo
 import { ListPageHeader } from "@/shared/components/ListPageHeader"
 import { DashboardPage } from "@/features/dashboard/page"
 
+import PageLoader from "@/shared/components/PageLoader"
 const QuickActionsPage = () => {
   const { t } = useTranslation()
 
@@ -20,5 +21,6 @@ const QuickActionsPage = () => {
 }
 
 export const Route = createFileRoute("/_protected/dashboard")({
+  pendingComponent: PageLoader,
   component: QuickActionsPage,
 })

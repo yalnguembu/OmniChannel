@@ -5,9 +5,10 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Development Commands
 
 ### Core Development
-- `npm run dev` - Start development server with Vite
-- `npm run build` - Build TypeScript and production bundle
-- `npm run build:prod` - Generate routes and build for production
+- `npm run dev` - Start development server with Vite (proxies `/api` requests to production)
+- `npm run build` - Build production bundle with Vite
+- `npm run build:prod` - Generate routes AND build for production
+- `npm run preview` - Preview production build locally
 
 ### Code Quality
 - `npm run lint` - Lint all files with ESLint
@@ -19,11 +20,16 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - `npm run test:e2e` - Run end-to-end tests in headless mode
 
 ### API & Routing
-- `npm run generate:route` - Generate TanStack Router routes
-- `npm run generate:api` - Generate API client from OpenAPI spec
+- `npm run generate:route` - Generate TanStack Router routes from `/src/routes/**/*.tsx`
+- `npm run generate:api` - Generate API client from OpenAPI spec (`spec.yml` → `/src/shared/api`)
+- `npm run generate:components` - Auto-generate components (uses `generator/` directory)
 
 ### Internationalization
-- `npm run parse` - Extract translatable strings and generate types
+- `npm run parse` - Extract translatable strings and generate TypeScript types
+
+### Releases
+- `npm run release:dev` - Create pre-release version with standard-version
+- `npm run release:prod` - Create production release with standard-version
 
 ## Architecture Overview
 
@@ -81,4 +87,25 @@ Auto-generated client from OpenAPI specification provides type-safe API calls. A
 React Hook Form with Zod validation schemas provide type-safe form handling. Consistent patterns across create/edit forms for each domain.
 
 ### Testing Strategy
-Cypress end-to-end tests cover complete authentication flow including OTP verification, password setting, and 2FA setup. Tests use mock API responses and custom commands for common operations.
+Cypress end-to-end tests in `/cypress/e2e/` cover:
+- Complete authentication flow (OTP → password → 2FA)
+- Accessibility testing (a11y)
+- Error handling scenarios
+
+Tests use mock API responses and custom commands for common operations.
+
+### Permission System
+The application implements role-based access control (RBAC):
+- Each menu item can have an optional `permission` field (e.g., `"COUNTRY_VIEW"`)
+- User permissions are stored in session and checked via `sessionStore`
+- Permission guards can be applied to routes using `createPermissionGuard()` from `/src/shared/guards/permissionGuard.ts`
+- Permissions follow pattern: `{MODULE}_{ACTION}` where ACTION is CREATE, UPDATE, DELETE, or VIEW
+- Menu items are filtered client-side based on user permissions using `filterMenuByPermissions()`
+
+### Important Patterns
+- **Path Aliases**: Use `@/` for imports (resolves to `/src`)
+- **API Generation**: All API code in `/src/shared/api` is auto-generated from `spec.yml` using `@hey-api/openapi-ts`. DO NOT manually edit files in this directory.
+- **Route Generation**: Routes are auto-generated from file structure in `/src/routes`. Run `npm run generate:route` after adding/modifying route files.
+- **i18n Keys**: Translation keys use dot notation (e.g., `menu.Dashboard`). Run `npm run parse` to extract new keys.
+- **Store Pattern**: All Zustand stores use immer middleware for immutable updates and devtools for debugging
+- **Vite Proxy**: Development server proxies `/api/*` requests to production backend for local development

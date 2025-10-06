@@ -27,7 +27,18 @@ export const useCurrency = () => {
   const store = useCurrencyStore()
 
   const searchCurrencysMutation = useMutation({
-    ...postApiCurrencySearchMutation(),
+    ...postApiCurrencySearchMutation({
+      body: {
+        pageNumber: store.currentPage,
+        pageSize: store.pageSize,
+        sortBy: store.sortBy,
+        sortDirection: store.sortDirection,
+        ids: store.filters.ids,
+        searchTerm: store.filters.searchTerm,
+        createdFrom: store.filters.createdFrom || "",
+        createdTo: store.filters.createdTo || "",
+      },
+    }),
     onMutate: () => {
       store.setLoading(true)
       store.setError(null)
@@ -247,6 +258,7 @@ export const useCurrency = () => {
     onDeleteCurrency,
     search,
     changePage,
+    changePageSize,
     changePageSize,
     changeSort,
     applyFilters,

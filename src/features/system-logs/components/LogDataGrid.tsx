@@ -146,8 +146,9 @@ export const LogDataGrid: React.FC = () => {
     setSelectedRows(selectedIds)
   }
 
-  const handlePageChange = (page: number) => {
+  const handlePageChange = (page: number, size: number) => {
     changePage(page)
+    changePageSize(size)
   }
 
   const DetailItem = ({ label, value }: { label: string; value: React.ReactNode }) => (

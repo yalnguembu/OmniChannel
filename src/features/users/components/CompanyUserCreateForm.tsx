@@ -14,7 +14,7 @@ import { useCompany } from "@/features/companies/hooks/useCompany"
 import { SearchDropdown } from "@/shared/components/dropdowns/search-dropdown"
 
 interface CompanyUserCreateFormProps {
-  onSubmit: (data: CreateCompanyUserRequest) => void
+  onSubmit: (data: CreateCompanyUserRequest, setError: any) => void
   onCancel: () => void
   isLoading?: boolean
 
@@ -48,7 +48,7 @@ export const CompanyUserCreateForm: React.FC<CompanyUserCreateFormProps> = ({ on
 
   const handleSubmit = (values: CreateCompanyUserRequest) => {
     if (onSubmit) {
-      onSubmit(values)
+      onSubmit(values, form.setError)
     }
   }
 

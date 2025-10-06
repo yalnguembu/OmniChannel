@@ -1,5 +1,5 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/components/ui/card"
-import { BarChart2, Calculator, Brain, Gauge } from "lucide-react"
+import { BarChart2, Calculator, Brain, Gauge, Loader } from "lucide-react"
 import { useTranslation } from "react-i18next"
 import { DailyMetricDto } from "@/shared/api/types.gen"
 import { ComposedChart, Bar, Area, XAxis, YAxis, CartesianGrid, Legend, Cell } from "recharts"
@@ -9,13 +9,24 @@ interface MathematicalAnalyticsTabProps {
   currentMetrics?: DailyMetricDto
   totalTransactions: number
   overallSuccessRate: number
+  isLoading?: boolean
 }
 
-export default function MathematicalAnalyticsTab({ currentMetrics, totalTransactions, overallSuccessRate }: MathematicalAnalyticsTabProps) {
+// Safe division helper to avoid NaN
+const safeDivide = (numerator: number, denominator: number, defaultValue = 0): number => {
+  if (!denominator || denominator === 0) return defaultValue
+  return numerator / denominator
+}
+
+// Safe percentage helper
+const safePercentage = (numerator: number, denominator: number, defaultValue = 0): number => {
+  return safeDivide(numerator, denominator, defaultValue) * 100
+}
+
+export default function MathematicalAnalyticsTab({ currentMetrics, totalTransactions, overallSuccessRate, isLoading = false }: MathematicalAnalyticsTabProps) {
   const { t } = useTranslation()
 
-  // Create default metrics when no data is available
-  const defaultMetrics = {
+  const effectiveMetrics = currentMetrics || {
     totalReceipts: 0,
     successfulReceipts: 0,
     failedReceipts: 0,
@@ -38,32 +49,30 @@ export default function MathematicalAnalyticsTab({ currentMetrics, totalTransact
     errorsCount: 0,
   }
 
-  const effectiveMetrics = currentMetrics || defaultMetrics
-
   // Prepare data for band charts
   const transactionStatusData = [
     {
       name: t("analytics.mathematical.transactionStatus.receipts"),
-      success: effectiveMetrics.successfulReceipts,
-      failed: effectiveMetrics.failedReceipts,
-      total: effectiveMetrics.totalReceipts,
-      successRate: effectiveMetrics.receiptsSuccessRate,
+      success: effectiveMetrics.successfulReceipts || 0,
+      failed: effectiveMetrics.failedReceipts || 0,
+      total: effectiveMetrics.totalReceipts || 0,
+      successRate: effectiveMetrics.receiptsSuccessRate || 0,
       color: "#10b981", // green-500
     },
     {
       name: t("analytics.mathematical.transactionStatus.withdrawals"),
-      success: effectiveMetrics.successfulWithdrawals,
-      failed: effectiveMetrics.failedWithdrawals,
-      total: effectiveMetrics.totalWithdrawals,
-      successRate: effectiveMetrics.withdrawalsSuccessRate,
+      success: effectiveMetrics.successfulWithdrawals || 0,
+      failed: effectiveMetrics.failedWithdrawals || 0,
+      total: effectiveMetrics.totalWithdrawals || 0,
+      successRate: effectiveMetrics.withdrawalsSuccessRate || 0,
       color: "#3b82f6", // blue-500
     },
     {
       name: t("analytics.mathematical.transactionStatus.fundTransfers"),
-      success: effectiveMetrics.successfulFundTransfers,
-      failed: effectiveMetrics.failedFundTransfers,
-      total: effectiveMetrics.totalFundTransfers,
-      successRate: effectiveMetrics.fundTransfersSuccessRate,
+      success: effectiveMetrics.successfulFundTransfers || 0,
+      failed: effectiveMetrics.failedFundTransfers || 0,
+      total: effectiveMetrics.totalFundTransfers || 0,
+      successRate: effectiveMetrics.fundTransfersSuccessRate || 0,
       color: "#8b5cf6", // purple-500
     },
   ]
@@ -291,18 +300,18 @@ export default function MathematicalAnalyticsTab({ currentMetrics, totalTransact
               <div className="p-6 bg-gray-50 rounded-lg">
                 <div className="text-sm text-gray-600 mb-2">{t("analytics.mathematical.operationFee.grossMargin")}</div>
                 <div className="text-2xl font-mono font-bold">
-                  {(((effectiveMetrics.totalFees - effectiveMetrics.totalProviderFees) / effectiveMetrics.totalFees) * 100).toFixed(1)}%
+                  {safePercentage((effectiveMetrics.totalFees || 0) - (effectiveMetrics.totalProviderFees || 0), effectiveMetrics.totalFees || 0).toFixed(1)}%
                 </div>
                 <div className="text-sm text-gray-500 mt-1">{t("analytics.mathematical.operationFee.profitMarginAfterProviderCosts")}</div>
               </div>
               <div className="p-6 bg-gray-50 rounded-lg">
                 <div className="text-sm text-gray-600 mb-2">{t("analytics.mathematical.operationFee.revenueVolumeRatio")}</div>
-                <div className="text-2xl font-mono font-bold">{((effectiveMetrics.totalFees / effectiveMetrics.totalVolume) * 100).toFixed(3)}%</div>
+                <div className="text-2xl font-mono font-bold">{safePercentage(effectiveMetrics.totalFees || 0, effectiveMetrics.totalVolume || 0).toFixed(3)}%</div>
                 <div className="text-sm text-gray-500 mt-1">{t("analytics.mathematical.operationFee.feeCollectionEfficiency")}</div>
               </div>
               <div className="p-6 bg-gray-50 rounded-lg">
                 <div className="text-sm text-gray-600 mb-2">{t("analytics.mathematical.operationFee.costEfficiencyMultiplier")}</div>
-                <div className="text-2xl font-mono font-bold">{(effectiveMetrics.totalFees / effectiveMetrics.totalProviderFees).toFixed(2)}x</div>
+                <div className="text-2xl font-mono font-bold">{safeDivide(effectiveMetrics.totalFees || 0, effectiveMetrics.totalProviderFees || 0).toFixed(2)}x</div>
                 <div className="text-sm text-gray-500 mt-1">{t("analytics.mathematical.operationFee.revenuePerCostUnit")}</div>
               </div>
             </div>
@@ -326,17 +335,17 @@ export default function MathematicalAnalyticsTab({ currentMetrics, totalTransact
             <div className="grid gap-6 md:grid-cols-3">
               <div className="p-6 bg-purple-50 rounded-lg text-center">
                 <div className="text-sm text-purple-600 mb-2">{t("analytics.mathematical.crossCorrelation.transactionsPerUser")}</div>
-                <div className="text-3xl font-mono font-bold text-purple-700">{(totalTransactions / effectiveMetrics.activeUsers).toFixed(2)}</div>
+                <div className="text-3xl font-mono font-bold text-purple-700">{safeDivide(totalTransactions, effectiveMetrics.activeUsers || 0).toFixed(2)}</div>
                 <div className="text-sm text-purple-600">{t("analytics.mathematical.crossCorrelation.transactionsUserUnit")}</div>
               </div>
               <div className="p-6 bg-indigo-50 rounded-lg text-center">
                 <div className="text-sm text-indigo-600 mb-2">{t("analytics.mathematical.crossCorrelation.apiCallsPerUser")}</div>
-                <div className="text-3xl font-mono font-bold text-indigo-700">{(effectiveMetrics.apiCallsCount / effectiveMetrics.activeUsers).toFixed(2)}</div>
+                <div className="text-3xl font-mono font-bold text-indigo-700">{safeDivide(effectiveMetrics.apiCallsCount || 0, effectiveMetrics.activeUsers || 0).toFixed(2)}</div>
                 <div className="text-sm text-indigo-600">{t("analytics.mathematical.crossCorrelation.callsUserUnit")}</div>
               </div>
               <div className="p-6 bg-teal-50 rounded-lg text-center">
                 <div className="text-sm text-teal-600 mb-2">{t("analytics.mathematical.crossCorrelation.revenuePerUser")}</div>
-                <div className="text-3xl font-mono font-bold text-teal-700">{(effectiveMetrics.netRevenue / effectiveMetrics.activeUsers).toFixed(0)}</div>
+                <div className="text-3xl font-mono font-bold text-teal-700">{safeDivide(effectiveMetrics.netRevenue || 0, effectiveMetrics.activeUsers || 0).toFixed(0)}</div>
                 <div className="text-sm text-teal-600">{t("analytics.mathematical.crossCorrelation.xafUserUnit")}</div>
               </div>
             </div>
@@ -379,15 +388,15 @@ export default function MathematicalAnalyticsTab({ currentMetrics, totalTransact
             <div className="grid gap-6 md:grid-cols-2">
               <div className="p-6 bg-red-50 rounded-lg">
                 <div className="text-sm text-red-600 mb-2">{t("analytics.mathematical.crossCorrelation.errorToVolumeRatio")}</div>
-                <div className="text-2xl font-mono font-bold text-red-700">{((effectiveMetrics.errorsCount / totalTransactions) * 100).toFixed(2)}%</div>
+                <div className="text-2xl font-mono font-bold text-red-700">{safePercentage(effectiveMetrics.errorsCount || 0, totalTransactions).toFixed(2)}%</div>
                 <div className="text-sm text-red-600 mt-1">{t("analytics.mathematical.crossCorrelation.percentageTransactionsWithErrors")}</div>
               </div>
               <div className="p-6 bg-orange-50 rounded-lg">
                 <div className="text-sm text-orange-600 mb-2">{t("analytics.mathematical.crossCorrelation.overallFailureDistribution")}</div>
                 <div className="text-2xl font-mono font-bold text-orange-700">
                   {(() => {
-                    const totalFailures = effectiveMetrics.failedReceipts + effectiveMetrics.failedWithdrawals + effectiveMetrics.failedFundTransfers
-                    return ((totalFailures / totalTransactions) * 100).toFixed(2)
+                    const totalFailures = (effectiveMetrics.failedReceipts || 0) + (effectiveMetrics.failedWithdrawals || 0) + (effectiveMetrics.failedFundTransfers || 0)
+                    return safePercentage(totalFailures, totalTransactions).toFixed(2)
                   })()}
                   %
                 </div>
@@ -414,17 +423,17 @@ export default function MathematicalAnalyticsTab({ currentMetrics, totalTransact
             <div className="grid gap-6 md:grid-cols-3">
               <div className="p-6 bg-green-50 rounded-lg text-center">
                 <div className="text-sm text-green-600 mb-2">{t("analytics.mathematical.growthOperationalEfficiency.dailyUserGrowthRate")}</div>
-                <div className="text-3xl font-mono font-bold text-green-700">{((effectiveMetrics.newUsers / effectiveMetrics.activeUsers) * 100).toFixed(2)}%</div>
+                <div className="text-3xl font-mono font-bold text-green-700">{safePercentage(effectiveMetrics.newUsers || 0, effectiveMetrics.activeUsers || 0).toFixed(2)}%</div>
                 <div className="text-sm text-green-600">{t("analytics.mathematical.growthOperationalEfficiency.newUsersPerDay")}</div>
               </div>
               <div className="p-6 bg-blue-50 rounded-lg text-center">
                 <div className="text-sm text-blue-600 mb-2">{t("analytics.mathematical.growthOperationalEfficiency.volumeVelocity")}</div>
-                <div className="text-3xl font-mono font-bold text-blue-700">{(effectiveMetrics.totalVolume / (24 * 60 * 60)).toFixed(0)}</div>
+                <div className="text-3xl font-mono font-bold text-blue-700">{safeDivide(effectiveMetrics.totalVolume || 0, 24 * 60 * 60).toFixed(0)}</div>
                 <div className="text-sm text-blue-600">{t("analytics.mathematical.growthOperationalEfficiency.xafPerSecond")}</div>
               </div>
               <div className="p-6 bg-purple-50 rounded-lg text-center">
                 <div className="text-sm text-purple-600 mb-2">{t("analytics.mathematical.growthOperationalEfficiency.transactionRate")}</div>
-                <div className="text-3xl font-mono font-bold text-purple-700">{(totalTransactions / 24).toFixed(1)}</div>
+                <div className="text-3xl font-mono font-bold text-purple-700">{safeDivide(totalTransactions, 24).toFixed(1)}</div>
                 <div className="text-sm text-purple-600">{t("analytics.mathematical.growthOperationalEfficiency.transactionsPerHour")}</div>
               </div>
             </div>
@@ -438,7 +447,7 @@ export default function MathematicalAnalyticsTab({ currentMetrics, totalTransact
                 <div className="text-sm text-gray-700 mb-2">{t("analytics.mathematical.growthOperationalEfficiency.growthMomentumIndex")}</div>
                 <div className="text-2xl font-mono font-bold text-green-700">
                   {(() => {
-                    const momentum = (effectiveMetrics.newUsers / effectiveMetrics.activeUsers) * (overallSuccessRate / 100) * (effectiveMetrics.netRevenue / 1000)
+                    const momentum = safeDivide(effectiveMetrics.newUsers || 0, effectiveMetrics.activeUsers || 0) * safeDivide(overallSuccessRate, 100) * safeDivide(effectiveMetrics.netRevenue || 0, 1000)
                     return momentum.toFixed(2)
                   })()}
                 </div>
@@ -448,7 +457,7 @@ export default function MathematicalAnalyticsTab({ currentMetrics, totalTransact
                 <div className="text-sm text-gray-700 mb-2">{t("analytics.mathematical.growthOperationalEfficiency.riskAssessmentScore")}</div>
                 <div className="text-2xl font-mono font-bold text-orange-700">
                   {(() => {
-                    const riskScore = (effectiveMetrics.failureRate / 100) * (effectiveMetrics.errorsCount / totalTransactions) * 100
+                    const riskScore = safeDivide(effectiveMetrics.failureRate || 0, 100) * safeDivide(effectiveMetrics.errorsCount || 0, totalTransactions) * 100
                     return riskScore.toFixed(3)
                   })()}
                 </div>
@@ -458,7 +467,7 @@ export default function MathematicalAnalyticsTab({ currentMetrics, totalTransact
                 <div className="text-sm text-gray-700 mb-2">{t("analytics.mathematical.growthOperationalEfficiency.platformStabilityIndex")}</div>
                 <div className="text-2xl font-mono font-bold text-purple-700">
                   {(() => {
-                    const stabilityIndex = (overallSuccessRate / 100) * (1 - effectiveMetrics.failureRate / 100) * 100
+                    const stabilityIndex = safeDivide(overallSuccessRate, 100) * (1 - safeDivide(effectiveMetrics.failureRate || 0, 100)) * 100
                     return stabilityIndex.toFixed(1)
                   })()}
                   %

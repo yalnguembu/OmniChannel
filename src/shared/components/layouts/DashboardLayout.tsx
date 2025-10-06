@@ -3,13 +3,29 @@ import { SidebarInset, SidebarProvider } from "@/shared/components/ui/sidebar"
 import { Outlet } from "@tanstack/react-router"
 import { AppSidebar } from "@/shared/components/sidebar"
 import { Button } from "@/shared/components/ui/button"
-import { Bell } from "lucide-react"
+import { Bell, Loader } from "lucide-react"
 import { SidebarTrigger } from "@/shared/components/ui/sidebar"
 import { Separator } from "@/shared/components/ui/separator"
 import { UserDropdown } from "@/shared/components/sidebar/UserDropdown"
+import { getApiUserMe } from "@/shared/api/sdk.gen"
+import { useQuery } from "@tanstack/react-query"
+import { useSessionStore } from "@/shared"
+import { ScrollToTopButton } from "../ScrollToTopButton"
 
 export const DashboardLayout = () => {
   const { sidebarOpen, toggleSidebar, pageTitle } = useUIStore()
+  const sessionStore = useSessionStore()
+
+  const { isLoading } = useQuery({
+    queryKey: ["user-profile"],
+    queryFn: async () => {
+      const result = await getApiUserMe()
+      if (result.data?.data) {
+        sessionStore.setPermissions(result.data.data?.permissions || [])
+      }
+      return result.data
+    },
+  })
 
   return (
     <SidebarProvider open={sidebarOpen} onOpenChange={toggleSidebar} className="w-screen overflow-hidden min-h-screen flex justify-end bg-muted">
@@ -24,14 +40,18 @@ export const DashboardLayout = () => {
           <div className="flex lg:gap-x-4 items-center">
             <Button variant="outline" className="flex items-center gap-2 border-transparent lg:border-muted-foreground/20 text-muted-foreground/80">
               <Bell className="h-4 w-4" />
-              <span className="hidden lg:inline">Notification</span>
             </Button>
             <UserDropdown />
           </div>
         </div>
-        {/* <div className="p-4"> */}
-        <Outlet />
-        {/* </div> */}
+        {isLoading ? (
+          <div className="flex w-full h-full items-center justify-center">
+            <Loader />
+          </div>
+        ) : (
+          <Outlet />
+        )}
+        <ScrollToTopButton />
       </SidebarInset>
     </SidebarProvider>
   )

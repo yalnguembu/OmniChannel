@@ -1,4 +1,4 @@
-import React, { ReactNode, useMemo, useEffect } from "react"
+import React, { ReactNode, useMemo, useEffect, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { useNavigate } from "@tanstack/react-router"
 import { DataGrid } from "@/shared/components/data-grid/data-grid"
@@ -6,16 +6,17 @@ import { ACTION, DataGridColumnHeader, DataGridRowEntry, DataGridSort, ViewMode 
 import { SortDirection } from "@/shared/enums/data-grid"
 import { useReceiptsReadModel } from "../hooks/useReceiptsReadModel"
 import { ReceiptsReadModelDataGridEntry } from "../lib/data-grid/ReceiptsReadModelDataGridEntry"
-import { Mail, PhoneCall, User, MapPin, Verified } from "lucide-react"
 import StatusBadge from "@/shared/components/StatusBadge"
-import { BadgeStyles } from "@/shared/types/enums"
 import ActionButtonGroup from "@/shared/components/data-grid/ActionButtonGroup"
 import DetailsCardItem from "@/shared/components/DetailsCardItem"
 import { getApiReceiptsReadModelCheckPaymentStatusById } from "@/shared/api/sdk.gen"
+import { ConfirmationModal } from "@/shared/components/ConfirmationModal"
 
 export const ReceiptsReadModelDataGrid: React.FC = () => {
   const { t } = useTranslation()
   const navigate = useNavigate()
+
+  const [bulkDeleteConfirmation, setBulkDeleteConfirmation] = useState(false)
 
   const {
     receiptsReadModels,
@@ -28,11 +29,11 @@ export const ReceiptsReadModelDataGrid: React.FC = () => {
     isLoading,
     hasSelection,
     changePage,
+    changePageSize,
     changeSort,
     setSelectedRows,
     bulkDeleteMutation,
     searchReceiptsReadModels,
-    // getApiReceiptsReadModelGetAllStatus,
   } = useReceiptsReadModel()
 
   const columnHeaders: DataGridColumnHeader[] = [
@@ -85,9 +86,6 @@ export const ReceiptsReadModelDataGrid: React.FC = () => {
     if (response.status === 200 && response.data) searchReceiptsReadModels()
   }
 
-  // const { data: allStatusData, isLoading: loadingStatus } = getApiReceiptsReadModelGetAllStatus()
-  // const feeTypeOptions = feeTypeDropdownData && feeTypeDropdownData.data ? feeTypeDropdownData.data.map((c) => ({ value: c.id, label: c.name })) : []
-
   useEffect(() => {
     searchReceiptsReadModels()
   }, [])
@@ -106,9 +104,12 @@ export const ReceiptsReadModelDataGrid: React.FC = () => {
   }
 
   const handleBulkDelete = () => {
-    if (confirm(t("receiptsReadModels.bulk.deleteConfirm", { count: selectedRows.length }))) {
-      bulkDeleteMutation.mutate(selectedRows)
-    }
+    setBulkDeleteConfirmation(true)
+  }
+
+  const confirmBulkDelete = () => {
+    bulkDeleteMutation.mutate(selectedRows)
+    setBulkDeleteConfirmation(false)
   }
 
   const sortConfig: DataGridSort | undefined = sortBy
@@ -127,8 +128,9 @@ export const ReceiptsReadModelDataGrid: React.FC = () => {
     setSelectedRows(selectedIds)
   }
 
-  const handlePageChange = (page: number) => {
+  const handlePageChange = (page: number, size: number) => {
     changePage(page)
+    changePageSize(size)
   }
 
   const bulkActions = hasSelection
@@ -153,15 +155,16 @@ export const ReceiptsReadModelDataGrid: React.FC = () => {
           return (
             <div className="flex flex-col gap-y-1 text-muted-foreground/80">
               <div className="flex gap-x-1.5 lg:text-md">
-                <span className="font-semibold">{t("receiptsreadmodels.headers.amount")} :</span>
-                <span className="text-primary">
-                  {item.getTextFor("amount")}
-                  {item.getTextFor("currency")}
+                <span className="font-medium">{t("receiptsreadmodels.headers.amount")} :</span>
+                <span className="text-green-500 font-bold">
+                  {item.getTextFor("amount")} {item.getTextFor("currency")}
                 </span>
               </div>
               <div className="flex gap-x-1.5">
-                <span className="font-semibold">{t("receiptsreadmodels.headers.netAmount")} :</span>
-                <span className="">{item.getTextFor("netAmount")}</span>
+                <span className="font-medium">{t("receiptsreadmodels.headers.netAmount")} :</span>
+                <span className="">
+                  {item.getTextFor("netAmount")} {item.getTextFor("currency")}
+                </span>
               </div>
               <div className="flex gap-x-1.5">
                 <StatusBadge text={item.getTextFor("status")} />
@@ -172,16 +175,20 @@ export const ReceiptsReadModelDataGrid: React.FC = () => {
           return (
             <div className="flex flex-col gap-y-1 text-muted-foreground/80">
               <div className="flex gap-x-1.5 lg:text-md">
-                <span className="font-semibold">{t("receiptsreadmodels.headers.providerFeeAmount")} :</span>
-                <span className="text-primary">{item.getTextFor("providerFeeAmount")}</span>
+                <span className="font-medium">{t("receiptsreadmodels.headers.providerFeeAmount")} :</span>
+                <span className="text-primary font-semibold">
+                  {item.getTextFor("providerFeeAmount")} {item.getTextFor("currency")}
+                </span>
               </div>
-              <div className="flex gap-x-1.5">
-                <span className="font-semibold">{t("receiptsreadmodels.headers.internalFeeAmount")} :</span>
+              {/* <div className="flex gap-x-1.5">
+                <span className="font-medium">{t("receiptsreadmodels.headers.internalFeeAmount")} :</span>
                 <span className="">{item.getTextFor("internalFeeAmount")}</span>
-              </div>
+              </div> */}
               <div className="flex gap-x-1.5">
-                <span className="font-semibold">{t("receiptsreadmodels.headers.feeAppliedAmount")} :</span>
-                <span className="">{item.getTextFor("feeAppliedAmount")}</span>
+                <span className="font-medium">{t("receiptsreadmodels.headers.feeAppliedAmount")} :</span>
+                <span className="font-semibold text-red-500">
+                  {item.getTextFor("feeAppliedAmount")} {item.getTextFor("currency")}
+                </span>
               </div>
             </div>
           )
@@ -189,16 +196,16 @@ export const ReceiptsReadModelDataGrid: React.FC = () => {
           return (
             <div className="flex flex-col gap-y-1 text-muted-foreground/80">
               <div className="flex gap-x-1.5 lg:text-md">
-                <span className="font-semibold">{t("receiptsreadmodels.headers.applicationName")} :</span>
-                <span className="text-primary">{item.getTextFor("applicationName")}</span>
+                <span className="font-medium">{t("receiptsreadmodels.headers.applicationName")} :</span>
+                <span className="text-primary font-bold">{item.getTextFor("applicationName")}</span>
               </div>
               <div className="flex gap-x-1.5">
-                <span className="font-semibold">{t("receiptsreadmodels.headers.companyName")} :</span>
+                <span className="font-medium">{t("receiptsreadmodels.headers.companyName")} :</span>
                 <span className="">{item.getTextFor("companyName")}</span>
               </div>
               <div className="flex gap-x-1.5">
-                <span className="font-semibold">{t("receiptsreadmodels.headers.phoneNumberEncrypted")} :</span>
-                <span className="">{item.getTextFor("phoneNumberEncrypted")}</span>
+                <span className="font-medium">{t("receiptsreadmodels.headers.phoneNumberEncrypted")} :</span>
+                <span className="font-black text-primary">{item.getTextFor("phoneNumberEncrypted")}</span>
               </div>
             </div>
           )
@@ -206,21 +213,21 @@ export const ReceiptsReadModelDataGrid: React.FC = () => {
           return (
             <div className="flex flex-col gap-y-1 text-muted-foreground/80">
               <div className="flex gap-x-1.5 lg:text-md">
-                <span className="font-semibold">{t("receiptsreadmodels.headers.externalReference")} :</span>
-                <span className="text-primary">{item.getTextFor("externalReference")}</span>
+                <span className="font-medium">{t("receiptsreadmodels.headers.externalReference")} :</span>
+                <span className="text-red-500 font-semibold">{item.getTextFor("externalReference")}</span>
               </div>
               <div className="flex gap-x-1.5">
-                <span className="font-semibold">{t("receiptsreadmodels.headers.providerReference")} :</span>
-                <span className="">{item.getTextFor("providerReference")}</span>
+                <span className="font-medium">{t("receiptsreadmodels.headers.internalReference")} :</span>
+                <span className="text-blue-500 font-semibold">{item.getTextFor("internalReference")}</span>
               </div>
               <div className="flex gap-x-1.5">
-                <span className="font-semibold">{t("receiptsreadmodels.headers.transactionId")} :</span>
-                <span className="">{item.getTextFor("transactionId")}</span>
+                <span className="font-medium">ID: </span>
+                <span className="">{item.getTextFor("id")}</span>
               </div>
             </div>
           )
         case "createdAt":
-          return <span className="text-muted-foreground/70">{item.getTextFor("createdAt")}</span>
+          return <span className="text-muted-foreground">{item.getTextFor("createdAt")}</span>
 
         case "actions":
           return <ActionButtonGroup view={view} isLoading={isLoading} row={item} actions={actions as ACTION[]} dispatch={handleDispatch} />
@@ -234,49 +241,74 @@ export const ReceiptsReadModelDataGrid: React.FC = () => {
       }
     } else {
       switch (column.key) {
-        case "basicInfo":
+        case "coreDetails":
           return (
             <div className="flex flex-col gap-y-1 px-4">
-              <div className="flex items-center gap-x-2">
-                <span className="font-semibold text-lg text-primary">{item.getTextFor("name")}</span>
-                <StatusBadge theme={BadgeStyles.GREEN} text={item.getTextFor("status")} />
-                {item.getTextFor("isVerified") === "true" && <StatusBadge Icon={Verified} theme={BadgeStyles.BLUE} text={t("receiptsreadmodels.headers.isVerified")} />}
-              </div>
-              <div className="flex flex-col gap-y-1 text-sm text-muted-foreground">
-                <DetailsCardItem Icon={User} label={t("receiptsreadmodels.headers.companyType")} value={item.getTextFor("companyType")} />
-                <DetailsCardItem Icon={Mail} label={t("receiptsreadmodels.headers.companySize")} value={item.getTextFor("companySize")} />
-              </div>
+              <DetailsCardItem
+                label={t("receiptsreadmodels.headers.amount")}
+                value={
+                  <span className="text-green-500 font-bold">
+                    {item.getTextFor("amount")} {item.getTextFor("currency")}
+                  </span>
+                }
+              />
+              <DetailsCardItem label={t("receiptsreadmodels.headers.netAmount")} value={item.getTextFor("netAmount")} />
+              <DetailsCardItem label={t("receiptsreadmodels.headers.status")} value={<StatusBadge text={item.getTextFor("status")} />} />
             </div>
           )
-        case "contactInfo":
+        case "fee":
           return (
             <div className="flex flex-col gap-y-1 px-4 text-sm text-muted-foreground">
-              <DetailsCardItem Icon={User} label={t("receiptsreadmodels.headers.contactPerson")} value={item.getTextFor("contactPerson")} />
-              <DetailsCardItem Icon={Mail} label={t("receiptsreadmodels.headers.email")} value={item.getTextFor("email")} />
-              <DetailsCardItem Icon={PhoneCall} label={t("receiptsreadmodels.headers.phoneNumber")} value={item.getTextFor("phoneNumber")} />
-              <DetailsCardItem Icon={MapPin} label={t("receiptsreadmodels.headers.address")} value={item.getTextFor("address")} />
+              <DetailsCardItem
+                label={t("receiptsreadmodels.headers.providerFeeAmount")}
+                value={
+                  <span className="text-primary font-semibold">
+                    {item.getTextFor("providerFeeAmount")} {item.getTextFor("currency")}
+                  </span>
+                }
+              />
+              {/* <DetailsCardItem label={t("receiptsreadmodels.headers.internalFeeAmount")} value={item.getTextFor("internalFeeAmount")} /> */}
+              <DetailsCardItem
+                label={t("receiptsreadmodels.headers.feeAppliedAmount")}
+                value={
+                  <span className="font-semibold text-red-500">
+                    {item.getTextFor("feeAppliedAmount")} {item.getTextFor("currency")}
+                  </span>
+                }
+              />
             </div>
           )
-        case "legalFinancial":
+        case "context":
           return (
             <div className="flex flex-col gap-y-1 px-4 text-sm text-muted-foreground">
-              <DetailsCardItem label={t("receiptsreadmodels.headers.countryName")} value={item.getTextFor("countryName")} />
-              <DetailsCardItem label={t("receiptsreadmodels.headers.businessRegistrationNumber")} value={item.getTextFor("businessRegistrationNumber")} />
-              <DetailsCardItem label={t("receiptsreadmodels.headers.taxNumber")} value={item.getTextFor("taxNumber")} />
-              <DetailsCardItem label={t("receiptsreadmodels.headers.website")} value={item.getTextFor("website")} />
+              <DetailsCardItem
+                label={t("receiptsreadmodels.headers.applicationName")}
+                value={<span className="text-primary font-bold">{item.getTextFor("applicationName")}</span>}
+              />
+              <DetailsCardItem label={t("receiptsreadmodels.headers.companyName")} value={item.getTextFor("companyName")} />
+              <DetailsCardItem
+                label={t("receiptsreadmodels.headers.phoneNumberEncrypted")}
+                value={<span className="font-black text-primary">{item.getTextFor("phoneNumberEncrypted")}</span>}
+              />
             </div>
           )
-        case "createdAt":
+        case "references":
           return (
-            <div className="px-4 pt-1 text-xs text-muted-foreground/70">
-              <span>{t("receiptsreadmodels.headers.createdAt")}: </span>
-              <span>{item.getTextFor("createdAt")}</span>
+            <div className="flex flex-col gap-y-1 px-4 text-sm text-muted-foreground">
+              <DetailsCardItem
+                label={t("receiptsreadmodels.headers.externalReference")}
+                value={<span className="text-red-500 font-semibold">{item.getTextFor("externalReference")}</span>}
+              />
+              <DetailsCardItem
+                label={t("receiptsreadmodels.headers.internalReference")}
+                value={<span className="text-blue-500 font-semibold">{item.getTextFor("internalReference")}</span>}
+              />
+              <DetailsCardItem label="ID" value={item.getTextFor("id")} />
             </div>
           )
         case "actions":
           return (
             <div className="flex flex-row justify-between px-4 pt-2 mt-auto border-t">
-              <DetailsCardItem label="#" value={1234} />
               <ActionButtonGroup view={view} isLoading={isLoading} row={item} actions={actions as ACTION[]} dispatch={handleDispatch} />
             </div>
           )
@@ -323,6 +355,18 @@ export const ReceiptsReadModelDataGrid: React.FC = () => {
         renderCell={renderCell}
         actions={actions}
         dispatch={handleDispatch}
+      />
+
+      <ConfirmationModal
+        open={bulkDeleteConfirmation}
+        onOpenChange={() => setBulkDeleteConfirmation(false)}
+        onConfirm={confirmBulkDelete}
+        title={t("receiptsReadModels.confirmations.bulkDelete.title")}
+        description={t("receiptsReadModels.confirmations.bulkDelete.description", { count: selectedRows.length })}
+        confirmText={t("receiptsReadModels.confirmations.bulkDelete.confirm")}
+        cancelText={t("receiptsReadModels.confirmations.bulkDelete.cancel")}
+        variant="danger"
+        isLoading={bulkDeleteMutation.isPending}
       />
     </div>
   )

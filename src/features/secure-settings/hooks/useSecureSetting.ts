@@ -4,6 +4,9 @@ import { useTranslation } from "react-i18next"
 import { useSecureSettingStore } from "../stores/secureSettingStore"
 import { SortDirection } from "@/shared/enums/data-grid"
 import { postApiSecureSettingSearchMutation, postApiSecureSettingMutation, getApiSecureSettingGetBySystemeNameBySystemNameOptions } from "@/shared/api/@tanstack/react-query.gen"
+import { useErrorHandling } from "@/shared/hooks/useErrorHandling"
+import type { UseFormSetError } from "react-hook-form"
+import type { SecureSettingRequest } from "@/shared/api/types.gen"
 
 export const secureSettingQueryKeys = {
   all: ["secureSetting"] as const,
@@ -18,9 +21,21 @@ export const useSecureSetting = () => {
   const { t } = useTranslation()
   const queryClient = useQueryClient()
   const store = useSecureSettingStore()
+  const { mapValidationErrorsToForm } = useErrorHandling()
 
   const searchSecureSettingsMutation = useMutation({
-    ...postApiSecureSettingSearchMutation(),
+    ...postApiSecureSettingSearchMutation({
+      body: {
+        pageNumber: store.currentPage,
+        pageSize: store.pageSize,
+        sortBy: store.sortBy,
+        sortDirection: store.sortDirection,
+        ids: store.filters.ids,
+        searchTerm: store.filters.searchTerm,
+        createdFrom: store.filters.createdFrom || "",
+        createdTo: store.filters.createdTo || "",
+      },
+    }),
     onMutate: () => {
       store.setLoading(true)
       store.setError(null)
@@ -113,6 +128,50 @@ export const useSecureSetting = () => {
     updateSecureSettingMutation.mutate({ body: data })
   }
 
+  // Helper functions with validation
+  const createSecureSettingWithValidation = (data: SecureSettingRequest[], setError: UseFormSetError<any>, onSuccess?: () => void) => {
+    createSecureSettingMutation.mutate(
+      { body: data },
+      {
+        onSuccess: () => {
+          toast.success(t("secureSettings.messages.create.success"))
+          queryClient.invalidateQueries({ queryKey: secureSettingQueryKeys.lists() })
+          searchSecureSettings()
+          onSuccess?.()
+        },
+        onError: (error: any) => {
+          const mapped = mapValidationErrorsToForm(error, setError)
+          if (!mapped) {
+            const message = error.message || t("secureSettings.messages.create.error")
+            store.setError(message)
+            toast.error(message)
+          }
+        },
+      },
+    )
+  }
+
+  const updateSecureSettingWithValidation = (data: SecureSettingRequest[], setError: UseFormSetError<any>, onSuccess?: () => void) => {
+    updateSecureSettingMutation.mutate(
+      { body: data },
+      {
+        onSuccess: () => {
+          toast.success(t("secureSettings.messages.update.success"))
+          queryClient.invalidateQueries({ queryKey: secureSettingQueryKeys.lists() })
+          onSuccess?.()
+        },
+        onError: (error: any) => {
+          const mapped = mapValidationErrorsToForm(error, setError)
+          if (!mapped) {
+            const message = error.message || t("secureSettings.messages.update.error")
+            store.setError(message)
+            toast.error(message)
+          }
+        },
+      },
+    )
+  }
+
   const search = () => {
     searchSecureSettings()
   }
@@ -149,8 +208,11 @@ export const useSecureSetting = () => {
     searchSecureSettings,
     onCreateSecureSetting,
     onUpdateSecureSetting,
+    createSecureSettingWithValidation,
+    updateSecureSettingWithValidation,
     search,
     changePage,
+    changePageSize,
     changePageSize,
     changeSort,
     applyFilters,

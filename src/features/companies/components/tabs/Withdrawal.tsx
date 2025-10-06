@@ -36,6 +36,7 @@ export function WithdrawalsTab({ companyId }: { companyId: string }) {
     applyFilters,
     clearFilters,
     changePage,
+    changePageSize,
     changeSort,
     setSelectedRows,
   } = useWithdrawalsReadModel()
@@ -43,98 +44,98 @@ export function WithdrawalsTab({ companyId }: { companyId: string }) {
   const columnHeaders: DataGridColumnHeader[] = [
     {
       key: "withdrawalMethodName",
-      label: "Withdrawal Method Name",
+      label: t("withdrawalsReadModels.headers.withdrawalMethodName"),
       sortable: true,
       resizable: true,
     },
     {
       key: "amount",
-      label: "Amount",
+      label: t("withdrawalsReadModels.headers.amount"),
       sortable: true,
       resizable: true,
     },
     {
       key: "currencySymbol",
-      label: "Currency Symbol",
+      label: t("withdrawalsReadModels.headers.currencySymbol"),
       sortable: true,
       resizable: true,
     },
     {
       key: "applicationName",
-      label: "Application Name",
+      label: t("withdrawalsReadModels.headers.applicationName"),
       sortable: true,
       resizable: true,
     },
     {
       key: "companyName",
-      label: "Company Name",
+      label: t("withdrawalsReadModels.headers.companyName"),
       sortable: true,
       resizable: true,
     },
 
     {
       key: "providerFeeAmount",
-      label: "Provider Fee Amount",
+      label: t("withdrawalsReadModels.headers.providerFeeAmount"),
       sortable: true,
       resizable: true,
     },
     {
       key: "internalFeeAmount",
-      label: "Internal Fee Amount",
+      label: t("withdrawalsReadModels.headers.internalFeeAmount"),
       sortable: true,
       resizable: true,
     },
     {
       key: "feeAppliedAmount",
-      label: "Fee Applied Amount",
+      label: t("withdrawalsReadModels.headers.feeAppliedAmount"),
       sortable: true,
       resizable: true,
     },
     {
       key: "netAmount",
-      label: "Net Amount",
+      label: t("withdrawalsReadModels.headers.netAmount"),
       sortable: true,
       resizable: true,
     },
     {
       key: "verificationAttempts",
-      label: "Verification Attempts",
+      label: t("withdrawalsReadModels.headers.verificationAttempts"),
       sortable: true,
       resizable: true,
     },
     {
       key: "providerReference",
-      label: "Provider Reference",
+      label: t("withdrawalsReadModels.headers.providerReference"),
       sortable: true,
       resizable: true,
     },
     {
       key: "transactionId",
-      label: "Transaction Id",
+      label: t("withdrawalsReadModels.headers.transactionId"),
       sortable: true,
       resizable: true,
     },
     {
       key: "status",
-      label: "Status",
+      label: t("withdrawalsReadModels.headers.status"),
       sortable: true,
       resizable: true,
     },
     {
       key: "accountNumber",
-      label: "Account Number",
+      label: t("withdrawalsReadModels.headers.accountNumber"),
       sortable: true,
       resizable: true,
     },
     {
       key: "paymentMethodName",
-      label: "Payment Method Name",
+      label: t("withdrawalsReadModels.headers.paymentMethodName"),
       sortable: true,
       resizable: true,
     },
     {
       key: "createdAt",
-      label: "Created At",
+      label: t("withdrawalsReadModels.headers.createdAt"),
       sortable: true,
       resizable: true,
     },
@@ -194,8 +195,9 @@ export function WithdrawalsTab({ companyId }: { companyId: string }) {
     setSelectedRows(selectedIds)
   }
 
-  const handlePageChange = (page: number) => {
+  const handlePageChange = (page: number, size: number) => {
     changePage(page)
+    changePageSize(size)
   }
 
   return (

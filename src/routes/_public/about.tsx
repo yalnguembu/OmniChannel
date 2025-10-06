@@ -4,6 +4,7 @@ import { Button } from "@/shared/components/ui/button"
 import { Sparkles, Shield, Headphones, Eye, Scale } from "lucide-react"
 import { createFileRoute } from "@tanstack/react-router"
 
+import PageLoader from "@/shared/components/PageLoader"
 function AboutPage() {
   const { t } = useTranslation()
 
@@ -107,5 +108,6 @@ function AboutPage() {
 }
 
 export const Route = createFileRoute("/_public/about")({
+  pendingComponent: PageLoader,
   component: AboutPage,
 })

@@ -2,7 +2,7 @@ import React, { useEffect, useMemo } from "react"
 import { useTranslation } from "react-i18next"
 import { useNavigate } from "@tanstack/react-router"
 import { DataGrid } from "@/shared/components/data-grid/data-grid"
-import { ACTION, DataGridColumnHeader,  DataGridSort } from "@/shared/types"
+import { ACTION, DataGridColumnHeader, DataGridSort } from "@/shared/types"
 import { SortDirection } from "@/shared/enums/data-grid"
 import { useFeeType } from "../hooks/useFeeType"
 import { FeeTypeDataGridEntry } from "../lib/data-grid/FeeTypeDataGridEntry"
@@ -23,6 +23,7 @@ export const FeeTypeDataGrid: React.FC = () => {
     isLoading,
     hasSelection,
     changePage,
+    changePageSize,
     changeSort,
     setSelectedRows,
     deleteFeeType,
@@ -132,8 +133,9 @@ export const FeeTypeDataGrid: React.FC = () => {
     setSelectedRows(selectedIds)
   }
 
-  const handlePageChange = (page: number) => {
+  const handlePageChange = (page: number, size: number) => {
     changePage(page)
+    changePageSize(size)
   }
 
   const bulkActions = hasSelection

@@ -15,7 +15,7 @@ import { SearchDropdown } from "@/shared/components/dropdowns/search-dropdown"
 interface ApplicationEditFormProps {
   applicationId: string
   initialData: UpdateApplicationRequest
-  onSubmit: (data: UpdateApplicationRequest) => void
+  onSubmit: (data: UpdateApplicationRequest, setError: any) => void
   onCancel: () => void
   isLoading?: boolean
 
@@ -40,7 +40,7 @@ export const ApplicationEditForm: React.FC<ApplicationEditFormProps> = ({ applic
 
   const handleSubmit = (values: UpdateApplicationRequest) => {
     if (onSubmit) {
-      onSubmit({ ...values, id: applicationId })
+      onSubmit({ ...values, id: applicationId }, form.setError)
     }
   }
 

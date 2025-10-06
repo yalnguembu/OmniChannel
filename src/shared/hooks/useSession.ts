@@ -2,12 +2,19 @@ import { useCallback } from "react"
 import { toast } from "sonner"
 import { router } from "@/app/providers/router-provider"
 import { useSessionStore } from "@/shared/stores/sessionStore"
-import { useMutation } from "@tanstack/react-query"
-import { postApiAuthLogoutAllMutation, postApiAuthLogoutMutation, postApiAuthCookieLoginMutation /*, postApiAuthLoginMutation */ } from "@/shared/api/@tanstack/react-query.gen"
+import {
+  postApiAuthLogoutAllMutation,
+  postApiAuthLogoutMutation,
+  postApiAuthCookieLoginMutation,
+  getApiUserMeOptions,
+  postApiAuthCookieLogoutMutation,
+  /*, postApiAuthLoginMutation */
+} from "@/shared/api/@tanstack/react-query.gen"
 import { LoginRequest } from "../api/types.gen"
 import { authPersistence } from "../lib/api/authPersistence"
 import { USER_TYPE } from "../enums/session"
 import { UserSession } from "../types/session"
+import { useMutation, useQuery } from "@tanstack/react-query"
 
 const cspHeader = `
   default-src *;
@@ -39,6 +46,19 @@ const headers = {
 }
 export const useSession = () => {
   const sessionStore = useSessionStore()
+
+  const getApiUserMe = () =>
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    useQuery({
+      ...getApiUserMeOptions(),
+      staleTime: 5 * 60 * 1000,
+      select: (data) => {
+        if (data.success && data.data) {
+          sessionStore.setUser({ ...data.data, fullName: `${data.data.firstName} ${data.data.lastName}` } as UserSession)
+        }
+        return data
+      },
+    })
 
   const loginMutation = useMutation({
     // ...postApiAuthLoginMutation({
@@ -78,7 +98,7 @@ export const useSession = () => {
   })
 
   const logoutMutation = useMutation({
-    ...postApiAuthLogoutMutation(),
+    ...postApiAuthCookieLogoutMutation(),
     onMutate: () => {
       sessionStore.setLoading(true)
     },
@@ -129,6 +149,7 @@ export const useSession = () => {
   return {
     login,
     logout,
+    getApiUserMe,
     isLoggedIn: sessionStore.getIsLoggedIn(),
     isLoading: sessionStore.isLoading || loginMutation.isPending || logoutMutation.isPending,
     error: sessionStore.error,

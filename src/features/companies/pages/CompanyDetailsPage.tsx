@@ -109,18 +109,18 @@ export function CompanyDetailsPage() {
       icon: AppWindow,
       component: ApplicationsTab,
     },
-    {
-      title: "Users",
-      value: "users",
-      icon: Users,
-      component: UsersTab,
-    },
-    {
-      title: "Settings",
-      value: "settings",
-      icon: Settings,
-      component: CompanySettingsTab,
-    },
+    // {
+    //   title: "Users",
+    //   value: "users",
+    //   icon: Users,
+    //   component: UsersTab,
+    // },
+    // {
+    //   title: "Settings",
+    //   value: "settings",
+    //   icon: Settings,
+    //   component: CompanySettingsTab,
+    // },
     {
       title: "Documents",
       value: "documents",
@@ -230,17 +230,17 @@ export function CompanyDetailsPage() {
           </Card>
 
           <Tabs value={activeTab} onValueChange={handleTabChange} defaultValue={activeTab} className="w-full">
-            <div className="sticky -top-4 z-20 pt-3 rounded bg-background">
+            <div className="sticky -top-4 z-20 pt-3 rounded bg-background overflow-x-auto">
               <TabsList className="flex flex-row gap-0 px-2 pb-0 bg-transparent border-b" style={{ boxShadow: "none" }}>
                 {tabs.map((tab) => (
                   <TabsTrigger
                     key={tab.value}
                     value={tab.value}
-                    className="2xl:min-w-[100px] hover:cursor-pointer px-2 2xl:px-4 py-2 border-b-4 border-transparent text-default font-medium text-base rounded-none data-[state=active]:border-b-primary data-[state=active]:shadow-none data-[state=active]:text-primary transition-colors"
+                    className="2xl:min-w-[100px] hover:cursor-pointer lg:px-2 2xl:px-4 py-2 border-b-4 border-transparent text-default font-medium text-base rounded-none data-[state=active]:border-b-primary data-[state=active]:shadow-none data-[state=active]:text-primary transition-colors"
                   >
-                    <div className="mb-3 px-2 space-x-3 flex items-center">
-                      <tab.icon className="h-6 w-6" />
-                      <span>{tab.title}</span>
+                    <div className="mb-3 px-1 lg:px-2 gap-x-1 lg:gap-x-3 flex items-center">
+                      <tab.icon className="h-4 w-4 lg:h-6 lg:w-6" />
+                      <span className="max-w-4 md:flex text-xs lg:text-sm break-words md:max-w-20 truncate lg:w-auto">{tab.title}</span>
                     </div>
                   </TabsTrigger>
                 ))}

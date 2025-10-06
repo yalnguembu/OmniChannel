@@ -7,6 +7,7 @@ import { motion } from "framer-motion"
 import { useState } from "react"
 import { createFileRoute } from "@tanstack/react-router"
 
+import PageLoader from "@/shared/components/PageLoader"
 function LandingPage() {
   const { t } = useTranslation()
 
@@ -560,5 +561,6 @@ async function createPayment() {
 }
 
 export const Route = createFileRoute("/_public/")({
+  pendingComponent: PageLoader,
   component: LandingPage,
 })

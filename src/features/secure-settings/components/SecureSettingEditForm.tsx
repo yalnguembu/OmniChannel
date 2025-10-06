@@ -13,7 +13,7 @@ import * as z from "zod"
 import { getUUID } from "@/shared/lib/uuid4"
 
 interface SecureSettingEditFormProps {
-  onSubmit: (data: SecureSettingRequest[]) => void
+  onSubmit: (data: SecureSettingRequest[], setError: any) => void
   onCancel: () => void
   isLoading?: boolean
   defaultValues: Partial<SecureSettingRequest>[]
@@ -60,6 +60,7 @@ export const SecureSettingEditForm: React.FC<SecureSettingEditFormProps> = ({ on
           ...setting,
           systemName,
         })),
+        form.setError,
       )
     }
   }

@@ -9,6 +9,7 @@ import { MapPin, Mail, Phone, Clock } from "lucide-react"
 import { Card, CardAction, CardContent, CardFooter, CardHeader, CardTitle } from "@/shared/components/ui/card"
 import { createFileRoute } from "@tanstack/react-router"
 
+import PageLoader from "@/shared/components/PageLoader"
 function ContactPage() {
   const { t } = useTranslation()
   const [formState, setFormState] = useState({
@@ -181,5 +182,6 @@ function ContactPage() {
 }
 
 export const Route = createFileRoute("/_public/contact")({
+  pendingComponent: PageLoader,
   component: ContactPage,
 })

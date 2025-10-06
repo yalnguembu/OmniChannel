@@ -14,6 +14,13 @@
       "title": "Notre vision"
     }
   },
+  "values": {
+    "compliance": "Nous respectons les normes réglementaires et les exigences de conformité les plus strictes, garantissant que toutes les transactions respectent les réglementations CEMAC et les protocoles de sécurité financière internationaux.",
+    "excellence": "Nous nous engageons à offrir une qualité de service exceptionnelle, des solutions innovantes et une amélioration continue dans tout ce que nous faisons pour nos clients.",
+    "security": "Nous priorisons la protection de vos données financières et transactions avec un chiffrement de niveau entreprise, une authentification multi-niveaux et des pistes d'audit complètes.",
+    "support": "Nous fournissons un support technique dédié et un service client pour assurer votre réussite, avec une assistance experte disponible quand vous en avez besoin.",
+    "transparency": "Nous croyons en une communication claire, une tarification honnête et une visibilité complète sur toutes les transactions et opérations de notre plateforme."
+  },
   "accessDenied": "Accès refusé",
   "actions": {
     "openMenu": "Ouvrir le menu"
@@ -157,7 +164,21 @@
     "title": "Applications",
     "totalCount_one": "1 application",
     "totalCount_other": "{{count}} applications",
-    "apiKeyExpiresAtUtc": "Expire le"
+    "apiKeyExpiresAtUtc": "Expire le",
+    "confirmations": {
+      "delete": {
+        "title": "Supprimer l'application",
+        "description": "Êtes-vous sûr de vouloir supprimer cette application ? Cette action est irréversible.",
+        "confirm": "Supprimer",
+        "cancel": "Annuler"
+      },
+      "bulkDelete": {
+        "title": "Supprimer les applications",
+        "description": "Êtes-vous sûr de vouloir supprimer {{count}} applications ? Cette action est irréversible.",
+        "confirm": "Tout supprimer",
+        "cancel": "Annuler"
+      }
+    }
   },
   "auditlogs": {
     "headers": {
@@ -425,7 +446,9 @@
         "import": "Importer",
         "more": "Plus",
         "refresh": "Actualiser",
-        "reset": "Réinitialiser"
+        "reset": "Réinitialiser",
+        "assignPermissions": "Assigner Permission",
+        "edit": "Modifier"
       },
       "selection": {
         "count_one": "1 sélectionné",
@@ -438,7 +461,12 @@
     },
     "form": {
       "valueLabel": "Valeur"
-    }
+    },
+    "backToList": "Retour a la liste",
+    "yes": "Oui",
+    "no": "Non",
+    "createdAt": "Créé le",
+    "updatedAt": "Modifié le"
   },
   "companies": {
     "actions": {
@@ -841,6 +869,13 @@
     },
     "endpoints": {
       "description": "Description",
+      "descriptions": {
+        "configureNotifications": "Configurez les webhooks et les préférences de notification pour recevoir des mises à jour en temps réel sur les événements de paiement, les retraits et les alertes système via plusieurs canaux.",
+        "initiateAndTrackPayments": "Créez des demandes de paiement, générez des liens de paiement et suivez le statut des transactions en temps réel pour les paiements Orange Money et MTN Mobile Money.",
+        "manageBalances": "Consultez les soldes des comptes, les positions des portefeuilles et les fonds disponibles sur tous les opérateurs de mobile money et comptes internes avec précision en temps réel.",
+        "manageFundTransfers": "Exécutez des transferts peer-to-peer, des mouvements inter-portefeuilles et des transferts opérateurs avec limites configurables et rapprochement automatique.",
+        "manageWithdrawalRequests": "Initiez des demandes de retrait, traitez les décaissements vers les comptes mobile money et suivez le statut des retraits avec workflows d'approbation multi-niveaux."
+      },
       "endpoint": "Endpoint",
       "method": "Méthode",
       "title": "Endpoints clés de l'API"
@@ -974,14 +1009,46 @@
     "title": "Foire Aux Questions"
   },
   "features": {
+    "administration": {
+      "benefit1": "Gestion centralisée de la configuration système",
+      "benefit2": "Support multi-devises et multi-pays",
+      "benefit3": "Configuration flexible de la structure des frais",
+      "benefit4": "Personnalisation des méthodes de paiement",
+      "benefits": "Gestion centralisée de la configuration système\nSupport multi-devises et multi-pays\nConfiguration flexible de la structure des frais\nPersonnalisation des méthodes de paiement",
+      "description": "Rationalisez vos opérations avec des outils d'administration puissants. Gérez les paramètres, configurez les frais, définissez les méthodes de paiement et contrôlez les paramètres système depuis une interface unifiée.",
+      "details": "Nos fonctionnalités d'administration offrent un contrôle complet sur l'ensemble de votre écosystème de paiement, vous permettant d'adapter le système à vos besoins métier spécifiques.",
+      "title": "Administration Système"
+    },
     "badge": "FONCTIONNALITÉS",
     "intro": "Fujisat Pay est conçu pour offrir un contrôle total sur vos opérations financières mobiles au Cameroun, grâce à une suite de fonctionnalités avancées et sécurisées.",
+    "kyc": {
+      "benefit1": "Collection et vérification de documents numériques",
+      "benefit2": "Workflow d'approbation multi-niveaux",
+      "benefit3": "Stockage sécurisé des documents avec chiffrement",
+      "benefit4": "Conformité aux exigences réglementaires",
+      "benefits": "Collection et vérification de documents numériques\nWorkflow d'approbation multi-niveaux\nStockage sécurisé des documents avec chiffrement\nConformité aux exigences réglementaires",
+      "description": "Assurez la conformité et renforcez la confiance avec des processus de vérification KYC (Know Your Customer) robustes. Simplifiez l'intégration des clients tout en respectant les exigences réglementaires.",
+      "details": "Notre système KYC vous aide à vérifier efficacement l'identité des clients tout en maintenant les plus hauts standards de sécurité et de conformité réglementaire.",
+      "title": "Gestion KYC"
+    },
+    "notifications": {
+      "benefit1": "Notifications d'événements en temps réel",
+      "benefit2": "Livraison multi-canal (SMS, Email, In-App)",
+      "benefit3": "Modèles de notifications personnalisables",
+      "benefit4": "Système de notification basé sur les priorités",
+      "benefits": "Notifications d'événements en temps réel\nLivraison multi-canal (SMS, Email, In-App)\nModèles de notifications personnalisables\nSystème de notification basé sur les priorités",
+      "description": "Tenez votre équipe et vos clients informés avec un système de notification intelligent. Envoyez des alertes en temps réel pour les transactions, événements de sécurité et mises à jour importantes via plusieurs canaux.",
+      "details": "Notre moteur de notifications assure la livraison rapide d'informations critiques via SMS, email et canaux in-app, avec des modèles personnalisables pour différents types d'événements.",
+      "title": "Notifications Intelligentes"
+    },
     "paymentManagement": {
       "benefit1": "Intégration unifiée Orange Money et MTN Mobile Money",
       "benefit2": "Gestion complète du cycle de vie des transactions",
       "benefit3": "Rapprochement et rapports automatisés",
       "benefit4": "Pages et liens de paiement personnalisables",
+      "benefits": "Intégration unifiée Orange Money et MTN Mobile Money\nGestion complète du cycle de vie des transactions\nRapprochement et rapports automatisés\nPages et liens de paiement personnalisables",
       "description": "Traitez efficacement les paiements entrants via Orange Money et MTN Mobile Money. Gérez le cycle de vie complet de chaque transaction (création, traitement, achèvement).",
+      "details": "Notre système de gestion des paiements offre une intégration transparente avec les principaux opérateurs de mobile money au Cameroun, permettant le traitement des transactions en temps réel, les mises à jour automatiques de statut et des capacités de suivi complètes pour toutes les opérations de paiement.",
       "title": "Gestion des paiements"
     },
     "reporting": {
@@ -989,7 +1056,9 @@
       "benefit2": "Génération de rapports personnalisés",
       "benefit3": "Exportation de données (CSV, Excel)",
       "benefit4": "Analyse des moyens de paiement",
+      "benefits": "Tableaux de bord des transactions en temps réel\nGénération de rapports personnalisés\nExportation de données (CSV, Excel)\nAnalyse des moyens de paiement",
       "description": "Obtenez des informations précieuses grâce à des outils de reporting et d'analyse complets pour une meilleure prise de décision.",
+      "details": "Accédez à des analyses détaillées et générez des rapports personnalisés pour suivre les performances, identifier les tendances et prendre des décisions basées sur les données pour la croissance de votre entreprise.",
       "title": "Analyses et Rapports"
     },
     "requestDemo": "Demander une démo",
@@ -998,7 +1067,9 @@
       "benefit2": "Chiffrement AES-256-GCM pour les données sensibles",
       "benefit3": "Restriction d'accès par adresse IP",
       "benefit4": "Journalisation d'audit complète",
+      "benefits": "Authentification multi-niveaux (Clé API, JWT)\nChiffrement AES-256-GCM pour les données sensibles\nRestriction d'accès par adresse IP\nJournalisation d'audit complète",
       "description": "Protégez votre entreprise et vos clients avec des fonctionnalités de sécurité de niveau entreprise conçues pour le secteur financier.",
+      "details": "Notre infrastructure de sécurité comprend plusieurs couches de protection, du chiffrement et de l'authentification à la journalisation d'audit et aux restrictions IP, garantissant la sécurité de vos données et transactions.",
       "title": "Sécurité"
     },
     "subtitle": "La puissance à votre service",
@@ -1010,8 +1081,40 @@
       "benefit2": "Support pour Orange Money et MTN Mobile Money",
       "benefit3": "Traitement par lots pour les volumes élevés",
       "benefit4": "Processus d'approbation flexibles",
+      "benefits": "Vérification à deux facteurs pour la sécurité\nSupport pour Orange Money et MTN Mobile Money\nTraitement par lots pour les volumes élevés\nProcessus d'approbation flexibles",
       "description": "Initiez et traitez les demandes de retrait de fonds avec une sécurité optimale. Que ce soit via mobile money ou virement bancaire, Fujisat Pay s'adapte à vos besoins.",
+      "details": "Notre système de gestion des retraits assure le décaissement sécurisé des fonds avec des workflows d'approbation multi-niveaux, des capacités de traitement par lots pour les opérations à volume élevé et des pistes d'audit complètes pour la conformité réglementaire.",
       "title": "Gestion des retraits"
+    },
+    "moneyTransfers": {
+      "benefit1": "Capacités de transfert peer-to-peer",
+      "benefit2": "Transferts inter-portefeuilles et inter-opérateurs",
+      "benefit3": "Traitement instantané des transferts",
+      "benefit4": "Contrôles de limites de transaction",
+      "benefits": "Capacités de transfert peer-to-peer\nTransferts inter-portefeuilles et inter-opérateurs\nTraitement instantané des transferts\nContrôles de limites de transaction",
+      "description": "Activez des transferts d'argent fluides entre utilisateurs, portefeuilles et opérateurs de mobile money. Supportez les opérations de transfert internes et externes avec traitement en temps réel.",
+      "details": "Notre module de transfert d'argent facilite le mouvement instantané de fonds entre différents opérateurs de mobile money et portefeuilles internes, avec des limites configurables, des structures de frais et un suivi complet des transactions pour une visibilité totale.",
+      "title": "Transferts d'argent"
+    },
+    "balanceManagement": {
+      "benefit1": "Suivi des soldes en temps réel",
+      "benefit2": "Support multi-devises pour les portefeuilles",
+      "benefit3": "Rapprochement automatique des soldes",
+      "benefit4": "Alertes et notifications de solde",
+      "benefits": "Suivi des soldes en temps réel\nSupport multi-devises pour les portefeuilles\nRapprochement automatique des soldes\nAlertes et notifications de solde",
+      "description": "Maintenez des soldes précis en temps réel sur tous les comptes, portefeuilles et opérateurs de mobile money. Suivez les mouvements de fonds et assurez l'exactitude financière en tout temps.",
+      "details": "Notre système de gestion des soldes offre une visibilité en temps réel sur toutes les positions financières, un rapprochement automatique avec les opérateurs de mobile money, un support multi-devises et des alertes configurables pour prévenir les découverts et maintenir la liquidité opérationnelle.",
+      "title": "Gestion des soldes"
+    },
+    "multiEnterprise": {
+      "benefit1": "Gestion centralisée multi-entreprises",
+      "benefit2": "Données et permissions isolées par entreprise",
+      "benefit3": "Rapports consolidés entre entités",
+      "benefit4": "Configurations partagées ou indépendantes",
+      "benefits": "Gestion centralisée multi-entreprises\nDonnées et permissions isolées par entreprise\nRapports consolidés entre entités\nConfigurations partagées ou indépendantes",
+      "description": "Gérez plusieurs entreprises ou filiales depuis une seule plateforme. Chaque entreprise maintient son propre isolement de données tout en bénéficiant d'une supervision et de rapports centralisés.",
+      "details": "Notre architecture multi-entreprises permet aux organisations de gérer plusieurs entités commerciales avec une isolation complète des données, des configurations indépendantes et un contrôle d'accès basé sur les rôles, tout en fournissant des vues consolidées et des analyses inter-entreprises pour des insights au niveau du groupe.",
+      "title": "Gestion multi-entreprises"
     }
   },
   "feeconfigurations": {
@@ -1780,7 +1883,8 @@
       "fee": "Frais",
       "context": "Contexte",
       "references": "Références",
-      "coreDetails": "Détails"
+      "coreDetails": "Détails",
+      "internalReference": "Ref. Interne"
     }
   },
   "receiptsReadModels": {
@@ -1840,7 +1944,15 @@
     },
     "title": "Reçus",
     "totalCount_one": "1 reçu",
-    "totalCount_other": "{{count}} reçus"
+    "totalCount_other": "{{count}} reçus",
+    "confirmations": {
+      "bulkDelete": {
+        "title": "Supprimer les reçus",
+        "description": "Êtes-vous sûr de vouloir supprimer {{count}} reçus ? Cette action est irréversible.",
+        "confirm": "Tout supprimer",
+        "cancel": "Annuler"
+      }
+    }
   },
   "securesettings": {
     "headers": {
@@ -2081,17 +2193,40 @@
       "description": "Fujisat Pay est hautement adaptable. Contactez-nous pour discuter d'une solution personnalisée pour vos besoins spécifiques.",
       "title": "Votre secteur n'est pas listé ?"
     },
+    "delivery": {
+      "benefits": "Automatisation paiement à la livraison\nGestion des paiements chauffeurs\nSuivi des règlements en temps réel\nSupport multi-opérateurs",
+      "problem": "Gestion de la collecte d'argent auprès des clients, traitement des paiements des chauffeurs, rapprochement des transactions entre plusieurs agents de livraison et opérateurs.",
+      "sector": "Logistique & Livraison",
+      "solution": "Automatisez les paiements à la livraison, gérez les revenus des chauffeurs et rapprochez toutes les transactions en temps réel via Orange Money et MTN Mobile Money.",
+      "title": "Services de Livraison & Logistique"
+    },
     "ecommerce": {
+      "benefits": "Expérience de paiement fluide\nRapprochement automatique des paiements\nIntégration multi-opérateurs\nSuivi des transactions en temps réel",
       "problem": "Forte dépendance au paiement mobile, rapprochement fastidieux des transactions par opérateur, besoin d'une expérience client fluide.",
+      "sector": "Commerce & E-commerce",
+      "solution": "Fournissez une passerelle de paiement unifiée pour Orange Money et MTN Mobile Money avec rapprochement automatique, notifications en temps réel et expérience de paiement fluide pour les clients.",
       "title": "E-commerce & Boutiques en Ligne"
     },
     "fintech": {
+      "benefits": "Traitement automatisé des décaissements\nGestion de portefeuilles numériques\nOutils de conformité KYC\nRapprochement des soldes",
       "problem": "Traitement des décaissements et des remboursements, gestion des soldes clients, conformité KYC.",
+      "sector": "Services Financiers",
+      "solution": "Rationalisez les décaissements et remboursements de prêts, gérez les portefeuilles clients, assurez la conformité KYC et automatisez le rapprochement des soldes avec les opérateurs de mobile money.",
       "title": "Services Financiers & FinTech"
     },
     "intro": "Quelle que soit votre activité, Fujisat Pay s'intègre pour optimiser vos processus de paiement mobile. Découvrez comment nous aidons nos clients à prospérer.",
+    "mobileApps": {
+      "benefits": "Bibliothèques SDK d'intégration\nTraitement de paiement in-app\nNotifications webhook\nEnvironnement sandbox de test",
+      "problem": "Intégration des paiements mobile money dans les applications mobiles, gestion des callbacks de transaction, assurance du traitement sécurisé des paiements.",
+      "sector": "Applications Mobiles",
+      "solution": "Intégrez les SDK Fujisat Pay pour des paiements in-app fluides avec Orange Money et MTN Mobile Money, avec notifications webhook et environnement sandbox de test.",
+      "title": "Développeurs d'Applications Mobiles"
+    },
     "nonprofit": {
+      "benefits": "Suivi et reporting des dons\nCollecte multi-canaux\nGestion des donateurs\nDocumentation de conformité",
       "problem": "Collecte de dons via mobile money, traçabilité des contributions, conformité.",
+      "sector": "Associations",
+      "solution": "Acceptez les dons via Orange Money et MTN Mobile Money avec traçabilité complète, gestion des donateurs, reçus automatisés et rapports de conformité.",
       "title": "ONG & Associations"
     },
     "problemLabel": "Le Défi",
@@ -2168,6 +2303,12 @@
       "edit": {
         "loadError": "Échec du chargement du profil.",
         "submit": "Enregistrer"
+      },
+      "assignPermissions": {
+        "title": "Assignation de permissions",
+        "description": "Description",
+        "selectAll": "Sellectionner tout",
+        "submit": "Enregistrer"
       }
     },
     "messages": {
@@ -2193,7 +2334,10 @@
     },
     "title": "Profils Utilisateurs",
     "totalCount_one": "1 profil",
-    "totalCount_other": "{{count}} profils"
+    "totalCount_other": "{{count}} profils",
+    "assignPermissions": {
+      "title": "Assign Permission"
+    }
   },
   "userprofiles": {
     "headers": {
@@ -2218,9 +2362,37 @@
       "nameLabel": "Nom",
       "namePlaceholder": "Saisir le nom du profil",
       "permissionsLabel": "Permissions",
-      "permissionsPlaceholder": "Sélectionnez les permissions"
+      "permissionsPlaceholder": "Sélectionnez les permissions",
+      "assignPermissions": {
+        "title": "Assignation de permissions",
+        "description": "Description",
+        "selectAll": "Sellectionner tout",
+        "submit": "Enregistrer"
+      }
     },
-    "title": "Profils Utilisateurs"
+    "title": "Profils Utilisateurs",
+    "actions": {
+      "edit": "Modifier le profil",
+      "assignPermissions": "Assigner Permission"
+    },
+    "details": {
+      "title": "Profils Utilisateurs",
+      "sections": {
+        "informations": "Informations",
+        "permissions": "Permissions",
+        "information": "Information"
+      }
+    },
+    "fields": {
+      "name": "Nom",
+      "description": "Description",
+      "active": "Actif",
+      "systemProfile": "Profil Système",
+      "permissions": "Permissions"
+    },
+    "assignPermissions": {
+      "title": "Assign Permission"
+    }
   },
   "users": {
     "actions": {
@@ -2309,11 +2481,35 @@
       "update": {
         "error": "La mise à jour a échoué.",
         "success": "Mise à jour réussie."
+      },
+      "status": {
+        "success": "Statut de l'utilisateur mis à jour avec succès.",
+        "error": "Échec de la mise à jour du statut de l'utilisateur."
       }
     },
     "title": "Utilisateurs",
     "totalCount_one": "1 utilisateur",
-    "totalCount_other": "{{count}} utilisateurs"
+    "totalCount_other": "{{count}} utilisateurs",
+    "confirmations": {
+      "delete": {
+        "title": "Supprimer l'utilisateur",
+        "description": "Êtes-vous sûr de vouloir supprimer cet utilisateur ? Cette action est irréversible.",
+        "confirm": "Supprimer",
+        "cancel": "Annuler"
+      },
+      "toggleStatus": {
+        "title": "Changer le statut de l'utilisateur",
+        "description": "Êtes-vous sûr de vouloir changer le statut de cet utilisateur ?",
+        "confirm": "Confirmer",
+        "cancel": "Annuler"
+      },
+      "bulkDelete": {
+        "title": "Supprimer les utilisateurs",
+        "description": "Êtes-vous sûr de vouloir supprimer {{count}} utilisateurs ? Cette action est irréversible.",
+        "confirm": "Tout supprimer",
+        "cancel": "Annuler"
+      }
+    }
   },
   "vwtransactionssummaries": {
     "headers": {

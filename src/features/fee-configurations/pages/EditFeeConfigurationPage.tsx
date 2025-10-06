@@ -1,11 +1,9 @@
-import { useEffect } from "react"
 import { useTranslation } from "react-i18next"
 import { useNavigate, useParams } from "@tanstack/react-router"
 import { StandardListPageLayout } from "@/shared/components/layouts/ListPageLayout"
 import { CreatePageHeader } from "@/shared/components/CreatePageHeader"
 import { FeeConfigurationEditForm } from "../components/FeeConfigurationEditForm"
 import { Loader2 } from "lucide-react"
-// import { toast } from "sonner"
 import { useFeeConfiguration } from "../hooks/useFeeConfiguration"
 import { UpdateFeeConfigurationRequest } from "@/shared/api"
 
@@ -13,17 +11,12 @@ export function EditFeeConfigurationPage() {
   const navigate = useNavigate()
   const { t } = useTranslation()
   const { id } = useParams({ from: "/_protected/administration/fee-configurations/$id/edit" })
-  const { updateMutation, getFeeConfigurationQuery, isLoading } = useFeeConfiguration()
+  const { updateFeeConfigurationWithValidation, getFeeConfigurationQuery, isLoading } = useFeeConfiguration()
 
-  const handleSubmit = (data: UpdateFeeConfigurationRequest) => {
-    updateMutation.mutate(
-      { body: data },
-      {
-        onSuccess: () => {
-          navigate({ to: `/administration/fee-configurations` })
-        },
-      },
-    )
+  const handleSubmit = (data: UpdateFeeConfigurationRequest, setError: any) => {
+    updateFeeConfigurationWithValidation(data, setError, () => {
+      navigate({ to: `/administration/fee-configurations` })
+    })
   }
 
   const { data: response } = getFeeConfigurationQuery(id)

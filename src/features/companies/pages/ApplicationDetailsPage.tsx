@@ -197,7 +197,7 @@ export function ApplicationDetailsPage() {
                   </div>
                 </div>
               </CardHeader>
-              <CardContent className="flex flex-col  gap-x-4 gap-2 gap-y-4 text-muted-foreground/80 pb-4 text-sm">
+              <CardContent className="flex flex-col items-end  lg:items-start gap-x-4 gap-2 gap-y-4 text-muted-foreground/80 pb-4 text-sm">
                 <div className="flex gap-x-1.5">
                   <span className="font-semibold">{t("applications.headers.createdAt")} :</span>
                   <span className="">{companyDetails.createdAt ? formatDate(companyDetails.createdAt) : "-"}</span>

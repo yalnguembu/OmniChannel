@@ -20,7 +20,7 @@ export const CollapsibleContainer: React.FC<CollapsibleContainerProps> = ({
   onCollapsedChange,
   children,
   className,
-  header
+  header,
 }) => {
   const [isCollapsed, setIsCollapsed] = useState(defaultCollapsed)
 

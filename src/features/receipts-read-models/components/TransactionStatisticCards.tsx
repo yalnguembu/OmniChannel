@@ -1,40 +1,61 @@
-import { useState, useEffect } from "react"
+import { useState, useMemo } from "react"
 import { useTranslation } from "react-i18next"
 import { ToggleGroup, ToggleGroupItem } from "@/shared/components/ui/toggle-group"
 import { DateRangeInput } from "@/shared/components/ui/date-range-input"
-import sampleData from "@/features/dashboard/data.json"
 import { CollapsibleContainer } from "@/shared/components/filter/collapsible-container"
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/shared/components/ui/card"
-import { TrendingUp, Activity, ArrowDown, ArrowUp, TrendingDown, ArrowLeftRight, Zap } from "lucide-react"
-import { DailyMetricDto } from "@/shared/api/types.gen"
+import { TrendingUp, Activity, ArrowDown, ArrowUp, TrendingDown, ArrowLeftRight, Zap, Loader } from "lucide-react"
+import { useQuery } from "@tanstack/react-query"
+import { postApiDailyMetricSearchOptions } from "@/shared/api/@tanstack/react-query.gen"
+import { formatCurrency } from "@/shared/utils/formatCurrency"
 
 export function TransactionStatisticCards() {
   const { t } = useTranslation()
-  const [dateRange, setDateRange] = useState()
+  const [dateRange, setDateRange] = useState<any>()
   const [timeRange, setTimeRange] = useState("7d")
-  const [metrics, setMetrics] = useState<DailyMetricDto[]>([])
-  const [loading, setLoading] = useState(true)
 
-  const currentMetrics = metrics[0]
+  // Memoize the effective date range to prevent infinite loops
+  const effectiveDateRange = useMemo(() => {
+    if (dateRange) return dateRange
 
-  useEffect(() => {
-    const loadSampleData = async () => {
-      try {
-        setLoading(true)
+    const now = new Date()
+    const startDate = new Date()
 
-        await new Promise((resolve) => setTimeout(resolve, 500))
-        setMetrics(sampleData.dailyMetrics as DailyMetricDto[])
-      } catch (error) {
-        console.error("Failed to load sample data:", error)
-        setMetrics([])
-      } finally {
-        setLoading(false)
-      }
+    switch (timeRange) {
+      case "7d":
+        startDate.setDate(now.getDate() - 7)
+        break
+      case "30d":
+        startDate.setDate(now.getDate() - 30)
+        break
+      case "90d":
+        startDate.setDate(now.getDate() - 90)
+        break
+      default:
+        startDate.setDate(now.getDate() - 7)
     }
 
-    loadSampleData()
+    return {
+      startDate: startDate.toISOString(),
+      endDate: now.toISOString(),
+    }
   }, [dateRange, timeRange])
+
+  // Fetch daily metrics
+  const { data, isLoading } = useQuery({
+    ...postApiDailyMetricSearchOptions({
+      body: {
+        pageNumber: 1,
+        pageSize: 100,
+      },
+    }),
+    retry: 1,
+    retryDelay: 1000,
+    refetchOnWindowFocus: false,
+    staleTime: 1000 * 60 * 5,
+  })
+
+  const currentMetrics = data?.data?.[0]
 
   return (
     <CollapsibleContainer
@@ -81,10 +102,10 @@ export function TransactionStatisticCards() {
           </div>
         </div>
 
-        {loading ? (
+        {isLoading ? (
           <div className="flex items-center justify-center h-96">
             <div className="text-center">
-              <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary mx-auto"></div>
+              <Loader className="h-16 w-16 animate-spin text-primary mx-auto" />
               <p className="mt-4 text-muted-foreground">{t("analytics.loading")}</p>
             </div>
           </div>
@@ -98,10 +119,10 @@ export function TransactionStatisticCards() {
                   <Activity className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold text-primary">{((currentMetrics?.totalVolume || 0) / 1000000).toFixed(1)}M XAF</div>
+                  <div className="text-2xl font-bold text-primary">{formatCurrency(currentMetrics?.totalVolume || 0)}</div>
                   <div className="flex items-center gap-1 text-xs text-muted-foreground">
                     <TrendingUp className="h-3 w-3 text-green-600" />
-                    <span className="font-semibold">{currentMetrics?.totalReceipts + currentMetrics?.totalWithdrawals + currentMetrics?.totalFundTransfers || 0}</span>
+                    <span className="font-semibold">{(currentMetrics?.totalReceipts || 0) + (currentMetrics?.totalWithdrawals || 0) + (currentMetrics?.totalFundTransfers || 0)}</span>
                     {t("analytics.transactions.counts")}
                   </div>
                 </CardContent>
@@ -113,7 +134,7 @@ export function TransactionStatisticCards() {
                   <ArrowDown className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold text-green-600">{((currentMetrics?.totalReceiptsAmount || 0) / 1000000).toFixed(1)}M XAF</div>
+                  <div className="text-2xl font-bold text-green-600">{formatCurrency(currentMetrics?.totalReceiptsAmount || 0)}</div>
                   <div className="flex items-center gap-1 text-xs text-muted-foreground">
                     <TrendingUp className="h-3 w-3 text-orange-500" />
                     <span className="font-semibold">{currentMetrics?.totalReceipts || 0}</span> {t("analytics.transactions.counts")}
@@ -127,7 +148,7 @@ export function TransactionStatisticCards() {
                   <ArrowUp className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold text-yellow-600">{((currentMetrics?.totalWithdrawalsAmount || 0) / 1000000).toFixed(1)}M XAF</div>
+                  <div className="text-2xl font-bold text-yellow-600">{formatCurrency(currentMetrics?.totalWithdrawalsAmount || 0)}</div>
                   <div className="flex items-center gap-1 text-xs text-muted-foreground">
                     <TrendingDown className="h-3 w-3 text-green-600" />
                     <span className="font-semibold">{currentMetrics?.totalWithdrawals || 0}</span> {t("analytics.transactions.counts")}
@@ -141,7 +162,7 @@ export function TransactionStatisticCards() {
                   <Zap className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold text-blue-500">{((currentMetrics?.totalFundTransfersAmount || 0) / 1000000).toFixed(1)}%</div>
+                  <div className="text-2xl font-bold text-blue-500">{formatCurrency(currentMetrics?.totalFundTransfersAmount || 0)}</div>
                   <div className="flex items-center gap-1 text-xs text-muted-foreground">
                     <TrendingUp className="h-3 w-3 text-green-600" />
                     <span className="font-semibold">{currentMetrics?.totalFundTransfers || 0} </span>

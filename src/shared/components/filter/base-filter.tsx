@@ -64,9 +64,9 @@ export function BaseFilter<T extends Record<string, unknown>>({
       lastScrollY = currentScrollY
     }
 
-    window.addEventListener('scroll', handleScroll, { passive: true })
+    window.addEventListener("scroll", handleScroll, { passive: true })
 
-    return () => window.removeEventListener('scroll', handleScroll)
+    return () => window.removeEventListener("scroll", handleScroll)
   }, [collapsible, isCollapsed, wasAutoCollapsed, defaultCollapsed])
 
   // Handle manual toggle

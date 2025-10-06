@@ -3,13 +3,14 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/sha
 import { Badge } from "@/shared/components/ui/badge"
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis, Cell, Pie, PieChart } from "recharts"
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent, ChartLegend } from "@/shared/components/ui/chart"
-import { Building2, Layers, TrendingUp, Crown, DollarSign, Target, Activity, Award, BarChart3, Users, Zap } from "lucide-react"
+import { Building2, Layers, TrendingUp, Crown, DollarSign, Target, Activity, Award, BarChart3, Users, Zap, Loader } from "lucide-react"
 import { useTranslation } from "react-i18next"
 import { DailyMetricDto } from "@/shared/api/types.gen"
 
 interface CrossTableAnalyticsTabProps {
   metrics: DailyMetricDto[]
   currentMetrics?: DailyMetricDto
+  isLoading?: boolean
 }
 
 interface CompanyApplicationMetrics {
@@ -36,272 +37,15 @@ const chartConfig = {
   users: { label: "Users", color: "hsl(var(--chart-4))" },
 } satisfies ChartConfig
 
-export default function CrossTableAnalyticsTab({ metrics }: CrossTableAnalyticsTabProps) {
+export default function CrossTableAnalyticsTab({ metrics, currentMetrics, isLoading = false }: CrossTableAnalyticsTabProps) {
   const { t } = useTranslation()
 
-  // Generate sample data when no real data is available
-  const sampleData: DailyMetricDto[] = useMemo(() => {
-    if (metrics.length > 0) return metrics
-
-    return [
-      {
-        id: "1",
-        metricDate: "2024-01-15",
-        companyId: "comp-1",
-        companyName: "FujiPay Solutions",
-        applicationId: "app-1",
-        applicationName: "Mobile Wallet",
-        totalReceipts: 1250,
-        successfulReceipts: 1189,
-        failedReceipts: 61,
-        pendingReceipts: 0,
-        receiptsSuccessRate: 95.12,
-        totalWithdrawals: 890,
-        successfulWithdrawals: 856,
-        failedWithdrawals: 34,
-        pendingWithdrawals: 0,
-        withdrawalsSuccessRate: 96.18,
-        totalFundTransfers: 340,
-        successfulFundTransfers: 327,
-        failedFundTransfers: 13,
-        pendingFundTransfers: 0,
-        fundTransfersSuccessRate: 96.18,
-        totalVolume: 12500000,
-        netRevenue: 375000,
-        activeUsers: 8500,
-        newUsers: 120,
-        apiCallsCount: 15600,
-        errorsCount: 108,
-        failureRate: 4.35,
-        totalFees: 450000,
-        totalProviderFees: 75000,
-        totalReceiptsAmount: 8500000,
-        totalReceiptsFees: 255000,
-        totalReceiptsProviderFees: 42500,
-        totalWithdrawalsAmount: 3200000,
-        totalWithdrawalsFees: 128000,
-        totalWithdrawalsProviderFees: 25600,
-        totalFundTransfersAmount: 800000,
-        totalFundTransfersFees: 67000,
-        isRecalculated: false,
-        currency: "XAF",
-      },
-      {
-        id: "2",
-        metricDate: "2024-01-15",
-        companyId: "comp-1",
-        companyName: "FujiPay Solutions",
-        applicationId: "app-2",
-        applicationName: "Business Portal",
-        totalReceipts: 780,
-        successfulReceipts: 741,
-        failedReceipts: 39,
-        pendingReceipts: 0,
-        receiptsSuccessRate: 95.0,
-        totalWithdrawals: 560,
-        successfulWithdrawals: 537,
-        failedWithdrawals: 23,
-        pendingWithdrawals: 0,
-        withdrawalsSuccessRate: 95.89,
-        totalFundTransfers: 210,
-        successfulFundTransfers: 201,
-        failedFundTransfers: 9,
-        pendingFundTransfers: 0,
-        fundTransfersSuccessRate: 95.71,
-        totalVolume: 7800000,
-        netRevenue: 234000,
-        activeUsers: 3200,
-        newUsers: 45,
-        apiCallsCount: 9300,
-        errorsCount: 71,
-        failureRate: 4.58,
-        totalFees: 280800,
-        totalProviderFees: 46800,
-        totalReceiptsAmount: 5400000,
-        totalReceiptsFees: 162000,
-        totalReceiptsProviderFees: 27000,
-        totalWithdrawalsAmount: 1900000,
-        totalWithdrawalsFees: 76000,
-        totalWithdrawalsProviderFees: 15200,
-        totalFundTransfersAmount: 500000,
-        totalFundTransfersFees: 42800,
-        isRecalculated: false,
-        currency: "XAF",
-      },
-      {
-        id: "3",
-        metricDate: "2024-01-15",
-        companyId: "comp-2",
-        companyName: "Digital Finance Corp",
-        applicationId: "app-3",
-        applicationName: "PayStream",
-        totalReceipts: 2100,
-        successfulReceipts: 1995,
-        failedReceipts: 105,
-        pendingReceipts: 0,
-        receiptsSuccessRate: 95.0,
-        totalWithdrawals: 1450,
-        successfulWithdrawals: 1392,
-        failedWithdrawals: 58,
-        pendingWithdrawals: 0,
-        withdrawalsSuccessRate: 96.0,
-        totalFundTransfers: 680,
-        successfulFundTransfers: 653,
-        failedFundTransfers: 27,
-        pendingFundTransfers: 0,
-        fundTransfersSuccessRate: 96.03,
-        totalVolume: 18900000,
-        netRevenue: 567000,
-        activeUsers: 12500,
-        newUsers: 280,
-        apiCallsCount: 25400,
-        errorsCount: 190,
-        failureRate: 4.49,
-        totalFees: 680400,
-        totalProviderFees: 113400,
-        totalReceiptsAmount: 13200000,
-        totalReceiptsFees: 396000,
-        totalReceiptsProviderFees: 66000,
-        totalWithdrawalsAmount: 4300000,
-        totalWithdrawalsFees: 172000,
-        totalWithdrawalsProviderFees: 34400,
-        totalFundTransfersAmount: 1400000,
-        totalFundTransfersFees: 112400,
-        isRecalculated: false,
-        currency: "XAF",
-      },
-      {
-        id: "4",
-        metricDate: "2024-01-15",
-        companyId: "comp-2",
-        companyName: "Digital Finance Corp",
-        applicationId: "app-4",
-        applicationName: "QuickTransfer",
-        totalReceipts: 890,
-        successfulReceipts: 854,
-        failedReceipts: 36,
-        pendingReceipts: 0,
-        receiptsSuccessRate: 95.96,
-        totalWithdrawals: 670,
-        successfulWithdrawals: 643,
-        failedWithdrawals: 27,
-        pendingWithdrawals: 0,
-        withdrawalsSuccessRate: 95.97,
-        totalFundTransfers: 290,
-        successfulFundTransfers: 278,
-        failedFundTransfers: 12,
-        pendingFundTransfers: 0,
-        fundTransfersSuccessRate: 95.86,
-        totalVolume: 8200000,
-        netRevenue: 246000,
-        activeUsers: 5800,
-        newUsers: 95,
-        apiCallsCount: 11100,
-        errorsCount: 75,
-        failureRate: 4.06,
-        totalFees: 295200,
-        totalProviderFees: 49200,
-        totalReceiptsAmount: 5700000,
-        totalReceiptsFees: 171000,
-        totalReceiptsProviderFees: 28500,
-        totalWithdrawalsAmount: 2100000,
-        totalWithdrawalsFees: 84000,
-        totalWithdrawalsProviderFees: 16800,
-        totalFundTransfersAmount: 400000,
-        totalFundTransfersFees: 40200,
-        isRecalculated: false,
-        currency: "XAF",
-      },
-      {
-        id: "5",
-        metricDate: "2024-01-15",
-        companyId: "comp-3",
-        companyName: "MoneyTech Solutions",
-        applicationId: "app-5",
-        applicationName: "CashFlow Pro",
-        totalReceipts: 1580,
-        successfulReceipts: 1501,
-        failedReceipts: 79,
-        pendingReceipts: 0,
-        receiptsSuccessRate: 95.0,
-        totalWithdrawals: 1120,
-        successfulWithdrawals: 1075,
-        failedWithdrawals: 45,
-        pendingWithdrawals: 0,
-        withdrawalsSuccessRate: 95.98,
-        totalFundTransfers: 450,
-        successfulFundTransfers: 432,
-        failedFundTransfers: 18,
-        pendingFundTransfers: 0,
-        fundTransfersSuccessRate: 96.0,
-        totalVolume: 15600000,
-        netRevenue: 468000,
-        activeUsers: 9800,
-        newUsers: 165,
-        apiCallsCount: 19200,
-        errorsCount: 142,
-        failureRate: 4.44,
-        totalFees: 561600,
-        totalProviderFees: 93600,
-        totalReceiptsAmount: 10800000,
-        totalReceiptsFees: 324000,
-        totalReceiptsProviderFees: 54000,
-        totalWithdrawalsAmount: 3900000,
-        totalWithdrawalsFees: 156000,
-        totalWithdrawalsProviderFees: 31200,
-        totalFundTransfersAmount: 900000,
-        totalFundTransfersFees: 81600,
-        isRecalculated: false,
-        currency: "XAF",
-      },
-      {
-        id: "6",
-        metricDate: "2024-01-15",
-        companyId: "comp-4",
-        companyName: "FinTech Express",
-        applicationId: "app-6",
-        applicationName: "SwiftPay",
-        totalReceipts: 950,
-        successfulReceipts: 912,
-        failedReceipts: 38,
-        pendingReceipts: 0,
-        receiptsSuccessRate: 96.0,
-        totalWithdrawals: 720,
-        successfulWithdrawals: 691,
-        failedWithdrawals: 29,
-        pendingWithdrawals: 0,
-        withdrawalsSuccessRate: 95.97,
-        totalFundTransfers: 310,
-        successfulFundTransfers: 298,
-        failedFundTransfers: 12,
-        pendingFundTransfers: 0,
-        fundTransfersSuccessRate: 96.13,
-        totalVolume: 9100000,
-        netRevenue: 273000,
-        activeUsers: 6200,
-        newUsers: 88,
-        apiCallsCount: 11800,
-        errorsCount: 79,
-        failureRate: 3.99,
-        totalFees: 327600,
-        totalProviderFees: 54600,
-        totalReceiptsAmount: 6300000,
-        totalReceiptsFees: 189000,
-        totalReceiptsProviderFees: 31500,
-        totalWithdrawalsAmount: 2300000,
-        totalWithdrawalsFees: 92000,
-        totalWithdrawalsProviderFees: 18400,
-        totalFundTransfersAmount: 500000,
-        totalFundTransfersFees: 46600,
-        isRecalculated: false,
-        currency: "XAF",
-      },
-    ]
-  }, [metrics])
+  // Use real metrics data
+  const effectiveMetrics: DailyMetricDto[] = metrics
 
   // Process and aggregate metrics by company and application
   const companyApplicationData = useMemo(() => {
-    const processedData: CompanyApplicationMetrics[] = sampleData
+    const processedData: CompanyApplicationMetrics[] = effectiveMetrics
       .filter((metric) => metric.companyName && metric.applicationName)
       .map((metric) => {
         const totalTransactions = metric.totalReceipts + metric.totalWithdrawals + metric.totalFundTransfers
@@ -331,7 +75,7 @@ export default function CrossTableAnalyticsTab({ metrics }: CrossTableAnalyticsT
       })
 
     return processedData
-  }, [sampleData])
+  }, [effectiveMetrics])
 
   // Aggregate data by company
   const companyAggregates = useMemo(() => {
@@ -420,8 +164,16 @@ export default function CrossTableAnalyticsTab({ metrics }: CrossTableAnalyticsT
             <Building2 className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{companyAggregates.length}</div>
-            <div className="text-xs text-muted-foreground">{t("analytics.crossTable.overview.activeCompanies")}</div>
+            {isLoading ? (
+              <div className="flex items-center justify-center h-16">
+                <Loader className="h-6 w-6 animate-spin text-muted-foreground" />
+              </div>
+            ) : (
+              <>
+                <div className="text-2xl font-bold">{companyAggregates.length}</div>
+                <div className="text-xs text-muted-foreground">{t("analytics.crossTable.overview.activeCompanies")}</div>
+              </>
+            )}
           </CardContent>
         </Card>
 
@@ -431,8 +183,16 @@ export default function CrossTableAnalyticsTab({ metrics }: CrossTableAnalyticsT
             <Layers className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{companyApplicationData.length}</div>
-            <div className="text-xs text-muted-foreground">{t("analytics.crossTable.overview.activeApplications")}</div>
+            {isLoading ? (
+              <div className="flex items-center justify-center h-16">
+                <Loader className="h-6 w-6 animate-spin text-muted-foreground" />
+              </div>
+            ) : (
+              <>
+                <div className="text-2xl font-bold">{companyApplicationData.length}</div>
+                <div className="text-xs text-muted-foreground">{t("analytics.crossTable.overview.activeApplications")}</div>
+              </>
+            )}
           </CardContent>
         </Card>
 
@@ -442,8 +202,16 @@ export default function CrossTableAnalyticsTab({ metrics }: CrossTableAnalyticsT
             <BarChart3 className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{companyAggregates.length > 0 ? (companyApplicationData.length / companyAggregates.length).toFixed(1) : "0"}</div>
-            <div className="text-xs text-muted-foreground">{t("analytics.crossTable.overview.applicationsPerCompany")}</div>
+            {isLoading ? (
+              <div className="flex items-center justify-center h-16">
+                <Loader className="h-6 w-6 animate-spin text-muted-foreground" />
+              </div>
+            ) : (
+              <>
+                <div className="text-2xl font-bold">{companyAggregates.length > 0 ? (companyApplicationData.length / companyAggregates.length).toFixed(1) : "0"}</div>
+                <div className="text-xs text-muted-foreground">{t("analytics.crossTable.overview.applicationsPerCompany")}</div>
+              </>
+            )}
           </CardContent>
         </Card>
 
@@ -453,8 +221,16 @@ export default function CrossTableAnalyticsTab({ metrics }: CrossTableAnalyticsT
             <TrendingUp className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{(companyAggregates.reduce((sum, company) => sum + company.totalVolume, 0) / 1000000).toFixed(1)}M</div>
-            <div className="text-xs text-muted-foreground">XAF</div>
+            {isLoading ? (
+              <div className="flex items-center justify-center h-16">
+                <Loader className="h-6 w-6 animate-spin text-muted-foreground" />
+              </div>
+            ) : (
+              <>
+                <div className="text-2xl font-bold">{(companyAggregates.reduce((sum, company) => sum + company.totalVolume, 0) / 1000000).toFixed(1)}M</div>
+                <div className="text-xs text-muted-foreground">XAF</div>
+              </>
+            )}
           </CardContent>
         </Card>
       </div>

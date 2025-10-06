@@ -22,6 +22,7 @@ export interface SessionState {
   error: string | null
   lastActivity: number
   user: UserSession | void
+  userPermissions: string[]
 }
 
 export interface SessionActions {
@@ -30,6 +31,7 @@ export interface SessionActions {
   resetSession: () => void
   updateActivity: () => void
   setUser: (data: UserSession) => void
+  setPermissions: (permissions: string[]) => void
 }
 
 export interface SessionActions {
@@ -49,6 +51,7 @@ const initialState: SessionState = {
   error: null,
   lastActivity: Date.now(),
   user: undefined,
+  userPermissions: [],
 }
 
 export const useSessionStore = create<SessionStore>()(
@@ -63,6 +66,12 @@ export const useSessionStore = create<SessionStore>()(
         setUser: (user: UserSession) => {
           set((state) => {
             state.user = user
+          })
+        },
+
+        setPermissions: (permissions: string[]) => {
+          set((state) => {
+            state.userPermissions = permissions
           })
         },
 

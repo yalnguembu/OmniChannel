@@ -5,6 +5,7 @@ import { Badge } from "@/shared/components/ui/badge"
 import { ShoppingCart, Truck, Smartphone, Heart, PiggyBank } from "lucide-react"
 import { createFileRoute } from "@tanstack/react-router"
 
+import PageLoader from "@/shared/components/PageLoader"
 function SolutionsPage() {
   const { t } = useTranslation()
 
@@ -113,5 +114,6 @@ function SolutionsPage() {
 }
 
 export const Route = createFileRoute("/_public/solutions")({
+  pendingComponent: PageLoader,
   component: SolutionsPage,
 })

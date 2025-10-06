@@ -25,6 +25,7 @@ export const DocumentsTypeDataGrid: React.FC = () => {
     selectedRows,
     isLoading,
     changePage,
+    changePageSize,
     changeSort,
     setSelectedRows,
     deleteDocumentsType,
@@ -157,8 +158,9 @@ export const DocumentsTypeDataGrid: React.FC = () => {
     setSelectedRows(selectedIds)
   }
 
-  const handlePageChange = (page: number) => {
+  const handlePageChange = (page: number, size: number) => {
     changePage(page)
+    changePageSize(size)
   }
 
   const handleSubmit = (data: UpdateDocumentsTypeRequest) => {

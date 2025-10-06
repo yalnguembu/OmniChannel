@@ -217,8 +217,9 @@ export const AuditLogDataGrid: React.FC = () => {
     setSelectedRows(selectedIds)
   }
 
-  const handlePageChange = (page: number) => {
+  const handlePageChange = (page: number, size: number) => {
     changePage(page)
+    changePageSize(size)
   }
 
   const [showDetailsModal, setShowDetailsModal] = useState(false)

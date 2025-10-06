@@ -31,7 +31,7 @@ import { zUpdateFeeConfigurationRequest } from "@/shared/api/zod.gen"
 interface FeeConfigurationEditFormProps {
   feeConfigurationId: string
   initialData: UpdateFeeConfigurationRequest
-  onSubmit: (data: UpdateFeeConfigurationRequest) => void
+  onSubmit: (data: UpdateFeeConfigurationRequest, setError: any) => void
   onCancel: () => void
   isLoading?: boolean
   companyId?: string
@@ -68,7 +68,7 @@ export const FeeConfigurationEditForm: React.FC<FeeConfigurationEditFormProps> =
 
   const handleSubmit = (values: UpdateFeeConfigurationRequest) => {
     if (onSubmit) {
-      onSubmit({ ...values, id: feeConfigurationId })
+      onSubmit({ ...values, id: feeConfigurationId }, form.setError)
     }
   }
   const { dropdownQuery: companyDropdownQuery } = useCompany()

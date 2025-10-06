@@ -25,6 +25,7 @@ export const WithdrawalMethodDataGrid: React.FC = () => {
     selectedRows,
     isLoading,
     changePage,
+    changePageSize,
     changeSort,
     setSelectedRows,
     updateMutation,
@@ -209,8 +210,9 @@ export const WithdrawalMethodDataGrid: React.FC = () => {
     setSelectedRows(selectedIds)
   }
 
-  const handlePageChange = (page: number) => {
+  const handlePageChange = (page: number, size: number) => {
     changePage(page)
+    changePageSize(size)
   }
 
   const handleSubmit = (data: UpdateWithdrawalMethodRequest) => {

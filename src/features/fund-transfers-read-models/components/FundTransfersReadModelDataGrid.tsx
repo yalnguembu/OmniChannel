@@ -25,6 +25,7 @@ export const FundTransfersReadModelDataGrid: React.FC = () => {
     isLoading,
     hasSelection,
     changePage,
+    changePageSize,
     changeSort,
     setSelectedRows,
     deleteFundTransfersReadModel,
@@ -238,8 +239,9 @@ export const FundTransfersReadModelDataGrid: React.FC = () => {
     setSelectedRows(selectedIds)
   }
 
-  const handlePageChange = (page: number) => {
+  const handlePageChange = (page: number, size: number) => {
     changePage(page)
+    changePageSize(size)
   }
 
   const bulkActions = hasSelection

@@ -139,7 +139,7 @@ export const DataGrid: React.FC<DataGridProps> = ({
       }
       if (rowItem.key === "actions")
         return (
-          <div className="flex flex-row justify-end px-4 pt-2 border-t">
+          <div className="flex flex-row justify-end px-4 -mt-2 pt-2 border-t">
             {/* <span className="px-2 h-min text-sm font-semibold block min-w-14">{rowItem.label}</span> */}
             <ActionButtonGroup isLoading={isLoading} row={item} actions={actions} dispatch={dispatch} view={view} />
           </div>
@@ -304,8 +304,8 @@ export const DataGrid: React.FC<DataGridProps> = ({
     <div className="w-full data-grid flex flex-col justify-between">
       <Header />
       {view == "list" ? (
-        <div className="rounded-lg border overflow-hidden bg-background relative">
-          <Table>
+        <div className="rounded-lg border bg-background relative">
+          <Table className="w-full border">
             <DataTableHeader />
 
             <TableBody>
@@ -349,7 +349,7 @@ export const DataGrid: React.FC<DataGridProps> = ({
         </>
       )}
 
-      {hasPagination && total > items.length && <DataTablePagination page={page} pageSize={limit} total={total} onPageChange={onPageChange} className="py-2 bg-background mt-2" />}
+      {hasPagination && <DataTablePagination page={page} on pageSize={limit} total={total} onPageChange={onPageChange} className="py-2 bg-background mt-2" />}
     </div>
   )
 }

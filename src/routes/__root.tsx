@@ -1,5 +1,6 @@
 import { createRootRoute, Outlet } from "@tanstack/react-router"
 import { ScrollToTop } from "@/shared/components/ScrollToTop"
+import PageLoader from "@/shared/components/PageLoader"
 
 export const Route = createRootRoute({
   component: () => (
@@ -8,4 +9,5 @@ export const Route = createRootRoute({
       <Outlet />
     </>
   ),
+  pendingComponent: PageLoader,
 })

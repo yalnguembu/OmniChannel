@@ -13,7 +13,7 @@ import { useUserProfile } from "@/features/user-profiles/hooks/useUserProfile"
 import { SearchDropdown } from "@/shared/components/dropdowns/search-dropdown"
 
 interface SystemUserCreateFormProps {
-  onSubmit: (data: CreateSystemUserRequest) => void
+  onSubmit: (data: CreateSystemUserRequest, setError: any) => void
   onCancel: () => void
   isLoading?: boolean
 
@@ -41,7 +41,7 @@ export const SystemUserCreateForm: React.FC<SystemUserCreateFormProps> = ({ onSu
 
   const handleSubmit = (values: CreateSystemUserRequest) => {
     if (onSubmit) {
-      onSubmit(values)
+      onSubmit(values, form.setError)
     }
   }
 

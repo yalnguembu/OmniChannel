@@ -2,7 +2,7 @@ import { useTranslation } from "react-i18next"
 import DataGridActionButton from "./DataGridActionButton"
 import { ElementType, useState } from "react"
 import { ACTION, DataGridRowEntry, ViewMode } from "@/shared/types"
-import { PencilIcon, TrashIcon, EyeIcon, X, CheckIcon, EllipsisVertical, RotateCcw } from "lucide-react"
+import { PencilIcon, TrashIcon, EyeIcon, X, CheckIcon, EllipsisVertical, RotateCcw, Cog, Power } from "lucide-react"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/shared/components/ui/dropdown-menu"
 
 type ActionButtonGroupType = {
@@ -24,6 +24,8 @@ const DataGridRowActionIcon: Record<ACTION, ElementType> = {
   "regen-secret": RotateCcw,
   checkStatus: RotateCcw,
   changeStatus: PencilIcon,
+  config: Cog,
+  toggle_status: Power,
 }
 
 const ActionButtonGroup = ({ row, actions, dispatch, isLoading, shouldCollapseTextOnMobile = true, view = "grid" }: ActionButtonGroupType) => {

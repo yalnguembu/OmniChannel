@@ -9,18 +9,13 @@ import { SecureSettingEditForm } from "../components/SecureSettingEditForm"
 export function EditSecureSettingPage() {
   const navigate = useNavigate()
   const { t } = useTranslation()
-  const { createMutation, getSecureSettingBySystemNameQuery } = useSecureSetting()
+  const { updateSecureSettingWithValidation, getSecureSettingBySystemNameQuery } = useSecureSetting()
   const { "system-name": systemName } = useParams({ from: "/_protected/administration/secure-settings/$system-name/edit" })
 
-  const handleSubmit = (data: SecureSettingRequest[]) => {
-    createMutation.mutate(
-      { body: data },
-      {
-        onSuccess: () => {
-          navigate({ to: `/administration/secure-settings` })
-        },
-      },
-    )
+  const handleSubmit = (data: SecureSettingRequest[], setError: any) => {
+    updateSecureSettingWithValidation(data, setError, () => {
+      navigate({ to: `/administration/secure-settings` })
+    })
   }
 
   const handleCancel = () => {

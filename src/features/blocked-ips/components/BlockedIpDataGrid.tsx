@@ -27,6 +27,7 @@ export const BlockedIpDataGrid: React.FC = () => {
     selectedRows,
     isLoading,
     changePage,
+    changePageSize,
     changeSort,
     setSelectedRows,
     deleteBlockedIp,
@@ -189,8 +190,9 @@ export const BlockedIpDataGrid: React.FC = () => {
     setSelectedRows(selectedIds)
   }
 
-  const handlePageChange = (page: number) => {
+  const handlePageChange = (page: number, size: number) => {
     changePage(page)
+    changePageSize(size)
   }
 
   const handleSubmit = (data: UpdateBlockedIpRequest) => {

@@ -3,13 +3,14 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/sha
 import { Badge } from "@/shared/components/ui/badge"
 import { Bar, BarChart, Line, LineChart, CartesianGrid, XAxis, YAxis, Area, AreaChart } from "recharts"
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/shared/components/ui/chart"
-import { Server, AlertTriangle, Activity, Zap, Database, TrendingDown, TrendingUp, Shield, CheckCircle, XCircle, Timer } from "lucide-react"
+import { Server, AlertTriangle, Activity, Zap, TrendingDown, TrendingUp, CheckCircle, XCircle, Loader } from "lucide-react"
 import { useTranslation } from "react-i18next"
 import { DailyMetricDto } from "@/shared/api/types.gen"
 
 interface TechnicalAnalyticsTabProps {
   metrics: DailyMetricDto[]
   currentMetrics?: DailyMetricDto
+  isLoading?: boolean
 }
 
 interface TechnicalMetrics {
@@ -18,117 +19,39 @@ interface TechnicalMetrics {
   totalApiCalls: number
   errorCount: number
   errorRate: number
-  avgResponseTime: number
-  uptime: number
-  downtime: number
-  systemLoad: number
-  peakConcurrency: number
-  databaseConnections: number
-  cacheHitRate: number
 }
 
 const chartConfig = {
   apiCalls: { label: "API Calls", color: "hsl(var(--chart-1))" },
   errors: { label: "Errors", color: "hsl(var(--chart-2))" },
-  responseTime: { label: "Response Time", color: "hsl(var(--chart-3))" },
-  uptime: { label: "Uptime", color: "hsl(var(--chart-4))" },
-  systemLoad: { label: "System Load", color: "hsl(var(--chart-5))" },
+  errorRate: { label: "Error Rate", color: "hsl(var(--chart-3))" },
 } satisfies ChartConfig
 
-export default function TechnicalAnalyticsTab({ metrics }: TechnicalAnalyticsTabProps) {
+export default function TechnicalAnalyticsTab({ metrics, currentMetrics, isLoading = false }: TechnicalAnalyticsTabProps) {
   const { t } = useTranslation()
 
-  // Generate enhanced technical sample data
+  // Convert real metrics to technical data - only use real data, no fake data
   const technicalData: TechnicalMetrics[] = useMemo(() => {
-    if (metrics.length === 0) {
-      // Generate 7 days of sample technical data
-      const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
-      const baseDate = new Date("2024-01-15")
-
-      return days
-        .map((day, index) => {
-          const date = new Date(baseDate)
-          date.setDate(baseDate.getDate() - (6 - index))
-
-          // Simulate different patterns for different days
-          const isWeekend = index >= 5
-          const isMonday = index === 0
-          const isWednesday = index === 2
-
-          let baseApiCalls = 15000
-          let baseErrors = 150
-          let baseResponseTime = 250
-
-          if (isWeekend) {
-            baseApiCalls *= 0.6 // Lower weekend traffic
-            baseErrors *= 0.7
-            baseResponseTime *= 0.8
-          }
-
-          if (isMonday) {
-            baseApiCalls *= 1.4 // Monday spike
-            baseErrors *= 1.3
-            baseResponseTime *= 1.2
-          }
-
-          if (isWednesday) {
-            baseErrors *= 1.8 // Wednesday maintenance issues
-            baseResponseTime *= 1.5
-          }
-
-          return {
-            date: date.toISOString().split("T")[0],
-            dayOfWeek: day,
-            totalApiCalls: Math.floor(baseApiCalls + (Math.random() - 0.5) * 2000),
-            errorCount: Math.floor(baseErrors + (Math.random() - 0.5) * 50),
-            errorRate: 0, // Will be calculated
-            avgResponseTime: Math.floor(baseResponseTime + (Math.random() - 0.5) * 100),
-            uptime: isWednesday ? 97.2 : 99.5 + Math.random() * 0.4,
-            downtime: isWednesday ? 2.8 : 0.1 + Math.random() * 0.4,
-            systemLoad: 45 + Math.random() * 30,
-            peakConcurrency: Math.floor(800 + Math.random() * 400),
-            databaseConnections: Math.floor(120 + Math.random() * 80),
-            cacheHitRate: 85 + Math.random() * 10,
-          }
-        })
-        .map((item) => ({
-          ...item,
-          errorRate: (item.errorCount / item.totalApiCalls) * 100,
-        }))
-    }
-
-    // Convert real metrics to technical data
     return metrics.map((metric) => ({
       date: metric.metricDate,
-      dayOfWeek: new Date(metric.metricDate).toLocaleDateString("en-US", { weekday: "long" }),
+      dayOfWeek: new Date(metric.metricDate).toLocaleDateString("en-US", { weekday: "short" }),
       totalApiCalls: metric.apiCallsCount,
       errorCount: metric.errorsCount,
       errorRate: metric.failureRate,
-      avgResponseTime: 200 + Math.random() * 200, // Simulated as not in real data
-      uptime: 100 - metric.failureRate,
-      downtime: metric.failureRate,
-      systemLoad: 30 + Math.random() * 40,
-      peakConcurrency: Math.floor(500 + Math.random() * 300),
-      databaseConnections: Math.floor(80 + Math.random() * 40),
-      cacheHitRate: 80 + Math.random() * 15,
     }))
   }, [metrics])
 
-  // Analysis calculations
+  // Analysis calculations - only use real data
   const analysis = useMemo(() => {
     if (technicalData.length === 0) return null
 
     const sortedByApiCalls = [...technicalData].sort((a, b) => b.totalApiCalls - a.totalApiCalls)
     const sortedByErrors = [...technicalData].sort((a, b) => b.errorCount - a.errorCount)
     const sortedByErrorRate = [...technicalData].sort((a, b) => b.errorRate - a.errorRate)
-    const sortedByDowntime = [...technicalData].sort((a, b) => b.downtime - a.downtime)
-    const sortedByResponseTime = [...technicalData].sort((a, b) => b.avgResponseTime - a.avgResponseTime)
 
     const totalApiCalls = technicalData.reduce((sum, day) => sum + day.totalApiCalls, 0)
     const totalErrors = technicalData.reduce((sum, day) => sum + day.errorCount, 0)
-    const avgResponseTime = technicalData.reduce((sum, day) => sum + day.avgResponseTime, 0) / technicalData.length
-    const avgUptime = technicalData.reduce((sum, day) => sum + day.uptime, 0) / technicalData.length
-    const avgSystemLoad = technicalData.reduce((sum, day) => sum + day.systemLoad, 0) / technicalData.length
+    const avgErrorRate = technicalData.reduce((sum, day) => sum + day.errorRate, 0) / technicalData.length
 
     return {
       busiestDay: sortedByApiCalls[0],
@@ -137,16 +60,10 @@ export default function TechnicalAnalyticsTab({ metrics }: TechnicalAnalyticsTab
       bestErrorDay: sortedByErrors[technicalData.length - 1],
       highestErrorRateDay: sortedByErrorRate[0],
       lowestErrorRateDay: sortedByErrorRate[technicalData.length - 1],
-      mostDowntimeDay: sortedByDowntime[0],
-      leastDowntimeDay: sortedByDowntime[technicalData.length - 1],
-      slowestDay: sortedByResponseTime[0],
-      fastestDay: sortedByResponseTime[technicalData.length - 1],
       totalApiCalls,
       totalErrors,
-      avgResponseTime,
-      avgUptime,
-      avgSystemLoad,
-      overallErrorRate: (totalErrors / totalApiCalls) * 100,
+      avgErrorRate,
+      overallErrorRate: totalApiCalls > 0 ? (totalErrors / totalApiCalls) * 100 : 0,
     }
   }, [technicalData])
 
@@ -168,53 +85,85 @@ export default function TechnicalAnalyticsTab({ metrics }: TechnicalAnalyticsTab
             <Activity className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{analysis.totalApiCalls.toLocaleString()}</div>
-            <div className="flex items-center gap-1 text-xs text-muted-foreground">
-              <TrendingUp className="h-3 w-3 text-green-600" />
-              {t("analytics.technical.overview.weeklyTotal")}
-            </div>
+            {isLoading ? (
+              <div className="flex items-center justify-center h-16">
+                <Loader className="h-6 w-6 animate-spin text-muted-foreground" />
+              </div>
+            ) : (
+              <>
+                <div className="text-2xl font-bold">{analysis.totalApiCalls.toLocaleString()}</div>
+                <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                  <TrendingUp className="h-3 w-3 text-green-600" />
+                  {t("analytics.technical.overview.weeklyTotal")}
+                </div>
+              </>
+            )}
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">{t("analytics.technical.overview.avgUptime")}</CardTitle>
-            <CheckCircle className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-medium">{t("analytics.technical.overview.totalErrors")}</CardTitle>
+            <AlertTriangle className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{analysis.avgUptime.toFixed(2)}%</div>
-            <div className="flex items-center gap-1 text-xs text-muted-foreground">
-              <Shield className="h-3 w-3 text-green-600" />
-              {t("analytics.technical.overview.reliability")}
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">{t("analytics.technical.overview.avgResponseTime")}</CardTitle>
-            <Timer className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{analysis.avgResponseTime.toFixed(0)}ms</div>
-            <div className="flex items-center gap-1 text-xs text-muted-foreground">
-              <Zap className="h-3 w-3 text-yellow-600" />
-              {t("analytics.technical.overview.performance")}
-            </div>
+            {isLoading ? (
+              <div className="flex items-center justify-center h-16">
+                <Loader className="h-6 w-6 animate-spin text-muted-foreground" />
+              </div>
+            ) : (
+              <>
+                <div className="text-2xl font-bold">{analysis.totalErrors.toLocaleString()}</div>
+                <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                  <XCircle className="h-3 w-3 text-red-600" />
+                  {t("analytics.technical.overview.errors")}
+                </div>
+              </>
+            )}
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">{t("analytics.technical.overview.errorRate")}</CardTitle>
-            <AlertTriangle className="h-4 w-4 text-muted-foreground" />
+            <TrendingDown className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{analysis.overallErrorRate.toFixed(2)}%</div>
-            <div className="flex items-center gap-1 text-xs text-muted-foreground">
-              <XCircle className="h-3 w-3 text-red-600" />
-              {analysis.totalErrors.toLocaleString()} {t("analytics.technical.overview.totalErrors")}
-            </div>
+            {isLoading ? (
+              <div className="flex items-center justify-center h-16">
+                <Loader className="h-6 w-6 animate-spin text-muted-foreground" />
+              </div>
+            ) : (
+              <>
+                <div className="text-2xl font-bold">{analysis.overallErrorRate.toFixed(2)}%</div>
+                <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                  <Zap className="h-3 w-3 text-yellow-600" />
+                  {t("analytics.technical.overview.avgRate")}
+                </div>
+              </>
+            )}
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">{t("analytics.technical.overview.avgErrorRate")}</CardTitle>
+            <CheckCircle className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            {isLoading ? (
+              <div className="flex items-center justify-center h-16">
+                <Loader className="h-6 w-6 animate-spin text-muted-foreground" />
+              </div>
+            ) : (
+              <>
+                <div className="text-2xl font-bold">{analysis.avgErrorRate.toFixed(2)}%</div>
+                <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                  <Activity className="h-3 w-3 text-green-600" />
+                  {t("analytics.technical.overview.daily")}
+                </div>
+              </>
+            )}
           </CardContent>
         </Card>
       </div>

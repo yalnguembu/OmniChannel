@@ -2,7 +2,23 @@ import { useMemo } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/components/ui/card"
 import { Badge } from "@/shared/components/ui/badge"
 import { AreaChartGradient, BarChartStacked, LineChartMultiAxis, HalfDonutChart, PieChartWithLabels, generateChartConfig } from "@/features/dashboard/components"
-import { TrendingUp, DollarSign, Activity, CreditCard, Wallet, PiggyBank, Zap, Percent, CheckCircle, AlertCircle, ArrowDown, ArrowUp, TrendingDown, ArrowLeftRight } from "lucide-react"
+import {
+  TrendingUp,
+  DollarSign,
+  Activity,
+  CreditCard,
+  Wallet,
+  PiggyBank,
+  Zap,
+  Percent,
+  CheckCircle,
+  AlertCircle,
+  ArrowDown,
+  ArrowUp,
+  TrendingDown,
+  ArrowLeftRight,
+  Loader,
+} from "lucide-react"
 import { useTranslation } from "react-i18next"
 import { DailyMetricDto, DailyMetricsByPaymentMethodDto, BalancesReadModelDto } from "@/shared/api/types.gen"
 
@@ -13,7 +29,8 @@ interface EnhancedOverviewTabProps {
   totalTransactions: number
   overallSuccessRate: number
   profitMargin: number
-  balances?: BalancesReadModelDto[] // New balance data integration
+  balances?: BalancesReadModelDto[]
+  isLoading?: boolean
 }
 
 export default function OverviewTab({
@@ -24,6 +41,7 @@ export default function OverviewTab({
   overallSuccessRate,
   profitMargin,
   balances = [],
+  isLoading = false,
 }: EnhancedOverviewTabProps) {
   const { t } = useTranslation()
 
@@ -49,50 +67,7 @@ export default function OverviewTab({
 
   const effectiveMetrics = currentMetrics || defaultMetrics
   const effectiveMetricsArray = metrics.length > 0 ? metrics : []
-
-  // Generate sample balance data when none available
-  const effectiveBalances = useMemo(() => {
-    if (balances.length > 0) return balances
-
-    return [
-      {
-        id: "bal-1",
-        paymentMethodName: "MTN Mobile Money",
-        paymentMethodCode: "MTN_MOMO",
-        currentBalance: 15750000,
-        availableBalance: 14250000,
-        reservedBalance: 1500000,
-        balanceType: "OPERATIONAL",
-        currency: "XAF",
-        ownerType: "SYSTEM",
-        reconciliationStatus: "RECONCILED",
-      },
-      {
-        id: "bal-2",
-        paymentMethodName: "Orange Money",
-        paymentMethodCode: "ORANGE_MONEY",
-        currentBalance: 8900000,
-        availableBalance: 8100000,
-        reservedBalance: 800000,
-        balanceType: "OPERATIONAL",
-        currency: "XAF",
-        ownerType: "SYSTEM",
-        reconciliationStatus: "RECONCILED",
-      },
-      {
-        id: "bal-3",
-        paymentMethodName: "Camtel Money",
-        paymentMethodCode: "CAMTEL_MONEY",
-        currentBalance: 3200000,
-        availableBalance: 2950000,
-        reservedBalance: 250000,
-        balanceType: "OPERATIONAL",
-        currency: "XAF",
-        ownerType: "SYSTEM",
-        reconciliationStatus: "PENDING",
-      },
-    ] as BalancesReadModelDto[]
-  }, [balances])
+  const effectiveBalances = balances
 
   // Advanced analytics calculations
   const analytics = useMemo(() => {
@@ -158,12 +133,20 @@ export default function OverviewTab({
             <Activity className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-primary">{((currentMetrics?.totalVolume || 0) / 1000000).toFixed(1)}M XAF</div>
-            <div className="flex items-center gap-1 text-xs text-muted-foreground">
-              <TrendingUp className="h-3 w-3 text-green-600" />
-              <span className="font-semibold">{currentMetrics?.totalReceipts + currentMetrics?.totalWithdrawals + currentMetrics?.totalFundTransfers || 0}</span>{" "}
-              {t("analytics.transactions.counts")}
-            </div>
+            {isLoading ? (
+              <div className="flex items-center justify-center h-16">
+                <Loader className="h-6 w-6 animate-spin text-muted-foreground" />
+              </div>
+            ) : (
+              <>
+                <div className="text-2xl font-bold text-primary">{((currentMetrics?.totalVolume || 0) / 1000000).toFixed(1)}M XAF</div>
+                <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                  <TrendingUp className="h-3 w-3 text-green-600" />
+                  <span className="font-semibold">{currentMetrics?.totalReceipts + currentMetrics?.totalWithdrawals + currentMetrics?.totalFundTransfers || 0}</span>{" "}
+                  {t("analytics.transactions.counts")}
+                </div>
+              </>
+            )}
           </CardContent>
         </Card>
 
@@ -173,11 +156,19 @@ export default function OverviewTab({
             <ArrowDown className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-green-600">{((currentMetrics?.totalReceiptsAmount || 0) / 1000000).toFixed(1)}M XAF</div>
-            <div className="flex items-center gap-1 text-xs text-muted-foreground">
-              <TrendingUp className="h-3 w-3 text-green-600" />
-              <span className="font-semibold">{currentMetrics?.totalReceipts || 0}</span> {t("analytics.transactions.counts")}
-            </div>
+            {isLoading ? (
+              <div className="flex items-center justify-center h-16">
+                <Loader className="h-6 w-6 animate-spin text-muted-foreground" />
+              </div>
+            ) : (
+              <>
+                <div className="text-2xl font-bold text-green-600">{((currentMetrics?.totalReceiptsAmount || 0) / 1000000).toFixed(1)}M XAF</div>
+                <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                  <TrendingUp className="h-3 w-3 text-green-600" />
+                  <span className="font-semibold">{currentMetrics?.totalReceipts || 0}</span> {t("analytics.transactions.counts")}
+                </div>
+              </>
+            )}
           </CardContent>
         </Card>
 
@@ -187,11 +178,19 @@ export default function OverviewTab({
             <ArrowUp className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-orange-600">{((currentMetrics?.totalWithdrawalsAmount || 0) / 1000000).toFixed(1)}M XAF</div>
-            <div className="flex items-center gap-1 text-xs text-muted-foreground">
-              <TrendingDown className="h-3 w-3 text-orange-600" />
-              <span className="font-semibold">{currentMetrics?.totalWithdrawals || 0}</span> {t("analytics.transactions.counts")}
-            </div>
+            {isLoading ? (
+              <div className="flex items-center justify-center h-16">
+                <Loader className="h-6 w-6 animate-spin text-muted-foreground" />
+              </div>
+            ) : (
+              <>
+                <div className="text-2xl font-bold text-orange-600">{((currentMetrics?.totalWithdrawalsAmount || 0) / 1000000).toFixed(1)}M XAF</div>
+                <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                  <TrendingDown className="h-3 w-3 text-orange-600" />
+                  <span className="font-semibold">{currentMetrics?.totalWithdrawals || 0}</span> {t("analytics.transactions.counts")}
+                </div>
+              </>
+            )}
           </CardContent>
         </Card>
 
@@ -201,12 +200,20 @@ export default function OverviewTab({
             <ArrowLeftRight className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-blue-500">{((currentMetrics?.totalFundTransfersAmount || 0) / 1000000).toFixed(1)}M XAF</div>
-            <div className="flex items-center gap-1 text-xs text-muted-foreground">
-              <TrendingUp className="h-3 w-3 text-green-600" />
-              <span className="font-semibold">{currentMetrics?.totalFundTransfers || 0} </span>
-              {t("analytics.transactions.counts")}
-            </div>
+            {isLoading ? (
+              <div className="flex items-center justify-center h-16">
+                <Loader className="h-6 w-6 animate-spin text-muted-foreground" />
+              </div>
+            ) : (
+              <>
+                <div className="text-2xl font-bold text-blue-500">{((currentMetrics?.totalFundTransfersAmount || 0) / 1000000).toFixed(1)}M XAF</div>
+                <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                  <TrendingUp className="h-3 w-3 text-green-600" />
+                  <span className="font-semibold">{currentMetrics?.totalFundTransfers || 0} </span>
+                  {t("analytics.transactions.counts")}
+                </div>
+              </>
+            )}
           </CardContent>
         </Card>
 
@@ -216,11 +223,19 @@ export default function OverviewTab({
             <Zap className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{overallSuccessRate.toFixed(1)}%</div>
-            <div className="flex items-center gap-1 text-xs text-muted-foreground">
-              <Activity className="h-3 w-3 text-purple-600" />
-              {totalTransactions.toLocaleString()} {t("analytics.enhanced.totalTransactions")}
-            </div>
+            {isLoading ? (
+              <div className="flex items-center justify-center h-16">
+                <Loader className="h-6 w-6 animate-spin text-muted-foreground" />
+              </div>
+            ) : (
+              <>
+                <div className="text-2xl font-bold">{overallSuccessRate.toFixed(1)}%</div>
+                <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                  <Activity className="h-3 w-3 text-purple-600" />
+                  {totalTransactions.toLocaleString()} {t("analytics.enhanced.totalTransactions")}
+                </div>
+              </>
+            )}
           </CardContent>
         </Card>
       </div>

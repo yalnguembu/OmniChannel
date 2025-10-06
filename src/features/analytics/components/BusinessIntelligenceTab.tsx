@@ -1,6 +1,6 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/components/ui/card"
 import { Badge } from "@/shared/components/ui/badge"
-import { Zap, Calculator, Award, AlertOctagon, TrendingUpDown } from "lucide-react"
+import { Zap, Calculator, Award, AlertOctagon, TrendingUpDown, Loader } from "lucide-react"
 import { useTranslation } from "react-i18next"
 import { DailyMetricDto, DailyMetricsByPaymentMethodDto } from "@/shared/api/types.gen"
 
@@ -10,13 +10,24 @@ interface BusinessIntelligenceTabProps {
   currentMetrics?: DailyMetricDto
   totalTransactions: number
   overallSuccessRate: number
+  isLoading?: boolean
 }
 
-export default function BusinessIntelligenceTab({ currentMetrics, totalTransactions, overallSuccessRate }: BusinessIntelligenceTabProps) {
+// Safe division helper to avoid NaN
+const safeDivide = (numerator: number, denominator: number, defaultValue = 0): number => {
+  if (!denominator || denominator === 0) return defaultValue
+  return numerator / denominator
+}
+
+// Safe percentage helper
+const safePercentage = (numerator: number, denominator: number, defaultValue = 0): number => {
+  return safeDivide(numerator, denominator, defaultValue) * 100
+}
+
+export default function BusinessIntelligenceTab({ currentMetrics, totalTransactions, overallSuccessRate, isLoading = false }: BusinessIntelligenceTabProps) {
   const { t } = useTranslation()
 
-  // Create default metrics when no data is available
-  const defaultMetrics = {
+  const effectiveMetrics = currentMetrics || {
     totalVolume: 0,
     netRevenue: 0,
     activeUsers: 0,
@@ -26,9 +37,15 @@ export default function BusinessIntelligenceTab({ currentMetrics, totalTransacti
     failureRate: 0,
     totalFees: 0,
     totalProviderFees: 0,
+    totalReceipts: 0,
+    totalWithdrawals: 0,
+    totalFundTransfers: 0,
+    totalReceiptsFees: 0,
+    totalWithdrawalsFees: 0,
+    totalFundTransfersFees: 0,
+    failedReceipts: 0,
+    failedWithdrawals: 0,
   }
-
-  const effectiveMetrics = currentMetrics || defaultMetrics
 
   return (
     <div className="space-y-6">
@@ -43,8 +60,13 @@ export default function BusinessIntelligenceTab({ currentMetrics, totalTransacti
             <CardDescription>{t("analytics.business.operationalEfficiency.description")}</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="space-y-4">
-              <div className="text-3xl font-bold text-green-600">{((overallSuccessRate + (100 - effectiveMetrics.failureRate)) / 2).toFixed(1)}%</div>
+            {isLoading ? (
+              <div className="flex items-center justify-center py-4">
+                <Loader className="h-6 w-6 animate-spin text-muted-foreground" />
+              </div>
+            ) : (
+              <div className="space-y-4">
+                <div className="text-3xl font-bold text-green-600">{safeDivide(overallSuccessRate + (100 - effectiveMetrics.failureRate), 2).toFixed(1)}%</div>
               <div className="space-y-2">
                 <div className="flex justify-between text-sm">
                   <span>{t("analytics.business.operationalEfficiency.transactionSuccess")}</span>
@@ -62,6 +84,7 @@ export default function BusinessIntelligenceTab({ currentMetrics, totalTransacti
                 </div>
               </div>
             </div>
+            )}
           </CardContent>
         </Card>
 
@@ -74,23 +97,29 @@ export default function BusinessIntelligenceTab({ currentMetrics, totalTransacti
             <CardDescription>{t("analytics.business.revenuePerTransaction.description")}</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="space-y-4">
-              <div className="text-3xl font-bold text-blue-600">{(effectiveMetrics.netRevenue / totalTransactions).toFixed(0)} XAF</div>
-              <div className="space-y-2">
-                <div className="flex justify-between text-sm">
-                  <span>{t("analytics.business.revenuePerTransaction.receiptsRPT")}</span>
-                  <span className="font-medium">{(effectiveMetrics.totalReceiptsFees / effectiveMetrics.totalReceipts).toFixed(0)} XAF</span>
-                </div>
-                <div className="flex justify-between text-sm">
-                  <span>{t("analytics.business.revenuePerTransaction.withdrawalsRPT")}</span>
-                  <span className="font-medium">{(effectiveMetrics.totalWithdrawalsFees / effectiveMetrics.totalWithdrawals).toFixed(0)} XAF</span>
-                </div>
-                <div className="flex justify-between text-sm">
-                  <span>{t("analytics.business.revenuePerTransaction.transfersRPT")}</span>
-                  <span className="font-medium">{(effectiveMetrics.totalFundTransfersFees / effectiveMetrics.totalFundTransfers).toFixed(0)} XAF</span>
+            {isLoading ? (
+              <div className="flex items-center justify-center py-4">
+                <Loader className="h-6 w-6 animate-spin text-muted-foreground" />
+              </div>
+            ) : (
+              <div className="space-y-4">
+                <div className="text-3xl font-bold text-blue-600">{safeDivide(effectiveMetrics.netRevenue, totalTransactions).toFixed(0)} XAF</div>
+                <div className="space-y-2">
+                  <div className="flex justify-between text-sm">
+                    <span>{t("analytics.business.revenuePerTransaction.receiptsRPT")}</span>
+                    <span className="font-medium">{safeDivide(effectiveMetrics.totalReceiptsFees || 0, effectiveMetrics.totalReceipts || 0).toFixed(0)} XAF</span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span>{t("analytics.business.revenuePerTransaction.withdrawalsRPT")}</span>
+                    <span className="font-medium">{safeDivide(effectiveMetrics.totalWithdrawalsFees || 0, effectiveMetrics.totalWithdrawals || 0).toFixed(0)} XAF</span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span>{t("analytics.business.revenuePerTransaction.transfersRPT")}</span>
+                    <span className="font-medium">{safeDivide(effectiveMetrics.totalFundTransfersFees || 0, effectiveMetrics.totalFundTransfers || 0).toFixed(0)} XAF</span>
+                  </div>
                 </div>
               </div>
-            </div>
+            )}
           </CardContent>
         </Card>
 
@@ -103,22 +132,28 @@ export default function BusinessIntelligenceTab({ currentMetrics, totalTransacti
             <CardDescription>{t("analytics.business.customerEngagement.description")}</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="space-y-4">
-              <div className="text-3xl font-bold text-purple-600">{(totalTransactions / effectiveMetrics.activeUsers).toFixed(1)}</div>
-              <div className="text-sm text-muted-foreground mb-3">{t("analytics.business.customerEngagement.transactionsPerUser")}</div>
-              <div className="space-y-2">
-                <div className="flex justify-between text-sm">
-                  <span>{t("analytics.business.customerEngagement.growthRate")}</span>
-                  <span className="font-medium">{((effectiveMetrics.newUsers / effectiveMetrics.activeUsers) * 100).toFixed(1)}%</span>
-                </div>
-                <div className="flex justify-between text-sm">
-                  <span>{t("analytics.business.customerEngagement.apiUsage")}</span>
-                  <span className="font-medium">
-                    {(effectiveMetrics.apiCallsCount / effectiveMetrics.activeUsers).toFixed(1)} {t("analytics.business.customerEngagement.callsPerUser")}
-                  </span>
+            {isLoading ? (
+              <div className="flex items-center justify-center py-4">
+                <Loader className="h-6 w-6 animate-spin text-muted-foreground" />
+              </div>
+            ) : (
+              <div className="space-y-4">
+                <div className="text-3xl font-bold text-purple-600">{safeDivide(totalTransactions, effectiveMetrics.activeUsers).toFixed(1)}</div>
+                <div className="text-sm text-muted-foreground mb-3">{t("analytics.business.customerEngagement.transactionsPerUser")}</div>
+                <div className="space-y-2">
+                  <div className="flex justify-between text-sm">
+                    <span>{t("analytics.business.customerEngagement.growthRate")}</span>
+                    <span className="font-medium">{safePercentage(effectiveMetrics.newUsers, effectiveMetrics.activeUsers).toFixed(1)}%</span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span>{t("analytics.business.customerEngagement.apiUsage")}</span>
+                    <span className="font-medium">
+                      {safeDivide(effectiveMetrics.apiCallsCount, effectiveMetrics.activeUsers).toFixed(1)} {t("analytics.business.customerEngagement.callsPerUser")}
+                    </span>
+                  </div>
                 </div>
               </div>
-            </div>
+            )}
           </CardContent>
         </Card>
       </div>
@@ -137,17 +172,17 @@ export default function BusinessIntelligenceTab({ currentMetrics, totalTransacti
             <div className="space-y-6">
               <div className="grid grid-cols-3 gap-4">
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-red-600">{effectiveMetrics.failedReceipts}</div>
+                  <div className="text-2xl font-bold text-red-600">{effectiveMetrics.failedReceipts || 0}</div>
                   <div className="text-sm text-muted-foreground">{t("analytics.business.riskAssessment.failedReceipts")}</div>
                   <Badge variant="outline" className="mt-1 bg-red-50 text-red-600">
-                    {((effectiveMetrics.failedReceipts / effectiveMetrics.totalReceipts) * 100).toFixed(1)}%
+                    {safePercentage(effectiveMetrics.failedReceipts || 0, effectiveMetrics.totalReceipts || 0).toFixed(1)}%
                   </Badge>
                 </div>
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-orange-600">{effectiveMetrics.failedWithdrawals}</div>
+                  <div className="text-2xl font-bold text-orange-600">{effectiveMetrics.failedWithdrawals || 0}</div>
                   <div className="text-sm text-muted-foreground">{t("analytics.business.riskAssessment.failedWithdrawals")}</div>
                   <Badge variant="outline" className="mt-1 bg-orange-50 text-orange-600">
-                    {((effectiveMetrics.failedWithdrawals / effectiveMetrics.totalWithdrawals) * 100).toFixed(1)}%
+                    {safePercentage(effectiveMetrics.failedWithdrawals || 0, effectiveMetrics.totalWithdrawals || 0).toFixed(1)}%
                   </Badge>
                 </div>
                 <div className="text-center">
@@ -187,11 +222,11 @@ export default function BusinessIntelligenceTab({ currentMetrics, totalTransacti
             <div className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <div className="text-lg font-bold">{(effectiveMetrics.totalVolume / 1000000 / (effectiveMetrics.activeUsers / 1000)).toFixed(1)}M</div>
+                  <div className="text-lg font-bold">{safeDivide(safeDivide(effectiveMetrics.totalVolume, 1000000), safeDivide(effectiveMetrics.activeUsers, 1000)).toFixed(1)}M</div>
                   <div className="text-sm text-muted-foreground">{t("analytics.business.growthIndicators.xafPer1kUsers")}</div>
                 </div>
                 <div>
-                  <div className="text-lg font-bold">{((effectiveMetrics.netRevenue / effectiveMetrics.totalVolume) * 100).toFixed(3)}%</div>
+                  <div className="text-lg font-bold">{safePercentage(effectiveMetrics.netRevenue, effectiveMetrics.totalVolume).toFixed(3)}%</div>
                   <div className="text-sm text-muted-foreground">{t("analytics.business.growthIndicators.revenueMargin")}</div>
                 </div>
               </div>
@@ -201,9 +236,9 @@ export default function BusinessIntelligenceTab({ currentMetrics, totalTransacti
                   <span className="text-sm">{t("analytics.business.growthIndicators.marketPenetration")}</span>
                   <div className="flex items-center gap-2">
                     <div className="w-24 h-2 bg-gray-200 rounded-full">
-                      <div className="h-2 bg-green-500 rounded-full" style={{ width: `${Math.min((effectiveMetrics.activeUsers / 10000) * 100, 100)}%` }}></div>
+                      <div className="h-2 bg-green-500 rounded-full" style={{ width: `${Math.min(safePercentage(effectiveMetrics.activeUsers, 10000), 100)}%` }}></div>
                     </div>
-                    <span className="text-sm font-medium">{((effectiveMetrics.activeUsers / 10000) * 100).toFixed(1)}%</span>
+                    <span className="text-sm font-medium">{safePercentage(effectiveMetrics.activeUsers, 10000).toFixed(1)}%</span>
                   </div>
                 </div>
 
@@ -221,9 +256,9 @@ export default function BusinessIntelligenceTab({ currentMetrics, totalTransacti
                   <span className="text-sm">{t("analytics.business.growthIndicators.operationalScalability")}</span>
                   <div className="flex items-center gap-2">
                     <div className="w-24 h-2 bg-gray-200 rounded-full">
-                      <div className="h-2 bg-purple-500 rounded-full" style={{ width: `${Math.min((totalTransactions / 5000) * 100, 100)}%` }}></div>
+                      <div className="h-2 bg-purple-500 rounded-full" style={{ width: `${Math.min(safePercentage(totalTransactions, 5000), 100)}%` }}></div>
                     </div>
-                    <span className="text-sm font-medium">{Math.min((totalTransactions / 5000) * 100, 100).toFixed(0)}%</span>
+                    <span className="text-sm font-medium">{Math.min(safePercentage(totalTransactions, 5000), 100).toFixed(0)}%</span>
                   </div>
                 </div>
               </div>

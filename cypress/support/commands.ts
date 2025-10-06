@@ -33,23 +33,23 @@
 //   }
 // }
 
-import '@testing-library/cypress/add-commands';
+import "@testing-library/cypress/add-commands"
 
 // Custom command to fill the OTP input fields
-Cypress.Commands.add('fillOtp', (value) => {
+Cypress.Commands.add("fillOtp", (value) => {
   // Split the string into individual characters
-  const chars = value.split('');
-  
+  const chars = value.split("")
+
   // Type each character into the corresponding OTP slot
   chars.forEach((char, index) => {
-    cy.get(`[data-slot="${index}"]`).type(char);
-  });
-});
+    cy.get(`[data-slot="${index}"]`).type(char)
+  })
+})
 
 // Custom command for login
-Cypress.Commands.add('login', (username, password) => {
-  cy.visit('/auth/login');
-  cy.get('input[name="username"]').type(username);
-  cy.get('input[name="password"]').type(password);
-  cy.get('button[type="submit"]').click();
-});
+Cypress.Commands.add("login", (username, password) => {
+  cy.visit("/auth/login")
+  cy.get('input[name="username"]').type(username)
+  cy.get('input[name="password"]').type(password)
+  cy.get('button[type="submit"]').click()
+})

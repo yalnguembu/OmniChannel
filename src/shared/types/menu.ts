@@ -15,6 +15,7 @@ export type SideBarMenuItemWithAddButton = {
   children?: SideBarMenuItem[]
   addPagePath?: string
   addButtonLabel?: string
+  permission?: string // Permission required to access this menu item (VIEW permission)
 }
 
 export type SideBarMenuItemWithoutAddButton = {
@@ -23,4 +24,5 @@ export type SideBarMenuItemWithoutAddButton = {
   icon?: ElementType
   isActive?: boolean
   children?: SideBarMenuItem[]
+  permission?: string // Permission required to access this menu item (VIEW permission)
 }

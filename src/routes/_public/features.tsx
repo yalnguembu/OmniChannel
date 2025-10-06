@@ -5,6 +5,7 @@ import { Button } from "@/shared/components/ui/button"
 import { CreditCard, ArrowDownToLine, ArrowLeftRight, BarChart4, Building2, ShieldCheck, Bell, LayoutDashboard, UserCheck, Settings } from "lucide-react"
 import { createFileRoute } from "@tanstack/react-router"
 
+import PageLoader from "@/shared/components/PageLoader"
 function FeaturesPage() {
   const { t } = useTranslation()
 
@@ -130,6 +131,7 @@ function FeaturesPage() {
 }
 
 export const Route = createFileRoute("/_public/features")({
+  pendingComponent: PageLoader,
   component: FeaturesPage,
 })
 

@@ -4,22 +4,17 @@ import { StandardListPageLayout } from "@/shared/components/layouts/ListPageLayo
 import { CreatePageHeader } from "@/shared/components/CreatePageHeader"
 import { CompanyCreateForm } from "../components/CompanyCreateForm"
 import { useCompany } from "../hooks/useCompany"
-import { UpdateCompanyRequest } from "@/shared/api"
+import { CreateCompanyRequest } from "@/shared/api"
 
 export function CreateCompanyPage() {
   const navigate = useNavigate()
   const { t } = useTranslation()
-  const { createMutation } = useCompany()
+  const { createCompanyWithValidation } = useCompany()
 
-  const handleSubmit = (data: UpdateCompanyRequest) => {
-    createMutation.mutate(
-      { body: data },
-      {
-        onSuccess: () => {
-          navigate({ to: `/companies` })
-        },
-      },
-    )
+  const handleSubmit = (data: CreateCompanyRequest, setError: any) => {
+    createCompanyWithValidation(data, setError, () => {
+      navigate({ to: `/companies` })
+    })
   }
 
   const handleCancel = () => {

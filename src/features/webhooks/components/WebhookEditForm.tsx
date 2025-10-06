@@ -1,5 +1,5 @@
 import React, { useEffect } from "react"
-import { useForm } from "react-hook-form"
+import { useForm, UseFormSetError } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useTranslation } from "react-i18next"
 import { Button } from "@/shared/components/ui/button"
@@ -13,7 +13,7 @@ import { zUpdateWebhookRequest } from "@/shared/api/zod.gen"
 interface WebhookEditFormProps {
   webhookId: string
   initialData: UpdateWebhookRequest
-  onSubmit: (data: UpdateWebhookRequest) => void
+  onSubmit: (data: UpdateWebhookRequest, setError: UseFormSetError<UpdateWebhookRequest>) => void
   onCancel: () => void
   isLoading?: boolean
 }
@@ -32,7 +32,7 @@ export const WebhookEditForm: React.FC<WebhookEditFormProps> = ({ webhookId, ini
 
   const handleSubmit = (values: UpdateWebhookRequest) => {
     if (onSubmit) {
-      onSubmit({ ...values, id: webhookId })
+      onSubmit({ ...values, id: webhookId }, form.setError)
     }
   }
 

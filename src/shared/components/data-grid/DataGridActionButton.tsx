@@ -14,11 +14,22 @@ export type DataGridRowActionIconType = {
 }
 
 const enum ActionButtonStyles {
-  view = "bg-primary/10 hover:bg-primary/20 text-primary",
-  edit = "bg-blue-100 hover:bg-blue-200 text-blue-600",
-  delete = "bg-red-100 hover:bg-red-200 text-red-600",
-  deactivate = "bg-red-100 hover:bg-red-200 text-red-700",
-  activate = "bg-green-100 hover:bg-green-200 text-green-600",
+  view = "hover:bg-primary/20 text-primary",
+  edit = "hover:bg-blue-200 text-blue-600",
+  changeStatus = "hover:bg-blue-200 text-blue-800",
+  delete = "hover:bg-red-200 text-red-600",
+  deactivate = "hover:bg-red-200 text-red-700",
+  activate = "hover:bg-green-200 text-green-600",
+  config = "hover:bg-accent/20 text-accent",
+  checkStatus = "hover:bg-yellow-200 text-yellow-500",
+  // view = "bg-primary/10 hover:bg-primary/20 text-primary",
+  // edit = "bg-blue-100 hover:bg-blue-200 text-blue-600",
+  // changeStatus = "bg-blue-100 hover:bg-blue-200 text-blue-800",
+  // delete = "bg-red-100 hover:bg-red-200 text-red-600",
+  // deactivate = "bg-red-100 hover:bg-red-200 text-red-700",
+  // activate = "bg-green-100 hover:bg-green-200 text-green-600",
+  // config = "bg-accent/10 hover:bg-accent/20 text-accent",
+  // checkStatus = "bg-yellow-100 hover:bg-yellow-200 text-yellow-500",
 }
 
 const DataGridRowActionIcon = ({ row, action, dispatch, isLoading = false, disabled = false, shouldCollapseTextOnMobile }: DataGridRowActionIconType) => {

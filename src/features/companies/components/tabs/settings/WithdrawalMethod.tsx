@@ -39,6 +39,7 @@ export function WithdrawalMethodsTab({ companyId }: { companyId: string }) {
     applyFilters,
     clearFilters,
     changePage,
+    changePageSize,
     changeSort,
     setSelectedRows,
     deleteWithdrawalMethod,
@@ -154,8 +155,9 @@ export function WithdrawalMethodsTab({ companyId }: { companyId: string }) {
     setSelectedRows(selectedIds)
   }
 
-  const handlePageChange = (page: number) => {
+  const handlePageChange = (page: number, size: number) => {
     changePage(page)
+    changePageSize(size)
   }
 
   const handleSubmit = (data: CreateWithdrawalMethodRequest) => {

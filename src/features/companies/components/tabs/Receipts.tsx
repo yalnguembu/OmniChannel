@@ -1,24 +1,29 @@
 import { useNavigate } from "@tanstack/react-router"
 import { useTranslation } from "react-i18next"
-import { useMemo } from "react"
+import { useMemo, useState, type ReactNode, useEffect } from "react"
 import { DataGrid } from "@/shared/components/data-grid/data-grid"
-import { DataGridColumnHeader, DataGridRowEntry, DataGridSort } from "@/shared/types"
+import { ACTION, DataGridColumnHeader, DataGridRowEntry, DataGridSort, ViewMode } from "@/shared/types"
 import { SortDirection } from "@/shared/enums/data-grid"
-import { Button } from "@/shared/components/ui/button"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/shared/components/ui/dropdown-menu"
-import { MoreHorizontal, Eye } from "lucide-react"
+import StatusBadge from "@/shared/components/StatusBadge"
 import { useReceiptsReadModel } from "@/features/receipts-read-models/hooks/useReceiptsReadModel"
 import { BaseFilter } from "@/shared/components/filter/base-filter"
 import { zSearchReceiptsReadModelRequest } from "@/shared/api/zod.gen"
 import { SearchReceiptsReadModelRequest } from "@/shared"
 import { CommonDataGridEntry, Entity } from "@/shared/components/data-grid/adapters/common"
 import { Card, CardContent } from "@/shared/components/ui/card"
+import { ConfirmationModal } from "@/shared/components/ConfirmationModal"
+import ActionButtonGroup from "@/shared/components/data-grid/ActionButtonGroup"
+import DetailsCardItem from "@/shared/components/DetailsCardItem"
+import { getApiReceiptsReadModelCheckPaymentStatusById } from "@/shared/api/sdk.gen"
+import { formatDate } from "@/shared/lib/date"
 
 export function ReceiptsTab({ companyId }: { companyId: string }) {
   const navigate = useNavigate()
   const { t } = useTranslation()
 
   console.log(companyId)
+
+  const [bulkDeleteConfirmation, setBulkDeleteConfirmation] = useState(false)
 
   const {
     receiptsReadModels,
@@ -36,99 +41,51 @@ export function ReceiptsTab({ companyId }: { companyId: string }) {
     applyFilters,
     clearFilters,
     changePage,
+    changePageSize,
     changeSort,
     setSelectedRows,
+    bulkDeleteMutation,
+    searchReceiptsReadModels,
   } = useReceiptsReadModel()
+
+  useEffect(() => {
+    searchReceiptsReadModels()
+  }, [])
 
   const columnHeaders: DataGridColumnHeader[] = [
     {
-      key: "amount",
-      label: "Amount",
+      key: "paymentMethod",
+      label: "M",
       sortable: true,
       resizable: true,
     },
     {
-      key: "currency",
-      label: "Currency",
+      key: "coreDetails",
+      label: t("receiptsreadmodels.headers.coreDetails"),
       sortable: true,
       resizable: true,
     },
     {
-      key: "applicationName",
-      label: "Application Name",
+      key: "fee",
+      label: t("receiptsreadmodels.headers.fee"),
       sortable: true,
       resizable: true,
     },
     {
-      key: "companyName",
-      label: "Company Name",
+      key: "context",
+      label: t("receiptsreadmodels.headers.context"),
       sortable: true,
       resizable: true,
     },
     {
-      key: "providerFeeAmount",
-      label: "Provider Fee Amount",
-      sortable: true,
-      resizable: true,
-    },
-    {
-      key: "internalFeeAmount",
-      label: "Internal Fee Amount",
-      sortable: true,
-      resizable: true,
-    },
-    {
-      key: "feeAppliedAmount",
-      label: "Fee Applied Amount",
-      sortable: true,
-      resizable: true,
-    },
-    {
-      key: "netAmount",
-      label: "Net Amount",
-      sortable: true,
-      resizable: true,
-    },
-    {
-      key: "phoneNumberEncrypted",
-      label: "Phone Number Encrypted",
-      sortable: true,
-      resizable: true,
-    },
-
-    {
-      key: "externalReference",
-      label: "External Reference",
-      sortable: true,
-      resizable: true,
-    },
-    {
-      key: "providerReference",
-      label: "Provider Reference",
-      sortable: true,
-      resizable: true,
-    },
-    {
-      key: "transactionId",
-      label: "Transaction Id",
-      sortable: true,
-      resizable: true,
-    },
-    {
-      key: "status",
-      label: "Status",
-      sortable: true,
-      resizable: true,
-    },
-    {
-      key: "paymentMethodCode",
-      label: "Payment Method Code",
+      key: "references",
+      label: t("receiptsreadmodels.headers.references"),
       sortable: true,
       resizable: true,
     },
     {
       key: "createdAt",
-      label: "Created At",
+      label: t("receiptsreadmodels.headers.createdAt"),
       sortable: true,
       resizable: true,
     },
@@ -136,9 +93,14 @@ export function ReceiptsTab({ companyId }: { companyId: string }) {
       key: "actions",
       label: t("receiptsReadModels.actions.more"),
       sortable: false,
-      width: 70,
+      width: 110,
     },
   ]
+
+  const getCheckStatus = async (id: string) => {
+    const response = await getApiReceiptsReadModelCheckPaymentStatusById({ path: { id } })
+    if (response.status === 200 && response.data) searchReceiptsReadModels()
+  }
 
   const gridItems = useMemo(() => {
     return receiptsReadModels.map((item) => new CommonDataGridEntry(item as Entity))
@@ -148,27 +110,195 @@ export function ReceiptsTab({ companyId }: { companyId: string }) {
     navigate({ to: `/transactions/receipts/${id}` })
   }
 
-  const renderCell = (item: DataGridRowEntry, columnKey: string) => {
-    switch (columnKey) {
-      case "actions":
-        return (
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-8 w-8 p-0">
-                <span className="sr-only">Open menu</span>
-                <MoreHorizontal className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={() => handleView(item.getId())}>
-                <Eye className="mr-2 h-4 w-4" />
-                {t("receiptsReadModels.actions.view")}
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        )
+  const enum paymentMethodCode {
+    MTN_MOMO = "/icons/momo.png",
+    ORANGE_MONEY = "/icons/om.png",
+  }
+
+  const actions: ACTION[] = ["checkStatus", "changeStatus"]
+
+  const handleDispatch = (action: ACTION, id: string) => {
+    switch (action) {
+      case "checkStatus":
+        getCheckStatus(id)
+        break
+      case "view":
+        handleView(id)
+        break
       default:
-        return item.getTextFor(columnKey) || "N/A"
+        return
+    }
+  }
+
+  const renderCell = (item: DataGridRowEntry, column: DataGridColumnHeader, view: ViewMode): ReactNode => {
+    if (view == "list") {
+      switch (column.key) {
+        case "paymentMethod":
+          return <img src={paymentMethodCode[item.getTextFor("paymentMethodCode") as keyof typeof paymentMethodCode]} alt="Payment Method" className="h-6 w-6 rounded-md" />
+        case "coreDetails":
+          return (
+            <div className="flex flex-col gap-y-1 text-muted-foreground/80">
+              <div className="flex gap-x-1.5 lg:text-md">
+                <span className="font-medium">{t("receiptsreadmodels.headers.amount")} :</span>
+                <span className="text-green-500 font-bold">
+                  {item.getTextFor("amount")} {item.getTextFor("currency")}
+                </span>
+              </div>
+              <div className="flex gap-x-1.5">
+                <span className="font-medium">{t("receiptsreadmodels.headers.netAmount")} :</span>
+                <span className="">
+                  {item.getTextFor("netAmount")} {item.getTextFor("currency")}
+                </span>
+              </div>
+              <div className="flex gap-x-1.5">
+                <StatusBadge text={item.getTextFor("status")} />
+              </div>
+            </div>
+          )
+        case "fee":
+          return (
+            <div className="flex flex-col gap-y-1 text-muted-foreground/80">
+              <div className="flex gap-x-1.5 lg:text-md">
+                <span className="font-medium">{t("receiptsreadmodels.headers.providerFeeAmount")} :</span>
+                <span className="text-primary font-semibold">
+                  {item.getTextFor("providerFeeAmount")} {item.getTextFor("currency")}
+                </span>
+              </div>
+              {/* <div className="flex gap-x-1.5">
+                <span className="font-medium">{t("receiptsreadmodels.headers.internalFeeAmount")} :</span>
+                <span className="">{item.getTextFor("internalFeeAmount")}</span>
+              </div> */}
+              <div className="flex gap-x-1.5">
+                <span className="font-medium">{t("receiptsreadmodels.headers.feeAppliedAmount")} :</span>
+                <span className="font-semibold text-red-500">
+                  {item.getTextFor("feeAppliedAmount")} {item.getTextFor("currency")}
+                </span>
+              </div>
+            </div>
+          )
+        case "context":
+          return (
+            <div className="flex flex-col gap-y-1 text-muted-foreground/80">
+              <div className="flex gap-x-1.5 lg:text-md">
+                <span className="font-medium">{t("receiptsreadmodels.headers.applicationName")} :</span>
+                <span className="text-primary font-bold">{item.getTextFor("applicationName")}</span>
+              </div>
+              <div className="flex gap-x-1.5">
+                <span className="font-medium">{t("receiptsreadmodels.headers.companyName")} :</span>
+                <span className="">{item.getTextFor("companyName")}</span>
+              </div>
+              <div className="flex gap-x-1.5">
+                <span className="font-medium">{t("receiptsreadmodels.headers.phoneNumberEncrypted")} :</span>
+                <span className="font-black text-primary">{item.getTextFor("phoneNumberEncrypted")}</span>
+              </div>
+            </div>
+          )
+        case "references":
+          return (
+            <div className="flex flex-col gap-y-1 text-muted-foreground/80">
+              <div className="flex gap-x-1.5 lg:text-md">
+                <span className="font-medium">{t("receiptsreadmodels.headers.externalReference")} :</span>
+                <span className="text-red-500 font-semibold">{item.getTextFor("externalReference")}</span>
+              </div>
+              <div className="flex gap-x-1.5">
+                <span className="font-medium">{t("receiptsreadmodels.headers.internalReference")} :</span>
+                <span className="text-blue-500 font-semibold">{item.getTextFor("internalReference")}</span>
+              </div>
+              <div className="flex gap-x-1.5">
+                <span className="font-medium">ID: </span>
+                <span className="">{item.getTextFor("id")}</span>
+              </div>
+            </div>
+          )
+        case "createdAt":
+          return <span className="text-muted-foreground">{item.getTextFor("createdAt") ? formatDate(item.getTextFor("createdAt")) : "N/A"}</span>
+
+        case "actions":
+          return <ActionButtonGroup view={view} isLoading={isLoading} row={item} actions={actions as ACTION[]} dispatch={handleDispatch} />
+
+        default:
+          return column?.isBadge ? (
+            <StatusBadge text={item.getTextFor(column.key) as string} />
+          ) : (
+            <span className="text-muted-foreground/70"> {item.getTextFor(column.key) || "N/A"}</span>
+          )
+      }
+    } else {
+      switch (column.key) {
+        case "coreDetails":
+          return (
+            <div className="flex flex-col gap-y-1 px-4">
+              <DetailsCardItem
+                label={t("receiptsreadmodels.headers.amount")}
+                value={
+                  <span className="text-green-500 font-bold">
+                    {item.getTextFor("amount")} {item.getTextFor("currency")}
+                  </span>
+                }
+              />
+              <DetailsCardItem label={t("receiptsreadmodels.headers.netAmount")} value={item.getTextFor("netAmount")} />
+              <DetailsCardItem label={t("receiptsreadmodels.headers.status")} value={<StatusBadge text={item.getTextFor("status")} />} />
+            </div>
+          )
+        case "fee":
+          return (
+            <div className="flex flex-col gap-y-1 px-4 text-sm text-muted-foreground">
+              <DetailsCardItem
+                label={t("receiptsreadmodels.headers.providerFeeAmount")}
+                value={
+                  <span className="text-primary font-semibold">
+                    {item.getTextFor("providerFeeAmount")} {item.getTextFor("currency")}
+                  </span>
+                }
+              />
+              {/* <DetailsCardItem label={t("receiptsreadmodels.headers.internalFeeAmount")} value={item.getTextFor("internalFeeAmount")} /> */}
+              <DetailsCardItem
+                label={t("receiptsreadmodels.headers.feeAppliedAmount")}
+                value={
+                  <span className="font-semibold text-red-500">
+                    {item.getTextFor("feeAppliedAmount")} {item.getTextFor("currency")}
+                  </span>
+                }
+              />
+            </div>
+          )
+        case "context":
+          return (
+            <div className="flex flex-col gap-y-1 px-4 text-sm text-muted-foreground">
+              <DetailsCardItem
+                label={t("receiptsreadmodels.headers.applicationName")}
+                value={<span className="text-primary font-bold">{item.getTextFor("applicationName")}</span>}
+              />
+              <DetailsCardItem
+                label={t("receiptsreadmodels.headers.phoneNumberEncrypted")}
+                value={<span className="font-black text-primary">{item.getTextFor("phoneNumberEncrypted")}</span>}
+              />
+            </div>
+          )
+        case "references":
+          return (
+            <div className="flex flex-col gap-y-1 px-4 text-sm text-muted-foreground">
+              <DetailsCardItem
+                label={t("receiptsreadmodels.headers.externalRefutilerence")}
+                value={<span className="text-red-500 font-semibold">{item.getTextFor("externalReference")}</span>}
+              />
+              <DetailsCardItem
+                label={t("receiptsreadmodels.headers.internalReference")}
+                value={<span className="text-blue-500 font-semibold">{item.getTextFor("internalReference")}</span>}
+              />
+              <DetailsCardItem label="ID" value={item.getTextFor("id")} />
+            </div>
+          )
+        case "actions":
+          return (
+            <div className="flex flex-row justify-between px-4 pt-2 mt-auto border-t">
+              <ActionButtonGroup view={view} isLoading={isLoading} row={item} actions={actions as ACTION[]} dispatch={handleDispatch} />
+            </div>
+          )
+        default:
+          // This will prevent rendering any other individual fields that are now part of a group.
+          return null
+      }
     }
   }
 
@@ -188,9 +318,30 @@ export function ReceiptsTab({ companyId }: { companyId: string }) {
     setSelectedRows(selectedIds)
   }
 
-  const handlePageChange = (page: number) => {
+  const handlePageChange = (page: number, size: number) => {
     changePage(page)
+    changePageSize(size)
   }
+
+  const handleBulkDelete = () => {
+    setBulkDeleteConfirmation(true)
+  }
+
+  const confirmBulkDelete = () => {
+    bulkDeleteMutation.mutate(selectedRows)
+    setBulkDeleteConfirmation(false)
+  }
+
+  const bulkActions = hasSelection
+    ? [
+        {
+          label: bulkDeleteMutation.isPending ? t("receiptsReadModels.bulk.deleting") : t("receiptsReadModels.bulk.delete", { count: selectedRows.length }),
+          action: handleBulkDelete,
+          variant: "destructive" as const,
+          loading: bulkDeleteMutation.isPending,
+        },
+      ]
+    : undefined
 
   return (
     <div className="flex flex-col gap-y-4 pt-4">
@@ -230,10 +381,24 @@ export function ReceiptsTab({ companyId }: { companyId: string }) {
             enableColumnVisibility={true}
             hiddenColumns={[]}
             onColumnVisibilityChange={() => {}}
+            bulkActions={bulkActions}
             renderCell={renderCell}
+            dispatch={handleDispatch}
           />
         </CardContent>
       </Card>
+
+      <ConfirmationModal
+        open={bulkDeleteConfirmation}
+        onOpenChange={() => setBulkDeleteConfirmation(false)}
+        onConfirm={confirmBulkDelete}
+        title={t("receiptsReadModels.confirmations.bulkDelete.title")}
+        description={t("receiptsReadModels.confirmations.bulkDelete.description", { count: selectedRows.length })}
+        confirmText={t("receiptsReadModels.confirmations.bulkDelete.confirm")}
+        cancelText={t("receiptsReadModels.confirmations.bulkDelete.cancel")}
+        variant="danger"
+        isLoading={bulkDeleteMutation.isPending}
+      />
     </div>
   )
 }

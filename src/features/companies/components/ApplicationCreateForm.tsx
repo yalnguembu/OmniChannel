@@ -13,7 +13,7 @@ import { CreateApplicationRequest } from "@/shared/api"
 import { zCreateApplicationRequest } from "@/shared/api/zod.gen"
 
 interface ApplicationCreateFormProps {
-  onSubmit: (data: CreateApplicationRequest) => void
+  onSubmit: (data: CreateApplicationRequest, setError: any) => void
   onCancel: () => void
   isLoading?: boolean
 
@@ -40,7 +40,7 @@ export const ApplicationCreateForm: React.FC<ApplicationCreateFormProps> = ({ on
 
   const handleSubmit = (values: CreateApplicationRequest) => {
     if (onSubmit) {
-      onSubmit(values)
+      onSubmit(values, form.setError)
     }
   }
 

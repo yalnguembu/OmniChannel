@@ -11,17 +11,12 @@ export function EditCompanyPage() {
   const navigate = useNavigate()
   const { t } = useTranslation()
   const { id } = useParams({ from: "/_protected/companies/$id/edit" })
-  const { updateMutation, getCompanyQuery } = useCompany()
+  const { updateCompanyWithValidation, getCompanyQuery } = useCompany()
 
-  const handleSubmit = (data: UpdateCompanyRequest) => {
-    updateMutation.mutate(
-      { body: data },
-      {
-        onSuccess: () => {
-          navigate({ to: "/companies" })
-        },
-      },
-    )
+  const handleSubmit = (data: UpdateCompanyRequest, setError: any) => {
+    updateCompanyWithValidation(data, setError, () => {
+      navigate({ to: "/companies" })
+    })
   }
 
   const { data, isPending } = getCompanyQuery(id)

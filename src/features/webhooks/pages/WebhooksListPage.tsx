@@ -12,18 +12,15 @@ import { ModalWrapper } from "@/shared/components/ModalWrapper"
 
 export function WebhooksListPage() {
   const { t } = useTranslation()
-  const { isLoading, viewMode, setViewMode, refreshData, hasSelection, selectedRows, applyFilters, clearFilters, createMutation } = useWebhook()
+  const { isLoading, viewMode, setViewMode, refreshData, hasSelection, selectedRows, applyFilters, clearFilters, createWebhookWithValidation } = useWebhook()
 
   const [showCreateModal, setShowCreateModal] = useState(false)
   const toggleShowCreateModal = () => setShowCreateModal((prev) => !prev)
 
-  const handleCreate = (data: CreateWebhookRequest) => {
-    createMutation.mutate(
-      { body: data },
-      {
-        onSuccess: () => toggleShowCreateModal(),
-      },
-    )
+  const handleCreate = (data: CreateWebhookRequest, setError: any) => {
+    createWebhookWithValidation(data, setError, () => {
+      toggleShowCreateModal()
+    })
   }
 
   return (

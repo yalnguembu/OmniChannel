@@ -17,8 +17,19 @@ import { UserStatisticCards } from "../components/UserStatisticCards"
 
 export function UsersListPage() {
   const { t } = useTranslation()
-  const { isLoading, viewMode, setViewMode, refreshData, hasSelection, selectedRows, applyFilters, clearFilters, createSystemMutation, createCompanyMutation, searchUsers } =
-    useUser()
+  const {
+    isLoading,
+    viewMode,
+    setViewMode,
+    refreshData,
+    hasSelection,
+    selectedRows,
+    applyFilters,
+    clearFilters,
+    createSystemUserWithValidation,
+    createCompanyUserWithValidation,
+    searchUsers,
+  } = useUser()
 
   const [showCreateSystemUserModal, setShowCreateSystemUserModal] = useState(false)
   const toggleShowCreateSystemUserModal = () => setShowCreateSystemUserModal((prev) => !prev)
@@ -26,22 +37,16 @@ export function UsersListPage() {
   const [showCreateCompanyUserModal, setShowCreateCompanyUserModal] = useState(false)
   const toggleShowCreateCompanyUserModal = () => setShowCreateCompanyUserModal((prev) => !prev)
 
-  const handleSubmitSystemUser = (data: CreateSystemUserRequest) => {
-    createSystemMutation.mutate(
-      { body: data },
-      {
-        onSuccess: () => toggleShowCreateSystemUserModal(),
-      },
-    )
+  const handleSubmitSystemUser = (data: CreateSystemUserRequest, setError: any) => {
+    createSystemUserWithValidation(data, setError, () => {
+      toggleShowCreateSystemUserModal()
+    })
   }
 
-  const handleSubmitCompanyUser = (data: CreateCompanyUserRequest) => {
-    createCompanyMutation.mutate(
-      { body: data },
-      {
-        onSuccess: () => toggleShowCreateCompanyUserModal(),
-      },
-    )
+  const handleSubmitCompanyUser = (data: CreateCompanyUserRequest, setError: any) => {
+    createCompanyUserWithValidation(data, setError, () => {
+      toggleShowCreateCompanyUserModal()
+    })
   }
 
   useEffect(() => {

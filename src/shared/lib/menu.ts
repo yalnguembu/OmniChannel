@@ -58,6 +58,7 @@ export const adminMenus: BaseMenus[] = [
             icon: Globe,
             addPagePath: "/administration/countries/add",
             addButtonLabel: "menu.addCountry",
+            permission: "COUNTRY_VIEW",
           },
           {
             label: "menu.currencies",
@@ -65,6 +66,7 @@ export const adminMenus: BaseMenus[] = [
             icon: DollarSign,
             addPagePath: "/administration/currencies/add",
             addButtonLabel: "menu.addCurrency",
+            permission: "CURRENCY_VIEW",
           },
           {
             label: "menu.feeTypes",
@@ -72,6 +74,7 @@ export const adminMenus: BaseMenus[] = [
             icon: Percent,
             addPagePath: "/administration/fee-types/add",
             addButtonLabel: "menu.addFeeType",
+            permission: "FEETYPE_VIEW",
           },
           {
             label: "menu.paymentMethod",
@@ -79,6 +82,7 @@ export const adminMenus: BaseMenus[] = [
             icon: CreditCard,
             addPagePath: "/administration/payment-methods/add",
             addButtonLabel: "menu.addPaymentMethod",
+            permission: "PAYMENTMETHOD_VIEW",
           },
           {
             label: "menu.withdrawalMethod",
@@ -86,6 +90,7 @@ export const adminMenus: BaseMenus[] = [
             icon: CreditCard,
             addPagePath: "/administration/withdrawal-methods/add",
             addButtonLabel: "menu.addWithdrawalMethod",
+            permission: "WITHDRAWALMETHOD_VIEW",
           },
           {
             label: "menu.feeConfigurations",
@@ -93,6 +98,7 @@ export const adminMenus: BaseMenus[] = [
             icon: List,
             addPagePath: "/administration/fee-configurations/add",
             addButtonLabel: "menu.addFeeConfiguration",
+            permission: "FEECONFIGURATION_VIEW",
           },
           {
             label: "menu.documentType",
@@ -100,6 +106,7 @@ export const adminMenus: BaseMenus[] = [
             icon: FileText,
             addPagePath: "/administration/document-types/add",
             addButtonLabel: "menu.addDocumentType",
+            permission: "DOCUMENTSTYPE_VIEW",
           },
           {
             label: "menu.companyAppLimit",
@@ -107,6 +114,7 @@ export const adminMenus: BaseMenus[] = [
             icon: Building,
             addPagePath: "/administration/company-app-limits/add",
             addButtonLabel: "menu.addCompanyAppLimit",
+            permission: "COMPANYAPPLIMIT_VIEW",
           },
           {
             label: "menu.settings",
@@ -114,6 +122,7 @@ export const adminMenus: BaseMenus[] = [
             icon: Settings,
             addPagePath: "/administration/settings/add",
             addButtonLabel: "menu.addSetting",
+            permission: "SETTING_VIEW",
           },
           {
             label: "menu.secureSettings",
@@ -121,6 +130,7 @@ export const adminMenus: BaseMenus[] = [
             icon: Lock,
             addPagePath: "/administration/secure-settings/add",
             addButtonLabel: "menu.addSecureSetting",
+            permission: "SECURESETTING_VIEW",
           },
         ],
       },
@@ -137,6 +147,7 @@ export const adminMenus: BaseMenus[] = [
             icon: User,
             addPagePath: "/access-control/users/add",
             addButtonLabel: "menu.addUser",
+            permission: "USER_VIEW",
           },
           {
             label: "menu.userProfiles",
@@ -144,11 +155,7 @@ export const adminMenus: BaseMenus[] = [
             icon: UserCircle,
             addPagePath: "/access-control/user-profiles/add",
             addButtonLabel: "menu.addUserProfile",
-          },
-          {
-            label: "menu.permissions",
-            path: "/access-control/permissions",
-            icon: Key,
+            permission: "USERPROFILE_VIEW",
           },
         ],
       },
@@ -163,6 +170,7 @@ export const adminMenus: BaseMenus[] = [
         icon: Building,
         addPagePath: "/companies/add",
         addButtonLabel: "menu.addCompany",
+        permission: "COMPANY_VIEW",
       },
       {
         label: "menu.applications",
@@ -170,26 +178,30 @@ export const adminMenus: BaseMenus[] = [
         icon: AppWindow,
         addPagePath: "/applications/add",
         addButtonLabel: "menu.addApplication",
+        permission: "APPLICATION_VIEW",
       },
       {
         label: "menu.transactions",
         path: "/transactions",
         icon: ArrowLeftRight,
         children: [
-          {
-            label: "menu.all",
-            path: "/transactions",
-            icon: List,
-          },
+          // {
+          //   label: "menu.all",
+          //   path: "/transactions",
+          //   icon: List,
+          //   permission: "TRANSACTION_VIEW",
+          // },
           {
             label: "menu.receipts",
             path: "/transactions/receipts",
             icon: DollarSign,
+            permission: "RECEIPTSREADMODEL_VIEW",
           },
           {
             label: "menu.withdrawals",
             path: "/transactions/withdrawals",
             icon: ArrowDownCircle,
+            permission: "WITHDRAWALSREADMODEL_VIEW",
           },
         ],
       },
@@ -204,6 +216,7 @@ export const adminMenus: BaseMenus[] = [
         icon: Zap,
         addPagePath: "/webhooks/add",
         addButtonLabel: "menu.addWebhook",
+        permission: "WEBHOOK_VIEW",
       },
       {
         label: "menu.auditSecurity",
@@ -214,21 +227,25 @@ export const adminMenus: BaseMenus[] = [
             label: "menu.allowedIps",
             path: "/audit-security/allowed-ips",
             icon: CheckCircle,
+            permission: "ALLOWEDIP_VIEW",
           },
           {
             label: "menu.blockedIps",
             path: "/audit-security/blocked-ips",
             icon: Blocks,
+            permission: "BLOCKEDIP_VIEW",
           },
           {
             label: "menu.auditLogs",
             path: "/audit-security/audit-logs",
             icon: ShieldAlert,
+            permission: "AUDITLOG_VIEW",
           },
           {
             label: "menu.userDevices",
             path: "/audit-security/user-devices",
             icon: Phone,
+            permission: "USERDEVICE_VIEW",
           },
         ],
       },
@@ -241,16 +258,19 @@ export const adminMenus: BaseMenus[] = [
             label: "menu.logs",
             path: "/monitoring/system-logs",
             icon: List,
+            permission: "LOG_VIEW",
           },
           {
             label: "menu.frontEvents",
             path: "/monitoring/front-events",
             icon: Activity,
+            permission: "FRONTEVENTLOG_VIEW",
           },
           {
             label: "menu.webHookLogs",
             path: "/monitoring/web-hook-logs",
             icon: ArrowDownCircle,
+            permission: "WEBHOOKLOG_VIEW",
           },
         ],
       },

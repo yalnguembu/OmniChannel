@@ -1,6 +1,7 @@
 // import { useQueryClient } from '@tanstack/react-query'
-import { createErrorHandler, handleRequestError } from "@/shared/lib/errorHandling"
+import { createErrorHandler, handleRequestError, mapValidationErrorsToForm } from "@/shared/lib/errorHandling"
 import { RedirectRule } from "../types/error"
+import type { FieldValues, UseFormSetError } from "react-hook-form"
 
 /**
  * Hook for handling API errors consistently across the application
@@ -46,9 +47,42 @@ export const useErrorHandling = () => {
     }
   }
 
+  /**
+   * Create error handler for mutations with form validation error mapping
+   * Use this in mutation onError callbacks to automatically map API validation errors to form fields
+   */
+  const createFormMutationErrorHandler = <T extends FieldValues>(
+    setError: UseFormSetError<T>,
+    options: {
+      toastMessage?: string
+      showToast?: boolean
+      onError?: (error: any) => void
+    } = {},
+  ) => {
+    return (error: any) => {
+      // Try to map validation errors to form fields
+      const mapped = mapValidationErrorsToForm(error, setError)
+
+      // If no validation errors were mapped, show the error via toast
+      if (!mapped) {
+        handleRequestError(error, {
+          showToast: options.showToast !== false,
+          toastMessage: options.toastMessage,
+        })
+      }
+
+      // Call custom error handler if provided
+      if (options.onError) {
+        options.onError(error)
+      }
+    }
+  }
+
   return {
     createMutationErrorHandler,
     createQueryErrorConfig,
+    createFormMutationErrorHandler,
     handleRequestError,
+    mapValidationErrorsToForm,
   }
 }

@@ -1,4 +1,4 @@
-import { BadgeCheck, Bell, ChevronRight, GalleryVerticalEnd, LogOut, Settings, Wheat } from "lucide-react"
+import { BadgeCheck, Bell, ChevronRight, GalleryVerticalEnd, LogOut, Settings, Wheat, User } from "lucide-react"
 
 import { Avatar, AvatarFallback } from "@/shared/components/ui/avatar"
 import {
@@ -31,8 +31,9 @@ export function UserDropdown() {
     navigate({ to: `/` })
   }
 
-  const avatar = user?.fullName
+  const avatar = (user?.fullName ?? `${user?.lastName} ${user?.firstName}`)
     .split(" ")
+    .splice(0, 2)
     .map((user) => user.at(0))
     ?.join("")
     .toLocaleUpperCase()
@@ -42,14 +43,13 @@ export function UserDropdown() {
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <SidebarMenuButton size="lg" className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground">
-              <Avatar className="h-8 w-8 rounded-lg">
-                {/* <AvatarImage src={user?.photo ?? ""} alt={user?.fullName} /> */}
-                <AvatarFallback className="rounded-full text-secondary">{avatar}</AvatarFallback>
-              </Avatar>
               <div className="hidden lg:grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-medium">{user?.fullName}</span>
-                {/* <span className="truncate text-xs">{user?.email}</span> */}
               </div>
+              <Avatar className="h-8 w-8 rounded-lg">
+                {/* <AvatarImage src={user?.photo ?? ""} alt={user?.fullName} /> */}
+                <AvatarFallback className="rounded-full text-secondary font-black">{avatar}</AvatarFallback>
+              </Avatar>
               <ChevronRight className="ml-auto size-4 rotate-90" />
             </SidebarMenuButton>
           </DropdownMenuTrigger>
@@ -105,6 +105,10 @@ export function UserDropdown() {
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
+              <DropdownMenuItem onClick={() => navigate({ to: "/settings/profile" })}>
+                <User />
+                My Profile
+              </DropdownMenuItem>
               <DropdownMenuItem>
                 <BadgeCheck />
                 Account

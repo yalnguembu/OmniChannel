@@ -27,7 +27,18 @@ export const useSetting = () => {
   const store = useSettingStore()
 
   const searchSettingsMutation = useMutation({
-    ...postApiSettingSearchMutation(),
+    ...postApiSettingSearchMutation({
+      body: {
+        pageNumber: store.currentPage,
+        pageSize: store.pageSize,
+        sortBy: store.sortBy,
+        sortDirection: store.sortDirection,
+        ids: store.filters.ids,
+        searchTerm: store.filters.searchTerm,
+        createdFrom: store.filters.createdFrom || "",
+        createdTo: store.filters.createdTo || "",
+      },
+    }),
     onMutate: () => {
       store.setLoading(true)
       store.setError(null)
@@ -213,7 +224,9 @@ export const useSetting = () => {
   }
   const changePageSize = (size: number) => {
     store.setPageSize(size)
-    searchSettings()
+    console.log(size)
+
+    // searchSettings()
   }
   const changeSort = (sortBy: string | null, direction: SortDirection | null) => {
     store.setSorting(sortBy, direction)
@@ -249,6 +262,7 @@ export const useSetting = () => {
     onDeleteSetting,
     search,
     changePage,
+    changePageSize,
     changePageSize,
     changeSort,
     applyFilters,

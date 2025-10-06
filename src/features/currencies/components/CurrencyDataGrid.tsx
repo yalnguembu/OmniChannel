@@ -23,6 +23,7 @@ export const CurrencyDataGrid: React.FC = () => {
     isLoading,
     hasSelection,
     changePage,
+    changePageSize,
     changeSort,
     deleteCurrency,
     bulkDeleteMutation,
@@ -136,8 +137,9 @@ export const CurrencyDataGrid: React.FC = () => {
     changeSort(config.column, direction)
   }
 
-  const handlePageChange = (page: number) => {
+  const handlePageChange = (page: number, size: number) => {
     changePage(page)
+    changePageSize(size)
   }
 
   const bulkActions = hasSelection

@@ -6,6 +6,7 @@ import { Input } from "@/shared/components/ui/input"
 import { Search } from "lucide-react"
 import { createFileRoute } from "@tanstack/react-router"
 
+import PageLoader from "@/shared/components/PageLoader"
 function FaqPage() {
   const { t } = useTranslation()
   const [searchTerm, setSearchTerm] = useState("")
@@ -118,5 +119,6 @@ function FaqPage() {
 }
 
 export const Route = createFileRoute("/_public/faq")({
+  pendingComponent: PageLoader,
   component: FaqPage,
 })

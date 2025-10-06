@@ -11,7 +11,11 @@ import {
   deleteApiUserByIdMutation,
   getApiUserByIdOptions,
   postApiUserSystemUsersMutation,
+  putApiUserByIdStatusMutation,
 } from "@/shared/api/@tanstack/react-query.gen"
+import { useErrorHandling } from "@/shared/hooks/useErrorHandling"
+import type { UseFormSetError } from "react-hook-form"
+import type { CreateSystemUserRequest, CreateCompanyUserRequest } from "@/shared/api/types.gen"
 
 export const userQueryKeys = {
   all: ["user"] as const,
@@ -26,9 +30,21 @@ export const useUser = () => {
   const { t } = useTranslation()
   const queryClient = useQueryClient()
   const store = useUserStore()
+  const { mapValidationErrorsToForm } = useErrorHandling()
 
   const searchUsersMutation = useMutation({
-    ...postApiUserSearchMutation(),
+    ...postApiUserSearchMutation({
+      body: {
+        pageNumber: store.currentPage,
+        pageSize: store.pageSize,
+        sortBy: store.sortBy,
+        sortDirection: store.sortDirection,
+        ids: store.filters.ids,
+        searchTerm: store.filters.searchTerm,
+        createdFrom: store.filters.createdFrom || "",
+        createdTo: store.filters.createdTo || "",
+      },
+    }),
     onMutate: () => {
       store.setLoading(true)
       store.setError(null)
@@ -113,6 +129,37 @@ export const useUser = () => {
     })
   }
 
+  // Helper function for creating system user with form validation
+  const createSystemUserWithValidation = (data: CreateSystemUserRequest, setError: UseFormSetError<CreateSystemUserRequest>, onSuccess?: () => void) => {
+    createSystemUserMutation.mutate(
+      {
+        body: {
+          ...data,
+          forcePasswordChange: true,
+        },
+      },
+      {
+        onSuccess: () => {
+          toast.success(t("users.messages.create.success"))
+          queryClient.invalidateQueries({ queryKey: userQueryKeys.lists() })
+          searchUsers()
+          onSuccess?.()
+        },
+        onError: (error: any) => {
+          // Try to map validation errors to form fields
+          const mapped = mapValidationErrorsToForm(error, setError)
+
+          // If no validation errors were mapped, show the error via toast
+          if (!mapped) {
+            const message = error.message || t("users.messages.create.error")
+            store.setError(message)
+            toast.error(message)
+          }
+        },
+      },
+    )
+  }
+
   const createCompanyUserMutation = useMutation({
     ...postApiUserCompanyUsersMutation(),
     onMutate: () => {
@@ -143,6 +190,35 @@ export const useUser = () => {
     })
   }
 
+  // Helper function for creating company user with form validation
+  const createCompanyUserWithValidation = (data: CreateCompanyUserRequest, setError: UseFormSetError<CreateCompanyUserRequest>, onSuccess?: () => void) => {
+    createCompanyUserMutation.mutate(
+      {
+        body: {
+          ...data,
+          forcePasswordChange: true,
+        },
+      },
+      {
+        onSuccess: () => {
+          toast.success(t("users.messages.create.success"))
+          queryClient.invalidateQueries({ queryKey: userQueryKeys.lists() })
+          searchUsers()
+          onSuccess?.()
+        },
+        onError: (error: any) => {
+          const mapped = mapValidationErrorsToForm(error, setError)
+
+          if (!mapped) {
+            const message = error.message || t("users.messages.create.error")
+            store.setError(message)
+            toast.error(message)
+          }
+        },
+      },
+    )
+  }
+
   const updateUserMutation = useMutation({
     ...putApiUserMutation(),
     onMutate: () => {
@@ -168,6 +244,31 @@ export const useUser = () => {
 
   const onUpdateUser = (data: any) => {
     updateUserMutation.mutate({ body: data })
+  }
+
+  const toggleUserStatusMutation = useMutation({
+    ...putApiUserByIdStatusMutation(),
+    onMutate: () => {
+      store.setLoading(true)
+      store.setError(null)
+    },
+    onSuccess: (_, variables) => {
+      toast.success(t("users.messages.status.success"))
+      queryClient.invalidateQueries({ queryKey: userQueryKeys.lists() })
+      searchUsers()
+    },
+    onError: (error) => {
+      const message = error.message || t("users.messages.status.error")
+      store.setError(message)
+      toast.error(message)
+    },
+    onSettled: () => {
+      store.setLoading(false)
+    },
+  })
+
+  const toggleUserStatus = (id: string) => {
+    toggleUserStatusMutation.mutate({ path: { id } })
   }
 
   const deleteUserMutation = useMutation({
@@ -276,6 +377,7 @@ export const useUser = () => {
     createSystemMutation: createSystemUserMutation,
     createCompanyMutation: createCompanyUserMutation,
     updateMutation: updateUserMutation,
+    toggleStatusMutation: toggleUserStatusMutation,
     deleteMutation: deleteUserMutation,
     bulkDeleteMutation,
     dropdownQuery,
@@ -283,10 +385,14 @@ export const useUser = () => {
     searchUsers,
     onCreateSystemUser: onCreateSystemUser,
     onCreateCompanyUser: onCreateCompanyUser,
+    createSystemUserWithValidation,
+    createCompanyUserWithValidation,
     onUpdateUser,
+    toggleUserStatus,
     onDeleteUser,
     search,
     changePage,
+    changePageSize,
     changePageSize,
     changeSort,
     applyFilters,

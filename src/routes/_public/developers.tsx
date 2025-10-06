@@ -6,6 +6,7 @@ import { Badge } from "@/shared/components/ui/badge"
 import { Code, Database, Lock, ExternalLink, Zap, BookOpen, Server, Activity } from "lucide-react"
 import { createFileRoute } from "@tanstack/react-router"
 
+import PageLoader from "@/shared/components/PageLoader"
 function DevelopersPage() {
   const { t } = useTranslation()
 
@@ -258,5 +259,6 @@ fetch('https://api.fujipay.com/payments', {
 }
 
 export const Route = createFileRoute("/_public/developers")({
+  pendingComponent: PageLoader,
   component: DevelopersPage,
 })

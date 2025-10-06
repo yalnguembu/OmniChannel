@@ -27,7 +27,18 @@ export const useFundTransfersReadModel = () => {
   const store = useFundTransfersReadModelStore()
 
   const searchFundTransfersReadModelsMutation = useMutation({
-    ...postApiFundTransfersReadModelSearchMutation(),
+    ...postApiFundTransfersReadModelSearchMutation({
+      body: {
+        pageNumber: store.currentPage,
+        pageSize: store.pageSize,
+        sortBy: store.sortBy,
+        sortDirection: store.sortDirection,
+        ids: store.filters.ids,
+        searchTerm: store.filters.searchTerm,
+        createdFrom: store.filters.createdFrom || "",
+        createdTo: store.filters.createdTo || "",
+      },
+    }),
     onMutate: () => {
       store.setLoading(true)
       store.setError(null)
@@ -248,6 +259,7 @@ export const useFundTransfersReadModel = () => {
     onDeleteFundTransfersReadModel,
     search,
     changePage,
+    changePageSize,
     changePageSize,
     changeSort,
     applyFilters,

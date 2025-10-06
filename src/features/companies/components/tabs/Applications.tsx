@@ -13,6 +13,7 @@ import { Card, CardContent } from "@/shared/components/ui/card"
 import { ModalWrapper } from "@/shared/components/ModalWrapper"
 import { ApplicationCreateForm } from "../ApplicationCreateForm"
 import { BadgeStyles } from "@/shared/types/enums"
+import { ConfirmationModal } from "@/shared/components/ConfirmationModal"
 
 export function ApplicationsTab({ companyId }: { companyId: string }) {
   const navigate = useNavigate()
@@ -20,6 +21,13 @@ export function ApplicationsTab({ companyId }: { companyId: string }) {
 
   const [showCreateModal, setShowCreateModal] = useState(false)
   const toggleShowCreateModal = () => setShowCreateModal((prev) => !prev)
+
+  const [deleteConfirmation, setDeleteConfirmation] = useState<{ open: boolean; applicationId: string | null }>({
+    open: false,
+    applicationId: null,
+  })
+
+  const [bulkDeleteConfirmation, setBulkDeleteConfirmation] = useState(false)
 
   const {
     applications,
@@ -33,6 +41,7 @@ export function ApplicationsTab({ companyId }: { companyId: string }) {
     isLoading,
     hasSelection,
     changePage,
+    changePageSize,
     changeSort,
     setSelectedRows,
     deleteApplication,
@@ -47,26 +56,26 @@ export function ApplicationsTab({ companyId }: { companyId: string }) {
   const columnHeaders: DataGridColumnHeader[] = [
     {
       key: "name",
-      label: "Name",
+      label: t("applications.headers.name"),
       sortable: true,
       resizable: true,
     },
     {
       key: "description",
-      label: "Description",
+      label: t("applications.headers.description"),
       sortable: true,
       resizable: true,
     },
     {
       key: "status",
-      label: "Status",
+      label: t("applications.headers.status"),
       sortable: true,
       resizable: true,
       isBadge: true,
     },
     {
       key: "environment",
-      label: "Environment",
+      label: t("applications.headers.environment"),
       sortable: true,
       resizable: true,
       isBadge: true,
@@ -74,7 +83,7 @@ export function ApplicationsTab({ companyId }: { companyId: string }) {
     },
     {
       key: "createdAt",
-      label: "Created At",
+      label: t("applications.headers.createdAt"),
       sortable: true,
       resizable: true,
     },
@@ -99,15 +108,23 @@ export function ApplicationsTab({ companyId }: { companyId: string }) {
   }
 
   const handleDelete = (id: string) => {
-    if (confirm(t("applications.messages.delete.confirm"))) {
-      deleteApplication(id)
+    setDeleteConfirmation({ open: true, applicationId: id })
+  }
+
+  const confirmDelete = () => {
+    if (deleteConfirmation.applicationId) {
+      deleteApplication(deleteConfirmation.applicationId)
+      setDeleteConfirmation({ open: false, applicationId: null })
     }
   }
 
   const handleBulkDelete = () => {
-    if (confirm(t("applications.bulk.deleteConfirm", { count: selectedRows.length }))) {
-      bulkDeleteMutation.mutate(selectedRows)
-    }
+    setBulkDeleteConfirmation(true)
+  }
+
+  const confirmBulkDelete = () => {
+    bulkDeleteMutation.mutate(selectedRows)
+    setBulkDeleteConfirmation(false)
   }
 
   const sortConfig: DataGridSort | undefined = sortBy
@@ -126,8 +143,9 @@ export function ApplicationsTab({ companyId }: { companyId: string }) {
     setSelectedRows(selectedIds)
   }
 
-  const handlePageChange = (page: number) => {
+  const handlePageChange = (page: number, size: number) => {
     changePage(page)
+    changePageSize(size)
   }
 
   const bulkActions = hasSelection
@@ -201,6 +219,29 @@ export function ApplicationsTab({ companyId }: { companyId: string }) {
       <ModalWrapper withHeader={false} open={showCreateModal} onOpenChange={toggleShowCreateModal}>
         <ApplicationCreateForm style="border-none shadow-none" companyId="" onSubmit={handleSubmit} onCancel={toggleShowCreateModal} isLoading={false} />
       </ModalWrapper>
+
+      <ConfirmationModal
+        open={deleteConfirmation.open}
+        onOpenChange={() => setDeleteConfirmation({ open: false, applicationId: null })}
+        onConfirm={confirmDelete}
+        title={t("applications.confirmations.delete.title")}
+        description={t("applications.confirmations.delete.description")}
+        confirmText={t("applications.confirmations.delete.confirm")}
+        cancelText={t("applications.confirmations.delete.cancel")}
+        variant="danger"
+      />
+
+      <ConfirmationModal
+        open={bulkDeleteConfirmation}
+        onOpenChange={() => setBulkDeleteConfirmation(false)}
+        onConfirm={confirmBulkDelete}
+        title={t("applications.confirmations.bulkDelete.title")}
+        description={t("applications.confirmations.bulkDelete.description", { count: selectedRows.length })}
+        confirmText={t("applications.confirmations.bulkDelete.confirm")}
+        cancelText={t("applications.confirmations.bulkDelete.cancel")}
+        variant="danger"
+        isLoading={bulkDeleteMutation.isPending}
+      />
     </>
   )
 }

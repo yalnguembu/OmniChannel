@@ -13,7 +13,14 @@ interface DataTablePaginationProps {
   pageSizeOptions?: number[]
 }
 
-export const DataTablePagination: React.FC<DataTablePaginationProps> = ({ page, pageSize, total, onPageChange, className, pageSizeOptions = [10, 20, 30, 40, 50] }) => {
+export const DataTablePagination: React.FC<DataTablePaginationProps> = ({
+  page,
+  pageSize,
+  total,
+  onPageChange,
+  className,
+  pageSizeOptions = [10, 20, 30, 40, 50, 100, 500, 1000],
+}) => {
   const totalPages = Math.ceil(total / pageSize)
   const startItem = (page - 1) * pageSize + 1
   const endItem = Math.min(page * pageSize, total)
