@@ -1,6 +1,5 @@
 import React, { ReactNode, useMemo, useEffect, useState } from "react"
 import { useTranslation } from "react-i18next"
-import { useNavigate } from "@tanstack/react-router"
 import { DataGrid } from "@/shared/components/data-grid/data-grid"
 import { ACTION, DataGridColumnHeader, DataGridRowEntry, DataGridSort, ViewMode } from "@/shared/types"
 import { SortDirection } from "@/shared/enums/data-grid"
@@ -11,12 +10,17 @@ import ActionButtonGroup from "@/shared/components/data-grid/ActionButtonGroup"
 import DetailsCardItem from "@/shared/components/DetailsCardItem"
 import { getApiReceiptsReadModelCheckPaymentStatusById } from "@/shared/api/sdk.gen"
 import { ConfirmationModal } from "@/shared/components/ConfirmationModal"
+import { TransactionDetailsModal } from "./TransactionDetailsModal"
+import { ChangeStatusDialog } from "./ChangeStatusDialog"
+import { SearchReceiptsReadModelResponse } from "@/shared/api/types.gen"
+import { toast } from "sonner"
 
 export const ReceiptsReadModelDataGrid: React.FC = () => {
   const { t } = useTranslation()
-  const navigate = useNavigate()
-
   const [bulkDeleteConfirmation, setBulkDeleteConfirmation] = useState(false)
+  const [showDetailsModal, setShowDetailsModal] = useState(false)
+  const [showChangeStatusDialog, setShowChangeStatusDialog] = useState(false)
+  const [selectedTransaction, setSelectedTransaction] = useState<SearchReceiptsReadModelResponse | null>(null)
 
   const {
     receiptsReadModels,
@@ -34,7 +38,11 @@ export const ReceiptsReadModelDataGrid: React.FC = () => {
     setSelectedRows,
     bulkDeleteMutation,
     searchReceiptsReadModels,
+    getApiReceiptsReadModelGetAllStatus,
   } = useReceiptsReadModel()
+
+  const { data: statusResponse } = getApiReceiptsReadModelGetAllStatus()
+  const availableStatuses = useMemo(() => statusResponse?.data || [], [statusResponse])
 
   const columnHeaders: DataGridColumnHeader[] = [
     {
@@ -100,7 +108,11 @@ export const ReceiptsReadModelDataGrid: React.FC = () => {
   }, [receiptsReadModels])
 
   const handleView = (id: string) => {
-    navigate({ to: `/payments/receipts/${id}` })
+    const transaction = receiptsReadModels.find((t) => t.id === id)
+    if (transaction) {
+      setSelectedTransaction(transaction)
+      setShowDetailsModal(true)
+    }
   }
 
   const handleBulkDelete = () => {
@@ -110,6 +122,22 @@ export const ReceiptsReadModelDataGrid: React.FC = () => {
   const confirmBulkDelete = () => {
     bulkDeleteMutation.mutate(selectedRows)
     setBulkDeleteConfirmation(false)
+  }
+
+  const handleChangeStatusClick = (id: string) => {
+    const transaction = receiptsReadModels.find((t) => t.id === id)
+    if (transaction) {
+      setSelectedTransaction(transaction)
+      setShowChangeStatusDialog(true)
+    }
+  }
+
+  const handleChangeStatusConfirm = (transactionId: string, newStatus: string) => {
+    toast.success(t("receiptsReadModels.changeStatus.success", { status: newStatus }))
+    setShowChangeStatusDialog(false)
+    setSelectedTransaction(null)
+    // Refresh data to get updated status
+    searchReceiptsReadModels()
   }
 
   const sortConfig: DataGridSort | undefined = sortBy
@@ -144,7 +172,7 @@ export const ReceiptsReadModelDataGrid: React.FC = () => {
       ]
     : undefined
 
-  const actions: ACTION[] = ["checkStatus", "changeStatus"]
+  const actions: ACTION[] = ["checkStatus", "view"]
 
   const renderCell = (item: DataGridRowEntry, column: DataGridColumnHeader, view: ViewMode): ReactNode => {
     if (view == "list") {
@@ -340,6 +368,9 @@ export const ReceiptsReadModelDataGrid: React.FC = () => {
       case "view":
         handleView(id)
         break
+      case "changeStatus":
+        handleChangeStatusClick(id)
+        break
       default:
         return
     }
@@ -380,6 +411,28 @@ export const ReceiptsReadModelDataGrid: React.FC = () => {
         cancelText={t("receiptsReadModels.confirmations.bulkDelete.cancel")}
         variant="danger"
         isLoading={bulkDeleteMutation.isPending}
+      />
+
+      <TransactionDetailsModal
+        open={showDetailsModal}
+        onOpenChange={() => {
+          setShowDetailsModal(false)
+          setSelectedTransaction(null)
+        }}
+        transaction={selectedTransaction}
+      />
+
+      <ChangeStatusDialog
+        open={showChangeStatusDialog}
+        onOpenChange={(open) => {
+          setShowChangeStatusDialog(open)
+          if (!open) setSelectedTransaction(null)
+        }}
+        currentStatus={selectedTransaction?.status || ""}
+        transactionId={selectedTransaction?.id || ""}
+        availableStatuses={availableStatuses}
+        onConfirm={handleChangeStatusConfirm}
+        isLoading={false}
       />
     </div>
   )

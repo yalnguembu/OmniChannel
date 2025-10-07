@@ -54,6 +54,7 @@ export enum ButtonSize {
 export enum BadgeStyles {
   GRAY = "inline-flex items-center rounded-full bg-gray-100 px-2 py-0.5 capitalize text-xs font-semibold text-gray-600 inset-ring inset-ring-gray-500/20",
   RED = "inline-flex items-center rounded-full bg-red-100 px-2 py-0.5 capitalize text-xs font-semibold text-red-700 inset-ring inset-ring-red-600/20",
+  OLD_RED = "inline-flex items-center rounded-full bg-red-500 px-2 py-0.5 capitalize text-xs font-semibold text-white inset-ring inset-ring-red-600/20",
   YELLOW = "inline-flex items-center rounded-full bg-yellow-100 px-2 py-0.5 capitalize text-xs font-semibold text-yellow-800 inset-ring inset-ring-yellow-600/20",
   GREEN = "inline-flex items-center rounded-full bg-green-100 px-2 py-0.5 capitalize text-xs font-semibold text-green-700 inset-ring inset-ring-green-600/30",
   BLUE = "inline-flex items-center rounded-full bg-blue-100 px-2 py-0.5 capitalize text-xs font-semibold text-blue-700 inset-ring inset-ring-blue-700/20",

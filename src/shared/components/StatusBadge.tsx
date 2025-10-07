@@ -32,6 +32,22 @@ const getBadgeThemeFromText = (text: string) => {
       return BadgeStyles.GREEN
     case "false":
       return BadgeStyles.YELLOW
+    case "yes":
+      return BadgeStyles.OLD_GREEN
+    case "no":
+      return BadgeStyles.OLD_YELLOW
+    case "error":
+      return BadgeStyles.RED
+    case "critical":
+      return BadgeStyles.OLD_RED
+    case "information":
+      return BadgeStyles.BLUE
+    case "trace":
+      return BadgeStyles.GRAY
+    case "warning":
+      return BadgeStyles.YELLOW
+    case "debug":
+      return BadgeStyles.VIOLET
     default:
       return BadgeStyles.GREEN
   }

@@ -17,7 +17,7 @@ export const LogDataGrid: React.FC = () => {
   const [showDetailsModal, setShowDetailsModal] = useState(false)
   const toggleShowDetailsModal = () => setShowDetailsModal((prev) => !prev)
 
-  const { logs, currentPage, pageSize, totalItems, sortBy, sortDirection, selectedRows, isLoading, changePage, changeSort, setSelectedRows, searchLogs } = useLog()
+  const { logs, currentPage, pageSize, totalItems, sortBy, sortDirection, selectedRows, isLoading, changePage, changeSort, setSelectedRows, searchLogs, changePageSize } = useLog()
 
   const columnHeaders: DataGridColumnHeader[] = [
     {
@@ -70,12 +70,12 @@ export const LogDataGrid: React.FC = () => {
     //   sortable: true,
     //   resizable: true,
     // },
-    {
-      key: "ipAddress",
-      label: t("logs.headers.ipAddress"),
-      sortable: true,
-      resizable: true,
-    },
+    // {
+    //   key: "ipAddress",
+    //   label: t("logs.headers.ipAddress"),
+    //   sortable: true,
+    //   resizable: true,
+    // },
     // {
     //   key: "requestUri",
     //   label: t("logs.headers.requestUri"),
@@ -165,7 +165,7 @@ export const LogDataGrid: React.FC = () => {
   }
 
   const LogDetails: React.FC<LogDetailsProps> = ({ onCancel, open, data }) => (
-    <ModalWrapper size="3xl" open={open} onOpenChange={onCancel} title={t("smsmailTemplates.details.title")}>
+    <ModalWrapper style="lg:w-3/4 max-h-3/4 overflow-y-auto" open={open} onOpenChange={onCancel} title={t("smsmailTemplates.details.title")}>
       <Card className="max-w-4xl -m-6">
         <CardHeader>
           <CardTitle>Log Details</CardTitle>
