@@ -163,7 +163,7 @@ export function DashboardPage() {
                 </div>
               ) : (
                 <>
-                  <div className="text-xl lg:text-base xl:text-2xl font-bold text-primary">{formatCurrency(currentMetrics?.totalVolume || 0)}</div>
+                  <div className="text-xl lg:text-base xl:text-2xl font-bold text-primary">{currentMetrics?.totalVolume}</div>
                   <div className="flex items-center gap-1 text-xs text-muted-foreground">
                     <TrendingUp className="h-3 w-3 text-green-600" />
                     <span className="font-semibold">{currentMetrics?.totalReceipts + currentMetrics?.totalWithdrawals + currentMetrics?.totalFundTransfers || 0}</span>
@@ -186,7 +186,7 @@ export function DashboardPage() {
                 </div>
               ) : (
                 <>
-                  <div className="text-xl lg:text-base xl:text-2xl font-bold">{formatCurrency(analytics?.totalBalance || 0)}</div>
+                  <div className="text-xl lg:text-base xl:text-2xl font-bold">{analytics?.totalBalance}</div>
                   <div className="flex items-center gap-1 text-xs text-muted-foreground">
                     <TrendingUp className="h-3 w-3 text-green-600" />
                     <span className="font-semibold">{currentMetrics?.totalReceipts + currentMetrics?.totalWithdrawals + currentMetrics?.totalFundTransfers || 0}</span>
@@ -209,7 +209,7 @@ export function DashboardPage() {
                 </div>
               ) : (
                 <>
-                  <div className="text-xl lg:text-base xl:text-2xl font-bold text-green-600">{formatCurrency(currentMetrics?.totalReceiptsAmount || 0)}</div>
+                  <div className="text-xl lg:text-base xl:text-2xl font-bold text-green-600">{currentMetrics?.totalReceiptsAmount}</div>
                   <div className="flex items-center gap-1 text-xs text-muted-foreground">
                     <TrendingUp className="h-3 w-3 text-green-600" />
                     <span className="font-semibold">{currentMetrics?.totalReceipts || 0}</span> {t("analytics.transactions.counts")}
@@ -231,7 +231,7 @@ export function DashboardPage() {
                 </div>
               ) : (
                 <>
-                  <div className="text-xl lg:text-base xl:text-2xl font-bold text-orange-600">{formatCurrency(currentMetrics?.totalWithdrawalsAmount || 0)}</div>
+                  <div className="text-xl lg:text-base xl:text-2xl font-bold text-orange-600">{currentMetrics?.totalWithdrawalsAmount}</div>
                   <div className="flex items-center gap-1 text-xs text-muted-foreground">
                     <TrendingDown className="h-3 w-3 text-orange-600" />
                     <span className="font-semibold">{currentMetrics?.totalWithdrawals || 0}</span> {t("analytics.transactions.counts")}
@@ -253,7 +253,7 @@ export function DashboardPage() {
                 </div>
               ) : (
                 <>
-                  <div className="text-xl lg:text-base xl:text-2xl font-bold text-blue-500">{formatCurrency(currentMetrics?.totalFundTransfersAmount || 0)}</div>
+                  <div className="text-xl lg:text-base xl:text-2xl font-bold text-blue-500">{currentMetrics?.totalFundTransfersAmount || 0}</div>
                   <div className="flex items-center gap-1 text-xs text-muted-foreground">
                     <TrendingUp className="h-3 w-3 text-green-600" />
                     <span className="font-semibold">{currentMetrics?.totalFundTransfers || 0} </span>

@@ -52,32 +52,32 @@ export const ReceiptsReadModelDataGrid: React.FC = () => {
       resizable: true,
     },
     {
-      key: "coreDetails",
-      label: t("receiptsreadmodels.headers.coreDetails"),
+      key: "amount",
+      label: t("receiptsreadmodels.headers.amount"),
       sortable: true,
       resizable: true,
     },
     {
-      key: "fee",
-      label: t("receiptsreadmodels.headers.fee"),
-      sortable: true,
-      resizable: true,
-    },
-    {
-      key: "context",
-      label: t("receiptsreadmodels.headers.context"),
-      sortable: true,
-      resizable: true,
-    },
-    {
-      key: "references",
-      label: t("receiptsreadmodels.headers.references"),
+      key: "transaction",
+      label: t("receiptsreadmodels.headers.transaction"),
       sortable: true,
       resizable: true,
     },
     {
       key: "createdAt",
       label: t("receiptsreadmodels.headers.createdAt"),
+      sortable: true,
+      resizable: true,
+    },
+    // {
+    //   key: "context",
+    //   label: t("receiptsreadmodels.headers.context"),
+    //   sortable: true,
+    //   resizable: true,
+    // },
+    {
+      key: "references",
+      label: t("receiptsreadmodels.headers.references"),
       sortable: true,
       resizable: true,
     },
@@ -179,7 +179,7 @@ export const ReceiptsReadModelDataGrid: React.FC = () => {
       switch (column.key) {
         case "paymentMethod":
           return <img src={paymentMethodCode[item.getTextFor("paymentMethodCode") as keyof typeof paymentMethodCode]} alt="Payment Method" className="h-6 w-6 rounded-md" />
-        case "coreDetails":
+        case "amount":
           return (
             <div className="flex flex-col gap-y-1 text-muted-foreground/80">
               <div className="flex gap-x-1.5 lg:text-md">
@@ -189,51 +189,28 @@ export const ReceiptsReadModelDataGrid: React.FC = () => {
                 </span>
               </div>
               <div className="flex gap-x-1.5">
-                <span className="font-medium">{t("receiptsreadmodels.headers.netAmount")} :</span>
-                <span className="">
-                  {item.getTextFor("netAmount")} {item.getTextFor("currency")}
-                </span>
-              </div>
-              <div className="flex gap-x-1.5">
-                <StatusBadge text={item.getTextFor("status")} />
-              </div>
-            </div>
-          )
-        case "fee":
-          return (
-            <div className="flex flex-col gap-y-1 text-muted-foreground/80">
-              <div className="flex gap-x-1.5 lg:text-md">
-                <span className="font-medium">{t("receiptsreadmodels.headers.providerFeeAmount")} :</span>
-                <span className="text-primary font-semibold">
+                <span className="font-medium">{t("receiptsreadmodels.headers.fee")} :</span>
+                <span className="text-red-500 font-semibold">
                   {item.getTextFor("providerFeeAmount")} {item.getTextFor("currency")}
                 </span>
               </div>
-              {/* <div className="flex gap-x-1.5">
-                <span className="font-medium">{t("receiptsreadmodels.headers.internalFeeAmount")} :</span>
-                <span className="">{item.getTextFor("internalFeeAmount")}</span>
-              </div> */}
               <div className="flex gap-x-1.5">
-                <span className="font-medium">{t("receiptsreadmodels.headers.feeAppliedAmount")} :</span>
-                <span className="font-semibold text-red-500">
-                  {item.getTextFor("feeAppliedAmount")} {item.getTextFor("currency")}
+                <span className="font-medium">{t("receiptsreadmodels.headers.netAmount")} :</span>
+                <span className="font-semibold text-blue-500">
+                  {item.getTextFor("netAmount")} {item.getTextFor("currency")}
                 </span>
               </div>
             </div>
           )
-        case "context":
+        case "transaction":
           return (
             <div className="flex flex-col gap-y-1 text-muted-foreground/80">
-              <div className="flex gap-x-1.5 lg:text-md">
-                <span className="font-medium">{t("receiptsreadmodels.headers.applicationName")} :</span>
-                <span className="text-primary font-bold">{item.getTextFor("applicationName")}</span>
-              </div>
-              <div className="flex gap-x-1.5">
-                <span className="font-medium">{t("receiptsreadmodels.headers.companyName")} :</span>
-                <span className="">{item.getTextFor("companyName")}</span>
-              </div>
-              <div className="flex gap-x-1.5">
-                <span className="font-medium">{t("receiptsreadmodels.headers.phoneNumberEncrypted")} :</span>
+              <div className="flex gap-x-1.5 mb-3">
+                {/* <span className="font-medium">{t("receiptsreadmodels.headers.phoneNumberEncrypted")} :</span> */}
                 <span className="font-black text-primary">{item.getTextFor("phoneNumberEncrypted")}</span>
+              </div>
+              <div className="flex gap-x-1.5">
+                <StatusBadge text={item.getTextFor("status")} />
               </div>
             </div>
           )
@@ -273,7 +250,7 @@ export const ReceiptsReadModelDataGrid: React.FC = () => {
       }
     } else {
       switch (column.key) {
-        case "coreDetails":
+        case "amount":
           return (
             <div className="flex flex-col gap-y-1 px-4">
               <DetailsCardItem
@@ -284,45 +261,39 @@ export const ReceiptsReadModelDataGrid: React.FC = () => {
                   </span>
                 }
               />
-              <DetailsCardItem label={t("receiptsreadmodels.headers.netAmount")} value={item.getTextFor("netAmount")} />
-              <DetailsCardItem label={t("receiptsreadmodels.headers.status")} value={<StatusBadge text={item.getTextFor("status")} />} />
-            </div>
-          )
-        case "fee":
-          return (
-            <div className="flex flex-col gap-y-1 px-4 text-sm text-muted-foreground">
-              <span className="font-medium border-t pt-2">{t("receiptsreadmodels.headers.fee")} </span>
               <DetailsCardItem
-                label={t("receiptsreadmodels.headers.providerFeeAmount")}
+                label={t("receiptsreadmodels.headers.fee")}
                 value={
-                  <span className="text-primary font-semibold">
+                  <span className="text-red-500 font-semibold">
                     {item.getTextFor("providerFeeAmount")} {item.getTextFor("currency")}
                   </span>
                 }
               />
-              {/* <DetailsCardItem label={t("receiptsreadmodels.headers.internalFeeAmount")} value={item.getTextFor("internalFeeAmount")} /> */}
               <DetailsCardItem
-                label={t("receiptsreadmodels.headers.feeAppliedAmount")}
+                label={t("receiptsreadmodels.headers.netAmount")}
                 value={
-                  <span className="font-semibold text-red-500">
-                    {item.getTextFor("feeAppliedAmount")} {item.getTextFor("currency")}
+                  <span className="font-semibold text-blue-500">
+                    {item.getTextFor("netAmount")} {item.getTextFor("currency")}
                   </span>
                 }
               />
             </div>
           )
-        case "context":
+        case "paymentMethod":
+          return (
+            <div className="flex flex-row justify-between px-4 mt-auto border-b">
+              <img src={paymentMethodCode[item.getTextFor("paymentMethodCode") as keyof typeof paymentMethodCode]} alt="Payment Method" className="h-6 w-6 rounded-md" />
+              <ActionButtonGroup view={view} isLoading={isLoading} row={item} actions={actions as ACTION[]} dispatch={handleDispatch} />
+            </div>
+          )
+        case "transaction":
           return (
             <div className="flex flex-col gap-y-1 px-4 text-sm text-muted-foreground">
               <DetailsCardItem
-                label={t("receiptsreadmodels.headers.applicationName")}
-                value={<span className="text-primary font-bold">{item.getTextFor("applicationName")}</span>}
-              />
-              <DetailsCardItem label={t("receiptsreadmodels.headers.companyName")} value={item.getTextFor("companyName")} />
-              <DetailsCardItem
                 label={t("receiptsreadmodels.headers.phoneNumberEncrypted")}
-                value={<span className="font-black text-primary">{item.getTextFor("phoneNumberEncrypted")}</span>}
+                value={<span className="text-primary font-bold">{item.getTextFor("phoneNumberEncrypted")}</span>}
               />
+              <DetailsCardItem label={t("receiptsreadmodels.headers.status")} value={<StatusBadge text={item.getTextFor("status")} />} />
             </div>
           )
         case "references":
@@ -348,13 +319,8 @@ export const ReceiptsReadModelDataGrid: React.FC = () => {
             </div>
           )
         case "actions":
-          return (
-            <div className="flex flex-row justify-between px-4 pt-2 mt-auto border-t">
-              <ActionButtonGroup view={view} isLoading={isLoading} row={item} actions={actions as ACTION[]} dispatch={handleDispatch} />
-            </div>
-          )
+          return null
         default:
-          // This will prevent rendering any other individual fields that are now part of a group.
           return null
       }
     }

@@ -69,14 +69,13 @@ export function BaseFilter<T extends Record<string, unknown>>({
     return () => window.removeEventListener("scroll", handleScroll)
   }, [collapsible, isCollapsed, wasAutoCollapsed, defaultCollapsed])
 
-  // Handle manual toggle
   const handleCollapsedChange = useCallback((collapsed: boolean) => {
     setIsCollapsed(collapsed)
-    // Reset auto-collapse flag when manually expanded
     if (!collapsed) {
       setWasAutoCollapsed(false)
     }
   }, [])
+
   const filteredSchema = useMemo(() => {
     if (!("shape" in schema)) {
       return schema
@@ -97,7 +96,7 @@ export function BaseFilter<T extends Record<string, unknown>>({
   }, [schema])
 
   const form = useForm<T>({
-    resolver: zodResolver(filteredSchema as any),
+    resolver: zodResolver(schema as any),
     defaultValues: defaultValues as any,
   })
 

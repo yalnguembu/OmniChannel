@@ -3,6 +3,7 @@ import { devtools } from "zustand/middleware"
 import { immer } from "zustand/middleware/immer"
 import { z } from "zod"
 import { zSearchReceiptsReadModelRequest, zSearchReceiptsReadModelResponse } from "@/shared/api/zod.gen"
+import { endOfDay, startOfDay } from "@/shared/lib/date"
 import { SortDirection } from "@/shared/enums/data-grid"
 
 // Types
@@ -93,7 +94,10 @@ const initialState: ReceiptsReadModelState = {
   sortBy: "createdAt",
   sortDirection: SortDirection.DESC,
 
-  filters: {},
+  filters: {
+    createdFrom: startOfDay(new Date()).toISOString(),
+    createdTo: endOfDay(new Date()).toISOString(),
+  },
 
   isLoading: false,
   isSearching: false,

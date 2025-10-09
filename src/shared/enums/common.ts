@@ -4,7 +4,7 @@ export enum DateFormat {
   MEDIUM = "MMM dd, yyyy",
   LONG = "MMMM dd, yyyy",
   ISO = "yyyy-MM-dd",
-  DATETIME_SHORT = "MM/dd/yyyy HH:mm",
+  DATETIME_SHORT = "dd/MM/yyyy HH:mm",
   DATETIME_MEDIUM = "MMM dd, yyyy HH:mm",
   DATETIME_LONG = "MMMM dd, yyyy HH:mm:ss",
   TIME_ONLY = "HH:mm",

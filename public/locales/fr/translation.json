@@ -1870,7 +1870,7 @@
       "companyName": "Etpe",
       "createdAt": "Date",
       "currency": "Devise",
-      "externalReference": "Réf. Ext.",
+      "externalReference": "Externe",
       "feeAppliedAmount": "Appliq",
       "internalFeeAmount": "Int",
       "netAmount": "Montant Net",
@@ -1884,13 +1884,15 @@
       "context": "Contexte",
       "references": "Références",
       "coreDetails": "Détails",
-      "internalReference": "Ref. Int.",
-      "providerInitialReference": "Réf. Init F.",
-      "providerFinalReference": "Réf. Fin F.",
+      "internalReference": "Interne.",
+      "providerInitialReference": "Initiale F.",
+      "providerFinalReference": "Finale F.",
       "companyId": "Company",
       "applicationId": "App",
       "customerName": "Nom Client",
-      "customerEmail": "Email client"
+      "customerEmail": "Email client",
+      "transaction":"Transaction",
+      "range": "Apartir Du... au..."
     }
   },
   "receiptsReadModels": {

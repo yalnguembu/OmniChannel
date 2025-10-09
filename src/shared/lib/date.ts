@@ -1,6 +1,6 @@
 import { DateFormat, Locale } from "@/shared/enums/common"
 
-export const formatDate = (date: string | Date, format: DateFormat = DateFormat.SHORT, locale: Locale = Locale.EN_US): string => {
+export const formatDate = (date: string | Date, format: DateFormat = DateFormat.SHORT, locale: Locale = Locale.FR_FR): string => {
   const dateObj = typeof date === "string" ? new Date(date) : date
 
   if (isNaN(dateObj.getTime())) {

@@ -60,7 +60,15 @@ export function ReceiptsReadModelsListPage() {
 
   const filterSections = useMemo(
     () => [
-      new FilterSectionBuilder(t(""), false, false)
+      new FilterSectionBuilder("", false, false)
+        .addField({
+          key: "customerIpAddress",
+          label: t("receiptsreadmodels.headers.range"),
+          type: FilterFieldType.DATERANGE,
+          placeholder: t("receiptsreadmodels.headers.range"),
+          // options: companyOptions,
+          isLoadingOptions: companyDropdownQuery.isLoading,
+        })
         .addField({
           key: "companyId",
           label: t("receiptsreadmodels.headers.companyId"),
@@ -133,18 +141,6 @@ export function ReceiptsReadModelsListPage() {
           type: FilterFieldType.TEXT,
           placeholder: t("receiptsreadmodels.headers.customerEmail"),
         })
-        // .addField({
-        //   key: "customerIpAddress",
-        //   label: t("receiptsreadmodels.headers.customerIpAddress"),
-        //   type: FilterFieldType.TEXT,
-        //   placeholder: t("receiptsreadmodels.headers.customerIpAddress"),
-        // })
-        // .addField({
-        //   key: "currency",
-        //   label: t("receiptsreadmodels.headers.currency"),
-        //   type: FilterFieldType.TEXT,
-        //   placeholder: t("receiptsreadmodels.headers.currency"),
-        // })
         .build(),
     ],
     [t, companyOptions, applicationOptions, companyDropdownQuery.isLoading, applicationDropdownQuery.isLoading],

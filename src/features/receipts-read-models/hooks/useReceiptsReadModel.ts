@@ -12,6 +12,7 @@ import {
   getApiCompanyDropdownOptions,
   getApiApplicationDropdownOptions,
 } from "@/shared/api/@tanstack/react-query.gen"
+import { endOfDay, startOfDay } from "@/shared/lib/date"
 
 export const receiptsReadModelQueryKeys = {
   all: ["receiptsReadModel"] as const,
@@ -28,18 +29,7 @@ export const useReceiptsReadModel = () => {
   const store = useReceiptsReadModelStore()
 
   const searchReceiptsReadModelsMutation = useMutation({
-    ...postApiReceiptsReadModelSearchMutation({
-      body: {
-        pageNumber: store.currentPage,
-        pageSize: store.pageSize,
-        sortBy: store.sortBy,
-        sortDirection: store.sortDirection,
-        ids: store.filters.ids,
-        searchTerm: store.filters.searchTerm,
-        createdFrom: store.filters.createdFrom || "",
-        createdTo: store.filters.createdTo || "",
-      },
-    }),
+    ...postApiReceiptsReadModelSearchMutation({}),
     onMutate: () => {
       store.setLoading(true)
       store.setError(null)
@@ -70,6 +60,9 @@ export const useReceiptsReadModel = () => {
       sortBy: store.sortBy || undefined,
       sortDirection: store.sortDirection || undefined,
       ...store.filters,
+      createdFrom: store.filters.customerIpAddress?.split("_")[0] || startOfDay(new Date()).toISOString(),
+      createdTo: store.filters.customerIpAddress?.split("_")[1] || endOfDay(new Date()).toISOString(),
+      customerIpAddress: "",
     }
     searchReceiptsReadModelsMutation.mutate({ body: searchParams })
   }

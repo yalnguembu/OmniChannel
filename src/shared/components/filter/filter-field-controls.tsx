@@ -1,6 +1,6 @@
 import React from "react"
 import { ControllerRenderProps } from "react-hook-form"
-import { CalendarIcon, ChevronDown, Search } from "lucide-react"
+import { CalendarIcon, ChevronDown, Search, X } from "lucide-react"
 import { format } from "date-fns"
 
 import { Button } from "@/shared/components/ui/button"
@@ -168,29 +168,57 @@ const DateFieldControl: React.FC<FilterFieldControlProps> = ({ field, formField,
   </Popover>
 )
 
-const DateRangeFieldControl: React.FC<FilterFieldControlProps> = ({ field, formField, isLoading }) => (
-  <Popover>
-    <PopoverTrigger asChild>
-      <Button variant="outline" className={cn("w-full justify-start text-left font-normal", !formField.value && "text-muted-foreground")} disabled={field.disabled || isLoading}>
-        <CalendarIcon className="mr-2 h-4 w-4" />
-        {formField.value?.from ? (
-          formField.value.to ? (
-            <>
-              {format(formField.value.from, "LLL dd, y")} - {format(formField.value.to, "LLL dd, y")}
-            </>
-          ) : (
-            format(formField.value.from, "LLL dd, y")
-          )
-        ) : (
-          <span>{field.placeholder || field.label}</span>
-        )}
-      </Button>
-    </PopoverTrigger>
-    <PopoverContent className="w-auto p-0" align="start">
-      <Calendar initialFocus mode="range" defaultMonth={formField.value?.from} selected={formField.value} onSelect={formField.onChange} numberOfMonths={2} />
-    </PopoverContent>
-  </Popover>
-)
+const DateRangeFieldControl: React.FC<FilterFieldControlProps> = ({ field, formField, isLoading }) => {
+  const dateRange = React.useMemo(() => {
+    if (typeof formField.value === "string" && formField.value.includes("_")) {
+      const [from, to] = formField.value.split("_")
+      return {
+        from: from ? new Date(from) : undefined,
+        to: to ? new Date(to) : undefined,
+      }
+    }
+    return { from: undefined, to: undefined }
+  }, [formField.value])
+
+  return (
+    <Popover>
+      <PopoverTrigger asChild>
+        <div className="relative w-full">
+          <Button variant="outline" className={cn("w-full justify-start text-left font-normal", !formField.value && "text-muted-foreground")} disabled={field.disabled || isLoading}>
+            <CalendarIcon className="mr-2 h-4 w-4" />
+            {dateRange?.from ? (
+              dateRange.to ? (
+                <>
+                  {format(dateRange.from, "LLL dd, y")} - {format(dateRange.to, "LLL dd, y")}
+                </>
+              ) : (
+                format(dateRange.from, "LLL dd, y")
+              )
+            ) : (
+              <span>{field.placeholder || field.label}</span>
+            )}
+          </Button>
+          {dateRange?.from && (
+            <Button
+              variant="ghost"
+              size="sm"
+              className="absolute right-1 top-1/2 -translate-y-1/2 h-6 w-6 p-0"
+              onClick={(e) => {
+                e.stopPropagation()
+                formField.onChange("")
+              }}
+            >
+              <X className="h-4 w-4" />
+            </Button>
+          )}
+        </div>
+      </PopoverTrigger>
+      <PopoverContent className="w-auto p-0" align="start">
+        <Calendar initialFocus mode="range" defaultMonth={dateRange?.from} selected={dateRange} onSelect={(range) => formField.onChange(`${range?.from?.toISOString() || ""}_${range?.to?.toISOString() || ""}`)} numberOfMonths={2} />
+      </PopoverContent>
+    </Popover>
+  )
+}
 
 const SearchDropdownFieldControl: React.FC<FilterFieldControlProps> = ({ field, formField, isLoading }) => (
   <SearchDropdown
