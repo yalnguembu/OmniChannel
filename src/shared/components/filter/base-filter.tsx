@@ -138,6 +138,10 @@ export function BaseFilter<T extends Record<string, unknown>>({
     form.setValue("searchTerm" as keyof T as any, text as any)
   }
 
+  const handleRefreshAndSubmit = () => {
+    form.handleSubmit(handleSubmit)()
+  }
+
   const filterFields: FilterFieldConfig[] = []
   if (enableDateRange)
     filterFields.push({
@@ -156,7 +160,7 @@ export function BaseFilter<T extends Record<string, unknown>>({
       selectedRows={selectedRows}
       viewMode={viewMode}
       setViewMode={setViewMode}
-      refreshData={refreshData}
+      refreshData={handleRefreshAndSubmit}
       hasSelection={hasSelection}
       selectionCount={selectionCount}
       onImport={onImport}
@@ -172,33 +176,27 @@ export function BaseFilter<T extends Record<string, unknown>>({
   )
 
   const filterContent = (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleSubmit)} className="p-4 pt-2 space-y-2 border-t">
-        {generatedSections.map((section) => (
-          <FilterSection key={section.title} section={section} control={form.control} isLoading={isLoading} />
-        ))}
-
-        <FilterActions
-          onSubmit={form.handleSubmit(handleSubmit)}
-          onReset={handleReset}
-          isLoading={isLoading}
-          showFilterButton={showFilterButton}
-          showResetButton={showResetButton}
-        />
-      </form>
-    </Form>
+    <div className="p-4 pt-2 space-y-2 border-t">
+      {generatedSections.map((section) => (
+        <FilterSection key={section.title} section={section} control={form.control} isLoading={isLoading} />
+      ))}
+    </div>
   )
 
   return (
-    <CollapsibleContainer
-      isCollapsible={collapsible}
-      defaultCollapsed={defaultCollapsed}
-      collapsed={isCollapsed}
-      onCollapsedChange={handleCollapsedChange}
-      className={className}
-      header={filterHeader}
-    >
-      {filterContent}
-    </CollapsibleContainer>
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(handleSubmit)}>
+        <CollapsibleContainer
+          isCollapsible={collapsible}
+          defaultCollapsed={defaultCollapsed}
+          collapsed={isCollapsed}
+          onCollapsedChange={handleCollapsedChange}
+          className={className}
+          header={filterHeader}
+        >
+          {filterContent}
+        </CollapsibleContainer>
+      </form>
+    </Form>
   )
 }

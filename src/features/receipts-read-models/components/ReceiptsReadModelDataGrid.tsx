@@ -157,8 +157,8 @@ export const ReceiptsReadModelDataGrid: React.FC = () => {
   }
 
   const handlePageChange = (page: number, size: number) => {
-    changePage(page)
-    changePageSize(size)
+    if (currentPage !== page) changePage(page)
+    if (pageSize !== size) changePageSize(size)
   }
 
   const bulkActions = hasSelection

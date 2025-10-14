@@ -257,11 +257,33 @@ export const useReceiptsReadModel = () => {
 
   const applyFilters = (filters: Partial<typeof store.filters>) => {
     const enhancedFilters = {
+      
+      phoneNumberEncrypted: undefined,
+      searchTerm: undefined,
+      ids: undefined,
+      currency: undefined,
+      customerEmail: undefined,
+      customerName: undefined,
+      customerIpAddress: undefined,
+      internalReference: undefined,
+      externalReference: undefined,
+      providerInitialReference: undefined,
+      providerFinalReference: undefined,
+      status: undefined,
+      applicationName: undefined,
+      companyName: undefined,
+      paymentMethodName: undefined,
+      paymentMethodCode: undefined,
+      providerMessage: undefined,
+      applicationId: undefined,
+      companyId: undefined,
       ...filters,
       createdFrom: filters.createdFrom ? filters.createdFrom : filters.customerIpAddress?.split("_")[0] || startOfDay(new Date()).toISOString(),
       createdTo: filters.createdTo ? filters.createdTo : filters.customerIpAddress?.split("_")[1] || endOfDay(new Date()).toISOString(),
     }
+    console.log(enhancedFilters)
     store.setFilters(enhancedFilters)
+    // store.setFilters(enhancedFilters)
     performSearch(enhancedFilters)
   }
 

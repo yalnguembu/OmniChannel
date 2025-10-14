@@ -118,12 +118,12 @@ export const FilterHeader: React.FC<FilterHeaderProps> = ({
         )}
 
         {hasValues && showClearButton && (
-          <Button type="button" variant="outline" size="sm" className="ml-4" onClick={handleClear} disabled={isLoading}>
+          <Button type="reset" variant="outline" onClick={handleClear} size="sm" className="ml-4" disabled={isLoading}>
             <X className="h-4 w-4 mr-1" />
             {t("common.filter.actions.clear")}
           </Button>
         )}
-        <Button size="sm" onClick={handleRefresh} disabled={isLoading} className="flex items-center gap-x-1" title={t("common.filter.actions.refresh")}>
+        <Button size="sm" type="submit" disabled={isLoading} className="flex items-center gap-x-1" title={t("common.filter.actions.refresh")}>
           <SearchIcon className={`h-4 w-4 ${isLoading ? "animate-spin" : ""}`} />
           <span className="hidden lg:inline">{t("common.filter.actions.filter")}</span>
         </Button>
