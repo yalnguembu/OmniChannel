@@ -77,7 +77,6 @@ export interface ReceiptsReadModelActions {
   setSelectedRows: (rows: string[]) => void
 
   reset: () => void
-  
   // NEW: Get current state snapshot
   getStateSnapshot: () => ReceiptsReadModelState
 }
@@ -90,7 +89,7 @@ const initialState: ReceiptsReadModelState = {
   selectedReceiptsReadModels: [],
 
   currentPage: 1,
-  pageSize: 100,
+  pageSize: 9999,
   totalItems: 0,
   totalPages: 0,
 
