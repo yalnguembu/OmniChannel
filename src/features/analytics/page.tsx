@@ -147,9 +147,9 @@ export function AnalyticsPage() {
     staleTime: 1000 * 60 * 5,
   })
 
-  const metrics = metricsData?.data || []
-  const paymentMethodMetrics = paymentMethodData?.data || []
-  const balances = balancesData?.data || []
+  const metrics = metricsData?.data.items || []
+  const paymentMethodMetrics = paymentMethodData?.data.items || []
+  const balances = balancesData?.data.items || []
   const loading = metricsLoading || paymentMethodLoading || balancesLoading
 
   const currentMetrics = metrics[0]

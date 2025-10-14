@@ -37,11 +37,11 @@ export const adminMenus: BaseMenus[] = [
         path: "/dashboard",
         icon: Gauge,
       },
-      {
-        label: "menu.analytics",
-        path: "/analytics",
-        icon: ChartColumnIcon,
-      },
+      // {
+      //   label: "menu.analytics",
+      //   path: "/analytics",
+      //   icon: ChartColumnIcon,
+      // },
     ],
   },
   {

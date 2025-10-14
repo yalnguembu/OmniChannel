@@ -49,7 +49,7 @@ export const useDashboard = () => {
     }),
     select: (data) => {
       if (data.success && data.data) {
-        return Array.isArray(data.data) ? data.data : []
+        return Array.isArray(data.data.items) ? data.data.items : []
       }
       return []
     },
@@ -73,7 +73,7 @@ export const useDashboard = () => {
     }),
     select: (data) => {
       if (data.success && data.data) {
-        return Array.isArray(data.data) ? data.data : []
+        return Array.isArray(data.data.items) ? data.data.items : []
       }
       return []
     },
@@ -90,7 +90,7 @@ export const useDashboard = () => {
     }),
     select: (data) => {
       if (data.success && data.data) {
-        return Array.isArray(data.data) ? data.data : []
+        return Array.isArray(data.data.items) ? data.data.items : []
       }
       return []
     },
