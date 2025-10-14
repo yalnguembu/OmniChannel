@@ -45,10 +45,10 @@ export const useFundTransfersReadModel = () => {
     },
     onSuccess: (data) => {
       if (data.success && data.data) {
-        const items = Array.isArray(data.data) ? data.data : []
+        const items = Array.isArray(data.data.items) ? data.data.items : []
         store.setFundTransfersReadModel(items)
-        const total = (data.metadata?.totalItems || items.length) as number
-        const totalPages = Math.ceil(total / store.pageSize)
+        const total = data.data.totalCount || 0
+        const totalPages = data.data.totalPages || 0
         store.setPaginationData(total, totalPages)
       }
     },
@@ -259,7 +259,6 @@ export const useFundTransfersReadModel = () => {
     onDeleteFundTransfersReadModel,
     search,
     changePage,
-    changePageSize,
     changePageSize,
     changeSort,
     applyFilters,

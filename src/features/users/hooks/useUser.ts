@@ -7,7 +7,6 @@ import {
   postApiUserSearchMutation,
   getApiUserDropdownOptions,
   postApiUserCompanyUsersMutation,
-  putApiUserMutation,
   deleteApiUserByIdMutation,
   getApiUserByIdOptions,
   postApiUserSystemUsersMutation,
@@ -51,10 +50,10 @@ export const useUser = () => {
     },
     onSuccess: (data) => {
       if (data.success && data.data) {
-        const items = Array.isArray(data.data) ? data.data : []
+        const items = Array.isArray(data.data.items) ? data.data.items : []
         store.setUser(items)
-        const total = (data.metadata?.totalItems || items.length) as number
-        const totalPages = Math.ceil(total / store.pageSize)
+        const total = data.data.totalCount || 0
+        const totalPages = data.data.totalPages || 0
         store.setPaginationData(total, totalPages)
       }
     },
@@ -219,32 +218,32 @@ export const useUser = () => {
     )
   }
 
-  const updateUserMutation = useMutation({
-    ...putApiUserMutation(),
-    onMutate: () => {
-      store.setLoading(true)
-      store.setError(null)
-    },
-    onSuccess: (result, variables) => {
-      toast.success(t("users.messages.update.success"))
-      queryClient.invalidateQueries({ queryKey: userQueryKeys.lists() })
-      if (result.success && variables.body?.id) {
-        store.updateItem(variables.body.id, variables.body)
-      }
-    },
-    onError: (error) => {
-      const message = error.message || t("users.messages.update.error")
-      store.setError(message)
-      toast.error(message)
-    },
-    onSettled: () => {
-      store.setLoading(false)
-    },
-  })
+  // const updateUserMutation = useMutation({
+  //   ...putApiUserMutation(),
+  //   onMutate: () => {
+  //     store.setLoading(true)
+  //     store.setError(null)
+  //   },
+  //   onSuccess: (result, variables) => {
+  //     toast.success(t("users.messages.update.success"))
+  //     queryClient.invalidateQueries({ queryKey: userQueryKeys.lists() })
+  //     if (result.success && variables.body?.id) {
+  //       store.updateItem(variables.body.id, variables.body)
+  //     }
+  //   },
+  //   onError: (error) => {
+  //     const message = error.message || t("users.messages.update.error")
+  //     store.setError(message)
+  //     toast.error(message)
+  //   },
+  //   onSettled: () => {
+  //     store.setLoading(false)
+  //   },
+  // })
 
-  const onUpdateUser = (data: any) => {
-    updateUserMutation.mutate({ body: data })
-  }
+  // const onUpdateUser = (data: any) => {
+  //   updateUserMutation.mutate({ body: data })
+  // }
 
   const toggleUserStatusMutation = useMutation({
     ...putApiUserByIdStatusMutation(),
@@ -376,7 +375,6 @@ export const useUser = () => {
     searchMutation: searchUsersMutation,
     createSystemMutation: createSystemUserMutation,
     createCompanyMutation: createCompanyUserMutation,
-    updateMutation: updateUserMutation,
     toggleStatusMutation: toggleUserStatusMutation,
     deleteMutation: deleteUserMutation,
     bulkDeleteMutation,
@@ -387,12 +385,10 @@ export const useUser = () => {
     onCreateCompanyUser: onCreateCompanyUser,
     createSystemUserWithValidation,
     createCompanyUserWithValidation,
-    onUpdateUser,
     toggleUserStatus,
     onDeleteUser,
     search,
     changePage,
-    changePageSize,
     changePageSize,
     changeSort,
     applyFilters,

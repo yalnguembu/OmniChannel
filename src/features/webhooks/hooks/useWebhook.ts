@@ -60,10 +60,10 @@ export const useWebhook = () => {
     },
     onSuccess: (data, variables) => {
       if (isSuccessResponse(data) && data?.data) {
-        const items = Array.isArray(data.data) ? data.data : []
+        const items = Array.isArray(data.data.items) ? data.data.items : []
         store.setWebhook(items)
-        const total = (data.metadata?.totalItems || items.length) as number
-        const totalPages = Math.ceil(total / store.pageSize)
+        const total = data.data.totalCount || 0
+        const totalPages = data.data.totalPages || 0
         store.setPaginationData(total, totalPages)
 
         const cacheKey = JSON.stringify(variables.body)
@@ -100,7 +100,7 @@ export const useWebhook = () => {
           const items = Array.isArray(cachedData.data) ? cachedData.data : []
           store.setWebhook(items)
           const total = (cachedData.metadata?.totalItems || items.length) as number
-          const totalPages = Math.ceil(total / store.pageSize)
+          const totalPages = data.data.totalPages || 0
           store.setPaginationData(total, totalPages)
         }
         store.setLoading(false)
@@ -424,7 +424,6 @@ export const useWebhook = () => {
     updateWebhookWithValidation,
     search,
     changePage,
-    changePageSize,
     changePageSize,
     changeSort,
     applyFilters,

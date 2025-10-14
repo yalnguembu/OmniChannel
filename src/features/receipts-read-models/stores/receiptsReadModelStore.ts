@@ -77,6 +77,9 @@ export interface ReceiptsReadModelActions {
   setSelectedRows: (rows: string[]) => void
 
   reset: () => void
+  
+  // NEW: Get current state snapshot
+  getStateSnapshot: () => ReceiptsReadModelState
 }
 
 export type ReceiptsReadModelStore = ReceiptsReadModelState & ReceiptsReadModelActions
@@ -87,7 +90,7 @@ const initialState: ReceiptsReadModelState = {
   selectedReceiptsReadModels: [],
 
   currentPage: 1,
-  pageSize: 10000,
+  pageSize: 100,
   totalItems: 0,
   totalPages: 0,
 
@@ -113,7 +116,7 @@ const initialState: ReceiptsReadModelState = {
 
 export const useReceiptsReadModelStore = create<ReceiptsReadModelStore>()(
   devtools(
-    immer((set) => ({
+    immer((set, get) => ({
       ...initialState,
 
       setReceiptsReadModel: (receiptsReadModel) =>
@@ -156,7 +159,6 @@ export const useReceiptsReadModelStore = create<ReceiptsReadModelStore>()(
       setPageSize: (size) =>
         set((state: ReceiptsReadModelState) => {
           state.pageSize = size
-          state.currentPage = 1 // Reset to first page
         }),
 
       setPaginationData: (total, totalPages) =>
@@ -179,7 +181,10 @@ export const useReceiptsReadModelStore = create<ReceiptsReadModelStore>()(
 
       clearFilters: () =>
         set((state: ReceiptsReadModelState) => {
-          state.filters = {}
+          state.filters = {
+            createdFrom: startOfDay(new Date()).toISOString(),
+            createdTo: endOfDay(new Date()).toISOString(),
+          }
           state.currentPage = 1
         }),
 
@@ -261,6 +266,11 @@ export const useReceiptsReadModelStore = create<ReceiptsReadModelStore>()(
         set((state: ReceiptsReadModelState) => {
           Object.assign(state, initialState)
         }),
+
+      // NEW: Method to get current state snapshot
+      getStateSnapshot: () => {
+        return get()
+      },
     })),
     {
       name: "receiptsReadModel-store",

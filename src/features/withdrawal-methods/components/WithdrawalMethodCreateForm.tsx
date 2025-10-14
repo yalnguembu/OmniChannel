@@ -12,6 +12,7 @@ import { CreateWithdrawalMethodRequest } from "@/shared/api"
 import { zCreateWithdrawalMethodRequest } from "@/shared/api/zod.gen"
 import { useCompany } from "@/features/companies/hooks/useCompany"
 import { SearchDropdown } from "@/shared/components/dropdowns/search-dropdown"
+import { usePaymentMethod } from "@/features/payment-methods/hooks/usePayMentmethod"
 
 interface WithdrawalMethodCreateFormProps {
   onSubmit: (data: CreateWithdrawalMethodRequest) => void
@@ -41,6 +42,10 @@ export const WithdrawalMethodCreateForm: React.FC<WithdrawalMethodCreateFormProp
   const { dropdownQuery: companyDropdownQuery } = useCompany()
   const { data: companyDropdownData, isLoading: isCompanyLoading } = companyDropdownQuery()
   const companyOptions = companyDropdownData && companyDropdownData.data ? companyDropdownData.data.map((c) => ({ value: c.id, label: c.name })) : []
+
+  const { dropdownQuery: paymentMethodDropdownQuery } = usePaymentMethod()
+  const { data: paymentMethodDropdownData, isLoading: isPaymentMethodLoading } = paymentMethodDropdownQuery()
+  const paymentMethodOptions = paymentMethodDropdownData && paymentMethodDropdownData.data ? paymentMethodDropdownData.data.map((c) => ({ value: c.id, label: c.name })) : []
 
   return (
     <Card className="w-full max-w-4xl mx-auto">
@@ -72,6 +77,7 @@ export const WithdrawalMethodCreateForm: React.FC<WithdrawalMethodCreateFormProp
                   </FormItem>
                 )}
               />
+
               <FormField
                 control={form.control}
                 name="name"
@@ -105,62 +111,16 @@ export const WithdrawalMethodCreateForm: React.FC<WithdrawalMethodCreateFormProp
                   <FormItem>
                     <FormLabel>{t("withdrawalMethods.form.paymentMethodIdLabel")}</FormLabel>
                     <FormControl>
-                      <Input type="text" placeholder={t("withdrawalMethods.form.paymentMethodIdPlaceholder")} {...field} value={field.value || ""} required={false} />
+                      <SearchDropdown
+                        value={field.value || null}
+                        onChange={(val) => field.onChange(val)}
+                        options={paymentMethodOptions}
+                        placeholder={t("withdrawalMethods.form.paymentMethodIdPlaceholder")}
+                        disabled={isPaymentMethodLoading}
+                        isLoading={isPaymentMethodLoading}
+                      />
                     </FormControl>
                     <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="isVerified"
-                render={({ field }) => (
-                  <FormItem className="flex items-center">
-                    <FormControl>
-                      <Checkbox checked={field.value || false} onCheckedChange={field.onChange} />
-                    </FormControl>
-                    <FormLabel>{t("withdrawalMethods.form.fields.isVerified")}</FormLabel>
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="verificationDate"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t("withdrawalMethods.form.verificationDateLabel")}</FormLabel>
-                    <FormControl>
-                      <Input type="text" placeholder={t("withdrawalMethods.form.verificationDatePlaceholder")} {...field} value={field.value || ""} required={false} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="verificationReference"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t("withdrawalMethods.form.verificationDateLabel")}</FormLabel>
-                    <FormControl>
-                      <Input type="text" placeholder={t("withdrawalMethods.form.verificationDatePlaceholder")} {...field} value={field.value || ""} required={false} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="isDefault"
-                render={({ field }) => (
-                  <FormItem className="flex items-center">
-                    <FormControl>
-                      <Checkbox checked={field.value || false} onCheckedChange={field.onChange} />
-                    </FormControl>
-                    <FormLabel>{t("withdrawalMethods.form.fields.isDefault")}</FormLabel>
                   </FormItem>
                 )}
               />
@@ -201,6 +161,59 @@ export const WithdrawalMethodCreateForm: React.FC<WithdrawalMethodCreateFormProp
                       <Input type="number" placeholder={t("withdrawalMethods.form.singleWithdrawalLimitPlaceholder")} {...field} value={field.value || ""} required={false} />
                     </FormControl>
                     <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* <FormField
+                control={form.control}
+                name="verificationDate"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{t("withdrawalMethods.form.verificationDateLabel")}</FormLabel>
+                    <FormControl>
+                      <Input type="text" placeholder={t("withdrawalMethods.form.verificationDatePlaceholder")} {...field} value={field.value || ""} required={false} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="verificationReference"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{t("withdrawalMethods.form.verificationDateLabel")}</FormLabel>
+                    <FormControl>
+                      <Input type="text" placeholder={t("withdrawalMethods.form.verificationDatePlaceholder")} {...field} value={field.value || ""} required={false} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              /> */}
+
+              <FormField
+                control={form.control}
+                name="isVerified"
+                render={({ field }) => (
+                  <FormItem className="flex items-center">
+                    <FormControl>
+                      <Checkbox checked={field.value || false} onCheckedChange={field.onChange} />
+                    </FormControl>
+                    <FormLabel>{t("withdrawalMethods.form.fields.isVerified")}</FormLabel>
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="isDefault"
+                render={({ field }) => (
+                  <FormItem className="flex items-center">
+                    <FormControl>
+                      <Checkbox checked={field.value || false} onCheckedChange={field.onChange} />
+                    </FormControl>
+                    <FormLabel>{t("withdrawalMethods.form.fields.isDefault")}</FormLabel>
                   </FormItem>
                 )}
               />

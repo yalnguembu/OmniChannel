@@ -44,10 +44,10 @@ export function BaseFilter<T extends Record<string, unknown>>({
   useEffect(() => {
     if (!collapsible) return
 
-    let lastScrollY = window.scrollY
+    let lastScrollY = document.getElementById("scroll-container")?.scrollTop || 0
 
     const handleScroll = () => {
-      const currentScrollY = window.scrollY
+      const currentScrollY = document.getElementById("scroll-container")?.scrollTop || 0
 
       // Scrolling down and past threshold - auto collapse if not already collapsed
       if (currentScrollY > lastScrollY && currentScrollY > 100 && !isCollapsed) {
@@ -64,9 +64,9 @@ export function BaseFilter<T extends Record<string, unknown>>({
       lastScrollY = currentScrollY
     }
 
-    window.addEventListener("scroll", handleScroll, { passive: true })
+    document.getElementById("scroll-container")?.addEventListener("scroll", handleScroll, { passive: true })
 
-    return () => window.removeEventListener("scroll", handleScroll)
+    return () => document.getElementById("scroll-container")?.removeEventListener("scroll", handleScroll)
   }, [collapsible, isCollapsed, wasAutoCollapsed, defaultCollapsed])
 
   const handleCollapsedChange = useCallback((collapsed: boolean) => {

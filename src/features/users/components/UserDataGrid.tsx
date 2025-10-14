@@ -104,10 +104,6 @@ export const UserDataGrid: React.FC = () => {
     navigate({ to: `/access-control/users/${id}` })
   }
 
-  const handleEdit = (id: string) => {
-    navigate({ to: `/access-control/users/${id}/edit` })
-  }
-
   const handleDelete = (id: string) => {
     setDeleteConfirmation({ open: true, userId: id })
   }
@@ -144,9 +140,6 @@ export const UserDataGrid: React.FC = () => {
       case "view":
         handleView(id)
         break
-      case "edit":
-        handleEdit(id)
-        break
       case "delete":
         handleDelete(id)
         break
@@ -158,7 +151,7 @@ export const UserDataGrid: React.FC = () => {
     }
   }
 
-  const actions = ["view", "edit", "toggle_status", "delete"]
+  const actions = ["view", "toggle_status", "delete"]
 
   const renderCell = (item: DataGridRowEntry, column: DataGridColumnHeader, view: ViewMode): ReactNode => {
     if (view == "list") {
@@ -180,10 +173,6 @@ export const UserDataGrid: React.FC = () => {
                 <DropdownMenuItem onClick={() => handleDispatch?.("view", item.getId())}>
                   <Eye className="mr-2 h-4 w-4" />
                   {t("countries.actions.view")}
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => handleDispatch?.("edit", item.getId())}>
-                  <Edit className="mr-2 h-4 w-4" />
-                  {t("countries.actions.edit")}
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => handleDispatch?.("toggle_status", item.getId())}>
                   <Power className="mr-2 h-4 w-4" />

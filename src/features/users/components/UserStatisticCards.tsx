@@ -28,7 +28,7 @@ export function UserStatisticCards() {
 
   // Calculate statistics from user data
   const stats = useMemo(() => {
-    const users = data?.data || []
+    const users = data?.data?.items || []
     const totalUsers = users.length
     const systemUsers = users.filter((u) => u.userType === "SYSTEM").length
     const companyUsers = users.filter((u) => u.userType === "COMPANY").length

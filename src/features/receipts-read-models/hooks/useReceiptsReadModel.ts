@@ -11,6 +11,7 @@ import {
   getApiReceiptsReadModelGetAllStatusOptions,
   getApiCompanyDropdownOptions,
   getApiApplicationDropdownOptions,
+  postApiReceiptsReadModelExportExcelMutation,
 } from "@/shared/api/@tanstack/react-query.gen"
 import { endOfDay, startOfDay } from "@/shared/lib/date"
 
@@ -36,10 +37,10 @@ export const useReceiptsReadModel = () => {
     },
     onSuccess: (data) => {
       if (data.success && data.data) {
-        const items = Array.isArray(data.data) ? data.data : []
+        const items = Array.isArray(data.data.items) ? data.data.items : []
         store.setReceiptsReadModel(items)
-        const total = (data.metadata?.totalItems || items.length) as number
-        const totalPages = Math.ceil(total / store.pageSize)
+        const total = data.data.totalCount || 0
+        const totalPages = data.data.totalPages || 0
         store.setPaginationData(total, totalPages)
       }
     },
@@ -53,18 +54,76 @@ export const useReceiptsReadModel = () => {
     },
   })
 
-  const searchReceiptsReadModels = () => {
+  const exportExcelReceiptsReadModelsMutation = useMutation({
+    ...postApiReceiptsReadModelExportExcelMutation({}),
+    onMutate: () => {
+      store.setLoading(true)
+      store.setError(null)
+    },
+    onSuccess: (data) => {
+      if (data) {
+        const filename = `ReceiptsReadModel-${new Date().toISOString()}.xlsx`
+        const url = window.URL.createObjectURL(data as unknown as Blob)
+        const link = document.createElement("a")
+        link.href = url
+        link.setAttribute("download", filename)
+        document.body.appendChild(link)
+        link.click()
+        link.remove()
+
+        window.URL.revokeObjectURL(url)
+        toast.success(t("receiptsReadModels.messages.export.success"))
+      }
+    },
+    onError: (error) => {
+      const message = error.message || t("receiptsReadModels.messages.search.error")
+      store.setError(message)
+      toast.error(message)
+    },
+    onSettled: () => {
+      store.setLoading(false)
+    },
+  })
+
+  const performExport = (overrideFilters?: Partial<typeof store.filters>) => {
+    const currentState = useReceiptsReadModelStore.getState()
+    const filters = overrideFilters !== undefined ? { ...currentState.filters, ...overrideFilters } : currentState.filters
+
     const searchParams = {
-      pageNumber: store.currentPage,
-      pageSize: store.pageSize,
-      sortBy: store.sortBy || undefined,
-      sortDirection: store.sortDirection || undefined,
-      ...store.filters,
-      createdFrom: store.filters.customerIpAddress?.split("_")[0] || startOfDay(new Date()).toISOString(),
-      createdTo: store.filters.customerIpAddress?.split("_")[1] || endOfDay(new Date()).toISOString(),
+      pageNumber: currentState.currentPage,
+      pageSize: currentState.pageSize,
+      sortBy: currentState.sortBy || undefined,
+      sortDirection: currentState.sortDirection || undefined,
+      ...filters,
+      paymentMethodCode: filters?.paymentMethodCode === "ALL" ? "" : filters?.paymentMethodCode,
+      createdFrom: filters.createdFrom ? filters.createdFrom : filters.customerIpAddress?.split("_")[0] || startOfDay(new Date()).toISOString(),
+      createdTo: filters.createdTo ? filters.createdTo : filters.customerIpAddress?.split("_")[1] || endOfDay(new Date()).toISOString(),
       customerIpAddress: "",
     }
+    exportExcelReceiptsReadModelsMutation.mutate({ body: searchParams, responseType: "blob" })
+  }
+
+  const performSearch = (overrideFilters?: Partial<typeof store.filters>) => {
+    const currentState = useReceiptsReadModelStore.getState()
+    const filters = overrideFilters !== undefined ? { ...currentState.filters, ...overrideFilters } : currentState.filters
+
+    const searchParams = {
+      pageNumber: currentState.currentPage,
+      pageSize: currentState.pageSize,
+      sortBy: currentState.sortBy || undefined,
+      sortDirection: currentState.sortDirection || undefined,
+      ...filters,
+      paymentMethodCode: filters?.paymentMethodCode === "ALL" ? "" : filters?.paymentMethodCode,
+      createdFrom: filters.createdFrom ? filters.createdFrom : filters.customerIpAddress?.split("_")[0] || startOfDay(new Date()).toISOString(),
+      createdTo: filters.createdTo ? filters.createdTo : filters.customerIpAddress?.split("_")[1] || endOfDay(new Date()).toISOString(),
+      customerIpAddress: "",
+    }
+
     searchReceiptsReadModelsMutation.mutate({ body: searchParams })
+  }
+
+  const searchReceiptsReadModels = (searchParams?: Partial<typeof store.filters>) => {
+    performSearch(searchParams)
   }
 
   const getReceiptsReadModelQuery = (id: string) =>
@@ -177,31 +236,44 @@ export const useReceiptsReadModel = () => {
   }
 
   const search = () => {
-    searchReceiptsReadModels()
+    performSearch()
   }
+
   const changePage = (page: number) => {
     store.setCurrentPage(page)
-    searchReceiptsReadModels()
+    performSearch()
   }
+
   const changePageSize = (size: number) => {
     store.setPageSize(size)
-    searchReceiptsReadModels()
+    store.setCurrentPage(1)
+    performSearch()
   }
+
   const changeSort = (sortBy: string | null, direction: SortDirection | null) => {
     store.setSorting(sortBy, direction)
-    searchReceiptsReadModels()
+    performSearch()
   }
+
   const applyFilters = (filters: Partial<typeof store.filters>) => {
-    store.setFilters(filters)
-    searchReceiptsReadModels()
+    const enhancedFilters = {
+      ...filters,
+      createdFrom: filters.createdFrom ? filters.createdFrom : filters.customerIpAddress?.split("_")[0] || startOfDay(new Date()).toISOString(),
+      createdTo: filters.createdTo ? filters.createdTo : filters.customerIpAddress?.split("_")[1] || endOfDay(new Date()).toISOString(),
+    }
+    store.setFilters(enhancedFilters)
+    performSearch(enhancedFilters)
   }
+
   const clearFilters = () => {
     store.clearFilters()
-    searchReceiptsReadModels()
+    performSearch()
   }
+
   const refreshData = () => {
-    searchReceiptsReadModels()
+    performSearch()
   }
+
   const enableDropdownQuery = () => {
     dropdownQuery.refetch()
   }
@@ -232,5 +304,6 @@ export const useReceiptsReadModel = () => {
     isError: searchReceiptsReadModelsMutation.isError,
     error: searchReceiptsReadModelsMutation.error || store.error,
     getApiReceiptsReadModelGetAllStatus,
+    performExport,
   }
 }

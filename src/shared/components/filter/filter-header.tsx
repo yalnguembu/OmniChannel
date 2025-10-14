@@ -1,5 +1,5 @@
-import React from "react"
-import { Badge, Download, Filter as FilterIcon, Grid3X3, List, MoreVertical, RefreshCw, Search, Upload, X } from "lucide-react"
+import React, { useState } from "react"
+import { Badge, Download, Filter as FilterIcon, Grid3X3, List, MoreVertical, SearchIcon, Search, Upload, X } from "lucide-react"
 import { Button } from "@/shared/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/shared/components/ui/dropdown-menu"
 import { Input } from "../ui/input"
@@ -47,6 +47,19 @@ export const FilterHeader: React.FC<FilterHeaderProps> = ({
   const handleRefresh = () => {
     refreshData()
   }
+
+  const [searchText, setSearchText] = useState(searchValue)
+
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchText(event.target.value)
+    onSearchChange?.(event.target.value)
+  }
+
+  const handleClear = () => {
+    setSearchText("")
+    onClear()
+  }
+
   return (
     <div className="flex items-center justify-between px-2 py-3 w-full gap-x-2">
       <div className="flex items-center gap-x-2 pl-2 md:pl-4">
@@ -58,18 +71,13 @@ export const FilterHeader: React.FC<FilterHeaderProps> = ({
         {enableSearch && (
           <div className="relative">
             <Search className="absolute z-50 left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input prefix="" type="text" value={searchValue} placeholder="Search..." disabled={isLoading} onChange={(e) => onSearchChange?.(e.target.value)} className="pl-10" />
+            <Input prefix="" type="text" value={searchText} placeholder="Search..." disabled={isLoading} onChange={handleSearchChange} className="pl-10" />
           </div>
         )}
       </div>
 
       <div className="flex items-center gap-x-2">
         {hasSelection && <Badge className="text-sm">{t("common.filter.selection.count", { count: selectionCount })}</Badge>}
-
-        <Button variant="outline" size="sm" onClick={handleRefresh} disabled={isLoading} className="flex items-center gap-x-1" title={t("common.filter.actions.refresh")}>
-          <RefreshCw className={`h-4 w-4 ${isLoading ? "animate-spin" : ""}`} />
-          <span className="hidden lg:inline">{t("common.filter.actions.refresh")}</span>
-        </Button>
 
         <div className="flex items-center border rounded-md">
           <Button
@@ -110,11 +118,15 @@ export const FilterHeader: React.FC<FilterHeaderProps> = ({
         )}
 
         {hasValues && showClearButton && (
-          <Button type="button" variant="ghost" size="sm" onClick={onClear} disabled={isLoading}>
+          <Button type="button" variant="outline" size="sm" className="ml-4" onClick={handleClear} disabled={isLoading}>
             <X className="h-4 w-4 mr-1" />
             {t("common.filter.actions.clear")}
           </Button>
         )}
+        <Button size="sm" onClick={handleRefresh} disabled={isLoading} className="flex items-center gap-x-1" title={t("common.filter.actions.refresh")}>
+          <SearchIcon className={`h-4 w-4 ${isLoading ? "animate-spin" : ""}`} />
+          <span className="hidden lg:inline">{t("common.filter.actions.filter")}</span>
+        </Button>
       </div>
     </div>
   )

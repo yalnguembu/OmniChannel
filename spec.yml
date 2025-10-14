@@ -1,15 +1,7 @@
 openapi: 3.0.1
 info:
-  title: ToDo API
-  description: An ASP.NET Core Web API for managing ToDo items
-  termsOfService: https://example.com/terms
-  contact:
-    name: Example Contact
-    url: https://example.com/contact
-  license:
-    name: Example License
-    url: https://example.com/license
-  version: v1
+  title: FujiPay.API
+  version: '1.0'
 paths:
   /api/AllowedIp/{id}:
     get:
@@ -7790,6 +7782,53 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ObjectFujiPayApiResponse'
+  /api/ReceiptsReadModel/export-excel:
+    post:
+      tags:
+        - ReceiptsReadModel
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExportReceiptsReadModelRequest'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/ExportReceiptsReadModelRequest'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/ExportReceiptsReadModelRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: string
+                format: binary
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectFujiPayApiResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectFujiPayApiResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectFujiPayApiResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectFujiPayApiResponse'
   /api/SecureSetting:
     post:
       tags:
@@ -9261,115 +9300,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ObjectFujiPayApiResponse'
-  /api/User:
-    post:
-      tags:
-        - User
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CreateUserRequest'
-          text/json:
-            schema:
-              $ref: '#/components/schemas/CreateUserRequest'
-          application/*+json:
-            schema:
-              $ref: '#/components/schemas/CreateUserRequest'
-      responses:
-        '201':
-          description: Created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BaseCreateResponseFujiPayApiResponse'
-        '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ObjectFujiPayApiResponse'
-        '401':
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ObjectFujiPayApiResponse'
-        '403':
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ObjectFujiPayApiResponse'
-        '409':
-          description: Conflict
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ObjectFujiPayApiResponse'
-        '500':
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ObjectFujiPayApiResponse'
-    put:
-      tags:
-        - User
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UpdateUserRequest'
-          text/json:
-            schema:
-              $ref: '#/components/schemas/UpdateUserRequest'
-          application/*+json:
-            schema:
-              $ref: '#/components/schemas/UpdateUserRequest'
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BaseUpdateResponseFujiPayApiResponse'
-        '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ObjectFujiPayApiResponse'
-        '401':
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ObjectFujiPayApiResponse'
-        '403':
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ObjectFujiPayApiResponse'
-        '404':
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ObjectFujiPayApiResponse'
-        '409':
-          description: Conflict
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ObjectFujiPayApiResponse'
-        '500':
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ObjectFujiPayApiResponse'
   /api/User/search:
     post:
       tags:
@@ -10264,6 +10194,35 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UserPermissionModuleResponseListFujiPayApiResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectFujiPayApiResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectFujiPayApiResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectFujiPayApiResponse'
+  /api/UserProfile/permissions/all-string:
+    get:
+      tags:
+        - UserProfile
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StringListFujiPayApiResponse'
         '401':
           description: Unauthorized
           content:
@@ -14240,38 +14199,6 @@ components:
         isActive:
           type: boolean
       additionalProperties: false
-    CreateUserRequest:
-      type: object
-      properties:
-        publicId:
-          type: string
-          nullable: true
-        companyId:
-          type: string
-          format: uuid
-          nullable: true
-        profileId:
-          type: string
-          format: uuid
-        firstName:
-          type: string
-          nullable: true
-        lastName:
-          type: string
-          nullable: true
-        email:
-          type: string
-          nullable: true
-        phoneNumber:
-          type: string
-          nullable: true
-        userType:
-          type: string
-          nullable: true
-        status:
-          type: string
-          nullable: true
-      additionalProperties: false
     CreateVwTransactionsSummaryRequest:
       type: object
       properties:
@@ -14977,6 +14904,90 @@ components:
           additionalProperties: {}
           nullable: true
       additionalProperties: {}
+    ExportReceiptsReadModelRequest:
+      type: object
+      properties:
+        searchTerm:
+          type: string
+          nullable: true
+        createdFrom:
+          type: string
+          format: date-time
+          nullable: true
+        createdTo:
+          type: string
+          format: date-time
+          nullable: true
+        sortBy:
+          maxLength: 50
+          minLength: 0
+          type: string
+          nullable: true
+        sortDirection:
+          maxLength: 10
+          minLength: 0
+          type: string
+          nullable: true
+        ids:
+          type: array
+          items:
+            type: string
+            format: uuid
+          nullable: true
+        currency:
+          type: string
+          nullable: true
+        phoneNumberEncrypted:
+          type: string
+          nullable: true
+        customerEmail:
+          type: string
+          nullable: true
+        customerName:
+          type: string
+          nullable: true
+        customerIpAddress:
+          type: string
+          nullable: true
+        internalReference:
+          type: string
+          nullable: true
+        externalReference:
+          type: string
+          nullable: true
+        providerInitialReference:
+          type: string
+          nullable: true
+        providerFinalReference:
+          type: string
+          nullable: true
+        status:
+          type: string
+          nullable: true
+        applicationName:
+          type: string
+          nullable: true
+        companyName:
+          type: string
+          nullable: true
+        paymentMethodName:
+          type: string
+          nullable: true
+        paymentMethodCode:
+          type: string
+          nullable: true
+        providerMessage:
+          type: string
+          nullable: true
+        applicationId:
+          type: string
+          format: uuid
+          nullable: true
+        companyId:
+          type: string
+          format: uuid
+          nullable: true
+      additionalProperties: false
     FeeConfigOwnerType:
       type: object
       properties:
@@ -18814,6 +18825,59 @@ components:
           additionalProperties: {}
           nullable: true
       additionalProperties: {}
+    SearchAllowedIpResponseIPagedList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/SearchAllowedIpResponse'
+          nullable: true
+          readOnly: true
+        pageNumber:
+          type: integer
+          format: int32
+          readOnly: true
+        pageSize:
+          type: integer
+          format: int32
+          readOnly: true
+        totalCount:
+          type: integer
+          format: int32
+          readOnly: true
+        totalPages:
+          type: integer
+          format: int32
+          readOnly: true
+        startIndex:
+          type: integer
+          format: int32
+          readOnly: true
+        endIndex:
+          type: integer
+          format: int32
+          readOnly: true
+        hasPreviousPage:
+          type: boolean
+          readOnly: true
+        hasNextPage:
+          type: boolean
+          readOnly: true
+        isFirstPage:
+          type: boolean
+          readOnly: true
+        isLastPage:
+          type: boolean
+          readOnly: true
+        count:
+          type: integer
+          format: int32
+          readOnly: true
+        isEmpty:
+          type: boolean
+          readOnly: true
+      additionalProperties: false
     SearchAllowedIpResponseIPagedListFujiPayApiResponse:
       type: object
       properties:
@@ -18834,10 +18898,7 @@ components:
           type: string
           nullable: true
         data:
-          type: array
-          items:
-            $ref: '#/components/schemas/SearchAllowedIpResponse'
-          nullable: true
+          $ref: '#/components/schemas/SearchAllowedIpResponseIPagedList'
         success:
           type: boolean
         errorCode:
@@ -19025,6 +19086,59 @@ components:
           additionalProperties: {}
           nullable: true
       additionalProperties: {}
+    SearchApplicationResponseIPagedList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/SearchApplicationResponse'
+          nullable: true
+          readOnly: true
+        pageNumber:
+          type: integer
+          format: int32
+          readOnly: true
+        pageSize:
+          type: integer
+          format: int32
+          readOnly: true
+        totalCount:
+          type: integer
+          format: int32
+          readOnly: true
+        totalPages:
+          type: integer
+          format: int32
+          readOnly: true
+        startIndex:
+          type: integer
+          format: int32
+          readOnly: true
+        endIndex:
+          type: integer
+          format: int32
+          readOnly: true
+        hasPreviousPage:
+          type: boolean
+          readOnly: true
+        hasNextPage:
+          type: boolean
+          readOnly: true
+        isFirstPage:
+          type: boolean
+          readOnly: true
+        isLastPage:
+          type: boolean
+          readOnly: true
+        count:
+          type: integer
+          format: int32
+          readOnly: true
+        isEmpty:
+          type: boolean
+          readOnly: true
+      additionalProperties: false
     SearchApplicationResponseIPagedListFujiPayApiResponse:
       type: object
       properties:
@@ -19045,10 +19159,7 @@ components:
           type: string
           nullable: true
         data:
-          type: array
-          items:
-            $ref: '#/components/schemas/SearchApplicationResponse'
-          nullable: true
+          $ref: '#/components/schemas/SearchApplicationResponseIPagedList'
         success:
           type: boolean
         errorCode:
@@ -19264,6 +19375,59 @@ components:
           additionalProperties: {}
           nullable: true
       additionalProperties: {}
+    SearchAuditLogResponseIPagedList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/SearchAuditLogResponse'
+          nullable: true
+          readOnly: true
+        pageNumber:
+          type: integer
+          format: int32
+          readOnly: true
+        pageSize:
+          type: integer
+          format: int32
+          readOnly: true
+        totalCount:
+          type: integer
+          format: int32
+          readOnly: true
+        totalPages:
+          type: integer
+          format: int32
+          readOnly: true
+        startIndex:
+          type: integer
+          format: int32
+          readOnly: true
+        endIndex:
+          type: integer
+          format: int32
+          readOnly: true
+        hasPreviousPage:
+          type: boolean
+          readOnly: true
+        hasNextPage:
+          type: boolean
+          readOnly: true
+        isFirstPage:
+          type: boolean
+          readOnly: true
+        isLastPage:
+          type: boolean
+          readOnly: true
+        count:
+          type: integer
+          format: int32
+          readOnly: true
+        isEmpty:
+          type: boolean
+          readOnly: true
+      additionalProperties: false
     SearchAuditLogResponseIPagedListFujiPayApiResponse:
       type: object
       properties:
@@ -19284,10 +19448,7 @@ components:
           type: string
           nullable: true
         data:
-          type: array
-          items:
-            $ref: '#/components/schemas/SearchAuditLogResponse'
-          nullable: true
+          $ref: '#/components/schemas/SearchAuditLogResponseIPagedList'
         success:
           type: boolean
         errorCode:
@@ -19571,6 +19732,59 @@ components:
           additionalProperties: {}
           nullable: true
       additionalProperties: {}
+    SearchBalancesReadModelResponseIPagedList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/SearchBalancesReadModelResponse'
+          nullable: true
+          readOnly: true
+        pageNumber:
+          type: integer
+          format: int32
+          readOnly: true
+        pageSize:
+          type: integer
+          format: int32
+          readOnly: true
+        totalCount:
+          type: integer
+          format: int32
+          readOnly: true
+        totalPages:
+          type: integer
+          format: int32
+          readOnly: true
+        startIndex:
+          type: integer
+          format: int32
+          readOnly: true
+        endIndex:
+          type: integer
+          format: int32
+          readOnly: true
+        hasPreviousPage:
+          type: boolean
+          readOnly: true
+        hasNextPage:
+          type: boolean
+          readOnly: true
+        isFirstPage:
+          type: boolean
+          readOnly: true
+        isLastPage:
+          type: boolean
+          readOnly: true
+        count:
+          type: integer
+          format: int32
+          readOnly: true
+        isEmpty:
+          type: boolean
+          readOnly: true
+      additionalProperties: false
     SearchBalancesReadModelResponseIPagedListFujiPayApiResponse:
       type: object
       properties:
@@ -19591,10 +19805,7 @@ components:
           type: string
           nullable: true
         data:
-          type: array
-          items:
-            $ref: '#/components/schemas/SearchBalancesReadModelResponse'
-          nullable: true
+          $ref: '#/components/schemas/SearchBalancesReadModelResponseIPagedList'
         success:
           type: boolean
         errorCode:
@@ -19748,6 +19959,59 @@ components:
           additionalProperties: {}
           nullable: true
       additionalProperties: {}
+    SearchBlockedIpResponseIPagedList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/SearchBlockedIpResponse'
+          nullable: true
+          readOnly: true
+        pageNumber:
+          type: integer
+          format: int32
+          readOnly: true
+        pageSize:
+          type: integer
+          format: int32
+          readOnly: true
+        totalCount:
+          type: integer
+          format: int32
+          readOnly: true
+        totalPages:
+          type: integer
+          format: int32
+          readOnly: true
+        startIndex:
+          type: integer
+          format: int32
+          readOnly: true
+        endIndex:
+          type: integer
+          format: int32
+          readOnly: true
+        hasPreviousPage:
+          type: boolean
+          readOnly: true
+        hasNextPage:
+          type: boolean
+          readOnly: true
+        isFirstPage:
+          type: boolean
+          readOnly: true
+        isLastPage:
+          type: boolean
+          readOnly: true
+        count:
+          type: integer
+          format: int32
+          readOnly: true
+        isEmpty:
+          type: boolean
+          readOnly: true
+      additionalProperties: false
     SearchBlockedIpResponseIPagedListFujiPayApiResponse:
       type: object
       properties:
@@ -19768,10 +20032,7 @@ components:
           type: string
           nullable: true
         data:
-          type: array
-          items:
-            $ref: '#/components/schemas/SearchBlockedIpResponse'
-          nullable: true
+          $ref: '#/components/schemas/SearchBlockedIpResponseIPagedList'
         success:
           type: boolean
         errorCode:
@@ -19952,6 +20213,59 @@ components:
           additionalProperties: {}
           nullable: true
       additionalProperties: {}
+    SearchCompanyAppLimitResponseIPagedList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/SearchCompanyAppLimitResponse'
+          nullable: true
+          readOnly: true
+        pageNumber:
+          type: integer
+          format: int32
+          readOnly: true
+        pageSize:
+          type: integer
+          format: int32
+          readOnly: true
+        totalCount:
+          type: integer
+          format: int32
+          readOnly: true
+        totalPages:
+          type: integer
+          format: int32
+          readOnly: true
+        startIndex:
+          type: integer
+          format: int32
+          readOnly: true
+        endIndex:
+          type: integer
+          format: int32
+          readOnly: true
+        hasPreviousPage:
+          type: boolean
+          readOnly: true
+        hasNextPage:
+          type: boolean
+          readOnly: true
+        isFirstPage:
+          type: boolean
+          readOnly: true
+        isLastPage:
+          type: boolean
+          readOnly: true
+        count:
+          type: integer
+          format: int32
+          readOnly: true
+        isEmpty:
+          type: boolean
+          readOnly: true
+      additionalProperties: false
     SearchCompanyAppLimitResponseIPagedListFujiPayApiResponse:
       type: object
       properties:
@@ -19972,10 +20286,7 @@ components:
           type: string
           nullable: true
         data:
-          type: array
-          items:
-            $ref: '#/components/schemas/SearchCompanyAppLimitResponse'
-          nullable: true
+          $ref: '#/components/schemas/SearchCompanyAppLimitResponseIPagedList'
         success:
           type: boolean
         errorCode:
@@ -20185,6 +20496,59 @@ components:
           additionalProperties: {}
           nullable: true
       additionalProperties: {}
+    SearchCompanyResponseIPagedList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/SearchCompanyResponse'
+          nullable: true
+          readOnly: true
+        pageNumber:
+          type: integer
+          format: int32
+          readOnly: true
+        pageSize:
+          type: integer
+          format: int32
+          readOnly: true
+        totalCount:
+          type: integer
+          format: int32
+          readOnly: true
+        totalPages:
+          type: integer
+          format: int32
+          readOnly: true
+        startIndex:
+          type: integer
+          format: int32
+          readOnly: true
+        endIndex:
+          type: integer
+          format: int32
+          readOnly: true
+        hasPreviousPage:
+          type: boolean
+          readOnly: true
+        hasNextPage:
+          type: boolean
+          readOnly: true
+        isFirstPage:
+          type: boolean
+          readOnly: true
+        isLastPage:
+          type: boolean
+          readOnly: true
+        count:
+          type: integer
+          format: int32
+          readOnly: true
+        isEmpty:
+          type: boolean
+          readOnly: true
+      additionalProperties: false
     SearchCompanyResponseIPagedListFujiPayApiResponse:
       type: object
       properties:
@@ -20205,10 +20569,7 @@ components:
           type: string
           nullable: true
         data:
-          type: array
-          items:
-            $ref: '#/components/schemas/SearchCompanyResponse'
-          nullable: true
+          $ref: '#/components/schemas/SearchCompanyResponseIPagedList'
         success:
           type: boolean
         errorCode:
@@ -20374,6 +20735,59 @@ components:
           additionalProperties: {}
           nullable: true
       additionalProperties: {}
+    SearchCompanyUserApplicationResponseIPagedList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/SearchCompanyUserApplicationResponse'
+          nullable: true
+          readOnly: true
+        pageNumber:
+          type: integer
+          format: int32
+          readOnly: true
+        pageSize:
+          type: integer
+          format: int32
+          readOnly: true
+        totalCount:
+          type: integer
+          format: int32
+          readOnly: true
+        totalPages:
+          type: integer
+          format: int32
+          readOnly: true
+        startIndex:
+          type: integer
+          format: int32
+          readOnly: true
+        endIndex:
+          type: integer
+          format: int32
+          readOnly: true
+        hasPreviousPage:
+          type: boolean
+          readOnly: true
+        hasNextPage:
+          type: boolean
+          readOnly: true
+        isFirstPage:
+          type: boolean
+          readOnly: true
+        isLastPage:
+          type: boolean
+          readOnly: true
+        count:
+          type: integer
+          format: int32
+          readOnly: true
+        isEmpty:
+          type: boolean
+          readOnly: true
+      additionalProperties: false
     SearchCompanyUserApplicationResponseIPagedListFujiPayApiResponse:
       type: object
       properties:
@@ -20394,10 +20808,7 @@ components:
           type: string
           nullable: true
         data:
-          type: array
-          items:
-            $ref: '#/components/schemas/SearchCompanyUserApplicationResponse'
-          nullable: true
+          $ref: '#/components/schemas/SearchCompanyUserApplicationResponseIPagedList'
         success:
           type: boolean
         errorCode:
@@ -20497,6 +20908,59 @@ components:
           format: uuid
           nullable: true
       additionalProperties: false
+    SearchCountryResponseIPagedList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/SearchCountryResponse'
+          nullable: true
+          readOnly: true
+        pageNumber:
+          type: integer
+          format: int32
+          readOnly: true
+        pageSize:
+          type: integer
+          format: int32
+          readOnly: true
+        totalCount:
+          type: integer
+          format: int32
+          readOnly: true
+        totalPages:
+          type: integer
+          format: int32
+          readOnly: true
+        startIndex:
+          type: integer
+          format: int32
+          readOnly: true
+        endIndex:
+          type: integer
+          format: int32
+          readOnly: true
+        hasPreviousPage:
+          type: boolean
+          readOnly: true
+        hasNextPage:
+          type: boolean
+          readOnly: true
+        isFirstPage:
+          type: boolean
+          readOnly: true
+        isLastPage:
+          type: boolean
+          readOnly: true
+        count:
+          type: integer
+          format: int32
+          readOnly: true
+        isEmpty:
+          type: boolean
+          readOnly: true
+      additionalProperties: false
     SearchCountryResponseIPagedListFujiPayApiResponse:
       type: object
       properties:
@@ -20517,10 +20981,7 @@ components:
           type: string
           nullable: true
         data:
-          type: array
-          items:
-            $ref: '#/components/schemas/SearchCountryResponse'
-          nullable: true
+          $ref: '#/components/schemas/SearchCountryResponseIPagedList'
         success:
           type: boolean
         errorCode:
@@ -20637,6 +21098,59 @@ components:
           format: uuid
           nullable: true
       additionalProperties: false
+    SearchCurrencyResponseIPagedList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/SearchCurrencyResponse'
+          nullable: true
+          readOnly: true
+        pageNumber:
+          type: integer
+          format: int32
+          readOnly: true
+        pageSize:
+          type: integer
+          format: int32
+          readOnly: true
+        totalCount:
+          type: integer
+          format: int32
+          readOnly: true
+        totalPages:
+          type: integer
+          format: int32
+          readOnly: true
+        startIndex:
+          type: integer
+          format: int32
+          readOnly: true
+        endIndex:
+          type: integer
+          format: int32
+          readOnly: true
+        hasPreviousPage:
+          type: boolean
+          readOnly: true
+        hasNextPage:
+          type: boolean
+          readOnly: true
+        isFirstPage:
+          type: boolean
+          readOnly: true
+        isLastPage:
+          type: boolean
+          readOnly: true
+        count:
+          type: integer
+          format: int32
+          readOnly: true
+        isEmpty:
+          type: boolean
+          readOnly: true
+      additionalProperties: false
     SearchCurrencyResponseIPagedListFujiPayApiResponse:
       type: object
       properties:
@@ -20657,10 +21171,7 @@ components:
           type: string
           nullable: true
         data:
-          type: array
-          items:
-            $ref: '#/components/schemas/SearchCurrencyResponse'
-          nullable: true
+          $ref: '#/components/schemas/SearchCurrencyResponseIPagedList'
         success:
           type: boolean
         errorCode:
@@ -20991,6 +21502,59 @@ components:
           additionalProperties: {}
           nullable: true
       additionalProperties: {}
+    SearchDailyMetricResponseIPagedList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/SearchDailyMetricResponse'
+          nullable: true
+          readOnly: true
+        pageNumber:
+          type: integer
+          format: int32
+          readOnly: true
+        pageSize:
+          type: integer
+          format: int32
+          readOnly: true
+        totalCount:
+          type: integer
+          format: int32
+          readOnly: true
+        totalPages:
+          type: integer
+          format: int32
+          readOnly: true
+        startIndex:
+          type: integer
+          format: int32
+          readOnly: true
+        endIndex:
+          type: integer
+          format: int32
+          readOnly: true
+        hasPreviousPage:
+          type: boolean
+          readOnly: true
+        hasNextPage:
+          type: boolean
+          readOnly: true
+        isFirstPage:
+          type: boolean
+          readOnly: true
+        isLastPage:
+          type: boolean
+          readOnly: true
+        count:
+          type: integer
+          format: int32
+          readOnly: true
+        isEmpty:
+          type: boolean
+          readOnly: true
+      additionalProperties: false
     SearchDailyMetricResponseIPagedListFujiPayApiResponse:
       type: object
       properties:
@@ -21011,10 +21575,7 @@ components:
           type: string
           nullable: true
         data:
-          type: array
-          items:
-            $ref: '#/components/schemas/SearchDailyMetricResponse'
-          nullable: true
+          $ref: '#/components/schemas/SearchDailyMetricResponseIPagedList'
         success:
           type: boolean
         errorCode:
@@ -21255,6 +21816,59 @@ components:
           additionalProperties: {}
           nullable: true
       additionalProperties: {}
+    SearchDailyMetricsByPaymentMethodResponseIPagedList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/SearchDailyMetricsByPaymentMethodResponse'
+          nullable: true
+          readOnly: true
+        pageNumber:
+          type: integer
+          format: int32
+          readOnly: true
+        pageSize:
+          type: integer
+          format: int32
+          readOnly: true
+        totalCount:
+          type: integer
+          format: int32
+          readOnly: true
+        totalPages:
+          type: integer
+          format: int32
+          readOnly: true
+        startIndex:
+          type: integer
+          format: int32
+          readOnly: true
+        endIndex:
+          type: integer
+          format: int32
+          readOnly: true
+        hasPreviousPage:
+          type: boolean
+          readOnly: true
+        hasNextPage:
+          type: boolean
+          readOnly: true
+        isFirstPage:
+          type: boolean
+          readOnly: true
+        isLastPage:
+          type: boolean
+          readOnly: true
+        count:
+          type: integer
+          format: int32
+          readOnly: true
+        isEmpty:
+          type: boolean
+          readOnly: true
+      additionalProperties: false
     SearchDailyMetricsByPaymentMethodResponseIPagedListFujiPayApiResponse:
       type: object
       properties:
@@ -21275,10 +21889,7 @@ components:
           type: string
           nullable: true
         data:
-          type: array
-          items:
-            $ref: '#/components/schemas/SearchDailyMetricsByPaymentMethodResponse'
-          nullable: true
+          $ref: '#/components/schemas/SearchDailyMetricsByPaymentMethodResponseIPagedList'
         success:
           type: boolean
         errorCode:
@@ -21373,6 +21984,59 @@ components:
           format: uuid
           nullable: true
       additionalProperties: false
+    SearchDocumentsTypeResponseIPagedList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/SearchDocumentsTypeResponse'
+          nullable: true
+          readOnly: true
+        pageNumber:
+          type: integer
+          format: int32
+          readOnly: true
+        pageSize:
+          type: integer
+          format: int32
+          readOnly: true
+        totalCount:
+          type: integer
+          format: int32
+          readOnly: true
+        totalPages:
+          type: integer
+          format: int32
+          readOnly: true
+        startIndex:
+          type: integer
+          format: int32
+          readOnly: true
+        endIndex:
+          type: integer
+          format: int32
+          readOnly: true
+        hasPreviousPage:
+          type: boolean
+          readOnly: true
+        hasNextPage:
+          type: boolean
+          readOnly: true
+        isFirstPage:
+          type: boolean
+          readOnly: true
+        isLastPage:
+          type: boolean
+          readOnly: true
+        count:
+          type: integer
+          format: int32
+          readOnly: true
+        isEmpty:
+          type: boolean
+          readOnly: true
+      additionalProperties: false
     SearchDocumentsTypeResponseIPagedListFujiPayApiResponse:
       type: object
       properties:
@@ -21393,10 +22057,7 @@ components:
           type: string
           nullable: true
         data:
-          type: array
-          items:
-            $ref: '#/components/schemas/SearchDocumentsTypeResponse'
-          nullable: true
+          $ref: '#/components/schemas/SearchDocumentsTypeResponseIPagedList'
         success:
           type: boolean
         errorCode:
@@ -21593,6 +22254,59 @@ components:
           additionalProperties: {}
           nullable: true
       additionalProperties: {}
+    SearchFeeConfigurationResponseIPagedList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/SearchFeeConfigurationResponse'
+          nullable: true
+          readOnly: true
+        pageNumber:
+          type: integer
+          format: int32
+          readOnly: true
+        pageSize:
+          type: integer
+          format: int32
+          readOnly: true
+        totalCount:
+          type: integer
+          format: int32
+          readOnly: true
+        totalPages:
+          type: integer
+          format: int32
+          readOnly: true
+        startIndex:
+          type: integer
+          format: int32
+          readOnly: true
+        endIndex:
+          type: integer
+          format: int32
+          readOnly: true
+        hasPreviousPage:
+          type: boolean
+          readOnly: true
+        hasNextPage:
+          type: boolean
+          readOnly: true
+        isFirstPage:
+          type: boolean
+          readOnly: true
+        isLastPage:
+          type: boolean
+          readOnly: true
+        count:
+          type: integer
+          format: int32
+          readOnly: true
+        isEmpty:
+          type: boolean
+          readOnly: true
+      additionalProperties: false
     SearchFeeConfigurationResponseIPagedListFujiPayApiResponse:
       type: object
       properties:
@@ -21613,10 +22327,7 @@ components:
           type: string
           nullable: true
         data:
-          type: array
-          items:
-            $ref: '#/components/schemas/SearchFeeConfigurationResponse'
-          nullable: true
+          $ref: '#/components/schemas/SearchFeeConfigurationResponseIPagedList'
         success:
           type: boolean
         errorCode:
@@ -21783,6 +22494,59 @@ components:
           additionalProperties: {}
           nullable: true
       additionalProperties: {}
+    SearchFeeTypeResponseIPagedList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/SearchFeeTypeResponse'
+          nullable: true
+          readOnly: true
+        pageNumber:
+          type: integer
+          format: int32
+          readOnly: true
+        pageSize:
+          type: integer
+          format: int32
+          readOnly: true
+        totalCount:
+          type: integer
+          format: int32
+          readOnly: true
+        totalPages:
+          type: integer
+          format: int32
+          readOnly: true
+        startIndex:
+          type: integer
+          format: int32
+          readOnly: true
+        endIndex:
+          type: integer
+          format: int32
+          readOnly: true
+        hasPreviousPage:
+          type: boolean
+          readOnly: true
+        hasNextPage:
+          type: boolean
+          readOnly: true
+        isFirstPage:
+          type: boolean
+          readOnly: true
+        isLastPage:
+          type: boolean
+          readOnly: true
+        count:
+          type: integer
+          format: int32
+          readOnly: true
+        isEmpty:
+          type: boolean
+          readOnly: true
+      additionalProperties: false
     SearchFeeTypeResponseIPagedListFujiPayApiResponse:
       type: object
       properties:
@@ -21803,10 +22567,7 @@ components:
           type: string
           nullable: true
         data:
-          type: array
-          items:
-            $ref: '#/components/schemas/SearchFeeTypeResponse'
-          nullable: true
+          $ref: '#/components/schemas/SearchFeeTypeResponseIPagedList'
         success:
           type: boolean
         errorCode:
@@ -21917,6 +22678,59 @@ components:
           type: string
           nullable: true
       additionalProperties: false
+    SearchFrontEventLogResponseIPagedList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/SearchFrontEventLogResponse'
+          nullable: true
+          readOnly: true
+        pageNumber:
+          type: integer
+          format: int32
+          readOnly: true
+        pageSize:
+          type: integer
+          format: int32
+          readOnly: true
+        totalCount:
+          type: integer
+          format: int32
+          readOnly: true
+        totalPages:
+          type: integer
+          format: int32
+          readOnly: true
+        startIndex:
+          type: integer
+          format: int32
+          readOnly: true
+        endIndex:
+          type: integer
+          format: int32
+          readOnly: true
+        hasPreviousPage:
+          type: boolean
+          readOnly: true
+        hasNextPage:
+          type: boolean
+          readOnly: true
+        isFirstPage:
+          type: boolean
+          readOnly: true
+        isLastPage:
+          type: boolean
+          readOnly: true
+        count:
+          type: integer
+          format: int32
+          readOnly: true
+        isEmpty:
+          type: boolean
+          readOnly: true
+      additionalProperties: false
     SearchFrontEventLogResponseIPagedListFujiPayApiResponse:
       type: object
       properties:
@@ -21937,10 +22751,7 @@ components:
           type: string
           nullable: true
         data:
-          type: array
-          items:
-            $ref: '#/components/schemas/SearchFrontEventLogResponse'
-          nullable: true
+          $ref: '#/components/schemas/SearchFrontEventLogResponseIPagedList'
         success:
           type: boolean
         errorCode:
@@ -22216,6 +23027,59 @@ components:
           additionalProperties: {}
           nullable: true
       additionalProperties: {}
+    SearchFundTransfersReadModelResponseIPagedList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/SearchFundTransfersReadModelResponse'
+          nullable: true
+          readOnly: true
+        pageNumber:
+          type: integer
+          format: int32
+          readOnly: true
+        pageSize:
+          type: integer
+          format: int32
+          readOnly: true
+        totalCount:
+          type: integer
+          format: int32
+          readOnly: true
+        totalPages:
+          type: integer
+          format: int32
+          readOnly: true
+        startIndex:
+          type: integer
+          format: int32
+          readOnly: true
+        endIndex:
+          type: integer
+          format: int32
+          readOnly: true
+        hasPreviousPage:
+          type: boolean
+          readOnly: true
+        hasNextPage:
+          type: boolean
+          readOnly: true
+        isFirstPage:
+          type: boolean
+          readOnly: true
+        isLastPage:
+          type: boolean
+          readOnly: true
+        count:
+          type: integer
+          format: int32
+          readOnly: true
+        isEmpty:
+          type: boolean
+          readOnly: true
+      additionalProperties: false
     SearchFundTransfersReadModelResponseIPagedListFujiPayApiResponse:
       type: object
       properties:
@@ -22236,10 +23100,7 @@ components:
           type: string
           nullable: true
         data:
-          type: array
-          items:
-            $ref: '#/components/schemas/SearchFundTransfersReadModelResponse'
-          nullable: true
+          $ref: '#/components/schemas/SearchFundTransfersReadModelResponseIPagedList'
         success:
           type: boolean
         errorCode:
@@ -22450,6 +23311,59 @@ components:
           additionalProperties: {}
           nullable: true
       additionalProperties: {}
+    SearchKycDocumentResponseIPagedList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/SearchKycDocumentResponse'
+          nullable: true
+          readOnly: true
+        pageNumber:
+          type: integer
+          format: int32
+          readOnly: true
+        pageSize:
+          type: integer
+          format: int32
+          readOnly: true
+        totalCount:
+          type: integer
+          format: int32
+          readOnly: true
+        totalPages:
+          type: integer
+          format: int32
+          readOnly: true
+        startIndex:
+          type: integer
+          format: int32
+          readOnly: true
+        endIndex:
+          type: integer
+          format: int32
+          readOnly: true
+        hasPreviousPage:
+          type: boolean
+          readOnly: true
+        hasNextPage:
+          type: boolean
+          readOnly: true
+        isFirstPage:
+          type: boolean
+          readOnly: true
+        isLastPage:
+          type: boolean
+          readOnly: true
+        count:
+          type: integer
+          format: int32
+          readOnly: true
+        isEmpty:
+          type: boolean
+          readOnly: true
+      additionalProperties: false
     SearchKycDocumentResponseIPagedListFujiPayApiResponse:
       type: object
       properties:
@@ -22470,10 +23384,7 @@ components:
           type: string
           nullable: true
         data:
-          type: array
-          items:
-            $ref: '#/components/schemas/SearchKycDocumentResponse'
-          nullable: true
+          $ref: '#/components/schemas/SearchKycDocumentResponseIPagedList'
         success:
           type: boolean
         errorCode:
@@ -22732,6 +23643,59 @@ components:
           type: string
           nullable: true
       additionalProperties: false
+    SearchLogResponseIPagedList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/SearchLogResponse'
+          nullable: true
+          readOnly: true
+        pageNumber:
+          type: integer
+          format: int32
+          readOnly: true
+        pageSize:
+          type: integer
+          format: int32
+          readOnly: true
+        totalCount:
+          type: integer
+          format: int32
+          readOnly: true
+        totalPages:
+          type: integer
+          format: int32
+          readOnly: true
+        startIndex:
+          type: integer
+          format: int32
+          readOnly: true
+        endIndex:
+          type: integer
+          format: int32
+          readOnly: true
+        hasPreviousPage:
+          type: boolean
+          readOnly: true
+        hasNextPage:
+          type: boolean
+          readOnly: true
+        isFirstPage:
+          type: boolean
+          readOnly: true
+        isLastPage:
+          type: boolean
+          readOnly: true
+        count:
+          type: integer
+          format: int32
+          readOnly: true
+        isEmpty:
+          type: boolean
+          readOnly: true
+      additionalProperties: false
     SearchLogResponseIPagedListFujiPayApiResponse:
       type: object
       properties:
@@ -22752,10 +23716,7 @@ components:
           type: string
           nullable: true
         data:
-          type: array
-          items:
-            $ref: '#/components/schemas/SearchLogResponse'
-          nullable: true
+          $ref: '#/components/schemas/SearchLogResponseIPagedList'
         success:
           type: boolean
         errorCode:
@@ -22973,6 +23934,59 @@ components:
           additionalProperties: {}
           nullable: true
       additionalProperties: {}
+    SearchNotificationResponseIPagedList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/SearchNotificationResponse'
+          nullable: true
+          readOnly: true
+        pageNumber:
+          type: integer
+          format: int32
+          readOnly: true
+        pageSize:
+          type: integer
+          format: int32
+          readOnly: true
+        totalCount:
+          type: integer
+          format: int32
+          readOnly: true
+        totalPages:
+          type: integer
+          format: int32
+          readOnly: true
+        startIndex:
+          type: integer
+          format: int32
+          readOnly: true
+        endIndex:
+          type: integer
+          format: int32
+          readOnly: true
+        hasPreviousPage:
+          type: boolean
+          readOnly: true
+        hasNextPage:
+          type: boolean
+          readOnly: true
+        isFirstPage:
+          type: boolean
+          readOnly: true
+        isLastPage:
+          type: boolean
+          readOnly: true
+        count:
+          type: integer
+          format: int32
+          readOnly: true
+        isEmpty:
+          type: boolean
+          readOnly: true
+      additionalProperties: false
     SearchNotificationResponseIPagedListFujiPayApiResponse:
       type: object
       properties:
@@ -22993,10 +24007,7 @@ components:
           type: string
           nullable: true
         data:
-          type: array
-          items:
-            $ref: '#/components/schemas/SearchNotificationResponse'
-          nullable: true
+          $ref: '#/components/schemas/SearchNotificationResponseIPagedList'
         success:
           type: boolean
         errorCode:
@@ -23120,6 +24131,59 @@ components:
           format: uuid
           nullable: true
       additionalProperties: false
+    SearchPaymentMethodResponseIPagedList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/SearchPaymentMethodResponse'
+          nullable: true
+          readOnly: true
+        pageNumber:
+          type: integer
+          format: int32
+          readOnly: true
+        pageSize:
+          type: integer
+          format: int32
+          readOnly: true
+        totalCount:
+          type: integer
+          format: int32
+          readOnly: true
+        totalPages:
+          type: integer
+          format: int32
+          readOnly: true
+        startIndex:
+          type: integer
+          format: int32
+          readOnly: true
+        endIndex:
+          type: integer
+          format: int32
+          readOnly: true
+        hasPreviousPage:
+          type: boolean
+          readOnly: true
+        hasNextPage:
+          type: boolean
+          readOnly: true
+        isFirstPage:
+          type: boolean
+          readOnly: true
+        isLastPage:
+          type: boolean
+          readOnly: true
+        count:
+          type: integer
+          format: int32
+          readOnly: true
+        isEmpty:
+          type: boolean
+          readOnly: true
+      additionalProperties: false
     SearchPaymentMethodResponseIPagedListFujiPayApiResponse:
       type: object
       properties:
@@ -23140,10 +24204,7 @@ components:
           type: string
           nullable: true
         data:
-          type: array
-          items:
-            $ref: '#/components/schemas/SearchPaymentMethodResponse'
-          nullable: true
+          $ref: '#/components/schemas/SearchPaymentMethodResponseIPagedList'
         success:
           type: boolean
         errorCode:
@@ -23418,6 +24479,59 @@ components:
           additionalProperties: {}
           nullable: true
       additionalProperties: {}
+    SearchReceiptsReadModelResponseIPagedList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/SearchReceiptsReadModelResponse'
+          nullable: true
+          readOnly: true
+        pageNumber:
+          type: integer
+          format: int32
+          readOnly: true
+        pageSize:
+          type: integer
+          format: int32
+          readOnly: true
+        totalCount:
+          type: integer
+          format: int32
+          readOnly: true
+        totalPages:
+          type: integer
+          format: int32
+          readOnly: true
+        startIndex:
+          type: integer
+          format: int32
+          readOnly: true
+        endIndex:
+          type: integer
+          format: int32
+          readOnly: true
+        hasPreviousPage:
+          type: boolean
+          readOnly: true
+        hasNextPage:
+          type: boolean
+          readOnly: true
+        isFirstPage:
+          type: boolean
+          readOnly: true
+        isLastPage:
+          type: boolean
+          readOnly: true
+        count:
+          type: integer
+          format: int32
+          readOnly: true
+        isEmpty:
+          type: boolean
+          readOnly: true
+      additionalProperties: false
     SearchReceiptsReadModelResponseIPagedListFujiPayApiResponse:
       type: object
       properties:
@@ -23438,10 +24552,7 @@ components:
           type: string
           nullable: true
         data:
-          type: array
-          items:
-            $ref: '#/components/schemas/SearchReceiptsReadModelResponse'
-          nullable: true
+          $ref: '#/components/schemas/SearchReceiptsReadModelResponseIPagedList'
         success:
           type: boolean
         errorCode:
@@ -23547,6 +24658,59 @@ components:
           format: uuid
           nullable: true
       additionalProperties: false
+    SearchSecureSettingResponseIPagedList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/SearchSecureSettingResponse'
+          nullable: true
+          readOnly: true
+        pageNumber:
+          type: integer
+          format: int32
+          readOnly: true
+        pageSize:
+          type: integer
+          format: int32
+          readOnly: true
+        totalCount:
+          type: integer
+          format: int32
+          readOnly: true
+        totalPages:
+          type: integer
+          format: int32
+          readOnly: true
+        startIndex:
+          type: integer
+          format: int32
+          readOnly: true
+        endIndex:
+          type: integer
+          format: int32
+          readOnly: true
+        hasPreviousPage:
+          type: boolean
+          readOnly: true
+        hasNextPage:
+          type: boolean
+          readOnly: true
+        isFirstPage:
+          type: boolean
+          readOnly: true
+        isLastPage:
+          type: boolean
+          readOnly: true
+        count:
+          type: integer
+          format: int32
+          readOnly: true
+        isEmpty:
+          type: boolean
+          readOnly: true
+      additionalProperties: false
     SearchSecureSettingResponseIPagedListFujiPayApiResponse:
       type: object
       properties:
@@ -23567,10 +24731,7 @@ components:
           type: string
           nullable: true
         data:
-          type: array
-          items:
-            $ref: '#/components/schemas/SearchSecureSettingResponse'
-          nullable: true
+          $ref: '#/components/schemas/SearchSecureSettingResponseIPagedList'
         success:
           type: boolean
         errorCode:
@@ -23770,6 +24931,59 @@ components:
           additionalProperties: {}
           nullable: true
       additionalProperties: {}
+    SearchSettingResponseIPagedList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/SearchSettingResponse'
+          nullable: true
+          readOnly: true
+        pageNumber:
+          type: integer
+          format: int32
+          readOnly: true
+        pageSize:
+          type: integer
+          format: int32
+          readOnly: true
+        totalCount:
+          type: integer
+          format: int32
+          readOnly: true
+        totalPages:
+          type: integer
+          format: int32
+          readOnly: true
+        startIndex:
+          type: integer
+          format: int32
+          readOnly: true
+        endIndex:
+          type: integer
+          format: int32
+          readOnly: true
+        hasPreviousPage:
+          type: boolean
+          readOnly: true
+        hasNextPage:
+          type: boolean
+          readOnly: true
+        isFirstPage:
+          type: boolean
+          readOnly: true
+        isLastPage:
+          type: boolean
+          readOnly: true
+        count:
+          type: integer
+          format: int32
+          readOnly: true
+        isEmpty:
+          type: boolean
+          readOnly: true
+      additionalProperties: false
     SearchSettingResponseIPagedListFujiPayApiResponse:
       type: object
       properties:
@@ -23790,10 +25004,7 @@ components:
           type: string
           nullable: true
         data:
-          type: array
-          items:
-            $ref: '#/components/schemas/SearchSettingResponse'
-          nullable: true
+          $ref: '#/components/schemas/SearchSettingResponseIPagedList'
         success:
           type: boolean
         errorCode:
@@ -23895,6 +25106,59 @@ components:
           format: uuid
           nullable: true
       additionalProperties: false
+    SearchSmsmailTemplateResponseIPagedList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/SearchSmsmailTemplateResponse'
+          nullable: true
+          readOnly: true
+        pageNumber:
+          type: integer
+          format: int32
+          readOnly: true
+        pageSize:
+          type: integer
+          format: int32
+          readOnly: true
+        totalCount:
+          type: integer
+          format: int32
+          readOnly: true
+        totalPages:
+          type: integer
+          format: int32
+          readOnly: true
+        startIndex:
+          type: integer
+          format: int32
+          readOnly: true
+        endIndex:
+          type: integer
+          format: int32
+          readOnly: true
+        hasPreviousPage:
+          type: boolean
+          readOnly: true
+        hasNextPage:
+          type: boolean
+          readOnly: true
+        isFirstPage:
+          type: boolean
+          readOnly: true
+        isLastPage:
+          type: boolean
+          readOnly: true
+        count:
+          type: integer
+          format: int32
+          readOnly: true
+        isEmpty:
+          type: boolean
+          readOnly: true
+      additionalProperties: false
     SearchSmsmailTemplateResponseIPagedListFujiPayApiResponse:
       type: object
       properties:
@@ -23915,10 +25179,7 @@ components:
           type: string
           nullable: true
         data:
-          type: array
-          items:
-            $ref: '#/components/schemas/SearchSmsmailTemplateResponse'
-          nullable: true
+          $ref: '#/components/schemas/SearchSmsmailTemplateResponseIPagedList'
         success:
           type: boolean
         errorCode:
@@ -24014,6 +25275,59 @@ components:
           type: string
           nullable: true
       additionalProperties: false
+    SearchSystemMetricResponseIPagedList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/SearchSystemMetricResponse'
+          nullable: true
+          readOnly: true
+        pageNumber:
+          type: integer
+          format: int32
+          readOnly: true
+        pageSize:
+          type: integer
+          format: int32
+          readOnly: true
+        totalCount:
+          type: integer
+          format: int32
+          readOnly: true
+        totalPages:
+          type: integer
+          format: int32
+          readOnly: true
+        startIndex:
+          type: integer
+          format: int32
+          readOnly: true
+        endIndex:
+          type: integer
+          format: int32
+          readOnly: true
+        hasPreviousPage:
+          type: boolean
+          readOnly: true
+        hasNextPage:
+          type: boolean
+          readOnly: true
+        isFirstPage:
+          type: boolean
+          readOnly: true
+        isLastPage:
+          type: boolean
+          readOnly: true
+        count:
+          type: integer
+          format: int32
+          readOnly: true
+        isEmpty:
+          type: boolean
+          readOnly: true
+      additionalProperties: false
     SearchSystemMetricResponseIPagedListFujiPayApiResponse:
       type: object
       properties:
@@ -24034,10 +25348,7 @@ components:
           type: string
           nullable: true
         data:
-          type: array
-          items:
-            $ref: '#/components/schemas/SearchSystemMetricResponse'
-          nullable: true
+          $ref: '#/components/schemas/SearchSystemMetricResponseIPagedList'
         success:
           type: boolean
         errorCode:
@@ -24229,6 +25540,59 @@ components:
           additionalProperties: {}
           nullable: true
       additionalProperties: {}
+    SearchUserDeviceResponseIPagedList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/SearchUserDeviceResponse'
+          nullable: true
+          readOnly: true
+        pageNumber:
+          type: integer
+          format: int32
+          readOnly: true
+        pageSize:
+          type: integer
+          format: int32
+          readOnly: true
+        totalCount:
+          type: integer
+          format: int32
+          readOnly: true
+        totalPages:
+          type: integer
+          format: int32
+          readOnly: true
+        startIndex:
+          type: integer
+          format: int32
+          readOnly: true
+        endIndex:
+          type: integer
+          format: int32
+          readOnly: true
+        hasPreviousPage:
+          type: boolean
+          readOnly: true
+        hasNextPage:
+          type: boolean
+          readOnly: true
+        isFirstPage:
+          type: boolean
+          readOnly: true
+        isLastPage:
+          type: boolean
+          readOnly: true
+        count:
+          type: integer
+          format: int32
+          readOnly: true
+        isEmpty:
+          type: boolean
+          readOnly: true
+      additionalProperties: false
     SearchUserDeviceResponseIPagedListFujiPayApiResponse:
       type: object
       properties:
@@ -24249,10 +25613,7 @@ components:
           type: string
           nullable: true
         data:
-          type: array
-          items:
-            $ref: '#/components/schemas/SearchUserDeviceResponse'
-          nullable: true
+          $ref: '#/components/schemas/SearchUserDeviceResponseIPagedList'
         success:
           type: boolean
         errorCode:
@@ -24354,6 +25715,59 @@ components:
           format: uuid
           nullable: true
       additionalProperties: false
+    SearchUserProfileResponseIPagedList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/SearchUserProfileResponse'
+          nullable: true
+          readOnly: true
+        pageNumber:
+          type: integer
+          format: int32
+          readOnly: true
+        pageSize:
+          type: integer
+          format: int32
+          readOnly: true
+        totalCount:
+          type: integer
+          format: int32
+          readOnly: true
+        totalPages:
+          type: integer
+          format: int32
+          readOnly: true
+        startIndex:
+          type: integer
+          format: int32
+          readOnly: true
+        endIndex:
+          type: integer
+          format: int32
+          readOnly: true
+        hasPreviousPage:
+          type: boolean
+          readOnly: true
+        hasNextPage:
+          type: boolean
+          readOnly: true
+        isFirstPage:
+          type: boolean
+          readOnly: true
+        isLastPage:
+          type: boolean
+          readOnly: true
+        count:
+          type: integer
+          format: int32
+          readOnly: true
+        isEmpty:
+          type: boolean
+          readOnly: true
+      additionalProperties: false
     SearchUserProfileResponseIPagedListFujiPayApiResponse:
       type: object
       properties:
@@ -24374,10 +25788,7 @@ components:
           type: string
           nullable: true
         data:
-          type: array
-          items:
-            $ref: '#/components/schemas/SearchUserProfileResponse'
-          nullable: true
+          $ref: '#/components/schemas/SearchUserProfileResponseIPagedList'
         success:
           type: boolean
         errorCode:
@@ -24590,6 +26001,59 @@ components:
           additionalProperties: {}
           nullable: true
       additionalProperties: {}
+    SearchUserResponseIPagedList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/SearchUserResponse'
+          nullable: true
+          readOnly: true
+        pageNumber:
+          type: integer
+          format: int32
+          readOnly: true
+        pageSize:
+          type: integer
+          format: int32
+          readOnly: true
+        totalCount:
+          type: integer
+          format: int32
+          readOnly: true
+        totalPages:
+          type: integer
+          format: int32
+          readOnly: true
+        startIndex:
+          type: integer
+          format: int32
+          readOnly: true
+        endIndex:
+          type: integer
+          format: int32
+          readOnly: true
+        hasPreviousPage:
+          type: boolean
+          readOnly: true
+        hasNextPage:
+          type: boolean
+          readOnly: true
+        isFirstPage:
+          type: boolean
+          readOnly: true
+        isLastPage:
+          type: boolean
+          readOnly: true
+        count:
+          type: integer
+          format: int32
+          readOnly: true
+        isEmpty:
+          type: boolean
+          readOnly: true
+      additionalProperties: false
     SearchUserResponseIPagedListFujiPayApiResponse:
       type: object
       properties:
@@ -24610,10 +26074,7 @@ components:
           type: string
           nullable: true
         data:
-          type: array
-          items:
-            $ref: '#/components/schemas/SearchUserResponse'
-          nullable: true
+          $ref: '#/components/schemas/SearchUserResponseIPagedList'
         success:
           type: boolean
         errorCode:
@@ -24758,6 +26219,59 @@ components:
           type: string
           nullable: true
       additionalProperties: false
+    SearchVwTransactionsSummaryResponseIPagedList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/SearchVwTransactionsSummaryResponse'
+          nullable: true
+          readOnly: true
+        pageNumber:
+          type: integer
+          format: int32
+          readOnly: true
+        pageSize:
+          type: integer
+          format: int32
+          readOnly: true
+        totalCount:
+          type: integer
+          format: int32
+          readOnly: true
+        totalPages:
+          type: integer
+          format: int32
+          readOnly: true
+        startIndex:
+          type: integer
+          format: int32
+          readOnly: true
+        endIndex:
+          type: integer
+          format: int32
+          readOnly: true
+        hasPreviousPage:
+          type: boolean
+          readOnly: true
+        hasNextPage:
+          type: boolean
+          readOnly: true
+        isFirstPage:
+          type: boolean
+          readOnly: true
+        isLastPage:
+          type: boolean
+          readOnly: true
+        count:
+          type: integer
+          format: int32
+          readOnly: true
+        isEmpty:
+          type: boolean
+          readOnly: true
+      additionalProperties: false
     SearchVwTransactionsSummaryResponseIPagedListFujiPayApiResponse:
       type: object
       properties:
@@ -24778,10 +26292,7 @@ components:
           type: string
           nullable: true
         data:
-          type: array
-          items:
-            $ref: '#/components/schemas/SearchVwTransactionsSummaryResponse'
-          nullable: true
+          $ref: '#/components/schemas/SearchVwTransactionsSummaryResponseIPagedList'
         success:
           type: boolean
         errorCode:
@@ -24933,6 +26444,59 @@ components:
           additionalProperties: {}
           nullable: true
       additionalProperties: {}
+    SearchWebhookLogResponseIPagedList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/SearchWebhookLogResponse'
+          nullable: true
+          readOnly: true
+        pageNumber:
+          type: integer
+          format: int32
+          readOnly: true
+        pageSize:
+          type: integer
+          format: int32
+          readOnly: true
+        totalCount:
+          type: integer
+          format: int32
+          readOnly: true
+        totalPages:
+          type: integer
+          format: int32
+          readOnly: true
+        startIndex:
+          type: integer
+          format: int32
+          readOnly: true
+        endIndex:
+          type: integer
+          format: int32
+          readOnly: true
+        hasPreviousPage:
+          type: boolean
+          readOnly: true
+        hasNextPage:
+          type: boolean
+          readOnly: true
+        isFirstPage:
+          type: boolean
+          readOnly: true
+        isLastPage:
+          type: boolean
+          readOnly: true
+        count:
+          type: integer
+          format: int32
+          readOnly: true
+        isEmpty:
+          type: boolean
+          readOnly: true
+      additionalProperties: false
     SearchWebhookLogResponseIPagedListFujiPayApiResponse:
       type: object
       properties:
@@ -24953,10 +26517,7 @@ components:
           type: string
           nullable: true
         data:
-          type: array
-          items:
-            $ref: '#/components/schemas/SearchWebhookLogResponse'
-          nullable: true
+          $ref: '#/components/schemas/SearchWebhookLogResponseIPagedList'
         success:
           type: boolean
         errorCode:
@@ -25133,6 +26694,59 @@ components:
           additionalProperties: {}
           nullable: true
       additionalProperties: {}
+    SearchWebhookResponseIPagedList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/SearchWebhookResponse'
+          nullable: true
+          readOnly: true
+        pageNumber:
+          type: integer
+          format: int32
+          readOnly: true
+        pageSize:
+          type: integer
+          format: int32
+          readOnly: true
+        totalCount:
+          type: integer
+          format: int32
+          readOnly: true
+        totalPages:
+          type: integer
+          format: int32
+          readOnly: true
+        startIndex:
+          type: integer
+          format: int32
+          readOnly: true
+        endIndex:
+          type: integer
+          format: int32
+          readOnly: true
+        hasPreviousPage:
+          type: boolean
+          readOnly: true
+        hasNextPage:
+          type: boolean
+          readOnly: true
+        isFirstPage:
+          type: boolean
+          readOnly: true
+        isLastPage:
+          type: boolean
+          readOnly: true
+        count:
+          type: integer
+          format: int32
+          readOnly: true
+        isEmpty:
+          type: boolean
+          readOnly: true
+      additionalProperties: false
     SearchWebhookResponseIPagedListFujiPayApiResponse:
       type: object
       properties:
@@ -25153,10 +26767,7 @@ components:
           type: string
           nullable: true
         data:
-          type: array
-          items:
-            $ref: '#/components/schemas/SearchWebhookResponse'
-          nullable: true
+          $ref: '#/components/schemas/SearchWebhookResponseIPagedList'
         success:
           type: boolean
         errorCode:
@@ -25369,6 +26980,59 @@ components:
           additionalProperties: {}
           nullable: true
       additionalProperties: {}
+    SearchWithdrawalMethodResponseIPagedList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/SearchWithdrawalMethodResponse'
+          nullable: true
+          readOnly: true
+        pageNumber:
+          type: integer
+          format: int32
+          readOnly: true
+        pageSize:
+          type: integer
+          format: int32
+          readOnly: true
+        totalCount:
+          type: integer
+          format: int32
+          readOnly: true
+        totalPages:
+          type: integer
+          format: int32
+          readOnly: true
+        startIndex:
+          type: integer
+          format: int32
+          readOnly: true
+        endIndex:
+          type: integer
+          format: int32
+          readOnly: true
+        hasPreviousPage:
+          type: boolean
+          readOnly: true
+        hasNextPage:
+          type: boolean
+          readOnly: true
+        isFirstPage:
+          type: boolean
+          readOnly: true
+        isLastPage:
+          type: boolean
+          readOnly: true
+        count:
+          type: integer
+          format: int32
+          readOnly: true
+        isEmpty:
+          type: boolean
+          readOnly: true
+      additionalProperties: false
     SearchWithdrawalMethodResponseIPagedListFujiPayApiResponse:
       type: object
       properties:
@@ -25389,10 +27053,7 @@ components:
           type: string
           nullable: true
         data:
-          type: array
-          items:
-            $ref: '#/components/schemas/SearchWithdrawalMethodResponse'
-          nullable: true
+          $ref: '#/components/schemas/SearchWithdrawalMethodResponseIPagedList'
         success:
           type: boolean
         errorCode:
@@ -25757,6 +27418,59 @@ components:
           additionalProperties: {}
           nullable: true
       additionalProperties: {}
+    SearchWithdrawalsReadModelResponseIPagedList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/SearchWithdrawalsReadModelResponse'
+          nullable: true
+          readOnly: true
+        pageNumber:
+          type: integer
+          format: int32
+          readOnly: true
+        pageSize:
+          type: integer
+          format: int32
+          readOnly: true
+        totalCount:
+          type: integer
+          format: int32
+          readOnly: true
+        totalPages:
+          type: integer
+          format: int32
+          readOnly: true
+        startIndex:
+          type: integer
+          format: int32
+          readOnly: true
+        endIndex:
+          type: integer
+          format: int32
+          readOnly: true
+        hasPreviousPage:
+          type: boolean
+          readOnly: true
+        hasNextPage:
+          type: boolean
+          readOnly: true
+        isFirstPage:
+          type: boolean
+          readOnly: true
+        isLastPage:
+          type: boolean
+          readOnly: true
+        count:
+          type: integer
+          format: int32
+          readOnly: true
+        isEmpty:
+          type: boolean
+          readOnly: true
+      additionalProperties: false
     SearchWithdrawalsReadModelResponseIPagedListFujiPayApiResponse:
       type: object
       properties:
@@ -25777,10 +27491,7 @@ components:
           type: string
           nullable: true
         data:
-          type: array
-          items:
-            $ref: '#/components/schemas/SearchWithdrawalsReadModelResponse'
-          nullable: true
+          $ref: '#/components/schemas/SearchWithdrawalsReadModelResponseIPagedList'
         success:
           type: boolean
         errorCode:
@@ -26245,6 +27956,54 @@ components:
           nullable: true
         data:
           $ref: '#/components/schemas/StatusPaymentResponse'
+        success:
+          type: boolean
+        errorCode:
+          type: string
+          nullable: true
+        traceId:
+          type: string
+          nullable: true
+        timestamp:
+          type: string
+          format: date-time
+        validationErrors:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+            nullable: true
+          nullable: true
+        metadata:
+          type: object
+          additionalProperties: {}
+          nullable: true
+      additionalProperties: {}
+    StringListFujiPayApiResponse:
+      type: object
+      properties:
+        type:
+          type: string
+          nullable: true
+        title:
+          type: string
+          nullable: true
+        status:
+          type: integer
+          format: int32
+          nullable: true
+        detail:
+          type: string
+          nullable: true
+        instance:
+          type: string
+          nullable: true
+        data:
+          type: array
+          items:
+            type: string
+          nullable: true
         success:
           type: boolean
         errorCode:
@@ -27045,41 +28804,6 @@ components:
           type: boolean
         isActive:
           type: boolean
-      additionalProperties: false
-    UpdateUserRequest:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        publicId:
-          type: string
-          nullable: true
-        companyId:
-          type: string
-          format: uuid
-          nullable: true
-        profileId:
-          type: string
-          format: uuid
-        firstName:
-          type: string
-          nullable: true
-        lastName:
-          type: string
-          nullable: true
-        email:
-          type: string
-          nullable: true
-        phoneNumber:
-          type: string
-          nullable: true
-        userType:
-          type: string
-          nullable: true
-        status:
-          type: string
-          nullable: true
       additionalProperties: false
     UpdateVwTransactionsSummaryRequest:
       type: object

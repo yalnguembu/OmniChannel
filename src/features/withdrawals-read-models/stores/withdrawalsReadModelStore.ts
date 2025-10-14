@@ -86,7 +86,7 @@ const initialState: WithdrawalsReadModelState = {
   selectedWithdrawalsReadModels: [],
 
   currentPage: 1,
-  pageSize: 10000,
+  pageSize: 10,
   totalItems: 0,
   totalPages: 0,
 

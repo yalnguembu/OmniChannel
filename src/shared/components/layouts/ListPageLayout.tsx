@@ -18,7 +18,7 @@ export const ListPageLayout: React.FC<ListPageLayoutProps> = ({ header, filter, 
       {header && <div className="flex-shrink-0 px-4 pt-4">{header}</div>}
 
       {/* <div className="flex flex-1 overflow-hidden w-full"> */}
-      <div className={cn("flex flex-1 flex-col overflow-x-hidden overflow-y-auto mt-2 relative px-4 ", contentClassName)}>
+      <div id="scroll-container" className={cn("flex flex-1 flex-col overflow-x-hidden overflow-y-auto mt-2 relative px-4 ", contentClassName)}>
         {statistic && <div className="flex-shrink-0 mb-1 mt-2">{statistic}</div>}
         {filter && <div className="flex-shrink-0 mb-1 sticky top-0 shadow z-10">{filter}</div>}
 
