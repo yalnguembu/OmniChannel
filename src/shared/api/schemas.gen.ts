@@ -1755,6 +1755,42 @@ export const CompanyUserApplicationDtoFujiPayApiResponseSchema = {
     additionalProperties: {}
 } as const;
 
+export const CompensationRecordSchema = {
+    type: 'object',
+    properties: {
+        compensationId: {
+            type: 'string',
+            format: 'uuid'
+        },
+        originalEventType: {
+            type: 'string',
+            nullable: true
+        },
+        compensationEventType: {
+            type: 'string',
+            nullable: true
+        },
+        compensatedAt: {
+            type: 'string',
+            format: 'date-time'
+        },
+        reason: {
+            type: 'string',
+            nullable: true
+        },
+        initiatedBy: {
+            type: 'string',
+            nullable: true
+        },
+        context: {
+            type: 'object',
+            additionalProperties: {},
+            nullable: true
+        }
+    },
+    additionalProperties: false
+} as const;
+
 export const CookieLoginResponseSchema = {
     type: 'object',
     properties: {
@@ -3248,6 +3284,33 @@ export const CreateWithdrawalMethodRequestSchema = {
     additionalProperties: false
 } as const;
 
+export const CurrencySchema = {
+    type: 'object',
+    properties: {
+        code: {
+            type: 'string',
+            nullable: true,
+            readOnly: true
+        },
+        name: {
+            type: 'string',
+            nullable: true,
+            readOnly: true
+        },
+        symbol: {
+            type: 'string',
+            nullable: true,
+            readOnly: true
+        },
+        decimalPlaces: {
+            type: 'integer',
+            format: 'int32',
+            readOnly: true
+        }
+    },
+    additionalProperties: false
+} as const;
+
 export const CurrencyDtoSchema = {
     type: 'object',
     properties: {
@@ -4066,6 +4129,18 @@ export const DocumentsTypeDtoFujiPayApiResponseSchema = {
     additionalProperties: {}
 } as const;
 
+export const EmailAddressSchema = {
+    type: 'object',
+    properties: {
+        plainValue: {
+            type: 'string',
+            nullable: true,
+            readOnly: true
+        }
+    },
+    additionalProperties: false
+} as const;
+
 export const ExportReceiptsReadModelRequestSchema = {
     type: 'object',
     properties: {
@@ -4172,6 +4247,35 @@ export const ExportReceiptsReadModelRequestSchema = {
             type: 'string',
             format: 'uuid',
             nullable: true
+        }
+    },
+    additionalProperties: false
+} as const;
+
+export const ExternalReferenceSchema = {
+    type: 'object',
+    properties: {
+        value: {
+            type: 'string',
+            nullable: true,
+            readOnly: true
+        },
+        type: {
+            type: 'string',
+            nullable: true,
+            readOnly: true
+        },
+        isClientReference: {
+            type: 'boolean',
+            readOnly: true
+        },
+        isProviderReference: {
+            type: 'boolean',
+            readOnly: true
+        },
+        isInternalReference: {
+            type: 'boolean',
+            readOnly: true
         }
     },
     additionalProperties: false
@@ -4852,6 +4956,52 @@ export const FundTransfersReadModelDtoFujiPayApiResponseSchema = {
         }
     },
     additionalProperties: {}
+} as const;
+
+export const GeoLocationSchema = {
+    type: 'object',
+    properties: {
+        country: {
+            type: 'string',
+            nullable: true
+        },
+        countryCode: {
+            type: 'string',
+            nullable: true
+        },
+        region: {
+            type: 'string',
+            nullable: true
+        },
+        city: {
+            type: 'string',
+            nullable: true
+        },
+        latitude: {
+            type: 'number',
+            format: 'double',
+            nullable: true
+        },
+        longitude: {
+            type: 'number',
+            format: 'double',
+            nullable: true
+        },
+        isp: {
+            type: 'string',
+            nullable: true
+        },
+        organization: {
+            type: 'string',
+            nullable: true
+        },
+        lastUpdated: {
+            type: 'string',
+            format: 'date-time',
+            nullable: true
+        }
+    },
+    additionalProperties: false
 } as const;
 
 export const GetAllAllowedIpResponseSchema = {
@@ -7085,6 +7235,39 @@ export const GetAllWithdrawalMethodResponseIEnumerableFujiPayApiResponseSchema =
     additionalProperties: {}
 } as const;
 
+export const IDomainEventSchema = {
+    type: 'object',
+    properties: {
+        eventId: {
+            type: 'string',
+            format: 'uuid',
+            readOnly: true
+        },
+        aggregateId: {
+            type: 'string',
+            format: 'uuid',
+            readOnly: true
+        },
+        occurredAt: {
+            type: 'string',
+            format: 'date-time',
+            readOnly: true
+        },
+        eventVersion: {
+            type: 'integer',
+            format: 'int32',
+            readOnly: true
+        },
+        metadata: {
+            type: 'object',
+            additionalProperties: {},
+            nullable: true,
+            readOnly: true
+        }
+    },
+    additionalProperties: false
+} as const;
+
 export const InitiationPaymentRequestSchema = {
     type: 'object',
     properties: {
@@ -7195,6 +7378,116 @@ export const InitiationPaymentResponseFujiPayApiResponseSchema = {
         }
     },
     additionalProperties: {}
+} as const;
+
+export const InternalReferenceSchema = {
+    type: 'object',
+    properties: {
+        value: {
+            type: 'string',
+            nullable: true,
+            readOnly: true
+        },
+        type: {
+            '$ref': '#/components/schemas/ReferenceType'
+        },
+        generatedDate: {
+            type: 'string',
+            format: 'date',
+            readOnly: true
+        },
+        identifier: {
+            type: 'string',
+            nullable: true,
+            readOnly: true
+        }
+    },
+    additionalProperties: false
+} as const;
+
+export const IpAddressSchema = {
+    type: 'object',
+    properties: {
+        value: {
+            type: 'string',
+            nullable: true,
+            readOnly: true
+        },
+        type: {
+            '$ref': '#/components/schemas/IpAddressType'
+        },
+        classification: {
+            '$ref': '#/components/schemas/IpClassification'
+        },
+        geoLocation: {
+            '$ref': '#/components/schemas/GeoLocation'
+        },
+        riskScore: {
+            type: 'integer',
+            format: 'int32',
+            readOnly: true
+        },
+        isPrivate: {
+            type: 'boolean',
+            readOnly: true
+        },
+        metadata: {
+            '$ref': '#/components/schemas/IpMetadata'
+        },
+        isSuspicious: {
+            type: 'boolean',
+            readOnly: true
+        },
+        isPublicRoutable: {
+            type: 'boolean',
+            readOnly: true
+        },
+        canBeGeolocated: {
+            type: 'boolean',
+            readOnly: true
+        },
+        isTrusted: {
+            type: 'boolean',
+            readOnly: true
+        }
+    },
+    additionalProperties: false
+} as const;
+
+export const IpAddressTypeSchema = {
+    enum: [0, 1],
+    type: 'integer',
+    format: 'int32'
+} as const;
+
+export const IpClassificationSchema = {
+    enum: [0, 1, 2, 3, 4, 5, 6],
+    type: 'integer',
+    format: 'int32'
+} as const;
+
+export const IpMetadataSchema = {
+    type: 'object',
+    properties: {
+        ipFamily: {
+            type: 'string',
+            nullable: true
+        },
+        isRoutable: {
+            type: 'boolean'
+        },
+        canBeGeolocated: {
+            type: 'boolean'
+        },
+        requiresSuspicionCheck: {
+            type: 'boolean'
+        },
+        recommendedAction: {
+            type: 'string',
+            nullable: true
+        }
+    },
+    additionalProperties: false
 } as const;
 
 export const KycDocumentDtoSchema = {
@@ -7942,6 +8235,39 @@ export const LogoutResponseFujiPayApiResponseSchema = {
     additionalProperties: {}
 } as const;
 
+export const MoneySchema = {
+    type: 'object',
+    properties: {
+        amount: {
+            type: 'number',
+            format: 'double',
+            readOnly: true
+        },
+        currency: {
+            '$ref': '#/components/schemas/Currency'
+        },
+        currencyCode: {
+            type: 'string',
+            nullable: true,
+            readOnly: true
+        },
+        currencySymbol: {
+            type: 'string',
+            nullable: true,
+            readOnly: true
+        },
+        isZero: {
+            type: 'boolean',
+            readOnly: true
+        },
+        isPositive: {
+            type: 'boolean',
+            readOnly: true
+        }
+    },
+    additionalProperties: false
+} as const;
+
 export const NotificationDtoSchema = {
     type: 'object',
     properties: {
@@ -8119,6 +8445,350 @@ export const ObjectFujiPayApiResponseSchema = {
         },
         data: {
             nullable: true
+        },
+        success: {
+            type: 'boolean'
+        },
+        errorCode: {
+            type: 'string',
+            nullable: true
+        },
+        traceId: {
+            type: 'string',
+            nullable: true
+        },
+        timestamp: {
+            type: 'string',
+            format: 'date-time'
+        },
+        validationErrors: {
+            type: 'object',
+            additionalProperties: {
+                type: 'array',
+                items: {
+                    type: 'string'
+                },
+                nullable: true
+            },
+            nullable: true
+        },
+        metadata: {
+            type: 'object',
+            additionalProperties: {},
+            nullable: true
+        }
+    },
+    additionalProperties: {}
+} as const;
+
+export const PaymentAggregateSchema = {
+    type: 'object',
+    properties: {
+        id: {
+            type: 'string',
+            format: 'uuid',
+            readOnly: true
+        },
+        version: {
+            type: 'integer',
+            format: 'int32',
+            readOnly: true
+        },
+        isReplaying: {
+            type: 'boolean',
+            readOnly: true
+        },
+        isSealed: {
+            type: 'boolean',
+            readOnly: true
+        },
+        createdAt: {
+            type: 'string',
+            format: 'date-time',
+            readOnly: true
+        },
+        lastModifiedAt: {
+            type: 'string',
+            format: 'date-time',
+            readOnly: true
+        },
+        uncommittedEvents: {
+            type: 'array',
+            items: {
+                '$ref': '#/components/schemas/IDomainEvent'
+            },
+            nullable: true,
+            readOnly: true
+        },
+        allEvents: {
+            type: 'array',
+            items: {
+                '$ref': '#/components/schemas/IDomainEvent'
+            },
+            nullable: true,
+            readOnly: true
+        },
+        hasUncommittedEvents: {
+            type: 'boolean',
+            readOnly: true
+        },
+        lastSnapshotVersion: {
+            type: 'integer',
+            format: 'int32',
+            nullable: true,
+            readOnly: true
+        },
+        pendingCompensationEvents: {
+            type: 'array',
+            items: {
+                '$ref': '#/components/schemas/IDomainEvent'
+            },
+            nullable: true,
+            readOnly: true
+        },
+        compensationHistory: {
+            type: 'array',
+            items: {
+                '$ref': '#/components/schemas/CompensationRecord'
+            },
+            nullable: true,
+            readOnly: true
+        },
+        externalReference: {
+            '$ref': '#/components/schemas/ExternalReference'
+        },
+        internalReference: {
+            '$ref': '#/components/schemas/InternalReference'
+        },
+        providerInitialReference: {
+            type: 'string',
+            nullable: true,
+            readOnly: true
+        },
+        providerFinalReference: {
+            type: 'string',
+            nullable: true,
+            readOnly: true
+        },
+        applicationId: {
+            type: 'string',
+            format: 'uuid',
+            readOnly: true
+        },
+        companyId: {
+            type: 'string',
+            format: 'uuid',
+            readOnly: true
+        },
+        paymentMethodId: {
+            type: 'string',
+            format: 'uuid',
+            readOnly: true
+        },
+        customerPhone: {
+            '$ref': '#/components/schemas/PhoneNumber'
+        },
+        customerEmail: {
+            '$ref': '#/components/schemas/EmailAddress'
+        },
+        customerIpAddress: {
+            '$ref': '#/components/schemas/IpAddress'
+        },
+        amount: {
+            '$ref': '#/components/schemas/Money'
+        },
+        finalAmount: {
+            '$ref': '#/components/schemas/Money'
+        },
+        providerFeeAmount: {
+            '$ref': '#/components/schemas/Money'
+        },
+        internalFeeAmount: {
+            '$ref': '#/components/schemas/Money'
+        },
+        feeAppliedAmount: {
+            '$ref': '#/components/schemas/Money'
+        },
+        netAmount: {
+            '$ref': '#/components/schemas/Money'
+        },
+        status: {
+            '$ref': '#/components/schemas/PaymentStatus'
+        },
+        customerVerified: {
+            type: 'boolean',
+            nullable: true,
+            readOnly: true
+        },
+        validationResults: {
+            type: 'string',
+            nullable: true,
+            readOnly: true
+        },
+        providerRequestData: {
+            type: 'string',
+            nullable: true,
+            readOnly: true
+        },
+        providerResponseData: {
+            type: 'string',
+            nullable: true,
+            readOnly: true
+        },
+        httpStatusCode: {
+            type: 'integer',
+            format: 'int32',
+            nullable: true,
+            readOnly: true
+        },
+        rawProviderData: {
+            type: 'string',
+            nullable: true,
+            readOnly: true
+        },
+        failureReason: {
+            type: 'string',
+            nullable: true,
+            readOnly: true
+        },
+        providerErrorCode: {
+            type: 'string',
+            nullable: true,
+            readOnly: true
+        },
+        providerErrorMessage: {
+            type: 'string',
+            nullable: true,
+            readOnly: true
+        },
+        internalErrorDetails: {
+            type: 'string',
+            nullable: true,
+            readOnly: true
+        },
+        validatedAt: {
+            type: 'string',
+            format: 'date-time',
+            nullable: true,
+            readOnly: true
+        },
+        providerRequestSentAt: {
+            type: 'string',
+            format: 'date-time',
+            nullable: true,
+            readOnly: true
+        },
+        completedAt: {
+            type: 'string',
+            format: 'date-time',
+            nullable: true,
+            readOnly: true
+        },
+        failedAt: {
+            type: 'string',
+            format: 'date-time',
+            nullable: true,
+            readOnly: true
+        },
+        timedOutAt: {
+            type: 'string',
+            format: 'date-time',
+            nullable: true,
+            readOnly: true
+        },
+        cancelledAt: {
+            type: 'string',
+            format: 'date-time',
+            nullable: true,
+            readOnly: true
+        },
+        lastVerificationType: {
+            type: 'string',
+            nullable: true,
+            readOnly: true
+        },
+        lastVerificationRequestedBy: {
+            type: 'string',
+            format: 'uuid',
+            nullable: true,
+            readOnly: true
+        },
+        lastVerificationRequestedByEmail: {
+            type: 'string',
+            nullable: true,
+            readOnly: true
+        },
+        lastReconciliationDate: {
+            type: 'string',
+            format: 'date-time',
+            nullable: true,
+            readOnly: true
+        },
+        lastReconciledBy: {
+            type: 'string',
+            format: 'uuid',
+            nullable: true,
+            readOnly: true
+        },
+        lastReconciledByEmail: {
+            type: 'string',
+            nullable: true,
+            readOnly: true
+        },
+        previousStatus: {
+            '$ref': '#/components/schemas/PaymentStatus'
+        },
+        canBeModified: {
+            type: 'boolean',
+            readOnly: true
+        },
+        isValidated: {
+            type: 'boolean',
+            readOnly: true
+        },
+        isProviderRequestSent: {
+            type: 'boolean',
+            readOnly: true
+        },
+        hasProviderFinalReference: {
+            type: 'boolean',
+            readOnly: true
+        },
+        timeElapsed: {
+            type: 'string',
+            format: 'date-span',
+            readOnly: true
+        }
+    },
+    additionalProperties: false
+} as const;
+
+export const PaymentAggregateFujiPayApiResponseSchema = {
+    type: 'object',
+    properties: {
+        type: {
+            type: 'string',
+            nullable: true
+        },
+        title: {
+            type: 'string',
+            nullable: true
+        },
+        status: {
+            type: 'integer',
+            format: 'int32',
+            nullable: true
+        },
+        detail: {
+            type: 'string',
+            nullable: true
+        },
+        instance: {
+            type: 'string',
+            nullable: true
+        },
+        data: {
+            '$ref': '#/components/schemas/PaymentAggregate'
         },
         success: {
             type: 'boolean'
@@ -8517,6 +9187,18 @@ export const PaymentStatusResultFujiPayApiResponseSchema = {
         }
     },
     additionalProperties: {}
+} as const;
+
+export const PhoneNumberSchema = {
+    type: 'object',
+    properties: {
+        plainValue: {
+            type: 'string',
+            nullable: true,
+            readOnly: true
+        }
+    },
+    additionalProperties: false
 } as const;
 
 export const ProfilPermissionsResponseSchema = {
@@ -8930,6 +9612,12 @@ export const ReceiptsReadModelDtoFujiPayApiResponseSchema = {
         }
     },
     additionalProperties: {}
+} as const;
+
+export const ReferenceTypeSchema = {
+    enum: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+    type: 'integer',
+    format: 'int32'
 } as const;
 
 export const RefreshTokenRequestSchema = {

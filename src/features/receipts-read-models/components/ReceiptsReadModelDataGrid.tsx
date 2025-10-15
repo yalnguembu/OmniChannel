@@ -8,7 +8,7 @@ import { ReceiptsReadModelDataGridEntry } from "../lib/data-grid/ReceiptsReadMod
 import StatusBadge from "@/shared/components/StatusBadge"
 import ActionButtonGroup from "@/shared/components/data-grid/ActionButtonGroup"
 import DetailsCardItem from "@/shared/components/DetailsCardItem"
-import { getApiReceiptsReadModelCheckPaymentStatusById } from "@/shared/api/sdk.gen"
+import { getApiReceiptsReadModelCheckPaymentStatusById, getApiReceiptsReadModelGetAllPaymentEventsById } from "@/shared/api/sdk.gen"
 import { ConfirmationModal } from "@/shared/components/ConfirmationModal"
 import { TransactionDetailsModal } from "./TransactionDetailsModal"
 import { ChangeStatusDialog } from "./ChangeStatusDialog"
@@ -38,11 +38,8 @@ export const ReceiptsReadModelDataGrid: React.FC = () => {
     setSelectedRows,
     bulkDeleteMutation,
     searchReceiptsReadModels,
-    getApiReceiptsReadModelGetAllStatus,
+    changePageSizehangePaymentStatusById,
   } = useReceiptsReadModel()
-
-  const { data: statusResponse } = getApiReceiptsReadModelGetAllStatus()
-  const availableStatuses = useMemo(() => statusResponse?.data || [], [statusResponse])
 
   const columnHeaders: DataGridColumnHeader[] = [
     {
@@ -132,11 +129,14 @@ export const ReceiptsReadModelDataGrid: React.FC = () => {
     }
   }
 
-  const handleChangeStatusConfirm = (transactionId: string, newStatus: string) => {
-    toast.success(t("receiptsReadModels.changeStatus.success", { status: newStatus }))
+  const handleChangeStatusConfirm = (transactionId: string) => {
     setShowChangeStatusDialog(false)
     setSelectedTransaction(null)
-    // Refresh data to get updated status
+    changePageSizehangePaymentStatusById.mutate({
+      path: {
+        id: transactionId,
+      },
+    })
     searchReceiptsReadModels()
   }
 
@@ -172,7 +172,7 @@ export const ReceiptsReadModelDataGrid: React.FC = () => {
       ]
     : undefined
 
-  const actions: ACTION[] = ["checkStatus", "view"]
+  const actions: ACTION[] = ["checkStatus", "view", "changeStatus"]
 
   const renderCell = (item: DataGridRowEntry, column: DataGridColumnHeader, view: ViewMode): ReactNode => {
     if (view == "list") {
@@ -326,6 +326,14 @@ export const ReceiptsReadModelDataGrid: React.FC = () => {
     }
   }
 
+  const handleCompyEvent = async (id: string) => {
+    const response = await getApiReceiptsReadModelGetAllPaymentEventsById({ path: { id } })
+    if (response.data) {
+      navigator.clipboard.writeText(JSON.stringify(response.data))
+      toast.success("Event copied")
+    }
+  }
+
   const handleDispatch = (action: ACTION, id: string) => {
     switch (action) {
       case "checkStatus":
@@ -385,6 +393,7 @@ export const ReceiptsReadModelDataGrid: React.FC = () => {
           setShowDetailsModal(false)
           setSelectedTransaction(null)
         }}
+        onCopyEvent={handleCompyEvent}
         transaction={selectedTransaction}
       />
 
@@ -396,7 +405,6 @@ export const ReceiptsReadModelDataGrid: React.FC = () => {
         }}
         currentStatus={selectedTransaction?.status || ""}
         transactionId={selectedTransaction?.id || ""}
-        availableStatuses={availableStatuses}
         onConfirm={handleChangeStatusConfirm}
         isLoading={false}
       />

@@ -5,14 +5,16 @@ import { ModalWrapper } from "@/shared/components/ModalWrapper"
 import { Label } from "@/shared/components/ui/label"
 import StatusBadge from "@/shared/components/StatusBadge"
 import { formatCurrency } from "@/shared/utils/formatCurrency"
+import { Button } from "@/shared"
 
 interface TransactionDetailsModalProps {
   open: boolean
   onOpenChange: () => void
+  onCopyEvent: (id: string) => void
   transaction: SearchReceiptsReadModelResponse | null
 }
 
-export const TransactionDetailsModal: React.FC<TransactionDetailsModalProps> = ({ open, onOpenChange, transaction }) => {
+export const TransactionDetailsModal: React.FC<TransactionDetailsModalProps> = ({ open, onOpenChange, transaction, onCopyEvent }) => {
   const { t } = useTranslation()
 
   if (!transaction) return null
@@ -38,9 +40,13 @@ export const TransactionDetailsModal: React.FC<TransactionDetailsModalProps> = (
     </div>
   )
 
+  const handleCopy = () => onCopyEvent(transaction.id)
+
   return (
     <ModalWrapper size="3xl" withHeader open={open} onOpenChange={onOpenChange} title={t("receiptsReadModels.details.title")}>
       <div className="max-h-[80vh] overflow-y-auto">
+        <h3 className="text-sm font-semibold bg-background px-2 text-muted-foreground uppercase"># {transaction.id || ""}</h3>
+
         <div className="grid lg:grid-cols-2 justify-center items-center gap-6 pt-4">
           {/* Transaction Overview */}
           <div className="h-full border p-4 rounded-lg relative">
@@ -113,6 +119,10 @@ export const TransactionDetailsModal: React.FC<TransactionDetailsModalProps> = (
                 <pre className="bg-muted p-3 rounded-md text-xs overflow-x-auto">{JSON.stringify(transaction.metaData, null, 2)}</pre>
               </div>
             )}
+
+            <Button variant="outline" type="button" onClick={handleCopy}>
+              {t("receiptsReadModels.details.copy")}
+            </Button>
           </div>
         </div>
       </div>

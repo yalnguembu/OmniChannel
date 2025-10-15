@@ -1113,6 +1113,31 @@ export const zCompanyUserApplicationDtoFujiPayApiResponse = z.object({
     ]).optional()
 });
 
+export const zCompensationRecord = z.object({
+    compensationId: z.string().uuid().optional(),
+    originalEventType: z.union([
+        z.string(),
+        z.null()
+    ]).optional(),
+    compensationEventType: z.union([
+        z.string(),
+        z.null()
+    ]).optional(),
+    compensatedAt: z.string().datetime().optional(),
+    reason: z.union([
+        z.string(),
+        z.null()
+    ]).optional(),
+    initiatedBy: z.union([
+        z.string(),
+        z.null()
+    ]).optional(),
+    context: z.union([
+        z.object({}),
+        z.null()
+    ]).optional()
+});
+
 export const zUserInfo = z.object({
     id: z.string().uuid().optional(),
     email: z.union([
@@ -2192,6 +2217,22 @@ export const zCreateWithdrawalMethodRequest = z.object({
     ]).optional()
 });
 
+export const zCurrency = z.object({
+    code: z.union([
+        z.string().readonly(),
+        z.null()
+    ]).readonly().optional(),
+    name: z.union([
+        z.string().readonly(),
+        z.null()
+    ]).readonly().optional(),
+    symbol: z.union([
+        z.string().readonly(),
+        z.null()
+    ]).readonly().optional(),
+    decimalPlaces: z.number().int().readonly().optional()
+});
+
 export const zCurrencyDto = z.object({
     id: z.string().uuid().optional(),
     createdAt: z.string().datetime().optional(),
@@ -2656,6 +2697,13 @@ export const zDocumentsTypeDtoFujiPayApiResponse = z.object({
     ]).optional()
 });
 
+export const zEmailAddress = z.object({
+    plainValue: z.union([
+        z.string().readonly(),
+        z.null()
+    ]).readonly().optional()
+});
+
 export const zExportReceiptsReadModelRequest = z.object({
     searchTerm: z.union([
         z.string(),
@@ -2749,6 +2797,20 @@ export const zExportReceiptsReadModelRequest = z.object({
         z.string().uuid(),
         z.null()
     ]).optional()
+});
+
+export const zExternalReference = z.object({
+    value: z.union([
+        z.string().readonly(),
+        z.null()
+    ]).readonly().optional(),
+    type: z.union([
+        z.string().readonly(),
+        z.null()
+    ]).readonly().optional(),
+    isClientReference: z.boolean().readonly().optional(),
+    isProviderReference: z.boolean().readonly().optional(),
+    isInternalReference: z.boolean().readonly().optional()
 });
 
 export const zFeeConfigOwnerType = z.object({
@@ -3169,6 +3231,45 @@ export const zFundTransfersReadModelDtoFujiPayApiResponse = z.object({
     ]).optional(),
     metadata: z.union([
         z.object({}),
+        z.null()
+    ]).optional()
+});
+
+export const zGeoLocation = z.object({
+    country: z.union([
+        z.string(),
+        z.null()
+    ]).optional(),
+    countryCode: z.union([
+        z.string(),
+        z.null()
+    ]).optional(),
+    region: z.union([
+        z.string(),
+        z.null()
+    ]).optional(),
+    city: z.union([
+        z.string(),
+        z.null()
+    ]).optional(),
+    latitude: z.union([
+        z.number(),
+        z.null()
+    ]).optional(),
+    longitude: z.union([
+        z.number(),
+        z.null()
+    ]).optional(),
+    isp: z.union([
+        z.string(),
+        z.null()
+    ]).optional(),
+    organization: z.union([
+        z.string(),
+        z.null()
+    ]).optional(),
+    lastUpdated: z.union([
+        z.string().datetime(),
         z.null()
     ]).optional()
 });
@@ -4648,6 +4749,17 @@ export const zGetAllWithdrawalMethodResponseIEnumerableFujiPayApiResponse = z.ob
     ]).optional()
 });
 
+export const zIDomainEvent = z.object({
+    eventId: z.string().uuid().readonly().optional(),
+    aggregateId: z.string().uuid().readonly().optional(),
+    occurredAt: z.string().datetime().readonly().optional(),
+    eventVersion: z.number().int().readonly().optional(),
+    metadata: z.union([
+        z.object({}).readonly(),
+        z.null()
+    ]).readonly().optional()
+});
+
 export const zInitiationPaymentRequest = z.object({
     amount: z.number().int().optional(),
     currency: z.union([
@@ -4724,6 +4836,56 @@ export const zInitiationPaymentResponseFujiPayApiResponse = z.object({
         z.object({}),
         z.null()
     ]).optional()
+});
+
+export const zReferenceType = z.unknown();
+
+export const zInternalReference = z.object({
+    value: z.union([
+        z.string().readonly(),
+        z.null()
+    ]).readonly().optional(),
+    type: zReferenceType.optional(),
+    generatedDate: z.string().date().readonly().optional(),
+    identifier: z.union([
+        z.string().readonly(),
+        z.null()
+    ]).readonly().optional()
+});
+
+export const zIpAddressType = z.unknown();
+
+export const zIpClassification = z.unknown();
+
+export const zIpMetadata = z.object({
+    ipFamily: z.union([
+        z.string(),
+        z.null()
+    ]).optional(),
+    isRoutable: z.boolean().optional(),
+    canBeGeolocated: z.boolean().optional(),
+    requiresSuspicionCheck: z.boolean().optional(),
+    recommendedAction: z.union([
+        z.string(),
+        z.null()
+    ]).optional()
+});
+
+export const zIpAddress = z.object({
+    value: z.union([
+        z.string().readonly(),
+        z.null()
+    ]).readonly().optional(),
+    type: zIpAddressType.optional(),
+    classification: zIpClassification.optional(),
+    geoLocation: zGeoLocation.optional(),
+    riskScore: z.number().int().readonly().optional(),
+    isPrivate: z.boolean().readonly().optional(),
+    metadata: zIpMetadata.optional(),
+    isSuspicious: z.boolean().readonly().optional(),
+    isPublicRoutable: z.boolean().readonly().optional(),
+    canBeGeolocated: z.boolean().readonly().optional(),
+    isTrusted: z.boolean().readonly().optional()
 });
 
 export const zKycDocumentDto = z.object({
@@ -5192,6 +5354,21 @@ export const zLogoutResponseFujiPayApiResponse = z.object({
     ]).optional()
 });
 
+export const zMoney = z.object({
+    amount: z.number().readonly().optional(),
+    currency: zCurrency.optional(),
+    currencyCode: z.union([
+        z.string().readonly(),
+        z.null()
+    ]).readonly().optional(),
+    currencySymbol: z.union([
+        z.string().readonly(),
+        z.null()
+    ]).readonly().optional(),
+    isZero: z.boolean().readonly().optional(),
+    isPositive: z.boolean().readonly().optional()
+});
+
 export const zNotificationDto = z.object({
     id: z.string().uuid().optional(),
     createdAt: z.string().datetime().optional(),
@@ -5334,6 +5511,222 @@ export const zObjectFujiPayApiResponse = z.object({
     ]).optional()
 });
 
+export const zPhoneNumber = z.object({
+    plainValue: z.union([
+        z.string().readonly(),
+        z.null()
+    ]).readonly().optional()
+});
+
+export const zPaymentStatus = z.object({
+    code: z.union([
+        z.string().readonly(),
+        z.null()
+    ]).readonly().optional(),
+    displayName: z.union([
+        z.string().readonly(),
+        z.null()
+    ]).readonly().optional(),
+    isTerminal: z.boolean().readonly().optional(),
+    category: z.union([
+        z.string().readonly(),
+        z.null()
+    ]).readonly().optional(),
+    isSuccess: z.boolean().readonly().optional(),
+    isFailure: z.boolean().readonly().optional(),
+    isPending: z.boolean().readonly().optional(),
+    isProcessing: z.boolean().readonly().optional()
+});
+
+export const zPaymentAggregate = z.object({
+    id: z.string().uuid().readonly().optional(),
+    version: z.number().int().readonly().optional(),
+    isReplaying: z.boolean().readonly().optional(),
+    isSealed: z.boolean().readonly().optional(),
+    createdAt: z.string().datetime().readonly().optional(),
+    lastModifiedAt: z.string().datetime().readonly().optional(),
+    uncommittedEvents: z.union([
+        z.array(zIDomainEvent).readonly(),
+        z.null()
+    ]).readonly().optional(),
+    allEvents: z.union([
+        z.array(zIDomainEvent).readonly(),
+        z.null()
+    ]).readonly().optional(),
+    hasUncommittedEvents: z.boolean().readonly().optional(),
+    lastSnapshotVersion: z.union([
+        z.number().int().readonly(),
+        z.null()
+    ]).readonly().optional(),
+    pendingCompensationEvents: z.union([
+        z.array(zIDomainEvent).readonly(),
+        z.null()
+    ]).readonly().optional(),
+    compensationHistory: z.union([
+        z.array(zCompensationRecord).readonly(),
+        z.null()
+    ]).readonly().optional(),
+    externalReference: zExternalReference.optional(),
+    internalReference: zInternalReference.optional(),
+    providerInitialReference: z.union([
+        z.string().readonly(),
+        z.null()
+    ]).readonly().optional(),
+    providerFinalReference: z.union([
+        z.string().readonly(),
+        z.null()
+    ]).readonly().optional(),
+    applicationId: z.string().uuid().readonly().optional(),
+    companyId: z.string().uuid().readonly().optional(),
+    paymentMethodId: z.string().uuid().readonly().optional(),
+    customerPhone: zPhoneNumber.optional(),
+    customerEmail: zEmailAddress.optional(),
+    customerIpAddress: zIpAddress.optional(),
+    amount: zMoney.optional(),
+    finalAmount: zMoney.optional(),
+    providerFeeAmount: zMoney.optional(),
+    internalFeeAmount: zMoney.optional(),
+    feeAppliedAmount: zMoney.optional(),
+    netAmount: zMoney.optional(),
+    status: zPaymentStatus.optional(),
+    customerVerified: z.union([
+        z.boolean().readonly(),
+        z.null()
+    ]).readonly().optional(),
+    validationResults: z.union([
+        z.string().readonly(),
+        z.null()
+    ]).readonly().optional(),
+    providerRequestData: z.union([
+        z.string().readonly(),
+        z.null()
+    ]).readonly().optional(),
+    providerResponseData: z.union([
+        z.string().readonly(),
+        z.null()
+    ]).readonly().optional(),
+    httpStatusCode: z.union([
+        z.number().int().readonly(),
+        z.null()
+    ]).readonly().optional(),
+    rawProviderData: z.union([
+        z.string().readonly(),
+        z.null()
+    ]).readonly().optional(),
+    failureReason: z.union([
+        z.string().readonly(),
+        z.null()
+    ]).readonly().optional(),
+    providerErrorCode: z.union([
+        z.string().readonly(),
+        z.null()
+    ]).readonly().optional(),
+    providerErrorMessage: z.union([
+        z.string().readonly(),
+        z.null()
+    ]).readonly().optional(),
+    internalErrorDetails: z.union([
+        z.string().readonly(),
+        z.null()
+    ]).readonly().optional(),
+    validatedAt: z.union([
+        z.string().datetime().readonly(),
+        z.null()
+    ]).readonly().optional(),
+    providerRequestSentAt: z.union([
+        z.string().datetime().readonly(),
+        z.null()
+    ]).readonly().optional(),
+    completedAt: z.union([
+        z.string().datetime().readonly(),
+        z.null()
+    ]).readonly().optional(),
+    failedAt: z.union([
+        z.string().datetime().readonly(),
+        z.null()
+    ]).readonly().optional(),
+    timedOutAt: z.union([
+        z.string().datetime().readonly(),
+        z.null()
+    ]).readonly().optional(),
+    cancelledAt: z.union([
+        z.string().datetime().readonly(),
+        z.null()
+    ]).readonly().optional(),
+    lastVerificationType: z.union([
+        z.string().readonly(),
+        z.null()
+    ]).readonly().optional(),
+    lastVerificationRequestedBy: z.union([
+        z.string().uuid().readonly(),
+        z.null()
+    ]).readonly().optional(),
+    lastVerificationRequestedByEmail: z.union([
+        z.string().readonly(),
+        z.null()
+    ]).readonly().optional(),
+    lastReconciliationDate: z.union([
+        z.string().datetime().readonly(),
+        z.null()
+    ]).readonly().optional(),
+    lastReconciledBy: z.union([
+        z.string().uuid().readonly(),
+        z.null()
+    ]).readonly().optional(),
+    lastReconciledByEmail: z.union([
+        z.string().readonly(),
+        z.null()
+    ]).readonly().optional(),
+    previousStatus: zPaymentStatus.optional(),
+    canBeModified: z.boolean().readonly().optional(),
+    isValidated: z.boolean().readonly().optional(),
+    isProviderRequestSent: z.boolean().readonly().optional(),
+    hasProviderFinalReference: z.boolean().readonly().optional(),
+    timeElapsed: z.string().readonly().optional()
+});
+
+export const zPaymentAggregateFujiPayApiResponse = z.object({
+    type: z.union([
+        z.string(),
+        z.null()
+    ]).optional(),
+    title: z.union([
+        z.string(),
+        z.null()
+    ]).optional(),
+    status: z.union([
+        z.number().int(),
+        z.null()
+    ]).optional(),
+    detail: z.union([
+        z.string(),
+        z.null()
+    ]).optional(),
+    instance: z.union([
+        z.string(),
+        z.null()
+    ]).optional(),
+    data: zPaymentAggregate.optional(),
+    success: z.boolean().optional(),
+    errorCode: z.union([
+        z.string(),
+        z.null()
+    ]).optional(),
+    traceId: z.union([
+        z.string(),
+        z.null()
+    ]).optional(),
+    timestamp: z.string().datetime().optional(),
+    validationErrors: z.union([
+        z.object({}),
+        z.null()
+    ]).optional(),
+    metadata: z.union([
+        z.object({}),
+        z.null()
+    ]).optional()
+});
+
 export const zPaymentMethodDto = z.object({
     id: z.string().uuid().optional(),
     createdAt: z.string().datetime().optional(),
@@ -5419,26 +5812,6 @@ export const zPaymentMethodDtoFujiPayApiResponse = z.object({
         z.object({}),
         z.null()
     ]).optional()
-});
-
-export const zPaymentStatus = z.object({
-    code: z.union([
-        z.string().readonly(),
-        z.null()
-    ]).readonly().optional(),
-    displayName: z.union([
-        z.string().readonly(),
-        z.null()
-    ]).readonly().optional(),
-    isTerminal: z.boolean().readonly().optional(),
-    category: z.union([
-        z.string().readonly(),
-        z.null()
-    ]).readonly().optional(),
-    isSuccess: z.boolean().readonly().optional(),
-    isFailure: z.boolean().readonly().optional(),
-    isPending: z.boolean().readonly().optional(),
-    isProcessing: z.boolean().readonly().optional()
 });
 
 export const zPaymentStatusIEnumerableFujiPayApiResponse = z.object({
@@ -17663,6 +18036,36 @@ export const zGetApiReceiptsReadModelGetAllStatusData = z.object({
  * OK
  */
 export const zGetApiReceiptsReadModelGetAllStatusResponse = zPaymentStatusIEnumerableFujiPayApiResponse;
+
+export const zPutApiReceiptsReadModelChangePaymentStatusByIdNewStatutData = z.object({
+    body: z.never().optional(),
+    headers: z.never().optional(),
+    path: z.object({
+        id: z.string().uuid()
+    }),
+    query: z.object({
+        newStatut: z.string().optional()
+    }).optional()
+});
+
+/**
+ * OK
+ */
+export const zPutApiReceiptsReadModelChangePaymentStatusByIdNewStatutResponse = zBooleanFujiPayApiResponse;
+
+export const zGetApiReceiptsReadModelGetAllPaymentEventsByIdData = z.object({
+    body: z.never().optional(),
+    headers: z.never().optional(),
+    path: z.object({
+        id: z.string().uuid()
+    }),
+    query: z.never().optional()
+});
+
+/**
+ * OK
+ */
+export const zGetApiReceiptsReadModelGetAllPaymentEventsByIdResponse = zPaymentAggregateFujiPayApiResponse;
 
 export const zGetApiReceiptsReadModelCheckPaymentStatusByIdData = z.object({
     body: z.never().optional(),

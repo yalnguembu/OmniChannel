@@ -2004,7 +2004,8 @@
       "providerMessage": "Provider Message",
       "currentVersion": "Version",
       "updatedAt": "Updated At",
-      "metadata": "Metadata"
+      "metadata": "Metadata",
+      "copy":"Copy Events"
     },
     "changeStatus": {
       "title": "Change Transaction Status",

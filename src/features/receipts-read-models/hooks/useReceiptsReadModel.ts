@@ -12,6 +12,8 @@ import {
   getApiCompanyDropdownOptions,
   getApiApplicationDropdownOptions,
   postApiReceiptsReadModelExportExcelMutation,
+  putApiReceiptsReadModelChangePaymentStatusByIdNewStatutMutation,
+  getApiReceiptsReadModelGetAllPaymentEventsByIdOptions,
 } from "@/shared/api/@tanstack/react-query.gen"
 import { endOfDay, startOfDay } from "@/shared/lib/date"
 
@@ -42,6 +44,27 @@ export const useReceiptsReadModel = () => {
         const total = data.data.totalCount || 0
         const totalPages = data.data.totalPages || 0
         store.setPaginationData(total, totalPages)
+      }
+    },
+    onError: (error) => {
+      const message = error.message || t("receiptsReadModels.messages.search.error")
+      store.setError(message)
+      toast.error(message)
+    },
+    onSettled: () => {
+      store.setLoading(false)
+    },
+  })
+
+  const changePageSizehangePaymentStatusById = useMutation({
+    ...putApiReceiptsReadModelChangePaymentStatusByIdNewStatutMutation({}),
+    onMutate: () => {
+      store.setLoading(true)
+      store.setError(null)
+    },
+    onSuccess: (data) => {
+      if (data.success && data.data) {
+        toast.error(t("receiptsReadModels.changeStatus.success"))
       }
     },
     onError: (error) => {
@@ -130,6 +153,20 @@ export const useReceiptsReadModel = () => {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     useQuery({
       ...getApiReceiptsReadModelByIdOptions({ path: { id } }),
+      enabled: !!id,
+      staleTime: 5 * 60 * 1000,
+      select: (data) => {
+        if (data.success && data.data) {
+          store.setSelectedItem(data.data)
+        }
+        return data
+      },
+    })
+
+  const getReceiptsReadModelGetAllPaymentEventsById = (id: string) =>
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    useQuery({
+      ...getApiReceiptsReadModelGetAllPaymentEventsByIdOptions({ path: { id } }),
       enabled: !!id,
       staleTime: 5 * 60 * 1000,
       select: (data) => {
@@ -257,7 +294,6 @@ export const useReceiptsReadModel = () => {
 
   const applyFilters = (filters: Partial<typeof store.filters>) => {
     const enhancedFilters = {
-      
       phoneNumberEncrypted: undefined,
       searchTerm: undefined,
       ids: undefined,
@@ -281,9 +317,7 @@ export const useReceiptsReadModel = () => {
       createdFrom: filters.createdFrom ? filters.createdFrom : filters.customerIpAddress?.split("_")[0] || startOfDay(new Date()).toISOString(),
       createdTo: filters.createdTo ? filters.createdTo : filters.customerIpAddress?.split("_")[1] || endOfDay(new Date()).toISOString(),
     }
-    console.log(enhancedFilters)
     store.setFilters(enhancedFilters)
-    // store.setFilters(enhancedFilters)
     performSearch(enhancedFilters)
   }
 
@@ -327,5 +361,7 @@ export const useReceiptsReadModel = () => {
     error: searchReceiptsReadModelsMutation.error || store.error,
     getApiReceiptsReadModelGetAllStatus,
     performExport,
+    changePageSizehangePaymentStatusById,
+    getReceiptsReadModelGetAllPaymentEventsById,
   }
 }

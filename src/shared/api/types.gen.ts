@@ -598,6 +598,18 @@ export type CompanyUserApplicationDtoFujiPayApiResponse = {
     } | null) | undefined;
 };
 
+export type CompensationRecord = {
+    compensationId?: string;
+    originalEventType?: string | null;
+    compensationEventType?: string | null;
+    compensatedAt?: string;
+    reason?: string | null;
+    initiatedBy?: string | null;
+    context?: {
+        [key: string]: unknown;
+    } | null;
+};
+
 export type CookieLoginResponseReadable = {
     sessionId?: string;
     user?: UserInfo;
@@ -1128,6 +1140,13 @@ export type CreateWithdrawalMethodRequest = {
     singleWithdrawalLimit?: number | null;
 };
 
+export type Currency = {
+    readonly code?: string | null;
+    readonly name?: string | null;
+    readonly symbol?: string | null;
+    readonly decimalPlaces?: number;
+};
+
 export type CurrencyDto = {
     id?: string;
     createdAt?: string;
@@ -1370,6 +1389,10 @@ export type DocumentsTypeDtoFujiPayApiResponse = {
     } | null) | undefined;
 };
 
+export type EmailAddress = {
+    readonly plainValue?: string | null;
+};
+
 export type ExportReceiptsReadModelRequest = {
     searchTerm?: string | null;
     createdFrom?: string | null;
@@ -1394,6 +1417,14 @@ export type ExportReceiptsReadModelRequest = {
     providerMessage?: string | null;
     applicationId?: string | null;
     companyId?: string | null;
+};
+
+export type ExternalReference = {
+    readonly value?: string | null;
+    readonly type?: string | null;
+    readonly isClientReference?: boolean;
+    readonly isProviderReference?: boolean;
+    readonly isInternalReference?: boolean;
 };
 
 export type FeeConfigOwnerType = {
@@ -1617,6 +1648,18 @@ export type FundTransfersReadModelDtoFujiPayApiResponse = {
     } | null) | ({
         [key: string]: unknown;
     } | null) | undefined;
+};
+
+export type GeoLocation = {
+    country?: string | null;
+    countryCode?: string | null;
+    region?: string | null;
+    city?: string | null;
+    latitude?: number | null;
+    longitude?: number | null;
+    isp?: string | null;
+    organization?: string | null;
+    lastUpdated?: string | null;
 };
 
 export type GetAllAllowedIpResponse = {
@@ -2413,6 +2456,16 @@ export type GetAllWithdrawalMethodResponseIEnumerableFujiPayApiResponse = {
     } | null) | undefined;
 };
 
+export type IDomainEvent = {
+    readonly eventId?: string;
+    readonly aggregateId?: string;
+    readonly occurredAt?: string;
+    readonly eventVersion?: number;
+    readonly metadata?: {
+        [key: string]: unknown;
+    } | null;
+};
+
 export type InitiationPaymentRequest = {
     amount?: number;
     currency?: string | null;
@@ -2450,6 +2503,57 @@ export type InitiationPaymentResponseFujiPayApiResponse = {
     } | null) | ({
         [key: string]: unknown;
     } | null) | undefined;
+};
+
+export type InternalReference = {
+    readonly value?: string | null;
+    type?: ReferenceType;
+    readonly generatedDate?: string;
+    readonly identifier?: string | null;
+};
+
+export type IpAddressReadable = {
+    readonly value?: string | null;
+    type?: IpAddressType;
+    classification?: IpClassification;
+    geoLocation?: GeoLocation;
+    readonly riskScore?: number;
+    readonly isPrivate?: boolean;
+    metadata?: IpMetadata;
+    readonly isSuspicious?: boolean;
+    readonly isPublicRoutable?: boolean;
+    readonly canBeGeolocated?: boolean;
+    readonly isTrusted?: boolean;
+};
+
+export type IpAddressWritable = {
+    type?: IpAddressType;
+    classification?: IpClassification;
+    geoLocation?: GeoLocation;
+    metadata?: IpMetadata;
+};
+
+export enum IpAddressType {
+    _0 = 0,
+    _1 = 1
+}
+
+export enum IpClassification {
+    _0 = 0,
+    _1 = 1,
+    _2 = 2,
+    _3 = 3,
+    _4 = 4,
+    _5 = 5,
+    _6 = 6
+}
+
+export type IpMetadata = {
+    ipFamily?: string | null;
+    isRoutable?: boolean;
+    canBeGeolocated?: boolean;
+    requiresSuspicionCheck?: boolean;
+    recommendedAction?: string | null;
 };
 
 export type KycDocumentDto = {
@@ -2673,6 +2777,15 @@ export type LogoutResponseFujiPayApiResponse = {
     } | null) | undefined;
 };
 
+export type Money = {
+    readonly amount?: number;
+    currency?: Currency;
+    readonly currencyCode?: string | null;
+    readonly currencySymbol?: string | null;
+    readonly isZero?: boolean;
+    readonly isPositive?: boolean;
+};
+
 export type NotificationDto = {
     id?: string;
     createdAt?: string;
@@ -2734,6 +2847,118 @@ export type ObjectFujiPayApiResponse = {
         [key: string]: unknown;
     } | null;
     [key: string]: unknown | (string | null) | (string | null) | (number | null) | (string | null) | (string | null) | boolean | (string | null) | (string | null) | string | ({
+        [key: string]: Array<string> | null;
+    } | null) | ({
+        [key: string]: unknown;
+    } | null) | undefined;
+};
+
+export type PaymentAggregateReadable = {
+    readonly id?: string;
+    readonly version?: number;
+    readonly isReplaying?: boolean;
+    readonly isSealed?: boolean;
+    readonly createdAt?: string;
+    readonly lastModifiedAt?: string;
+    readonly uncommittedEvents?: Array<IDomainEvent> | null;
+    readonly allEvents?: Array<IDomainEvent> | null;
+    readonly hasUncommittedEvents?: boolean;
+    readonly lastSnapshotVersion?: number | null;
+    readonly pendingCompensationEvents?: Array<IDomainEvent> | null;
+    readonly compensationHistory?: Array<CompensationRecord> | null;
+    externalReference?: ExternalReference;
+    internalReference?: InternalReference;
+    readonly providerInitialReference?: string | null;
+    readonly providerFinalReference?: string | null;
+    readonly applicationId?: string;
+    readonly companyId?: string;
+    readonly paymentMethodId?: string;
+    customerPhone?: PhoneNumber;
+    customerEmail?: EmailAddress;
+    customerIpAddress?: IpAddressReadable;
+    amount?: Money;
+    finalAmount?: Money;
+    providerFeeAmount?: Money;
+    internalFeeAmount?: Money;
+    feeAppliedAmount?: Money;
+    netAmount?: Money;
+    status?: PaymentStatus;
+    readonly customerVerified?: boolean | null;
+    readonly validationResults?: string | null;
+    readonly providerRequestData?: string | null;
+    readonly providerResponseData?: string | null;
+    readonly httpStatusCode?: number | null;
+    readonly rawProviderData?: string | null;
+    readonly failureReason?: string | null;
+    readonly providerErrorCode?: string | null;
+    readonly providerErrorMessage?: string | null;
+    readonly internalErrorDetails?: string | null;
+    readonly validatedAt?: string | null;
+    readonly providerRequestSentAt?: string | null;
+    readonly completedAt?: string | null;
+    readonly failedAt?: string | null;
+    readonly timedOutAt?: string | null;
+    readonly cancelledAt?: string | null;
+    readonly lastVerificationType?: string | null;
+    readonly lastVerificationRequestedBy?: string | null;
+    readonly lastVerificationRequestedByEmail?: string | null;
+    readonly lastReconciliationDate?: string | null;
+    readonly lastReconciledBy?: string | null;
+    readonly lastReconciledByEmail?: string | null;
+    previousStatus?: PaymentStatus;
+    readonly canBeModified?: boolean;
+    readonly isValidated?: boolean;
+    readonly isProviderRequestSent?: boolean;
+    readonly hasProviderFinalReference?: boolean;
+    readonly timeElapsed?: string;
+};
+
+export type PaymentAggregateWritable = {
+    customerIpAddress?: IpAddressWritable;
+};
+
+export type PaymentAggregateFujiPayApiResponseReadable = {
+    type?: string | null;
+    title?: string | null;
+    status?: number | null;
+    detail?: string | null;
+    instance?: string | null;
+    data?: PaymentAggregateReadable;
+    success?: boolean;
+    errorCode?: string | null;
+    traceId?: string | null;
+    timestamp?: string;
+    validationErrors?: {
+        [key: string]: Array<string> | null;
+    } | null;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
+    [key: string]: unknown | (string | null) | (string | null) | (number | null) | (string | null) | (string | null) | PaymentAggregateReadable | boolean | (string | null) | (string | null) | string | ({
+        [key: string]: Array<string> | null;
+    } | null) | ({
+        [key: string]: unknown;
+    } | null) | undefined;
+};
+
+export type PaymentAggregateFujiPayApiResponseWritable = {
+    type?: string | null;
+    title?: string | null;
+    status?: number | null;
+    detail?: string | null;
+    instance?: string | null;
+    data?: PaymentAggregateWritable;
+    success?: boolean;
+    errorCode?: string | null;
+    traceId?: string | null;
+    timestamp?: string;
+    validationErrors?: {
+        [key: string]: Array<string> | null;
+    } | null;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
+    [key: string]: unknown | (string | null) | (string | null) | (number | null) | (string | null) | (string | null) | PaymentAggregateWritable | boolean | (string | null) | (string | null) | string | ({
         [key: string]: Array<string> | null;
     } | null) | ({
         [key: string]: unknown;
@@ -2916,6 +3141,10 @@ export type PaymentStatusResultFujiPayApiResponseWritable = {
     } | null) | undefined;
 };
 
+export type PhoneNumber = {
+    readonly plainValue?: string | null;
+};
+
 export type ProfilPermissionsResponse = {
     id?: string;
     profilName?: string | null;
@@ -3035,6 +3264,19 @@ export type ReceiptsReadModelDtoFujiPayApiResponse = {
         [key: string]: unknown;
     } | null) | undefined;
 };
+
+export enum ReferenceType {
+    _0 = 0,
+    _1 = 1,
+    _2 = 2,
+    _3 = 3,
+    _4 = 4,
+    _5 = 5,
+    _6 = 6,
+    _7 = 7,
+    _8 = 8,
+    _9 = 9
+}
 
 export type RefreshTokenRequest = {
     refreshToken: string;
@@ -14835,6 +15077,94 @@ export type GetApiReceiptsReadModelGetAllStatusResponses = {
 };
 
 export type GetApiReceiptsReadModelGetAllStatusResponse = GetApiReceiptsReadModelGetAllStatusResponses[keyof GetApiReceiptsReadModelGetAllStatusResponses];
+
+export type PutApiReceiptsReadModelChangePaymentStatusByIdNewStatutData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: {
+        newStatut?: string;
+    };
+    url: '/api/ReceiptsReadModel/change-payment-status/{id}/newStatut';
+};
+
+export type PutApiReceiptsReadModelChangePaymentStatusByIdNewStatutErrors = {
+    /**
+     * Bad Request
+     */
+    400: ObjectFujiPayApiResponse;
+    /**
+     * Unauthorized
+     */
+    401: ObjectFujiPayApiResponse;
+    /**
+     * Forbidden
+     */
+    403: ObjectFujiPayApiResponse;
+    /**
+     * Not Found
+     */
+    404: ObjectFujiPayApiResponse;
+    /**
+     * Internal Server Error
+     */
+    500: ObjectFujiPayApiResponse;
+};
+
+export type PutApiReceiptsReadModelChangePaymentStatusByIdNewStatutError = PutApiReceiptsReadModelChangePaymentStatusByIdNewStatutErrors[keyof PutApiReceiptsReadModelChangePaymentStatusByIdNewStatutErrors];
+
+export type PutApiReceiptsReadModelChangePaymentStatusByIdNewStatutResponses = {
+    /**
+     * OK
+     */
+    200: BooleanFujiPayApiResponse;
+};
+
+export type PutApiReceiptsReadModelChangePaymentStatusByIdNewStatutResponse = PutApiReceiptsReadModelChangePaymentStatusByIdNewStatutResponses[keyof PutApiReceiptsReadModelChangePaymentStatusByIdNewStatutResponses];
+
+export type GetApiReceiptsReadModelGetAllPaymentEventsByIdData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/ReceiptsReadModel/get-all-payment-events/{id}';
+};
+
+export type GetApiReceiptsReadModelGetAllPaymentEventsByIdErrors = {
+    /**
+     * Bad Request
+     */
+    400: ObjectFujiPayApiResponse;
+    /**
+     * Unauthorized
+     */
+    401: ObjectFujiPayApiResponse;
+    /**
+     * Forbidden
+     */
+    403: ObjectFujiPayApiResponse;
+    /**
+     * Not Found
+     */
+    404: ObjectFujiPayApiResponse;
+    /**
+     * Internal Server Error
+     */
+    500: ObjectFujiPayApiResponse;
+};
+
+export type GetApiReceiptsReadModelGetAllPaymentEventsByIdError = GetApiReceiptsReadModelGetAllPaymentEventsByIdErrors[keyof GetApiReceiptsReadModelGetAllPaymentEventsByIdErrors];
+
+export type GetApiReceiptsReadModelGetAllPaymentEventsByIdResponses = {
+    /**
+     * OK
+     */
+    200: PaymentAggregateFujiPayApiResponseReadable;
+};
+
+export type GetApiReceiptsReadModelGetAllPaymentEventsByIdResponse = GetApiReceiptsReadModelGetAllPaymentEventsByIdResponses[keyof GetApiReceiptsReadModelGetAllPaymentEventsByIdResponses];
 
 export type GetApiReceiptsReadModelCheckPaymentStatusByIdData = {
     body?: never;
