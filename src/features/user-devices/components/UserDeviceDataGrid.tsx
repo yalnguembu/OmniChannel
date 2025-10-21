@@ -1,20 +1,16 @@
 import React, { useMemo } from "react"
 import { useTranslation } from "react-i18next"
-import { useNavigate } from "@tanstack/react-router"
 import { DataGrid } from "@/shared/components/data-grid/data-grid"
-import { DataGridColumnHeader, DataGridRowEntry, DataGridSort } from "@/shared/types"
+import { DataGridColumnHeader, DataGridSort } from "@/shared/types"
 import { SortDirection } from "@/shared/enums/data-grid"
-import { Button } from "@/shared/components/ui/button"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/shared/components/ui/dropdown-menu"
-import { MoreHorizontal, Eye } from "lucide-react"
 import { useUserDevice } from "../hooks/useUserDevice"
 import { UserDeviceDataGridEntry } from "../lib/data-grid/UserDeviceDataGridEntry"
 
 export const UserDeviceDataGrid: React.FC = () => {
   const { t } = useTranslation()
-  const navigate = useNavigate()
 
-  const { userDevices, currentPage, pageSize, totalItems, sortBy, sortDirection, selectedRows, isLoading, changePage, changeSort, setSelectedRows } = useUserDevice()
+  const { userDevices, currentPage, pageSize, totalItems, sortBy, sortDirection, selectedRows, isLoading, changePage, changePageSize, changeSort, setSelectedRows } =
+    useUserDevice()
 
   const columnHeaders: DataGridColumnHeader[] = [
     {
@@ -120,34 +116,6 @@ export const UserDeviceDataGrid: React.FC = () => {
     return userDevices.map((item) => new UserDeviceDataGridEntry(item))
   }, [userDevices])
 
-  const handleView = (id: string) => {
-    navigate({ to: `/userDevice/${id}` })
-  }
-
-  const renderCell = (item: DataGridRowEntry, columnKey: string) => {
-    switch (columnKey) {
-      case "actions":
-        return (
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-8 w-8 p-0">
-                <span className="sr-only">Open menu</span>
-                <MoreHorizontal className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={() => handleView(item.getId())}>
-                <Eye className="mr-2 h-4 w-4" />
-                {t("userDevices.actions.view")}
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        )
-      default:
-        return item.getTextFor(columnKey) || "N/A"
-    }
-  }
-
   const sortConfig: DataGridSort | undefined = sortBy
     ? {
         column: sortBy,
@@ -193,7 +161,7 @@ export const UserDeviceDataGrid: React.FC = () => {
         hiddenColumns={[]}
         onColumnVisibilityChange={() => {}}
         bulkActions={bulkActions}
-        renderCell={renderCell}
+        dispatch={() => {}}
       />
     </div>
   )

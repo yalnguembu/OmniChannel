@@ -13,8 +13,21 @@ import { ModalWrapper } from "@/shared/components/ModalWrapper"
 export const WebhookLogDataGrid: React.FC = () => {
   const { t } = useTranslation()
 
-  const { webhookLogs, currentPage, pageSize, totalItems, sortBy, sortDirection, selectedRows, isLoading, changePage, changeSort, setSelectedRows, searchWebhookLogs } =
-    useWebhookLog()
+  const {
+    webhookLogs,
+    currentPage,
+    pageSize,
+    totalItems,
+    sortBy,
+    sortDirection,
+    selectedRows,
+    isLoading,
+    changePage,
+    changePageSize,
+    changeSort,
+    setSelectedRows,
+    searchWebhookLogs,
+  } = useWebhookLog()
 
   const columnHeaders: DataGridColumnHeader[] = [
     {

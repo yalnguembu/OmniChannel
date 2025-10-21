@@ -11,7 +11,8 @@ export const CountryDataGrid: React.FC = () => {
   const { t } = useTranslation()
   const navigate = useNavigate()
 
-  const { countrys, currentPage, pageSize, totalItems, sortBy, sortDirection, selectedRows, isLoading, changePage, changeSort, setSelectedRows, deleteCountry } = useCountry()
+  const { countrys, currentPage, pageSize, totalItems, sortBy, sortDirection, selectedRows, isLoading, changePage, changePageSize, changeSort, setSelectedRows, deleteCountry } =
+    useCountry()
 
   const columnHeaders: DataGridColumnHeader[] = [
     {

@@ -11,8 +11,21 @@ export const SecureSettingDataGrid: React.FC = () => {
   const { t } = useTranslation()
   const navigate = useNavigate()
 
-  const { secureSettings, searchSecureSettings, currentPage, pageSize, totalItems, sortBy, sortDirection, selectedRows, isLoading, changePage, changeSort, setSelectedRows } =
-    useSecureSetting()
+  const {
+    secureSettings,
+    searchSecureSettings,
+    currentPage,
+    pageSize,
+    totalItems,
+    sortBy,
+    sortDirection,
+    selectedRows,
+    isLoading,
+    changePage,
+    changePageSize,
+    changeSort,
+    setSelectedRows,
+  } = useSecureSetting()
 
   useEffect(() => {
     searchSecureSettings()
