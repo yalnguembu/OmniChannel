@@ -14,9 +14,12 @@ import { TransactionDetailsModal } from "./TransactionDetailsModal"
 import { ChangeStatusDialog } from "./ChangeStatusDialog"
 import { SearchReceiptsReadModelResponse } from "@/shared/api/types.gen"
 import { toast } from "sonner"
+import { useSessionStore } from "@/shared/stores/sessionStore"
 
 export const ReceiptsReadModelDataGrid: React.FC = () => {
   const { t } = useTranslation()
+  const { userPermissions } = useSessionStore()
+
   const [bulkDeleteConfirmation, setBulkDeleteConfirmation] = useState(false)
   const [showDetailsModal, setShowDetailsModal] = useState(false)
   const [showChangeStatusDialog, setShowChangeStatusDialog] = useState(false)
@@ -66,12 +69,6 @@ export const ReceiptsReadModelDataGrid: React.FC = () => {
       sortable: true,
       resizable: true,
     },
-    // {
-    //   key: "context",
-    //   label: t("receiptsreadmodels.headers.context"),
-    //   sortable: true,
-    //   resizable: true,
-    // },
     {
       key: "references",
       label: t("receiptsreadmodels.headers.references"),
@@ -350,6 +347,12 @@ export const ReceiptsReadModelDataGrid: React.FC = () => {
     }
   }
 
+  const getActionsForFromPermissions = (): ACTION[] => {
+    const baseActions: ACTION[] = ["view"]
+    if (!userPermissions.includes("WITHDRAWALSREADMODEL_CHANGE_STATUS")) baseActions.push("checkStatus", "changeStatus")
+    return baseActions
+  }
+
   return (
     <div className="w-full max-w-full overflow-hidden">
       <DataGrid
@@ -371,7 +374,7 @@ export const ReceiptsReadModelDataGrid: React.FC = () => {
         enableColumnVisibility={true}
         bulkActions={bulkActions}
         renderCell={renderCell}
-        actions={actions}
+        actions={getActionsForFromPermissions()}
         dispatch={handleDispatch}
       />
 

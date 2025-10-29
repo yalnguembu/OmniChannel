@@ -9,9 +9,11 @@ import { useWithdrawalsReadModel } from "../hooks/useWithdrawalsReadModel"
 import { useState } from "react"
 import { WithdrawalInitForm } from "../components/WithdrawalInitForm"
 import { ModalWrapper } from "@/shared/components/ModalWrapper"
+import { useSessionStore } from "@/shared/stores/sessionStore"
 
 export function WithdrawalsReadModelsListPage() {
   const { t } = useTranslation()
+  const { userPermissions } = useSessionStore()
   const { isLoading, isError, error, viewMode, setViewMode, refreshData, hasSelection, selectedRows, applyFilters, clearFilters, createWithdrawalReadModelWithValidation } =
     useWithdrawalsReadModel()
 
@@ -54,7 +56,7 @@ export function WithdrawalsReadModelsListPage() {
       header={
         <ListPageHeader
           title={t("withdrawalsReadModels.title")}
-          addButtonText={t("withdrawalsReadModels.actions.add")}
+          addButtonText={userPermissions?.includes("WITHDRAWALSREADMODEL_CREATE") ? t("withdrawalsReadModels.actions.add") : undefined}
           breadcrumbs={[{ label: t("navigation.dashboard"), href: "/dashboard" }, { label: t("withdrawalsReadModels.title") }]}
           onCreate={toggleShowCreateForm}
         />

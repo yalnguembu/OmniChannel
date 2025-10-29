@@ -62,7 +62,7 @@ export function DashboardPage() {
 
   // Advanced analytics calculations
   const analytics = useMemo(() => {
-    const totalBalance = effectiveBalances.reduce((sum, bal) => sum + (bal.currentBalance || 0), 0)
+    const totalBalance = effectiveBalances.filter((bal) => bal.balanceType === "MAIN").reduce((sum, bal) => sum + (bal.currentBalance || 0), 0)
     const totalAvailable = effectiveBalances.reduce((sum, bal) => sum + (bal.availableBalance || 0), 0)
     const totalReserved = effectiveBalances.reduce((sum, bal) => sum + (bal.reservedBalance || 0), 0)
 
@@ -163,10 +163,12 @@ export function DashboardPage() {
                 </div>
               ) : (
                 <>
-                  <div className="text-xl lg:text-base xl:text-2xl font-bold text-primary">{currentMetrics?.totalVolume}</div>
+                  <div className="text-xl lg:text-base xl:text-2xl font-bold text-primary">{currentMetrics?.totalVolume?.toFixed(2)} XAF</div>
                   <div className="flex items-center gap-1 text-xs text-muted-foreground">
                     <TrendingUp className="h-3 w-3 text-green-600" />
-                    <span className="font-semibold">{currentMetrics?.totalReceipts + currentMetrics?.totalWithdrawals + currentMetrics?.totalFundTransfers || 0}</span>
+                    <span className="font-semibold">
+                      {(currentMetrics?.totalReceipts || 0) + (currentMetrics?.totalWithdrawals || 0) + (currentMetrics?.totalFundTransfers || 0)}
+                    </span>
                     {t("analytics.transactions.counts")}
                   </div>
                 </>
@@ -186,10 +188,12 @@ export function DashboardPage() {
                 </div>
               ) : (
                 <>
-                  <div className="text-xl lg:text-base xl:text-2xl font-bold">{analytics?.totalBalance}</div>
+                  <div className="text-xl lg:text-base xl:text-2xl font-bold">{parseInt(analytics?.totalBalance?.toFixed(2))} XAF</div>
                   <div className="flex items-center gap-1 text-xs text-muted-foreground">
                     <TrendingUp className="h-3 w-3 text-green-600" />
-                    <span className="font-semibold">{currentMetrics?.totalReceipts + currentMetrics?.totalWithdrawals + currentMetrics?.totalFundTransfers || 0}</span>
+                    <span className="font-semibold">
+                      {(currentMetrics?.totalReceipts || 0) + (currentMetrics?.totalWithdrawals || 0) + (currentMetrics?.totalFundTransfers || 0)}
+                    </span>
                     {t("analytics.transactions.counts")}
                   </div>
                 </>
@@ -209,7 +213,7 @@ export function DashboardPage() {
                 </div>
               ) : (
                 <>
-                  <div className="text-xl lg:text-base xl:text-2xl font-bold text-green-600">{currentMetrics?.totalReceiptsAmount}</div>
+                  <div className="text-xl lg:text-base xl:text-2xl font-bold text-green-600">{currentMetrics?.totalReceiptsAmount?.toFixed(2)} XAF</div>
                   <div className="flex items-center gap-1 text-xs text-muted-foreground">
                     <TrendingUp className="h-3 w-3 text-green-600" />
                     <span className="font-semibold">{currentMetrics?.totalReceipts || 0}</span> {t("analytics.transactions.counts")}
@@ -231,7 +235,7 @@ export function DashboardPage() {
                 </div>
               ) : (
                 <>
-                  <div className="text-xl lg:text-base xl:text-2xl font-bold text-orange-600">{currentMetrics?.totalWithdrawalsAmount}</div>
+                  <div className="text-xl lg:text-base xl:text-2xl font-bold text-orange-600">{currentMetrics?.totalWithdrawalsAmount} XAF</div>
                   <div className="flex items-center gap-1 text-xs text-muted-foreground">
                     <TrendingDown className="h-3 w-3 text-orange-600" />
                     <span className="font-semibold">{currentMetrics?.totalWithdrawals || 0}</span> {t("analytics.transactions.counts")}
@@ -253,7 +257,7 @@ export function DashboardPage() {
                 </div>
               ) : (
                 <>
-                  <div className="text-xl lg:text-base xl:text-2xl font-bold text-blue-500">{currentMetrics?.totalFundTransfersAmount || 0}</div>
+                  <div className="text-xl lg:text-base xl:text-2xl font-bold text-blue-500">{currentMetrics?.totalFundTransfersAmount?.toFixed(2) || 0} XAF</div>
                   <div className="flex items-center gap-1 text-xs text-muted-foreground">
                     <TrendingUp className="h-3 w-3 text-green-600" />
                     <span className="font-semibold">{currentMetrics?.totalFundTransfers || 0} </span>

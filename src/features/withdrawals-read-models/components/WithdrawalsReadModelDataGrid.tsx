@@ -14,9 +14,11 @@ import { getApiWithdrawalsReadModelGetAllWithdrawlsEventsById } from "@/shared/a
 import { toast } from "sonner"
 import { WithdrawalDetailsModal } from "./WithdrawalDetailsModal"
 import { Input } from "@/shared/components/ui/input"
+import { useSessionStore } from "@/shared/stores/sessionStore"
 
 export const WithdrawalsReadModelDataGrid: React.FC = () => {
   const { t } = useTranslation()
+  const { userPermissions } = useSessionStore()
 
   const [deleteConfirmation, setDeleteConfirmation] = useState<{ open: boolean; withdrawalId: string | null }>({
     open: false,
@@ -57,7 +59,7 @@ export const WithdrawalsReadModelDataGrid: React.FC = () => {
   const columnHeaders: DataGridColumnHeader[] = [
     {
       key: "paymentMethod",
-      label: t("withdrawalsreadmodels.headers.withdrawalMethodName"),
+      label: "🖼",
       sortable: true,
       resizable: true,
     },
@@ -151,12 +153,15 @@ export const WithdrawalsReadModelDataGrid: React.FC = () => {
   const actions: ACTION[] = ["view", "delete", "approve", "cancel", "complete"]
 
   const enum paymentMethodCode {
-    MTN_MOMO = "/icons/momo.png",
-    ORANGE_MONEY = "/icons/om.png",
+    MOMO = "/icons/momo.png",
+    OM = "/icons/om.png",
   }
 
   const getActionsForStatus = (status: string): ACTION[] => {
     const baseActions: ACTION[] = ["view", "delete"]
+    if (!userPermissions.includes("WITHDRAWALSREADMODEL_CHANGE_STATUS")) {
+      return baseActions
+    }
     switch (status) {
       case "AWAITING_APPROVAL":
         return [...baseActions, "approve", "cancel"]
@@ -244,13 +249,7 @@ export const WithdrawalsReadModelDataGrid: React.FC = () => {
           return (
             <div className="flex flex-row justify-between px-4 mt-auto border-b">
               <img src={paymentMethodCode[item.getTextFor("paymentMethodName") as keyof typeof paymentMethodCode]} alt="Payment Method" className="h-6 w-6 rounded-md" />
-              <ActionButtonGroup
-                view={view}
-                isLoading={isLoading}
-                row={item}
-                actions={getActionsForStatus(item.getTextFor("status")) as ACTION[]}
-                dispatch={handleDispatch}
-              />
+              <ActionButtonGroup view={view} isLoading={isLoading} row={item} actions={getActionsForStatus(item.getTextFor("status")) as ACTION[]} dispatch={handleDispatch} />
             </div>
           )
         case "amount":
