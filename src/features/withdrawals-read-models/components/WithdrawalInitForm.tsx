@@ -7,7 +7,7 @@ import { Input } from "@/shared/components/ui/input"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/shared/components/ui/form"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/components/ui/card"
 import { LoaderIcon } from "lucide-react"
-import { WithdrawalsInitRequest } from "@/shared/api"
+import { getApiBalancesReadModelDropdown, WithdrawalsInitRequest } from "@/shared/api"
 import { zWithdrawalsInitRequest } from "@/shared/api/zod.gen"
 import { useCompany } from "@/features/companies/hooks/useCompany"
 import { SearchDropdown } from "@/shared/components/dropdowns/search-dropdown"
@@ -26,7 +26,8 @@ interface WithdrawalInitFormProps {
 export const WithdrawalInitForm: React.FC<WithdrawalInitFormProps> = ({ onSubmit, onCancel, isLoading = false, defaultValues }) => {
   const { t } = useTranslation()
 
-  const [balanceId, setBalanceId] = React.useState<string>("")
+  const [balancesResponse, setBalances] = React.useState({})
+  const [isBalancesLoading, setIsBalancesLoading] = React.useState<boolean>(false)
 
   const form = useForm<WithdrawalsInitRequest>({
     resolver: zodResolver(zWithdrawalsInitRequest),
@@ -36,7 +37,6 @@ export const WithdrawalInitForm: React.FC<WithdrawalInitFormProps> = ({ onSubmit
   })
 
   const { dropdownQuery: getBalances } = useBalancesReadModel()
-  const { searchMutation: searchBalancesReadModelsMutation } = useBalancesReadModel()
   const { dropdownQuery: getCompanies } = useCompany()
   const { dropdownQuery: getApplications } = useApplication()
   const { dropdownQuery: getWithdrawalMethods } = useWithdrawalMethod()
@@ -44,9 +44,16 @@ export const WithdrawalInitForm: React.FC<WithdrawalInitFormProps> = ({ onSubmit
   const { data: companiesResponse, isLoading: isCompaniesLoading } = getCompanies()
   const { data: applicationsResponse, isLoading: isApplicationsLoading } = getApplications()
   const { data: withdrawalMethodsResponse, isLoading: isWithdrawalMethodsLoading } = getWithdrawalMethods()
-  const { data: balancesResponse, isLoading: isBlancesLoading } = getBalances()
+  // const { data: balancesResponse, isLoading: isBlancesLoading } = getBalances()
 
-  const balanceOptions = useMemo(() => balancesResponse?.data?.map((balance) => ({ value: balance.id ?? "", label: balance.name ?? "" })) ?? [], [balancesResponse])
+  const balanceOptions = useMemo(
+    () =>
+      balancesResponse?.data?.map((balance) => ({
+        value: balance.id ?? "",
+        label: `${balance.balanceType} ${balance.currentBalance} ${balance.currency}` ?? "",
+      })) ?? [],
+    [balancesResponse],
+  )
   const companyOptions = useMemo(() => companiesResponse?.data?.map((company) => ({ value: company.id ?? "", label: company.name ?? "" })) ?? [], [companiesResponse])
   const applicationOptions = useMemo(() => applicationsResponse?.data?.map((app) => ({ value: app.id ?? "", label: app.name ?? "" })) ?? [], [applicationsResponse])
   const withdrawalMethodOptions = useMemo(() => withdrawalMethodsResponse?.data?.map((app) => ({ value: app.id ?? "", label: app.name ?? "" })) ?? [], [withdrawalMethodsResponse])
@@ -57,37 +64,25 @@ export const WithdrawalInitForm: React.FC<WithdrawalInitFormProps> = ({ onSubmit
     }
   }
 
-  const searchBalancesReadModelsByApplicationIdAndWithdrawalMethodId = (paymentMethodId: string) => {
-    searchBalancesReadModelsMutation.mutate(
-      {
-        body: {
-          pageNumber: 1,
-          pageSize: 10,
-          balanceType: "MAIN",
-          paymentMethodId,
-        },
+  const fetchBalances = async () => {
+    setIsBalancesLoading(true)
+    const response = await getApiBalancesReadModelDropdown({
+      query: {
+        balancetype: "MAIN",
+        applicationid: form.getValues("applicationId") ?? "",
       },
-      {
-        onSuccess: (data) => {
-          if (data.success && data.data?.items && data.data.items.length > 0) {
-            const balance = data.data.items[0]
-            setBalanceId(balance.id ?? "")
-            form.setValue("balanceId", balance.id ?? "")
-          }
-        },
-        onError: (error: any) => {
-          const message = error.message || t("users.messages.create.error")
-          toast.error(message)
-        },
-      },
-    )
+    })
+    setIsBalancesLoading(false)
+    console.log(response.data)
+
+    if (response.data) setBalances(response.data)
   }
 
   useEffect(() => {
     if (form.getValues("withdrawalMethodId")) {
-      searchBalancesReadModelsByApplicationIdAndWithdrawalMethodId(form.getValues("withdrawalMethodId") || "")
+      fetchBalances()
     }
-  }, [form.watch("withdrawalMethodId")])
+  }, [form.watch("withdrawalMethodId"), form.watch("applicationId")])
 
   return (
     <Card className="w-full max-w-4xl mx-auto">
@@ -161,6 +156,26 @@ export const WithdrawalInitForm: React.FC<WithdrawalInitFormProps> = ({ onSubmit
                 )}
               />
 
+              <FormField
+                control={form.control}
+                name="balanceId"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{t("withdrawals.form.balanceIdLabel")}</FormLabel>
+                    <FormControl>
+                      <SearchDropdown
+                        value={field.value || null}
+                        onChange={(val) => field.onChange(val)}
+                        options={balanceOptions}
+                        placeholder={t("withdrawals.form.balanceIdPlaceholder")}
+                        disabled={isBalancesLoading}
+                        isLoading={isBalancesLoading}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
               <FormField
                 control={form.control}
                 name="amount"

@@ -3509,6 +3509,8 @@
       "applicationIdPlaceholder": "Sélectionner une application",
       "companyIdLabel": "Entreprise",
       "companyIdPlaceholder": "Sélectionner une entreprise",
+      "balanceIdLabel": "Solde",
+      "balanceIdPlaceholder": "Sélectionner un Solde",
       "init": {
         "description": "Initier un nouveau retrait.",
         "submit": "Initier",

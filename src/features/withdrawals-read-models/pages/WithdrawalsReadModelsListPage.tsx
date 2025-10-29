@@ -37,7 +37,7 @@ export function WithdrawalsReadModelsListPage() {
       <>
         <WithdrawalsReadModelDataGrid />
         {showCreateForm ? (
-          <ModalWrapper title="" size="xl" open={showCreateForm} onOpenChange={toggleShowCreateForm}>
+          <ModalWrapper title="" size="2xl" open={showCreateForm} onOpenChange={toggleShowCreateForm}>
             <div className="-m-6">
               <WithdrawalInitForm onSubmit={handleSubmitWithdrawalInit} onCancel={toggleShowCreateForm} />
             </div>{" "}
@@ -71,7 +71,6 @@ export function WithdrawalsReadModelsListPage() {
           hasSelection={hasSelection}
           selectedRows={selectedRows}
           selectionCount={selectedRows.length}
-          // onImport={handleImport}
           onExport={handleExport}
           fieldTranslationPrefix="withdrawalsReadModels"
         />

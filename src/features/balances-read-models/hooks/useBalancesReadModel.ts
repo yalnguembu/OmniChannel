@@ -90,10 +90,18 @@ export const useBalancesReadModel = () => {
       },
     })
 
-  const dropdownQuery = (id?: string) =>
+  type BalancePayload = { balancetype: string; paymentmethodid?: string; applicationid: string }
+
+  const dropdownQuery = ({ balancetype, paymentmethodid, applicationid }: BalancePayload) =>
     // eslint-disable-next-line react-hooks/rules-of-hooks
     useQuery({
-      ...getApiBalancesReadModelDropdownOptions({ query: { id } }),
+      ...getApiBalancesReadModelDropdownOptions({
+        query: {
+          balancetype,
+          paymentmethodid,
+          applicationid,
+        },
+      }),
       staleTime: 10 * 60 * 1000,
       gcTime: 30 * 60 * 1000,
       ...createQueryErrorConfig({
@@ -250,9 +258,6 @@ export const useBalancesReadModel = () => {
   const refreshData = () => {
     searchBalancesReadModels()
   }
-  const enableDropdownQuery = () => {
-    dropdownQuery()
-  }
 
   return {
     ...store,
@@ -274,7 +279,6 @@ export const useBalancesReadModel = () => {
     applyFilters,
     clearFilters,
     refreshData,
-    enableDropdownQuery,
     deleteBalancesReadModel,
     hasData: store.balancesReadModels.length > 0,
     hasSelection: store.selectedRows.length > 0,

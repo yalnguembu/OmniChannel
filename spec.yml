@@ -1824,7 +1824,17 @@ paths:
           schema:
             type: string
             default: Asc
+        - name: balancetype
+          in: query
+          schema:
+            type: string
+            default: ''
         - name: paymentmethodid
+          in: query
+          schema:
+            type: string
+            format: uuid
+        - name: applicationid
           in: query
           schema:
             type: string
@@ -16210,6 +16220,15 @@ components:
         currency:
           type: string
           nullable: true
+        ownerName:
+          type: string
+          nullable: true
+        balanceType:
+          type: string
+          nullable: true
+        currentBalance:
+          type: number
+          format: double
       additionalProperties: false
     GetAllBalancesReadModelResponseIEnumerableFujiPayApiResponse:
       type: object

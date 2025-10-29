@@ -206,22 +206,27 @@ export const useWithdrawalsReadModel = () => {
   const search = () => {
     searchWithdrawalsReadModels()
   }
+
   const changePage = (page: number) => {
     store.setCurrentPage(page)
     searchWithdrawalsReadModels()
   }
+
   const changePageSize = (size: number) => {
     store.setPageSize(size)
     searchWithdrawalsReadModels()
   }
+
   const changeSort = (sortBy: string | null, direction: SortDirection | null) => {
     store.setSorting(sortBy, direction)
     searchWithdrawalsReadModels()
   }
+
   const applyFilters = (filters: Partial<typeof store.filters>) => {
     store.setFilters(filters)
     searchWithdrawalsReadModels()
   }
+
   const clearFilters = () => {
     store.clearFilters()
     searchWithdrawalsReadModels()

@@ -3487,6 +3487,8 @@
       "applicationIdPlaceholder": "Application Id Placeholder",
       "companyIdLabel": "Company Id Label",
       "companyIdPlaceholder": "Company Id Placeholder",
+      "balanceIdLabel": "Balance",
+      "balanceIdPlaceholder": "Select a balance",
       "init": {
         "description": "Description",
         "submit": "Submit",
