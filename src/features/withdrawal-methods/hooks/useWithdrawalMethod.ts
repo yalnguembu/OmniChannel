@@ -87,11 +87,12 @@ export const useWithdrawalMethod = () => {
       },
     })
 
-  const dropdownQuery = useQuery({
-    ...getApiWithdrawalMethodDropdownOptions(),
-    enabled: false,
-    staleTime: 10 * 60 * 1000,
-  })
+  const dropdownQuery = () =>
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    useQuery({
+      ...getApiWithdrawalMethodDropdownOptions(),
+      staleTime: 10 * 60 * 1000,
+    })
 
   const createWithdrawalMethodMutation = useMutation({
     ...postApiWithdrawalMethodMutation(),
@@ -242,7 +243,7 @@ export const useWithdrawalMethod = () => {
     searchWithdrawalMethods()
   }
   const enableDropdownQuery = () => {
-    dropdownQuery.refetch()
+    dropdownQuery()
   }
 
   return {

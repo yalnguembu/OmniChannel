@@ -134,9 +134,7 @@ export default function GeolocationAnalyticsTab({ metrics, paymentMethodMetrics,
                 <div className="absolute inset-0 flex flex-col items-center justify-center bg-background/80 backdrop-blur-sm">
                   <MapPin className="h-16 w-16 text-muted-foreground/40 mb-4" />
                   <h3 className="text-xl font-semibold mb-2">{t("analytics.geo.mapFeatureTitle")}</h3>
-                  <p className="text-center text-muted-foreground max-w-md mb-4">
-                    {t("analytics.geo.mapFeatureDescription")}
-                  </p>
+                  <p className="text-center text-muted-foreground max-w-md mb-4">{t("analytics.geo.mapFeatureDescription")}</p>
                   <div className="flex flex-wrap gap-2 justify-center">
                     <div className="flex items-center gap-2 px-3 py-1 bg-primary/10 rounded-full text-sm">
                       <MapPin className="h-4 w-4" />

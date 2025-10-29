@@ -1,9 +1,5 @@
 import { immer } from "zustand/middleware/immer"
-import {
-  ReceiptsReadModelState,
-  ReceiptsReadModelActions,
-  initialState,
-} from "@/features/receipts-read-models/stores/receiptsReadModelStore"
+import { ReceiptsReadModelState, ReceiptsReadModelActions, initialState } from "@/features/receipts-read-models/stores/receiptsReadModelStore"
 
 type Action = {
   type: keyof ReceiptsReadModelActions

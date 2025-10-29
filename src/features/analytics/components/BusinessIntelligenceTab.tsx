@@ -67,23 +67,23 @@ export default function BusinessIntelligenceTab({ currentMetrics, totalTransacti
             ) : (
               <div className="space-y-4">
                 <div className="text-3xl font-bold text-green-600">{safeDivide(overallSuccessRate + (100 - effectiveMetrics.failureRate), 2).toFixed(1)}%</div>
-              <div className="space-y-2">
-                <div className="flex justify-between text-sm">
-                  <span>{t("analytics.business.operationalEfficiency.transactionSuccess")}</span>
-                  <span className="font-medium">{overallSuccessRate.toFixed(1)}%</span>
-                </div>
-                <div className="flex justify-between text-sm">
-                  <span>{t("analytics.business.operationalEfficiency.apiReliability")}</span>
-                  <span className="font-medium">{(100 - effectiveMetrics.failureRate).toFixed(1)}%</span>
-                </div>
-                <div className="flex justify-between text-sm">
-                  <span>{t("analytics.business.operationalEfficiency.processingLoad")}</span>
-                  <span className="font-medium">
-                    {totalTransactions.toLocaleString()} {t("analytics.business.operationalEfficiency.txPerDay")}
-                  </span>
+                <div className="space-y-2">
+                  <div className="flex justify-between text-sm">
+                    <span>{t("analytics.business.operationalEfficiency.transactionSuccess")}</span>
+                    <span className="font-medium">{overallSuccessRate.toFixed(1)}%</span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span>{t("analytics.business.operationalEfficiency.apiReliability")}</span>
+                    <span className="font-medium">{(100 - effectiveMetrics.failureRate).toFixed(1)}%</span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span>{t("analytics.business.operationalEfficiency.processingLoad")}</span>
+                    <span className="font-medium">
+                      {totalTransactions.toLocaleString()} {t("analytics.business.operationalEfficiency.txPerDay")}
+                    </span>
+                  </div>
                 </div>
               </div>
-            </div>
             )}
           </CardContent>
         </Card>
@@ -222,7 +222,9 @@ export default function BusinessIntelligenceTab({ currentMetrics, totalTransacti
             <div className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <div className="text-lg font-bold">{safeDivide(safeDivide(effectiveMetrics.totalVolume, 1000000), safeDivide(effectiveMetrics.activeUsers, 1000)).toFixed(1)}M</div>
+                  <div className="text-lg font-bold">
+                    {safeDivide(safeDivide(effectiveMetrics.totalVolume, 1000000), safeDivide(effectiveMetrics.activeUsers, 1000)).toFixed(1)}M
+                  </div>
                   <div className="text-sm text-muted-foreground">{t("analytics.business.growthIndicators.xafPer1kUsers")}</div>
                 </div>
                 <div>

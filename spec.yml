@@ -1491,6 +1491,54 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ObjectFujiPayApiResponse'
+  /api/BalancesReadModel/get-all-balance-events/{id}:
+    get:
+      tags:
+        - BalancesReadModel
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentAggregateFujiPayApiResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectFujiPayApiResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectFujiPayApiResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectFujiPayApiResponse'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectFujiPayApiResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectFujiPayApiResponse'
   /api/BalancesReadModel/{id}:
     get:
       tags:
@@ -4348,8 +4396,6 @@ paths:
           description: Unauthorized
         '403':
           description: Forbidden
-      security:
-        - oauth2: []
   /api/Device/revoke:
     post:
       tags:
@@ -4372,8 +4418,6 @@ paths:
           description: Unauthorized
         '403':
           description: Forbidden
-      security:
-        - oauth2: []
   /api/Device/revoke-others:
     post:
       tags:
@@ -4396,8 +4440,6 @@ paths:
           description: Unauthorized
         '403':
           description: Forbidden
-      security:
-        - oauth2: []
   /api/DocumentsType/{id}:
     get:
       tags:
@@ -7486,10 +7528,6 @@ paths:
           schema:
             type: string
             format: uuid
-        - name: newStatut
-          in: query
-          schema:
-            type: string
       responses:
         '200':
           description: OK
@@ -8117,8 +8155,6 @@ paths:
           description: Unauthorized
         '403':
           description: Forbidden
-      security:
-        - oauth2: []
   /api/Session/terminate:
     post:
       tags:
@@ -8141,8 +8177,6 @@ paths:
           description: Unauthorized
         '403':
           description: Forbidden
-      security:
-        - oauth2: []
   /api/Session/terminate-others:
     post:
       tags:
@@ -8154,8 +8188,6 @@ paths:
           description: Unauthorized
         '403':
           description: Forbidden
-      security:
-        - oauth2: []
   /api/Setting/get-all-categories:
     get:
       tags:
@@ -11870,6 +11902,287 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ObjectFujiPayApiResponse'
+  /api/WithdrawalsReadModel/get-all-status:
+    get:
+      tags:
+        - WithdrawalsReadModel
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WithdrawalStatusIEnumerableFujiPayApiResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectFujiPayApiResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectFujiPayApiResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectFujiPayApiResponse'
+  /api/WithdrawalsReadModel/get-all-withdrawls-events/{id}:
+    get:
+      tags:
+        - WithdrawalsReadModel
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentAggregateFujiPayApiResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectFujiPayApiResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectFujiPayApiResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectFujiPayApiResponse'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectFujiPayApiResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectFujiPayApiResponse'
+  /api/WithdrawalsReadModel:
+    post:
+      tags:
+        - WithdrawalsReadModel
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WithdrawalsInitRequest'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/WithdrawalsInitRequest'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/WithdrawalsInitRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaseCreateResponseFujiPayApiResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectFujiPayApiResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectFujiPayApiResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectFujiPayApiResponse'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectFujiPayApiResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectFujiPayApiResponse'
+  /api/WithdrawalsReadModel/approval/{id}:
+    put:
+      tags:
+        - WithdrawalsReadModel
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaseCreateResponseFujiPayApiResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectFujiPayApiResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectFujiPayApiResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectFujiPayApiResponse'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectFujiPayApiResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectFujiPayApiResponse'
+  /api/WithdrawalsReadModel/cancel/{id}:
+    put:
+      tags:
+        - WithdrawalsReadModel
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: raison
+          in: query
+          schema:
+            type: string
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaseCreateResponseFujiPayApiResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectFujiPayApiResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectFujiPayApiResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectFujiPayApiResponse'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectFujiPayApiResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectFujiPayApiResponse'
+  /api/WithdrawalsReadModel/complete/{id}:
+    put:
+      tags:
+        - WithdrawalsReadModel
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: reference
+          in: query
+          schema:
+            type: string
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaseCreateResponseFujiPayApiResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectFujiPayApiResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectFujiPayApiResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectFujiPayApiResponse'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectFujiPayApiResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectFujiPayApiResponse'
   /api/WithdrawalsReadModel/{id}:
     get:
       tags:
@@ -14408,10 +14721,6 @@ components:
           format: uuid
         isVerified:
           type: boolean
-        verificationDate:
-          type: string
-          format: date-time
-          nullable: true
         verificationReference:
           type: string
           nullable: true
@@ -29524,12 +29833,6 @@ components:
         paymentMethodId:
           type: string
           format: uuid
-        isVerified:
-          type: boolean
-        verificationDate:
-          type: string
-          format: date-time
-          nullable: true
         verificationReference:
           type: string
           nullable: true
@@ -30690,6 +30993,128 @@ components:
           additionalProperties: {}
           nullable: true
       additionalProperties: {}
+    WithdrawalStatus:
+      type: object
+      properties:
+        code:
+          type: string
+          nullable: true
+          readOnly: true
+        displayName:
+          type: string
+          nullable: true
+          readOnly: true
+        isTerminal:
+          type: boolean
+          readOnly: true
+        category:
+          type: string
+          nullable: true
+          readOnly: true
+        isSuccess:
+          type: boolean
+          readOnly: true
+        isFailure:
+          type: boolean
+          readOnly: true
+        isPending:
+          type: boolean
+          readOnly: true
+        isProcessing:
+          type: boolean
+          readOnly: true
+        isAutomaticWorkflow:
+          type: boolean
+          readOnly: true
+        isManualWorkflow:
+          type: boolean
+          readOnly: true
+        requiresApproval:
+          type: boolean
+          readOnly: true
+        requiresManualProcessing:
+          type: boolean
+          readOnly: true
+        canRetry:
+          type: boolean
+          readOnly: true
+      additionalProperties: false
+    WithdrawalStatusIEnumerableFujiPayApiResponse:
+      type: object
+      properties:
+        type:
+          type: string
+          nullable: true
+        title:
+          type: string
+          nullable: true
+        status:
+          type: integer
+          format: int32
+          nullable: true
+        detail:
+          type: string
+          nullable: true
+        instance:
+          type: string
+          nullable: true
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/WithdrawalStatus'
+          nullable: true
+        success:
+          type: boolean
+        errorCode:
+          type: string
+          nullable: true
+        traceId:
+          type: string
+          nullable: true
+        timestamp:
+          type: string
+          format: date-time
+        validationErrors:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+            nullable: true
+          nullable: true
+        metadata:
+          type: object
+          additionalProperties: {}
+          nullable: true
+      additionalProperties: {}
+    WithdrawalsInitRequest:
+      required:
+        - amount
+        - applicationId
+        - balanceId
+        - companyId
+        - withdrawalMethodId
+      type: object
+      properties:
+        balanceId:
+          type: string
+          format: uuid
+        companyId:
+          type: string
+          format: uuid
+        applicationId:
+          type: string
+          format: uuid
+        withdrawalMethodId:
+          type: string
+          format: uuid
+        amount:
+          type: number
+          format: double
+        notes:
+          type: string
+          nullable: true
+      additionalProperties: false
     WithdrawalsReadModelDto:
       type: object
       properties:

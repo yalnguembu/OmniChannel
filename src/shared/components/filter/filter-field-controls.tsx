@@ -184,7 +184,11 @@ const DateRangeFieldControl: React.FC<FilterFieldControlProps> = ({ field, formF
     <Popover>
       <PopoverTrigger asChild>
         <div className="relative w-full">
-          <Button variant="outline" className={cn("w-full justify-start text-left font-normal", !formField.value && "text-muted-foreground")} disabled={field.disabled || isLoading}>
+          <Button
+            variant="outline"
+            className={cn("w-full justify-start text-left font-normal", !formField.value && "text-muted-foreground")}
+            disabled={field.disabled || isLoading}
+          >
             <CalendarIcon className="mr-2 h-4 w-4" />
             {dateRange?.from ? (
               dateRange.to ? (
@@ -214,7 +218,14 @@ const DateRangeFieldControl: React.FC<FilterFieldControlProps> = ({ field, formF
         </div>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0" align="start">
-        <Calendar initialFocus mode="range" defaultMonth={dateRange?.from} selected={dateRange} onSelect={(range) => formField.onChange(`${range?.from?.toISOString() || ""}_${range?.to?.toISOString() || ""}`)} numberOfMonths={2} />
+        <Calendar
+          initialFocus
+          mode="range"
+          defaultMonth={dateRange?.from}
+          selected={dateRange}
+          onSelect={(range) => formField.onChange(`${range?.from?.toISOString() || ""}_${range?.to?.toISOString() || ""}`)}
+          numberOfMonths={2}
+        />
       </PopoverContent>
     </Popover>
   )

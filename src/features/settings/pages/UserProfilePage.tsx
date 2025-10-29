@@ -91,7 +91,9 @@ export function UserProfilePage() {
                   <User className="h-8 w-8 text-primary" />
                 </div>
                 <div>
-                  <CardTitle className="text-2xl">{userData.firstName && userData.lastName ? `${userData.firstName} ${userData.lastName}` : t("settings.userProfile.title")}</CardTitle>
+                  <CardTitle className="text-2xl">
+                    {userData.firstName && userData.lastName ? `${userData.firstName} ${userData.lastName}` : t("settings.userProfile.title")}
+                  </CardTitle>
                   <CardDescription className="text-base">{userData.email}</CardDescription>
                 </div>
               </div>
@@ -183,7 +185,9 @@ export function UserProfilePage() {
                 <>
                   <Separator className="my-6" />
                   <div>
-                    <h3 className="text-sm font-semibold mb-3">{t("settings.userProfile.sections.permissions")} ({userData.permissions.length})</h3>
+                    <h3 className="text-sm font-semibold mb-3">
+                      {t("settings.userProfile.sections.permissions")} ({userData.permissions.length})
+                    </h3>
                     <div className="flex flex-wrap gap-2 mt-3">
                       {userData.permissions.map((permission, index) => (
                         <Badge key={index} variant="secondary" className="font-normal text-xs">

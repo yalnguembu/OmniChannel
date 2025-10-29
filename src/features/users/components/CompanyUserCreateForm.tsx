@@ -41,7 +41,7 @@ export const CompanyUserCreateForm: React.FC<CompanyUserCreateFormProps> = ({ on
   const { data: userProfileResponse, isLoading: isUserProfilesLoading } = getUserProfiles()
 
   const userProfileOptions = useMemo(
-    () => userProfileResponse?.data.map((userProfile) => ({ value: userProfile.id ?? "", label: userProfile.name ?? "" })) ?? [],
+    () => userProfileResponse?.data?.map((userProfile) => ({ value: userProfile.id ?? "", label: userProfile.name ?? "" })) ?? [],
     [userProfileResponse],
   )
   const userCompanyOptions = useMemo(() => companiesResponse?.data?.map((app) => ({ value: app.id ?? "", label: app.name ?? "" })) ?? [], [companiesResponse])

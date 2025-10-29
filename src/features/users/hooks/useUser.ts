@@ -251,7 +251,7 @@ export const useUser = () => {
       store.setLoading(true)
       store.setError(null)
     },
-    onSuccess: (_, variables) => {
+    onSuccess: () => {
       toast.success(t("users.messages.status.success"))
       queryClient.invalidateQueries({ queryKey: userQueryKeys.lists() })
       searchUsers()

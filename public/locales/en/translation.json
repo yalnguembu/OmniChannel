@@ -90,6 +90,465 @@
     "totalCount_one": "1 allowed IP",
     "totalCount_other": "{{count}} allowed IPs"
   },
+  "analytics": {
+    "business": {
+      "customerEngagement": {
+        "apiUsage": "API Usage",
+        "callsPerUser": "calls/user",
+        "description": "User activity and growth metrics",
+        "growthRate": "Growth Rate",
+        "title": "Customer Engagement",
+        "transactionsPerUser": "Transactions per active user"
+      },
+      "growthIndicators": {
+        "description": "Key metrics for strategic decision making",
+        "marketPenetration": "Market Penetration",
+        "operationalScalability": "Operational Scalability",
+        "revenueMargin": "Revenue margin",
+        "serviceDiversification": "Service Diversification",
+        "title": "Business Growth Indicators",
+        "xafPer1kUsers": "XAF per 1K users"
+      },
+      "operationalEfficiency": {
+        "apiReliability": "API Reliability",
+        "description": "Overall platform performance and reliability",
+        "processingLoad": "Processing Load",
+        "title": "Operational Efficiency Score",
+        "transactionSuccess": "Transaction Success",
+        "txPerDay": "tx/day"
+      },
+      "revenuePerTransaction": {
+        "description": "Average revenue generation efficiency",
+        "receiptsRPT": "Receipts RPT",
+        "title": "Revenue per Transaction",
+        "transfersRPT": "Transfers RPT",
+        "withdrawalsRPT": "Withdrawals RPT"
+      },
+      "riskAssessment": {
+        "apiErrors": "API Errors",
+        "description": "Transaction failure patterns and risk indicators",
+        "failedReceipts": "Failed Receipts",
+        "failedWithdrawals": "Failed Withdrawals",
+        "high": "HIGH",
+        "low": "LOW",
+        "medium": "MEDIUM",
+        "overallRiskLevel": "Overall Risk Level",
+        "title": "Risk Assessment Dashboard"
+      },
+      "title": "Business Intelligence"
+    },
+    "crossTable": {
+      "companyMatrix": {
+        "applications": "Apps",
+        "avgProfitMargin": "Avg Profit Margin",
+        "avgSuccessRate": "Avg Success Rate",
+        "company": "Company",
+        "description": "Comprehensive company performance overview",
+        "title": "Company-Application Matrix",
+        "totalRevenue": "Total Revenue (XAF)",
+        "totalUsers": "Total Users",
+        "totalVolume": "Total Volume (XAF)"
+      },
+      "companyVolumeDistribution": {
+        "description": "Top companies by transaction volume",
+        "title": "Company Volume Distribution"
+      },
+      "overview": {
+        "activeApplications": "active applications",
+        "activeCompanies": "active companies",
+        "applicationsPerCompany": "applications per company",
+        "avgAppsPerCompany": "Avg Apps/Company",
+        "totalApplications": "Total Applications",
+        "totalCompanies": "Total Companies",
+        "totalEcosystemVolume": "Total Ecosystem Volume"
+      },
+      "rankings": {
+        "applications": "applications",
+        "mostDominant": {
+          "description": "Companies with highest transaction volumes",
+          "title": "Most Dominant Companies"
+        },
+        "mostEfficient": {
+          "title": "Most Fee Efficient"
+        },
+        "mostProfitable": {
+          "description": "Companies with highest profit margins",
+          "title": "Most Profitable Companies"
+        },
+        "mostTransactions": {
+          "title": "Most Transactions"
+        },
+        "mostUsers": {
+          "title": "Most Active Users"
+        },
+        "profitMargin": "profit margin",
+        "revenue": "revenue",
+        "transactions": "transactions"
+      },
+      "revenueDistribution": {
+        "description": "Revenue share by company",
+        "title": "Revenue Distribution"
+      },
+      "title": "Company & Application Analytics",
+      "topApplications": {
+        "application": "Application",
+        "company": "Company",
+        "description": "Best performing applications across all companies",
+        "rank": "Rank",
+        "revenue": "Revenue (XAF)",
+        "successRate": "Success Rate",
+        "title": "Top Applications Performance",
+        "transactions": "Transactions",
+        "users": "Users",
+        "volume": "Volume (XAF)"
+      }
+    },
+    "description": "Daily metrics and performance analytics",
+    "enhanced": {
+      "available": "Available",
+      "balance": "Balance",
+      "balanceDistribution": "Balance Distribution",
+      "balanceDistributionDesc": "Balance allocation across payment methods",
+      "balanceHealthDashboard": "Balance Health Dashboard",
+      "balanceHealthDesc": "Comprehensive balance monitoring and status",
+      "combinedVolume": "transactions + balances",
+      "currentBalance": "Current Balance",
+      "excellentMargin": "Excellent profit margin",
+      "goodMargin": "Good profit margin",
+      "improvementNeeded": "Margin improvement needed",
+      "liquidityDesc": "Available vs total balance ratio",
+      "liquidityHealth": "Liquidity Health",
+      "liquidityRatio": "Liquidity Ratio",
+      "operationalRisk": "Operational Risk",
+      "pendingReconciliations": "pending reconciliations",
+      "performanceMetrics": "Performance Metrics",
+      "performanceMetricsDesc": "Success rate and revenue trends",
+      "profitabilityDesc": "Revenue margin performance indicator",
+      "profitabilityTarget": "Profitability Target",
+      "provider": "Provider",
+      "reserved": "Reserved",
+      "status": "Status",
+      "systemEfficiency": "System Efficiency",
+      "totalEcosystemValue": "Total Ecosystem Value",
+      "totalTransactions": "total transactions",
+      "transactionTrends": "Transaction Trends",
+      "transactionTrendsDesc": "Daily transaction volume patterns",
+      "utilizationRate": "Utilization Rate",
+      "volumeTrendAnalysis": "Volume Trend Analysis",
+      "volumeTrendDesc": "Advanced volume visualization with gradient effects"
+    },
+    "financial": {
+      "costBenefit": {
+        "apiCallsPerHour": "API calls/hour",
+        "costEfficiency": "Cost Efficiency",
+        "costToProfitRatio": "Cost-to-profit ratio",
+        "fromReceipts": "From receipts",
+        "processingCapacity": "Processing Capacity",
+        "revenueFocus": "Revenue Focus",
+        "revenuePerUser": "XAF revenue/user",
+        "userEconomics": "User Economics"
+      },
+      "profitability": {
+        "description": "Current period profitability metrics",
+        "margin": "Profit margin",
+        "netProfit": "Net Profit",
+        "providerCosts": "Provider Costs",
+        "title": "Profitability Overview",
+        "totalFees": "Total Fees Collected"
+      },
+      "revenueAnalysis": {
+        "description": "Total fees vs provider costs with net revenue",
+        "title": "Revenue & Fee Analysis"
+      },
+      "revenueBreakdown": {
+        "description": "Revenue and margin analysis per service type",
+        "margin": "Margin",
+        "receipts": "Receipt Services",
+        "title": "Revenue Breakdown by Service",
+        "transfers": "Transfer Services",
+        "withdrawals": "Withdrawal Services"
+      }
+    },
+    "geo": {
+      "acrossRegions": "across all regions",
+      "allRegions": "All Regions",
+      "avgGrowth": "Average Growth",
+      "avgPenetration": "average penetration",
+      "cameroonRegionsMap": "Cameroon Regions Map",
+      "cameroonRegionsMapDesc": "Visual representation of user distribution across Cameroon",
+      "capital": "Capital",
+      "fastestGrowingDesc": "Regions with highest growth rates",
+      "fastestGrowingRegions": "Fastest Growing Regions",
+      "geographicDistribution": "Geographic Distribution",
+      "geographicDistributionDesc": "Users by area type",
+      "growth": "Growth",
+      "heatmaps": "Heatmaps",
+      "interactiveMap": "Interactive Map",
+      "mapDescription": "Map Description",
+      "mapFeatureDescription": "Map Feature Description",
+      "mapFeatureTitle": "Map Feature Title",
+      "marketPenetration": "Market Penetration",
+      "penetration": "Penetration",
+      "region": "Region",
+      "regionalPerformance": "Regional Performance Dashboard",
+      "regionalPerformanceDesc": "Comprehensive regional metrics and performance indicators",
+      "regionTracking": "Region Tracking",
+      "status": "Status",
+      "topRegionsByUsers": "Top Regions by Users",
+      "topRegionsDesc": "Regions with highest user adoption",
+      "totalTransactions": "Total Transactions",
+      "totalUsers": "Total Users",
+      "totalVolume": "Total Volume",
+      "transactions": "transactions",
+      "userDensity": "User Density",
+      "userDistribution": "Regional User Distribution",
+      "userDistributionDesc": "User count and transaction volume by region",
+      "users": "Users",
+      "volume": "Volume",
+      "yearOverYear": "year over year"
+    },
+    "loading": "Loading analytics data...",
+    "loadingTab": "Loading tab content...",
+    "mathematical": {
+      "crossCorrelation": {
+        "apiCallsPerUser": "API Calls per User",
+        "callsUserUnit": "calls/user",
+        "correlationCoefficientReceipt": "Correlation coefficient for receipt transactions",
+        "correlationCoefficientWithdrawal": "Correlation coefficient for withdrawal transactions",
+        "description": "Relationship analysis between key metrics and user behavior patterns",
+        "errorPatternAnalysis": "Error Pattern Analysis",
+        "errorToVolumeRatio": "Error to Volume Ratio",
+        "overallFailureDistribution": "Overall Failure Distribution",
+        "percentageTransactionsWithErrors": "Percentage of transactions with errors",
+        "receiptsVolumeSuccessCorrelation": "Receipts: Volume-Success Correlation",
+        "revenuePerUser": "Revenue per User",
+        "title": "Cross-Correlation & User Engagement Analysis",
+        "totalFailureRateAllTransactionTypes": "Total failure rate across all transaction types",
+        "transactionsPerUser": "Transactions per User",
+        "transactionsUserUnit": "transactions/user",
+        "userEngagementMetrics": "User Engagement Metrics",
+        "volumeVsSuccessRateCorrelation": "Volume vs Success Rate Correlation",
+        "withdrawalsVolumeSuccessCorrelation": "Withdrawals: Volume-Success Correlation",
+        "xafUserUnit": "XAF/user"
+      },
+      "growthOperationalEfficiency": {
+        "advancedPerformanceIndicators": "Advanced Performance Indicators",
+        "compositeGrowthIndicator": "Composite growth indicator",
+        "dailyUserGrowthRate": "Daily User Growth Rate",
+        "description": "Temporal trends, growth patterns, and operational performance indicators",
+        "growthMomentumIndex": "Growth Momentum Index",
+        "growthVelocityMetrics": "Growth & Velocity Metrics",
+        "newUsersPerDay": "new users/day",
+        "operationalRiskLevel": "Operational risk level",
+        "overallSystemStability": "Overall system stability",
+        "platformStabilityIndex": "Platform Stability Index",
+        "riskAssessmentScore": "Risk Assessment Score",
+        "title": "Growth & Operational Efficiency Analytics",
+        "transactionRate": "Transaction Rate",
+        "transactionsPerHour": "transactions/hour",
+        "volumeVelocity": "Volume Velocity",
+        "xafPerSecond": "XAF/second"
+      },
+      "operationFee": {
+        "costEfficiencyMultiplier": "Cost Efficiency Multiplier",
+        "description": "Internal vs Provider fee correlation and profitability metrics",
+        "feeCollectionEfficiency": "Fee collection efficiency",
+        "feeDistributionOverview": "Fee Distribution Overview",
+        "grossMargin": "Gross Margin",
+        "netMargin": "Net Margin",
+        "profitabilityRatios": "Profitability Ratios",
+        "profitMarginAfterProviderCosts": "Profit margin after provider costs",
+        "providerCosts": "Provider Costs",
+        "revenuePerCostUnit": "Revenue per cost unit",
+        "revenueVolumeRatio": "Revenue/Volume Ratio",
+        "title": "Operation Fee Analysis",
+        "totalFeesCollected": "Total Fees Collected"
+      },
+      "title": "Advanced Mathematical Analytics",
+      "transactionStatus": {
+        "description": "Mathematical breakdown of transaction outcomes and success patterns",
+        "failed": "Failed",
+        "failureImpactAnalysis": "Failure Impact Analysis",
+        "fundTransfers": "Fund Transfers",
+        "receiptFailures": "Receipt Failures",
+        "receipts": "Receipts",
+        "receiptsSuccessRate": "Receipts Success Rate",
+        "statisticalVarianceAnalysis": "Statistical Variance Analysis",
+        "successful": "Successful",
+        "successRate": "Success Rate",
+        "successRateBands": "Success Rate Performance Bands",
+        "successRateConsistencyMeasure": "Measure of success rate consistency",
+        "successRatesAnalysis": "Success Rates Analysis",
+        "successRateStdDev": "Success Rate Standard Deviation",
+        "title": "Transaction Status Distribution",
+        "total": "Total",
+        "transactionCoefficientVariation": "Transaction Coefficient of Variation",
+        "transactions": "transactions",
+        "transactionVolumeBands": "Transaction Volume Distribution Bands",
+        "transferFailures": "Transfer Failures",
+        "transfersSuccessRate": "Transfers Success Rate",
+        "volumeDistributionVariability": "Volume distribution variability",
+        "withdrawalFailures": "Withdrawal Failures",
+        "withdrawals": "Withdrawals",
+        "withdrawalsSuccessRate": "Withdrawals Success Rate"
+      }
+    },
+    "noData": "No data available",
+    "overview": {
+      "activeUsers": "Active Users",
+      "failureRate": "Failure rate",
+      "net": "Net",
+      "netRevenue": "Net revenue",
+      "newUsers": "New users",
+      "overallSuccessRate": "Overall Success Rate",
+      "paymentMethods": {
+        "amount": "Amount",
+        "description": "Success rates and volumes by provider",
+        "provider": "Provider",
+        "rate": "Rate",
+        "title": "Payment Method Performance",
+        "volume": "Volume"
+      },
+      "profitMargin": "Profit Margin",
+      "totalVolume": "Total Volume",
+      "transactionBreakdown": {
+        "description": "Detailed transaction metrics by type",
+        "fundTransfers": "Fund Transfers",
+        "rate": "Rate",
+        "receipts": "Receipts",
+        "success": "Success",
+        "title": "Transaction Breakdown",
+        "total": "Total",
+        "type": "Type",
+        "withdrawals": "Withdrawals"
+      }
+    },
+    "selectRange": "Select range",
+    "tabs": {
+      "business": "Business Intelligence",
+      "crossTable": "Company Analytics",
+      "financial": "Financial",
+      "geolocation": "Geographical Analytics",
+      "mathematical": "Mathematical Analytics",
+      "overview": "Overview",
+      "technical": "Technical Analytics",
+      "transactions": "Transactions"
+    },
+    "technical": {
+      "analysis": {
+        "apiCalls": "API calls",
+        "avgResponse": "avg response",
+        "bestUptimeDay": "Best Uptime Day",
+        "busiestDay": "Busiest Day",
+        "downtime": "downtime",
+        "errorRate": "error rate",
+        "fastestDay": "Fastest Response Day",
+        "issues": {
+          "description": "Days with highest error rates and performance issues",
+          "title": "Issues & Incidents"
+        },
+        "mostDowntimeDay": "Most Downtime Day",
+        "peakPerformance": {
+          "description": "Best performing days across key metrics",
+          "title": "Peak Performance Days"
+        },
+        "slowestDay": "Slowest Response Day",
+        "uptime": "uptime",
+        "worstErrorDay": "Worst Error Day"
+      },
+      "charts": {
+        "apiCalls": {
+          "description": "System load and API traffic patterns by day",
+          "title": "Daily API Call Volume"
+        },
+        "errorRate": {
+          "description": "Daily error rate monitoring for system health",
+          "title": "Error Rate Trends"
+        },
+        "responseTime": {
+          "description": "Average response time performance by day",
+          "title": "Response Time Analysis"
+        },
+        "uptime": {
+          "description": "Daily uptime percentage and system availability",
+          "title": "System Uptime Monitoring"
+        }
+      },
+      "overview": {
+        "avgErrorRate": "Average Error Rate",
+        "avgRate": "Average Rate",
+        "avgResponseTime": "Avg Response Time",
+        "avgUptime": "Average Uptime",
+        "daily": "Daily",
+        "errorRate": "Error Rate",
+        "errors": "Errors",
+        "performance": "system performance",
+        "reliability": "system reliability",
+        "totalApiCalls": "Total API Calls",
+        "totalErrors": "total errors",
+        "weeklyTotal": "weekly total"
+      },
+      "summary": {
+        "apiCalls": "API Calls",
+        "day": "Day",
+        "description": "Comprehensive technical metrics overview for system monitoring",
+        "errorRate": "Error Rate",
+        "errors": "Errors",
+        "excellent": "Excellent",
+        "good": "Good",
+        "issues": "Issues",
+        "responseTime": "Response Time",
+        "status": "Status",
+        "title": "Weekly Technical Performance Summary",
+        "uptime": "Uptime"
+      },
+      "title": "Technical Analytics for System Operations"
+    },
+    "timeRange": {
+      "30days": "Last 30 days",
+      "7days": "Last 7 days",
+      "90days": "Last 90 days"
+    },
+    "title": "Analytics Dashboard",
+    "transactions": {
+      "counts": "Operations",
+      "fundTransfers": "Fund Transfers",
+      "momo": "MTN Mobile Money",
+      "om": "Orange Money",
+      "paymentMethods": {
+        "amount": "Amount",
+        "avgAmount": "Avg Amount",
+        "avgTicket": "Avg Ticket",
+        "description": "Transaction volume by payment provider",
+        "failures": "Failures",
+        "marketShare": "Market Share",
+        "noOperators": "No payment method data available",
+        "operatorCode": "Operator Code",
+        "operatorDetails": "Operator Details",
+        "operatorDetailsDesc": "Detailed information for each payment provider",
+        "performanceSummary": "Payment Methods Performance Summary",
+        "performanceSummaryDesc": "Comprehensive comparison of all payment providers",
+        "provider": "Provider",
+        "rate": "Rate",
+        "successRate": "Success Rate",
+        "title": "Payment Methods Distribution",
+        "totalVolume": "Total Volume",
+        "transactions": "Transactions",
+        "volume": "Volume"
+      },
+      "receipts": "Receipts",
+      "successRateMonitoring": {
+        "description": "Success rates by transaction type over time",
+        "title": "Success Rate Monitoring"
+      },
+      "totalVolume": "Total Volume",
+      "volumeByType": {
+        "description": "Daily transaction counts across all service types",
+        "title": "Transaction Volume by Type"
+      },
+      "withdrawals": "Withdrawals"
+    }
+  },
   "applications": {
     "actions": {
       "add": "Add Application",
@@ -98,6 +557,7 @@
       "more": "More Actions",
       "view": "View"
     },
+    "apiKeyExpiresAtUtc": "Expires At",
     "bulk": {
       "delete_one": "Delete this application?",
       "delete_other": "Delete these applications?",
@@ -108,6 +568,22 @@
       "deleting": "Deleting...",
       "partialError_one": "A partial error occurred.",
       "partialError_other": "{{count}} partial errors occurred."
+    },
+    "confirmations": {
+      "bulkDelete": {
+        "cancel": "Cancel",
+        "confirm": "Delete All",
+        "description": "Are you sure you want to delete {{count}} applications? This action cannot be undone.",
+        "description_one": "Description",
+        "description_other": "Description",
+        "title": "Delete Applications"
+      },
+      "delete": {
+        "cancel": "Cancel",
+        "confirm": "Delete",
+        "description": "Are you sure you want to delete this application? This action cannot be undone.",
+        "title": "Delete Application"
+      }
     },
     "create": "Create Application",
     "details": "Application Details",
@@ -136,9 +612,9 @@
       "createdAt": "Created At",
       "description": "Description",
       "environment": "Environment",
+      "keys": "Keys",
       "name": "Name",
-      "status": "Status",
-      "keys": "Keys"
+      "status": "Status"
     },
     "messages": {
       "create": {
@@ -163,22 +639,7 @@
     },
     "title": "Applications",
     "totalCount_one": "1 application",
-    "totalCount_other": "{{count}} applications",
-    "apiKeyExpiresAtUtc": "Expires At",
-    "confirmations": {
-      "delete": {
-        "title": "Delete Application",
-        "description": "Are you sure you want to delete this application? This action cannot be undone.",
-        "confirm": "Delete",
-        "cancel": "Cancel"
-      },
-      "bulkDelete": {
-        "title": "Delete Applications",
-        "description": "Are you sure you want to delete {{count}} applications? This action cannot be undone.",
-        "confirm": "Delete All",
-        "cancel": "Cancel"
-      }
-    }
+    "totalCount_other": "{{count}} applications"
   },
   "auditlogs": {
     "headers": {
@@ -256,6 +717,13 @@
       "passwordPlaceholder": "••••••••",
       "signIn": "Sign In",
       "title": "Sign in to your account"
+    }
+  },
+  "balances": {
+    "messages": {
+      "dropdown": {
+        "error": "Error"
+      }
     }
   },
   "balancesreadmodels": {
@@ -426,14 +894,17 @@
   },
   "common": {
     "actions": {
+      "activate": "Activate",
+      "deactivate": "Deactivate",
       "delete": "Delete",
       "edit": "Edit",
       "more": "More Actions",
-      "view": "View",
-      "activate": "Activate",
-      "deactivate": "Deactivate"
+      "view": "View"
     },
+    "backToList": "Back To List",
     "cancel": "Cancel",
+    "confirm": "Confirm",
+    "createdAt": "Created At",
     "dataGrid": {
       "items": "Items",
       "total": "Total"
@@ -459,7 +930,12 @@
     },
     "form": {
       "valueLabel": "Value"
-    }
+    },
+    "loading": "Loading",
+    "na": "N/A",
+    "no": "No",
+    "updatedAt": "Updated At",
+    "yes": "Yes"
   },
   "companies": {
     "actions": {
@@ -491,6 +967,7 @@
       "contact": "Contact",
       "contactPerson": "Contact Person",
       "countryCode": "Country Code",
+      "countryName": "Country",
       "createdAt": "Creation Date",
       "email": "Email",
       "isVerified": "Verified",
@@ -498,7 +975,6 @@
       "phoneNumber": "Phone Number",
       "status": "Status",
       "taxNumber": "Tax Number",
-      "countryName": "Country",
       "website": "Website"
     },
     "groups": {
@@ -1013,6 +1489,16 @@
       "title": "System Administration"
     },
     "badge": "FEATURES",
+    "balanceManagement": {
+      "benefit1": "Real-time balance tracking",
+      "benefit2": "Multi-currency wallet support",
+      "benefit3": "Automated balance reconciliation",
+      "benefit4": "Balance alerts and notifications",
+      "benefits": "Real-time balance tracking\nMulti-currency wallet support\nAutomated balance reconciliation\nBalance alerts and notifications",
+      "description": "Maintain accurate real-time balances across all accounts, wallets, and mobile money operators. Track funds movement and ensure financial accuracy at all times.",
+      "details": "Our balance management system provides real-time visibility into all financial positions, automated reconciliation with mobile money operators, multi-currency support, and configurable alerts to prevent overdrafts and maintain operational liquidity.",
+      "title": "Balance Management"
+    },
     "intro": "Fujisat Pay is designed to offer total control over your mobile financial operations in Cameroon, thanks to a suite of advanced and secure features.",
     "kyc": {
       "benefit1": "Digital document collection and verification",
@@ -1023,6 +1509,26 @@
       "description": "Ensure compliance and build trust with robust KYC (Know Your Customer) verification processes. Streamline customer onboarding while meeting regulatory requirements.",
       "details": "Our KYC system helps you verify customer identities efficiently while maintaining the highest security standards and regulatory compliance.",
       "title": "KYC Management"
+    },
+    "moneyTransfers": {
+      "benefit1": "Peer-to-peer transfer capabilities",
+      "benefit2": "Cross-wallet and cross-operator transfers",
+      "benefit3": "Instant transfer processing",
+      "benefit4": "Transaction limit controls",
+      "benefits": "Peer-to-peer transfer capabilities\nCross-wallet and cross-operator transfers\nInstant transfer processing\nTransaction limit controls",
+      "description": "Enable seamless money transfers between users, wallets, and mobile money operators. Support both internal and external transfer operations with real-time processing.",
+      "details": "Our money transfer module facilitates instant fund movement across different mobile money operators and internal wallets, with configurable limits, fee structures, and comprehensive transaction tracking for complete visibility.",
+      "title": "Money Transfers"
+    },
+    "multiEnterprise": {
+      "benefit1": "Centralized multi-company management",
+      "benefit2": "Isolated data and permissions per company",
+      "benefit3": "Consolidated reporting across entities",
+      "benefit4": "Shared or independent configurations",
+      "benefits": "Centralized multi-company management\nIsolated data and permissions per company\nConsolidated reporting across entities\nShared or independent configurations",
+      "description": "Manage multiple businesses or subsidiaries from a single platform. Each company maintains its own data isolation while benefiting from centralized oversight and reporting.",
+      "details": "Our multi-enterprise architecture enables organizations to manage multiple business entities with complete data isolation, independent configurations, and role-based access control, while providing consolidated views and cross-company analytics for group-level insights.",
+      "title": "Multi-Enterprise Management"
     },
     "notifications": {
       "benefit1": "Real-time event notifications",
@@ -1154,6 +1660,9 @@
     "create": "Create Fee Configuration",
     "edit": "Edit Fee Configuration",
     "form": {
+      "applicationId": {
+        "placeholder": "Placeholder"
+      },
       "companyId": {
         "placeholder": "Select a company"
       },
@@ -1162,10 +1671,18 @@
         "submit": "Create",
         "title": "Create Fee Configuration"
       },
+      "currency": {
+        "placeholder": "Placeholder"
+      },
       "edit": {
         "loadError": "Failed to load configuration."
       },
+      "feeTypeId": {
+        "placeholder": "Select fee type"
+      },
       "fields": {
+        "applicationId": "Application Id",
+        "companyId": "Company Id",
         "currency": "Currency",
         "endDate": "End Date",
         "feeTypeId": "Fee Type",
@@ -1177,6 +1694,13 @@
         "ownerType": "Owner Type",
         "percentageRate": "Percentage Rate",
         "startDate": "Start Date"
+      },
+      "ownerType": {
+        "application": "Application",
+        "company": "Company",
+        "label": "Owner Type",
+        "placeholder": "Select a Owner Type",
+        "system": "System"
       },
       "placeholders": {
         "fixedAmount": "Enter fixed amount",
@@ -1639,6 +2163,7 @@
     "administration": "Administration",
     "all": "All",
     "allowedIps": "Allowed IPs",
+    "analytics": "Analytics",
     "applications": "Applications",
     "auditLogs": "Audit Logs",
     "auditSecurity": "Audit & Security",
@@ -1673,8 +2198,7 @@
     "webHookLogs": "Webhook Logs",
     "webhooks": "Webhooks",
     "withdrawalMethod": "Withdrawal Methods",
-    "withdrawals": "Withdrawals",
-    "analytics": "Analytics"
+    "withdrawals": "Withdrawals"
   },
   "navigation": {
     "about": "About",
@@ -1859,29 +2383,34 @@
   "receiptsreadmodels": {
     "headers": {
       "amount": "Amount",
+      "applicationId": "App",
       "applicationName": "Application",
+      "companyId": "Company",
       "companyName": "Company",
+      "context": "Context",
+      "coreDetails": "Core",
       "createdAt": "Date",
       "currency": "Currency",
+      "customerEmail": "Email client",
+      "customerName": "Nom Client",
       "externalReference": "External Ref.",
+      "externalRefutilerence": "External Refutilerence",
+      "fee": "Fees",
       "feeAppliedAmount": "Fee Applied",
       "internalFeeAmount": "Internal Fee",
+      "internalReference": "Internal Ref",
       "netAmount": "Net Amount",
       "paymentMethodCode": "Pay Method Code",
       "phoneNumberEncrypted": "Phone",
       "providerFeeAmount": "Provider Fee",
+      "providerFinalReference": "Provider Final Reference",
+      "providerInitialReference": "Provider Initial Reference",
       "providerReference": "Provider Ref.",
-      "status": "Status",
-      "transactionId": "Txn ID",
-      "fee": "Fees",
-      "context": "Context",
+      "range": "Range",
       "references": "References",
-      "coreDetails": "Core",
-      "internalReference": "Internal Ref",
-      "companyId": "Company",
-      "applicationId": "App",
-      "customerName": "Nom Client",
-      "customerEmail": "Email client"
+      "status": "Status",
+      "transaction": "Transaction",
+      "transactionId": "Txn ID"
     }
   },
   "receiptsReadModels": {
@@ -1902,6 +2431,72 @@
       "deleting": "Deleting...",
       "partialError_one": "A partial error occurred.",
       "partialError_other": "{{count}} partial errors occurred."
+    },
+    "changeStatus": {
+      "cancel": "Cancel",
+      "confirm": "Change Status",
+      "current": "current",
+      "currentStatus": "Current Status",
+      "description": "Select a new status for this transaction. This action will update the transaction status.",
+      "newStatus": "New Status",
+      "selectStatus": "Select new status...",
+      "success": "Transaction status changed to {{status}} successfully",
+      "title": "Change Transaction Status",
+      "warning": "You are about to change status from {{from}} to {{to}}. Please confirm this action."
+    },
+    "confirmations": {
+      "bulkDelete": {
+        "cancel": "Cancel",
+        "confirm": "Delete All",
+        "description": "Are you sure you want to delete {{count}} receipts? This action cannot be undone.",
+        "description_one": "Description",
+        "description_other": "Description",
+        "title": "Delete Receipts"
+      }
+    },
+    "details": {
+      "additionalInfo": "Additional Information",
+      "amount": "Amount",
+      "amounts": "Amount Details",
+      "applicationName": "Application Name",
+      "applicationStatus": "Application Status",
+      "companyApplication": "Company & Application",
+      "companyEmail": "Company Email",
+      "companyName": "Company Name",
+      "companyPhoneNumber": "Company Phone",
+      "companyStatus": "Company Status",
+      "completedAt": "Completed At",
+      "copy": "Copy Events",
+      "createdAt": "Created At",
+      "currency": "Currency",
+      "currentVersion": "Version",
+      "customerEmail": "Customer Email",
+      "customerInfo": "Customer Information",
+      "customerIpAddress": "Customer IP Address",
+      "customerName": "Customer Name",
+      "externalReference": "External Reference",
+      "feeAppliedAmount": "Fee Applied",
+      "internalReference": "Internal Reference",
+      "metadata": "Metadata",
+      "netAmount": "Net Amount",
+      "overview": "Overview",
+      "paymentMethod": "Payment Method",
+      "paymentMethodCode": "Payment Method Code",
+      "phoneNumberEncrypted": "Phone Number",
+      "providerFeeAmount": "Provider Fee",
+      "providerFinalReference": "Provider Final Reference",
+      "providerInitialReference": "Provider Initial Reference",
+      "providerMessage": "Provider Message",
+      "references": "References",
+      "status": "Status",
+      "title": "Transaction Details",
+      "transactionInformation": "Transaction Information",
+      "updatedAt": "Updated At"
+    },
+    "filter": {
+      "customer": "Customer Information",
+      "identifiers": "Transaction References",
+      "transaction": "Transaction Details"
     },
     "form": {
       "applicationIdLabel": "Application ID",
@@ -1939,11 +2534,6 @@
       "statusLabel": "Status",
       "statusPlaceholder": "Select status"
     },
-    "filter": {
-      "identifiers": "Transaction References",
-      "customer": "Customer Information",
-      "transaction": "Transaction Details"
-    },
     "messages": {
       "delete": {
         "confirm": "Are you sure?",
@@ -1952,6 +2542,9 @@
         "success_one": "1 receipt deleted.",
         "success_other": "{{count}} receipts deleted."
       },
+      "export": {
+        "success": "Success"
+      },
       "noData": "No receipts found.",
       "search": {
         "error": "Search failed."
@@ -1959,66 +2552,7 @@
     },
     "title": "Receipts",
     "totalCount_one": "1 receipt",
-    "totalCount_other": "{{count}} receipts",
-    "confirmations": {
-      "bulkDelete": {
-        "title": "Delete Receipts",
-        "description": "Are you sure you want to delete {{count}} receipts? This action cannot be undone.",
-        "confirm": "Delete All",
-        "cancel": "Cancel"
-      }
-    },
-    "details": {
-      "title": "Transaction Details",
-      "transactionInformation": "Transaction Information",
-      "overview": "Overview",
-      "status": "Status",
-      "paymentMethod": "Payment Method",
-      "paymentMethodCode": "Payment Method Code",
-      "createdAt": "Created At",
-      "completedAt": "Completed At",
-      "amounts": "Amount Details",
-      "amount": "Amount",
-      "currency": "Currency",
-      "providerFeeAmount": "Provider Fee",
-      "feeAppliedAmount": "Fee Applied",
-      "netAmount": "Net Amount",
-      "references": "References",
-      "internalReference": "Internal Reference",
-      "externalReference": "External Reference",
-      "providerInitialReference": "Provider Initial Reference",
-      "providerFinalReference": "Provider Final Reference",
-      "customerInfo": "Customer Information",
-      "customerName": "Customer Name",
-      "customerEmail": "Customer Email",
-      "phoneNumberEncrypted": "Phone Number",
-      "customerIpAddress": "Customer IP Address",
-      "companyApplication": "Company & Application",
-      "companyName": "Company Name",
-      "companyEmail": "Company Email",
-      "companyPhoneNumber": "Company Phone",
-      "companyStatus": "Company Status",
-      "applicationName": "Application Name",
-      "applicationStatus": "Application Status",
-      "additionalInfo": "Additional Information",
-      "providerMessage": "Provider Message",
-      "currentVersion": "Version",
-      "updatedAt": "Updated At",
-      "metadata": "Metadata",
-      "copy":"Copy Events"
-    },
-    "changeStatus": {
-      "title": "Change Transaction Status",
-      "description": "Select a new status for this transaction. This action will update the transaction status.",
-      "currentStatus": "Current Status",
-      "newStatus": "New Status",
-      "selectStatus": "Select new status...",
-      "current": "current",
-      "warning": "You are about to change status from {{from}} to {{to}}. Please confirm this action.",
-      "cancel": "Cancel",
-      "confirm": "Change Status",
-      "success": "Transaction status changed to {{status}} successfully"
-    }
+    "totalCount_other": "{{count}} receipts"
   },
   "securesettings": {
     "headers": {
@@ -2175,6 +2709,32 @@
     "totalCount_one": "1 setting",
     "totalCount_other": "{{count}} settings",
     "userProfile": {
+      "actions": {
+        "returnToDashboard": "Return To Dashboard"
+      },
+      "fields": {
+        "companyId": "Company Id",
+        "companyName": "Company Name",
+        "email": "Email",
+        "firstName": "First Name",
+        "lastLogin": "Last Login",
+        "lastName": "Last Name",
+        "profileId": "Profile Id",
+        "profileName": "Profile Name",
+        "publicId": "Public Id",
+        "status": "Status",
+        "userType": "User Type"
+      },
+      "messages": {
+        "loadError": "Load Error"
+      },
+      "sections": {
+        "accountInfo": "Account Info",
+        "companyInfo": "Company Info",
+        "permissions": "Permissions",
+        "personalInfo": "Personal Info",
+        "profilePermissions": "Profile Permissions"
+      },
       "title": "Profile"
     }
   },
@@ -2302,6 +2862,33 @@
     "solutionLabel": "The Fujisat Pay Solution",
     "title": "Fujisat Pay: Tailored Solutions for Every Sector"
   },
+  "statusBadges": {
+    "active": "Active",
+    "ALL": "All",
+    "APPLICATION": "APPLICATION",
+    "CANCELLED": "CANCELLED",
+    "COMPANY": "COMPANY",
+    "COMPLETED": "COMPLETED",
+    "disabled": "Disabled",
+    "enabled": "Enabled",
+    "FAILED": "FAILED",
+    "false": "False",
+    "FUND_TRANSFER": "FUND_TRANSFER",
+    "inactive": "Inactive",
+    "MOMO": "MOMO",
+    "MTN": "MTN",
+    "OM": "OM",
+    "ORANGE": "ORANGE",
+    "PENDING": "PENDING",
+    "PROCESSING": "PROCESSING",
+    "RECEIPT": "RECEIPT",
+    "REJECTED": "REJECTED",
+    "SYSTEM": "SYSTEM",
+    "TIMEOUT": "TIMEOUT",
+    "true": "True",
+    "VALIDATING": "VALIDATING",
+    "WITHDRAWAL": "WITHDRAWAL"
+  },
   "system": "System",
   "themeMode": {
     "dark": "Dark",
@@ -2350,6 +2937,10 @@
       "more": "More Actions",
       "view": "View"
     },
+    "assignPermissions": {
+      "description": "Permissions assigned to a profile will confer access to user, do it prudently",
+      "title": "Assign Permissions"
+    },
     "bulk": {
       "delete_one": "Delete this profile?",
       "delete_other": "Delete these profiles?",
@@ -2364,6 +2955,13 @@
     "create": "Create Profile",
     "edit": "Edit Profile",
     "form": {
+      "assignPermissions": {
+        "description": "Permissions assigned to a profile will confer access to user, do it prudently",
+        "noPermissions": "No Permissions",
+        "selectAll": "Select All",
+        "submit": "Submit",
+        "title": "Assign Permissions"
+      },
       "create": {
         "description": "Add a new user profile.",
         "submit": "Create",
@@ -2372,13 +2970,12 @@
       "edit": {
         "loadError": "Failed to load profile.",
         "submit": "Save Changes"
-      },
-      "assignPermissions": {
-        "title": "Assign Permissions",
-        "description": "Permissions assigned to a profile will confer access to user, do it prudently"
       }
     },
     "messages": {
+      "assign": {
+        "success": "Success"
+      },
       "create": {
         "error": "Creation failed.",
         "success": "Creation successful."
@@ -2401,11 +2998,7 @@
     },
     "title": "User Profiles",
     "totalCount_one": "1 profile",
-    "totalCount_other": "{{count}} profiles",
-    "assignPermissions": {
-      "title": "Assign Permissions",
-      "description": "Permissions assigned to a profile will confer access to user, do it prudently"
-    }
+    "totalCount_other": "{{count}} profiles"
   },
   "userprofiles": {
     "headers": {
@@ -2418,6 +3011,23 @@
     }
   },
   "userProfiles": {
+    "actions": {
+      "assignPermissions": "Assign Permissions",
+      "edit": "Edit"
+    },
+    "details": {
+      "sections": {
+        "information": "Information",
+        "permissions": "Permissions"
+      },
+      "title": "Title"
+    },
+    "fields": {
+      "active": "Active",
+      "description": "Description",
+      "name": "Name",
+      "systemProfile": "System Profile"
+    },
     "form": {
       "descriptionLabel": "Description",
       "descriptionPlaceholder": "Enter description",
@@ -2432,6 +3042,9 @@
       "permissionsLabel": "Permissions",
       "permissionsPlaceholder": "Select permissions"
     },
+    "messages": {
+      "notFound": "Not Found"
+    },
     "title": "User Profiles"
   },
   "users": {
@@ -2442,6 +3055,7 @@
       "delete": "Delete",
       "edit": "Edit",
       "more": "More Actions",
+      "toggleStatus": "Toggle Status",
       "view": "View"
     },
     "bulk": {
@@ -2455,6 +3069,28 @@
       "partialError_one": "A partial error occurred.",
       "partialError_other": "{{count}} partial errors occurred."
     },
+    "confirmations": {
+      "bulkDelete": {
+        "cancel": "Cancel",
+        "confirm": "Delete All",
+        "description": "Are you sure you want to delete {{count}} users? This action cannot be undone.",
+        "description_one": "Description",
+        "description_other": "Description",
+        "title": "Delete Users"
+      },
+      "delete": {
+        "cancel": "Cancel",
+        "confirm": "Delete",
+        "description": "Are you sure you want to delete this user? This action cannot be undone.",
+        "title": "Delete User"
+      },
+      "toggleStatus": {
+        "cancel": "Cancel",
+        "confirm": "Confirm",
+        "description": "Are you sure you want to change this user's status?",
+        "title": "Change User Status"
+      }
+    },
     "details": {
       "title": "User Details"
     },
@@ -2462,11 +3098,11 @@
       "companyIdLabel": "Company",
       "companyIdPlaceholder": "Select a company",
       "create": {
+        "companyTitle": "Create Company User",
         "description": "Add a new user.",
         "submit": "Create",
-        "title": "Create User",
         "systemTitle": "Create system User",
-        "companyTitle": "Create Company User"
+        "title": "Create User"
       },
       "edit": {
         "description": "Update the details of this user.",
@@ -2520,38 +3156,33 @@
       "search": {
         "error": "Search failed."
       },
+      "status": {
+        "error": "Failed to update user status.",
+        "success": "User status updated successfully."
+      },
       "update": {
         "error": "Update failed.",
         "success": "Update successful."
-      },
-      "status": {
-        "success": "User status updated successfully.",
-        "error": "Failed to update user status."
       }
+    },
+    "stats": {
+      "active": "Active",
+      "allTime": "All Time",
+      "blocked": "Blocked",
+      "company": "Company",
+      "system": "System",
+      "total": "Total"
     },
     "title": "Users",
     "totalCount_one": "1 user",
-    "totalCount_other": "{{count}} users",
-    "confirmations": {
-      "delete": {
-        "title": "Delete User",
-        "description": "Are you sure you want to delete this user? This action cannot be undone.",
-        "confirm": "Delete",
-        "cancel": "Cancel"
-      },
-      "toggleStatus": {
-        "title": "Change User Status",
-        "description": "Are you sure you want to change this user's status?",
-        "confirm": "Confirm",
-        "cancel": "Cancel"
-      },
-      "bulkDelete": {
-        "title": "Delete Users",
-        "description": "Are you sure you want to delete {{count}} users? This action cannot be undone.",
-        "confirm": "Delete All",
-        "cancel": "Cancel"
-      }
-    }
+    "totalCount_other": "{{count}} users"
+  },
+  "values": {
+    "compliance": "We adhere to the highest regulatory standards and compliance requirements, ensuring all transactions meet CEMAC regulations and international financial security protocols.",
+    "excellence": "We are committed to delivering exceptional service quality, innovative solutions, and continuous improvement in everything we do for our clients.",
+    "security": "We prioritize the protection of your financial data and transactions with enterprise-grade encryption, multi-level authentication, and comprehensive audit trails.",
+    "support": "We provide dedicated technical support and customer service to ensure your success, with expert assistance available whenever you need it.",
+    "transparency": "We believe in clear communication, honest pricing, and complete visibility into all transactions and operations on our platform."
   },
   "vwtransactionssummaries": {
     "headers": {
@@ -2792,9 +3423,98 @@
   },
   "withdrawals": {
     "actions": {
+      "approve": "Approve",
+      "cancel": "Cancel",
+      "complete": "Complete",
       "view": "View"
     },
+    "confirmations": {
+      "cancel": {
+        "cancel": "Cancel",
+        "confirm": "Confirm",
+        "description": "Description",
+        "reasonPlaceholder": "Reason Placeholder",
+        "title": "Title"
+      },
+      "complete": {
+        "cancel": "Cancel",
+        "confirm": "Confirm",
+        "description": "Description",
+        "referencePlaceholder": "Reference Placeholder",
+        "title": "Title"
+      },
+      "delete": {
+        "cancel": "Cancel",
+        "confirm": "Confirm",
+        "description": "Description",
+        "title": "Title"
+      }
+    },
+    "details": {
+      "accountNumber": "Account Number",
+      "additionalInfo": "Additional Info",
+      "amount": "Amount",
+      "amounts": "Amounts",
+      "applicationName": "Application Name",
+      "companyApplication": "Company Application",
+      "companyName": "Company Name",
+      "copyEvents": "Copy Events",
+      "createdAt": "Created At",
+      "currency": "Currency",
+      "currentVersion": "Current Version",
+      "feeAppliedAmount": "Fee Applied Amount",
+      "internalReference": "Internal Reference",
+      "netAmount": "Net Amount",
+      "notes": "Notes",
+      "overview": "Overview",
+      "processedAt": "Processed At",
+      "providerFeeAmount": "Provider Fee Amount",
+      "providerFinalReference": "Provider Final Reference",
+      "providerInitialReference": "Provider Initial Reference",
+      "providerMessage": "Provider Message",
+      "providerReference": "Provider Reference",
+      "references": "References",
+      "status": "Status",
+      "title": "Title",
+      "updatedAt": "Updated At",
+      "verifiedAt": "Verified At",
+      "withdrawalMethodName": "Withdrawal Method Name"
+    },
+    "form": {
+      "amountLabel": "Amount Label",
+      "amountPlaceholder": "Amount Placeholder",
+      "applicationIdLabel": "Application Id Label",
+      "applicationIdPlaceholder": "Application Id Placeholder",
+      "companyIdLabel": "Company Id Label",
+      "companyIdPlaceholder": "Company Id Placeholder",
+      "init": {
+        "description": "Description",
+        "submit": "Submit",
+        "systemTitle": "System Title"
+      },
+      "notesLabel": "Notes Label",
+      "notesPlaceholder": "Notes Placeholder",
+      "withdrawalMethodIdLabel": "Withdrawal Method Id Label",
+      "withdrawalMethodIdPlaceholder": "Withdrawal Method Id Placeholder"
+    },
+    "headers": {
+      "details": "Details"
+    },
     "messages": {
+      "approve": {
+        "error": "Error",
+        "success": "Success"
+      },
+      "cancel": {
+        "error": "Error",
+        "reasonRequired": "Reason Required",
+        "success": "Success"
+      },
+      "complete": {
+        "error": "Error",
+        "referenceRequired": "Reference Required",
+        "success": "Success"
+      },
       "noData": "No withdrawals found."
     }
   },
@@ -2808,10 +3528,14 @@
       "currencySymbol": "Currency",
       "feeAppliedAmount": "Fee Applied",
       "internalFeeAmount": "Internal Fee",
+      "internalReference": "Internal Reference",
       "netAmount": "Net Amount",
       "paymentMethodName": "Payment Method",
       "providerFeeAmount": "Provider Fee",
+      "providerFinalReference": "Provider Final Reference",
+      "providerInitialReference": "Provider Initial Reference",
       "providerReference": "Provider Ref.",
+      "references": "References",
       "status": "Status",
       "transactionId": "Transaction ID",
       "verificationAttempts": "Verification Attempts",
@@ -2851,6 +3575,24 @@
       "verifiedByNameLabel": "Verified By Name",
       "withdrawalMethodIdLabel": "Withdrawal Method"
     },
+    "headers": {
+      "accountNumber": "Account Number",
+      "amount": "Amount",
+      "applicationName": "Application Name",
+      "companyName": "Company Name",
+      "createdAt": "Created At",
+      "currencySymbol": "Currency Symbol",
+      "feeAppliedAmount": "Fee Applied Amount",
+      "internalFeeAmount": "Internal Fee Amount",
+      "netAmount": "Net Amount",
+      "paymentMethodName": "Payment Method Name",
+      "providerFeeAmount": "Provider Fee Amount",
+      "providerReference": "Provider Reference",
+      "status": "Status",
+      "transactionId": "Transaction Id",
+      "verificationAttempts": "Verification Attempts",
+      "withdrawalMethodName": "Withdrawal Method Name"
+    },
     "messages": {
       "noData": "No withdrawals found.",
       "search": {
@@ -2860,476 +3602,5 @@
     "title": "Withdrawals",
     "totalCount_one": "1 withdrawal",
     "totalCount_other": "{{count}} withdrawals"
-  },
-  "analytics": {
-    "title": "Analytics Dashboard",
-    "description": "Daily metrics and performance analytics",
-    "loading": "Loading analytics data...",
-    "loadingTab": "Loading tab content...",
-    "noData": "No data available",
-    "selectRange": "Select range",
-    "timeRange": {
-      "7days": "Last 7 days",
-      "30days": "Last 30 days",
-      "90days": "Last 90 days"
-    },
-    "tabs": {
-      "overview": "Overview",
-      "transactions": "Transactions",
-      "financial": "Financial",
-      "business": "Business Intelligence",
-      "mathematical": "Mathematical Analytics",
-      "crossTable": "Company Analytics",
-      "technical": "Technical Analytics",
-      "geolocation": "Geographical Analytics"
-    },
-    "overview": {
-      "totalVolume": "Total Volume",
-      "netRevenue": "Net revenue",
-      "overallSuccessRate": "Overall Success Rate",
-      "failureRate": "Failure rate",
-      "profitMargin": "Profit Margin",
-      "net": "Net",
-      "activeUsers": "Active Users",
-      "newUsers": "New users",
-      "transactionBreakdown": {
-        "title": "Transaction Breakdown",
-        "description": "Detailed transaction metrics by type",
-        "type": "Type",
-        "total": "Total",
-        "success": "Success",
-        "rate": "Rate",
-        "receipts": "Receipts",
-        "withdrawals": "Withdrawals",
-        "fundTransfers": "Fund Transfers"
-      },
-      "paymentMethods": {
-        "title": "Payment Method Performance",
-        "description": "Success rates and volumes by provider",
-        "provider": "Provider",
-        "volume": "Volume",
-        "amount": "Amount",
-        "rate": "Rate"
-      }
-    },
-    "transactions": {
-      "volumeByType": {
-        "title": "Transaction Volume by Type",
-        "description": "Daily transaction counts across all service types"
-      },
-      "successRateMonitoring": {
-        "title": "Success Rate Monitoring",
-        "description": "Success rates by transaction type over time"
-      },
-      "paymentMethods": {
-        "title": "Payment Methods Distribution",
-        "description": "Transaction volume by payment provider",
-        "operatorDetails": "Operator Details",
-        "operatorDetailsDesc": "Detailed information for each payment provider",
-        "operatorCode": "Operator Code",
-        "transactions": "Transactions",
-        "successRate": "Success Rate",
-        "totalVolume": "Total Volume",
-        "avgAmount": "Avg Amount",
-        "failures": "Failures",
-        "noOperators": "No payment method data available",
-        "performanceSummary": "Payment Methods Performance Summary",
-        "performanceSummaryDesc": "Comprehensive comparison of all payment providers",
-        "provider": "Provider",
-        "volume": "Volume",
-        "amount": "Amount",
-        "rate": "Rate",
-        "avgTicket": "Avg Ticket",
-        "marketShare": "Market Share"
-      },
-      "totalVolume": "Total Volume",
-      "receipts": "Receipts",
-      "counts": "Operations",
-      "withdrawals": "Withdrawals",
-      "fundTransfers": "Fund Transfers"
-    },
-    "financial": {
-      "revenueAnalysis": {
-        "title": "Revenue & Fee Analysis",
-        "description": "Total fees vs provider costs with net revenue"
-      },
-      "profitability": {
-        "title": "Profitability Overview",
-        "description": "Current period profitability metrics",
-        "margin": "Profit margin",
-        "totalFees": "Total Fees Collected",
-        "providerCosts": "Provider Costs",
-        "netProfit": "Net Profit"
-      },
-      "costBenefit": {
-        "costEfficiency": "Cost Efficiency",
-        "costToProfitRatio": "Cost-to-profit ratio",
-        "revenueFocus": "Revenue Focus",
-        "fromReceipts": "From receipts",
-        "processingCapacity": "Processing Capacity",
-        "apiCallsPerHour": "API calls/hour",
-        "userEconomics": "User Economics",
-        "revenuePerUser": "XAF revenue/user"
-      },
-      "revenueBreakdown": {
-        "title": "Revenue Breakdown by Service",
-        "description": "Revenue and margin analysis per service type",
-        "receipts": "Receipt Services",
-        "withdrawals": "Withdrawal Services",
-        "transfers": "Transfer Services",
-        "margin": "Margin"
-      }
-    },
-    "business": {
-      "title": "Business Intelligence",
-      "operationalEfficiency": {
-        "title": "Operational Efficiency Score",
-        "description": "Overall platform performance and reliability",
-        "transactionSuccess": "Transaction Success",
-        "apiReliability": "API Reliability",
-        "processingLoad": "Processing Load",
-        "txPerDay": "tx/day"
-      },
-      "revenuePerTransaction": {
-        "title": "Revenue per Transaction",
-        "description": "Average revenue generation efficiency",
-        "receiptsRPT": "Receipts RPT",
-        "withdrawalsRPT": "Withdrawals RPT",
-        "transfersRPT": "Transfers RPT"
-      },
-      "customerEngagement": {
-        "title": "Customer Engagement",
-        "description": "User activity and growth metrics",
-        "transactionsPerUser": "Transactions per active user",
-        "growthRate": "Growth Rate",
-        "apiUsage": "API Usage",
-        "callsPerUser": "calls/user"
-      },
-      "riskAssessment": {
-        "title": "Risk Assessment Dashboard",
-        "description": "Transaction failure patterns and risk indicators",
-        "failedReceipts": "Failed Receipts",
-        "failedWithdrawals": "Failed Withdrawals",
-        "apiErrors": "API Errors",
-        "overallRiskLevel": "Overall Risk Level",
-        "high": "HIGH",
-        "medium": "MEDIUM",
-        "low": "LOW"
-      },
-      "growthIndicators": {
-        "title": "Business Growth Indicators",
-        "description": "Key metrics for strategic decision making",
-        "xafPer1kUsers": "XAF per 1K users",
-        "revenueMargin": "Revenue margin",
-        "marketPenetration": "Market Penetration",
-        "serviceDiversification": "Service Diversification",
-        "operationalScalability": "Operational Scalability"
-      }
-    },
-    "mathematical": {
-      "title": "Advanced Mathematical Analytics",
-      "transactionStatus": {
-        "title": "Transaction Status Distribution",
-        "description": "Mathematical breakdown of transaction outcomes and success patterns",
-        "successRatesAnalysis": "Success Rates Analysis",
-        "receiptsSuccessRate": "Receipts Success Rate",
-        "withdrawalsSuccessRate": "Withdrawals Success Rate",
-        "transfersSuccessRate": "Transfers Success Rate",
-        "failureImpactAnalysis": "Failure Impact Analysis",
-        "receiptFailures": "Receipt Failures",
-        "withdrawalFailures": "Withdrawal Failures",
-        "transferFailures": "Transfer Failures",
-        "transactions": "transactions",
-        "receipts": "Receipts",
-        "withdrawals": "Withdrawals",
-        "fundTransfers": "Fund Transfers",
-        "transactionVolumeBands": "Transaction Volume Distribution Bands",
-        "successRateBands": "Success Rate Performance Bands",
-        "total": "Total",
-        "successful": "Successful",
-        "failed": "Failed",
-        "successRate": "Success Rate",
-        "statisticalVarianceAnalysis": "Statistical Variance Analysis",
-        "successRateStdDev": "Success Rate Standard Deviation",
-        "successRateConsistencyMeasure": "Measure of success rate consistency",
-        "transactionCoefficientVariation": "Transaction Coefficient of Variation",
-        "volumeDistributionVariability": "Volume distribution variability"
-      },
-      "operationFee": {
-        "title": "Operation Fee Analysis",
-        "description": "Internal vs Provider fee correlation and profitability metrics",
-        "feeDistributionOverview": "Fee Distribution Overview",
-        "totalFeesCollected": "Total Fees Collected",
-        "providerCosts": "Provider Costs",
-        "netMargin": "Net Margin",
-        "profitabilityRatios": "Profitability Ratios",
-        "grossMargin": "Gross Margin",
-        "profitMarginAfterProviderCosts": "Profit margin after provider costs",
-        "revenueVolumeRatio": "Revenue/Volume Ratio",
-        "feeCollectionEfficiency": "Fee collection efficiency",
-        "costEfficiencyMultiplier": "Cost Efficiency Multiplier",
-        "revenuePerCostUnit": "Revenue per cost unit"
-      },
-      "crossCorrelation": {
-        "title": "Cross-Correlation & User Engagement Analysis",
-        "description": "Relationship analysis between key metrics and user behavior patterns",
-        "userEngagementMetrics": "User Engagement Metrics",
-        "transactionsPerUser": "Transactions per User",
-        "transactionsUserUnit": "transactions/user",
-        "apiCallsPerUser": "API Calls per User",
-        "callsUserUnit": "calls/user",
-        "revenuePerUser": "Revenue per User",
-        "xafUserUnit": "XAF/user",
-        "volumeVsSuccessRateCorrelation": "Volume vs Success Rate Correlation",
-        "receiptsVolumeSuccessCorrelation": "Receipts: Volume-Success Correlation",
-        "correlationCoefficientReceipt": "Correlation coefficient for receipt transactions",
-        "withdrawalsVolumeSuccessCorrelation": "Withdrawals: Volume-Success Correlation",
-        "correlationCoefficientWithdrawal": "Correlation coefficient for withdrawal transactions",
-        "errorPatternAnalysis": "Error Pattern Analysis",
-        "errorToVolumeRatio": "Error to Volume Ratio",
-        "percentageTransactionsWithErrors": "Percentage of transactions with errors",
-        "overallFailureDistribution": "Overall Failure Distribution",
-        "totalFailureRateAllTransactionTypes": "Total failure rate across all transaction types"
-      },
-      "growthOperationalEfficiency": {
-        "title": "Growth & Operational Efficiency Analytics",
-        "description": "Temporal trends, growth patterns, and operational performance indicators",
-        "growthVelocityMetrics": "Growth & Velocity Metrics",
-        "dailyUserGrowthRate": "Daily User Growth Rate",
-        "newUsersPerDay": "new users/day",
-        "volumeVelocity": "Volume Velocity",
-        "xafPerSecond": "XAF/second",
-        "transactionRate": "Transaction Rate",
-        "transactionsPerHour": "transactions/hour",
-        "advancedPerformanceIndicators": "Advanced Performance Indicators",
-        "growthMomentumIndex": "Growth Momentum Index",
-        "compositeGrowthIndicator": "Composite growth indicator",
-        "riskAssessmentScore": "Risk Assessment Score",
-        "operationalRiskLevel": "Operational risk level",
-        "platformStabilityIndex": "Platform Stability Index",
-        "overallSystemStability": "Overall system stability"
-      }
-    },
-    "crossTable": {
-      "title": "Company & Application Analytics",
-      "overview": {
-        "totalCompanies": "Total Companies",
-        "activeCompanies": "active companies",
-        "totalApplications": "Total Applications",
-        "activeApplications": "active applications",
-        "avgAppsPerCompany": "Avg Apps/Company",
-        "applicationsPerCompany": "applications per company",
-        "totalEcosystemVolume": "Total Ecosystem Volume"
-      },
-      "companyVolumeDistribution": {
-        "title": "Company Volume Distribution",
-        "description": "Top companies by transaction volume"
-      },
-      "revenueDistribution": {
-        "title": "Revenue Distribution",
-        "description": "Revenue share by company"
-      },
-      "rankings": {
-        "mostDominant": {
-          "title": "Most Dominant Companies",
-          "description": "Companies with highest transaction volumes"
-        },
-        "mostProfitable": {
-          "title": "Most Profitable Companies",
-          "description": "Companies with highest profit margins"
-        },
-        "mostUsers": {
-          "title": "Most Active Users"
-        },
-        "mostEfficient": {
-          "title": "Most Fee Efficient"
-        },
-        "mostTransactions": {
-          "title": "Most Transactions"
-        },
-        "applications": "applications",
-        "transactions": "transactions",
-        "revenue": "revenue",
-        "profitMargin": "profit margin"
-      },
-      "topApplications": {
-        "title": "Top Applications Performance",
-        "description": "Best performing applications across all companies",
-        "rank": "Rank",
-        "company": "Company",
-        "application": "Application",
-        "volume": "Volume (XAF)",
-        "revenue": "Revenue (XAF)",
-        "transactions": "Transactions",
-        "users": "Users",
-        "successRate": "Success Rate"
-      },
-      "companyMatrix": {
-        "title": "Company-Application Matrix",
-        "description": "Comprehensive company performance overview",
-        "company": "Company",
-        "applications": "Apps",
-        "totalVolume": "Total Volume (XAF)",
-        "totalRevenue": "Total Revenue (XAF)",
-        "avgProfitMargin": "Avg Profit Margin",
-        "totalUsers": "Total Users",
-        "avgSuccessRate": "Avg Success Rate"
-      }
-    },
-    "technical": {
-      "title": "Technical Analytics for System Operations",
-      "overview": {
-        "totalApiCalls": "Total API Calls",
-        "weeklyTotal": "weekly total",
-        "avgUptime": "Average Uptime",
-        "reliability": "system reliability",
-        "avgResponseTime": "Avg Response Time",
-        "performance": "system performance",
-        "errorRate": "Error Rate",
-        "totalErrors": "total errors"
-      },
-      "charts": {
-        "apiCalls": {
-          "title": "Daily API Call Volume",
-          "description": "System load and API traffic patterns by day"
-        },
-        "errorRate": {
-          "title": "Error Rate Trends",
-          "description": "Daily error rate monitoring for system health"
-        },
-        "responseTime": {
-          "title": "Response Time Analysis",
-          "description": "Average response time performance by day"
-        },
-        "uptime": {
-          "title": "System Uptime Monitoring",
-          "description": "Daily uptime percentage and system availability"
-        }
-      },
-      "analysis": {
-        "peakPerformance": {
-          "title": "Peak Performance Days",
-          "description": "Best performing days across key metrics"
-        },
-        "issues": {
-          "title": "Issues & Incidents",
-          "description": "Days with highest error rates and performance issues"
-        },
-        "busiestDay": "Busiest Day",
-        "fastestDay": "Fastest Response Day",
-        "bestUptimeDay": "Best Uptime Day",
-        "worstErrorDay": "Worst Error Day",
-        "slowestDay": "Slowest Response Day",
-        "mostDowntimeDay": "Most Downtime Day",
-        "apiCalls": "API calls",
-        "avgResponse": "avg response",
-        "uptime": "uptime",
-        "errorRate": "error rate",
-        "downtime": "downtime"
-      },
-      "summary": {
-        "title": "Weekly Technical Performance Summary",
-        "description": "Comprehensive technical metrics overview for system monitoring",
-        "day": "Day",
-        "apiCalls": "API Calls",
-        "errors": "Errors",
-        "errorRate": "Error Rate",
-        "responseTime": "Response Time",
-        "uptime": "Uptime",
-        "status": "Status",
-        "excellent": "Excellent",
-        "good": "Good",
-        "issues": "Issues"
-      }
-    },
-    "enhanced": {
-      "totalEcosystemValue": "Total Ecosystem Value",
-      "combinedVolume": "transactions + balances",
-      "liquidityHealth": "Liquidity Health",
-      "available": "Available",
-      "operationalRisk": "Operational Risk",
-      "pendingReconciliations": "pending reconciliations",
-      "systemEfficiency": "System Efficiency",
-      "totalTransactions": "total transactions",
-      "balance": "Balance",
-      "profitabilityTarget": "Profitability Target",
-      "profitabilityDesc": "Revenue margin performance indicator",
-      "excellentMargin": "Excellent profit margin",
-      "goodMargin": "Good profit margin",
-      "improvementNeeded": "Margin improvement needed",
-      "liquidityRatio": "Liquidity Ratio",
-      "liquidityDesc": "Available vs total balance ratio",
-      "reserved": "Reserved",
-      "balanceDistribution": "Balance Distribution",
-      "balanceDistributionDesc": "Balance allocation across payment methods",
-      "transactionTrends": "Transaction Trends",
-      "transactionTrendsDesc": "Daily transaction volume patterns",
-      "performanceMetrics": "Performance Metrics",
-      "performanceMetricsDesc": "Success rate and revenue trends",
-      "balanceHealthDashboard": "Balance Health Dashboard",
-      "balanceHealthDesc": "Comprehensive balance monitoring and status",
-      "provider": "Provider",
-      "currentBalance": "Current Balance",
-      "utilizationRate": "Utilization Rate",
-      "status": "Status",
-      "volumeTrendAnalysis": "Volume Trend Analysis",
-      "volumeTrendDesc": "Advanced volume visualization with gradient effects"
-    },
-    "geo": {
-      "totalUsers": "Total Users",
-      "acrossRegions": "across all regions",
-      "totalVolume": "Total Volume",
-      "transactions": "transactions",
-      "avgGrowth": "Average Growth",
-      "yearOverYear": "year over year",
-      "marketPenetration": "Market Penetration",
-      "avgPenetration": "average penetration",
-      "topRegionsByUsers": "Top Regions by Users",
-      "topRegionsDesc": "Regions with highest user adoption",
-      "fastestGrowingRegions": "Fastest Growing Regions",
-      "fastestGrowingDesc": "Regions with highest growth rates",
-      "userDistribution": "Regional User Distribution",
-      "userDistributionDesc": "User count and transaction volume by region",
-      "geographicDistribution": "Geographic Distribution",
-      "geographicDistributionDesc": "Users by area type",
-      "regionalPerformance": "Regional Performance Dashboard",
-      "regionalPerformanceDesc": "Comprehensive regional metrics and performance indicators",
-      "region": "Region",
-      "capital": "Capital",
-      "users": "Users",
-      "volume": "Volume",
-      "growth": "Growth",
-      "penetration": "Penetration",
-      "status": "Status",
-      "cameroonRegionsMap": "Cameroon Regions Map",
-      "cameroonRegionsMapDesc": "Visual representation of user distribution across Cameroon",
-      "userDensity": "User Density"
-    }
-  },
-  "statusBadges": {
-    "active": "Active",
-    "inactive": "Inactive",
-    "enabled": "Enabled",
-    "disabled": "Disabled",
-    "OM": "OM",
-    "MOMO": "MOMO",
-    "MTN": "MTN",
-    "ORANGE": "ORANGE",
-    "PENDING": "PENDING",
-    "PROCESSING": "PROCESSING",
-    "VALIDATING": "VALIDATING",
-    "COMPLETED": "COMPLETED",
-    "FAILED": "FAILED",
-    "CANCELLED": "CANCELLED",
-    "REJECTED": "REJECTED",
-    "TIMEOUT": "TIMEOUT",
-    "SYSTEM": "SYSTEM",
-    "COMPANY": "COMPANY",
-    "APPLICATION": "APPLICATION",
-    "RECEIPT": "RECEIPT",
-    "WITHDRAWAL": "WITHDRAWAL",
-    "FUND_TRANSFER": "FUND_TRANSFER",
-    "true": "True",
-    "false": "False"
   }
 }

@@ -65,7 +65,9 @@ export default function TransactionAnalyticsTab({ metrics, paymentMethodMetrics,
                 <div className="text-2xl font-bold text-primary">{safeDivide(currentMetrics?.totalVolume || 0, 1000000).toFixed(1)}M XAF</div>
                 <div className="flex items-center gap-1 text-xs text-muted-foreground">
                   <TrendingUp className="h-3 w-3 text-green-600" />
-                  <span className="font-semibold">{(currentMetrics?.totalReceipts || 0) + (currentMetrics?.totalWithdrawals || 0) + (currentMetrics?.totalFundTransfers || 0)}</span>{" "}
+                  <span className="font-semibold">
+                    {(currentMetrics?.totalReceipts || 0) + (currentMetrics?.totalWithdrawals || 0) + (currentMetrics?.totalFundTransfers || 0)}
+                  </span>{" "}
                   {t("analytics.transactions.counts")}
                 </div>
               </>
@@ -350,7 +352,9 @@ export default function TransactionAnalyticsTab({ metrics, paymentMethodMetrics,
                         <td className="p-2 text-right font-mono">{method.transactionCount.toLocaleString()}</td>
                         <td className="p-2 text-right font-mono">{safeDivide(method.totalAmount, 1000000).toFixed(1)}M</td>
                         <td className="p-2 text-right">
-                          <span className={`font-bold ${(method.successRate || 0) >= 95 ? "text-green-600" : (method.successRate || 0) >= 90 ? "text-yellow-600" : "text-red-600"}`}>
+                          <span
+                            className={`font-bold ${(method.successRate || 0) >= 95 ? "text-green-600" : (method.successRate || 0) >= 90 ? "text-yellow-600" : "text-red-600"}`}
+                          >
                             {(method.successRate || 0).toFixed(1)}%
                           </span>
                         </td>

@@ -14,7 +14,8 @@ import { FrontEventLogDto } from "@/shared"
 export const FrontEventLogDataGrid: React.FC = () => {
   const { t } = useTranslation()
 
-  const { frontEventLogs, currentPage, pageSize, totalItems, sortBy, sortDirection, selectedRows, isLoading, changePage, changePageSize, changeSort, setSelectedRows } = useFrontEventLog()
+  const { frontEventLogs, currentPage, pageSize, totalItems, sortBy, sortDirection, selectedRows, isLoading, changePage, changePageSize, changeSort, setSelectedRows } =
+    useFrontEventLog()
 
   const columnHeaders: DataGridColumnHeader[] = [
     {
@@ -150,9 +151,7 @@ export const FrontEventLogDataGrid: React.FC = () => {
     </ModalWrapper>
   )
 
-  const handleDisptach= () => {
-
-  }
+  const handleDisptach = () => {}
   return (
     <div className="w-full max-w-full overflow-hidden">
       <DataGrid

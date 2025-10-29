@@ -447,7 +447,10 @@ export default function MathematicalAnalyticsTab({ currentMetrics, totalTransact
                 <div className="text-sm text-gray-700 mb-2">{t("analytics.mathematical.growthOperationalEfficiency.growthMomentumIndex")}</div>
                 <div className="text-2xl font-mono font-bold text-green-700">
                   {(() => {
-                    const momentum = safeDivide(effectiveMetrics.newUsers || 0, effectiveMetrics.activeUsers || 0) * safeDivide(overallSuccessRate, 100) * safeDivide(effectiveMetrics.netRevenue || 0, 1000)
+                    const momentum =
+                      safeDivide(effectiveMetrics.newUsers || 0, effectiveMetrics.activeUsers || 0) *
+                      safeDivide(overallSuccessRate, 100) *
+                      safeDivide(effectiveMetrics.netRevenue || 0, 1000)
                     return momentum.toFixed(2)
                   })()}
                 </div>

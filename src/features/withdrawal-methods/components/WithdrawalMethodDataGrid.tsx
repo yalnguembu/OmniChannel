@@ -68,38 +68,8 @@ export const WithdrawalMethodDataGrid: React.FC = () => {
       resizable: true,
     },
     {
-      key: "verificationDate",
-      label: t("withdrawalmethods.headers.verificationDate"),
-      sortable: true,
-      resizable: true,
-    },
-    {
-      key: "verificationReference",
-      label: t("withdrawalmethods.headers.verificationReference"),
-      sortable: true,
-      resizable: true,
-    },
-    {
       key: "isDefault",
       label: t("withdrawalmethods.headers.isDefault"),
-      sortable: true,
-      resizable: true,
-    },
-    {
-      key: "dailyLimit",
-      label: t("withdrawalmethods.headers.dailyLimit"),
-      sortable: true,
-      resizable: true,
-    },
-    {
-      key: "monthlyLimit",
-      label: t("withdrawalmethods.headers.monthlyLimit"),
-      sortable: true,
-      resizable: true,
-    },
-    {
-      key: "singleWithdrawalLimit",
-      label: t("withdrawalmethods.headers.singleWithdrawalLimit"),
       sortable: true,
       resizable: true,
     },

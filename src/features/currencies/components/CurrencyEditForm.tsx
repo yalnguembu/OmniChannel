@@ -96,7 +96,14 @@ export const CurrencyEditForm: React.FC<CurrencyEditFormProps> = ({ currencyId, 
                   <FormItem>
                     <FormLabel>{t("currencies.form.decimalPlacesLabel")}</FormLabel>
                     <FormControl>
-                      <Input type="number" placeholder={t("currencies.form.decimalPlacesPlaceholder")} {...field} value={field.value || ""} required={false} />
+                      <Input
+                        type="number"
+                        placeholder={t("currencies.form.decimalPlacesPlaceholder")}
+                        {...field}
+                        value={field.value || ""}
+                        required={false}
+                        onChange={(e) => field.onChange(e.target.value === "" ? undefined : Number(e.target.value))}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -110,7 +117,14 @@ export const CurrencyEditForm: React.FC<CurrencyEditFormProps> = ({ currencyId, 
                   <FormItem>
                     <FormLabel>{t("currencies.form.exchangeRateLabel")}</FormLabel>
                     <FormControl>
-                      <Input type="number" placeholder={t("currencies.form.codePlaceholder")} {...field} value={field.value || ""} required={false} />
+                      <Input
+                        type="number"
+                        placeholder={t("currencies.form.codePlaceholder")}
+                        {...field}
+                        value={field.value || ""}
+                        required={false}
+                        onChange={(e) => field.onChange(e.target.value === "" ? undefined : Number(e.target.value))}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

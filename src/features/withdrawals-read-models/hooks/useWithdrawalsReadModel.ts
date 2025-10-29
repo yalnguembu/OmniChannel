@@ -1,9 +1,19 @@
-import { useMutation, useQuery } from "@tanstack/react-query"
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { toast } from "sonner"
 import { useTranslation } from "react-i18next"
 import { useWithdrawalsReadModelStore } from "../stores/withdrawalsReadModelStore"
 import { SortDirection } from "@/shared/enums/data-grid"
-import { postApiWithdrawalsReadModelSearchMutation, getApiWithdrawalsReadModelByIdOptions } from "@/shared/api/@tanstack/react-query.gen"
+import { useErrorHandling } from "@/shared/hooks/useErrorHandling"
+import {
+  postApiWithdrawalsReadModelSearchMutation,
+  getApiWithdrawalsReadModelByIdOptions,
+  postApiWithdrawalsReadModelMutation,
+  putApiWithdrawalsReadModelApprovalByIdMutation,
+  putApiWithdrawalsReadModelCancelByIdMutation,
+  putApiWithdrawalsReadModelCompleteByIdMutation,
+} from "@/shared/api/@tanstack/react-query.gen"
+import { UseFormSetError } from "react-hook-form"
+import { WithdrawalsInitRequest } from "@/shared"
 
 export const withdrawalsReadModelQueryKeys = {
   all: ["withdrawalsReadModel"] as const,
@@ -16,7 +26,9 @@ export const withdrawalsReadModelQueryKeys = {
 
 export const useWithdrawalsReadModel = () => {
   const { t } = useTranslation()
+  const queryClient = useQueryClient()
   const store = useWithdrawalsReadModelStore()
+  const { mapValidationErrorsToForm } = useErrorHandling()
 
   const searchWithdrawalsReadModelsMutation = useMutation({
     ...postApiWithdrawalsReadModelSearchMutation({
@@ -79,6 +91,118 @@ export const useWithdrawalsReadModel = () => {
       },
     })
 
+  const createWithdrawalReadModelMutation = useMutation({
+    ...postApiWithdrawalsReadModelMutation(),
+    onMutate: () => {
+      store.setLoading(true)
+      store.setError(null)
+    },
+    onSuccess: () => {
+      toast.success(t("users.messages.create.success"))
+      // queryClient.invalidateQueries({ queryKey: userQueryKeys.lists() })
+      searchWithdrawalsReadModels()
+    },
+    onError: (error) => {
+      const message = error.message || t("users.messages.create.error")
+      store.setError(message)
+      toast.error(message)
+    },
+    onSettled: () => {
+      store.setLoading(false)
+    },
+  })
+
+  const onCreateWithdrawalReadModel = (data: any) => {
+    createWithdrawalReadModelMutation.mutate({
+      body: {
+        ...data,
+        forcePasswordChange: true,
+      },
+    })
+  }
+
+  // tion for creating company user with form validation
+  const createWithdrawalReadModelWithValidation = (data: WithdrawalsInitRequest, setError: UseFormSetError<WithdrawalsInitRequest>, onSuccess?: () => void) => {
+    createWithdrawalReadModelMutation.mutate(
+      {
+        body: {
+          ...data,
+        },
+      },
+      {
+        onSuccess: () => {
+          toast.success(t("users.messages.create.success"))
+          // queryClient.invalidateQueries({ queryKey: userQueryKeys.lists() })
+          searchWithdrawalsReadModels()
+          onSuccess?.()
+        },
+        onError: (error: any) => {
+          const mapped = mapValidationErrorsToForm(error, setError)
+
+          if (!mapped) {
+            const message = error.message || t("users.messages.create.error")
+            store.setError(message)
+            toast.error(message)
+          }
+        },
+      },
+    )
+  }
+
+  const approveWithdrawalMutation = useMutation({
+    ...putApiWithdrawalsReadModelApprovalByIdMutation(),
+    onSuccess: () => {
+      toast.success(t("withdrawals.messages.approve.success"))
+      queryClient.invalidateQueries({ queryKey: withdrawalsReadModelQueryKeys.lists() })
+      searchWithdrawalsReadModels()
+    },
+    onError: (error) => {
+      const message = error.message || t("withdrawals.messages.approve.error")
+      toast.error(message)
+    },
+  })
+
+  const onApproveWithdrawal = (id: string) => {
+    approveWithdrawalMutation.mutate({ path: { id } })
+  }
+
+  const cancelWithdrawalMutation = useMutation({
+    ...putApiWithdrawalsReadModelCancelByIdMutation(),
+    onSuccess: () => {
+      toast.success(t("withdrawals.messages.cancel.success"))
+      queryClient.invalidateQueries({ queryKey: withdrawalsReadModelQueryKeys.lists() })
+      searchWithdrawalsReadModels()
+    },
+    onError: (error) => {
+      const message = error.message || t("withdrawals.messages.cancel.error")
+      toast.error(message)
+    },
+  })
+
+  const onCancelWithdrawal = (id: string, reason: string) => {
+    cancelWithdrawalMutation.mutate({ path: { id }, query: { raison: reason } })
+  }
+
+  const completeWithdrawalMutation = useMutation({
+    ...putApiWithdrawalsReadModelCompleteByIdMutation(),
+    onSuccess: () => {
+      toast.success(t("withdrawals.messages.complete.success"))
+      queryClient.invalidateQueries({ queryKey: withdrawalsReadModelQueryKeys.lists() })
+      searchWithdrawalsReadModels()
+    },
+    onError: (error) => {
+      const message = error.message || t("withdrawals.messages.complete.error")
+      toast.error(message)
+    },
+  })
+
+  const onCompleteWithdrawal = (id: string, reference: string) => {
+    completeWithdrawalMutation.mutate({
+      path: { id },
+      query: { reference },
+    })
+  }
+
   const search = () => {
     searchWithdrawalsReadModels()
   }
@@ -122,5 +246,14 @@ export const useWithdrawalsReadModel = () => {
     isLoading: searchWithdrawalsReadModelsMutation.isPending || store.isLoading,
     isError: searchWithdrawalsReadModelsMutation.isError,
     error: searchWithdrawalsReadModelsMutation.error || store.error,
+    createWithdrawalReadModelMutation,
+    onCreateWithdrawalReadModel,
+    createWithdrawalReadModelWithValidation,
+    approveWithdrawalMutation,
+    onApproveWithdrawal,
+    cancelWithdrawalMutation,
+    onCancelWithdrawal,
+    completeWithdrawalMutation,
+    onCompleteWithdrawal,
   }
 }

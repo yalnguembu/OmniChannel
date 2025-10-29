@@ -1,3 +1,4 @@
+import { ReactNode } from "react"
 import { ModalWrapper } from "./ModalWrapper"
 import { Button } from "./ui/button"
 import { AlertTriangle, Trash2, CheckCircle, Info } from "lucide-react"
@@ -15,6 +16,7 @@ interface ConfirmationModalProps {
   cancelText?: string
   variant?: ConfirmationModalVariant
   isLoading?: boolean
+  children?: ReactNode
 }
 
 const variantConfig = {
@@ -49,6 +51,7 @@ export function ConfirmationModal({
   confirmText,
   cancelText,
   variant = "warning",
+  children,
   isLoading = false,
 }: ConfirmationModalProps) {
   const { t } = useTranslation()
@@ -73,24 +76,12 @@ export function ConfirmationModal({
           <h3 className="text-lg font-semibold">{title}</h3>
           {description && <p className="text-sm text-muted-foreground">{description}</p>}
         </div>
-
+        {children}
         <div className="flex gap-3 w-full mt-2">
-          <Button
-            type="button"
-            variant="outline"
-            onClick={onOpenChange}
-            disabled={isLoading}
-            className="flex-1"
-          >
+          <Button type="button" variant="outline" onClick={onOpenChange} disabled={isLoading} className="flex-1">
             {cancelText || t("common.cancel")}
           </Button>
-          <Button
-            type="button"
-            variant={config.confirmButtonVariant}
-            onClick={handleConfirm}
-            disabled={isLoading}
-            className="flex-1"
-          >
+          <Button type="button" variant={config.confirmButtonVariant} onClick={handleConfirm} disabled={isLoading} className="flex-1">
             {isLoading ? t("common.loading") : confirmText || t("common.confirm")}
           </Button>
         </div>

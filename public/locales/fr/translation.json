@@ -14,13 +14,6 @@
       "title": "Notre vision"
     }
   },
-  "values": {
-    "compliance": "Nous respectons les normes réglementaires et les exigences de conformité les plus strictes, garantissant que toutes les transactions respectent les réglementations CEMAC et les protocoles de sécurité financière internationaux.",
-    "excellence": "Nous nous engageons à offrir une qualité de service exceptionnelle, des solutions innovantes et une amélioration continue dans tout ce que nous faisons pour nos clients.",
-    "security": "Nous priorisons la protection de vos données financières et transactions avec un chiffrement de niveau entreprise, une authentification multi-niveaux et des pistes d'audit complètes.",
-    "support": "Nous fournissons un support technique dédié et un service client pour assurer votre réussite, avec une assistance experte disponible quand vous en avez besoin.",
-    "transparency": "Nous croyons en une communication claire, une tarification honnête et une visibilité complète sur toutes les transactions et opérations de notre plateforme."
-  },
   "accessDenied": "Accès refusé",
   "actions": {
     "openMenu": "Ouvrir le menu"
@@ -46,6 +39,7 @@
       "deleteError": "Erreur lors de la suppression des adresses IP sélectionnées.",
       "deleteReason": "Motif de la suppression groupée",
       "partialError_one": "Une erreur partielle est survenue.",
+      "partialError_many": "Plusieurs erreurs partielles sont survenues.",
       "partialError_other": "{{count}} erreurs partielles sont survenues."
     },
     "details": {
@@ -75,6 +69,7 @@
         "error": "Échec de la suppression de l'IP autorisée.",
         "success": "IP autorisée supprimée avec succès.",
         "success_one": "1 IP autorisée supprimée avec succès.",
+        "success_many": "Les IPs autorisées ont été supprimées avec succès.",
         "success_other": "{{count}} IPs autorisées supprimées avec succès."
       },
       "noData": "Aucune IP autorisée trouvée.",
@@ -90,6 +85,465 @@
     "totalCount_one": "1 IP autorisée",
     "totalCount_other": "{{count}} IPs autorisées"
   },
+  "analytics": {
+    "business": {
+      "customerEngagement": {
+        "apiUsage": "Utilisation de l'API",
+        "callsPerUser": "appels/utilisateur",
+        "description": "Activité des utilisateurs et métriques de croissance",
+        "growthRate": "Taux de Croissance",
+        "title": "Engagement Client",
+        "transactionsPerUser": "Transactions par utilisateur actif"
+      },
+      "growthIndicators": {
+        "description": "Métriques clés pour la prise de décision stratégique",
+        "marketPenetration": "Pénétration du Marché",
+        "operationalScalability": "Évolutivité Opérationnelle",
+        "revenueMargin": "Marge de revenu",
+        "serviceDiversification": "Diversification des Services",
+        "title": "Indicateurs de Croissance",
+        "xafPer1kUsers": "XAF pour 1K utilisateurs"
+      },
+      "operationalEfficiency": {
+        "apiReliability": "Fiabilité de l'API",
+        "description": "Performance et fiabilité globales de la plateforme",
+        "processingLoad": "Charge de Traitement",
+        "title": "Score d'Efficacité Opérationnelle",
+        "transactionSuccess": "Réussite des Transactions",
+        "txPerDay": "tx/jour"
+      },
+      "revenuePerTransaction": {
+        "description": "Efficacité moyenne de la génération de revenus",
+        "receiptsRPT": "RPT Reçus",
+        "title": "Revenu par Transaction",
+        "transfersRPT": "RPT Transferts",
+        "withdrawalsRPT": "RPT Retraits"
+      },
+      "riskAssessment": {
+        "apiErrors": "Erreurs API",
+        "description": "Modèles d'échec des transactions et indicateurs de risque",
+        "failedReceipts": "Reçus Échoués",
+        "failedWithdrawals": "Retraits Échoués",
+        "high": "ÉLEVÉ",
+        "low": "FAIBLE",
+        "medium": "MOYEN",
+        "overallRiskLevel": "Niveau de Risque Global",
+        "title": "Tableau de Bord d'Évaluation des Risques"
+      },
+      "title": "Business Intelligence"
+    },
+    "crossTable": {
+      "companyMatrix": {
+        "applications": "Apps",
+        "avgProfitMargin": "Marge Bénéf. Moy.",
+        "avgSuccessRate": "Taux de Réussite Moy.",
+        "company": "Entreprise",
+        "description": "Aperçu complet de la performance des entreprises",
+        "title": "Matrice Entreprise-Application",
+        "totalRevenue": "Revenu Total (XAF)",
+        "totalUsers": "Total Utilisateurs",
+        "totalVolume": "Volume Total (XAF)"
+      },
+      "companyVolumeDistribution": {
+        "description": "Top entreprises par volume de transactions",
+        "title": "Distribution du Volume par Entreprise"
+      },
+      "overview": {
+        "activeApplications": "applications actives",
+        "activeCompanies": "entreprises actives",
+        "applicationsPerCompany": "apps par entreprise",
+        "avgAppsPerCompany": "Moy. Apps/Entreprise",
+        "totalApplications": "Total Applications",
+        "totalCompanies": "Total Entreprises",
+        "totalEcosystemVolume": "Volume Total de l'Écosystème"
+      },
+      "rankings": {
+        "applications": "applications",
+        "mostDominant": {
+          "description": "Entreprises avec les plus hauts volumes de transactions",
+          "title": "Entreprises les Plus Dominantes"
+        },
+        "mostEfficient": {
+          "title": "Plus Efficaces en Frais"
+        },
+        "mostProfitable": {
+          "description": "Entreprises avec les plus hautes marges bénéficiaires",
+          "title": "Entreprises les Plus Rentables"
+        },
+        "mostTransactions": {
+          "title": "Plus de Transactions"
+        },
+        "mostUsers": {
+          "title": "Plus d'Utilisateurs Actifs"
+        },
+        "profitMargin": "marge bénéficiaire",
+        "revenue": "revenu",
+        "transactions": "transactions"
+      },
+      "revenueDistribution": {
+        "description": "Part des revenus par entreprise",
+        "title": "Distribution des Revenus"
+      },
+      "title": "Analyses par Entreprise et Application",
+      "topApplications": {
+        "application": "Application",
+        "company": "Entreprise",
+        "description": "Applications les plus performantes toutes entreprises confondues",
+        "rank": "Rang",
+        "revenue": "Revenu (XAF)",
+        "successRate": "Taux de Réussite",
+        "title": "Performance des Meilleures Applications",
+        "transactions": "Transactions",
+        "users": "Utilisateurs",
+        "volume": "Volume (XAF)"
+      }
+    },
+    "description": "Métriques quotidiennes et analyses de performance",
+    "enhanced": {
+      "available": "Disponible",
+      "balance": "Solde",
+      "balanceDistribution": "Distribution des Soldes",
+      "balanceDistributionDesc": "Allocation des soldes par méthode de paiement",
+      "balanceHealthDashboard": "Tableau de Bord de la Santé des Soldes",
+      "balanceHealthDesc": "Suivi complet et statut des soldes",
+      "combinedVolume": "transactions + soldes",
+      "currentBalance": "Solde Actuel",
+      "excellentMargin": "Excellente marge bénéficiaire",
+      "goodMargin": "Bonne marge bénéficiaire",
+      "improvementNeeded": "Amélioration de la marge nécessaire",
+      "liquidityDesc": "Ratio solde disponible vs total",
+      "liquidityHealth": "Santé de la Liquidité",
+      "liquidityRatio": "Ratio de Liquidité",
+      "operationalRisk": "Risque Opérationnel",
+      "pendingReconciliations": "rapprochements en attente",
+      "performanceMetrics": "Métriques de Performance",
+      "performanceMetricsDesc": "Taux de réussite et tendances des revenus",
+      "profitabilityDesc": "Indicateur de performance de la marge de revenu",
+      "profitabilityTarget": "Objectif de Rentabilité",
+      "provider": "Fournisseur",
+      "reserved": "Réservé",
+      "status": "Statut",
+      "systemEfficiency": "Efficacité du Système",
+      "totalEcosystemValue": "Valeur Totale de l'Écosystème",
+      "totalTransactions": "transactions totales",
+      "transactionTrends": "Tendances des Transactions",
+      "transactionTrendsDesc": "Modèles de volume de transactions quotidiens",
+      "utilizationRate": "Taux d'Utilisation",
+      "volumeTrendAnalysis": "Analyse des Tendances de Volume",
+      "volumeTrendDesc": "Visualisation avancée du volume avec effets de gradient"
+    },
+    "financial": {
+      "costBenefit": {
+        "apiCallsPerHour": "appels API/heure",
+        "costEfficiency": "Efficacité des Coûts",
+        "costToProfitRatio": "Ratio coût/bénéfice",
+        "fromReceipts": "Provenant des reçus",
+        "processingCapacity": "Capacité de Traitement",
+        "revenueFocus": "Focalisation sur le Revenu",
+        "revenuePerUser": "XAF revenu/utilisateur",
+        "userEconomics": "Économie Utilisateur"
+      },
+      "profitability": {
+        "description": "Métriques de rentabilité pour la période actuelle",
+        "margin": "Marge bénéficiaire",
+        "netProfit": "Bénéfice Net",
+        "providerCosts": "Coûts Fournisseurs",
+        "title": "Aperçu de la Rentabilité",
+        "totalFees": "Total des Frais Collectés"
+      },
+      "revenueAnalysis": {
+        "description": "Total des frais vs coûts des fournisseurs avec le revenu net",
+        "title": "Analyse des Revenus et Frais"
+      },
+      "revenueBreakdown": {
+        "description": "Analyse des revenus et de la marge par type de service",
+        "margin": "Marge",
+        "receipts": "Services de Reçus",
+        "title": "Répartition des Revenus par Service",
+        "transfers": "Services de Transfert",
+        "withdrawals": "Services de Retrait"
+      }
+    },
+    "geo": {
+      "acrossRegions": "dans toutes les régions",
+      "allRegions": "Toutes les régions",
+      "avgGrowth": "Croissance Moyenne",
+      "avgPenetration": "pénétration moyenne",
+      "cameroonRegionsMap": "Carte des Régions du Cameroun",
+      "cameroonRegionsMapDesc": "Représentation visuelle de la distribution des utilisateurs au Cameroun",
+      "capital": "Capitale",
+      "fastestGrowingDesc": "Régions avec les plus forts taux de croissance",
+      "fastestGrowingRegions": "Régions à Croissance la Plus Rapide",
+      "geographicDistribution": "Distribution Géographique",
+      "geographicDistributionDesc": "Utilisateurs par type de zone",
+      "growth": "Croissance",
+      "heatmaps": "Cartes de chaleur",
+      "interactiveMap": "Carte interactive",
+      "mapDescription": "Description de la carte",
+      "mapFeatureDescription": "Description de la fonctionnalité de la carte",
+      "mapFeatureTitle": "Titre de la fonctionnalité de la carte",
+      "marketPenetration": "Pénétration du Marché",
+      "penetration": "Pénétration",
+      "region": "Région",
+      "regionalPerformance": "Tableau de Bord de Performance Régionale",
+      "regionalPerformanceDesc": "Métriques régionales complètes et indicateurs de performance",
+      "regionTracking": "Suivi par région",
+      "status": "Statut",
+      "topRegionsByUsers": "Top Régions par Utilisateurs",
+      "topRegionsDesc": "Régions avec la plus forte adoption",
+      "totalTransactions": "Total des transactions",
+      "totalUsers": "Total Utilisateurs",
+      "totalVolume": "Volume Total",
+      "transactions": "transactions",
+      "userDensity": "Densité d'Utilisateurs",
+      "userDistribution": "Distribution Régionale des Utilisateurs",
+      "userDistributionDesc": "Nombre d'utilisateurs et volume de transactions par région",
+      "users": "Utilisateurs",
+      "volume": "Volume",
+      "yearOverYear": "d'une année sur l'autre"
+    },
+    "loading": "Chargement des données analytiques...",
+    "loadingTab": "Chargement du contenu de l'onglet...",
+    "mathematical": {
+      "crossCorrelation": {
+        "apiCallsPerUser": "Appels API par Utilisateur",
+        "callsUserUnit": "appels/utilisateur",
+        "correlationCoefficientReceipt": "Coefficient de corrélation pour les reçus",
+        "correlationCoefficientWithdrawal": "Coefficient de corrélation pour les retraits",
+        "description": "Analyse des relations entre métriques clés et comportement utilisateur",
+        "errorPatternAnalysis": "Analyse des Modèles d'Erreur",
+        "errorToVolumeRatio": "Ratio Erreur/Volume",
+        "overallFailureDistribution": "Distribution Globale des Échecs",
+        "percentageTransactionsWithErrors": "Pourcentage de transactions avec erreurs",
+        "receiptsVolumeSuccessCorrelation": "Reçus: Corrélation Volume-Succès",
+        "revenuePerUser": "Revenu par Utilisateur",
+        "title": "Analyse de Corrélation Croisée et Engagement Utilisateur",
+        "totalFailureRateAllTransactionTypes": "Taux d'échec total tous types de transactions",
+        "transactionsPerUser": "Transactions par Utilisateur",
+        "transactionsUserUnit": "trans./utilisateur",
+        "userEngagementMetrics": "Métriques d'Engagement Utilisateur",
+        "volumeVsSuccessRateCorrelation": "Corrélation Volume vs Taux de Réussite",
+        "withdrawalsVolumeSuccessCorrelation": "Retraits: Corrélation Volume-Succès",
+        "xafUserUnit": "XAF/utilisateur"
+      },
+      "growthOperationalEfficiency": {
+        "advancedPerformanceIndicators": "Indicateurs de Performance Avancés",
+        "compositeGrowthIndicator": "Indicateur de croissance composite",
+        "dailyUserGrowthRate": "Taux de Croissance Utilisateurs/Jour",
+        "description": "Tendances temporelles, modèles de croissance et indicateurs de performance",
+        "growthMomentumIndex": "Indice de Momentum de Croissance",
+        "growthVelocityMetrics": "Métriques de Croissance et Vélocité",
+        "newUsersPerDay": "nouv. utilisateurs/jour",
+        "operationalRiskLevel": "Niveau de risque opérationnel",
+        "overallSystemStability": "Stabilité globale du système",
+        "platformStabilityIndex": "Indice de Stabilité de la Plateforme",
+        "riskAssessmentScore": "Score d'Évaluation des Risques",
+        "title": "Analyses de Croissance et d'Efficacité Opérationnelle",
+        "transactionRate": "Taux de Transaction",
+        "transactionsPerHour": "trans./heure",
+        "volumeVelocity": "Vélocité du Volume",
+        "xafPerSecond": "XAF/seconde"
+      },
+      "operationFee": {
+        "costEfficiencyMultiplier": "Multiplicateur d'Efficacité des Coûts",
+        "description": "Corrélation entre frais internes et fournisseurs et métriques de rentabilité",
+        "feeCollectionEfficiency": "Efficacité de la collecte des frais",
+        "feeDistributionOverview": "Aperçu de la Distribution des Frais",
+        "grossMargin": "Marge Brute",
+        "netMargin": "Marge Nette",
+        "profitabilityRatios": "Ratios de Rentabilité",
+        "profitMarginAfterProviderCosts": "Marge bénéficiaire après coûts fournisseurs",
+        "providerCosts": "Coûts Fournisseurs",
+        "revenuePerCostUnit": "Revenu par unité de coût",
+        "revenueVolumeRatio": "Ratio Revenu/Volume",
+        "title": "Analyse des Frais d'Opération",
+        "totalFeesCollected": "Total des Frais Collectés"
+      },
+      "title": "Analyses Mathématiques Avancées",
+      "transactionStatus": {
+        "description": "Analyse mathématique des résultats de transactions et des modèles de succès",
+        "failed": "Échouées",
+        "failureImpactAnalysis": "Analyse de l'Impact des Échecs",
+        "fundTransfers": "Transferts de Fonds",
+        "receiptFailures": "Échecs Reçus",
+        "receipts": "Reçus",
+        "receiptsSuccessRate": "Taux de Réussite Reçus",
+        "statisticalVarianceAnalysis": "Analyse de la Variance Statistique",
+        "successful": "Réussies",
+        "successRate": "Taux de Réussite",
+        "successRateBands": "Bandes de Performance du Taux de Réussite",
+        "successRateConsistencyMeasure": "Mesure de la consistance du taux de réussite",
+        "successRatesAnalysis": "Analyse des Taux de Réussite",
+        "successRateStdDev": "Écart-Type du Taux de Réussite",
+        "title": "Distribution du Statut des Transactions",
+        "total": "Total",
+        "transactionCoefficientVariation": "Coefficient de Variation des Transactions",
+        "transactions": "transactions",
+        "transactionVolumeBands": "Bandes de Distribution du Volume des Transactions",
+        "transferFailures": "Échecs Transferts",
+        "transfersSuccessRate": "Taux de Réussite Transferts",
+        "volumeDistributionVariability": "Variabilité de la distribution du volume",
+        "withdrawalFailures": "Échecs Retraits",
+        "withdrawals": "Retraits",
+        "withdrawalsSuccessRate": "Taux de Réussite Retraits"
+      }
+    },
+    "noData": "Aucune donnée disponible",
+    "overview": {
+      "activeUsers": "Utilisateurs Actifs",
+      "failureRate": "Taux d'Échec",
+      "net": "Net",
+      "netRevenue": "Revenu Net",
+      "newUsers": "Nouveaux Utilisateurs",
+      "overallSuccessRate": "Taux de Réussite Global",
+      "paymentMethods": {
+        "amount": "Montant",
+        "description": "Taux de réussite et volumes par fournisseur",
+        "provider": "Fournisseur",
+        "rate": "Taux",
+        "title": "Performance des Méthodes de Paiement",
+        "volume": "Volume"
+      },
+      "profitMargin": "Marge Bénéficiaire",
+      "totalVolume": "Volume Total",
+      "transactionBreakdown": {
+        "description": "Métriques détaillées des transactions par type",
+        "fundTransfers": "Transferts de Fonds",
+        "rate": "Taux",
+        "receipts": "Reçus",
+        "success": "Succès",
+        "title": "Répartition des Transactions",
+        "total": "Total",
+        "type": "Type",
+        "withdrawals": "Retraits"
+      }
+    },
+    "selectRange": "Sélectionner la période",
+    "tabs": {
+      "business": "Business Intelligence",
+      "crossTable": "Analyses Entreprises",
+      "financial": "Financier",
+      "geolocation": "Analyses Géographiques",
+      "mathematical": "Analyses Mathématiques",
+      "overview": "Aperçu",
+      "technical": "Analyses Techniques",
+      "transactions": "Transactions"
+    },
+    "technical": {
+      "analysis": {
+        "apiCalls": "appels API",
+        "avgResponse": "réponse moy.",
+        "bestUptimeDay": "Meilleure Disponibilité",
+        "busiestDay": "Jour le Plus Actif",
+        "downtime": "indisponibilité",
+        "errorRate": "taux d'erreur",
+        "fastestDay": "Jour le Plus Rapide",
+        "issues": {
+          "description": "Jours avec les taux d'erreur et problèmes de performance les plus élevés",
+          "title": "Problèmes et Incidents"
+        },
+        "mostDowntimeDay": "Plus Longue Indisponibilité",
+        "peakPerformance": {
+          "description": "Meilleurs jours selon les métriques clés",
+          "title": "Jours de Performance de Pointe"
+        },
+        "slowestDay": "Jour le Plus Lent",
+        "uptime": "disponibilité",
+        "worstErrorDay": "Pire Jour d'Erreur"
+      },
+      "charts": {
+        "apiCalls": {
+          "description": "Charge système et trafic API par jour",
+          "title": "Volume Quotidien des Appels API"
+        },
+        "errorRate": {
+          "description": "Suivi quotidien du taux d'erreur pour la santé du système",
+          "title": "Tendances du Taux d'Erreur"
+        },
+        "responseTime": {
+          "description": "Performance moyenne du temps de réponse par jour",
+          "title": "Analyse du Temps de Réponse"
+        },
+        "uptime": {
+          "description": "Pourcentage de disponibilité quotidien",
+          "title": "Suivi de la Disponibilité Système"
+        }
+      },
+      "overview": {
+        "avgErrorRate": "Taux d'erreur moyen",
+        "avgRate": "Taux moyen",
+        "avgResponseTime": "Temps de Réponse Moy.",
+        "avgUptime": "Disponibilité Moyenne",
+        "daily": "Quotidien",
+        "errorRate": "Taux d'Erreur",
+        "errors": "Erreurs",
+        "performance": "performance système",
+        "reliability": "fiabilité système",
+        "totalApiCalls": "Total Appels API",
+        "totalErrors": "erreurs totales",
+        "weeklyTotal": "total hebdo."
+      },
+      "summary": {
+        "apiCalls": "Appels API",
+        "day": "Jour",
+        "description": "Aperçu complet des métriques techniques pour le suivi système",
+        "errorRate": "Taux d'Erreur",
+        "errors": "Erreurs",
+        "excellent": "Excellent",
+        "good": "Bon",
+        "issues": "Problèmes",
+        "responseTime": "Temps de Réponse",
+        "status": "Statut",
+        "title": "Résumé Hebdomadaire des Performances Techniques",
+        "uptime": "Disponibilité"
+      },
+      "title": "Analyses Techniques pour les Opérations Système"
+    },
+    "timeRange": {
+      "30days": "30 derniers jours",
+      "7days": "7 derniers jours",
+      "90days": "90 derniers jours"
+    },
+    "title": "Tableau de Bord Analytique",
+    "transactions": {
+      "counts": "Opérations",
+      "fundTransfers": "Transferts de Fonds",
+      "momo": "MOMO",
+      "om": "OM",
+      "paymentMethods": {
+        "amount": "Montant",
+        "avgAmount": "Montant Moyen",
+        "avgTicket": "Panier Moyen",
+        "description": "Volume des transactions par fournisseur de paiement",
+        "failures": "Échecs",
+        "marketShare": "Part de Marché",
+        "noOperators": "Aucune donnée de méthode de paiement disponible",
+        "operatorCode": "Code Opérateur",
+        "operatorDetails": "Détails Opérateur",
+        "operatorDetailsDesc": "Informations détaillées pour chaque fournisseur de paiement",
+        "performanceSummary": "Résumé de Performance des Méthodes de Paiement",
+        "performanceSummaryDesc": "Comparaison complète de tous les fournisseurs de paiement",
+        "provider": "Fournisseur",
+        "rate": "Taux",
+        "successRate": "Taux de Réussite",
+        "title": "Distribution des Méthodes de Paiement",
+        "totalVolume": "Volume Total",
+        "transactions": "Transactions",
+        "volume": "Volume"
+      },
+      "receipts": "Reçus",
+      "successRateMonitoring": {
+        "description": "Taux de réussite par type de transaction au fil du temps",
+        "title": "Suivi du Taux de Réussite"
+      },
+      "totalVolume": "Volume Total",
+      "volumeByType": {
+        "description": "Nombre de transactions quotidiennes par type de service",
+        "title": "Volume des Transactions par Type"
+      },
+      "withdrawals": "Retraits"
+    }
+  },
   "applications": {
     "actions": {
       "add": "Ajouter Application",
@@ -98,8 +552,10 @@
       "more": "Actions",
       "view": "Voir"
     },
+    "apiKeyExpiresAtUtc": "Expire le",
     "bulk": {
       "delete_one": "Supprimer cette application ?",
+      "delete_many": "Supprimer ces applications ?",
       "delete_other": "Supprimer ces applications ?",
       "deleteConfirm_one": "Êtes-vous sûr de vouloir supprimer cette application ?",
       "deleteConfirm_other": "Êtes-vous sûr de vouloir supprimer ces {{count}} applications ?",
@@ -107,7 +563,24 @@
       "deleteReason": "Motif de la suppression groupée",
       "deleting": "Suppression en cours...",
       "partialError_one": "Une erreur partielle est survenue.",
+      "partialError_many": "Plusieurs erreurs partielles sont survenues.",
       "partialError_other": "{{count}} erreurs partielles sont survenues."
+    },
+    "confirmations": {
+      "bulkDelete": {
+        "cancel": "Annuler",
+        "confirm": "Tout supprimer",
+        "description": "Êtes-vous sûr de vouloir supprimer {{count}} applications ? Cette action est irréversible.",
+        "description_one": "Êtes-vous sûr de vouloir supprimer cette application ? Cette action est irréversible.",
+        "description_many": "Êtes-vous sûr de vouloir supprimer ces applications ? Cette action est irréversible.",
+        "description_other": "Êtes-vous sûr de vouloir supprimer ces {{count}} applications ? Cette action est irréversible."
+      },
+      "delete": {
+        "cancel": "Annuler",
+        "confirm": "Supprimer",
+        "description": "Êtes-vous sûr de vouloir supprimer cette application ? Cette action est irréversible.",
+        "title": "Supprimer l'application"
+      }
     },
     "create": "Créer une application",
     "details": "Détails de l'application",
@@ -136,9 +609,9 @@
       "createdAt": "Créé le",
       "description": "Description",
       "environment": "Environnement",
+      "keys": "Clés",
       "name": "Nom",
-      "status": "Statut",
-      "keys": "Clés"
+      "status": "Statut"
     },
     "messages": {
       "create": {
@@ -150,6 +623,7 @@
         "error": "Échec de la suppression de l'application.",
         "success": "Application supprimée avec succès.",
         "success_one": "1 application supprimée.",
+        "success_many": "Les applications ont été supprimées avec succès.",
         "success_other": "{{count}} applications supprimées."
       },
       "noData": "Aucune application trouvée.",
@@ -163,22 +637,7 @@
     },
     "title": "Applications",
     "totalCount_one": "1 application",
-    "totalCount_other": "{{count}} applications",
-    "apiKeyExpiresAtUtc": "Expire le",
-    "confirmations": {
-      "delete": {
-        "title": "Supprimer l'application",
-        "description": "Êtes-vous sûr de vouloir supprimer cette application ? Cette action est irréversible.",
-        "confirm": "Supprimer",
-        "cancel": "Annuler"
-      },
-      "bulkDelete": {
-        "title": "Supprimer les applications",
-        "description": "Êtes-vous sûr de vouloir supprimer {{count}} applications ? Cette action est irréversible.",
-        "confirm": "Tout supprimer",
-        "cancel": "Annuler"
-      }
-    }
+    "totalCount_other": "{{count}} applications"
   },
   "auditlogs": {
     "headers": {
@@ -218,6 +677,7 @@
       "deleteError": "Erreur lors de la suppression des journaux.",
       "deleteReason": "Motif de la suppression",
       "partialError_one": "Une erreur partielle est survenue.",
+      "partialError_many": "Plusieurs erreurs partielles sont survenues.",
       "partialError_other": "{{count}} erreurs partielles sont survenues."
     },
     "details": {
@@ -232,6 +692,7 @@
         "error": "Échec de la suppression du journal.",
         "success": "Journal supprimé avec succès.",
         "success_one": "1 journal supprimé.",
+        "success_many": "Les journaux ont été supprimés avec succès.",
         "success_other": "{{count}} journaux supprimés."
       },
       "noData": "Aucun journal d'audit trouvé.",
@@ -256,6 +717,13 @@
       "passwordPlaceholder": "••••••••",
       "signIn": "Se connecter",
       "title": "Connectez-vous à votre compte"
+    }
+  },
+  "balances": {
+    "messages": {
+      "dropdown": {
+        "error": "Erreur"
+      }
     }
   },
   "balancesreadmodels": {
@@ -314,13 +782,16 @@
     },
     "bulk": {
       "delete_one": "Supprimer ce solde ?",
+      "delete_many": "Supprimer ces soldes ?",
       "delete_other": "Supprimer ces soldes ?",
       "deleteConfirm_one": "Êtes-vous sûr de vouloir supprimer ce solde ?",
+      "deleteConfirm_many": "Êtes-vous sûr de vouloir supprimer ces soldes ?",
       "deleteConfirm_other": "Êtes-vous sûr de vouloir supprimer ces {{count}} soldes ?",
       "deleteError": "Erreur lors de la suppression des soldes.",
       "deleteReason": "Motif de la suppression",
       "deleting": "Suppression en cours...",
       "partialError_one": "Une erreur partielle est survenue.",
+      "partialError_many": "Plusieurs erreurs partielles sont survenues.",
       "partialError_other": "{{count}} erreurs partielles sont survenues."
     },
     "messages": {
@@ -333,6 +804,7 @@
         "error": "Échec de la suppression du solde.",
         "success": "Solde supprimé avec succès.",
         "success_one": "1 solde supprimé.",
+        "success_many": "Les soldes ont été supprimés avec succès.",
         "success_other": "{{count}} soldes supprimés."
       },
       "noData": "Aucun solde trouvé.",
@@ -360,6 +832,7 @@
       "deleteError": "Erreur lors de la suppression des adresses IP.",
       "deleteReason": "Motif de la suppression",
       "partialError_one": "Une erreur partielle est survenue.",
+      "partialError_many": "Plusieurs erreurs partielles sont survenues.",
       "partialError_other": "{{count}} erreurs partielles sont survenues."
     },
     "details": {
@@ -385,6 +858,7 @@
         "error": "Le déblocage a échoué.",
         "success": "Déblocage réussi.",
         "success_one": "1 IP débloquée avec succès.",
+        "success_many": "Les IPs ont été débloquées avec succès.",
         "success_other": "{{count}} IPs débloquées avec succès."
       },
       "noData": "Aucune IP bloquée trouvée.",
@@ -426,32 +900,36 @@
   },
   "common": {
     "actions": {
+      "activate": "Activer",
+      "deactivate": "Désactiver",
       "delete": "Supprimer",
       "edit": "Modifier",
       "more": "Actions",
-      "view": "Voir",
-      "activate": "Activer",
-      "deactivate": "Désactiver"
+      "view": "Voir"
     },
+    "backToList": "Retour a la liste",
     "cancel": "Annuler",
+    "confirm": "Confirmer",
+    "createdAt": "Créé le",
     "dataGrid": {
       "items": "Éléments",
       "total": "Total"
     },
     "filter": {
       "actions": {
+        "assignPermissions": "Assigner Permission",
         "clear": "Effacer",
+        "edit": "Modifier",
         "export": "Exporter",
         "filter": "Filtrer",
         "import": "Importer",
         "more": "Plus",
         "refresh": "Actualiser",
-        "reset": "Réinitialiser",
-        "assignPermissions": "Assigner Permission",
-        "edit": "Modifier"
+        "reset": "Réinitialiser"
       },
       "selection": {
         "count_one": "1 sélectionné",
+        "count_many": "{{count}} sélectionnés",
         "count_other": "{{count}} sélectionnés"
       },
       "view": {
@@ -462,11 +940,11 @@
     "form": {
       "valueLabel": "Valeur"
     },
-    "backToList": "Retour a la liste",
-    "yes": "Oui",
+    "loading": "Chargement...",
+    "na": "N/A",
     "no": "Non",
-    "createdAt": "Créé le",
-    "updatedAt": "Modifié le"
+    "updatedAt": "Modifié le",
+    "yes": "Oui"
   },
   "companies": {
     "actions": {
@@ -478,13 +956,16 @@
     },
     "bulk": {
       "delete_one": "Supprimer cette entreprise ?",
+      "delete_many": "Supprimer ces entreprises ?",
       "delete_other": "Supprimer ces entreprises ?",
       "deleteConfirm_one": "Êtes-vous sûr de vouloir supprimer cette entreprise ?",
+      "deleteConfirm_many": "Êtes-vous sûr de vouloir supprimer ces entreprises ?",
       "deleteConfirm_other": "Êtes-vous sûr de vouloir supprimer ces {{count}} entreprises ?",
       "deleteError": "Erreur lors de la suppression.",
       "deleteReason": "Motif de la suppression",
       "deleting": "Suppression en cours...",
       "partialError_one": "Une erreur partielle est survenue.",
+      "partialError_many": "Plusieurs erreurs partielles sont survenues.",
       "partialError_other": "{{count}} erreurs partielles sont survenues."
     },
     "create": "Créer une entreprise",
@@ -498,6 +979,7 @@
       "contact": "Contact",
       "contactPerson": "Personne de contact",
       "countryCode": "Code Pays",
+      "countryName": "Pays",
       "createdAt": "Date de création",
       "email": "Email",
       "isVerified": "Vérifié",
@@ -505,14 +987,7 @@
       "phoneNumber": "Téléphone",
       "status": "Statut",
       "taxNumber": "N° Contribuable",
-      "countryName": "Pays",
       "website": "Site Web"
-    },
-    "groups": {
-      "basicInfo": "Informations de base",
-      "contactInfo": "Contact et Localisation",
-      "legalFinancial": "Légal et Financier",
-      "createdAt": "Date de création"
     },
     "form": {
       "adressLabel": "Adresse",
@@ -552,6 +1027,12 @@
       "websiteLabel": "Site Web",
       "websitePlaceholder": "Saisir l'URL du site Web"
     },
+    "groups": {
+      "basicInfo": "Informations de base",
+      "contactInfo": "Contact et Localisation",
+      "createdAt": "Date de création",
+      "legalFinancial": "Légal et Financier"
+    },
     "headers": {
       "contactPhone": "Tél. Contact",
       "countryId": "ID Pays",
@@ -568,6 +1049,7 @@
         "error": "La suppression a échoué.",
         "success": "Suppression réussie.",
         "success_one": "1 entreprise supprimée.",
+        "success_many": "Les entreprises ont été supprimées avec succès.",
         "success_other": "{{count}} entreprises supprimées."
       },
       "dropdown": {
@@ -628,13 +1110,16 @@
     },
     "bulk": {
       "delete_one": "Supprimer cette limite ?",
+      "delete_many": "Supprimer ces limites ?",
       "delete_other": "Supprimer ces limites ?",
       "deleteConfirm_one": "Êtes-vous sûr de vouloir supprimer cette limite ?",
+      "deleteConfirm_many": "Êtes-vous sûr de vouloir supprimer ces limites ?",
       "deleteConfirm_other": "Êtes-vous sûr de vouloir supprimer ces {{count}} limites ?",
       "deleteError": "Erreur lors de la suppression.",
       "deleteReason": "Motif de la suppression",
       "deleting": "Suppression en cours...",
       "partialError_one": "Une erreur partielle est survenue.",
+      "partialError_many": "Plusieurs erreurs partielles sont survenues.",
       "partialError_other": "{{count}} erreurs partielles sont survenues."
     },
     "create": "Créer une limite d'application",
@@ -670,6 +1155,7 @@
         "error": "La suppression a échoué.",
         "success": "Suppression réussie.",
         "success_one": "1 limite supprimée.",
+        "success_many": "Les limites ont été supprimées avec succès.",
         "success_other": "{{count}} limites supprimées."
       },
       "noData": "Aucune limite trouvée.",
@@ -719,6 +1205,7 @@
       "deleteError": "Échec de la suppression des pays sélectionnés",
       "deleteReason": "Opération de suppression groupée",
       "partialError_one": "1 erreur partielle est survenue.",
+      "partialError_many": "Plusieurs erreurs partielles sont survenues.",
       "partialError_other": "{{count}} erreurs partielles sont survenues."
     },
     "create": "Créer un pays",
@@ -760,6 +1247,7 @@
         "error": "Échec de la suppression du pays.",
         "success": "Pays supprimé avec succès.",
         "success_one": "1 pays supprimé.",
+        "success_many": "Les pays ont été supprimés avec succès.",
         "success_other": "{{count}} pays supprimés."
       },
       "noData": "Aucun pays trouvé.",
@@ -785,13 +1273,16 @@
     },
     "bulk": {
       "delete_one": "Supprimer cette devise ?",
+      "delete_many": "Supprimer ces devises ?",
       "delete_other": "Supprimer ces devises ?",
       "deleteConfirm_one": "Êtes-vous sûr de vouloir supprimer cette devise ?",
+      "deleteConfirm_many": "Êtes-vous sûr de vouloir supprimer ces devises ?",
       "deleteConfirm_other": "Êtes-vous sûr de vouloir supprimer ces {{count}} devises ?",
       "deleteError": "Erreur lors de la suppression.",
       "deleteReason": "Motif de la suppression",
       "deleting": "Suppression en cours...",
       "partialError_one": "Une erreur partielle est survenue.",
+      "partialError_many": "Plusieurs erreurs partielles sont survenues.",
       "partialError_other": "{{count}} erreurs partielles sont survenues."
     },
     "create": "Créer une devise",
@@ -841,6 +1332,7 @@
         "error": "La suppression a échoué.",
         "success": "Suppression réussie.",
         "success_one": "1 devise supprimée.",
+        "success_many": "Les devises ont été supprimées avec succès.",
         "success_other": "{{count}} devises supprimées."
       },
       "noData": "Aucune devise trouvée.",
@@ -946,6 +1438,7 @@
       "deleteError": "Erreur lors de la suppression.",
       "deleteReason": "Motif de la suppression",
       "partialError_one": "Une erreur partielle est survenue.",
+      "partialError_many": "Plusieurs erreurs partielles sont survenues.",
       "partialError_other": "{{count}} erreurs partielles sont survenues."
     },
     "form": {
@@ -973,6 +1466,7 @@
         "error": "La suppression a échoué.",
         "success": "Suppression réussie.",
         "success_one": "1 type de document supprimé.",
+        "success_many": "Les types de documents ont été supprimés avec succès.",
         "success_other": "{{count}} types de documents supprimés."
       },
       "noData": "Aucun type de document trouvé.",
@@ -1020,6 +1514,16 @@
       "title": "Administration Système"
     },
     "badge": "FONCTIONNALITÉS",
+    "balanceManagement": {
+      "benefit1": "Suivi des soldes en temps réel",
+      "benefit2": "Support multi-devises pour les portefeuilles",
+      "benefit3": "Rapprochement automatique des soldes",
+      "benefit4": "Alertes et notifications de solde",
+      "benefits": "Suivi des soldes en temps réel\nSupport multi-devises pour les portefeuilles\nRapprochement automatique des soldes\nAlertes et notifications de solde",
+      "description": "Maintenez des soldes précis en temps réel sur tous les comptes, portefeuilles et opérateurs de mobile money. Suivez les mouvements de fonds et assurez l'exactitude financière en tout temps.",
+      "details": "Notre système de gestion des soldes offre une visibilité en temps réel sur toutes les positions financières, un rapprochement automatique avec les opérateurs de mobile money, un support multi-devises et des alertes configurables pour prévenir les découverts et maintenir la liquidité opérationnelle.",
+      "title": "Gestion des soldes"
+    },
     "intro": "Fujisat Pay est conçu pour offrir un contrôle total sur vos opérations financières mobiles au Cameroun, grâce à une suite de fonctionnalités avancées et sécurisées.",
     "kyc": {
       "benefit1": "Collection et vérification de documents numériques",
@@ -1030,6 +1534,26 @@
       "description": "Assurez la conformité et renforcez la confiance avec des processus de vérification KYC (Know Your Customer) robustes. Simplifiez l'intégration des clients tout en respectant les exigences réglementaires.",
       "details": "Notre système KYC vous aide à vérifier efficacement l'identité des clients tout en maintenant les plus hauts standards de sécurité et de conformité réglementaire.",
       "title": "Gestion KYC"
+    },
+    "moneyTransfers": {
+      "benefit1": "Capacités de transfert peer-to-peer",
+      "benefit2": "Transferts inter-portefeuilles et inter-opérateurs",
+      "benefit3": "Traitement instantané des transferts",
+      "benefit4": "Contrôles de limites de transaction",
+      "benefits": "Capacités de transfert peer-to-peer\nTransferts inter-portefeuilles et inter-opérateurs\nTraitement instantané des transferts\nContrôles de limites de transaction",
+      "description": "Activez des transferts d'argent fluides entre utilisateurs, portefeuilles et opérateurs de mobile money. Supportez les opérations de transfert internes et externes avec traitement en temps réel.",
+      "details": "Notre module de transfert d'argent facilite le mouvement instantané de fonds entre différents opérateurs de mobile money et portefeuilles internes, avec des limites configurables, des structures de frais et un suivi complet des transactions pour une visibilité totale.",
+      "title": "Transferts d'argent"
+    },
+    "multiEnterprise": {
+      "benefit1": "Gestion centralisée multi-entreprises",
+      "benefit2": "Données et permissions isolées par entreprise",
+      "benefit3": "Rapports consolidés entre entités",
+      "benefit4": "Configurations partagées ou indépendantes",
+      "benefits": "Gestion centralisée multi-entreprises\nDonnées et permissions isolées par entreprise\nRapports consolidés entre entités\nConfigurations partagées ou indépendantes",
+      "description": "Gérez plusieurs entreprises ou filiales depuis une seule plateforme. Chaque entreprise maintient son propre isolement de données tout en bénéficiant d'une supervision et de rapports centralisés.",
+      "details": "Notre architecture multi-entreprises permet aux organisations de gérer plusieurs entités commerciales avec une isolation complète des données, des configurations indépendantes et un contrôle d'accès basé sur les rôles, tout en fournissant des vues consolidées et des analyses inter-entreprises pour des insights au niveau du groupe.",
+      "title": "Gestion multi-entreprises"
     },
     "notifications": {
       "benefit1": "Notifications d'événements en temps réel",
@@ -1085,36 +1609,6 @@
       "description": "Initiez et traitez les demandes de retrait de fonds avec une sécurité optimale. Que ce soit via mobile money ou virement bancaire, Fujisat Pay s'adapte à vos besoins.",
       "details": "Notre système de gestion des retraits assure le décaissement sécurisé des fonds avec des workflows d'approbation multi-niveaux, des capacités de traitement par lots pour les opérations à volume élevé et des pistes d'audit complètes pour la conformité réglementaire.",
       "title": "Gestion des retraits"
-    },
-    "moneyTransfers": {
-      "benefit1": "Capacités de transfert peer-to-peer",
-      "benefit2": "Transferts inter-portefeuilles et inter-opérateurs",
-      "benefit3": "Traitement instantané des transferts",
-      "benefit4": "Contrôles de limites de transaction",
-      "benefits": "Capacités de transfert peer-to-peer\nTransferts inter-portefeuilles et inter-opérateurs\nTraitement instantané des transferts\nContrôles de limites de transaction",
-      "description": "Activez des transferts d'argent fluides entre utilisateurs, portefeuilles et opérateurs de mobile money. Supportez les opérations de transfert internes et externes avec traitement en temps réel.",
-      "details": "Notre module de transfert d'argent facilite le mouvement instantané de fonds entre différents opérateurs de mobile money et portefeuilles internes, avec des limites configurables, des structures de frais et un suivi complet des transactions pour une visibilité totale.",
-      "title": "Transferts d'argent"
-    },
-    "balanceManagement": {
-      "benefit1": "Suivi des soldes en temps réel",
-      "benefit2": "Support multi-devises pour les portefeuilles",
-      "benefit3": "Rapprochement automatique des soldes",
-      "benefit4": "Alertes et notifications de solde",
-      "benefits": "Suivi des soldes en temps réel\nSupport multi-devises pour les portefeuilles\nRapprochement automatique des soldes\nAlertes et notifications de solde",
-      "description": "Maintenez des soldes précis en temps réel sur tous les comptes, portefeuilles et opérateurs de mobile money. Suivez les mouvements de fonds et assurez l'exactitude financière en tout temps.",
-      "details": "Notre système de gestion des soldes offre une visibilité en temps réel sur toutes les positions financières, un rapprochement automatique avec les opérateurs de mobile money, un support multi-devises et des alertes configurables pour prévenir les découverts et maintenir la liquidité opérationnelle.",
-      "title": "Gestion des soldes"
-    },
-    "multiEnterprise": {
-      "benefit1": "Gestion centralisée multi-entreprises",
-      "benefit2": "Données et permissions isolées par entreprise",
-      "benefit3": "Rapports consolidés entre entités",
-      "benefit4": "Configurations partagées ou indépendantes",
-      "benefits": "Gestion centralisée multi-entreprises\nDonnées et permissions isolées par entreprise\nRapports consolidés entre entités\nConfigurations partagées ou indépendantes",
-      "description": "Gérez plusieurs entreprises ou filiales depuis une seule plateforme. Chaque entreprise maintient son propre isolement de données tout en bénéficiant d'une supervision et de rapports centralisés.",
-      "details": "Notre architecture multi-entreprises permet aux organisations de gérer plusieurs entités commerciales avec une isolation complète des données, des configurations indépendantes et un contrôle d'accès basé sur les rôles, tout en fournissant des vues consolidées et des analyses inter-entreprises pour des insights au niveau du groupe.",
-      "title": "Gestion multi-entreprises"
     }
   },
   "feeconfigurations": {
@@ -1149,18 +1643,24 @@
     },
     "bulk": {
       "delete_one": "Supprimer cette configuration ?",
+      "delete_many": "Supprimer ces configurations ?",
       "delete_other": "Supprimer ces configurations ?",
       "deleteConfirm_one": "Êtes-vous sûr de vouloir supprimer cette configuration ?",
+      "deleteConfirm_many": "Êtes-vous sûr de vouloir supprimer ces configurations ?",
       "deleteConfirm_other": "Êtes-vous sûr de vouloir supprimer ces {{count}} configurations ?",
       "deleteError": "Erreur lors de la suppression.",
       "deleteReason": "Motif de la suppression",
       "deleting": "Suppression en cours...",
       "partialError_one": "Une erreur partielle est survenue.",
+      "partialError_many": "Plusieurs erreurs partielles sont survenues.",
       "partialError_other": "{{count}} erreurs partielles sont survenues."
     },
     "create": "Créer une configuration de frais",
     "edit": "Modifier la configuration de frais",
     "form": {
+      "applicationId": {
+        "placeholder": "Sélectionnez une application"
+      },
       "companyId": {
         "placeholder": "Sélectionnez une entreprise"
       },
@@ -1169,10 +1669,18 @@
         "submit": "Créer",
         "title": "Créer une configuration de frais"
       },
+      "currency": {
+        "placeholder": "Sélectionnez une devise"
+      },
       "edit": {
         "loadError": "Échec du chargement de la configuration."
       },
+      "feeTypeId": {
+        "placeholder": "Sélectionnez un type de frais"
+      },
       "fields": {
+        "applicationId": "ID Application",
+        "companyId": "ID Entreprise",
         "currency": "Devise",
         "endDate": "Date de fin",
         "feeTypeId": "Type de frais",
@@ -1185,21 +1693,18 @@
         "percentageRate": "Taux en pourcentage",
         "startDate": "Date de début"
       },
+      "ownerType": {
+        "application": "Application",
+        "company": "Entreprise",
+        "label": "Type de propriétaire",
+        "placeholder": "Sélectionnez un type de propriétaire",
+        "system": "System"
+      },
       "placeholders": {
         "fixedAmount": "Saisir le montant fixe",
         "maxAmount": "Saisir le montant maximum",
         "minAmount": "Saisir le montant minimum",
         "percentageRate": "Saisir le taux en pourcentage"
-      },
-      "feeTypeId": {
-        "placeholder": "Sélectionnez un type de frais"
-      },
-      "ownerType": {
-        "label": "Type de propriétaire",
-        "placeholder": "Sélectionnez un type de propriétaire",
-        "system": "System",
-        "company": "Entreprise",
-        "application": "Application"
       }
     },
     "forms": {
@@ -1218,6 +1723,7 @@
         "error": "La suppression a échoué.",
         "success": "Suppression réussie.",
         "success_one": "1 configuration supprimée.",
+        "success_many": "Les configurations ont été supprimées avec succès.",
         "success_other": "{{count}} configurations supprimées."
       },
       "noData": "Aucune configuration de frais trouvée.",
@@ -1253,13 +1759,16 @@
     },
     "bulk": {
       "delete_one": "Supprimer ce type ?",
+      "delete_many": "Supprimer ces types ?",
       "delete_other": "Supprimer ces types ?",
       "deleteConfirm_one": "Êtes-vous sûr de vouloir supprimer ce type de frais ?",
+      "deleteConfirm_many": "Êtes-vous sûr de vouloir supprimer ces types de frais ?",
       "deleteConfirm_other": "Êtes-vous sûr de vouloir supprimer ces {{count}} types de frais ?",
       "deleteError": "Erreur lors de la suppression.",
       "deleteReason": "Motif de la suppression",
       "deleting": "Suppression en cours...",
       "partialError_one": "Une erreur partielle est survenue.",
+      "partialError_many": "Plusieurs erreurs partielles sont survenues.",
       "partialError_other": "{{count}} erreurs partielles sont survenues."
     },
     "create": "Créer un type de frais",
@@ -1303,6 +1812,7 @@
         "error": "La suppression a échoué.",
         "success": "Suppression réussie.",
         "success_one": "1 type de frais supprimé.",
+        "success_many": "Les types de frais ont été supprimés avec succès.",
         "success_other": "{{count}} types de frais supprimés."
       },
       "noData": "Aucun type de frais trouvé.",
@@ -1401,13 +1911,16 @@
     },
     "bulk": {
       "delete_one": "Supprimer ce transfert ?",
+      "delete_many": "Supprimer ces transferts ?",
       "delete_other": "Supprimer ces transferts ?",
       "deleteConfirm_one": "Êtes-vous sûr de vouloir supprimer ce transfert ?",
+      "deleteConfirm_many": "Êtes-vous sûr de vouloir supprimer ces transferts ?",
       "deleteConfirm_other": "Êtes-vous sûr de vouloir supprimer ces {{count}} transferts ?",
       "deleteError": "Erreur lors de la suppression.",
       "deleteReason": "Motif de la suppression",
       "deleting": "Suppression en cours...",
       "partialError_one": "Une erreur partielle est survenue.",
+      "partialError_many": "Plusieurs erreurs partielles sont survenues.",
       "partialError_other": "{{count}} erreurs partielles sont survenues."
     },
     "messages": {
@@ -1420,6 +1933,7 @@
         "error": "La suppression a échoué.",
         "success": "Suppression réussie.",
         "success_one": "1 transfert supprimé.",
+        "success_many": "Les transferts ont été supprimés avec succès.",
         "success_other": "{{count}} transferts supprimés."
       },
       "noData": "Aucun transfert de fonds trouvé.",
@@ -1472,6 +1986,7 @@
       "deleteError": "Erreur lors de la suppression.",
       "deleteReason": "Motif de la suppression",
       "partialError_one": "Une erreur partielle est survenue.",
+      "partialError_many": "Plusieurs erreurs partielles sont survenues.",
       "partialError_other": "{{count}} erreurs partielles sont survenues."
     },
     "form": {
@@ -1502,6 +2017,7 @@
         "error": "La suppression a échoué.",
         "success": "Suppression réussie.",
         "success_one": "1 document supprimé.",
+        "success_many": "Les documents ont été supprimés avec succès.",
         "success_other": "{{count}} documents supprimés."
       },
       "noData": "Aucun document KYC trouvé.",
@@ -1646,6 +2162,7 @@
     "administration": "Administration",
     "all": "Tous",
     "allowedIps": "IPs Autorisées",
+    "analytics": "Analyses",
     "applications": "Applications",
     "auditLogs": "Journaux d'Audit",
     "auditSecurity": "Audit et Sécurité",
@@ -1680,8 +2197,7 @@
     "webHookLogs": "Logs Webhook",
     "webhooks": "Webhooks",
     "withdrawalMethod": "Méthodes de Retrait",
-    "withdrawals": "Retraits",
-    "analytics": "Analyses"
+    "withdrawals": "Retraits"
   },
   "navigation": {
     "about": "À propos",
@@ -1707,13 +2223,16 @@
     },
     "bulk": {
       "delete_one": "Supprimer cette notification ?",
+      "delete_many": "Supprimer ces notifications ?",
       "delete_other": "Supprimer ces notifications ?",
       "deleteConfirm_one": "Êtes-vous sûr de vouloir supprimer cette notification ?",
+      "deleteConfirm_many": "Êtes-vous sûr de vouloir supprimer ces notifications ?",
       "deleteConfirm_other": "Êtes-vous sûr de vouloir supprimer ces {{count}} notifications ?",
       "deleteError": "Erreur lors de la suppression.",
       "deleteReason": "Motif de la suppression",
       "deleting": "Suppression en cours...",
       "partialError_one": "Une erreur partielle est survenue.",
+      "partialError_many": "Plusieurs erreurs partielles sont survenues.",
       "partialError_other": "{{count}} erreurs partielles sont survenues."
     },
     "messages": {
@@ -1726,6 +2245,7 @@
         "error": "La suppression a échoué.",
         "success": "Suppression réussie.",
         "success_one": "1 notification supprimée.",
+        "success_many": "Les notifications ont été supprimées avec succès.",
         "success_other": "{{count}} notifications supprimées."
       },
       "noData": "Aucune notification.",
@@ -1790,13 +2310,16 @@
     },
     "bulk": {
       "delete_one": "Supprimer cette méthode de paiement ?",
+      "delete_many": "Supprimer ces méthodes de paiement ?",
       "delete_other": "Supprimer ces méthodes de paiement ?",
       "deleteConfirm_one": "Êtes-vous sûr de vouloir supprimer cette méthode de paiement ?",
+      "deleteConfirm_many": "Êtes-vous sûr de vouloir supprimer ces méthodes de paiement ?",
       "deleteConfirm_other": "Êtes-vous sûr de vouloir supprimer ces {{count}} méthodes de paiement ?",
       "deleteError": "Erreur lors de la suppression.",
       "deleteReason": "Motif de la suppression",
       "deleting": "Suppression en cours...",
       "partialError_one": "Une erreur partielle est survenue.",
+      "partialError_many": "Plusieurs erreurs partielles sont survenues.",
       "partialError_other": "{{count}} erreurs partielles sont survenues."
     },
     "create": "Créer une méthode de paiement",
@@ -1838,6 +2361,7 @@
         "error": "La suppression a échoué.",
         "success": "Suppression réussie.",
         "success_one": "1 méthode de paiement supprimée.",
+        "success_many": "Les méthodes de paiement ont été supprimées avec succès.",
         "success_other": "{{count}} méthodes de paiement supprimées."
       },
       "noData": "Aucune méthode de paiement trouvée.",
@@ -1866,33 +2390,34 @@
   "receiptsreadmodels": {
     "headers": {
       "amount": "Montant",
+      "applicationId": "App",
       "applicationName": "App",
+      "companyId": "Company",
       "companyName": "Etpe",
+      "context": "Contexte",
+      "coreDetails": "Détails",
       "createdAt": "Date",
       "currency": "Devise",
+      "customerEmail": "Email client",
+      "customerName": "Nom Client",
       "externalReference": "Externe",
+      "externalRefutilerence": "Réf. Externe",
+      "fee": "Frais",
       "feeAppliedAmount": "Appliq",
       "internalFeeAmount": "Int",
+      "internalReference": "Interne.",
       "netAmount": "Montant Net",
       "paymentMethodCode": "Code Méth. Paiement",
       "phoneNumberEncrypted": "Tél",
       "providerFeeAmount": "Four",
-      "providerReference": "Réf. Four",
-      "status": "Statut",
-      "transactionId": "ID Trans.",
-      "fee": "Frais",
-      "context": "Contexte",
-      "references": "Références",
-      "coreDetails": "Détails",
-      "internalReference": "Interne.",
-      "providerInitialReference": "Initiale F.",
       "providerFinalReference": "Finale F.",
-      "companyId": "Company",
-      "applicationId": "App",
-      "customerName": "Nom Client",
-      "customerEmail": "Email client",
+      "providerInitialReference": "Initiale F.",
+      "providerReference": "Réf. Four",
+      "range": "Apartir Du... au...",
+      "references": "Références",
+      "status": "Statut",
       "transaction": "Transaction",
-      "range": "Apartir Du... au..."
+      "transactionId": "ID Trans."
     }
   },
   "receiptsReadModels": {
@@ -1905,6 +2430,7 @@
     },
     "bulk": {
       "delete_one": "Supprimer ce reçu ?",
+      "delete_many": "Supprimer ces reçus ?",
       "delete_other": "Supprimer ces reçus ?",
       "deleteConfirm_one": "Êtes-vous sûr de vouloir supprimer ce reçu ?",
       "deleteConfirm_other": "Êtes-vous sûr de vouloir supprimer ces {{count}} reçus ?",
@@ -1912,7 +2438,69 @@
       "deleteReason": "Motif de la suppression",
       "deleting": "Suppression en cours...",
       "partialError_one": "Une erreur partielle est survenue.",
+      "partialError_many": "Plusieurs erreurs partielles sont survenues.",
       "partialError_other": "{{count}} erreurs partielles sont survenues."
+    },
+    "changeStatus": {
+      "cancel": "Cancel",
+      "confirm": "Change Status",
+      "current": "Actuel",
+      "currentStatus": "Statut Actuel",
+      "description": "Select a new status for this transaction. This action will update the transaction status.",
+      "newStatus": "Nouveau Status",
+      "selectStatus": "Selectionnez le nouveau statut",
+      "success": "Status de Transaction change de EN COURS",
+      "title": "Renitialiser le statut de la transaction",
+      "warning": "En cliquant sur ce button vous vous appretez a changer le status de cette transaction de {{from}} to a EN COURS. Etes vous sur de vouloir vraiment proceder?"
+    },
+    "confirmations": {
+      "bulkDelete": {
+        "cancel": "Annuler",
+        "confirm": "Tout supprimer",
+        "description": "Êtes-vous sûr de vouloir supprimer {{count}} reçus ? Cette action est irréversible.",
+        "description_one": "Êtes-vous sûr de vouloir supprimer ce reçu ? Cette action est irréversible.",
+        "description_many": "Êtes-vous sûr de vouloir supprimer ces reçus ? Cette action est irréversible.",
+        "description_other": "Êtes-vous sûr de vouloir supprimer ces {{count}} reçus ? Cette action est irréversible."
+      }
+    },
+    "details": {
+      "additionalInfo": "Info suplementaire",
+      "amount": "Montant",
+      "amounts": "Montants",
+      "applicationName": "applicationName",
+      "applicationStatus": "Statut App.",
+      "companyApplication": "Application",
+      "companyEmail": "Email Entreprise",
+      "companyName": "Entreprise",
+      "companyPhoneNumber": "Tél. Entreprise",
+      "companyStatus": "Statut Entreprise",
+      "completedAt": "Terminé le",
+      "copy": "Copiez les evenemnts",
+      "createdAt": "Date de création",
+      "currency": "Devise",
+      "currentVersion": "Version Actuelle",
+      "customerEmail": "Email client",
+      "customerInfo": "Informations client",
+      "customerIpAddress": "Adresse Ip Client",
+      "customerName": "Nom Client",
+      "externalReference": "Réf. Externe",
+      "feeAppliedAmount": "Frais Appliqués",
+      "internalReference": "Ref. Int.",
+      "metadata": "Metadonnées",
+      "netAmount": "Montant Net",
+      "overview": "Aperçu",
+      "paymentMethod": "Méthodes de Paiement",
+      "paymentMethodCode": "Code Méth. Paiement",
+      "phoneNumberEncrypted": "Telephone payeur",
+      "providerFeeAmount": "Frais Fournisseur",
+      "providerFinalReference": "Réf. Finale Fournisseur",
+      "providerInitialReference": "Réf. Initiale Fournisseur",
+      "providerMessage": "Message fournisseur",
+      "references": "Références",
+      "status": "Statut",
+      "title": "Transaction details",
+      "transactionInformation": "Informations",
+      "updatedAt": "Modifié le"
     },
     "form": {
       "applicationIdLabel": "ID Application",
@@ -1943,7 +2531,11 @@
         "error": "La suppression a échoué.",
         "success": "Suppression réussie.",
         "success_one": "1 reçu supprimé.",
+        "success_many": "Les reçus ont été supprimés avec succès.",
         "success_other": "{{count}} reçus supprimés."
+      },
+      "export": {
+        "success": "Exportation réussie."
       },
       "noData": "Aucun reçu trouvé.",
       "search": {
@@ -1952,66 +2544,7 @@
     },
     "title": "Reçus",
     "totalCount_one": "1 reçu",
-    "totalCount_other": "{{count}} reçus",
-    "confirmations": {
-      "bulkDelete": {
-        "title": "Supprimer les reçus",
-        "description": "Êtes-vous sûr de vouloir supprimer {{count}} reçus ? Cette action est irréversible.",
-        "confirm": "Tout supprimer",
-        "cancel": "Annuler"
-      }
-    },
-    "details": {
-      "overview": "Aperçu",
-      "title": "Transaction details",
-      "transactionInformation": "Informations",
-      "status": "Statut",
-      "paymentMethod": "Méthodes de Paiement",
-      "paymentMethodCode": "Code Méth. Paiement",
-      "createdAt": "Date de création",
-      "completedAt": "Terminé le",
-      "amounts": "Montants",
-      "amount": "Montant",
-      "currency": "Devise",
-      "providerFeeAmount": "Frais Fournisseur",
-      "feeAppliedAmount": "Frais Appliqués",
-      "netAmount": "Montant Net",
-      "references": "Références",
-      "internalReference": "Ref. Int.",
-      "externalReference": "Réf. Externe",
-      "providerInitialReference": "Réf. Initiale Fournisseur",
-      "providerFinalReference": "Réf. Finale Fournisseur",
-      "customerInfo": "Informations client",
-      "customerName": "Nom Client",
-      "customerEmail": "Email client",
-      "phoneNumberEncrypted": "Telephone payeur",
-      "customerIpAddress": "Adresse Ip Client",
-      "companyApplication": "Application",
-      "companyName": "Entreprise",
-      "companyEmail": "Email Entreprise",
-      "companyPhoneNumber": "Tél. Entreprise",
-      "companyStatus": "Statut Entreprise",
-      "applicationName": "applicationName",
-      "applicationStatus": "Statut App.",
-      "additionalInfo": "Info suplementaire",
-      "providerMessage": "Message fournisseur",
-      "currentVersion": "Version Actuelle",
-      "updatedAt": "Modifié le",
-      "metadata": "Metadonnées",
-      "copy":"Copiez les evenemnts"
-    },
-    "changeStatus": {
-      "title": "Renitialiser le statut de la transaction",
-      "description": "Select a new status for this transaction. This action will update the transaction status.",
-      "currentStatus": "Statut Actuel",
-      "newStatus": "Nouveau Status",
-      "selectStatus": "Selectionnez le nouveau statut",
-      "current": "Actuel",
-      "warning": "En cliquant sur ce button vous vous appretez a changer le status de cette transaction de {{from}} to a EN COURS. Etes vous sur de vouloir vraiment proceder?",
-      "cancel": "Cancel",
-      "confirm": "Change Status",
-      "success": "Status de Transaction change de EN COURS"
-    }
+    "totalCount_other": "{{count}} reçus"
   },
   "securesettings": {
     "headers": {
@@ -2079,13 +2612,16 @@
     },
     "bulk": {
       "delete_one": "Supprimer ce paramètre ?",
+      "delete_many": "Supprimer ces paramètres ?",
       "delete_other": "Supprimer ces paramètres ?",
       "deleteConfirm_one": "Êtes-vous sûr de vouloir supprimer ce paramètre ?",
+      "deleteConfirm_many": "Êtes-vous sûr de vouloir supprimer ces paramètres ?",
       "deleteConfirm_other": "Êtes-vous sûr de vouloir supprimer ces {{count}} paramètres ?",
       "deleteError": "Erreur lors de la suppression.",
       "deleteReason": "Motif de la suppression",
       "deleting": "Suppression en cours...",
       "partialError_one": "Une erreur partielle est survenue.",
+      "partialError_many": "Plusieurs erreurs partielles sont survenues.",
       "partialError_other": "{{count}} erreurs partielles sont survenues."
     },
     "create": "Créer un paramètre",
@@ -2153,6 +2689,7 @@
         "error": "La suppression a échoué.",
         "success": "Suppression réussie.",
         "success_one": "1 paramètre supprimé.",
+        "success_many": "Les paramètres ont été supprimés avec succès.",
         "success_other": "{{count}} paramètres supprimés."
       },
       "noData": "Aucun paramètre trouvé.",
@@ -2168,24 +2705,33 @@
     "totalCount_one": "1 paramètre",
     "totalCount_other": "{{count}} paramètres",
     "userProfile": {
-      "title": "Profile",
-      "sections": {
-        "accountInfo": "Information du compte",
-        "profilePermissions": "Profile des permissions",
-        "permissions": "Permissions",
-        "personalInfo": "Information personnel"
+      "actions": {
+        "returnToDashboard": "Retour au tableau de bord"
       },
       "fields": {
-        "firstName": "Prénom",
-        "lastName": "Nom",
+        "companyId": "ID Entreprise",
+        "companyName": "Nom de l'Entreprise",
         "email": "Email",
-        "publicId": "Ip Public",
+        "firstName": "Prénom",
         "lastLogin": "Dernier Connexion",
-        "userType": "Type d'utilisateur",
-        "status": "Statut",
+        "lastName": "Nom",
+        "profileId": "Id profile",
         "profileName": "Profil",
-        "profileId": "Id profile"
-      }
+        "publicId": "Ip Public",
+        "status": "Statut",
+        "userType": "Type d'utilisateur"
+      },
+      "messages": {
+        "loadError": "Erreur de chargement"
+      },
+      "sections": {
+        "accountInfo": "Information du compte",
+        "companyInfo": "Information de l'entreprise",
+        "permissions": "Permissions",
+        "personalInfo": "Information personnel",
+        "profilePermissions": "Profile des permissions"
+      },
+      "title": "Profile"
     }
   },
   "smsmailtemplates": {
@@ -2208,13 +2754,16 @@
     },
     "bulk": {
       "delete_one": "Supprimer ce modèle ?",
+      "delete_many": "Supprimer ces modèles ?",
       "delete_other": "Supprimer ces modèles ?",
       "deleteConfirm_one": "Êtes-vous sûr de vouloir supprimer ce modèle ?",
+      "deleteConfirm_many": "Êtes-vous sûr de vouloir supprimer ces modèles ?",
       "deleteConfirm_other": "Êtes-vous sûr de vouloir supprimer ces {{count}} modèles ?",
       "deleteError": "Erreur lors de la suppression.",
       "deleteReason": "Motif de la suppression",
       "deleting": "Suppression en cours...",
       "partialError_one": "Une erreur partielle est survenue.",
+      "partialError_many": "Plusieurs erreurs partielles sont survenues.",
       "partialError_other": "{{count}} erreurs partielles sont survenues."
     },
     "details": {
@@ -2250,6 +2799,7 @@
         "error": "La suppression a échoué.",
         "success": "Suppression réussie.",
         "success_one": "1 modèle supprimé.",
+        "success_many": "Les modèles ont été supprimés avec succès.",
         "success_other": "{{count}} modèles supprimés."
       },
       "noData": "Aucun modèle trouvé.",
@@ -2312,6 +2862,33 @@
     "solutionLabel": "La Solution Fujisat Pay",
     "title": "Fujisat Pay : Solutions sur mesure pour chaque secteur"
   },
+  "statusBadges": {
+    "active": "Actif",
+    "ALL": "TOUS",
+    "APPLICATION": "APPLICATION",
+    "CANCELLED": "ANNULÉ",
+    "COMPANY": "ENTREPRISE",
+    "COMPLETED": "TERMINÉ",
+    "disabled": "Désactivé",
+    "enableb": "Activé",
+    "FAILED": "ÉCHOUÉ",
+    "false": "Faux",
+    "FUND_TRANSFER": "TRANSFERT",
+    "inactive": "Inactif",
+    "MOMO": "MOMO",
+    "MTN": "MTN",
+    "OM": "OM",
+    "ORANGE": "ORANGE",
+    "PENDING": "EN ATTENTE",
+    "PROCESSING": "EN COURS",
+    "RECEIPT": "REÇU",
+    "REJECTED": "REJETÉ",
+    "SYSTEM": "SYSTÈME",
+    "TIMEOUT": "EXPIRÉ",
+    "true": "Vrai",
+    "VALIDATING": "VALIDATION",
+    "WITHDRAWAL": "RETRAIT"
+  },
   "system": "Système",
   "themeMode": {
     "dark": "Sombre",
@@ -2360,20 +2937,33 @@
       "more": "Actions",
       "view": "Voir"
     },
+    "assignPermissions": {
+      "title": "Assign Permission"
+    },
     "bulk": {
       "delete_one": "Supprimer ce profil ?",
+      "delete_many": "Supprimer ces profils ?",
       "delete_other": "Supprimer ces profils ?",
       "deleteConfirm_one": "Êtes-vous sûr de vouloir supprimer ce profil ?",
+      "deleteConfirm_many": "Êtes-vous sûr de vouloir supprimer ces profils ?",
       "deleteConfirm_other": "Êtes-vous sûr de vouloir supprimer ces {{count}} profils ?",
       "deleteError": "Erreur lors de la suppression.",
       "deleteReason": "Motif de la suppression",
       "deleting": "Suppression en cours...",
       "partialError_one": "Une erreur partielle est survenue.",
+      "partialError_many": "Plusieurs erreurs partielles sont survenues.",
       "partialError_other": "{{count}} erreurs partielles sont survenues."
     },
     "create": "Créer un profil",
     "edit": "Modifier le profil",
     "form": {
+      "assignPermissions": {
+        "description": "Description",
+        "noPermissions": "Aucune permission",
+        "selectAll": "Sellectionner tout",
+        "submit": "Enregistrer",
+        "title": "Assignation de permissions"
+      },
       "create": {
         "description": "Ajouter un nouveau profil utilisateur.",
         "submit": "Créer",
@@ -2382,15 +2972,14 @@
       "edit": {
         "loadError": "Échec du chargement du profil.",
         "submit": "Enregistrer"
-      },
-      "assignPermissions": {
-        "title": "Assignation de permissions",
-        "description": "Description",
-        "selectAll": "Sellectionner tout",
-        "submit": "Enregistrer"
       }
     },
     "messages": {
+      "assign": {
+        "error": "Echec d'assignation des Profiles",
+        "succes": "Profile assigne avec succes",
+        "success": "Assignation réussie."
+      },
       "create": {
         "error": "La création a échoué.",
         "success": "Création réussie."
@@ -2400,6 +2989,7 @@
         "error": "La suppression a échoué.",
         "success": "Suppression réussie.",
         "success_one": "1 profil supprimé.",
+        "success_many": "Les profils ont été supprimés avec succès.",
         "success_other": "{{count}} profils supprimés."
       },
       "noData": "Aucun profil trouvé.",
@@ -2409,18 +2999,11 @@
       "update": {
         "error": "La mise à jour a échoué.",
         "success": "Mise à jour réussie."
-      },
-      "assign": {
-        "succes": "Profile assigne avec succes",
-        "error": "Echec d'assignation des Profiles"
       }
     },
     "title": "Profils Utilisateurs",
     "totalCount_one": "1 profil",
-    "totalCount_other": "{{count}} profils",
-    "assignPermissions": {
-      "title": "Assign Permission"
-    }
+    "totalCount_other": "{{count}} profils"
   },
   "userprofiles": {
     "headers": {
@@ -2433,7 +3016,35 @@
     }
   },
   "userProfiles": {
+    "actions": {
+      "assignPermissions": "Assigner Permission",
+      "edit": "Modifier le profil"
+    },
+    "assignPermissions": {
+      "title": "Assign Permission"
+    },
+    "details": {
+      "sections": {
+        "information": "Information",
+        "informations": "Informations",
+        "permissions": "Permissions"
+      },
+      "title": "Profils Utilisateurs"
+    },
+    "fields": {
+      "active": "Actif",
+      "description": "Description",
+      "name": "Nom",
+      "permissions": "Permissions",
+      "systemProfile": "Profil Système"
+    },
     "form": {
+      "assignPermissions": {
+        "description": "Description",
+        "selectAll": "Sellectionner tout",
+        "submit": "Enregistrer",
+        "title": "Assignation de permissions"
+      },
       "descriptionLabel": "Description",
       "descriptionPlaceholder": "Saisir la description",
       "edit": {
@@ -2445,37 +3056,12 @@
       "nameLabel": "Nom",
       "namePlaceholder": "Saisir le nom du profil",
       "permissionsLabel": "Permissions",
-      "permissionsPlaceholder": "Sélectionnez les permissions",
-      "assignPermissions": {
-        "title": "Assignation de permissions",
-        "description": "Description",
-        "selectAll": "Sellectionner tout",
-        "submit": "Enregistrer"
-      }
+      "permissionsPlaceholder": "Sélectionnez les permissions"
     },
-    "title": "Profils Utilisateurs",
-    "actions": {
-      "edit": "Modifier le profil",
-      "assignPermissions": "Assigner Permission"
+    "messages": {
+      "notFound": "Non trouvé"
     },
-    "details": {
-      "title": "Profils Utilisateurs",
-      "sections": {
-        "informations": "Informations",
-        "permissions": "Permissions",
-        "information": "Information"
-      }
-    },
-    "fields": {
-      "name": "Nom",
-      "description": "Description",
-      "active": "Actif",
-      "systemProfile": "Profil Système",
-      "permissions": "Permissions"
-    },
-    "assignPermissions": {
-      "title": "Assign Permission"
-    }
+    "title": "Profils Utilisateurs"
   },
   "users": {
     "actions": {
@@ -2485,10 +3071,12 @@
       "delete": "Supprimer",
       "edit": "Modifier",
       "more": "Actions",
+      "toggleStatus": "Changer le statut",
       "view": "Voir"
     },
     "bulk": {
       "delete_one": "Supprimer cet utilisateur ?",
+      "delete_many": "Supprimer ces utilisateurs ?",
       "delete_other": "Supprimer ces utilisateurs ?",
       "deleteConfirm_one": "Êtes-vous sûr de vouloir supprimer cet utilisateur ?",
       "deleteConfirm_other": "Êtes-vous sûr de vouloir supprimer ces {{count}} utilisateurs ?",
@@ -2496,7 +3084,30 @@
       "deleteReason": "Motif de la suppression",
       "deleting": "Suppression en cours...",
       "partialError_one": "Une erreur partielle est survenue.",
+      "partialError_many": "Plusieurs erreurs partielles sont survenues.",
       "partialError_other": "{{count}} erreurs partielles sont survenues."
+    },
+    "confirmations": {
+      "bulkDelete": {
+        "cancel": "Annuler",
+        "confirm": "Tout supprimer",
+        "description": "Êtes-vous sûr de vouloir supprimer {{count}} utilisateurs ? Cette action est irréversible.",
+        "description_one": "Êtes-vous sûr de vouloir supprimer cet utilisateur ? Cette action est irréversible.",
+        "description_many": "Êtes-vous sûr de vouloir supprimer ces utilisateurs ? Cette action est irréversible.",
+        "description_other": "Êtes-vous sûr de vouloir supprimer ces {{count}} utilisateurs ? Cette action est irréversible."
+      },
+      "delete": {
+        "cancel": "Annuler",
+        "confirm": "Supprimer",
+        "description": "Êtes-vous sûr de vouloir supprimer cet utilisateur ? Cette action est irréversible.",
+        "title": "Supprimer l'utilisateur"
+      },
+      "toggleStatus": {
+        "cancel": "Annuler",
+        "confirm": "Confirmer",
+        "description": "Êtes-vous sûr de vouloir changer le statut de cet utilisateur ?",
+        "title": "Changer le statut de l'utilisateur"
+      }
     },
     "details": {
       "title": "Détails de l'utilisateur"
@@ -2507,6 +3118,7 @@
       "create": {
         "description": "Ajouter un nouvel utilisateur.",
         "submit": "Créer",
+        "systemTitle": "Créer un utilisateur système",
         "title": "Créer un utilisateur"
       },
       "edit": {
@@ -2555,44 +3167,40 @@
         "error": "La suppression a échoué.",
         "success": "Suppression réussie.",
         "success_one": "1 utilisateur supprimé.",
+        "success_many": "Les utilisateurs ont été supprimés avec succès.",
         "success_other": "{{count}} utilisateurs supprimés."
       },
       "noData": "Aucun utilisateur trouvé.",
       "search": {
         "error": "La recherche a échoué."
       },
+      "status": {
+        "error": "Échec de la mise à jour du statut de l'utilisateur.",
+        "success": "Statut de l'utilisateur mis à jour avec succès."
+      },
       "update": {
         "error": "La mise à jour a échoué.",
         "success": "Mise à jour réussie."
-      },
-      "status": {
-        "success": "Statut de l'utilisateur mis à jour avec succès.",
-        "error": "Échec de la mise à jour du statut de l'utilisateur."
       }
+    },
+    "stats": {
+      "active": "Actifs",
+      "allTime": "Depuis le début",
+      "blocked": "Bloqués",
+      "company": "Entreprise",
+      "system": "Système",
+      "total": "Total"
     },
     "title": "Utilisateurs",
     "totalCount_one": "1 utilisateur",
-    "totalCount_other": "{{count}} utilisateurs",
-    "confirmations": {
-      "delete": {
-        "title": "Supprimer l'utilisateur",
-        "description": "Êtes-vous sûr de vouloir supprimer cet utilisateur ? Cette action est irréversible.",
-        "confirm": "Supprimer",
-        "cancel": "Annuler"
-      },
-      "toggleStatus": {
-        "title": "Changer le statut de l'utilisateur",
-        "description": "Êtes-vous sûr de vouloir changer le statut de cet utilisateur ?",
-        "confirm": "Confirmer",
-        "cancel": "Annuler"
-      },
-      "bulkDelete": {
-        "title": "Supprimer les utilisateurs",
-        "description": "Êtes-vous sûr de vouloir supprimer {{count}} utilisateurs ? Cette action est irréversible.",
-        "confirm": "Tout supprimer",
-        "cancel": "Annuler"
-      }
-    }
+    "totalCount_other": "{{count}} utilisateurs"
+  },
+  "values": {
+    "compliance": "Nous respectons les normes réglementaires et les exigences de conformité les plus strictes, garantissant que toutes les transactions respectent les réglementations CEMAC et les protocoles de sécurité financière internationaux.",
+    "excellence": "Nous nous engageons à offrir une qualité de service exceptionnelle, des solutions innovantes et une amélioration continue dans tout ce que nous faisons pour nos clients.",
+    "security": "Nous priorisons la protection de vos données financières et transactions avec un chiffrement de niveau entreprise, une authentification multi-niveaux et des pistes d'audit complètes.",
+    "support": "Nous fournissons un support technique dédié et un service client pour assurer votre réussite, avec une assistance experte disponible quand vous en avez besoin.",
+    "transparency": "Nous croyons en une communication claire, une tarification honnête et une visibilité complète sur toutes les transactions et opérations de notre plateforme."
   },
   "vwtransactionssummaries": {
     "headers": {
@@ -2664,6 +3272,7 @@
       "deleteError": "Erreur lors de la suppression.",
       "deleteReason": "Motif de la suppression",
       "partialError_one": "Une erreur partielle est survenue.",
+      "partialError_many": "Plusieurs erreurs partielles sont survenues.",
       "partialError_other": "{{count}} erreurs partielles sont survenues."
     },
     "form": {
@@ -2702,6 +3311,7 @@
         "error": "La suppression a échoué.",
         "success": "Suppression réussie.",
         "success_one": "1 webhook supprimé.",
+        "success_many": "Les webhooks ont été supprimés avec succès.",
         "success_other": "{{count}} webhooks supprimés."
       },
       "dropdown": {
@@ -2734,6 +3344,7 @@
       "deleteError": "Erreur lors de la suppression.",
       "deleteReason": "Motif de la suppression",
       "partialError_one": "Une erreur partielle est survenue.",
+      "partialError_many": "Plusieurs erreurs partielles sont survenues.",
       "partialError_other": "{{count}} erreurs partielles sont survenues."
     },
     "create": "Créer une méthode de retrait",
@@ -2757,6 +3368,7 @@
         "error": "La suppression a échoué.",
         "success": "Suppression réussie.",
         "success_one": "1 méthode supprimée.",
+        "success_many": "Les méthodes ont été supprimées avec succès.",
         "success_other": "{{count}} méthodes supprimées."
       },
       "noData": "Aucune méthode de retrait trouvée.",
@@ -2833,9 +3445,98 @@
   },
   "withdrawals": {
     "actions": {
+      "approve": "Approuver",
+      "cancel": "Annuler",
+      "complete": "Terminer",
       "view": "Voir"
     },
+    "confirmations": {
+      "cancel": {
+        "cancel": "Annuler",
+        "confirm": "Confirmer",
+        "description": "Veuillez fournir un motif pour l'annulation.",
+        "reasonPlaceholder": "Motif de l'annulation",
+        "title": "Annuler le Retrait"
+      },
+      "complete": {
+        "cancel": "Annuler",
+        "confirm": "Confirmer",
+        "description": "Veuillez fournir la référence pour marquer ce retrait comme terminé.",
+        "referencePlaceholder": "Référence de complétion",
+        "title": "Terminer le Retrait"
+      },
+      "delete": {
+        "cancel": "Annuler",
+        "confirm": "Confirmer",
+        "description": "Êtes-vous sûr de vouloir supprimer ceci ?",
+        "title": "Confirmer la Suppression"
+      }
+    },
+    "details": {
+      "accountNumber": "Numéro de Compte",
+      "additionalInfo": "Informations Additionnelles",
+      "amount": "Montant",
+      "amounts": "Montants",
+      "applicationName": "Nom de l'Application",
+      "companyApplication": "Entreprise & Application",
+      "companyName": "Nom de l'Entreprise",
+      "copyEvents": "Copier les Événements",
+      "createdAt": "Créé le",
+      "currency": "Devise",
+      "currentVersion": "Version Actuelle",
+      "feeAppliedAmount": "Frais Appliqués",
+      "internalReference": "Référence Interne",
+      "netAmount": "Montant Net",
+      "notes": "Notes",
+      "overview": "Aperçu",
+      "processedAt": "Traité le",
+      "providerFeeAmount": "Frais Fournisseur",
+      "providerFinalReference": "Référence Finale Fournisseur",
+      "providerInitialReference": "Référence Initiale Fournisseur",
+      "providerMessage": "Message du Fournisseur",
+      "providerReference": "Référence Fournisseur",
+      "references": "Références",
+      "status": "Statut",
+      "title": "Détails du Retrait",
+      "updatedAt": "Mis à jour le",
+      "verifiedAt": "Vérifié le",
+      "withdrawalMethodName": "Nom de la Méthode de Retrait"
+    },
+    "form": {
+      "amountLabel": "Montant",
+      "amountPlaceholder": "Saisir le montant",
+      "applicationIdLabel": "Application",
+      "applicationIdPlaceholder": "Sélectionner une application",
+      "companyIdLabel": "Entreprise",
+      "companyIdPlaceholder": "Sélectionner une entreprise",
+      "init": {
+        "description": "Initier un nouveau retrait.",
+        "submit": "Initier",
+        "systemTitle": "Initier un Retrait Système"
+      },
+      "notesLabel": "Notes",
+      "notesPlaceholder": "Saisir des notes",
+      "withdrawalMethodIdLabel": "Méthode de Retrait",
+      "withdrawalMethodIdPlaceholder": "Sélectionner une méthode de retrait"
+    },
+    "headers": {
+      "details": "Détails"
+    },
     "messages": {
+      "approve": {
+        "error": "Échec de l'approbation.",
+        "success": "Approbation réussie."
+      },
+      "cancel": {
+        "error": "Échec de l'annulation.",
+        "reasonRequired": "Un motif est requis.",
+        "success": "Annulation réussie."
+      },
+      "complete": {
+        "error": "Échec de la finalisation.",
+        "referenceRequired": "Une référence est requise.",
+        "success": "Finalisation réussie."
+      },
       "noData": "Aucun retrait trouvé."
     }
   },
@@ -2849,10 +3550,14 @@
       "currencySymbol": "Devise",
       "feeAppliedAmount": "Frais Appliqués",
       "internalFeeAmount": "Frais Internes",
+      "internalReference": "Référence Interne",
       "netAmount": "Montant Net",
       "paymentMethodName": "Méth. Paiement",
       "providerFeeAmount": "Frais Fournisseur",
+      "providerFinalReference": "Réf. Finale Fournisseur",
+      "providerInitialReference": "Réf. Initiale Fournisseur",
       "providerReference": "Réf. Fournisseur",
+      "references": "Références",
       "status": "Statut",
       "transactionId": "ID Trans.",
       "verificationAttempts": "Tentatives Vérif.",
@@ -2892,6 +3597,24 @@
       "verifiedByNameLabel": "Vérifié par",
       "withdrawalMethodIdLabel": "Méthode de retrait"
     },
+    "headers": {
+      "accountNumber": "Numéro de Compte",
+      "amount": "Montant",
+      "applicationName": "Nom de l'Application",
+      "companyName": "Nom de l'Entreprise",
+      "createdAt": "Créé le",
+      "currencySymbol": "Symbole Devise",
+      "feeAppliedAmount": "Frais Appliqués",
+      "internalFeeAmount": "Frais Internes",
+      "netAmount": "Montant Net",
+      "paymentMethodName": "Nom Méthode de Paiement",
+      "providerFeeAmount": "Frais Fournisseur",
+      "providerReference": "Référence Fournisseur",
+      "status": "Statut",
+      "transactionId": "ID Transaction",
+      "verificationAttempts": "Tentatives de Vérification",
+      "withdrawalMethodName": "Nom Méthode de Retrait"
+    },
     "messages": {
       "noData": "Aucun retrait trouvé.",
       "search": {
@@ -2901,478 +3624,5 @@
     "title": "Retraits",
     "totalCount_one": "1 retrait",
     "totalCount_other": "{{count}} retraits"
-  },
-  "analytics": {
-    "title": "Tableau de Bord Analytique",
-    "description": "Métriques quotidiennes et analyses de performance",
-    "loading": "Chargement des données analytiques...",
-    "loadingTab": "Chargement du contenu de l'onglet...",
-    "noData": "Aucune donnée disponible",
-    "selectRange": "Sélectionner la période",
-    "timeRange": {
-      "7days": "7 derniers jours",
-      "30days": "30 derniers jours",
-      "90days": "90 derniers jours"
-    },
-    "tabs": {
-      "overview": "Aperçu",
-      "transactions": "Transactions",
-      "financial": "Financier",
-      "business": "Business Intelligence",
-      "mathematical": "Analyses Mathématiques",
-      "crossTable": "Analyses Entreprises",
-      "technical": "Analyses Techniques",
-      "geolocation": "Analyses Géographiques"
-    },
-    "overview": {
-      "totalVolume": "Volume Total",
-      "netRevenue": "Revenu Net",
-      "overallSuccessRate": "Taux de Réussite Global",
-      "failureRate": "Taux d'Échec",
-      "profitMargin": "Marge Bénéficiaire",
-      "net": "Net",
-      "activeUsers": "Utilisateurs Actifs",
-      "newUsers": "Nouveaux Utilisateurs",
-      "transactionBreakdown": {
-        "title": "Répartition des Transactions",
-        "description": "Métriques détaillées des transactions par type",
-        "type": "Type",
-        "total": "Total",
-        "success": "Succès",
-        "rate": "Taux",
-        "receipts": "Reçus",
-        "withdrawals": "Retraits",
-        "fundTransfers": "Transferts de Fonds"
-      },
-      "paymentMethods": {
-        "title": "Performance des Méthodes de Paiement",
-        "description": "Taux de réussite et volumes par fournisseur",
-        "provider": "Fournisseur",
-        "volume": "Volume",
-        "amount": "Montant",
-        "rate": "Taux"
-      }
-    },
-    "transactions": {
-      "volumeByType": {
-        "title": "Volume des Transactions par Type",
-        "description": "Nombre de transactions quotidiennes par type de service"
-      },
-      "successRateMonitoring": {
-        "title": "Suivi du Taux de Réussite",
-        "description": "Taux de réussite par type de transaction au fil du temps"
-      },
-      "paymentMethods": {
-        "title": "Distribution des Méthodes de Paiement",
-        "description": "Volume des transactions par fournisseur de paiement",
-        "operatorDetails": "Détails Opérateur",
-        "operatorDetailsDesc": "Informations détaillées pour chaque fournisseur de paiement",
-        "operatorCode": "Code Opérateur",
-        "transactions": "Transactions",
-        "successRate": "Taux de Réussite",
-        "totalVolume": "Volume Total",
-        "avgAmount": "Montant Moyen",
-        "failures": "Échecs",
-        "noOperators": "Aucune donnée de méthode de paiement disponible",
-        "performanceSummary": "Résumé de Performance des Méthodes de Paiement",
-        "performanceSummaryDesc": "Comparaison complète de tous les fournisseurs de paiement",
-        "provider": "Fournisseur",
-        "volume": "Volume",
-        "amount": "Montant",
-        "rate": "Taux",
-        "avgTicket": "Panier Moyen",
-        "marketShare": "Part de Marché"
-      },
-      "totalVolume": "Volume Total",
-      "receipts": "Reçus",
-      "counts": "Opérations",
-      "withdrawals": "Retraits",
-      "fundTransfers": "Transferts de Fonds",
-      "om": "OM",
-      "momo": "MOMO"
-    },
-    "financial": {
-      "revenueAnalysis": {
-        "title": "Analyse des Revenus et Frais",
-        "description": "Total des frais vs coûts des fournisseurs avec le revenu net"
-      },
-      "profitability": {
-        "title": "Aperçu de la Rentabilité",
-        "description": "Métriques de rentabilité pour la période actuelle",
-        "margin": "Marge bénéficiaire",
-        "totalFees": "Total des Frais Collectés",
-        "providerCosts": "Coûts Fournisseurs",
-        "netProfit": "Bénéfice Net"
-      },
-      "costBenefit": {
-        "costEfficiency": "Efficacité des Coûts",
-        "costToProfitRatio": "Ratio coût/bénéfice",
-        "revenueFocus": "Focalisation sur le Revenu",
-        "fromReceipts": "Provenant des reçus",
-        "processingCapacity": "Capacité de Traitement",
-        "apiCallsPerHour": "appels API/heure",
-        "userEconomics": "Économie Utilisateur",
-        "revenuePerUser": "XAF revenu/utilisateur"
-      },
-      "revenueBreakdown": {
-        "title": "Répartition des Revenus par Service",
-        "description": "Analyse des revenus et de la marge par type de service",
-        "receipts": "Services de Reçus",
-        "withdrawals": "Services de Retrait",
-        "transfers": "Services de Transfert",
-        "margin": "Marge"
-      }
-    },
-    "business": {
-      "title": "Business Intelligence",
-      "operationalEfficiency": {
-        "title": "Score d'Efficacité Opérationnelle",
-        "description": "Performance et fiabilité globales de la plateforme",
-        "transactionSuccess": "Réussite des Transactions",
-        "apiReliability": "Fiabilité de l'API",
-        "processingLoad": "Charge de Traitement",
-        "txPerDay": "tx/jour"
-      },
-      "revenuePerTransaction": {
-        "title": "Revenu par Transaction",
-        "description": "Efficacité moyenne de la génération de revenus",
-        "receiptsRPT": "RPT Reçus",
-        "withdrawalsRPT": "RPT Retraits",
-        "transfersRPT": "RPT Transferts"
-      },
-      "customerEngagement": {
-        "title": "Engagement Client",
-        "description": "Activité des utilisateurs et métriques de croissance",
-        "transactionsPerUser": "Transactions par utilisateur actif",
-        "growthRate": "Taux de Croissance",
-        "apiUsage": "Utilisation de l'API",
-        "callsPerUser": "appels/utilisateur"
-      },
-      "riskAssessment": {
-        "title": "Tableau de Bord d'Évaluation des Risques",
-        "description": "Modèles d'échec des transactions et indicateurs de risque",
-        "failedReceipts": "Reçus Échoués",
-        "failedWithdrawals": "Retraits Échoués",
-        "apiErrors": "Erreurs API",
-        "overallRiskLevel": "Niveau de Risque Global",
-        "high": "ÉLEVÉ",
-        "medium": "MOYEN",
-        "low": "FAIBLE"
-      },
-      "growthIndicators": {
-        "title": "Indicateurs de Croissance",
-        "description": "Métriques clés pour la prise de décision stratégique",
-        "xafPer1kUsers": "XAF pour 1K utilisateurs",
-        "revenueMargin": "Marge de revenu",
-        "marketPenetration": "Pénétration du Marché",
-        "serviceDiversification": "Diversification des Services",
-        "operationalScalability": "Évolutivité Opérationnelle"
-      }
-    },
-    "mathematical": {
-      "title": "Analyses Mathématiques Avancées",
-      "transactionStatus": {
-        "title": "Distribution du Statut des Transactions",
-        "description": "Analyse mathématique des résultats de transactions et des modèles de succès",
-        "successRatesAnalysis": "Analyse des Taux de Réussite",
-        "receiptsSuccessRate": "Taux de Réussite Reçus",
-        "withdrawalsSuccessRate": "Taux de Réussite Retraits",
-        "transfersSuccessRate": "Taux de Réussite Transferts",
-        "failureImpactAnalysis": "Analyse de l'Impact des Échecs",
-        "receiptFailures": "Échecs Reçus",
-        "withdrawalFailures": "Échecs Retraits",
-        "transferFailures": "Échecs Transferts",
-        "transactions": "transactions",
-        "receipts": "Reçus",
-        "withdrawals": "Retraits",
-        "fundTransfers": "Transferts de Fonds",
-        "transactionVolumeBands": "Bandes de Distribution du Volume des Transactions",
-        "successRateBands": "Bandes de Performance du Taux de Réussite",
-        "total": "Total",
-        "successful": "Réussies",
-        "failed": "Échouées",
-        "successRate": "Taux de Réussite",
-        "statisticalVarianceAnalysis": "Analyse de la Variance Statistique",
-        "successRateStdDev": "Écart-Type du Taux de Réussite",
-        "successRateConsistencyMeasure": "Mesure de la consistance du taux de réussite",
-        "transactionCoefficientVariation": "Coefficient de Variation des Transactions",
-        "volumeDistributionVariability": "Variabilité de la distribution du volume"
-      },
-      "operationFee": {
-        "title": "Analyse des Frais d'Opération",
-        "description": "Corrélation entre frais internes et fournisseurs et métriques de rentabilité",
-        "feeDistributionOverview": "Aperçu de la Distribution des Frais",
-        "totalFeesCollected": "Total des Frais Collectés",
-        "providerCosts": "Coûts Fournisseurs",
-        "netMargin": "Marge Nette",
-        "profitabilityRatios": "Ratios de Rentabilité",
-        "grossMargin": "Marge Brute",
-        "profitMarginAfterProviderCosts": "Marge bénéficiaire après coûts fournisseurs",
-        "revenueVolumeRatio": "Ratio Revenu/Volume",
-        "feeCollectionEfficiency": "Efficacité de la collecte des frais",
-        "costEfficiencyMultiplier": "Multiplicateur d'Efficacité des Coûts",
-        "revenuePerCostUnit": "Revenu par unité de coût"
-      },
-      "crossCorrelation": {
-        "title": "Analyse de Corrélation Croisée et Engagement Utilisateur",
-        "description": "Analyse des relations entre métriques clés et comportement utilisateur",
-        "userEngagementMetrics": "Métriques d'Engagement Utilisateur",
-        "transactionsPerUser": "Transactions par Utilisateur",
-        "transactionsUserUnit": "trans./utilisateur",
-        "apiCallsPerUser": "Appels API par Utilisateur",
-        "callsUserUnit": "appels/utilisateur",
-        "revenuePerUser": "Revenu par Utilisateur",
-        "xafUserUnit": "XAF/utilisateur",
-        "volumeVsSuccessRateCorrelation": "Corrélation Volume vs Taux de Réussite",
-        "receiptsVolumeSuccessCorrelation": "Reçus: Corrélation Volume-Succès",
-        "correlationCoefficientReceipt": "Coefficient de corrélation pour les reçus",
-        "withdrawalsVolumeSuccessCorrelation": "Retraits: Corrélation Volume-Succès",
-        "correlationCoefficientWithdrawal": "Coefficient de corrélation pour les retraits",
-        "errorPatternAnalysis": "Analyse des Modèles d'Erreur",
-        "errorToVolumeRatio": "Ratio Erreur/Volume",
-        "percentageTransactionsWithErrors": "Pourcentage de transactions avec erreurs",
-        "overallFailureDistribution": "Distribution Globale des Échecs",
-        "totalFailureRateAllTransactionTypes": "Taux d'échec total tous types de transactions"
-      },
-      "growthOperationalEfficiency": {
-        "title": "Analyses de Croissance et d'Efficacité Opérationnelle",
-        "description": "Tendances temporelles, modèles de croissance et indicateurs de performance",
-        "growthVelocityMetrics": "Métriques de Croissance et Vélocité",
-        "dailyUserGrowthRate": "Taux de Croissance Utilisateurs/Jour",
-        "newUsersPerDay": "nouv. utilisateurs/jour",
-        "volumeVelocity": "Vélocité du Volume",
-        "xafPerSecond": "XAF/seconde",
-        "transactionRate": "Taux de Transaction",
-        "transactionsPerHour": "trans./heure",
-        "advancedPerformanceIndicators": "Indicateurs de Performance Avancés",
-        "growthMomentumIndex": "Indice de Momentum de Croissance",
-        "compositeGrowthIndicator": "Indicateur de croissance composite",
-        "riskAssessmentScore": "Score d'Évaluation des Risques",
-        "operationalRiskLevel": "Niveau de risque opérationnel",
-        "platformStabilityIndex": "Indice de Stabilité de la Plateforme",
-        "overallSystemStability": "Stabilité globale du système"
-      }
-    },
-    "crossTable": {
-      "title": "Analyses par Entreprise et Application",
-      "overview": {
-        "totalCompanies": "Total Entreprises",
-        "activeCompanies": "entreprises actives",
-        "totalApplications": "Total Applications",
-        "activeApplications": "applications actives",
-        "avgAppsPerCompany": "Moy. Apps/Entreprise",
-        "applicationsPerCompany": "apps par entreprise",
-        "totalEcosystemVolume": "Volume Total de l'Écosystème"
-      },
-      "companyVolumeDistribution": {
-        "title": "Distribution du Volume par Entreprise",
-        "description": "Top entreprises par volume de transactions"
-      },
-      "revenueDistribution": {
-        "title": "Distribution des Revenus",
-        "description": "Part des revenus par entreprise"
-      },
-      "rankings": {
-        "mostDominant": {
-          "title": "Entreprises les Plus Dominantes",
-          "description": "Entreprises avec les plus hauts volumes de transactions"
-        },
-        "mostProfitable": {
-          "title": "Entreprises les Plus Rentables",
-          "description": "Entreprises avec les plus hautes marges bénéficiaires"
-        },
-        "mostUsers": {
-          "title": "Plus d'Utilisateurs Actifs"
-        },
-        "mostEfficient": {
-          "title": "Plus Efficaces en Frais"
-        },
-        "mostTransactions": {
-          "title": "Plus de Transactions"
-        },
-        "applications": "applications",
-        "transactions": "transactions",
-        "revenue": "revenu",
-        "profitMargin": "marge bénéficiaire"
-      },
-      "topApplications": {
-        "title": "Performance des Meilleures Applications",
-        "description": "Applications les plus performantes toutes entreprises confondues",
-        "rank": "Rang",
-        "company": "Entreprise",
-        "application": "Application",
-        "volume": "Volume (XAF)",
-        "revenue": "Revenu (XAF)",
-        "transactions": "Transactions",
-        "users": "Utilisateurs",
-        "successRate": "Taux de Réussite"
-      },
-      "companyMatrix": {
-        "title": "Matrice Entreprise-Application",
-        "description": "Aperçu complet de la performance des entreprises",
-        "company": "Entreprise",
-        "applications": "Apps",
-        "totalVolume": "Volume Total (XAF)",
-        "totalRevenue": "Revenu Total (XAF)",
-        "avgProfitMargin": "Marge Bénéf. Moy.",
-        "totalUsers": "Total Utilisateurs",
-        "avgSuccessRate": "Taux de Réussite Moy."
-      }
-    },
-    "technical": {
-      "title": "Analyses Techniques pour les Opérations Système",
-      "overview": {
-        "totalApiCalls": "Total Appels API",
-        "weeklyTotal": "total hebdo.",
-        "avgUptime": "Disponibilité Moyenne",
-        "reliability": "fiabilité système",
-        "avgResponseTime": "Temps de Réponse Moy.",
-        "performance": "performance système",
-        "errorRate": "Taux d'Erreur",
-        "totalErrors": "erreurs totales"
-      },
-      "charts": {
-        "apiCalls": {
-          "title": "Volume Quotidien des Appels API",
-          "description": "Charge système et trafic API par jour"
-        },
-        "errorRate": {
-          "title": "Tendances du Taux d'Erreur",
-          "description": "Suivi quotidien du taux d'erreur pour la santé du système"
-        },
-        "responseTime": {
-          "title": "Analyse du Temps de Réponse",
-          "description": "Performance moyenne du temps de réponse par jour"
-        },
-        "uptime": {
-          "title": "Suivi de la Disponibilité Système",
-          "description": "Pourcentage de disponibilité quotidien"
-        }
-      },
-      "analysis": {
-        "peakPerformance": {
-          "title": "Jours de Performance de Pointe",
-          "description": "Meilleurs jours selon les métriques clés"
-        },
-        "issues": {
-          "title": "Problèmes et Incidents",
-          "description": "Jours avec les taux d'erreur et problèmes de performance les plus élevés"
-        },
-        "busiestDay": "Jour le Plus Actif",
-        "fastestDay": "Jour le Plus Rapide",
-        "bestUptimeDay": "Meilleure Disponibilité",
-        "worstErrorDay": "Pire Jour d'Erreur",
-        "slowestDay": "Jour le Plus Lent",
-        "mostDowntimeDay": "Plus Longue Indisponibilité",
-        "apiCalls": "appels API",
-        "avgResponse": "réponse moy.",
-        "uptime": "disponibilité",
-        "errorRate": "taux d'erreur",
-        "downtime": "indisponibilité"
-      },
-      "summary": {
-        "title": "Résumé Hebdomadaire des Performances Techniques",
-        "description": "Aperçu complet des métriques techniques pour le suivi système",
-        "day": "Jour",
-        "apiCalls": "Appels API",
-        "errors": "Erreurs",
-        "errorRate": "Taux d'Erreur",
-        "responseTime": "Temps de Réponse",
-        "uptime": "Disponibilité",
-        "status": "Statut",
-        "excellent": "Excellent",
-        "good": "Bon",
-        "issues": "Problèmes"
-      }
-    },
-    "enhanced": {
-      "totalEcosystemValue": "Valeur Totale de l'Écosystème",
-      "combinedVolume": "transactions + soldes",
-      "liquidityHealth": "Santé de la Liquidité",
-      "available": "Disponible",
-      "operationalRisk": "Risque Opérationnel",
-      "pendingReconciliations": "rapprochements en attente",
-      "systemEfficiency": "Efficacité du Système",
-      "totalTransactions": "transactions totales",
-      "balance": "Solde",
-      "profitabilityTarget": "Objectif de Rentabilité",
-      "profitabilityDesc": "Indicateur de performance de la marge de revenu",
-      "excellentMargin": "Excellente marge bénéficiaire",
-      "goodMargin": "Bonne marge bénéficiaire",
-      "improvementNeeded": "Amélioration de la marge nécessaire",
-      "liquidityRatio": "Ratio de Liquidité",
-      "liquidityDesc": "Ratio solde disponible vs total",
-      "reserved": "Réservé",
-      "balanceDistribution": "Distribution des Soldes",
-      "balanceDistributionDesc": "Allocation des soldes par méthode de paiement",
-      "transactionTrends": "Tendances des Transactions",
-      "transactionTrendsDesc": "Modèles de volume de transactions quotidiens",
-      "performanceMetrics": "Métriques de Performance",
-      "performanceMetricsDesc": "Taux de réussite et tendances des revenus",
-      "balanceHealthDashboard": "Tableau de Bord de la Santé des Soldes",
-      "balanceHealthDesc": "Suivi complet et statut des soldes",
-      "provider": "Fournisseur",
-      "currentBalance": "Solde Actuel",
-      "utilizationRate": "Taux d'Utilisation",
-      "status": "Statut",
-      "volumeTrendAnalysis": "Analyse des Tendances de Volume",
-      "volumeTrendDesc": "Visualisation avancée du volume avec effets de gradient"
-    },
-    "geo": {
-      "totalUsers": "Total Utilisateurs",
-      "acrossRegions": "dans toutes les régions",
-      "totalVolume": "Volume Total",
-      "transactions": "transactions",
-      "avgGrowth": "Croissance Moyenne",
-      "yearOverYear": "d'une année sur l'autre",
-      "marketPenetration": "Pénétration du Marché",
-      "avgPenetration": "pénétration moyenne",
-      "topRegionsByUsers": "Top Régions par Utilisateurs",
-      "topRegionsDesc": "Régions avec la plus forte adoption",
-      "fastestGrowingRegions": "Régions à Croissance la Plus Rapide",
-      "fastestGrowingDesc": "Régions avec les plus forts taux de croissance",
-      "userDistribution": "Distribution Régionale des Utilisateurs",
-      "userDistributionDesc": "Nombre d'utilisateurs et volume de transactions par région",
-      "geographicDistribution": "Distribution Géographique",
-      "geographicDistributionDesc": "Utilisateurs par type de zone",
-      "regionalPerformance": "Tableau de Bord de Performance Régionale",
-      "regionalPerformanceDesc": "Métriques régionales complètes et indicateurs de performance",
-      "region": "Région",
-      "capital": "Capitale",
-      "users": "Utilisateurs",
-      "volume": "Volume",
-      "growth": "Croissance",
-      "penetration": "Pénétration",
-      "status": "Statut",
-      "cameroonRegionsMap": "Carte des Régions du Cameroun",
-      "cameroonRegionsMapDesc": "Représentation visuelle de la distribution des utilisateurs au Cameroun",
-      "userDensity": "Densité d'Utilisateurs"
-    }
-  },
-  "statusBadges": {
-    "active": "Actif",
-    "inactive": "Inactif",
-    "enableb": "Activé",
-    "disabled": "Désactivé",
-    "OM": "OM",
-    "MOMO": "MOMO",
-    "MTN": "MTN",
-    "ORANGE": "ORANGE",
-    "PENDING": "EN ATTENTE",
-    "PROCESSING": "EN COURS",
-    "VALIDATING": "VALIDATION",
-    "COMPLETED": "TERMINÉ",
-    "FAILED": "ÉCHOUÉ",
-    "CANCELLED": "ANNULÉ",
-    "REJECTED": "REJETÉ",
-    "TIMEOUT": "EXPIRÉ",
-    "SYSTEM": "SYSTÈME",
-    "COMPANY": "ENTREPRISE",
-    "APPLICATION": "APPLICATION",
-    "RECEIPT": "REÇU",
-    "WITHDRAWAL": "RETRAIT",
-    "FUND_TRANSFER": "TRANSFERT",
-    "true": "Vrai",
-    "false": "Faux"
   }
 }

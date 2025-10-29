@@ -150,8 +150,6 @@ export const useCompany = () => {
       ...getApiCompanyDropdownOptions(),
       staleTime: 10 * 60 * 1000,
       gcTime: 30 * 60 * 1000,
-      refetchOnMount: "always",
-      refetchOnWindowFocus: false,
       ...createQueryErrorConfig({
         toastMessage: t("companies.messages.dropdown.error"),
         showToast: false,

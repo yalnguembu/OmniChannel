@@ -132,7 +132,14 @@ export const WithdrawalMethodCreateForm: React.FC<WithdrawalMethodCreateFormProp
                   <FormItem>
                     <FormLabel>{t("withdrawalMethods.form.dailyLimitLabel")}</FormLabel>
                     <FormControl>
-                      <Input type="number" placeholder={t("withdrawalMethods.form.dailyLimitPlaceholder")} {...field} value={field.value || ""} required={false} />
+                      <Input
+                        type="number"
+                        placeholder={t("withdrawalMethods.form.dailyLimitPlaceholder")}
+                        {...field}
+                        value={field.value || ""}
+                        required={false}
+                        onChange={(e) => field.onChange(e.target.value === "" ? undefined : Number(e.target.value))}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -145,7 +152,14 @@ export const WithdrawalMethodCreateForm: React.FC<WithdrawalMethodCreateFormProp
                   <FormItem>
                     <FormLabel>{t("withdrawalMethods.form.monthlyLimitLabel")}</FormLabel>
                     <FormControl>
-                      <Input type="number" placeholder={t("withdrawalMethods.form.monthlyLimitPlaceholder")} {...field} value={field.value || ""} required={false} />
+                      <Input
+                        type="number"
+                        placeholder={t("withdrawalMethods.form.monthlyLimitPlaceholder")}
+                        {...field}
+                        value={field.value || ""}
+                        required={false}
+                        onChange={(e) => field.onChange(e.target.value === "" ? undefined : Number(e.target.value))}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -158,39 +172,19 @@ export const WithdrawalMethodCreateForm: React.FC<WithdrawalMethodCreateFormProp
                   <FormItem>
                     <FormLabel>{t("withdrawalMethods.form.singleWithdrawalLimitLabel")}</FormLabel>
                     <FormControl>
-                      <Input type="number" placeholder={t("withdrawalMethods.form.singleWithdrawalLimitPlaceholder")} {...field} value={field.value || ""} required={false} />
+                      <Input
+                        type="number"
+                        placeholder={t("withdrawalMethods.form.singleWithdrawalLimitPlaceholder")}
+                        {...field}
+                        value={field.value || ""}
+                        required={false}
+                        onChange={(e) => field.onChange(e.target.value === "" ? undefined : Number(e.target.value))}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-
-              {/* <FormField
-                control={form.control}
-                name="verificationDate"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t("withdrawalMethods.form.verificationDateLabel")}</FormLabel>
-                    <FormControl>
-                      <Input type="text" placeholder={t("withdrawalMethods.form.verificationDatePlaceholder")} {...field} value={field.value || ""} required={false} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="verificationReference"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t("withdrawalMethods.form.verificationDateLabel")}</FormLabel>
-                    <FormControl>
-                      <Input type="text" placeholder={t("withdrawalMethods.form.verificationDatePlaceholder")} {...field} value={field.value || ""} required={false} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              /> */}
 
               <FormField
                 control={form.control}

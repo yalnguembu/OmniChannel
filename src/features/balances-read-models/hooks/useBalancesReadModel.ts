@@ -11,6 +11,7 @@ import {
   deleteApiBalancesReadModelByIdMutation,
   getApiBalancesReadModelByIdOptions,
 } from "@/shared/api/@tanstack/react-query.gen"
+import { useErrorHandling } from "@/shared/hooks/useErrorHandling"
 
 export const balancesReadModelQueryKeys = {
   all: ["balancesReadModel"] as const,
@@ -25,6 +26,8 @@ export const useBalancesReadModel = () => {
   const { t } = useTranslation()
   const queryClient = useQueryClient()
   const store = useBalancesReadModelStore()
+
+  const { createQueryErrorConfig } = useErrorHandling()
 
   const searchBalancesReadModelsMutation = useMutation({
     ...postApiBalancesReadModelSearchMutation({
@@ -87,11 +90,17 @@ export const useBalancesReadModel = () => {
       },
     })
 
-  const dropdownQuery = useQuery({
-    ...getApiBalancesReadModelDropdownOptions(),
-    enabled: false,
-    staleTime: 10 * 60 * 1000,
-  })
+  const dropdownQuery = (id?: string) =>
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    useQuery({
+      ...getApiBalancesReadModelDropdownOptions({ query: { id } }),
+      staleTime: 10 * 60 * 1000,
+      gcTime: 30 * 60 * 1000,
+      ...createQueryErrorConfig({
+        toastMessage: t("balances.messages.dropdown.error"),
+        showToast: false,
+      }),
+    })
 
   const createBalancesReadModelMutation = useMutation({
     ...postApiBalancesReadModelMutation(),
@@ -242,7 +251,7 @@ export const useBalancesReadModel = () => {
     searchBalancesReadModels()
   }
   const enableDropdownQuery = () => {
-    dropdownQuery.refetch()
+    dropdownQuery()
   }
 
   return {

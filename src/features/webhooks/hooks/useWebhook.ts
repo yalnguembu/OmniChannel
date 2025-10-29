@@ -138,7 +138,6 @@ export const useWebhook = () => {
     enabled: false,
     staleTime: 10 * 60 * 1000,
     gcTime: 30 * 60 * 1000,
-    refetchOnMount: "always",
     refetchOnWindowFocus: false,
     ...createQueryErrorConfig({
       toastMessage: t("webhooks.messages.dropdown.error"),

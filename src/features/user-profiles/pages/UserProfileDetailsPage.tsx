@@ -113,7 +113,9 @@ export function UserProfileDetailsPage() {
               <>
                 <Separator className="my-6" />
                 <div>
-                  <h3 className="text-sm font-semibold mb-3">{t("userProfiles.details.sections.permissions")} ({data?.data?.permissions.split(",").length})</h3>
+                  <h3 className="text-sm font-semibold mb-3">
+                    {t("userProfiles.details.sections.permissions")} ({data?.data?.permissions.split(",").length})
+                  </h3>
                   <div className="flex flex-wrap gap-2 mt-3">
                     {data?.data?.permissions.split(",").map((permission, index) => (
                       <Badge key={index} variant="secondary" className="font-normal text-xs">

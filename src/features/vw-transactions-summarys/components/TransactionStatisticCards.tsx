@@ -122,7 +122,9 @@ export function TransactionStatisticCards() {
                   <div className="text-2xl font-bold text-primary">{formatCurrency(currentMetrics?.totalVolume || 0)}</div>
                   <div className="flex items-center gap-1 text-xs text-muted-foreground">
                     <TrendingUp className="h-3 w-3 text-green-600" />
-                    <span className="font-semibold">{(currentMetrics?.totalReceipts || 0) + (currentMetrics?.totalWithdrawals || 0) + (currentMetrics?.totalFundTransfers || 0)}</span>
+                    <span className="font-semibold">
+                      {(currentMetrics?.totalReceipts || 0) + (currentMetrics?.totalWithdrawals || 0) + (currentMetrics?.totalFundTransfers || 0)}
+                    </span>
                     {t("analytics.transactions.counts")}
                   </div>
                 </CardContent>

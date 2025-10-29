@@ -34,7 +34,21 @@ export interface BulkAction {
   loading?: boolean
 }
 
-export type ACTION = "view" | "delete" | "edit" | "activate" | "deactivate" | "ROW_CLICK" | "regen-secret" | "checkStatus" | "changeStatus" | "config" | "toggle_status"
+export type ACTION =
+  | "view"
+  | "delete"
+  | "edit"
+  | "activate"
+  | "deactivate"
+  | "ROW_CLICK"
+  | "regen-secret"
+  | "checkStatus"
+  | "changeStatus"
+  | "config"
+  | "toggle_status"
+  | "approve"
+  | "cancel"
+  | "complete"
 
 export type BreakPoint = "sm" | "md" | "lg" | "xl" | "xl2"
 export type ViewMode = "list" | "grid"
