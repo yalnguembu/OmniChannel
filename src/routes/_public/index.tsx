@@ -5,9 +5,10 @@ import { ArrowRight, Shield, CreditCard, Zap, Code, BarChart3, Smartphone, Check
 import { useTranslation } from "react-i18next"
 import { motion } from "framer-motion"
 import { useState } from "react"
-import { createFileRoute } from "@tanstack/react-router"
-
+import { createFileRoute, redirect } from "@tanstack/react-router"
+import { useSessionStore } from "@/shared/stores/sessionStore"
 import PageLoader from "@/shared/components/PageLoader"
+
 function LandingPage() {
   const { t } = useTranslation()
 
@@ -563,4 +564,17 @@ async function createPayment() {
 export const Route = createFileRoute("/_public/")({
   pendingComponent: PageLoader,
   component: LandingPage,
+  beforeLoad: () => {
+    const { getIsLoggedIn } = useSessionStore.getState()
+    const returnUrl = new URL(window.location.href).searchParams.get("returnUrl") || "/dashboard"
+    if (returnUrl && getIsLoggedIn()) {
+      throw redirect({ to: returnUrl })
+    }
+    if (getIsLoggedIn()) {
+      throw redirect({ to: "/dashboard" })
+    } else {
+      throw redirect({ to: "/auth/login" })
+    }
+  },
+
 })
