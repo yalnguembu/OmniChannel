@@ -109,19 +109,21 @@ export const WithdrawalMethodCreateForm: React.FC<WithdrawalMethodCreateFormProp
                   </FormItem>
                 )}
               />
+
               <FormField
                 control={form.control}
                 name="phoneNumber"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>{t("withdrawalMethods.form.phoneNumberLabel")}</FormLabel>
+                    <FormLabel>{t("withdrawalMethods.form.accountNumberLabel")}</FormLabel>
                     <FormControl>
-                      <Input type="text" placeholder={t("withdrawalMethods.form.phoneNumberPlaceholder")} {...field} value={field.value || ""} required={false} />
+                      <Input type="text" placeholder={t("withdrawalMethods.form.accountNumberPlaceholder")} {...field} value={field.value || ""} required={false} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
+
               <FormField
                 control={form.control}
                 name="paymentMethodId"
@@ -156,6 +158,7 @@ export const WithdrawalMethodCreateForm: React.FC<WithdrawalMethodCreateFormProp
                   </FormItem>
                 )}
               />
+
               <FormField
                 control={form.control}
                 name="monthlyLimit"
@@ -169,6 +172,7 @@ export const WithdrawalMethodCreateForm: React.FC<WithdrawalMethodCreateFormProp
                   </FormItem>
                 )}
               />
+
               <FormField
                 control={form.control}
                 name="singleWithdrawalLimit"

@@ -3430,6 +3430,8 @@
       "paymentMethodIdPlaceholder": "Sélectionnez une méthode de paiement",
       "phoneNumberLabel": "Numéro de téléphone",
       "phoneNumberPlaceholder": "Saisir le numéro de téléphone",
+      "accountNumberLabel": "Numéro de compte",
+      "accountNumberPlaceholder": "Saisir le numéro de compte",
       "singleWithdrawalLimitLabel": "Limite par retrait",
       "singleWithdrawalLimitPlaceholder": "Saisir la limite par retrait",
       "verificationDateLabel": "Date de vérification",

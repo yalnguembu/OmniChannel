@@ -3408,6 +3408,8 @@
       "paymentMethodIdPlaceholder": "Select a payment method",
       "phoneNumberLabel": "Phone Number",
       "phoneNumberPlaceholder": "Enter phone number",
+      "accountNumberLabel": "Account Number",
+      "accountNumberPlaceholder": "Enter account number",
       "singleWithdrawalLimitLabel": "Single Withdrawal Limit",
       "singleWithdrawalLimitPlaceholder": "Enter single withdrawal limit",
       "verificationDateLabel": "Verification Date",

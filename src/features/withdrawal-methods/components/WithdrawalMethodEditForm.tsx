@@ -106,9 +106,9 @@ export const WithdrawalMethodEditForm: React.FC<WithdrawalMethodEditFormProps> =
                 name="phoneNumber"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>{t("withdrawalMethods.form.phoneNumberLabel")}</FormLabel>
+                    <FormLabel>{t("withdrawalMethods.form.accountNumberLabel")}</FormLabel>
                     <FormControl>
-                      <Input type="text" placeholder={t("withdrawalMethods.form.phoneNumberPlaceholder")} {...field} value={field.value || ""} required={false} />
+                      <Input type="text" placeholder={t("withdrawalMethods.form.accountNumberPlaceholder")} {...field} value={field.value || ""} required={false} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
