@@ -42,7 +42,7 @@ export function WithdrawalsReadModelsListPage() {
           <ModalWrapper title="" size="2xl" open={showCreateForm} onOpenChange={toggleShowCreateForm}>
             <div className="-m-6">
               <WithdrawalInitForm onSubmit={handleSubmitWithdrawalInit} onCancel={toggleShowCreateForm} />
-            </div>{" "}
+            </div>
           </ModalWrapper>
         ) : (
           <></>

@@ -3407,7 +3407,8 @@
       "companyIdPlaceholder": "Sélectionnez une entreprise",
       "create": {
         "description": "Ajouter une nouvelle méthode de retrait.",
-        "title": "Créer une méthode de retrait"
+        "title": "Créer une méthode de retrait",
+        "infoMessage":"Veillez entrer 0 dans les champs limites journaliere mensuelles et limite uniques pour pouvoir effectuer des retraits a l'infinie"
       },
       "dailyLimitLabel": "Limite quotidienne",
       "dailyLimitPlaceholder": "Saisir la limite quotidienne",

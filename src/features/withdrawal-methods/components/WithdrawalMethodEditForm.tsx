@@ -8,8 +8,21 @@ import { Checkbox } from "@/shared/components/ui/checkbox"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/shared/components/ui/form"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/components/ui/card"
 import { LoaderIcon } from "lucide-react"
-import { UpdateWithdrawalMethodRequest } from "@/shared/api"
-import { zUpdateWithdrawalMethodRequest } from "@/shared/api/zod.gen"
+import { z } from "zod"
+
+type UpdateWithdrawalMethodRequest = {
+  id?: string
+  companyId?: string
+  name: string
+  phoneNumber?: string
+  paymentMethodId: string
+  verificationReference?: string | null
+  isDefault?: boolean
+  isVerified?: boolean
+  dailyLimit?: string | null
+  monthlyLimit?: string | null
+  singleWithdrawalLimit?: string | null
+}
 
 interface WithdrawalMethodEditFormProps {
   withdrawalMethodId: string
@@ -21,6 +34,19 @@ interface WithdrawalMethodEditFormProps {
 
 export const WithdrawalMethodEditForm: React.FC<WithdrawalMethodEditFormProps> = ({ withdrawalMethodId, initialData, onSubmit, onCancel, isLoading = false }) => {
   const { t } = useTranslation()
+
+  const zUpdateWithdrawalMethodRequest = z.object({
+    companyId: z.string().uuid().optional(),
+    name: z.string(),
+    phoneNumber: z.string().optional(),
+    paymentMethodId: z.string().uuid(),
+    isVerified: z.boolean().optional(),
+    verificationReference: z.union([z.string(), z.null()]).optional(),
+    isDefault: z.boolean().optional(),
+    dailyLimit: z.union([z.string(), z.null()]).optional(),
+    monthlyLimit: z.union([z.string(), z.null()]).optional(),
+    singleWithdrawalLimit: z.union([z.string(), z.null()]).optional(),
+  })
 
   const form = useForm<UpdateWithdrawalMethodRequest>({
     resolver: zodResolver(zUpdateWithdrawalMethodRequest),

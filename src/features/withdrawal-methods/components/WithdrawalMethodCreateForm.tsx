@@ -7,12 +7,13 @@ import { Input } from "@/shared/components/ui/input"
 import { Checkbox } from "@/shared/components/ui/checkbox"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/shared/components/ui/form"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/components/ui/card"
-import { LoaderIcon } from "lucide-react"
+import { Info, LoaderIcon } from "lucide-react"
 import { CreateWithdrawalMethodRequest } from "@/shared/api"
-import { zCreateWithdrawalMethodRequest } from "@/shared/api/zod.gen"
 import { useCompany } from "@/features/companies/hooks/useCompany"
 import { SearchDropdown } from "@/shared/components/dropdowns/search-dropdown"
 import { usePaymentMethod } from "@/features/payment-methods/hooks/usePayMentmethod"
+import { z } from "zod"
+import { Alert } from "@/shared/components/ui/alert"
 
 interface WithdrawalMethodCreateFormProps {
   onSubmit: (data: CreateWithdrawalMethodRequest) => void
@@ -25,6 +26,19 @@ interface WithdrawalMethodCreateFormProps {
 
 export const WithdrawalMethodCreateForm: React.FC<WithdrawalMethodCreateFormProps> = ({ onSubmit, onCancel, isLoading = false, defaultValues, companyId }) => {
   const { t } = useTranslation()
+
+  const zCreateWithdrawalMethodRequest = z.object({
+    companyId: z.string().uuid().optional(),
+    name: z.string(),
+    phoneNumber: z.string().optional(),
+    paymentMethodId: z.string().uuid(),
+    isVerified: z.boolean().optional(),
+    verificationReference: z.union([z.string(), z.null()]).optional(),
+    isDefault: z.boolean().optional(),
+    dailyLimit: z.union([z.string(), z.null()]).optional(),
+    monthlyLimit: z.union([z.string(), z.null()]).optional(),
+    singleWithdrawalLimit: z.union([z.string(), z.null()]).optional(),
+  })
 
   const form = useForm<CreateWithdrawalMethodRequest>({
     resolver: zodResolver(zCreateWithdrawalMethodRequest),
@@ -54,6 +68,10 @@ export const WithdrawalMethodCreateForm: React.FC<WithdrawalMethodCreateFormProp
         <CardDescription>{t("withdrawalMethods.form.create.description")}</CardDescription>
       </CardHeader>
       <CardContent>
+        <Alert className="mb-4 bg-blue-100/50 text-blue-500">
+          <Info className="mr-2 h-4 w-4" />
+          {t("withdrawalMethods.form.create.infoMessage")}
+        </Alert>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -132,14 +150,7 @@ export const WithdrawalMethodCreateForm: React.FC<WithdrawalMethodCreateFormProp
                   <FormItem>
                     <FormLabel>{t("withdrawalMethods.form.dailyLimitLabel")}</FormLabel>
                     <FormControl>
-                      <Input
-                        type="number"
-                        placeholder={t("withdrawalMethods.form.dailyLimitPlaceholder")}
-                        {...field}
-                        value={field.value || ""}
-                        required={false}
-                        onChange={(e) => field.onChange(e.target.value === "" ? undefined : Number(e.target.value))}
-                      />
+                      <Input type="string" placeholder={t("withdrawalMethods.form.dailyLimitPlaceholder")} {...field} value={field.value || ""} required={false} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -152,14 +163,7 @@ export const WithdrawalMethodCreateForm: React.FC<WithdrawalMethodCreateFormProp
                   <FormItem>
                     <FormLabel>{t("withdrawalMethods.form.monthlyLimitLabel")}</FormLabel>
                     <FormControl>
-                      <Input
-                        type="number"
-                        placeholder={t("withdrawalMethods.form.monthlyLimitPlaceholder")}
-                        {...field}
-                        value={field.value || ""}
-                        required={false}
-                        onChange={(e) => field.onChange(e.target.value === "" ? undefined : Number(e.target.value))}
-                      />
+                      <Input type="string" placeholder={t("withdrawalMethods.form.monthlyLimitPlaceholder")} {...field} value={field.value || ""} required={false} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -172,14 +176,7 @@ export const WithdrawalMethodCreateForm: React.FC<WithdrawalMethodCreateFormProp
                   <FormItem>
                     <FormLabel>{t("withdrawalMethods.form.singleWithdrawalLimitLabel")}</FormLabel>
                     <FormControl>
-                      <Input
-                        type="number"
-                        placeholder={t("withdrawalMethods.form.singleWithdrawalLimitPlaceholder")}
-                        {...field}
-                        value={field.value || ""}
-                        required={false}
-                        onChange={(e) => field.onChange(e.target.value === "" ? undefined : Number(e.target.value))}
-                      />
+                      <Input type="string" placeholder={t("withdrawalMethods.form.singleWithdrawalLimitPlaceholder")} {...field} value={field.value || ""} required={false} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

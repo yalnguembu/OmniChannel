@@ -23604,18 +23604,15 @@ export const UpdateWithdrawalMethodRequestSchema = {
             type: 'boolean'
         },
         dailyLimit: {
-            type: 'number',
-            format: 'double',
+            type: 'string',
             nullable: true
         },
         monthlyLimit: {
-            type: 'number',
-            format: 'double',
+            type: 'string',
             nullable: true
         },
         singleWithdrawalLimit: {
-            type: 'number',
-            format: 'double',
+            type: 'string',
             nullable: true
         }
     },
@@ -25043,18 +25040,15 @@ export const WithdrawalMethodDtoSchema = {
             type: 'boolean'
         },
         dailyLimit: {
-            type: 'number',
-            format: 'double',
+            type: 'string',
             nullable: true
         },
         monthlyLimit: {
-            type: 'number',
-            format: 'double',
+            type: 'string',
             nullable: true
         },
         singleWithdrawalLimit: {
-            type: 'number',
-            format: 'double',
+            type: 'string',
             nullable: true
         },
         updatedAt: {

@@ -8291,9 +8291,9 @@ export type UpdateWithdrawalMethodRequest = {
     paymentMethodId?: string;
     verificationReference?: string | null;
     isDefault?: boolean;
-    dailyLimit?: number | null;
-    monthlyLimit?: number | null;
-    singleWithdrawalLimit?: number | null;
+    dailyLimit?: string | null;
+    monthlyLimit?: string | null;
+    singleWithdrawalLimit?: string | null;
 };
 
 export type UserDeviceDto = {
@@ -8786,9 +8786,9 @@ export type WithdrawalMethodDto = {
     verificationDate?: string | null;
     verificationReference?: string | null;
     isDefault?: boolean;
-    dailyLimit?: number | null;
-    monthlyLimit?: number | null;
-    singleWithdrawalLimit?: number | null;
+    dailyLimit?: string | null;
+    monthlyLimit?: string | null;
+    singleWithdrawalLimit?: string | null;
     updatedAt?: string | null;
     createdBy?: string;
     updatedBy?: string | null;

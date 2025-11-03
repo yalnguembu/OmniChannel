@@ -10,6 +10,7 @@ import { Label } from "@/shared/components/ui/label"
 import { ModalWrapper } from "@/shared/components/ModalWrapper"
 import { Card, CardContent, CardHeader, CardTitle } from "@/shared/components/ui/card"
 import { WithdrawalMethodEditForm } from "./WithdrawalMethodEditForm"
+// import { ModalWrapper } from "@/shared/components/ModalWrapper"
 
 export const WithdrawalMethodDataGrid: React.FC = () => {
   const { t } = useTranslation()
@@ -219,7 +220,17 @@ export const WithdrawalMethodDataGrid: React.FC = () => {
         dispatch={handleDispatch}
       />
       {showEditModal && !!selectedItem && (
-        <WithdrawalMethodEditForm initialData={selectedItem} withdrawalMethodId={selectedItem.id ?? ""} onSubmit={handleSubmit} onCancel={toggleShowEditModal} isLoading={false} />
+        <ModalWrapper style="lg:max-h-3/5 overflow-y-scroll" size="2xl" open={showEditModal} onOpenChange={toggleShowEditModal} title="">
+          <div className="max-h-2/3 -m-4">
+            <WithdrawalMethodEditForm
+              initialData={selectedItem}
+              withdrawalMethodId={selectedItem.id ?? ""}
+              onSubmit={handleSubmit}
+              onCancel={toggleShowEditModal}
+              isLoading={false}
+            />
+          </div>
+        </ModalWrapper>
       )}
       {showDetailsModal && !!selectedItem && <WithdrawalMethodDetails data={selectedItem} open={showDetailsModal} onCancel={toggleShowDetailsModal} />}
     </div>

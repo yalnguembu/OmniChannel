@@ -14914,15 +14914,15 @@ export const zUpdateWithdrawalMethodRequest = z.object({
     ]).optional(),
     isDefault: z.boolean().optional(),
     dailyLimit: z.union([
-        z.number(),
+        z.string(),
         z.null()
     ]).optional(),
     monthlyLimit: z.union([
-        z.number(),
+        z.string(),
         z.null()
     ]).optional(),
     singleWithdrawalLimit: z.union([
-        z.number(),
+        z.string(),
         z.null()
     ]).optional()
 });
@@ -15766,15 +15766,15 @@ export const zWithdrawalMethodDto = z.object({
     ]).optional(),
     isDefault: z.boolean().optional(),
     dailyLimit: z.union([
-        z.number(),
+        z.string(),
         z.null()
     ]).optional(),
     monthlyLimit: z.union([
-        z.number(),
+        z.string(),
         z.null()
     ]).optional(),
     singleWithdrawalLimit: z.union([
-        z.number(),
+        z.string(),
         z.null()
     ]).optional(),
     updatedAt: z.union([
