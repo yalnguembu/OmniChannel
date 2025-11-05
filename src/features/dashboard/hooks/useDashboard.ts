@@ -41,8 +41,8 @@ export const useDashboard = () => {
       body: {
         pageNumber: 1,
         pageSize: 100,
-        sortBy: "metricDate",
-        sortDirection: "Descending",
+        // sortBy: "metricDate",
+        // sortDirection: "Descending",
         createdFrom: effectiveDateRange.startDate,
         createdTo: effectiveDateRange.endDate,
       },
@@ -65,8 +65,8 @@ export const useDashboard = () => {
       body: {
         pageNumber: 1,
         pageSize: 100,
-        sortBy: "metricDate",
-        sortDirection: "Descending",
+        // sortBy: "metricDate",
+        // sortDirection: "Descending",
         createdFrom: effectiveDateRange.startDate,
         createdTo: effectiveDateRange.endDate,
       },
