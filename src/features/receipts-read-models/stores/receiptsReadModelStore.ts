@@ -89,7 +89,7 @@ const initialState: ReceiptsReadModelState = {
   selectedReceiptsReadModels: [],
 
   currentPage: 1,
-  pageSize: 9999,
+  pageSize: 100,
   totalItems: 0,
   totalPages: 0,
 
