@@ -16223,6 +16223,9 @@ components:
         ownerName:
           type: string
           nullable: true
+        paymentMethodName:
+          type: string
+          nullable: true
         balanceType:
           type: string
           nullable: true

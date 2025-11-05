@@ -77,8 +77,10 @@ html{
   --background: oklch(0.99 0.002 80); 
   --foreground: oklch(0.15 0 0); 
   --primary: oklch(0.52 0.24 286.19); 
-  --om: oklch(66.764% 0.22353 36.974); 
+  --om: oklch(66.764% 0.22353 36.974);
+  --ORANGE_MONEY: oklch(66.764% 0.22353 36.974);
   --momo: oklch(86.53% 0.17584 90.266) ; 
+  --MTN_MOMO: oklch(86.53% 0.17584 90.266) ; 
   --completed: #06a700;
   --failed: #be0000;
   --cancelled: #6d6d6d;

@@ -15,13 +15,9 @@ export const formatValue = (value: any): string => {
   if (value == null) return ""
 
   if (typeof value === "number") {
-    if (value >= 1000000) {
-      return `${(value / 1000000).toFixed(1)}M`
-    }
-    if (value >= 1000) {
-      return `${(value / 1000).toFixed(1)}K`
-    }
-    return value.toLocaleString()
+    const parts = value.toString().split(".")
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, " ")
+    return parts.length > 1 ? parts.join(".") : parts[0]
   }
 
   return String(value)

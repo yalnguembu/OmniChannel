@@ -9,7 +9,7 @@ import { useMemo } from "react"
 import { cn } from "@/shared/lib/utils"
 
 export function LineChart({
-  data,
+data,
   config,
   dataKey,
   width,

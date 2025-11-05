@@ -6,15 +6,35 @@ import { Button } from "@/shared/components/ui/button"
 import { Input } from "@/shared/components/ui/input"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/shared/components/ui/form"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/components/ui/card"
-import { LoaderIcon } from "lucide-react"
-import { getApiBalancesReadModelDropdown, WithdrawalsInitRequest } from "@/shared/api"
-import { zWithdrawalsInitRequest } from "@/shared/api/zod.gen"
+import { LoaderIcon, CalendarIcon } from "lucide-react"
+import { getApiBalancesReadModelDropdown } from "@/shared/api"
 import { useCompany } from "@/features/companies/hooks/useCompany"
 import { SearchDropdown } from "@/shared/components/dropdowns/search-dropdown"
-import { useBalancesReadModel } from "@/features/balances-read-models/hooks/useBalancesReadModel"
 import { useApplication } from "@/features/companies/hooks/useApplication"
 import { useWithdrawalMethod } from "@/features/withdrawal-methods/hooks/useWithdrawalMethod"
-import { toast } from "sonner"
+import { Popover, PopoverContent, PopoverTrigger } from "@/shared/components/ui/popover"
+import { Calendar } from "@/shared/components/ui/calendar"
+import { cn } from "@/shared/lib/utils"
+import { format } from "date-fns"
+import { z } from "zod"
+
+type WithdrawalsInitRequest = {
+    balanceId: string;
+    companyId: string;
+    applicationId: string;
+    withdrawalMethodId: string;
+    amount: number;
+    notes: string;
+};
+
+const zWithdrawalsInitRequest = z.object({
+    balanceId: z.string().uuid(),
+    companyId: z.string().uuid(),
+    applicationId: z.string().uuid(),
+    withdrawalMethodId: z.string().uuid(),
+    amount: z.number(),
+    notes: z.string(),
+});
 
 interface WithdrawalInitFormProps {
   onSubmit: (data: WithdrawalsInitRequest, setError: any) => void
@@ -36,7 +56,6 @@ export const WithdrawalInitForm: React.FC<WithdrawalInitFormProps> = ({ onSubmit
     },
   })
 
-  const { dropdownQuery: getBalances } = useBalancesReadModel()
   const { dropdownQuery: getCompanies } = useCompany()
   const { dropdownQuery: getApplications } = useApplication()
   const { dropdownQuery: getWithdrawalMethods } = useWithdrawalMethod()
@@ -44,13 +63,12 @@ export const WithdrawalInitForm: React.FC<WithdrawalInitFormProps> = ({ onSubmit
   const { data: companiesResponse, isLoading: isCompaniesLoading } = getCompanies()
   const { data: applicationsResponse, isLoading: isApplicationsLoading } = getApplications()
   const { data: withdrawalMethodsResponse, isLoading: isWithdrawalMethodsLoading } = getWithdrawalMethods()
-  // const { data: balancesResponse, isLoading: isBlancesLoading } = getBalances()
 
   const balanceOptions = useMemo(
     () =>
       balancesResponse?.data?.map((balance) => ({
         value: balance.id ?? "",
-        label: `${balance.balanceType} ${balance.currentBalance} ${balance.currency}` ?? "",
+        label: `${balance.paymentMethodName} ${balance.currentBalance} ${balance.currency}` ?? "",
       })) ?? [],
     [balancesResponse],
   )
@@ -201,9 +219,23 @@ export const WithdrawalInitForm: React.FC<WithdrawalInitFormProps> = ({ onSubmit
                 name="notes"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>{t("withdrawals.form.notesLabel")}</FormLabel>
+                    <FormLabel>{t("withdrawals.form.dateLabel")}</FormLabel>
                     <FormControl>
-                      <Input type="text" placeholder={t("withdrawals.form.notesPlaceholder")} {...field} value={field.value || ""} required={false} />
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <Button
+                            variant="outline"
+                            className={cn("w-full justify-start text-left font-normal", !field.value && "text-muted-foreground")}
+                            disabled={field.disabled || isLoading}
+                          >
+                            <CalendarIcon className="mr-2 h-4 w-4" />
+                            {field.value ? format(field.value, "yyyy-MM-dd") : <span>{t("withdrawals.form.datePlaceholder")}</span>}
+                          </Button>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-auto p-0">
+                          <Calendar mode="single" selected={field.value ? new Date(field.value) : undefined} onSelect={(date) => field.onChange(date ? date.toISOString() : "")} />
+                        </PopoverContent>
+                      </Popover>
                     </FormControl>
                     <FormMessage />
                   </FormItem>

@@ -3435,6 +3435,10 @@ export const zGetAllBalancesReadModelResponse = z.object({
         z.string(),
         z.null()
     ]).optional(),
+    paymentMethodName: z.union([
+        z.string(),
+        z.null()
+    ]).optional(),
     balanceType: z.union([
         z.string(),
         z.null()
@@ -14914,15 +14918,15 @@ export const zUpdateWithdrawalMethodRequest = z.object({
     ]).optional(),
     isDefault: z.boolean().optional(),
     dailyLimit: z.union([
-        z.string(),
+        z.number(),
         z.null()
     ]).optional(),
     monthlyLimit: z.union([
-        z.string(),
+        z.number(),
         z.null()
     ]).optional(),
     singleWithdrawalLimit: z.union([
-        z.string(),
+        z.number(),
         z.null()
     ]).optional()
 });
@@ -15766,15 +15770,15 @@ export const zWithdrawalMethodDto = z.object({
     ]).optional(),
     isDefault: z.boolean().optional(),
     dailyLimit: z.union([
-        z.string(),
+        z.number(),
         z.null()
     ]).optional(),
     monthlyLimit: z.union([
-        z.string(),
+        z.number(),
         z.null()
     ]).optional(),
     singleWithdrawalLimit: z.union([
-        z.string(),
+        z.number(),
         z.null()
     ]).optional(),
     updatedAt: z.union([

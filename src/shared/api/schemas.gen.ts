@@ -5253,6 +5253,10 @@ export const GetAllBalancesReadModelResponseSchema = {
             type: 'string',
             nullable: true
         },
+        paymentMethodName: {
+            type: 'string',
+            nullable: true
+        },
         balanceType: {
             type: 'string',
             nullable: true
@@ -23604,15 +23608,18 @@ export const UpdateWithdrawalMethodRequestSchema = {
             type: 'boolean'
         },
         dailyLimit: {
-            type: 'string',
+            type: 'number',
+            format: 'double',
             nullable: true
         },
         monthlyLimit: {
-            type: 'string',
+            type: 'number',
+            format: 'double',
             nullable: true
         },
         singleWithdrawalLimit: {
-            type: 'string',
+            type: 'number',
+            format: 'double',
             nullable: true
         }
     },
@@ -25040,15 +25047,18 @@ export const WithdrawalMethodDtoSchema = {
             type: 'boolean'
         },
         dailyLimit: {
-            type: 'string',
+            type: 'number',
+            format: 'double',
             nullable: true
         },
         monthlyLimit: {
-            type: 'string',
+            type: 'number',
+            format: 'double',
             nullable: true
         },
         singleWithdrawalLimit: {
-            type: 'string',
+            type: 'number',
+            format: 'double',
             nullable: true
         },
         updatedAt: {

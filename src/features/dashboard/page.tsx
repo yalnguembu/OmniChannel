@@ -2,12 +2,14 @@ import { useTranslation } from "react-i18next"
 import { ToggleGroup, ToggleGroupItem } from "@/shared/components/ui/toggle-group"
 import { DateRangeInput } from "@/shared/components/ui/date-range-input"
 import { useMemo } from "react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/components/ui/card"
+import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/components/ui/card"
 import { Badge } from "@/shared/components/ui/badge"
-import { AreaChartGradient, BarChartStacked, LineChartMultiAxis, HalfDonutChart, generateChartConfig } from "@/features/dashboard/components"
-import { TrendingUp, Activity, CreditCard, Wallet, PiggyBank, Zap, ArrowDown, ArrowUp, TrendingDown, ArrowLeftRight, Loader } from "lucide-react"
+import { BarChartStacked, LineChartMultiAxis, generateChartConfig } from "@/features/dashboard/components"
+import { TrendingUp, Activity, CreditCard, PiggyBank, TrendingDown, Loader } from "lucide-react"
 import { BalancesReadModelDto } from "@/shared/api/types.gen"
 import { useDashboard } from "./hooks/useDashboard"
+import { CartesianGrid, LabelList, Line, LineChart, XAxis } from "recharts"
+import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/shared/components/ui/chart"
 import { formatCurrency, formatAmount } from "@/shared/utils/formatCurrency"
 
 export function DashboardPage() {
@@ -28,10 +30,6 @@ export function DashboardPage() {
   const loading = isLoadingMetrics || isLoadingPaymentMethods || isLoadingBalances
 
   const currentMetrics = metrics[0]
-  const totalTransactions = currentMetrics ? currentMetrics.totalReceipts + currentMetrics.totalWithdrawals + currentMetrics.totalFundTransfers : 0
-  const totalSuccessfulTransactions = currentMetrics ? currentMetrics.successfulReceipts + currentMetrics.successfulWithdrawals + currentMetrics.successfulFundTransfers : 0
-  const overallSuccessRate = totalTransactions > 0 ? (totalSuccessfulTransactions / totalTransactions) * 100 : 0
-
   // Create default metrics for when no data is available
   const defaultMetrics = {
     totalVolume: 0,
@@ -63,6 +61,8 @@ export function DashboardPage() {
   // Advanced analytics calculations
   const analytics = useMemo(() => {
     const totalBalance = effectiveBalances.filter((bal) => bal.balanceType === "MAIN").reduce((sum, bal) => sum + (bal.currentBalance || 0), 0)
+    const omBalance = effectiveBalances.filter((bal) => bal.paymentMethodCode === "ORANGE_MONEY").reduce((sum, bal) => sum + (bal.currentBalance || 0), 0)
+    const momoBalance = effectiveBalances.filter((bal) => bal.paymentMethodCode === "MTN_MOMO").reduce((sum, bal) => sum + (bal.currentBalance || 0), 0)
     const totalAvailable = effectiveBalances.reduce((sum, bal) => sum + (bal.availableBalance || 0), 0)
     const totalReserved = effectiveBalances.reduce((sum, bal) => sum + (bal.reservedBalance || 0), 0)
 
@@ -81,17 +81,10 @@ export function DashboardPage() {
       reserveRatio,
       reconciliationRisk,
       riskLevel,
+      omBalance,
+      momoBalance,
     }
   }, [effectiveBalances, effectiveMetrics])
-
-  // Chart data preparations
-  const liquidityData = [{ name: "Liquidity", value: analytics.liquidityRatio }]
-
-  const balanceDistributionData = effectiveBalances.map((balance, index) => ({
-    name: balance.paymentMethodName || "Unknown",
-    value: balance.currentBalance || 0,
-    fill: `hsl(var(--chart-${(index % 5) + 1}))`,
-  }))
 
   const transactionTrendsData = effectiveMetricsArray.slice(-7).map((metric) => ({
     date: new Date(metric.metricDate).toLocaleDateString("en", { month: "short", day: "numeric" }),
@@ -101,60 +94,40 @@ export function DashboardPage() {
     volume: (metric.totalVolume || 0) / 1000000,
   }))
 
-  const performanceMetricsData = effectiveMetricsArray.slice(-7).map((metric) => ({
-    date: new Date(metric.metricDate).toLocaleDateString("en", { month: "short", day: "numeric" }),
-    successRate: overallSuccessRate,
-    revenue: (metric.netRevenue || 0) / 1000,
-    users: metric.activeUsers || 0,
+  const performanceMetricsData = effectiveMetricsArray.map((metric) => ({
+    date: new Date(metric.metricDate).toLocaleDateString("fr", { month: "short", day: "numeric" }),
+    global: metric.totalReceiptsAmount,
+    count: metric.totalReceipts,
   }))
 
-  // Chart configurations
-  const liquidityConfig = generateChartConfig(["value"])
-  const balanceConfig = generateChartConfig(balanceDistributionData.map((d) => d.name))
   const trendsConfig = generateChartConfig(["receipts", "withdrawals", "transfers", "volume"])
-  const performanceConfig = generateChartConfig(["successRate", "revenue", "users"])
+  const performanceConfig = generateChartConfig(["date", "global", "count"])
+
+  const chartConfig = {
+    global: {
+      label: "Amount (XAF)",
+      color: "var(--chart-1)",
+    },
+    count: {
+      label: "Count",
+      color: "var(--chart-2)",
+    },
+  } satisfies ChartConfig
 
   return (
     <div className="space-y-4 sm:space-y-6 overflow-y-auto h-max">
       {/* Header */}
-      <div className="flex flex-col gap-4 lg:flex-row lg:justify-between lg:items-center hidden">
+      <div className="flex flex-col gap-4 lg:flex-row lg:justify-between lg:items-center">
         <p className="flex-1 min-w-0 text-muted-foreground text-sm xl:text-base">{t("analytics.description")}</p>
-
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4 flex-shrink-0">
-          <ToggleGroup type="single" value={timeRange} onValueChange={setTimeRange} variant="outline" className="flex-wrap bg-background">
-            <ToggleGroupItem value="7d" className="text-xs xl:text-sm">
-              {t("analytics.timeRange.7days")}
-            </ToggleGroupItem>
-            <ToggleGroupItem value="30d" className="text-xs xl:text-sm">
-              {t("analytics.timeRange.30days")}
-            </ToggleGroupItem>
-            <ToggleGroupItem value="90d" className="text-xs xl:text-sm">
-              {t("analytics.timeRange.90days")}
-            </ToggleGroupItem>
-          </ToggleGroup>
-          <div className="w-full sm:w-auto">
-            <DateRangeInput
-              size="sm"
-              style="rounded-md h-8 w-full sm:w-auto"
-              dateFormat="short"
-              placeholder={t("analytics.selectRange")}
-              formField={{
-                value: dateRange,
-                name: "date-range",
-                onChange: setDateRange,
-              }}
-            />
-          </div>
-        </div>
       </div>
 
       <div className="space-y-6">
         {/* Enhanced KPI Cards with Advanced Metrics */}
-        <div className="grid gap-4 lg:gap-2 xl:gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+        <div className="grid gap-4 lg:gap-2 xl:gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
           <Card className="justify-between">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">{t("analytics.transactions.totalVolume")}</CardTitle>
-              <Activity className="h-4 w-4 text-muted-foreground" />
+              <CardTitle className="text-sm font-medium">{t("analytics.transactions.cummulatedBalance")}</CardTitle>
+              <CreditCard className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
               {loading ? (
@@ -163,12 +136,10 @@ export function DashboardPage() {
                 </div>
               ) : (
                 <>
-                  <div className="text-xl lg:text-base xl:text-2xl font-bold text-primary">{currentMetrics?.totalVolume?.toFixed(2)} XAF</div>
+                  <div className="text-xl lg:text-base xl:text-2xl font-bold text-primary">{formatCurrency(analytics.totalBalance?.toFixed(2))}</div>
                   <div className="flex items-center gap-1 text-xs text-muted-foreground">
                     <TrendingUp className="h-3 w-3 text-green-600" />
-                    <span className="font-semibold">
-                      {(currentMetrics?.totalReceipts || 0) + (currentMetrics?.totalWithdrawals || 0) + (currentMetrics?.totalFundTransfers || 0)}
-                    </span>
+                    <span className="font-semibold">100%</span>
                     {t("analytics.transactions.counts")}
                   </div>
                 </>
@@ -178,8 +149,10 @@ export function DashboardPage() {
 
           <Card className="justify-between">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">{t("analytics.enhanced.balance")}</CardTitle>
-              <Zap className="h-4 w-4 text-muted-foreground" />
+              <CardTitle className="text-sm font-medium">
+                {t("analytics.enhanced.balance")} {t("analytics.transactions.om")}
+              </CardTitle>
+              <img src="/icons/om.png" className="h-6 w-6 text-muted- rounded-lg" />
             </CardHeader>
             <CardContent>
               {loading ? (
@@ -188,12 +161,14 @@ export function DashboardPage() {
                 </div>
               ) : (
                 <>
-                  <div className="text-xl lg:text-base xl:text-2xl font-bold">{parseInt(analytics?.totalBalance?.toFixed(2))} XAF</div>
+                  <div className="text-xl lg:text-base xl:text-2xl font-bold">{formatCurrency(analytics?.omBalance?.toFixed(2))}</div>
                   <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                    <TrendingUp className="h-3 w-3 text-green-600" />
-                    <span className="font-semibold">
-                      {(currentMetrics?.totalReceipts || 0) + (currentMetrics?.totalWithdrawals || 0) + (currentMetrics?.totalFundTransfers || 0)}
-                    </span>
+                    {(analytics?.omBalance / analytics.totalBalance) * 100 > (analytics?.momoBalance / analytics.totalBalance) * 100 ? (
+                      <TrendingUp className="h-3 w-3 text-green-600" />
+                    ) : (
+                      <TrendingDown className="h-3 w-3 text-red-600" />
+                    )}
+                    <span className="font-semibold">{((analytics?.omBalance / analytics.totalBalance) * 100)?.toFixed(2)}%</span>
                     {t("analytics.transactions.counts")}
                   </div>
                 </>
@@ -203,8 +178,10 @@ export function DashboardPage() {
 
           <Card className="justify-between">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">{t("analytics.transactions.receipts")}</CardTitle>
-              <ArrowDown className="h-4 w-4 text-muted-foreground" />
+              <CardTitle className="text-sm font-medium">
+                {t("analytics.enhanced.balance")} {t("analytics.transactions.momo")}
+              </CardTitle>
+              <img src="/icons/momo.png" className="h-6 w-6 text-muted- rounded-lg" />
             </CardHeader>
             <CardContent>
               {loading ? (
@@ -213,64 +190,103 @@ export function DashboardPage() {
                 </div>
               ) : (
                 <>
-                  <div className="text-xl lg:text-base xl:text-2xl font-bold text-green-600">{currentMetrics?.totalReceiptsAmount?.toFixed(2)} XAF</div>
+                  <div className="text-xl lg:text-base xl:text-2xl font-bold">{formatCurrency(analytics?.momoBalance?.toFixed(2))}</div>
                   <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                    <TrendingUp className="h-3 w-3 text-green-600" />
-                    <span className="font-semibold">{currentMetrics?.totalReceipts || 0}</span> {t("analytics.transactions.counts")}
+                    {(analytics?.momoBalance * 100) / analytics.totalBalance > (analytics?.omBalance * 100) / analytics.totalBalance ? (
+                      <TrendingUp className="h-3 w-3 text-green-600" />
+                    ) : (
+                      <TrendingDown className="h-3 w-3 text-red-600" />
+                    )}
+                    <span className="font-semibold">{((analytics?.momoBalance * 100) / analytics.totalBalance)?.toFixed(2)}%</span> {t("analytics.transactions.counts")}
                   </div>
                 </>
               )}
             </CardContent>
           </Card>
 
-          <Card className="justify-between">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">{t("analytics.transactions.withdrawals")}</CardTitle>
-              <ArrowUp className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
+          {/* <Card className="lg:col-span-2">
+            <CardContent className="min-h-[220px]">
               {loading ? (
-                <div className="flex items-center justify-center h-16">
-                  <Loader className="h-6 w-6 animate-spin text-muted-foreground" />
+                <div className="flex items-center justify-center h-54">
+                  <Loader className="h-8 w-8 animate-spin text-muted-foreground" />
                 </div>
               ) : (
-                <>
-                  <div className="text-xl lg:text-base xl:text-2xl font-bold text-orange-600">{currentMetrics?.totalWithdrawalsAmount} XAF</div>
-                  <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                    <TrendingDown className="h-3 w-3 text-orange-600" />
-                    <span className="font-semibold">{currentMetrics?.totalWithdrawals || 0}</span> {t("analytics.transactions.counts")}
-                  </div>
-                </>
+                <DonutChart data={balanceDistributionData} config={balanceConfig} dataKey="value" nameKey="name" height={250} />
               )}
             </CardContent>
-          </Card>
-
-          <Card className="justify-between">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">{t("analytics.transactions.fundTransfers")}</CardTitle>
-              <ArrowLeftRight className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              {loading ? (
-                <div className="flex items-center justify-center h-16">
-                  <Loader className="h-6 w-6 animate-spin text-muted-foreground" />
-                </div>
-              ) : (
-                <>
-                  <div className="text-xl lg:text-base xl:text-2xl font-bold text-blue-500">{currentMetrics?.totalFundTransfersAmount?.toFixed(2) || 0} XAF</div>
-                  <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                    <TrendingUp className="h-3 w-3 text-green-600" />
-                    <span className="font-semibold">{currentMetrics?.totalFundTransfers || 0} </span>
-                    {t("analytics.transactions.counts")}
-                  </div>
-                </>
-              )}
-            </CardContent>
-          </Card>
+          </Card> */}
         </div>
+        {/* Enhanced Transaction Trends */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <TrendingUp className="h-5 w-5" />
+              {/* {t("analytics.enhanced.performanceMetrics")} */}
+              {t("analytics.description")}
+            </CardTitle>
+            <CardDescription>{t("analytics.enhanced.performanceMetricsDesc")}</CardDescription>
+            <CardAction>
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4 flex-shrink-0">
+                <ToggleGroup type="single" value={timeRange} onValueChange={setTimeRange} variant="outline" className="flex-wrap bg-background">
+                  <ToggleGroupItem value="7d" className="text-xs xl:text-sm">
+                    {t("analytics.timeRange.7days")}
+                  </ToggleGroupItem>
+                  <ToggleGroupItem value="30d" className="text-xs xl:text-sm">
+                    {t("analytics.timeRange.30days")}
+                  </ToggleGroupItem>
+                  <ToggleGroupItem value="90d" className="text-xs xl:text-sm">
+                    {t("analytics.timeRange.90days")}
+                  </ToggleGroupItem>
+                </ToggleGroup>
+                <div className="w-full sm:w-auto">
+                  <DateRangeInput
+                    size="sm"
+                    style="rounded-md h-8 w-full sm:w-auto"
+                    dateFormat="short"
+                    placeholder={t("analytics.selectRange")}
+                    formField={{
+                      value: dateRange,
+                      name: "date-range",
+                      onChange: setDateRange,
+                    }}
+                  />
+                </div>
+              </div>
+            </CardAction>
+          </CardHeader>
+          <CardContent>
+            {loading ? (
+              <div className="flex items-center justify-center h-[300px]">
+                <Loader className="h-8 w-8 animate-spin text-muted-foreground" />
+              </div>
+            ) : (
+              <>
+                <ChartContainer config={chartConfig}>
+                  <LineChart
+                    height={300}
+                    accessibilityLayer
+                    data={performanceMetricsData}
+                    margin={{
+                      left: 12,
+                      right: 12,
+                    }}
+                  >
+                    <CartesianGrid vertical={false} />
+                    <XAxis dataKey="date" tickLine={false} axisLine={false} tickMargin={8} />
+                    <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
+                    <Line dataKey="global" type="basis" stroke="var(--primary)" strokeWidth={2} dot={false}>
+                      {/* <LabelList position="top" offset={12} className="fill-foreground" fontSize={12} /> */}
+                    </Line>
+                    <Line dataKey="count" type="monotone" stroke="var(--secondary)" strokeWidth={2} dot={false} />
+                  </LineChart>
+                </ChartContainer>
+              </>
+            )}
+          </CardContent>
+        </Card>
         <div className="hidden">
           {/* Advanced Financial Visualizations */}
-          <div className="grid gap-6 xl:grid-cols-3">
+          <div className="grid gap-6 xl:grid-cols-4">
             <Card>
               <CardHeader>
                 <CardTitle>{t("analytics.overview.transactionBreakdown.title")}</CardTitle>
@@ -350,7 +366,7 @@ export function DashboardPage() {
                         <div key={method.paymentMethodId} className="grid grid-cols-4 gap-4 py-2">
                           <div className="font-medium">{method.paymentMethodName}</div>
                           <div>{method.transactionCount.toLocaleString()}</div>
-                          <div>{formatAmount(method.totalAmount)}</div>
+                          <div>{formatAmount(method.totalAmount)} XAF</div>
                           <div>
                             <Badge variant="outline" className="bg-green-50 text-green-600">
                               {method.successRate.toFixed(1)}%
@@ -360,25 +376,6 @@ export function DashboardPage() {
                       ))}
                     </div>
                   </div>
-                )}
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <CreditCard className="h-5 w-5 text-purple-500" />
-                  {t("analytics.enhanced.balanceDistribution")}
-                </CardTitle>
-                <CardDescription>{t("analytics.enhanced.balanceDistributionDesc")}</CardDescription>
-              </CardHeader>
-              <CardContent className="min-h-[200px]">
-                {loading ? (
-                  <div className="flex items-center justify-center h-48">
-                    <Loader className="h-8 w-8 animate-spin text-muted-foreground" />
-                  </div>
-                ) : (
-                  <HalfDonutChart data={balanceDistributionData} config={balanceConfig} dataKey="value" nameKey="name" height={250} />
                 )}
               </CardContent>
             </Card>
@@ -424,128 +421,50 @@ export function DashboardPage() {
               </CardContent>
             </Card>
           </div>
+          {/* </div> */}
 
           {/* Balance Health Dashboard */}
-          <div className="grid xl:grid-cols-3 gap-8">
-            <Card className="xl:col-span-2">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <PiggyBank className="h-5 w-5 text-indigo-500" />
-                  {t("analytics.enhanced.balanceHealthDashboard")}
-                </CardTitle>
-                <CardDescription>{t("analytics.enhanced.balanceHealthDesc")}</CardDescription>
-              </CardHeader>
-              <CardContent>
-                {loading ? (
-                  <div className="flex items-center justify-center h-64">
-                    <Loader className="h-8 w-8 animate-spin text-muted-foreground" />
-                  </div>
-                ) : (
-                  <div className="overflow-x-auto">
-                    <table className="w-full text-sm">
-                      <thead>
-                        <tr className="border-b">
-                          <th className="text-left p-2 font-medium">{t("analytics.enhanced.provider")}</th>
-                          <th className="text-right p-2 font-medium">{t("analytics.enhanced.currentBalance")}</th>
-                          <th className="text-right p-2 font-medium">{t("analytics.enhanced.available")}</th>
-                          <th className="text-right p-2 font-medium">{t("analytics.enhanced.reserved")}</th>
-                          <th className="text-right p-2 font-medium">{t("analytics.enhanced.utilizationRate")}</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {effectiveBalances.map((balance, index) => {
-                          const utilizationRate = balance.currentBalance ? ((balance.currentBalance - (balance.availableBalance || 0)) / balance.currentBalance) * 100 : 0
-
-                          return (
-                            <tr key={balance.id || index} className="border-b hover:bg-muted/50">
-                              <td className="p-2">
-                                <div className="flex items-center gap-2">
-                                  <div className="w-3 h-3 rounded-full" style={{ backgroundColor: `hsl(var(--chart-${(index % 5) + 1}))` }} />
-                                  <div>
-                                    <div className="font-medium">{balance.paymentMethodName}</div>
-                                    <div className="text-xs text-muted-foreground">{balance.paymentMethodCode}</div>
-                                  </div>
-                                </div>
-                              </td>
-                              <td className="p-2 text-right font-mono">{formatAmount(balance.currentBalance || 0)}</td>
-                              <td className="p-2 text-right font-mono">{formatAmount(balance.availableBalance || 0)}</td>
-                              <td className="p-2 text-right font-mono">{formatAmount(balance.reservedBalance || 0)}</td>
-                              <td className="p-2 text-right">
-                                <div className="flex items-center justify-end gap-2">
-                                  <div className="w-16 bg-gray-200 rounded-full h-2">
-                                    <div
-                                      className={`h-2 rounded-full ${utilizationRate > 80 ? "bg-red-500" : utilizationRate > 60 ? "bg-yellow-500" : "bg-green-500"}`}
-                                      style={{ width: `${Math.min(utilizationRate, 100)}%` }}
-                                    />
-                                  </div>
-                                  <span className="text-xs font-medium w-10 text-right">{utilizationRate.toFixed(1)}%</span>
-                                </div>
-                              </td>
-                            </tr>
-                          )
-                        })}
-                      </tbody>
-                    </table>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Wallet className="h-5 w-5 text-blue-500" />
-                  {t("analytics.enhanced.liquidityRatio")}
-                </CardTitle>
-                <CardDescription>{t("analytics.enhanced.liquidityDesc")}</CardDescription>
-              </CardHeader>
-              <CardContent>
-                {loading ? (
-                  <div className="flex items-center justify-center h-64">
-                    <Loader className="h-8 w-8 animate-spin text-muted-foreground" />
-                  </div>
-                ) : (
-                  <>
-                    <HalfDonutChart
-                      data={liquidityData}
-                      config={liquidityConfig}
-                      dataKey="value"
-                      nameKey="name"
-                      height={150}
-                      centerLabel={`${analytics.liquidityRatio.toFixed(1)}%`}
-                    />
-                    <div className="mt-4 space-y-2">
-                      <div className="flex justify-between text-sm">
-                        <span className="text-muted-foreground">{t("analytics.enhanced.available")}:</span>
-                        <span className="font-bold">{formatCurrency(analytics.totalAvailable)}</span>
-                      </div>
-                      <div className="flex justify-between text-sm">
-                        <span className="text-muted-foreground">{t("analytics.enhanced.reserved")}:</span>
-                        <span className="font-bold">{formatCurrency(analytics.totalReserved)}</span>
-                      </div>
-                    </div>
-                  </>
-                )}
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Volume Trend with Advanced Visualization */}
-          <Card>
+          <Card className="xl:col-span-2">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <TrendingUp className="h-5 w-5" />
-                {t("analytics.enhanced.volumeTrendAnalysis")}
+                <PiggyBank className="h-5 w-5 text-indigo-500" />
+                {t("analytics.enhanced.balanceHealthDashboard")}
               </CardTitle>
-              <CardDescription>{t("analytics.enhanced.volumeTrendDesc")}</CardDescription>
+              <CardDescription>{t("analytics.enhanced.balanceHealthDesc")}</CardDescription>
             </CardHeader>
             <CardContent>
               {loading ? (
-                <div className="flex items-center justify-center h-[300px]">
+                <div className="flex items-center justify-center h-64">
                   <Loader className="h-8 w-8 animate-spin text-muted-foreground" />
                 </div>
               ) : (
-                <AreaChartGradient data={transactionTrendsData} config={trendsConfig} dataKey="volume" height={300} fillOpacity={0.6} />
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm">
+                    <thead>
+                      <tr className="border-b">
+                        <th className="text-left p-2 font-medium">{t("analytics.enhanced.provider")}</th>
+                        <th className="text-right p-2 font-medium">{t("analytics.enhanced.balance")}</th>
+                        <th className="text-right p-2 font-medium">{t("analytics.enhanced.currentBalance")}</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {effectiveBalances.map((balance, index) => (
+                        <tr key={balance.id || index} className="border-b hover:bg-muted/50">
+                          <td className="p-2">
+                            <div className="flex items-center gap-2">
+                              <div className="w-3 h-3 rounded-full" style={{ backgroundColor: `hsl(var(--${balance.paymentMethodCode}))` }} />
+                              <div>
+                                <div className="font-medium">{balance.paymentMethodName}</div>
+                              </div>
+                            </div>
+                          </td>
+                          <td className="p-2 text-right font-mono">{<div className="text-xs text-muted-foreground">{balance.balanceName}</div>}</td>
+                          <td className="p-2 text-right font-mono">{formatAmount(balance.currentBalance || 0)}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               )}
             </CardContent>
           </Card>

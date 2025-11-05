@@ -541,7 +541,8 @@
         "description": "Nombre de transactions quotidiennes par type de service",
         "title": "Volume des Transactions par Type"
       },
-      "withdrawals": "Retraits"
+      "withdrawals": "Retraits",
+      "cummulatedBalance": "Solde Cummulé"
     }
   },
   "applications": {
@@ -3408,7 +3409,7 @@
       "create": {
         "description": "Ajouter une nouvelle méthode de retrait.",
         "title": "Créer une méthode de retrait",
-        "infoMessage":"Veillez entrer 0 dans les champs limites journaliere mensuelles et limite uniques pour pouvoir effectuer des retraits a l'infinie"
+        "infoMessage": "Veillez entrer 0 dans les champs limites journaliere mensuelles et limite uniques pour pouvoir effectuer des retraits a l'infinie"
       },
       "dailyLimitLabel": "Limite quotidienne",
       "dailyLimitPlaceholder": "Saisir la limite quotidienne",
@@ -3490,7 +3491,7 @@
       "feeAppliedAmount": "Frais Appliqués",
       "internalReference": "Référence Interne",
       "netAmount": "Montant Net",
-      "notes": "Notes",
+      "notes": "Date de Retrait",
       "overview": "Aperçu",
       "processedAt": "Traité le",
       "providerFeeAmount": "Frais Fournisseur",
@@ -3522,7 +3523,9 @@
       "notesLabel": "Notes",
       "notesPlaceholder": "Saisir des notes",
       "withdrawalMethodIdLabel": "Méthode de Retrait",
-      "withdrawalMethodIdPlaceholder": "Sélectionner une méthode de retrait"
+      "withdrawalMethodIdPlaceholder": "Sélectionner une méthode de retrait",
+      "dateLabel":"Date de retrait",
+      "datePlaceholder": "Veuillez Sélectionner la date"
     },
     "headers": {
       "details": "Détails"

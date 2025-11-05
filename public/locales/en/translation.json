@@ -546,7 +546,8 @@
         "description": "Daily transaction counts across all service types",
         "title": "Transaction Volume by Type"
       },
-      "withdrawals": "Withdrawals"
+      "withdrawals": "Withdrawals",
+      "cummulatedBalance":"Cummulated Balance"
     }
   },
   "applications": {
@@ -3468,7 +3469,7 @@
       "feeAppliedAmount": "Fee Applied Amount",
       "internalReference": "Internal Reference",
       "netAmount": "Net Amount",
-      "notes": "Notes",
+      "notes": "Withdrawals date",
       "overview": "Overview",
       "processedAt": "Processed At",
       "providerFeeAmount": "Provider Fee Amount",
@@ -3497,10 +3498,12 @@
         "submit": "Submit",
         "systemTitle": "System Title"
       },
-      "notesLabel": "Notes Label",
-      "notesPlaceholder": "Notes Placeholder",
+      "notesLabel": "Withdrawals date",
+      "notesPlaceholder": "Select Withdrawals date",
       "withdrawalMethodIdLabel": "Withdrawal Method Id Label",
-      "withdrawalMethodIdPlaceholder": "Withdrawal Method Id Placeholder"
+      "withdrawalMethodIdPlaceholder": "Withdrawal Method Id Placeholder",
+      "dateLabel":"Date",
+      "datePlaceholder": "Select a date"
     },
     "headers": {
       "details": "Details"

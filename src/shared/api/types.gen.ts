@@ -1751,6 +1751,7 @@ export type GetAllBalancesReadModelResponse = {
     id?: string;
     currency?: string | null;
     ownerName?: string | null;
+    paymentMethodName?: string | null;
     balanceType?: string | null;
     currentBalance?: number;
 };
@@ -8291,9 +8292,9 @@ export type UpdateWithdrawalMethodRequest = {
     paymentMethodId?: string;
     verificationReference?: string | null;
     isDefault?: boolean;
-    dailyLimit?: string | null;
-    monthlyLimit?: string | null;
-    singleWithdrawalLimit?: string | null;
+    dailyLimit?: number | null;
+    monthlyLimit?: number | null;
+    singleWithdrawalLimit?: number | null;
 };
 
 export type UserDeviceDto = {
@@ -8786,9 +8787,9 @@ export type WithdrawalMethodDto = {
     verificationDate?: string | null;
     verificationReference?: string | null;
     isDefault?: boolean;
-    dailyLimit?: string | null;
-    monthlyLimit?: string | null;
-    singleWithdrawalLimit?: string | null;
+    dailyLimit?: number | null;
+    monthlyLimit?: number | null;
+    singleWithdrawalLimit?: number | null;
     updatedAt?: string | null;
     createdBy?: string;
     updatedBy?: string | null;

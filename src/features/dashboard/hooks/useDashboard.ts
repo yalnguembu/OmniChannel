@@ -41,10 +41,10 @@ export const useDashboard = () => {
       body: {
         pageNumber: 1,
         pageSize: 100,
-        // sortBy: "metricDate",
-        // sortDirection: "Descending",
-        // startDate: effectiveDateRange.startDate,
-        // endDate: effectiveDateRange.endDate,
+        sortBy: "metricDate",
+        sortDirection: "Descending",
+        createdFrom: effectiveDateRange.startDate,
+        createdTo: effectiveDateRange.endDate,
       },
     }),
     select: (data) => {
@@ -65,10 +65,10 @@ export const useDashboard = () => {
       body: {
         pageNumber: 1,
         pageSize: 100,
-        // sortBy: "metricDate",
-        // sortDirection: "Descending",
-        // startDate: effectiveDateRange.startDate,
-        // endDate: effectiveDateRange.endDate,
+        sortBy: "metricDate",
+        sortDirection: "Descending",
+        createdFrom: effectiveDateRange.startDate,
+        createdTo: effectiveDateRange.endDate,
       },
     }),
     select: (data) => {
