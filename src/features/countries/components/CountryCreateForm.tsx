@@ -40,7 +40,7 @@ export const CountryCreateForm: React.FC<CountryCreateFormProps> = ({ onSubmit, 
   }
 
   return (
-    <Card className="w-full max-w-4xl mx-auto">
+    <Card className="w-full max-w-4xl mx-auto xl:max-w-5xl 2xl:max-w-6xl">
       <CardHeader>
         <CardTitle>{t("countries.form.create.title")}</CardTitle>
         <CardDescription>{t("countries.form.create.description")}</CardDescription>

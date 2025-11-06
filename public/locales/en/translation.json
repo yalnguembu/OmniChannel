@@ -207,6 +207,7 @@
     "enhanced": {
       "available": "Available",
       "balance": "Balance",
+      "balanceType": "Balance Type",
       "balanceDistribution": "Balance Distribution",
       "balanceDistributionDesc": "Balance allocation across payment methods",
       "balanceHealthDashboard": "Balance Health Dashboard",
@@ -235,7 +236,10 @@
       "transactionTrendsDesc": "Daily transaction volume patterns",
       "utilizationRate": "Utilization Rate",
       "volumeTrendAnalysis": "Volume Trend Analysis",
-      "volumeTrendDesc": "Advanced volume visualization with gradient effects"
+      "volumeTrendDesc": "Advanced volume visualization with gradient effects",
+      "credit":"Credit",
+      "debit":"Debit",
+      "transaction":"Transaction"
     },
     "financial": {
       "costBenefit": {

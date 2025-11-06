@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query"
 import { useState, useMemo } from "react"
 import { postApiDailyMetricSearchOptions, postApiDailyMetricsByPaymentMethodSearchOptions, postApiBalancesReadModelSearchOptions } from "@/shared/api/@tanstack/react-query.gen"
+import { SortDirection } from "@/shared/enums/data-grid"
 
 export const useDashboard = () => {
   const [dateRange, setDateRange] = useState<any>()
@@ -41,8 +42,8 @@ export const useDashboard = () => {
       body: {
         pageNumber: 1,
         pageSize: 100,
-        // sortBy: "metricDate",
-        // sortDirection: "Descending",
+        sortBy: "metricDate",
+        sortDirection: SortDirection.ASC,
         createdFrom: effectiveDateRange.startDate,
         createdTo: effectiveDateRange.endDate,
       },
@@ -65,8 +66,8 @@ export const useDashboard = () => {
       body: {
         pageNumber: 1,
         pageSize: 100,
-        // sortBy: "metricDate",
-        // sortDirection: "Descending",
+        sortBy: "metricDate",
+        sortDirection: SortDirection.ASC,
         createdFrom: effectiveDateRange.startDate,
         createdTo: effectiveDateRange.endDate,
       },

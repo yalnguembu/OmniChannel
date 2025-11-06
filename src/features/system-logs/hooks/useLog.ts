@@ -53,11 +53,14 @@ export const useLog = () => {
       store.setLoading(false)
     },
   })
-
-  const searchLogs = () => {
+  type OverrideFilters = Partial<typeof store.filters> & {
+    currentPage?: number
+    pageSize?: number
+  }
+  const searchLogs = (overrideFilters?: OverrideFilters) => {
     const searchParams = {
-      pageNumber: store.currentPage,
-      pageSize: store.pageSize,
+      pageNumber: overrideFilters?.currentPage || store.currentPage,
+      pageSize: overrideFilters?.pageSize || store.pageSize,
       sortBy: store.sortBy || undefined,
       sortDirection: store.sortDirection || undefined,
       ...store.filters,
@@ -84,11 +87,11 @@ export const useLog = () => {
   }
   const changePage = (page: number) => {
     store.setCurrentPage(page)
-    searchLogs()
+    searchLogs({ currentPage: page })
   }
   const changePageSize = (size: number) => {
     store.setPageSize(size)
-    searchLogs()
+    searchLogs({ currentPage: 1, pageSize: size })
   }
   const changeSort = (sortBy: string | null, direction: SortDirection | null) => {
     store.setSorting(sortBy, direction)

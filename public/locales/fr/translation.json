@@ -202,6 +202,7 @@
     "enhanced": {
       "available": "Disponible",
       "balance": "Solde",
+      "balanceType":"Type de solde",
       "balanceDistribution": "Distribution des Soldes",
       "balanceDistributionDesc": "Allocation des soldes par méthode de paiement",
       "balanceHealthDashboard": "Tableau de Bord de la Santé des Soldes",
@@ -230,7 +231,10 @@
       "transactionTrendsDesc": "Modèles de volume de transactions quotidiens",
       "utilizationRate": "Taux d'Utilisation",
       "volumeTrendAnalysis": "Analyse des Tendances de Volume",
-      "volumeTrendDesc": "Visualisation avancée du volume avec effets de gradient"
+      "volumeTrendDesc": "Visualisation avancée du volume avec effets de gradient",
+      "credit":"Credit",
+      "debit":"Debit",
+      "transaction":"Transaction"
     },
     "financial": {
       "costBenefit": {
