@@ -106,7 +106,6 @@ export const useReceiptsReadModel = () => {
     onSettled: () => {
       store.setLoading(false)
     },
-    gcTime: 1000 * 60 * 30,
   })
 
   const performExport = (overrideFilters?: Partial<typeof store.filters>) => {

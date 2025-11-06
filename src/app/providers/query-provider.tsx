@@ -1,10 +1,5 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { ReactNode } from "react"
-import { client } from "@/shared/api/client.gen"
-import { authPersistence } from "@/shared/lib/api/authPersistence"
-import { env } from "@/config/env"
-import axios from "axios"
-import { handleRequestError } from "@/shared/lib/errorHandling"
 
 const queryClient = new QueryClient({
   defaultOptions: {

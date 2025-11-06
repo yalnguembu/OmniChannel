@@ -57,7 +57,7 @@ export const setupAxiosInterceptors = () => {
 
   client.setConfig({
     baseURL: env.VITE_API_BASE_URL,
-    timeout: 60000,
+    timeout: 3600000,
     headers: {
       "Content-Security-Policy": "unsafe", //cspHeader,
       "Content-Type": "application/json",
