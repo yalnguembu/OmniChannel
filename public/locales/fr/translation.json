@@ -202,7 +202,7 @@
     "enhanced": {
       "available": "Disponible",
       "balance": "Solde",
-      "balanceType":"Type de solde",
+      "balanceType": "Type de solde",
       "balanceDistribution": "Distribution des Soldes",
       "balanceDistributionDesc": "Allocation des soldes par méthode de paiement",
       "balanceHealthDashboard": "Tableau de Bord de la Santé des Soldes",
@@ -232,9 +232,9 @@
       "utilizationRate": "Taux d'Utilisation",
       "volumeTrendAnalysis": "Analyse des Tendances de Volume",
       "volumeTrendDesc": "Visualisation avancée du volume avec effets de gradient",
-      "credit":"Credit",
-      "debit":"Debit",
-      "transaction":"Transaction"
+      "credit": "Credit",
+      "debit": "Debit",
+      "transaction": "Transaction"
     },
     "financial": {
       "costBenefit": {
@@ -3528,7 +3528,7 @@
       "notesPlaceholder": "Saisir des notes",
       "withdrawalMethodIdLabel": "Méthode de Retrait",
       "withdrawalMethodIdPlaceholder": "Sélectionner une méthode de retrait",
-      "dateLabel":"Date de retrait",
+      "dateLabel": "Date de retrait",
       "datePlaceholder": "Veuillez Sélectionner la date"
     },
     "headers": {
@@ -3573,7 +3573,12 @@
       "status": "Statut",
       "transactionId": "ID Trans.",
       "verificationAttempts": "Tentatives Vérif.",
-      "withdrawalMethodName": "Méthode Retrait"
+      "withdrawalMethodName": "Méthode Retrait",
+      "creator": "Initier par",
+      "verificator": "Vérifié par",
+      "notes": "Date de Retrait",
+      "verifiedAt": "Vérifié le",
+      "auditInfo":"Info suplementaire"
     }
   },
   "withdrawalsReadModels": {

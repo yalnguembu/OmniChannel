@@ -1,6 +1,5 @@
 import React, { useState } from "react"
 import { useTranslation } from "react-i18next"
-import { SearchWithdrawalsReadModelResponse } from "@/shared/api/types.gen"
 import { ModalWrapper } from "@/shared/components/ModalWrapper"
 import { Label } from "@/shared/components/ui/label"
 import StatusBadge from "@/shared/components/StatusBadge"
@@ -9,29 +8,42 @@ import { Button, Input } from "@/shared"
 import { useWithdrawalsReadModel } from "../hooks/useWithdrawalsReadModel"
 import { ConfirmationModal } from "@/shared/components/ConfirmationModal"
 import { toast } from "sonner"
+import { Loader2 } from "lucide-react"
+import { formatDate } from "@/shared/lib"
 
 interface WithdrawalDetailsModalProps {
   open: boolean
   onOpenChange: () => void
   onCopyEvent: (id: string) => void
-  withdrawal: SearchWithdrawalsReadModelResponse | null
+  withdrawalId: string | null
 }
 
-export const WithdrawalDetailsModal: React.FC<WithdrawalDetailsModalProps> = ({ open, onOpenChange, withdrawal, onCopyEvent }) => {
+export const WithdrawalDetailsModal: React.FC<WithdrawalDetailsModalProps> = ({ open, onOpenChange, withdrawalId, onCopyEvent }) => {
   const { t } = useTranslation()
-  const { onApproveWithdrawal, onCancelWithdrawal, onCompleteWithdrawal } = useWithdrawalsReadModel()
+  const { onApproveWithdrawal, onCancelWithdrawal, onCompleteWithdrawal, getWithdrawalsReadModelQuery } = useWithdrawalsReadModel()
+
+  const { data: withdrawalQueryResponse, isLoading } = getWithdrawalsReadModelQuery(withdrawalId ?? "")
+
   const [showCancelModal, setShowCancelModal] = useState(false)
   const [showCompleteModal, setShowCompleteModal] = useState(false)
   const [cancelReason, setCancelReason] = useState("")
   const [completeReference, setCompleteReference] = useState("")
 
-  if (!withdrawal) return null
+  if (!withdrawalQueryResponse?.data) return null
 
-  const isPending = withdrawal.status === "AWAITING_APPROVAL"
-  const isApproved = withdrawal.status === "APPROVED"
+  if (isLoading || !withdrawalQueryResponse?.data) {
+    return (
+      <div className="flex justify-center items-center h-64">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      </div>
+    )
+  }
+
+  const isPending = withdrawalQueryResponse.data.status === "AWAITING_APPROVAL"
+  const isApproved = withdrawalQueryResponse.data.status === "APPROVED"
 
   const handleApprove = () => {
-    onApproveWithdrawal(withdrawal.id!)
+    onApproveWithdrawal(withdrawalQueryResponse.data?.id ?? "")
     onOpenChange()
   }
 
@@ -56,46 +68,58 @@ export const WithdrawalDetailsModal: React.FC<WithdrawalDetailsModalProps> = ({ 
     </div>
   )
 
-  const handleCopy = () => onCopyEvent(withdrawal.id!)
+  const handleCopy = () => onCopyEvent(withdrawalQueryResponse.data?.id ?? "")
 
   return (
-    <ModalWrapper size="3xl" withHeader open={open} onOpenChange={onOpenChange} title={t("withdrawals.details.title")}>
+    <ModalWrapper size="3xl" withHeader open={open} onOpenChange={onOpenChange} title={`${t("withdrawals.details.title")} - # ${withdrawalQueryResponse.data.id || ""}`}>
       <div className="max-h-[80vh] overflow-y-auto">
-        <h3 className="text-sm font-semibold bg-background px-2 text-muted-foreground uppercase"># {withdrawal.id || ""}</h3>
+        {/* <h3 className="text-sm font-semibold bg-background px-2 text-muted-foreground uppercase"># {withdrawal.id || ""}</h3> */}
 
         <div className="grid lg:grid-cols-2 justify-center items-start gap-6 pt-4">
           {/* Withdrawal Overview */}
           <div className="h-full border p-4 rounded-lg relative">
             <h3 className="text-sm font-semibold mb-3 absolute -top-2.5 left-3 bg-background px-2 text-muted-foreground uppercase">{t("withdrawals.details.overview")}</h3>
-            <DetailItem label={t("withdrawals.details.status")} value={<StatusBadge text={withdrawal.status || ""} />} />
-            <DetailItem label={t("withdrawals.details.withdrawalMethodName")} value={withdrawal.withdrawalMethodName} highlight="info" />
-            <DetailItem label={t("withdrawals.details.accountNumber")} value={withdrawal.accountNumber} />
-            <DetailItem label={t("withdrawals.details.createdAt")} value={withdrawal.createdAt ? new Date(withdrawal.createdAt).toLocaleString() : "N/A"} />
-            <DetailItem label={t("withdrawals.details.processedAt")} value={withdrawal.processedAt ? new Date(withdrawal.processedAt).toLocaleString() : "N/A"} />
-            <DetailItem label={t("withdrawals.details.verifiedAt")} value={withdrawal.verifiedAt ? new Date(withdrawal.verifiedAt).toLocaleString() : "N/A"} />
+
+            <DetailItem label={t("withdrawals.details.withdrawalMethodName")} value={withdrawalQueryResponse.data.paymentMethodName} highlight="info" />
+            <DetailItem label={t("withdrawals.details.accountNumber")} value={withdrawalQueryResponse.data.accountNumber} />
+            <DetailItem label={t("withdrawals.details.createdAt")} value={withdrawalQueryResponse.data.createdAt ? formatDate(withdrawalQueryResponse.data.createdAt) : "N/A"} />
+            <DetailItem label={t("withdrawals.details.notes")} value={withdrawalQueryResponse.data.notes} />
+            <DetailItem label={t("withdrawals.details.verifiedAt")} value={withdrawalQueryResponse.data.verifiedAt ? formatDate(withdrawalQueryResponse.data.verifiedAt) : "N/A"} />
           </div>
 
           {/* Amount Details */}
           <div className="h-full border p-4 rounded-lg relative">
             <h3 className="text-sm font-semibold mb-3 absolute -top-2.5 left-3 bg-background px-2 text-muted-foreground uppercase">{t("withdrawals.details.amounts")}</h3>
-            <DetailItem label={t("withdrawals.details.amount")} value={formatCurrency(withdrawal.amount || 0, withdrawal.currency || "XAF")} highlight="success" />
-            <DetailItem label={t("withdrawals.details.currency")} value={withdrawal.currency} />
-            <DetailItem label={t("withdrawals.details.providerFeeAmount")} value={formatCurrency(withdrawal.providerFeeAmount || 0, withdrawal.currency || "XAF")} />
+            <DetailItem
+              label={t("withdrawals.details.amount")}
+              value={formatCurrency(withdrawalQueryResponse.data.amount || 0, withdrawalQueryResponse.data.currencySymbol || "XAF")}
+              highlight="success"
+            />
+            <DetailItem label={t("withdrawals.details.currency")} value={withdrawalQueryResponse.data.currencySymbol} />
+            <DetailItem
+              label={t("withdrawals.details.providerFeeAmount")}
+              value={formatCurrency(withdrawalQueryResponse.data.providerFeeAmount || 0, withdrawalQueryResponse.data.currencySymbol || "XAF")}
+            />
             <DetailItem
               label={t("withdrawals.details.feeAppliedAmount")}
-              value={formatCurrency(withdrawal.feeAppliedAmount || 0, withdrawal.currency || "XAF")}
+              value={formatCurrency(withdrawalQueryResponse.data.feeAppliedAmount || 0, withdrawalQueryResponse.data.currencySymbol || "XAF")}
               highlight="error"
             />
-            <DetailItem label={t("withdrawals.details.netAmount")} value={formatCurrency(withdrawal.netAmount || 0, withdrawal.currency || "XAF")} highlight="info" />
+            <DetailItem
+              label={t("withdrawals.details.netAmount")}
+              value={formatCurrency(withdrawalQueryResponse.data.netAmount || 0, withdrawalQueryResponse.data.currency || "XAF")}
+              highlight="info"
+            />
+            <DetailItem label={t("withdrawals.details.status")} value={<StatusBadge text={withdrawalQueryResponse.data.status || ""} />} />
           </div>
 
           {/* References */}
           <div className="h-full border p-4 rounded-lg relative">
             <h3 className="text-sm font-semibold mb-3 absolute -top-2.5 left-3 bg-background px-2 text-muted-foreground uppercase">{t("withdrawals.details.references")}</h3>
-            <DetailItem label={t("withdrawals.details.internalReference")} value={withdrawal.internalReference} highlight="info" />
-            <DetailItem label={t("withdrawals.details.providerInitialReference")} value={withdrawal.providerInitialReference} />
-            <DetailItem label={t("withdrawals.details.providerFinalReference")} value={withdrawal.providerFinalReference} />
-            <DetailItem label={t("withdrawals.details.providerReference")} value={withdrawal.providerReference} />
+            <DetailItem label={t("withdrawals.details.internalReference")} value={withdrawalQueryResponse.data.internalReference} highlight="info" />
+            <DetailItem label={t("withdrawals.details.providerInitialReference")} value={withdrawalQueryResponse.data.providerInitialReference} />
+            <DetailItem label={t("withdrawals.details.providerFinalReference")} value={withdrawalQueryResponse.data.providerFinalReference} />
+            <DetailItem label={t("withdrawals.details.providerReference")} value={withdrawalQueryResponse.data.providerReference} />
           </div>
 
           {/* Company & Application */}
@@ -103,17 +127,16 @@ export const WithdrawalDetailsModal: React.FC<WithdrawalDetailsModalProps> = ({ 
             <h3 className="text-sm font-semibold mb-3 absolute -top-2.5 left-3 bg-background px-2 text-muted-foreground uppercase">
               {t("withdrawals.details.companyApplication")}
             </h3>
-            <DetailItem label={t("withdrawals.details.companyName")} value={withdrawal.companyName} />
-            <DetailItem label={t("withdrawals.details.applicationName")} value={withdrawal.applicationName} highlight="info" />
+            <DetailItem label={t("withdrawals.details.companyName")} value={withdrawalQueryResponse.data.companyName} />
+            <DetailItem label={t("withdrawals.details.applicationName")} value={withdrawalQueryResponse.data.applicationName} highlight="info" />
           </div>
 
           {/* Additional Information */}
           <div className="h-full border p-4 rounded-lg relative">
             <h3 className="text-sm font-semibold mb-3 absolute -top-2.5 left-3 bg-background px-2 text-muted-foreground uppercase">{t("withdrawals.details.additionalInfo")}</h3>
-            <DetailItem label={t("withdrawals.details.notes")} value={withdrawal.notes} />
-            <DetailItem label={t("withdrawals.details.providerMessage")} value={withdrawal.providerMessage} />
-            <DetailItem label={t("withdrawals.details.currentVersion")} value={withdrawal.currentVersion} />
-            <DetailItem label={t("withdrawals.details.updatedAt")} value={withdrawal.updatedAt ? new Date(withdrawal.updatedAt).toLocaleString() : "N/A"} />
+            <DetailItem label={t("withdrawals.details.providerMessage")} value={withdrawalQueryResponse.data.providerMessage} />
+            <DetailItem label={t("withdrawals.details.currentVersion")} value={withdrawalQueryResponse.data.currentVersion} />
+            <DetailItem label={t("withdrawals.details.updatedAt")} value={withdrawalQueryResponse.data.updatedAt ? formatDate(withdrawalQueryResponse.data.updatedAt) : "N/A"} />
             <Button variant="outline" type="button" onClick={handleCopy} className="mt-4">
               {t("withdrawals.details.copyEvents")}
             </Button>
@@ -145,7 +168,7 @@ export const WithdrawalDetailsModal: React.FC<WithdrawalDetailsModalProps> = ({ 
             toast.error(t("withdrawals.messages.cancel.reasonRequired"))
             return
           }
-          onCancelWithdrawal(withdrawal.id!, cancelReason)
+          onCancelWithdrawal(withdrawalQueryResponse.data.id!, cancelReason)
           setShowCancelModal(false)
           onOpenChange()
         }}
@@ -165,7 +188,7 @@ export const WithdrawalDetailsModal: React.FC<WithdrawalDetailsModalProps> = ({ 
             toast.error(t("withdrawals.messages.complete.referenceRequired"))
             return
           }
-          onCompleteWithdrawal(withdrawal.id!, completeReference)
+          onCompleteWithdrawal(withdrawalQueryResponse.data.id!, completeReference)
           setShowCompleteModal(false)
           onOpenChange()
         }}

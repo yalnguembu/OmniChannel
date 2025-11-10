@@ -3551,7 +3551,12 @@
       "status": "Status",
       "transactionId": "Transaction ID",
       "verificationAttempts": "Verification Attempts",
-      "withdrawalMethodName": "Withdrawal Method"
+      "withdrawalMethodName": "Withdrawal Method",
+      "creator":"Initate by",
+      "verificator":"Verify by",
+      "notes":"Withdrawals date",
+      "verifiedAt":"Verified At",
+      "auditInfo":"Spplement Infos"
     }
   },
   "withdrawalsReadModels": {

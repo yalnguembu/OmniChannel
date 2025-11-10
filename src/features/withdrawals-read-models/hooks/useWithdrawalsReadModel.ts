@@ -82,7 +82,7 @@ export const useWithdrawalsReadModel = () => {
     useQuery({
       ...getApiWithdrawalsReadModelByIdOptions({ path: { id } }),
       enabled: !!id,
-      staleTime: 5 * 60 * 1000,
+      staleTime: 35 * 60 * 1000,
       select: (data) => {
         if (data.success && data.data) {
           store.setSelectedItem(data.data)
@@ -121,7 +121,6 @@ export const useWithdrawalsReadModel = () => {
     })
   }
 
-  // tion for creating company user with form validation
   const createWithdrawalReadModelWithValidation = (data: WithdrawalsInitRequest, setError: UseFormSetError<WithdrawalsInitRequest>, onSuccess?: () => void) => {
     createWithdrawalReadModelMutation.mutate(
       {

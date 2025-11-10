@@ -15,6 +15,7 @@ import { toast } from "sonner"
 import { WithdrawalDetailsModal } from "./WithdrawalDetailsModal"
 import { Input } from "@/shared/components/ui/input"
 import { useSessionStore } from "@/shared/stores/sessionStore"
+import { formatDate } from "@/shared/lib"
 
 export const WithdrawalsReadModelDataGrid: React.FC = () => {
   const { t } = useTranslation()
@@ -26,7 +27,7 @@ export const WithdrawalsReadModelDataGrid: React.FC = () => {
   })
 
   const [showDetailsModal, setShowDetailsModal] = useState(false)
-  const [selectedWithdrawal, setSelectedWithdrawal] = useState<SearchWithdrawalsReadModelResponse | null>(null)
+  const [selectedWithdrawalId, setSelectedWithdrawalId] = useState<string | null>(null)
   const [showCancelModal, setShowCancelModal] = useState(false)
   const [showCompleteModal, setShowCompleteModal] = useState(false)
   const [cancelReason, setCancelReason] = useState("")
@@ -58,12 +59,6 @@ export const WithdrawalsReadModelDataGrid: React.FC = () => {
 
   const columnHeaders: DataGridColumnHeader[] = [
     {
-      key: "paymentMethod",
-      label: "🖼",
-      sortable: true,
-      resizable: true,
-    },
-    {
       key: "amount",
       label: t("withdrawalsreadmodels.headers.amount"),
       sortable: true,
@@ -76,8 +71,8 @@ export const WithdrawalsReadModelDataGrid: React.FC = () => {
       resizable: true,
     },
     {
-      key: "references",
-      label: t("withdrawalsreadmodels.headers.references"),
+      key: "auditInfo",
+      label: t("withdrawalsreadmodels.headers.auditInfo"),
       sortable: true,
       resizable: true,
     },
@@ -100,11 +95,8 @@ export const WithdrawalsReadModelDataGrid: React.FC = () => {
   }, [withdrawalsReadModels])
 
   const handleView = (id: string) => {
-    const withdrawal = withdrawalsReadModels.find((w) => w.id === id)
-    if (withdrawal) {
-      setSelectedWithdrawal(withdrawal)
-      setShowDetailsModal(true)
-    }
+    setSelectedWithdrawalId(id)
+    setShowDetailsModal(true)
   }
 
   const handleDelete = (id: string) => {
@@ -186,19 +178,19 @@ export const WithdrawalsReadModelDataGrid: React.FC = () => {
               <div className="flex gap-x-1.5 lg:text-md">
                 <span className="font-medium">{t("withdrawalsreadmodels.headers.amount")}:</span>
                 <span className="text-green-500 font-bold">
-                  {item.getTextFor("amount")} {item.getTextFor("currency")}
+                  {item.getTextFor("amount")} {item.getTextFor("currencySymbol")}
                 </span>
               </div>
               <div className="flex gap-x-1.5">
                 <span className="font-medium">{t("withdrawalsreadmodels.headers.providerFeeAmount")}:</span>
                 <span className="text-red-500 font-semibold">
-                  {item.getTextFor("providerFeeAmount")} {item.getTextFor("currency")}
+                  {item.getTextFor("providerFeeAmount")} {item.getTextFor("currencySymbol")}
                 </span>
               </div>
               <div className="flex gap-x-1.5">
                 <span className="font-medium">{t("withdrawalsreadmodels.headers.netAmount")}:</span>
                 <span className="font-semibold text-blue-500">
-                  {item.getTextFor("netAmount")} {item.getTextFor("currency")}
+                  {item.getTextFor("netAmount")} {item.getTextFor("currencySymbol")}
                 </span>
               </div>
             </div>
@@ -207,32 +199,52 @@ export const WithdrawalsReadModelDataGrid: React.FC = () => {
           return (
             <div className="flex flex-col gap-y-1 text-muted-foreground/80">
               <div className="flex gap-x-1.5 mb-3">
-                <span className="font-black text-primary">{item.getTextFor("accountNumber")}</span>
+                <span className="font-black text-secondary">{item.getTextFor("accountNumber")}</span>
+              </div>
+              <div className="flex gap-x-1.5 mb-3">
+                <span className="font-semibold">{item.getTextFor("paymentMethodName")}</span>
               </div>
               <div className="flex gap-x-1.5">
                 <StatusBadge text={item.getTextFor("status") as unknown as string} />
               </div>
             </div>
           )
-        case "references":
+        case "auditInfo":
           return (
             <div className="flex flex-col gap-y-1 text-muted-foreground/80">
               <div className="flex gap-x-1.5">
-                <span className="font-medium">{t("withdrawalsreadmodels.headers.internalReference")}:</span>
-                <span className="text-blue-500 font-semibold">{item.getTextFor("internalReference")}</span>
+                <span className="font-medium">{t("withdrawalsreadmodels.headers.creator")}:</span>
+                <span className="text-blue-500 font-semibold">
+                  {item.getTextFor("createdByFirstName")}
+                  {item.getTextFor("createdByLastName")}
+                </span>
               </div>
               <div className="flex gap-x-1.5">
-                <span className="font-medium">{t("withdrawalsreadmodels.headers.providerInitialReference")}:</span>
-                <span className="">{item.getTextFor("providerInitialReference")}</span>
-              </div>
-              <div className="flex gap-x-1.5">
-                <span className="font-medium">{t("withdrawalsreadmodels.headers.providerFinalReference")}:</span>
-                <span className="">{item.getTextFor("providerFinalReference")}</span>
+                <span className="font-medium">{t("withdrawalsreadmodels.headers.verificator")}:</span>
+                <span className="text-blue-500 font-semibold">
+                  {item.getTextFor("verifiedByFirstName")}
+                  {item.getTextFor("verifiedByLastName")}
+                </span>
               </div>
             </div>
           )
         case "createdAt":
-          return <span className="text-muted-foreground">{item.getTextFor("createdAt")}</span>
+          return (
+            <div className="flex flex-col gap-y-1 text-muted-foreground/80">
+              <div className="flex gap-x-1.5">
+                <span className="font-medium">{t("withdrawalsreadmodels.headers.createdAt")}:</span>
+                <span className="text-blue-500 font-semibold">{formatDate(item.getTextFor("createdAt"))}</span>
+              </div>
+              <div className="flex gap-x-1.5">
+                <span className="font-medium">{t("withdrawalsreadmodels.headers.notes")}:</span>
+                <span className="text-blue-500 font-semibold truncate max-w-24">{formatDate(item.getTextFor("notes"))}</span>
+              </div>
+              <div className="flex gap-x-1.5">
+                <span className="font-medium">{t("withdrawalsreadmodels.headers.verifiedAt")}:</span>
+                <span className="text-blue-500 font-semibold">{formatDate(item.getTextFor("verifiedAt"))}</span>
+              </div>
+            </div>
+          )
         case "actions":
           const status = item.getTextFor("status")
           const availableActions = getActionsForStatus(status as unknown as string)
@@ -259,7 +271,7 @@ export const WithdrawalsReadModelDataGrid: React.FC = () => {
                 label={t("withdrawalsreadmodels.headers.amount")}
                 value={
                   <span className="text-green-500 font-bold">
-                    {item.getTextFor("amount")} {item.getTextFor("currency")}
+                    {item.getTextFor("amount")} {item.getTextFor("currencySymbol")}
                   </span>
                 }
               />
@@ -267,7 +279,7 @@ export const WithdrawalsReadModelDataGrid: React.FC = () => {
                 label={t("withdrawalsreadmodels.headers.providerFeeAmount")}
                 value={
                   <span className="text-red-500 font-semibold">
-                    {item.getTextFor("providerFeeAmount")} {item.getTextFor("currency")}
+                    {item.getTextFor("providerFeeAmount")} {item.getTextFor("currencySymbol")}
                   </span>
                 }
               />
@@ -275,7 +287,7 @@ export const WithdrawalsReadModelDataGrid: React.FC = () => {
                 label={t("withdrawalsreadmodels.headers.netAmount")}
                 value={
                   <span className="font-semibold text-blue-500">
-                    {item.getTextFor("netAmount")} {item.getTextFor("currency")}
+                    {item.getTextFor("netAmount")} {item.getTextFor("currencySymbol")}
                   </span>
                 }
               />
@@ -288,31 +300,37 @@ export const WithdrawalsReadModelDataGrid: React.FC = () => {
                 label={t("withdrawalsreadmodels.headers.accountNumber")}
                 value={<span className="text-primary font-bold">{item.getTextFor("accountNumber")}</span>}
               />
-              <DetailsCardItem label={t("withdrawalsreadmodels.headers.status")} value={<StatusBadge text={item.getTextFor("status") as unknown as string} />} />
+              <DetailsCardItem label={t("withdrawals.headers.details")} value={<span className="font-semibold">{item.getTextFor("paymentMethodName")}</span>} />
+              <DetailsCardItem label={t("withdrawalsreadmodels.headers.status")} value={<StatusBadge text={item.getTextFor("status")} />} />
             </div>
           )
-        case "references":
+        case "auditInfo":
           return (
             <div className="flex flex-col gap-y-1 px-4 text-sm text-muted-foreground">
-              <span className="font-medium border-t pt-2">{t("withdrawalsreadmodels.headers.references")}</span>
               <DetailsCardItem
-                label={t("withdrawalsreadmodels.headers.internalReference")}
-                value={<span className="text-blue-500 font-semibold">{item.getTextFor("internalReference")}</span>}
+                label={t("withdrawalsreadmodels.headers.creator")}
+                value={
+                  <span className="text-blue-500 font-semibold">
+                    {item.getTextFor("createdByFirstName")} {item.getTextFor("createdByLastName")}
+                  </span>
+                }
               />
               <DetailsCardItem
-                label={t("withdrawalsreadmodels.headers.providerInitialReference")}
-                value={<span className="font-semibold">{item.getTextFor("providerInitialReference")}</span>}
-              />
-              <DetailsCardItem
-                label={t("withdrawalsreadmodels.headers.providerFinalReference")}
-                value={<span className="font-semibold">{item.getTextFor("providerFinalReference")}</span>}
+                label={t("withdrawalsreadmodels.headers.verificator")}
+                value={
+                  <span className="text-blue-500 font-semibold">
+                    {item.getTextFor("verifiedByFirstName")} {item.getTextFor("verifiedByLastName")}
+                  </span>
+                }
               />
             </div>
           )
         case "createdAt":
           return (
             <div className="flex flex-col gap-y-1 px-4 text-sm text-muted-foreground">
-              <DetailsCardItem label={t("withdrawalsreadmodels.headers.createdAt")} value={<span className="font-semibold">{item.getTextFor("createdAt")}</span>} />
+              <DetailsCardItem label={t("withdrawalsreadmodels.headers.createdAt")} value={<span className="font-semibold">{formatDate(item.getTextFor("createdAt"))}</span>} />
+              <DetailsCardItem label={t("withdrawalsreadmodels.headers.notes")} value={<span className="font-semibold truncate max-w-24">{item.getTextFor("notes")}</span>} />
+              <DetailsCardItem label={t("withdrawalsreadmodels.headers.verifiedAt")} value={<span className="font-semibold">{formatDate(item.getTextFor("verifiedAt"))}</span>} />
             </div>
           )
         case "actions":
@@ -433,10 +451,10 @@ export const WithdrawalsReadModelDataGrid: React.FC = () => {
         open={showDetailsModal}
         onOpenChange={() => {
           setShowDetailsModal(false)
-          setSelectedWithdrawal(null)
+          setSelectedWithdrawalId(null)
         }}
         onCopyEvent={handleCopyEvent}
-        withdrawal={selectedWithdrawal}
+        withdrawalId={selectedWithdrawalId}
       />
     </div>
   )
