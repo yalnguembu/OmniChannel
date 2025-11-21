@@ -26,6 +26,8 @@ import {
   Zap,
   Gauge,
   ChartColumnIcon,
+  BookText,
+  FileSliders,
 } from "lucide-react"
 
 export const adminMenus: BaseMenus[] = [
@@ -205,6 +207,25 @@ export const adminMenus: BaseMenus[] = [
           },
         ],
       },
+    //   {
+    //     label: "menu.accounting",
+    //     path: "/accounting",
+    //     icon: BookText,
+    //     children: [
+    //       {
+    //         label: "menu.statement",
+    //         path: "/accounting/statement",
+    //         icon: FileText,
+    //         permission: "RECEIPTSREADMODEL_VIEW",
+    //       },
+    //       {
+    //         label: "menu.summary",
+    //         path: "/accounting/summary",
+    //         icon: FileSliders,
+    //         permission: "WITHDRAWALSREADMODEL_VIEW",
+    //       },
+    //     ],
+    //   },
     ],
   },
   {

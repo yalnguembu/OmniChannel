@@ -87,6 +87,7 @@ export const useDashboard = () => {
       body: {
         pageNumber: 1,
         pageSize: 100,
+        balanceType:"MAIN",
       },
     }),
     select: (data) => {

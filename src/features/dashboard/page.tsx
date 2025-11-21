@@ -62,12 +62,12 @@ export function DashboardPage() {
   const analytics = useMemo(() => {
     const totalBalance = effectiveBalances.filter((bal) => bal.balanceType === "MAIN").reduce((sum, bal) => sum + (bal.currentBalance || 0), 0)
     const totalAllTimeBalance = effectiveBalances.filter((bal) => bal.balanceType === "MAIN").reduce((sum, bal) => sum + (bal.totalCredits || 0), 0)
-    const omBalance = effectiveBalances.filter((bal) => bal.paymentMethodCode === "ORANGE_MONEY").reduce((sum, bal) => sum + (bal.currentBalance || 0), 0)
-    const omAllTimeBalance = effectiveBalances.filter((bal) => bal.paymentMethodCode === "ORANGE_MONEY").reduce((sum, bal) => sum + (bal.totalCredits || 0), 0)
-    const omAllTimeCount = effectiveBalances.filter((bal) => bal.paymentMethodCode === "ORANGE_MONEY").reduce((sum, bal) => sum + (bal.transactionCount || 0), 0)
-    const momoBalance = effectiveBalances.filter((bal) => bal.paymentMethodCode === "MTN_MOMO").reduce((sum, bal) => sum + (bal.currentBalance || 0), 0)
-    const momoAllTimeBalance = effectiveBalances.filter((bal) => bal.paymentMethodCode === "MTN_MOMO").reduce((sum, bal) => sum + (bal.totalCredits || 0), 0)
-    const momoAllTimeCount = effectiveBalances.filter((bal) => bal.paymentMethodCode === "MTN_MOMO").reduce((sum, bal) => sum + (bal.transactionCount || 0), 0)
+    const omBalance = effectiveBalances.filter((bal) => bal.paymentMethodCode === "ORANGE_MONEY" && bal.balanceType === "MAIN").reduce((sum, bal) => sum + (bal.currentBalance || 0), 0)
+    const omAllTimeBalance = effectiveBalances.filter((bal) => bal.paymentMethodCode === "ORANGE_MONEY" && bal.balanceType === "MAIN").reduce((sum, bal) => sum + (bal.totalCredits || 0), 0)
+    const omAllTimeCount = effectiveBalances.filter((bal) => bal.paymentMethodCode === "ORANGE_MONEY" && bal.balanceType === "MAIN").reduce((sum, bal) => sum + (bal.transactionCount || 0), 0)
+    const momoBalance = effectiveBalances.filter((bal) => bal.paymentMethodCode === "MTN_MOMO" && bal.balanceType === "MAIN").reduce((sum, bal) => sum + (bal.currentBalance || 0), 0)
+    const momoAllTimeBalance = effectiveBalances.filter((bal) => bal.paymentMethodCode === "MTN_MOMO" && bal.balanceType === "MAIN").reduce((sum, bal) => sum + (bal.totalCredits || 0), 0)
+    const momoAllTimeCount = effectiveBalances.filter((bal) => bal.paymentMethodCode === "MTN_MOMO" && bal.balanceType === "MAIN").reduce((sum, bal) => sum + (bal.transactionCount || 0), 0)
     const totalAvailable = effectiveBalances.reduce((sum, bal) => sum + (bal.availableBalance || 0), 0)
     const totalReserved = effectiveBalances.reduce((sum, bal) => sum + (bal.reservedBalance || 0), 0)
 
@@ -331,7 +331,7 @@ export function DashboardPage() {
                     </tr>
                   </thead>
                   <tbody>
-                    {effectiveBalances.map((balance, index) => (
+                    {effectiveBalances.filter((bal) => bal.balanceType === "MAIN").map((balance, index) => (
                       <tr key={balance.id || index} className="border-b hover:bg-muted/50">
                         <td className="p-2">
                           <div className="flex gap-2">
