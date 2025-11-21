@@ -9,7 +9,7 @@ import StatusBadge from "@/shared/components/StatusBadge"
 import ActionButtonGroup from "@/shared/components/data-grid/ActionButtonGroup"
 import DetailsCardItem from "@/shared/components/DetailsCardItem"
 import { ConfirmationModal } from "@/shared/components/ConfirmationModal"
-import { SearchWithdrawalsReadModelResponse } from "@/shared/api"
+// import { SearchWithdrawalsReadModelResponse } from "@/shared/api"
 import { getApiWithdrawalsReadModelGetAllWithdrawlsEventsById } from "@/shared/api/sdk.gen"
 import { toast } from "sonner"
 import { WithdrawalDetailsModal } from "./WithdrawalDetailsModal"
@@ -215,14 +215,14 @@ export const WithdrawalsReadModelDataGrid: React.FC = () => {
               <div className="flex gap-x-1.5">
                 <span className="font-medium">{t("withdrawalsreadmodels.headers.creator")}:</span>
                 <span className="text-blue-500 font-semibold">
-                  {item.getTextFor("createdByFirstName")}
+                  {item.getTextFor("createdByFirstName")} {" "}
                   {item.getTextFor("createdByLastName")}
                 </span>
               </div>
               <div className="flex gap-x-1.5">
                 <span className="font-medium">{t("withdrawalsreadmodels.headers.verificator")}:</span>
                 <span className="text-blue-500 font-semibold">
-                  {item.getTextFor("verifiedByFirstName")}
+                  {item.getTextFor("verifiedByFirstName")} {" "}
                   {item.getTextFor("verifiedByLastName")}
                 </span>
               </div>
@@ -311,7 +311,7 @@ export const WithdrawalsReadModelDataGrid: React.FC = () => {
                 label={t("withdrawalsreadmodels.headers.creator")}
                 value={
                   <span className="text-blue-500 font-semibold">
-                    {item.getTextFor("createdByFirstName")} {item.getTextFor("createdByLastName")}
+                    {item.getTextFor("createdByFirstName")} {" "}  {item.getTextFor("createdByLastName")}
                   </span>
                 }
               />
@@ -319,7 +319,7 @@ export const WithdrawalsReadModelDataGrid: React.FC = () => {
                 label={t("withdrawalsreadmodels.headers.verificator")}
                 value={
                   <span className="text-blue-500 font-semibold">
-                    {item.getTextFor("verifiedByFirstName")} {item.getTextFor("verifiedByLastName")}
+                    {item.getTextFor("verifiedByFirstName")} {" "} {item.getTextFor("verifiedByLastName")}
                   </span>
                 }
               />
@@ -343,9 +343,9 @@ export const WithdrawalsReadModelDataGrid: React.FC = () => {
 
   const sortConfig: DataGridSort | undefined = sortBy
     ? {
-        column: sortBy,
-        direction: sortDirection === "desc" ? SortDirection.DESC : SortDirection.ASC,
-      }
+      column: sortBy,
+      direction: sortDirection === "desc" ? SortDirection.DESC : SortDirection.ASC,
+    }
     : undefined
 
   const handleSortChange = (config: DataGridSort) => {
