@@ -237,9 +237,9 @@
       "utilizationRate": "Utilization Rate",
       "volumeTrendAnalysis": "Volume Trend Analysis",
       "volumeTrendDesc": "Advanced volume visualization with gradient effects",
-      "credit":"Credit",
-      "debit":"Debit",
-      "transaction":"Transaction"
+      "credit": "Credit",
+      "debit": "Debit",
+      "transaction": "Transaction"
     },
     "financial": {
       "costBenefit": {
@@ -551,7 +551,7 @@
         "title": "Transaction Volume by Type"
       },
       "withdrawals": "Withdrawals",
-      "cummulatedBalance":"Cummulated Balance"
+      "cummulatedBalance": "Cummulated Balance"
     }
   },
   "applications": {
@@ -3391,7 +3391,7 @@
       "create": {
         "description": "Add a new withdrawal method.",
         "title": "Create Withdrawal Method",
-        "infoMessage":"Veillez entrer 0 dans les champs limites journaliere mensuelles et limite uniques pour pouvoir effectuer des retraits a l'infinie"
+        "infoMessage": "Veillez entrer 0 dans les champs limites journaliere mensuelles et limite uniques pour pouvoir effectuer des retraits a l'infinie"
       },
       "dailyLimitLabel": "Daily Limit",
       "dailyLimitPlaceholder": "Enter daily limit",
@@ -3473,7 +3473,7 @@
       "feeAppliedAmount": "Fee Applied Amount",
       "internalReference": "Internal Reference",
       "netAmount": "Net Amount",
-      "notes": "Withdrawals date",
+      "notes": "Notes",
       "overview": "Overview",
       "processedAt": "Processed At",
       "providerFeeAmount": "Provider Fee Amount",
@@ -3486,7 +3486,11 @@
       "title": "Title",
       "updatedAt": "Updated At",
       "verifiedAt": "Verified At",
-      "withdrawalMethodName": "Withdrawal Method Name"
+      "withdrawalMethodName": "Withdrawal Method Name",
+      "balancesReadModelName": "Balance name",
+      "withdrawalsAt": "Withdrawals date",
+      "paymentMethodName": "Payment Method",
+      "balancesReadModelId": "Balance ID"
     },
     "form": {
       "amountLabel": "Amount Label",
@@ -3506,7 +3510,7 @@
       "notesPlaceholder": "Select Withdrawals date",
       "withdrawalMethodIdLabel": "Withdrawal Method Id Label",
       "withdrawalMethodIdPlaceholder": "Withdrawal Method Id Placeholder",
-      "dateLabel":"Date",
+      "dateLabel": "Date",
       "datePlaceholder": "Select a date"
     },
     "headers": {
@@ -3552,11 +3556,12 @@
       "transactionId": "Transaction ID",
       "verificationAttempts": "Verification Attempts",
       "withdrawalMethodName": "Withdrawal Method",
-      "creator":"Initate by",
-      "verificator":"Verify by",
-      "notes":"Withdrawals date",
-      "verifiedAt":"Verified At",
-      "auditInfo":"Spplement Infos"
+      "creator": "Initate by",
+      "verificator": "Verify by",
+      "notes": "Notes",
+      "verifiedAt": "Verified At",
+      "auditInfo": "Spplement Infos",
+      "withdrawalsAt": "Withdrawals date"
     }
   },
   "withdrawalsReadModels": {

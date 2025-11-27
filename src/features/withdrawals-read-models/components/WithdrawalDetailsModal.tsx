@@ -79,11 +79,10 @@ export const WithdrawalDetailsModal: React.FC<WithdrawalDetailsModalProps> = ({ 
           {/* Withdrawal Overview */}
           <div className="h-full border p-4 rounded-lg relative">
             <h3 className="text-sm font-semibold mb-3 absolute -top-2.5 left-3 bg-background px-2 text-muted-foreground uppercase">{t("withdrawals.details.overview")}</h3>
-
-            <DetailItem label={t("withdrawals.details.withdrawalMethodName")} value={withdrawalQueryResponse.data.paymentMethodName} highlight="info" />
+            <DetailItem label={t("withdrawals.details.balancesReadModelName")} value={withdrawalQueryResponse.data.balancesReadModelName} />
+            <DetailItem label={t("withdrawals.details.paymentMethodName")} value={withdrawalQueryResponse.data.paymentMethodName} highlight="info" />
             <DetailItem label={t("withdrawals.details.accountNumber")} value={withdrawalQueryResponse.data.accountNumber} />
             <DetailItem label={t("withdrawals.details.createdAt")} value={withdrawalQueryResponse.data.createdAt ? formatDate(withdrawalQueryResponse.data.createdAt) : "N/A"} />
-            <DetailItem label={t("withdrawals.details.notes")} value={withdrawalQueryResponse.data.notes} />
             <DetailItem label={t("withdrawals.details.verifiedAt")} value={withdrawalQueryResponse.data.verifiedAt ? formatDate(withdrawalQueryResponse.data.verifiedAt) : "N/A"} />
           </div>
 
@@ -129,6 +128,8 @@ export const WithdrawalDetailsModal: React.FC<WithdrawalDetailsModalProps> = ({ 
             </h3>
             <DetailItem label={t("withdrawals.details.companyName")} value={withdrawalQueryResponse.data.companyName} />
             <DetailItem label={t("withdrawals.details.applicationName")} value={withdrawalQueryResponse.data.applicationName} highlight="info" />
+            <DetailItem label={t("withdrawals.details.withdrawalsAt")} value={withdrawalQueryResponse.data.withdrawalsAt} />
+            <DetailItem label={t("withdrawals.details.balancesReadModelId")} value={withdrawalQueryResponse.data.balancesReadModelId} />
           </div>
 
           {/* Additional Information */}

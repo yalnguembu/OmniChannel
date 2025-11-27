@@ -215,15 +215,13 @@ export const WithdrawalsReadModelDataGrid: React.FC = () => {
               <div className="flex gap-x-1.5">
                 <span className="font-medium">{t("withdrawalsreadmodels.headers.creator")}:</span>
                 <span className="text-blue-500 font-semibold">
-                  {item.getTextFor("createdByFirstName")} {" "}
-                  {item.getTextFor("createdByLastName")}
+                  {item.getTextFor("createdByFirstName")} {item.getTextFor("createdByLastName")}
                 </span>
               </div>
               <div className="flex gap-x-1.5">
                 <span className="font-medium">{t("withdrawalsreadmodels.headers.verificator")}:</span>
                 <span className="text-blue-500 font-semibold">
-                  {item.getTextFor("verifiedByFirstName")} {" "}
-                  {item.getTextFor("verifiedByLastName")}
+                  {item.getTextFor("verifiedByFirstName")} {item.getTextFor("verifiedByLastName")}
                 </span>
               </div>
             </div>
@@ -236,8 +234,8 @@ export const WithdrawalsReadModelDataGrid: React.FC = () => {
                 <span className="text-blue-500 font-semibold">{formatDate(item.getTextFor("createdAt"))}</span>
               </div>
               <div className="flex gap-x-1.5">
-                <span className="font-medium">{t("withdrawalsreadmodels.headers.notes")}:</span>
-                <span className="text-blue-500 font-semibold truncate max-w-24">{formatDate(item.getTextFor("notes"))}</span>
+                <span className="font-medium">{t("withdrawalsreadmodels.headers.withdrawalsAt")}:</span>
+                <span className="text-blue-500 font-semibold truncate max-w-24">{formatDate(item.getTextFor("withdrawalsAt"))}</span>
               </div>
               <div className="flex gap-x-1.5">
                 <span className="font-medium">{t("withdrawalsreadmodels.headers.verifiedAt")}:</span>
@@ -267,6 +265,7 @@ export const WithdrawalsReadModelDataGrid: React.FC = () => {
         case "amount":
           return (
             <div className="flex flex-col gap-y-1 px-4">
+              <ActionButtonGroup view={view} isLoading={isLoading} row={item} actions={getActionsForStatus(item.getTextFor("status")) as ACTION[]} dispatch={handleDispatch} />
               <DetailsCardItem
                 label={t("withdrawalsreadmodels.headers.amount")}
                 value={
@@ -311,7 +310,7 @@ export const WithdrawalsReadModelDataGrid: React.FC = () => {
                 label={t("withdrawalsreadmodels.headers.creator")}
                 value={
                   <span className="text-blue-500 font-semibold">
-                    {item.getTextFor("createdByFirstName")} {" "}  {item.getTextFor("createdByLastName")}
+                    {item.getTextFor("createdByFirstName")} {item.getTextFor("createdByLastName")}
                   </span>
                 }
               />
@@ -319,7 +318,7 @@ export const WithdrawalsReadModelDataGrid: React.FC = () => {
                 label={t("withdrawalsreadmodels.headers.verificator")}
                 value={
                   <span className="text-blue-500 font-semibold">
-                    {item.getTextFor("verifiedByFirstName")} {" "} {item.getTextFor("verifiedByLastName")}
+                    {item.getTextFor("verifiedByFirstName")} {item.getTextFor("verifiedByLastName")}
                   </span>
                 }
               />
@@ -329,7 +328,10 @@ export const WithdrawalsReadModelDataGrid: React.FC = () => {
           return (
             <div className="flex flex-col gap-y-1 px-4 text-sm text-muted-foreground">
               <DetailsCardItem label={t("withdrawalsreadmodels.headers.createdAt")} value={<span className="font-semibold">{formatDate(item.getTextFor("createdAt"))}</span>} />
-              <DetailsCardItem label={t("withdrawalsreadmodels.headers.notes")} value={<span className="font-semibold truncate max-w-24">{item.getTextFor("notes")}</span>} />
+              <DetailsCardItem
+                label={t("withdrawalsreadmodels.headers.withdrawalsAt")}
+                value={<span className="font-semibold truncate max-w-24">{item.getTextFor("withdrawalsAt")}</span>}
+              />
               <DetailsCardItem label={t("withdrawalsreadmodels.headers.verifiedAt")} value={<span className="font-semibold">{formatDate(item.getTextFor("verifiedAt"))}</span>} />
             </div>
           )
@@ -343,9 +345,9 @@ export const WithdrawalsReadModelDataGrid: React.FC = () => {
 
   const sortConfig: DataGridSort | undefined = sortBy
     ? {
-      column: sortBy,
-      direction: sortDirection === "desc" ? SortDirection.DESC : SortDirection.ASC,
-    }
+        column: sortBy,
+        direction: sortDirection === "desc" ? SortDirection.DESC : SortDirection.ASC,
+      }
     : undefined
 
   const handleSortChange = (config: DataGridSort) => {

@@ -21532,6 +21532,15 @@ export const SearchWithdrawalsReadModelResponseSchema = {
         providerMessage: {
             type: 'string',
             nullable: true
+        },
+        balancesReadModelId: {
+            type: 'string',
+            format: 'uuid',
+            nullable: true
+        },
+        balancesReadModelName: {
+            type: 'string',
+            nullable: true
         }
     },
     additionalProperties: false
@@ -25289,7 +25298,7 @@ export const WithdrawalStatusIEnumerableFujiPayApiResponseSchema = {
 } as const;
 
 export const WithdrawalsInitRequestSchema = {
-    required: ['amount', 'applicationId', 'balanceId', 'companyId', 'withdrawalMethodId'],
+    required: ['amount', 'applicationId', 'balanceId', 'companyId', 'withdrawalMethodId', 'withdrawalsAt'],
     type: 'object',
     properties: {
         balanceId: {
@@ -25315,6 +25324,9 @@ export const WithdrawalsInitRequestSchema = {
         notes: {
             type: 'string',
             nullable: true
+        },
+        withdrawalsAt: {
+            type: 'string'
         }
     },
     additionalProperties: false

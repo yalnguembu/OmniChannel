@@ -7592,6 +7592,8 @@ export type SearchWithdrawalsReadModelResponse = {
     createdBy?: string;
     updatedBy?: string | null;
     providerMessage?: string | null;
+    balancesReadModelId?: string | null;
+    balancesReadModelName?: string | null;
 };
 
 export type SearchWithdrawalsReadModelResponseFujiPayApiResponse = {
@@ -8894,6 +8896,7 @@ export type WithdrawalsInitRequest = {
     withdrawalMethodId: string;
     amount: number;
     notes?: string | null;
+    withdrawalsAt: string;
 };
 
 export type WithdrawalsReadModelDto = {

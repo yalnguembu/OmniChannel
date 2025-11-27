@@ -19,22 +19,24 @@ import { format } from "date-fns"
 import { z } from "zod"
 
 type WithdrawalsInitRequest = {
-    balanceId: string;
-    companyId: string;
-    applicationId: string;
-    withdrawalMethodId: string;
-    amount: number;
-    notes: string;
-};
+  balanceId: string
+  companyId: string
+  applicationId: string
+  withdrawalMethodId: string
+  amount: number
+  notes?: string
+  withdrawalsAt: string
+}
 
 const zWithdrawalsInitRequest = z.object({
-    balanceId: z.string().uuid(),
-    companyId: z.string().uuid(),
-    applicationId: z.string().uuid(),
-    withdrawalMethodId: z.string().uuid(),
-    amount: z.number(),
-    notes: z.string(),
-});
+  balanceId: z.string().uuid(),
+  companyId: z.string().uuid(),
+  applicationId: z.string().uuid(),
+  withdrawalMethodId: z.string().uuid(),
+  amount: z.number(),
+  notes: z.string().optional(),
+  withdrawalsAt: z.string(),
+})
 
 interface WithdrawalInitFormProps {
   onSubmit: (data: WithdrawalsInitRequest, setError: any) => void
@@ -216,7 +218,7 @@ export const WithdrawalInitForm: React.FC<WithdrawalInitFormProps> = ({ onSubmit
               />
               <FormField
                 control={form.control}
-                name="notes"
+                name="withdrawalsAt"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>{t("withdrawals.form.dateLabel")}</FormLabel>

@@ -3508,7 +3508,11 @@
       "title": "Détails du Retrait",
       "updatedAt": "Mis à jour le",
       "verifiedAt": "Vérifié le",
-      "withdrawalMethodName": "Nom de la Méthode de Retrait"
+      "withdrawalMethodName": "Nom de la Méthode de Retrait",
+      "balancesReadModelName": "Nom du solde",
+      "withdrawalsAt": "Date de retrait",
+      "paymentMethodName": "Méth. Paiement",
+      "balancesReadModelId": "ID solde"
     },
     "form": {
       "amountLabel": "Montant",
@@ -3576,9 +3580,10 @@
       "withdrawalMethodName": "Méthode Retrait",
       "creator": "Initier par",
       "verificator": "Vérifié par",
-      "notes": "Date de Retrait",
+      "notes": "Notes",
       "verifiedAt": "Vérifié le",
-      "auditInfo":"Info suplementaire"
+      "auditInfo":"Info suplementaire",
+      "withdrawalsAt": "Date de retrait"
     }
   },
   "withdrawalsReadModels": {

@@ -28344,6 +28344,13 @@ components:
         providerMessage:
           type: string
           nullable: true
+        balancesReadModelId:
+          type: string
+          format: uuid
+          nullable: true
+        balancesReadModelName:
+          type: string
+          nullable: true
       additionalProperties: false
     SearchWithdrawalsReadModelResponseFujiPayApiResponse:
       type: object
@@ -31116,6 +31123,7 @@ components:
         - balanceId
         - companyId
         - withdrawalMethodId
+        - withdrawalsAt
       type: object
       properties:
         balanceId:
@@ -31136,6 +31144,8 @@ components:
         notes:
           type: string
           nullable: true
+        withdrawalsAt:
+          type: string
       additionalProperties: false
     WithdrawalsReadModelDto:
       type: object
@@ -31291,6 +31301,13 @@ components:
         updatedBy:
           type: string
           format: uuid
+          nullable: true
+        balancesReadModelId:
+          type: string
+          format: uuid
+          nullable: true
+        balancesReadModelName:
+          type: string
           nullable: true
       additionalProperties: false
     WithdrawalsReadModelDtoFujiPayApiResponse:

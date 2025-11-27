@@ -13560,6 +13560,14 @@ export const zSearchWithdrawalsReadModelResponse = z.object({
     providerMessage: z.union([
         z.string(),
         z.null()
+    ]).optional(),
+    balancesReadModelId: z.union([
+        z.string().uuid(),
+        z.null()
+    ]).optional(),
+    balancesReadModelName: z.union([
+        z.string(),
+        z.null()
     ]).optional()
 });
 
@@ -15926,7 +15934,8 @@ export const zWithdrawalsInitRequest = z.object({
     notes: z.union([
         z.string(),
         z.null()
-    ]).optional()
+    ]).optional(),
+    withdrawalsAt: z.string()
 });
 
 export const zWithdrawalsReadModelDto = z.object({
