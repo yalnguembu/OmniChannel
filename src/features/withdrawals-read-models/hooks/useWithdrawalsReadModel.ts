@@ -11,6 +11,7 @@ import {
   putApiWithdrawalsReadModelApprovalByIdMutation,
   putApiWithdrawalsReadModelCancelByIdMutation,
   putApiWithdrawalsReadModelCompleteByIdMutation,
+  getApiWithdrawalsReadModelDetailByIdOptions,
 } from "@/shared/api/@tanstack/react-query.gen"
 import { UseFormSetError } from "react-hook-form"
 import { WithdrawalsInitRequest } from "@/shared"
@@ -76,6 +77,20 @@ export const useWithdrawalsReadModel = () => {
     }
     searchWithdrawalsReadModelsMutation.mutate({ body: searchParams })
   }
+
+  const getWithdrawalsReadModelDetailsQuery = (id: string) =>
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    useQuery({
+      ...getApiWithdrawalsReadModelDetailByIdOptions({ path: { id } }),
+      enabled: !!id,
+      staleTime: 35 * 60 * 1000,
+      select: (data) => {
+        if (data.success && data.data) {
+          store.setSelectedItem(data.data)
+        }
+        return data
+      },
+    })
 
   const getWithdrawalsReadModelQuery = (id: string) =>
     // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -237,6 +252,7 @@ export const useWithdrawalsReadModel = () => {
   return {
     ...store,
     getWithdrawalsReadModelQuery,
+    getWithdrawalsReadModelDetailsQuery,
     searchWithdrawalsReadModels,
     search,
     changePage,

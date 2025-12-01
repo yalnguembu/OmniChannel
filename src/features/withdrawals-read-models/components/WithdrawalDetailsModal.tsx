@@ -20,9 +20,9 @@ interface WithdrawalDetailsModalProps {
 
 export const WithdrawalDetailsModal: React.FC<WithdrawalDetailsModalProps> = ({ open, onOpenChange, withdrawalId, onCopyEvent }) => {
   const { t } = useTranslation()
-  const { onApproveWithdrawal, onCancelWithdrawal, onCompleteWithdrawal, getWithdrawalsReadModelQuery } = useWithdrawalsReadModel()
+  const { onApproveWithdrawal, onCancelWithdrawal, onCompleteWithdrawal, getWithdrawalsReadModelDetailsQuery } = useWithdrawalsReadModel()
 
-  const { data: withdrawalQueryResponse, isLoading } = getWithdrawalsReadModelQuery(withdrawalId ?? "")
+  const { data: withdrawalQueryResponse, isLoading } = getWithdrawalsReadModelDetailsQuery(withdrawalId ?? "")
 
   const [showCancelModal, setShowCancelModal] = useState(false)
   const [showCompleteModal, setShowCompleteModal] = useState(false)

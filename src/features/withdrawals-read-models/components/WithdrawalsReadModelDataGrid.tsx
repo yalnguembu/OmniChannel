@@ -204,6 +204,9 @@ export const WithdrawalsReadModelDataGrid: React.FC = () => {
               <div className="flex gap-x-1.5 mb-3">
                 <span className="font-semibold">{item.getTextFor("paymentMethodName")}</span>
               </div>
+              <div className="flex gap-x-1.5 mb-3">
+                <span>{item.getTextFor("balancesReadModelName")}</span>
+              </div>
               <div className="flex gap-x-1.5">
                 <StatusBadge text={item.getTextFor("status") as unknown as string} />
               </div>
@@ -299,6 +302,7 @@ export const WithdrawalsReadModelDataGrid: React.FC = () => {
                 label={t("withdrawalsreadmodels.headers.accountNumber")}
                 value={<span className="text-primary font-bold">{item.getTextFor("accountNumber")}</span>}
               />
+              <DetailsCardItem label={t("withdrawals.details.balancesReadModelName")} value={<span className="font-bold">{item.getTextFor("balancesReadModelName")}</span>} />
               <DetailsCardItem label={t("withdrawals.headers.details")} value={<span className="font-semibold">{item.getTextFor("paymentMethodName")}</span>} />
               <DetailsCardItem label={t("withdrawalsreadmodels.headers.status")} value={<StatusBadge text={item.getTextFor("status")} />} />
             </div>
