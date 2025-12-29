@@ -1,9 +1,9 @@
 import { useMemo } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/components/ui/card"
-import { Badge } from "@/shared/components/ui/badge"
+// import { Badge } from "@/shared/components/ui/badge"
 import { Bar, BarChart, Line, LineChart, CartesianGrid, XAxis, YAxis, Area, AreaChart } from "recharts"
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/shared/components/ui/chart"
-import { Server, AlertTriangle, Activity, Zap, TrendingDown, TrendingUp, CheckCircle, XCircle, Loader } from "lucide-react"
+import { AlertTriangle, Activity, Zap, TrendingDown, TrendingUp, CheckCircle, XCircle, Loader, Timer, Database } from "lucide-react"
 import { useTranslation } from "react-i18next"
 import { DailyMetricDto } from "@/shared/api/types.gen"
 
@@ -27,7 +27,7 @@ const chartConfig = {
   errorRate: { label: "Error Rate", color: "hsl(var(--chart-3))" },
 } satisfies ChartConfig
 
-export default function TechnicalAnalyticsTab({ metrics, currentMetrics, isLoading = false }: TechnicalAnalyticsTabProps) {
+export default function TechnicalAnalyticsTab({ metrics, isLoading = false }: TechnicalAnalyticsTabProps) {
   const { t } = useTranslation()
 
   // Convert real metrics to technical data - only use real data, no fake data
@@ -35,9 +35,9 @@ export default function TechnicalAnalyticsTab({ metrics, currentMetrics, isLoadi
     return metrics.map((metric) => ({
       date: metric.metricDate,
       dayOfWeek: new Date(metric.metricDate).toLocaleDateString("en-US", { weekday: "short" }),
-      totalApiCalls: metric.apiCallsCount,
-      errorCount: metric.errorsCount,
-      errorRate: metric.failureRate,
+      totalApiCalls: metric.apiCallsCount || 0,
+      errorCount: metric.errorsCount || 0,
+      errorRate: metric.failureRate || 0,
     }))
   }, [metrics])
 
@@ -300,10 +300,10 @@ export default function TechnicalAnalyticsTab({ metrics, currentMetrics, isLoadi
                 <div className="flex items-center justify-between">
                   <div>
                     <div className="font-medium">{t("analytics.technical.analysis.fastestDay")}</div>
-                    <div className="text-sm text-muted-foreground">{analysis.fastestDay.dayOfWeek}</div>
+                    {/* <div className="text-sm text-muted-foreground">{analysis.fastestDay.dayOfWeek}</div> */}
                   </div>
                   <div className="text-right">
-                    <div className="font-bold text-blue-600">{analysis.fastestDay.avgResponseTime.toFixed(0)}ms</div>
+                    {/* <div className="font-bold text-blue-600">{analysis.fastestDay.avgResponseTime.toFixed(0)}ms</div> */}
                     <div className="text-xs text-muted-foreground">{t("analytics.technical.analysis.avgResponse")}</div>
                   </div>
                 </div>
@@ -313,10 +313,10 @@ export default function TechnicalAnalyticsTab({ metrics, currentMetrics, isLoadi
                 <div className="flex items-center justify-between">
                   <div>
                     <div className="font-medium">{t("analytics.technical.analysis.bestUptimeDay")}</div>
-                    <div className="text-sm text-muted-foreground">{analysis.leastDowntimeDay.dayOfWeek}</div>
+                    {/* <div className="text-sm text-muted-foreground">{analysis.leastDowntimeDay.dayOfWeek}</div> */}
                   </div>
                   <div className="text-right">
-                    <div className="font-bold text-purple-600">{analysis.leastDowntimeDay.uptime.toFixed(2)}%</div>
+                    {/* <div className="font-bold text-purple-600">{analysis.leastDowntimeDay.uptime.toFixed(2)}%</div> */}
                     <div className="text-xs text-muted-foreground">{t("analytics.technical.analysis.uptime")}</div>
                   </div>
                 </div>
@@ -355,10 +355,10 @@ export default function TechnicalAnalyticsTab({ metrics, currentMetrics, isLoadi
                 <div className="flex items-center justify-between">
                   <div>
                     <div className="font-medium">{t("analytics.technical.analysis.slowestDay")}</div>
-                    <div className="text-sm text-muted-foreground">{analysis.slowestDay.dayOfWeek}</div>
+                    {/* <div className="text-sm text-muted-foreground">{analysis.slowestDay.dayOfWeek}</div> */}
                   </div>
                   <div className="text-right">
-                    <div className="font-bold text-orange-600">{analysis.slowestDay.avgResponseTime.toFixed(0)}ms</div>
+                    {/* <div className="font-bold text-orange-600">{analysis.slowestDay.avgResponseTime.toFixed(0)}ms</div> */}
                     <div className="text-xs text-muted-foreground">{t("analytics.technical.analysis.avgResponse")}</div>
                   </div>
                 </div>
@@ -368,10 +368,10 @@ export default function TechnicalAnalyticsTab({ metrics, currentMetrics, isLoadi
                 <div className="flex items-center justify-between">
                   <div>
                     <div className="font-medium">{t("analytics.technical.analysis.mostDowntimeDay")}</div>
-                    <div className="text-sm text-muted-foreground">{analysis.mostDowntimeDay.dayOfWeek}</div>
+                    {/* <div className="text-sm text-muted-foreground">{analysis.mostDowntimeDay.dayOfWeek}</div> */}
                   </div>
                   <div className="text-right">
-                    <div className="font-bold text-yellow-600">{analysis.mostDowntimeDay.downtime.toFixed(2)}%</div>
+                    {/* <div className="font-bold text-yellow-600">{analysis.mostDowntimeDay.downtime.toFixed(2)}%</div> */}
                     <div className="text-xs text-muted-foreground">{t("analytics.technical.analysis.downtime")}</div>
                   </div>
                 </div>
@@ -405,16 +405,16 @@ export default function TechnicalAnalyticsTab({ metrics, currentMetrics, isLoadi
                 </tr>
               </thead>
               <tbody>
-                {technicalData.map((day, index) => (
+                {technicalData.map((day) => (
                   <tr key={day.date} className="border-b hover:bg-muted/50">
                     <td className="p-2 font-medium">{day.dayOfWeek}</td>
                     <td className="p-2 text-right font-mono">{day.totalApiCalls.toLocaleString()}</td>
                     <td className="p-2 text-right font-mono">{day.errorCount.toLocaleString()}</td>
                     <td className="p-2 text-right font-mono">{day.errorRate.toFixed(2)}%</td>
-                    <td className="p-2 text-right font-mono">{day.avgResponseTime.toFixed(0)}ms</td>
-                    <td className="p-2 text-right font-mono">{day.uptime.toFixed(2)}%</td>
+                    {/* <td className="p-2 text-right font-mono">{day.avgResponseTime.toFixed(0)}ms</td> */}
+                    {/* <td className="p-2 text-right font-mono">{day.uptime.toFixed(2)}%</td> */}
                     <td className="p-2 text-right">
-                      <Badge
+                      {/* <Badge
                         variant="outline"
                         className={
                           day.uptime >= 99.5 && day.errorRate < 1
@@ -429,7 +429,7 @@ export default function TechnicalAnalyticsTab({ metrics, currentMetrics, isLoadi
                           : day.uptime >= 99 && day.errorRate < 2
                             ? t("analytics.technical.summary.good")
                             : t("analytics.technical.summary.issues")}
-                      </Badge>
+                      </Badge> */}
                     </td>
                   </tr>
                 ))}

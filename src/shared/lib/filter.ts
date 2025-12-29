@@ -1,7 +1,7 @@
 import { z } from "zod"
-import { FilterFieldConfig, FilterSection } from "@/shared/types"
-import { FilterFieldType } from "@/shared/enums/filter"
-import { EXCLUDED_FIELDS } from "@/shared/lib/constant"
+import { FilterFieldConfig, FilterSection } from "../types/filter"
+import { FilterFieldType } from "../enums/filter"
+import { EXCLUDED_FIELDS } from "../lib/constant"
 import { useTranslation } from "react-i18next"
 
 export function inferFilterTypeFromZodSchema(zodType: z.ZodType<any>): FilterFieldType {

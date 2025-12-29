@@ -1,12 +1,10 @@
-import { useNavigate } from "@tanstack/react-router"
 import { useTranslation } from "react-i18next"
 import { useEffect, useMemo, useState } from "react"
 import { DataGrid } from "@/shared/components/data-grid/data-grid"
-import { DataGridColumnHeader, DataGridRowEntry, DataGridSort } from "@/shared/types"
+import { DataGridColumnHeader, DataGridSort } from "@/shared/types"
 import { SortDirection } from "@/shared/enums/data-grid"
 import { Button } from "@/shared/components/ui/button"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/shared/components/ui/dropdown-menu"
-import { MoreHorizontal, Eye, Edit, Trash2, Plus } from "lucide-react"
+import { Plus } from "lucide-react"
 import { useCompanyAppLimit } from "@/features/company-app-limits/hooks/useCompanyAppLimit"
 import { BaseFilter } from "@/shared/components/filter/base-filter"
 import { zSearchCompanyAppLimitRequest } from "@/shared/api/zod.gen"
@@ -17,7 +15,6 @@ import { ModalWrapper } from "@/shared/components/ModalWrapper"
 import { CompanyAppLimitCreateForm } from "@/features/company-app-limits/components/CompanyAppLimitCreateForm"
 
 export function CompanyAppLimitsTab({ companyId }: { companyId: string }) {
-  const navigate = useNavigate()
   const { t } = useTranslation()
 
   const [showCreateModal, setShowCreateModal] = useState(false)
@@ -43,8 +40,6 @@ export function CompanyAppLimitsTab({ companyId }: { companyId: string }) {
     changePageSize,
     changeSort,
     setSelectedRows,
-    deleteCompanyAppLimit,
-    bulkDeleteMutation,
     createMutation,
   } = useCompanyAppLimit()
 
@@ -107,31 +102,11 @@ export function CompanyAppLimitsTab({ companyId }: { companyId: string }) {
     return companyAppLimits.map((item) => new CommonDataGridEntry(item as Entity))
   }, [companyAppLimits])
 
-  const handleView = (id: string) => {
-    navigate({ to: `/administration/company-app-limits/${id}` })
-  }
-
-  const handleEdit = (id: string) => {
-    navigate({ to: `/administration/company-app-limits/${id}/edit` })
-  }
-
-  const handleDelete = (id: string) => {
-    if (confirm(t("companyAppLimits.messages.delete.confirm"))) {
-      deleteCompanyAppLimit(id)
-    }
-  }
-
-  const handleBulkDelete = () => {
-    if (confirm(t("companyAppLimits.bulk.deleteConfirm", { count: selectedRows.length }))) {
-      bulkDeleteMutation.mutate(selectedRows)
-    }
-  }
-
   const sortConfig: DataGridSort | undefined = sortBy
     ? {
-        column: sortBy,
-        direction: sortDirection === "desc" ? SortDirection.DESC : SortDirection.ASC,
-      }
+      column: sortBy,
+      direction: sortDirection === "desc" ? SortDirection.DESC : SortDirection.ASC,
+    }
     : undefined
 
   const handleSortChange = (config: DataGridSort) => {
@@ -147,17 +122,6 @@ export function CompanyAppLimitsTab({ companyId }: { companyId: string }) {
     changePage(page)
     changePageSize(size)
   }
-
-  const bulkActions = hasSelection
-    ? [
-        {
-          label: bulkDeleteMutation.isPending ? t("companyAppLimits.bulk.deleting") : t("companyAppLimits.bulk.delete", { count: selectedRows.length }),
-          action: handleBulkDelete,
-          variant: "destructive" as const,
-          loading: bulkDeleteMutation.isPending,
-        },
-      ]
-    : undefined
 
   const handleSubmit = (data: UpdateCompanyAppLimitRequest) => {
     createMutation.mutate(
@@ -210,8 +174,8 @@ export function CompanyAppLimitsTab({ companyId }: { companyId: string }) {
             onSortChange={handleSortChange}
             enableColumnVisibility={true}
             hiddenColumns={[]}
-            onColumnVisibilityChange={() => {}}
-            bulkActions={bulkActions}
+            onColumnVisibilityChange={() => { }}
+            dispatch={() => { }}
           />
         </CardContent>
       </Card>

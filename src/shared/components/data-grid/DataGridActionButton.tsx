@@ -13,7 +13,7 @@ export type DataGridRowActionIconType = {
   shouldCollapseTextOnMobile?: boolean
 }
 
-const enum ActionButtonStyles {
+enum ActionButtonStyles {
   view = "hover:bg-primary/20 text-primary",
   edit = "hover:bg-blue-200 text-blue-600",
   changeStatus = "hover:bg-blue-200 text-blue-800",
@@ -43,7 +43,7 @@ const DataGridRowActionIcon = ({ row, action, dispatch, isLoading = false, disab
         type="button"
         data-test-id={`action-${action.key}`}
         onClick={() => dispatch(action.key, row.getId())}
-        className={`btn border w-full lg:auto btn-sm p-2 lg:p-1 rounded-md relative border-transparent shadow-none cursor-pointer hover:shadow-md ${ActionButtonStyles[action.key]}`}
+        className={`btn border w-full lg:auto btn-sm p-2 lg:p-1 rounded-md relative border-transparent shadow-none cursor-pointer hover:shadow-md ${ActionButtonStyles[action.key as keyof typeof ActionButtonStyles]}`}
       >
         {isLoading && (
           <div className="bg-background opacity-60 h-5 w-5 absolute flex justify-center items-center">

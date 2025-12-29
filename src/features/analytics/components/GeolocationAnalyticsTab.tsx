@@ -10,13 +10,11 @@ interface GeolocationAnalyticsTabProps {
   isLoading?: boolean
 }
 
-export default function GeolocationAnalyticsTab({ metrics, paymentMethodMetrics, currentMetrics, isLoading = false }: GeolocationAnalyticsTabProps) {
+export default function GeolocationAnalyticsTab({ currentMetrics, isLoading = false }: GeolocationAnalyticsTabProps) {
   const { t } = useTranslation()
 
-  // Note: Geolocation data is not available in the current API response
-  // This tab is prepared for future geolocation features
   const totalUsers = currentMetrics?.activeUsers || 0
-  const totalTransactions = currentMetrics ? currentMetrics.totalReceipts + currentMetrics.totalWithdrawals + currentMetrics.totalFundTransfers : 0
+  const totalTransactions = currentMetrics ? ((currentMetrics.totalReceipts || 0) + (currentMetrics.totalWithdrawals || 0) + (currentMetrics.totalFundTransfers || 0)) : 0
   const totalVolume = currentMetrics?.totalVolume || 0
 
   return (

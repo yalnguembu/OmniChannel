@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react"
+import { useState, useMemo, ReactNode } from "react"
 import { useTranslation } from "react-i18next"
 import { StandardListPageLayout } from "@/shared/components/layouts/ListPageLayout"
 import { ListPageHeader } from "../../../shared/components/ListPageHeader"
@@ -7,7 +7,7 @@ import { CreateSmsmailTemplateRequest, SearchSmsmailTemplateRequest, SmsmailTemp
 import { zSearchSmsmailTemplateRequest } from "@/shared/api/zod.gen"
 import { SmsmailTemplateCreateForm } from "../components/SmsMailTemplateCreateForm"
 import { DataGrid } from "@/shared/components/data-grid/data-grid"
-import { DataGridColumnHeader, DataGridRowEntry, DataGridSort } from "@/shared/types"
+import { DataGridColumnHeader, DataGridRowEntry, DataGridSort, ViewMode } from "@/shared/types"
 import { SortDirection } from "@/shared/enums/data-grid"
 import { Button } from "@/shared/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/shared/components/ui/dropdown-menu"
@@ -33,7 +33,7 @@ export function SmsmailTemplatesListPage() {
     setSelectedRows,
     deleteSmsmailTemplate,
     isLoading,
-
+    totalItems,
     viewMode,
     setViewMode,
     refreshData,
@@ -120,8 +120,8 @@ export function SmsmailTemplatesListPage() {
     }
   }
 
-  const renderCell = (item: DataGridRowEntry, columnKey: string) => {
-    switch (columnKey) {
+  const renderCell = (item: DataGridRowEntry, column: DataGridColumnHeader, _view: ViewMode): ReactNode => {
+    switch (column.key) {
       case "actions":
         return (
           <DropdownMenu>
@@ -148,7 +148,7 @@ export function SmsmailTemplatesListPage() {
           </DropdownMenu>
         )
       default:
-        return item.getTextFor(columnKey) || "N/A"
+        return item.getTextFor(column.key) || "N/A"
     }
   }
 
@@ -170,9 +170,9 @@ export function SmsmailTemplatesListPage() {
 
   const sortConfig: DataGridSort | undefined = sortBy
     ? {
-        column: sortBy,
-        direction: sortDirection === "desc" ? SortDirection.DESC : SortDirection.ASC,
-      }
+      column: sortBy,
+      direction: sortDirection === "desc" ? SortDirection.DESC : SortDirection.ASC,
+    }
     : undefined
 
   const handleSortChange = (config: DataGridSort) => {
@@ -264,7 +264,8 @@ export function SmsmailTemplatesListPage() {
               onSortChange={handleSortChange}
               enableColumnVisibility={true}
               hiddenColumns={[]}
-              onColumnVisibilityChange={() => {}}
+              onColumnVisibilityChange={() => { }}
+              dispatch={() => { }}
               renderCell={renderCell}
             />
           </div>

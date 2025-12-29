@@ -5,7 +5,6 @@ import { StandardListPageLayout } from "@/shared/components/layouts/ListPageLayo
 import { CreatePageHeader } from "@/shared/components/CreatePageHeader"
 import { WithdrawalMethodEditForm } from "../components/WithdrawalMethodEditForm"
 import { Loader2 } from "lucide-react"
-// import { toast } from "sonner"
 import { useWithdrawalMethod } from "../hooks/useWithdrawalMethod"
 import { UpdateWithdrawalMethodRequest } from "@/shared/api"
 
@@ -64,7 +63,7 @@ export function EditWithdrawalMethodPage() {
           ]}
         />
       }
-      content={<WithdrawalMethodEditForm withdrawalMethodId={id} initialData={data} onSubmit={handleSubmit} onCancel={handleCancel} isLoading={false} />}
+      content={<WithdrawalMethodEditForm withdrawalMethodId={id} initialData={data as any} onSubmit={handleSubmit as any} onCancel={handleCancel} isLoading={false} />}
     />
   )
 }

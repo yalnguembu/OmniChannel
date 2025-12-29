@@ -1,12 +1,10 @@
-import { useNavigate } from "@tanstack/react-router"
 import { useTranslation } from "react-i18next"
 import { useMemo, useState } from "react"
 import { DataGrid } from "@/shared/components/data-grid/data-grid"
-import { DataGridColumnHeader, DataGridRowEntry, DataGridSort } from "@/shared/types"
+import { DataGridColumnHeader, DataGridSort } from "@/shared/types"
 import { SortDirection } from "@/shared/enums/data-grid"
 import { Button } from "@/shared/components/ui/button"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/shared/components/ui/dropdown-menu"
-import { MoreHorizontal, Eye, Edit, Trash2, Plus } from "lucide-react"
+import { Plus } from "lucide-react"
 import { useWithdrawalMethod } from "@/features/withdrawal-methods/hooks/useWithdrawalMethod"
 import { BaseFilter } from "@/shared/components/filter/base-filter"
 import { zSearchWithdrawalMethodRequest } from "@/shared/api/zod.gen"
@@ -17,7 +15,6 @@ import { ModalWrapper } from "@/shared/components/ModalWrapper"
 import { WithdrawalMethodCreateForm } from "@/features/withdrawal-methods/components/WithdrawalMethodCreateForm"
 
 export function WithdrawalMethodsTab({ companyId }: { companyId: string }) {
-  const navigate = useNavigate()
   const { t } = useTranslation()
 
   const [showCreateModal, setShowCreateModal] = useState(false)
@@ -42,7 +39,6 @@ export function WithdrawalMethodsTab({ companyId }: { companyId: string }) {
     changePageSize,
     changeSort,
     setSelectedRows,
-    deleteWithdrawalMethod,
     createMutation,
   } = useWithdrawalMethod()
 
@@ -125,25 +121,11 @@ export function WithdrawalMethodsTab({ companyId }: { companyId: string }) {
     return withdrawalMethods.map((item) => new CommonDataGridEntry(item as Entity))
   }, [withdrawalMethods])
 
-  const handleView = (id: string) => {
-    navigate({ to: `/withdrawalMethod/${id}` })
-  }
-
-  const handleEdit = (id: string) => {
-    navigate({ to: `/access-control/withdrawalMethods/${id}/edit` })
-  }
-
-  const handleDelete = (id: string) => {
-    if (confirm(t("withdrawalMethod.messages.delete.confirm"))) {
-      deleteWithdrawalMethod(id)
-    }
-  }
-
   const sortConfig: DataGridSort | undefined = sortBy
     ? {
-        column: sortBy,
-        direction: sortDirection === "desc" ? SortDirection.DESC : SortDirection.ASC,
-      }
+      column: sortBy,
+      direction: sortDirection === "desc" ? SortDirection.DESC : SortDirection.ASC,
+    }
     : undefined
 
   const handleSortChange = (config: DataGridSort) => {
@@ -209,7 +191,8 @@ export function WithdrawalMethodsTab({ companyId }: { companyId: string }) {
             onSortChange={handleSortChange}
             enableColumnVisibility={true}
             hiddenColumns={[]}
-            onColumnVisibilityChange={() => {}}
+            onColumnVisibilityChange={() => { }}
+            dispatch={() => { }}
           />
         </CardContent>
       </Card>

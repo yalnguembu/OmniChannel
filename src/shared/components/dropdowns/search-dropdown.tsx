@@ -21,7 +21,7 @@ export interface SearchDropdownProps {
   searchTerm?: string
   debounce?: boolean
   isLoading?: boolean
-  onSearch?: (search: string) => void // for server-side search
+  onSearch?: (search: string) => void
 }
 
 export const SearchDropdown: React.FC<SearchDropdownProps> = ({

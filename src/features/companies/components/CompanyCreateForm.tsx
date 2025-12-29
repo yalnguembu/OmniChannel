@@ -15,7 +15,7 @@ import { useCountry } from "@/features/countries/hooks/useCountry"
 import { useCompany } from "../hooks/useCompany"
 
 interface CompanyCreateFormProps {
-  onSubmit: (data: CreateCompanyRequest) => void
+  onSubmit: (data: CreateCompanyRequest, setError: any) => void
   onCancel: () => void
   isLoading?: boolean
 

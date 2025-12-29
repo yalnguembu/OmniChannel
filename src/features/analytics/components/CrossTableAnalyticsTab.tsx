@@ -37,7 +37,7 @@ const chartConfig = {
   users: { label: "Users", color: "hsl(var(--chart-4))" },
 } satisfies ChartConfig
 
-export default function CrossTableAnalyticsTab({ metrics, currentMetrics, isLoading = false }: CrossTableAnalyticsTabProps) {
+export default function CrossTableAnalyticsTab({ metrics, isLoading = false }: CrossTableAnalyticsTabProps) {
   const { t } = useTranslation()
 
   // Use real metrics data
@@ -48,25 +48,25 @@ export default function CrossTableAnalyticsTab({ metrics, currentMetrics, isLoad
     const processedData: CompanyApplicationMetrics[] = effectiveMetrics
       .filter((metric) => metric.companyName && metric.applicationName)
       .map((metric) => {
-        const totalTransactions = metric.totalReceipts + metric.totalWithdrawals + metric.totalFundTransfers
-        const successfulTransactions = metric.successfulReceipts + metric.successfulWithdrawals + metric.successfulFundTransfers
+        const totalTransactions = (metric.totalReceipts || 0) + (metric.totalWithdrawals || 0) + (metric.totalFundTransfers || 0)
+        const successfulTransactions = (metric.successfulReceipts || 0) + (metric.successfulWithdrawals || 0) + (metric.successfulFundTransfers || 0)
         const successRate = totalTransactions > 0 ? (successfulTransactions / totalTransactions) * 100 : 0
-        const profitMargin = metric.totalFees > 0 ? ((metric.totalFees - metric.totalProviderFees) / metric.totalFees) * 100 : 0
-        const feeEfficiency = metric.totalVolume > 0 ? (metric.totalFees / metric.totalVolume) * 100 : 0
-        const userProductivity = metric.activeUsers > 0 ? totalTransactions / metric.activeUsers : 0
-        const revenuePerTransaction = totalTransactions > 0 ? metric.netRevenue / totalTransactions : 0
+        const profitMargin = (metric.totalFees || 0) > 0 ? (((metric.totalFees || 0) - (metric.totalProviderFees || 0)) / (metric.totalFees || 0)) * 100 : 0
+        const feeEfficiency = (metric.totalVolume || 0) > 0 ? ((metric.totalFees || 0) / (metric.totalVolume || 0)) * 100 : 0
+        const userProductivity = (metric.activeUsers || 0) > 0 ? totalTransactions / (metric.activeUsers || 0) : 0
+        const revenuePerTransaction = totalTransactions > 0 ? (metric.netRevenue || 0) / totalTransactions : 0
 
         return {
           companyId: metric.companyId || "unknown",
           companyName: metric.companyName || "Unknown Company",
           applicationId: metric.applicationId || "unknown",
           applicationName: metric.applicationName || "Unknown Application",
-          totalVolume: metric.totalVolume,
-          totalFees: metric.totalFees,
-          netRevenue: metric.netRevenue,
+          totalVolume: metric.totalVolume || 0,
+          totalFees: metric.totalFees || 0,
+          netRevenue: metric.netRevenue || 0,
           totalTransactions,
           successRate,
-          activeUsers: metric.activeUsers,
+          activeUsers: metric.activeUsers || 0,
           profitMargin,
           feeEfficiency,
           userProductivity,
@@ -270,7 +270,7 @@ export default function CrossTableAnalyticsTab({ metrics, currentMetrics, isLoad
             <ChartContainer config={chartConfig} className="h-[300px]">
               <PieChart>
                 <Pie data={topPerformers.mostRevenue.slice(0, 6)} dataKey="netRevenue" nameKey="companyName" cx="50%" cy="50%" outerRadius={80} fill="hsl(var(--chart-2))">
-                  {topPerformers.mostRevenue.slice(0, 6).map((entry, index) => (
+                  {topPerformers.mostRevenue.slice(0, 6).map((_entry, index) => (
                     <Cell key={`cell-${index}`} fill={`hsl(var(--chart-${(index % 5) + 1}))`} />
                   ))}
                 </Pie>
@@ -507,7 +507,7 @@ export default function CrossTableAnalyticsTab({ metrics, currentMetrics, isLoad
               <tbody>
                 {companyAggregates
                   .sort((a, b) => b.totalVolume - a.totalVolume)
-                  .map((company, index) => (
+                  .map((company) => (
                     <tr key={company.companyName} className="border-b hover:bg-muted/50">
                       <td className="p-2 font-medium">{company.companyName}</td>
                       <td className="p-2 text-right font-mono">{company.applicationCount}</td>

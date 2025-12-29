@@ -105,7 +105,7 @@ export default function OverviewTab({
 
     // Risk assessment based on balances and metrics
     const reconciliationRisk = effectiveBalances.filter((bal) => bal.reconciliationStatus !== "RECONCILED").length
-    const riskLevel = reconciliationRisk > 0 ? "MEDIUM" : effectiveMetrics.failureRate > 5 ? "HIGH" : "LOW"
+    const riskLevel = reconciliationRisk > 0 ? "MEDIUM" : (effectiveMetrics.failureRate || 0) > 5 ? "HIGH" : "LOW"
 
     return {
       totalBalance,
@@ -158,7 +158,7 @@ export default function OverviewTab({
             <DollarSign className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{((effectiveMetrics.totalVolume + analytics.totalBalance) / 1000000).toFixed(1)}M XAF</div>
+            <div className="text-2xl font-bold">{(((effectiveMetrics.totalVolume || 0) + analytics.totalBalance) / 1000000).toFixed(1)}M XAF</div>
             <div className="flex items-center gap-1 text-xs text-muted-foreground">
               <TrendingUp className="h-3 w-3 text-green-600" />
               {t("analytics.enhanced.combinedVolume")}
@@ -227,31 +227,31 @@ export default function OverviewTab({
               <div className="space-y-3">
                 <div className="grid grid-cols-4 gap-4 py-2">
                   <div className="font-medium">{t("analytics.overview.transactionBreakdown.receipts")}</div>
-                  <div>{effectiveMetrics.totalReceipts.toLocaleString()}</div>
-                  <div>{effectiveMetrics.successfulReceipts.toLocaleString()}</div>
+                  <div>{effectiveMetrics.totalReceipts?.toLocaleString()}</div>
+                  <div>{effectiveMetrics.successfulReceipts?.toLocaleString()}</div>
                   <div>
                     <Badge variant="outline" className="bg-green-50 text-green-600">
-                      {effectiveMetrics.receiptsSuccessRate.toFixed(1)}%
+                      {effectiveMetrics.receiptsSuccessRate?.toFixed(1)}%
                     </Badge>
                   </div>
                 </div>
                 <div className="grid grid-cols-4 gap-4 py-2">
                   <div className="font-medium">{t("analytics.overview.transactionBreakdown.withdrawals")}</div>
-                  <div>{effectiveMetrics.totalWithdrawals.toLocaleString()}</div>
-                  <div>{effectiveMetrics.successfulWithdrawals.toLocaleString()}</div>
+                  <div>{effectiveMetrics.totalWithdrawals?.toLocaleString()}</div>
+                  <div>{effectiveMetrics.successfulWithdrawals?.toLocaleString()}</div>
                   <div>
                     <Badge variant="outline" className="bg-blue-50 text-blue-600">
-                      {effectiveMetrics.withdrawalsSuccessRate.toFixed(1)}%
+                      {effectiveMetrics.withdrawalsSuccessRate?.toFixed(1)}%
                     </Badge>
                   </div>
                 </div>
                 <div className="grid grid-cols-4 gap-4 py-2">
                   <div className="font-medium">{t("analytics.overview.transactionBreakdown.fundTransfers")}</div>
-                  <div>{effectiveMetrics.totalFundTransfers.toLocaleString()}</div>
-                  <div>{effectiveMetrics.successfulFundTransfers.toLocaleString()}</div>
+                  <div>{effectiveMetrics.totalFundTransfers?.toLocaleString()}</div>
+                  <div>{effectiveMetrics.successfulFundTransfers?.toLocaleString()}</div>
                   <div>
                     <Badge variant="outline" className="bg-purple-50 text-purple-600">
-                      {effectiveMetrics.fundTransfersSuccessRate.toFixed(1)}%
+                      {effectiveMetrics.fundTransfersSuccessRate?.toFixed(1)}%
                     </Badge>
                   </div>
                 </div>
@@ -278,11 +278,11 @@ export default function OverviewTab({
                 {paymentMethodMetrics.map((method) => (
                   <div key={method.paymentMethodId} className="grid grid-cols-4 gap-4 py-2">
                     <div className="font-medium">{method.paymentMethodName}</div>
-                    <div>{method.transactionCount.toLocaleString()}</div>
-                    <div>{(method.totalAmount / 1000000).toFixed(1)}M</div>
+                    <div>{method.transactionCount?.toLocaleString()}</div>
+                    <div>{((method.totalAmount ?? 0) / 1000000).toFixed(1)}M</div>
                     <div>
                       <Badge variant="outline" className="bg-green-50 text-green-600">
-                        {method.successRate.toFixed(1)}%
+                        {method.successRate?.toFixed(1)}%
                       </Badge>
                     </div>
                   </div>

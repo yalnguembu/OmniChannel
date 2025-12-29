@@ -54,25 +54,6 @@ interface DailyMetricDto {
   totalProviderFees: number
 }
 
-interface DailyMetricsByPaymentMethodDto {
-  id?: string
-  createdAt?: string
-  paymentMethodId: string
-  companyId?: string | null
-  applicationId?: string | null
-  metricDate: string
-  transactionCount: number
-  successfulTransactions: number
-  failedTransactions: number
-  successRate: number
-  paymentMethodName?: string | null
-  paymentMethodCode?: string | null
-  currency?: string | null
-  totalAmount: number
-  averageAmount: number
-}
-
-// Lazy loaded tab components
 const OverviewTab = lazy(() => import("./components/OverviewTabDashboard"))
 const TransactionAnalyticsTab = lazy(() => import("./components/TransactionAnalyticsTab"))
 const FinancialAnalyticsTab = lazy(() => import("./components/FinancialAnalyticsTab"))
@@ -88,7 +69,6 @@ export function AnalyticsPage() {
   const [timeRange, setTimeRange] = useState("7d")
   const [activeTab, setActiveTab] = useState("overview")
 
-  // Calculate date range based on timeRange selection
   const effectiveDateRange = useMemo(() => {
     if (dateRange) return dateRange
 
@@ -101,7 +81,6 @@ export function AnalyticsPage() {
     }
   }, [dateRange, timeRange])
 
-  // Fetch daily metrics
   const { data: metricsData, isLoading: metricsLoading } = useQuery({
     ...postApiDailyMetricSearchOptions({
       body: {
@@ -117,7 +96,6 @@ export function AnalyticsPage() {
     staleTime: 1000 * 60 * 5,
   })
 
-  // Fetch payment method metrics
   const { data: paymentMethodData, isLoading: paymentMethodLoading } = useQuery({
     ...postApiDailyMetricsByPaymentMethodSearchOptions({
       body: {
@@ -133,7 +111,6 @@ export function AnalyticsPage() {
     staleTime: 1000 * 60 * 5,
   })
 
-  // Fetch balances data for liquidity ratio and health board
   const { data: balancesData, isLoading: balancesLoading } = useQuery({
     ...postApiBalancesReadModelSearchOptions({
       body: {
@@ -147,16 +124,16 @@ export function AnalyticsPage() {
     staleTime: 1000 * 60 * 5,
   })
 
-  const metrics = metricsData?.data.items || []
-  const paymentMethodMetrics = paymentMethodData?.data.items || []
-  const balances = balancesData?.data.items || []
+  const metrics = metricsData?.data?.items || []
+  const paymentMethodMetrics = paymentMethodData?.data?.items || []
+  const balances = balancesData?.data?.items || []
   const loading = metricsLoading || paymentMethodLoading || balancesLoading
 
   const currentMetrics = metrics[0]
-  const totalTransactions = currentMetrics ? currentMetrics.totalReceipts + currentMetrics.totalWithdrawals + currentMetrics.totalFundTransfers : 0
-  const totalSuccessfulTransactions = currentMetrics ? currentMetrics.successfulReceipts + currentMetrics.successfulWithdrawals + currentMetrics.successfulFundTransfers : 0
+  const totalTransactions = currentMetrics ? (currentMetrics.totalReceipts || 0) + (currentMetrics.totalWithdrawals || 0) + (currentMetrics.totalFundTransfers || 0) : 0
+  const totalSuccessfulTransactions = currentMetrics ? (currentMetrics.successfulReceipts || 0) + (currentMetrics.successfulWithdrawals || 0) + (currentMetrics.successfulFundTransfers || 0) : 0
   const overallSuccessRate = totalTransactions > 0 ? (totalSuccessfulTransactions / totalTransactions) * 100 : 0
-  const profitMargin = currentMetrics && currentMetrics.totalFees > 0 ? ((currentMetrics.totalFees - currentMetrics.totalProviderFees) / currentMetrics.totalFees) * 100 : 0
+  const profitMargin = currentMetrics && (currentMetrics.totalFees || 0) > 0 ? (((currentMetrics.totalFees || 0) - (currentMetrics.totalProviderFees || 0)) / (currentMetrics.totalFees || 0)) * 100 : 0
 
   const analyticsTabs = [
     {
@@ -262,9 +239,9 @@ export function AnalyticsPage() {
               }
             >
               <OverviewTab
-                metrics={metrics}
-                paymentMethodMetrics={paymentMethodMetrics}
-                currentMetrics={currentMetrics}
+                metrics={metrics as DailyMetricDto[]}
+                paymentMethodMetrics={paymentMethodMetrics as DailyMetricDto[]}
+                currentMetrics={currentMetrics as DailyMetricDto}
                 totalTransactions={totalTransactions}
                 overallSuccessRate={overallSuccessRate}
                 profitMargin={profitMargin}
@@ -282,7 +259,7 @@ export function AnalyticsPage() {
                 </div>
               }
             >
-              <TransactionAnalyticsTab metrics={metrics} paymentMethodMetrics={paymentMethodMetrics} currentMetrics={currentMetrics} isLoading={loading} />
+              <TransactionAnalyticsTab metrics={metrics as DailyMetricDto[]} paymentMethodMetrics={paymentMethodMetrics as DailyMetricDto[]} currentMetrics={currentMetrics as DailyMetricDto} isLoading={loading} />
             </Suspense>
           </TabsContent>
 
@@ -294,7 +271,7 @@ export function AnalyticsPage() {
                 </div>
               }
             >
-              <FinancialAnalyticsTab metrics={metrics} currentMetrics={currentMetrics} totalTransactions={totalTransactions} profitMargin={profitMargin} isLoading={loading} />
+              <FinancialAnalyticsTab metrics={metrics as DailyMetricDto[]} currentMetrics={currentMetrics as DailyMetricDto} totalTransactions={totalTransactions} profitMargin={profitMargin} isLoading={loading} />
             </Suspense>
           </TabsContent>
 
@@ -307,9 +284,9 @@ export function AnalyticsPage() {
               }
             >
               <BusinessIntelligenceTab
-                metrics={metrics}
-                paymentMethodMetrics={paymentMethodMetrics}
-                currentMetrics={currentMetrics}
+                metrics={metrics as DailyMetricDto[]}
+                paymentMethodMetrics={paymentMethodMetrics as DailyMetricDto[]}
+                currentMetrics={currentMetrics as DailyMetricDto}
                 totalTransactions={totalTransactions}
                 overallSuccessRate={overallSuccessRate}
                 isLoading={loading}
@@ -326,8 +303,7 @@ export function AnalyticsPage() {
               }
             >
               <MathematicalAnalyticsTab
-                metrics={metrics}
-                currentMetrics={currentMetrics}
+                currentMetrics={currentMetrics as DailyMetricDto}
                 totalTransactions={totalTransactions}
                 overallSuccessRate={overallSuccessRate}
                 isLoading={loading}
@@ -343,7 +319,7 @@ export function AnalyticsPage() {
                 </div>
               }
             >
-              <CrossTableAnalyticsTab metrics={metrics} currentMetrics={currentMetrics} isLoading={loading} />
+              <CrossTableAnalyticsTab metrics={metrics as DailyMetricDto[]} currentMetrics={currentMetrics as DailyMetricDto} isLoading={loading} />
             </Suspense>
           </TabsContent>
 
@@ -355,7 +331,7 @@ export function AnalyticsPage() {
                 </div>
               }
             >
-              <GeolocationAnalyticsTab metrics={metrics} paymentMethodMetrics={paymentMethodMetrics} currentMetrics={currentMetrics} isLoading={loading} />
+              <GeolocationAnalyticsTab metrics={metrics as DailyMetricDto[]} paymentMethodMetrics={paymentMethodMetrics as DailyMetricDto[]} currentMetrics={currentMetrics as DailyMetricDto} isLoading={loading} />
             </Suspense>
           </TabsContent>
 
@@ -367,7 +343,7 @@ export function AnalyticsPage() {
                 </div>
               }
             >
-              <TechnicalAnalyticsTab metrics={metrics} currentMetrics={currentMetrics} isLoading={loading} />
+              <TechnicalAnalyticsTab metrics={metrics as DailyMetricDto[]} currentMetrics={currentMetrics as DailyMetricDto} isLoading={loading} />
             </Suspense>
           </TabsContent>
         </>

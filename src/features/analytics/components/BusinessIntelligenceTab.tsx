@@ -66,7 +66,7 @@ export default function BusinessIntelligenceTab({ currentMetrics, totalTransacti
               </div>
             ) : (
               <div className="space-y-4">
-                <div className="text-3xl font-bold text-green-600">{safeDivide(overallSuccessRate + (100 - effectiveMetrics.failureRate), 2).toFixed(1)}%</div>
+                <div className="text-3xl font-bold text-green-600">{safeDivide(overallSuccessRate + (100 - (effectiveMetrics.failureRate || 0)), 2).toFixed(1)}%</div>
                 <div className="space-y-2">
                   <div className="flex justify-between text-sm">
                     <span>{t("analytics.business.operationalEfficiency.transactionSuccess")}</span>
@@ -74,7 +74,7 @@ export default function BusinessIntelligenceTab({ currentMetrics, totalTransacti
                   </div>
                   <div className="flex justify-between text-sm">
                     <span>{t("analytics.business.operationalEfficiency.apiReliability")}</span>
-                    <span className="font-medium">{(100 - effectiveMetrics.failureRate).toFixed(1)}%</span>
+                    <span className="font-medium">{(100 - (effectiveMetrics.failureRate || 0)).toFixed(1)}%</span>
                   </div>
                   <div className="flex justify-between text-sm">
                     <span>{t("analytics.business.operationalEfficiency.processingLoad")}</span>
@@ -103,7 +103,7 @@ export default function BusinessIntelligenceTab({ currentMetrics, totalTransacti
               </div>
             ) : (
               <div className="space-y-4">
-                <div className="text-3xl font-bold text-blue-600">{safeDivide(effectiveMetrics.netRevenue, totalTransactions).toFixed(0)} XAF</div>
+                <div className="text-3xl font-bold text-blue-600">{safeDivide(effectiveMetrics.netRevenue || 0, totalTransactions).toFixed(0)} XAF</div>
                 <div className="space-y-2">
                   <div className="flex justify-between text-sm">
                     <span>{t("analytics.business.revenuePerTransaction.receiptsRPT")}</span>
@@ -138,17 +138,17 @@ export default function BusinessIntelligenceTab({ currentMetrics, totalTransacti
               </div>
             ) : (
               <div className="space-y-4">
-                <div className="text-3xl font-bold text-purple-600">{safeDivide(totalTransactions, effectiveMetrics.activeUsers).toFixed(1)}</div>
+                <div className="text-3xl font-bold text-purple-600">{safeDivide(totalTransactions, effectiveMetrics.activeUsers || 0).toFixed(1)}</div>
                 <div className="text-sm text-muted-foreground mb-3">{t("analytics.business.customerEngagement.transactionsPerUser")}</div>
                 <div className="space-y-2">
                   <div className="flex justify-between text-sm">
                     <span>{t("analytics.business.customerEngagement.growthRate")}</span>
-                    <span className="font-medium">{safePercentage(effectiveMetrics.newUsers, effectiveMetrics.activeUsers).toFixed(1)}%</span>
+                    <span className="font-medium">{safePercentage(effectiveMetrics.newUsers || 0, effectiveMetrics.activeUsers || 0).toFixed(1)}%</span>
                   </div>
                   <div className="flex justify-between text-sm">
                     <span>{t("analytics.business.customerEngagement.apiUsage")}</span>
                     <span className="font-medium">
-                      {safeDivide(effectiveMetrics.apiCallsCount, effectiveMetrics.activeUsers).toFixed(1)} {t("analytics.business.customerEngagement.callsPerUser")}
+                      {safeDivide(effectiveMetrics.apiCallsCount || 0, effectiveMetrics.activeUsers || 0).toFixed(1)} {t("analytics.business.customerEngagement.callsPerUser")}
                     </span>
                   </div>
                 </div>
@@ -189,7 +189,7 @@ export default function BusinessIntelligenceTab({ currentMetrics, totalTransacti
                   <div className="text-2xl font-bold text-yellow-600">{effectiveMetrics.errorsCount}</div>
                   <div className="text-sm text-muted-foreground">{t("analytics.business.riskAssessment.apiErrors")}</div>
                   <Badge variant="outline" className="mt-1 bg-yellow-50 text-yellow-600">
-                    {effectiveMetrics.failureRate.toFixed(1)}%
+                    {effectiveMetrics.failureRate?.toFixed(1)}%
                   </Badge>
                 </div>
               </div>
@@ -197,10 +197,10 @@ export default function BusinessIntelligenceTab({ currentMetrics, totalTransacti
               <div className="pt-4 border-t">
                 <div className="flex items-center justify-between">
                   <span className="text-sm font-medium">{t("analytics.business.riskAssessment.overallRiskLevel")}</span>
-                  <Badge variant={effectiveMetrics.failureRate > 10 ? "destructive" : effectiveMetrics.failureRate > 5 ? "default" : "secondary"}>
-                    {effectiveMetrics.failureRate > 10
+                  <Badge variant={(effectiveMetrics.failureRate||0) > 10 ? "destructive" : (effectiveMetrics.failureRate || 0) > 5 ? "default" : "secondary"}>
+                    {(effectiveMetrics.failureRate||0) > 10
                       ? t("analytics.business.riskAssessment.high")
-                      : effectiveMetrics.failureRate > 5
+                      : (effectiveMetrics.failureRate || 0) > 5
                         ? t("analytics.business.riskAssessment.medium")
                         : t("analytics.business.riskAssessment.low")}
                   </Badge>
@@ -223,12 +223,12 @@ export default function BusinessIntelligenceTab({ currentMetrics, totalTransacti
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <div className="text-lg font-bold">
-                    {safeDivide(safeDivide(effectiveMetrics.totalVolume, 1000000), safeDivide(effectiveMetrics.activeUsers, 1000)).toFixed(1)}M
+                    {safeDivide(safeDivide(effectiveMetrics.totalVolume || 0, 1000000), safeDivide(effectiveMetrics.activeUsers || 0, 1000)).toFixed(1)}M
                   </div>
                   <div className="text-sm text-muted-foreground">{t("analytics.business.growthIndicators.xafPer1kUsers")}</div>
                 </div>
                 <div>
-                  <div className="text-lg font-bold">{safePercentage(effectiveMetrics.netRevenue, effectiveMetrics.totalVolume).toFixed(3)}%</div>
+                  <div className="text-lg font-bold">{safePercentage(effectiveMetrics.netRevenue || 0, effectiveMetrics.totalVolume || 0).toFixed(3)}%</div>
                   <div className="text-sm text-muted-foreground">{t("analytics.business.growthIndicators.revenueMargin")}</div>
                 </div>
               </div>
@@ -238,9 +238,9 @@ export default function BusinessIntelligenceTab({ currentMetrics, totalTransacti
                   <span className="text-sm">{t("analytics.business.growthIndicators.marketPenetration")}</span>
                   <div className="flex items-center gap-2">
                     <div className="w-24 h-2 bg-gray-200 rounded-full">
-                      <div className="h-2 bg-green-500 rounded-full" style={{ width: `${Math.min(safePercentage(effectiveMetrics.activeUsers, 10000), 100)}%` }}></div>
+                      <div className="h-2 bg-green-500 rounded-full" style={{ width: `${Math.min(safePercentage(effectiveMetrics.activeUsers || 0, 10000), 100)}%` }}></div>
                     </div>
-                    <span className="text-sm font-medium">{safePercentage(effectiveMetrics.activeUsers, 10000).toFixed(1)}%</span>
+                    <span className="text-sm font-medium">{safePercentage(effectiveMetrics.activeUsers || 0, 10000).toFixed(1)}%</span>
                   </div>
                 </div>
 

@@ -13,29 +13,25 @@ interface FinancialAnalyticsTabProps {
   isLoading?: boolean
 }
 
-// Chart configurations
 const revenueChartConfig = {
   totalFees: { label: "Total Fees", color: "hsl(var(--chart-1))" },
   totalProviderFees: { label: "Provider Fees", color: "hsl(var(--chart-2))" },
   netRevenue: { label: "Net Revenue", color: "hsl(var(--chart-5))" },
 } satisfies ChartConfig
 
-export default function FinancialAnalyticsTab({ metrics, currentMetrics, totalTransactions, profitMargin, isLoading = false }: FinancialAnalyticsTabProps) {
+export default function FinancialAnalyticsTab({ metrics, currentMetrics, profitMargin, isLoading = false }: FinancialAnalyticsTabProps) {
   const { t } = useTranslation()
 
-  // Helper function to safely calculate percentages
   const safePercentage = (numerator: number, denominator: number): string => {
     if (!denominator || denominator === 0) return "0.0"
     return ((numerator / denominator) * 100).toFixed(1)
   }
 
-  // Helper function to safely calculate division
   const safeDivision = (numerator: number, denominator: number): string => {
     if (!denominator || denominator === 0) return "0"
     return (numerator / denominator).toFixed(0)
   }
 
-  // Create default values when no data is available
   const defaultMetrics = {
     totalVolume: 0,
     totalFees: 0,
@@ -52,6 +48,8 @@ export default function FinancialAnalyticsTab({ metrics, currentMetrics, totalTr
     totalReceiptsFees: 0,
     totalWithdrawalsFees: 0,
     totalFundTransfersFees: 0,
+    totalWithdrawalsProviderFees: 0,
+    totalReceiptsProviderFees: 0,
   }
 
   const effectiveMetrics = currentMetrics || defaultMetrics
@@ -76,7 +74,7 @@ export default function FinancialAnalyticsTab({ metrics, currentMetrics, totalTr
             ) : (
               <>
                 <div className="text-2xl font-bold text-green-600">
-                  {safePercentage(effectiveMetrics.totalFees - effectiveMetrics.totalProviderFees, effectiveMetrics.totalProviderFees)}%
+                  {safePercentage((effectiveMetrics.totalFees || 0) - (effectiveMetrics.totalProviderFees || 0), (effectiveMetrics.totalProviderFees || 0))}%
                 </div>
                 <p className="text-sm text-muted-foreground">{t("analytics.financial.costBenefit.costToProfitRatio")}</p>
               </>
@@ -98,7 +96,7 @@ export default function FinancialAnalyticsTab({ metrics, currentMetrics, totalTr
               </div>
             ) : (
               <>
-                <div className="text-2xl font-bold text-blue-600">{safePercentage(effectiveMetrics.totalReceiptsFees, effectiveMetrics.totalFees)}%</div>
+                <div className="text-2xl font-bold text-blue-600">{safePercentage((effectiveMetrics.totalReceiptsFees || 0), (effectiveMetrics.totalFees || 0))}%</div>
                 <p className="text-sm text-muted-foreground">{t("analytics.financial.costBenefit.fromReceipts")}</p>
               </>
             )}
@@ -119,7 +117,7 @@ export default function FinancialAnalyticsTab({ metrics, currentMetrics, totalTr
               </div>
             ) : (
               <>
-                <div className="text-2xl font-bold text-purple-600">{safeDivision(effectiveMetrics.apiCallsCount, 24)}</div>
+                <div className="text-2xl font-bold text-purple-600">{safeDivision(effectiveMetrics.apiCallsCount || 0, 24)}</div>
                 <p className="text-sm text-muted-foreground">{t("analytics.financial.costBenefit.apiCallsPerHour")}</p>
               </>
             )}
@@ -140,7 +138,7 @@ export default function FinancialAnalyticsTab({ metrics, currentMetrics, totalTr
               </div>
             ) : (
               <>
-                <div className="text-2xl font-bold text-orange-600">{safeDivision(effectiveMetrics.netRevenue, effectiveMetrics.activeUsers)}</div>
+                <div className="text-2xl font-bold text-orange-600">{safeDivision(effectiveMetrics.netRevenue || 0, effectiveMetrics.activeUsers || 0)}</div>
                 <p className="text-sm text-muted-foreground">{t("analytics.financial.costBenefit.revenuePerUser")}</p>
               </>
             )}
@@ -158,25 +156,25 @@ export default function FinancialAnalyticsTab({ metrics, currentMetrics, totalTr
           <div className="grid gap-6 md:grid-cols-3">
             <div className="p-6 border border-foreground/10 bg-background rounded-lg">
               <div className="text-sm text-green-600 mb-2">{t("analytics.financial.revenueBreakdown.receipts")}</div>
-              <div className="text-3xl font-bold text-green-700">{(effectiveMetrics.totalReceiptsFees / 1000).toFixed(0)}K</div>
+              <div className="text-3xl font-bold text-green-700">{((effectiveMetrics.totalReceiptsFees || 0) / 1000).toFixed(0)}K</div>
               <div className="text-sm text-green-600 mt-1">
                 {t("analytics.financial.revenueBreakdown.margin")}:{" "}
-                {safePercentage(effectiveMetrics.totalReceiptsFees - effectiveMetrics.totalReceiptsProviderFees, effectiveMetrics.totalReceiptsFees)}%
+                {safePercentage((effectiveMetrics.totalReceiptsFees || 0) - (effectiveMetrics.totalReceiptsProviderFees || 0), (effectiveMetrics.totalReceiptsFees || 0))}%
               </div>
             </div>
 
             <div className="p-6 border border-foreground/10 bg-background rounded-lg">
               <div className="text-sm text-blue-600 mb-2">{t("analytics.financial.revenueBreakdown.withdrawals")}</div>
-              <div className="text-3xl font-bold text-blue-700">{(effectiveMetrics.totalWithdrawalsFees / 1000).toFixed(0)}K</div>
+              <div className="text-3xl font-bold text-blue-700">{((effectiveMetrics.totalWithdrawalsFees || 0) / 1000).toFixed(0)}K</div>
               <div className="text-sm text-blue-600 mt-1">
                 {t("analytics.financial.revenueBreakdown.margin")}:{" "}
-                {safePercentage(effectiveMetrics.totalWithdrawalsFees - effectiveMetrics.totalWithdrawalsProviderFees, effectiveMetrics.totalWithdrawalsFees)}%
+                {safePercentage((effectiveMetrics.totalWithdrawalsFees || 0) - (effectiveMetrics.totalWithdrawalsProviderFees || 0), (effectiveMetrics.totalWithdrawalsFees || 0))}%
               </div>
             </div>
 
             <div className="p-6 border border-foreground/10 bg-background rounded-lg">
               <div className="text-sm text-purple-600 mb-2">{t("analytics.financial.revenueBreakdown.transfers")}</div>
-              <div className="text-3xl font-bold text-purple-700">{(effectiveMetrics.totalFundTransfersFees / 1000).toFixed(0)}K</div>
+              <div className="text-3xl font-bold text-purple-700">{((effectiveMetrics.totalFundTransfersFees || 0) / 1000).toFixed(0)}K</div>
               <div className="text-sm text-purple-600 mt-1">{t("analytics.financial.revenueBreakdown.margin")}: 100%</div>
             </div>
           </div>
@@ -239,7 +237,7 @@ export default function FinancialAnalyticsTab({ metrics, currentMetrics, totalTr
                     <ArrowDownCircle className="h-4 w-4 inline mr-2" />
                     {t("analytics.financial.profitability.totalFees")}
                   </div>
-                  <div className="text-2xl font-bold text-blue-700">{(effectiveMetrics.totalFees / 1000).toFixed(0)}K XAF</div>
+                  <div className="text-2xl font-bold text-blue-700">{((effectiveMetrics.totalFees || 0) / 1000).toFixed(0)}K XAF</div>
                 </div>
 
                 <div className="p-4 border border-foreground/5 rounded-lg">
@@ -247,7 +245,7 @@ export default function FinancialAnalyticsTab({ metrics, currentMetrics, totalTr
                     <Cog className="h-4 w-4 inline mr-2" />
                     {t("analytics.financial.profitability.providerCosts")}
                   </div>
-                  <div className="text-2xl font-bold text-red-700">{(effectiveMetrics.totalProviderFees / 1000).toFixed(0)}K XAF</div>
+                  <div className="text-2xl font-bold text-red-700">{((effectiveMetrics.totalProviderFees || 0) / 1000).toFixed(0)}K XAF</div>
                 </div>
 
                 <div className="p-4 border border-foreground/5 rounded-lg">
@@ -255,7 +253,7 @@ export default function FinancialAnalyticsTab({ metrics, currentMetrics, totalTr
                     <DollarSign className="h-4 w-4 inline mr-2" />
                     {t("analytics.financial.profitability.netProfit")}
                   </div>
-                  <div className="text-2xl font-bold text-green-700">{((effectiveMetrics.totalFees - effectiveMetrics.totalProviderFees) / 1000).toFixed(0)}K XAF</div>
+                  <div className="text-2xl font-bold text-green-700">{((effectiveMetrics.totalFees || 0) - (effectiveMetrics.totalProviderFees || 0) / 1000).toFixed(0)}K XAF</div>
                 </div>
               </div>
             </div>

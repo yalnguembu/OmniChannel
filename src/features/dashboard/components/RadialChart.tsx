@@ -1,5 +1,5 @@
-import { RadialBar, RadialBarChart, ResponsiveContainer, PolarAngleAxis, PolarRadiusAxis } from "recharts"
-import { ChartContainer, ChartTooltip, ChartTooltipContent, ChartLegend, ChartLegendContent } from "@/shared/components/ui/chart"
+import { RadialBar, RadialBarChart, ResponsiveContainer } from "recharts"
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/shared/components/ui/chart"
 import { RadialChartProps } from "./types"
 import { ChartLoading } from "./ChartLoading"
 import { ChartErrorInline } from "./ChartError"
@@ -12,7 +12,6 @@ export function RadialChart({
   data,
   config,
   dataKey,
-  width,
   height = 350,
   className,
   showTooltip = true,
@@ -28,8 +27,6 @@ export function RadialChart({
   endAngle = -270,
   cornerRadius = 10,
   fill = "var(--chart-1)",
-  showLabels = false,
-  labelFormatter,
   valueFormatter,
 }: RadialChartProps) {
   const validation = useMemo(() => validateData(data), [data])
@@ -91,8 +88,8 @@ export function RadialChart({
                   <ChartTooltipContent
                     formatter={(value) => [formatTooltipValue(value as number), ""]}
                     labelFormatter={(label, payload) => {
-                      if (payload && payload.length > 0) {
-                        return payload[0].payload.name || label
+                      if (payload && payload.length > 0 && payload[0].payload) {
+                        return (payload[0].payload as any).name || label
                       }
                       return label
                     }}
@@ -123,8 +120,7 @@ export function RadialProgressChart({
   showCenterValue?: boolean
   centerLabel?: string
 }) {
-  const value = (data[0]?.[dataKey] as number) || 0
-  const maxValue = 100 // assuming percentage
+  const value = data[0] ? ((data[0] as any)[dataKey] as number) : 0
 
   return (
     <div className="relative">
@@ -161,7 +157,6 @@ export function RadialStackedChart({ data, config, dataKeys, ...props }: Omit<Ra
 
             {dataKeys.map((key, index) => {
               const color = config[key]?.color || `var(--chart-${index + 1})`
-              const radius = (props.outerRadius || 100) - index * 15
 
               return (
                 <RadialBar
@@ -169,8 +164,6 @@ export function RadialStackedChart({ data, config, dataKeys, ...props }: Omit<Ra
                   dataKey={key}
                   cornerRadius={props.cornerRadius || 10}
                   fill={color}
-                  outerRadius={radius}
-                  innerRadius={radius - 10}
                   isAnimationActive={props.animate}
                   animationDuration={props.animate ? 750 : 0}
                 />

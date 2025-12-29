@@ -349,7 +349,7 @@ export const DataGrid: React.FC<DataGridProps> = ({
         </>
       )}
 
-      {hasPagination && <DataTablePagination page={page} on pageSize={limit} total={total} onPageChange={onPageChange} className="py-2 bg-background mt-2" />}
+      {hasPagination && <DataTablePagination page={page} pageSize={limit} total={total} onPageChange={onPageChange} className="py-2 bg-background mt-2" />}
     </div>
   )
 }

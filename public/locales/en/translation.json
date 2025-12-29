@@ -14,13 +14,6 @@
       "title": "Our Vision"
     }
   },
-  "values": {
-    "compliance": "We adhere to the highest regulatory standards and compliance requirements, ensuring all transactions meet CEMAC regulations and international financial security protocols.",
-    "excellence": "We are committed to delivering exceptional service quality, innovative solutions, and continuous improvement in everything we do for our clients.",
-    "security": "We prioritize the protection of your financial data and transactions with enterprise-grade encryption, multi-level authentication, and comprehensive audit trails.",
-    "support": "We provide dedicated technical support and customer service to ensure your success, with expert assistance available whenever you need it.",
-    "transparency": "We believe in clear communication, honest pricing, and complete visibility into all transactions and operations on our platform."
-  },
   "accessDenied": "Access denied",
   "actions": {
     "openMenu": "Open Menu"
@@ -207,13 +200,15 @@
     "enhanced": {
       "available": "Available",
       "balance": "Balance",
-      "balanceType": "Balance Type",
       "balanceDistribution": "Balance Distribution",
       "balanceDistributionDesc": "Balance allocation across payment methods",
       "balanceHealthDashboard": "Balance Health Dashboard",
       "balanceHealthDesc": "Comprehensive balance monitoring and status",
+      "balanceType": "Balance Type",
       "combinedVolume": "transactions + balances",
+      "credit": "Credit",
       "currentBalance": "Current Balance",
+      "debit": "Debit",
       "excellentMargin": "Excellent profit margin",
       "goodMargin": "Good profit margin",
       "improvementNeeded": "Margin improvement needed",
@@ -232,14 +227,12 @@
       "systemEfficiency": "System Efficiency",
       "totalEcosystemValue": "Total Ecosystem Value",
       "totalTransactions": "total transactions",
+      "transaction": "Transaction",
       "transactionTrends": "Transaction Trends",
       "transactionTrendsDesc": "Daily transaction volume patterns",
       "utilizationRate": "Utilization Rate",
       "volumeTrendAnalysis": "Volume Trend Analysis",
-      "volumeTrendDesc": "Advanced volume visualization with gradient effects",
-      "credit": "Credit",
-      "debit": "Debit",
-      "transaction": "Transaction"
+      "volumeTrendDesc": "Advanced volume visualization with gradient effects"
     },
     "financial": {
       "costBenefit": {
@@ -516,6 +509,7 @@
     "title": "Analytics Dashboard",
     "transactions": {
       "counts": "Operations",
+      "cummulatedBalance": "Cummulated Balance",
       "fundTransfers": "Fund Transfers",
       "momo": "MTN Mobile Money",
       "om": "Orange Money",
@@ -550,8 +544,7 @@
         "description": "Daily transaction counts across all service types",
         "title": "Transaction Volume by Type"
       },
-      "withdrawals": "Withdrawals",
-      "cummulatedBalance": "Cummulated Balance"
+      "withdrawals": "Withdrawals"
     }
   },
   "applications": {
@@ -982,12 +975,6 @@
       "taxNumber": "Tax Number",
       "website": "Website"
     },
-    "groups": {
-      "basicInfo": "Basic Information",
-      "contactInfo": "Contact & Location",
-      "legalFinancial": "Legal & Financial",
-      "createdAt": "Creation Date"
-    },
     "form": {
       "adressLabel": "Address",
       "adressPlaceholder": "Enter address",
@@ -1025,6 +1012,12 @@
       "taxNumberPlaceholder": "Enter tax number",
       "websiteLabel": "Website",
       "websitePlaceholder": "Enter website URL"
+    },
+    "groups": {
+      "basicInfo": "Basic Information",
+      "contactInfo": "Contact & Location",
+      "createdAt": "Creation Date",
+      "legalFinancial": "Legal & Financial"
     },
     "headers": {
       "contactPhone": "Contact Phone",
@@ -1589,36 +1582,6 @@
       "description": "Initiate and process fund withdrawal requests with optimal security. Whether via mobile money or bank transfer, Fujisat Pay adapts to your needs.",
       "details": "Our withdrawal management system ensures secure fund disbursement with multi-level approval workflows, batch processing capabilities for high-volume operations, and comprehensive audit trails for regulatory compliance.",
       "title": "Withdrawal Management"
-    },
-    "moneyTransfers": {
-      "benefit1": "Peer-to-peer transfer capabilities",
-      "benefit2": "Cross-wallet and cross-operator transfers",
-      "benefit3": "Instant transfer processing",
-      "benefit4": "Transaction limit controls",
-      "benefits": "Peer-to-peer transfer capabilities\nCross-wallet and cross-operator transfers\nInstant transfer processing\nTransaction limit controls",
-      "description": "Enable seamless money transfers between users, wallets, and mobile money operators. Support both internal and external transfer operations with real-time processing.",
-      "details": "Our money transfer module facilitates instant fund movement across different mobile money operators and internal wallets, with configurable limits, fee structures, and comprehensive transaction tracking for complete visibility.",
-      "title": "Money Transfers"
-    },
-    "balanceManagement": {
-      "benefit1": "Real-time balance tracking",
-      "benefit2": "Multi-currency wallet support",
-      "benefit3": "Automated balance reconciliation",
-      "benefit4": "Balance alerts and notifications",
-      "benefits": "Real-time balance tracking\nMulti-currency wallet support\nAutomated balance reconciliation\nBalance alerts and notifications",
-      "description": "Maintain accurate real-time balances across all accounts, wallets, and mobile money operators. Track funds movement and ensure financial accuracy at all times.",
-      "details": "Our balance management system provides real-time visibility into all financial positions, automated reconciliation with mobile money operators, multi-currency support, and configurable alerts to prevent overdrafts and maintain operational liquidity.",
-      "title": "Balance Management"
-    },
-    "multiEnterprise": {
-      "benefit1": "Centralized multi-company management",
-      "benefit2": "Isolated data and permissions per company",
-      "benefit3": "Consolidated reporting across entities",
-      "benefit4": "Shared or independent configurations",
-      "benefits": "Centralized multi-company management\nIsolated data and permissions per company\nConsolidated reporting across entities\nShared or independent configurations",
-      "description": "Manage multiple businesses or subsidiaries from a single platform. Each company maintains its own data isolation while benefiting from centralized oversight and reporting.",
-      "details": "Our multi-enterprise architecture enables organizations to manage multiple business entities with complete data isolation, independent configurations, and role-based access control, while providing consolidated views and cross-company analytics for group-level insights.",
-      "title": "Multi-Enterprise Management"
     }
   },
   "feeconfigurations": {
@@ -1712,16 +1675,6 @@
         "maxAmount": "Enter maximum amount",
         "minAmount": "Enter minimum amount",
         "percentageRate": "Enter percentage rate"
-      },
-      "feeTypeId": {
-        "placeholder": "Select fee type"
-      },
-      "ownerType": {
-        "label": "Owner Type",
-        "placeholder": "Select a Owner Type",
-        "system": "System",
-        "company": "Company",
-        "application": "Application"
       }
     },
     "forms": {
@@ -3386,12 +3339,14 @@
       "add": "New Withdrawal Method"
     },
     "form": {
+      "accountNumberLabel": "Account Number",
+      "accountNumberPlaceholder": "Enter account number",
       "companyIdLabel": "Company",
       "companyIdPlaceholder": "Select a company",
       "create": {
         "description": "Add a new withdrawal method.",
-        "title": "Create Withdrawal Method",
-        "infoMessage": "Veillez entrer 0 dans les champs limites journaliere mensuelles et limite uniques pour pouvoir effectuer des retraits a l'infinie"
+        "infoMessage": "Veillez entrer 0 dans les champs limites journaliere mensuelles et limite uniques pour pouvoir effectuer des retraits a l'infinie",
+        "title": "Create Withdrawal Method"
       },
       "dailyLimitLabel": "Daily Limit",
       "dailyLimitPlaceholder": "Enter daily limit",
@@ -3413,8 +3368,6 @@
       "paymentMethodIdPlaceholder": "Select a payment method",
       "phoneNumberLabel": "Phone Number",
       "phoneNumberPlaceholder": "Enter phone number",
-      "accountNumberLabel": "Account Number",
-      "accountNumberPlaceholder": "Enter account number",
       "singleWithdrawalLimitLabel": "Single Withdrawal Limit",
       "singleWithdrawalLimitPlaceholder": "Enter single withdrawal limit",
       "verificationDateLabel": "Verification Date",
@@ -3464,6 +3417,8 @@
       "amount": "Amount",
       "amounts": "Amounts",
       "applicationName": "Application Name",
+      "balancesReadModelId": "Balance ID",
+      "balancesReadModelName": "Balance name",
       "companyApplication": "Company Application",
       "companyName": "Company Name",
       "copyEvents": "Copy Events",
@@ -3475,6 +3430,7 @@
       "netAmount": "Net Amount",
       "notes": "Notes",
       "overview": "Overview",
+      "paymentMethodName": "Payment Method",
       "processedAt": "Processed At",
       "providerFeeAmount": "Provider Fee Amount",
       "providerFinalReference": "Provider Final Reference",
@@ -3487,20 +3443,19 @@
       "updatedAt": "Updated At",
       "verifiedAt": "Verified At",
       "withdrawalMethodName": "Withdrawal Method Name",
-      "balancesReadModelName": "Balance name",
-      "withdrawalsAt": "Withdrawals date",
-      "paymentMethodName": "Payment Method",
-      "balancesReadModelId": "Balance ID"
+      "withdrawalsAt": "Withdrawals date"
     },
     "form": {
       "amountLabel": "Amount Label",
       "amountPlaceholder": "Amount Placeholder",
       "applicationIdLabel": "Application Id Label",
       "applicationIdPlaceholder": "Application Id Placeholder",
-      "companyIdLabel": "Company Id Label",
-      "companyIdPlaceholder": "Company Id Placeholder",
       "balanceIdLabel": "Balance",
       "balanceIdPlaceholder": "Select a balance",
+      "companyIdLabel": "Company Id Label",
+      "companyIdPlaceholder": "Company Id Placeholder",
+      "dateLabel": "Date",
+      "datePlaceholder": "Select a date",
       "init": {
         "description": "Description",
         "submit": "Submit",
@@ -3509,9 +3464,7 @@
       "notesLabel": "Withdrawals date",
       "notesPlaceholder": "Select Withdrawals date",
       "withdrawalMethodIdLabel": "Withdrawal Method Id Label",
-      "withdrawalMethodIdPlaceholder": "Withdrawal Method Id Placeholder",
-      "dateLabel": "Date",
-      "datePlaceholder": "Select a date"
+      "withdrawalMethodIdPlaceholder": "Withdrawal Method Id Placeholder"
     },
     "headers": {
       "details": "Details"
@@ -3539,13 +3492,16 @@
       "accountNumber": "Account Number",
       "amount": "Amount",
       "applicationName": "Application",
+      "auditInfo": "Spplement Infos",
       "companyName": "Company",
       "createdAt": "Created At",
+      "creator": "Initate by",
       "currencySymbol": "Currency",
       "feeAppliedAmount": "Fee Applied",
       "internalFeeAmount": "Internal Fee",
       "internalReference": "Internal Reference",
       "netAmount": "Net Amount",
+      "notes": "Notes",
       "paymentMethodName": "Payment Method",
       "providerFeeAmount": "Provider Fee",
       "providerFinalReference": "Provider Final Reference",
@@ -3555,12 +3511,9 @@
       "status": "Status",
       "transactionId": "Transaction ID",
       "verificationAttempts": "Verification Attempts",
-      "withdrawalMethodName": "Withdrawal Method",
-      "creator": "Initate by",
       "verificator": "Verify by",
-      "notes": "Notes",
       "verifiedAt": "Verified At",
-      "auditInfo": "Spplement Infos",
+      "withdrawalMethodName": "Withdrawal Method",
       "withdrawalsAt": "Withdrawals date"
     }
   },

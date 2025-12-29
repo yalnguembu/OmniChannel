@@ -7560,6 +7560,7 @@ export type SearchWithdrawalsReadModelResponse = {
     verifiedByEmail?: string | null;
     withdrawalMethodName?: string | null;
     withdrawalMethodPhoneNumber?: string | null;
+    withdrawalsAt?: string | null;
     publicId?: string | null;
     companyId?: string;
     applicationId?: string | null;
@@ -8936,6 +8937,8 @@ export type WithdrawalsReadModelDto = {
     updatedAt?: string | null;
     createdBy?: string;
     updatedBy?: string | null;
+    balancesReadModelId?: string | null;
+    balancesReadModelName?: string | null;
 };
 
 export type WithdrawalsReadModelDtoFujiPayApiResponse = {

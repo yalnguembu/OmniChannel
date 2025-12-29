@@ -22,7 +22,7 @@ import {
   getApiWebhookGetWebhookSecretByIdOptions,
   patchApiWebhookRenegereWebhookSecretByIdMutation,
 } from "@/shared/api/@tanstack/react-query.gen"
-import { SearchWebhookResponseIPagedListFujiPayApiResponse } from "@/shared/api/types.gen"
+import { SearchWebhookLogResponseIPagedListFujiPayApiResponseReadable } from "@/shared/api/types.gen"
 
 const getWebhookSearchQueryKey = (cacheKey: string) => ["webhook", "search", cacheKey]
 
@@ -30,7 +30,7 @@ const isSuccessResponse = (response: any): boolean => {
   return response?.success === true
 }
 
-const isValidSearchResponse = (data: any): data is SearchWebhookResponseIPagedListFujiPayApiResponse => {
+const isValidSearchResponse = (data: any): data is SearchWebhookLogResponseIPagedListFujiPayApiResponseReadable => {
   return data !== null && typeof data === "object" && typeof data.success === "boolean" && Array.isArray(data.data)
 }
 
@@ -67,7 +67,7 @@ export const useWebhook = () => {
         store.setPaginationData(total, totalPages)
 
         const cacheKey = JSON.stringify(variables.body)
-        queryClient.setQueryData<SearchWebhookResponseIPagedListFujiPayApiResponse>(getWebhookSearchQueryKey(cacheKey), data as SearchWebhookResponseIPagedListFujiPayApiResponse)
+        queryClient.setQueryData<SearchWebhookLogResponseIPagedListFujiPayApiResponseReadable>(getWebhookSearchQueryKey(cacheKey), data as SearchWebhookLogResponseIPagedListFujiPayApiResponseReadable)
       }
     },
     onError: () =>
@@ -91,7 +91,7 @@ export const useWebhook = () => {
 
     const cacheKey = JSON.stringify(searchParams)
 
-    const cachedData = queryClient.getQueryData<SearchWebhookResponseIPagedListFujiPayApiResponse>(getWebhookSearchQueryKey(cacheKey))
+    const cachedData = queryClient.getQueryData<SearchWebhookLogResponseIPagedListFujiPayApiResponseReadable>(getWebhookSearchQueryKey(cacheKey))
 
     if (isValidSearchResponse(cachedData) && cachedData.success === true) {
       store.setLoading(true)
@@ -100,7 +100,7 @@ export const useWebhook = () => {
           const items = Array.isArray(cachedData.data) ? cachedData.data : []
           store.setWebhook(items)
           const total = (cachedData.metadata?.totalItems || items.length) as number
-          const totalPages = data.data.totalPages || 0
+          const totalPages = cachedData.data.totalPages || 0
           store.setPaginationData(total, totalPages)
         }
         store.setLoading(false)

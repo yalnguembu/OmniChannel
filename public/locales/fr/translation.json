@@ -202,13 +202,15 @@
     "enhanced": {
       "available": "Disponible",
       "balance": "Solde",
-      "balanceType": "Type de solde",
       "balanceDistribution": "Distribution des Soldes",
       "balanceDistributionDesc": "Allocation des soldes par méthode de paiement",
       "balanceHealthDashboard": "Tableau de Bord de la Santé des Soldes",
       "balanceHealthDesc": "Suivi complet et statut des soldes",
+      "balanceType": "Type de solde",
       "combinedVolume": "transactions + soldes",
+      "credit": "Credit",
       "currentBalance": "Solde Actuel",
+      "debit": "Debit",
       "excellentMargin": "Excellente marge bénéficiaire",
       "goodMargin": "Bonne marge bénéficiaire",
       "improvementNeeded": "Amélioration de la marge nécessaire",
@@ -227,14 +229,12 @@
       "systemEfficiency": "Efficacité du Système",
       "totalEcosystemValue": "Valeur Totale de l'Écosystème",
       "totalTransactions": "transactions totales",
+      "transaction": "Transaction",
       "transactionTrends": "Tendances des Transactions",
       "transactionTrendsDesc": "Modèles de volume de transactions quotidiens",
       "utilizationRate": "Taux d'Utilisation",
       "volumeTrendAnalysis": "Analyse des Tendances de Volume",
-      "volumeTrendDesc": "Visualisation avancée du volume avec effets de gradient",
-      "credit": "Credit",
-      "debit": "Debit",
-      "transaction": "Transaction"
+      "volumeTrendDesc": "Visualisation avancée du volume avec effets de gradient"
     },
     "financial": {
       "costBenefit": {
@@ -511,6 +511,7 @@
     "title": "Tableau de Bord Analytique",
     "transactions": {
       "counts": "Opérations",
+      "cummulatedBalance": "Solde Cummulé",
       "fundTransfers": "Transferts de Fonds",
       "momo": "MOMO",
       "om": "OM",
@@ -545,8 +546,7 @@
         "description": "Nombre de transactions quotidiennes par type de service",
         "title": "Volume des Transactions par Type"
       },
-      "withdrawals": "Retraits",
-      "cummulatedBalance": "Solde Cummulé"
+      "withdrawals": "Retraits"
     }
   },
   "applications": {
@@ -578,7 +578,8 @@
         "description": "Êtes-vous sûr de vouloir supprimer {{count}} applications ? Cette action est irréversible.",
         "description_one": "Êtes-vous sûr de vouloir supprimer cette application ? Cette action est irréversible.",
         "description_many": "Êtes-vous sûr de vouloir supprimer ces applications ? Cette action est irréversible.",
-        "description_other": "Êtes-vous sûr de vouloir supprimer ces {{count}} applications ? Cette action est irréversible."
+        "description_other": "Êtes-vous sûr de vouloir supprimer ces {{count}} applications ? Cette action est irréversible.",
+        "title": "_title"
       },
       "delete": {
         "cancel": "Annuler",
@@ -2465,7 +2466,8 @@
         "description": "Êtes-vous sûr de vouloir supprimer {{count}} reçus ? Cette action est irréversible.",
         "description_one": "Êtes-vous sûr de vouloir supprimer ce reçu ? Cette action est irréversible.",
         "description_many": "Êtes-vous sûr de vouloir supprimer ces reçus ? Cette action est irréversible.",
-        "description_other": "Êtes-vous sûr de vouloir supprimer ces {{count}} reçus ? Cette action est irréversible."
+        "description_other": "Êtes-vous sûr de vouloir supprimer ces {{count}} reçus ? Cette action est irréversible.",
+        "title": "_title"
       }
     },
     "details": {
@@ -3099,7 +3101,8 @@
         "description": "Êtes-vous sûr de vouloir supprimer {{count}} utilisateurs ? Cette action est irréversible.",
         "description_one": "Êtes-vous sûr de vouloir supprimer cet utilisateur ? Cette action est irréversible.",
         "description_many": "Êtes-vous sûr de vouloir supprimer ces utilisateurs ? Cette action est irréversible.",
-        "description_other": "Êtes-vous sûr de vouloir supprimer ces {{count}} utilisateurs ? Cette action est irréversible."
+        "description_other": "Êtes-vous sûr de vouloir supprimer ces {{count}} utilisateurs ? Cette action est irréversible.",
+        "title": "_title"
       },
       "delete": {
         "cancel": "Annuler",
@@ -3408,12 +3411,14 @@
       "add": "Nouvelle Méthode"
     },
     "form": {
+      "accountNumberLabel": "Numéro de compte",
+      "accountNumberPlaceholder": "Saisir le numéro de compte",
       "companyIdLabel": "Entreprise",
       "companyIdPlaceholder": "Sélectionnez une entreprise",
       "create": {
         "description": "Ajouter une nouvelle méthode de retrait.",
-        "title": "Créer une méthode de retrait",
-        "infoMessage": "Veillez entrer 0 dans les champs limites journaliere mensuelles et limite uniques pour pouvoir effectuer des retraits a l'infinie"
+        "infoMessage": "Veillez entrer 0 dans les champs limites journaliere mensuelles et limite uniques pour pouvoir effectuer des retraits a l'infinie",
+        "title": "Créer une méthode de retrait"
       },
       "dailyLimitLabel": "Limite quotidienne",
       "dailyLimitPlaceholder": "Saisir la limite quotidienne",
@@ -3435,8 +3440,6 @@
       "paymentMethodIdPlaceholder": "Sélectionnez une méthode de paiement",
       "phoneNumberLabel": "Numéro de téléphone",
       "phoneNumberPlaceholder": "Saisir le numéro de téléphone",
-      "accountNumberLabel": "Numéro de compte",
-      "accountNumberPlaceholder": "Saisir le numéro de compte",
       "singleWithdrawalLimitLabel": "Limite par retrait",
       "singleWithdrawalLimitPlaceholder": "Saisir la limite par retrait",
       "verificationDateLabel": "Date de vérification",
@@ -3486,6 +3489,8 @@
       "amount": "Montant",
       "amounts": "Montants",
       "applicationName": "Nom de l'Application",
+      "balancesReadModelId": "ID solde",
+      "balancesReadModelName": "Nom du solde",
       "companyApplication": "Entreprise & Application",
       "companyName": "Nom de l'Entreprise",
       "copyEvents": "Copier les Événements",
@@ -3497,6 +3502,7 @@
       "netAmount": "Montant Net",
       "notes": "Date de Retrait",
       "overview": "Aperçu",
+      "paymentMethodName": "Méth. Paiement",
       "processedAt": "Traité le",
       "providerFeeAmount": "Frais Fournisseur",
       "providerFinalReference": "Référence Finale Fournisseur",
@@ -3509,20 +3515,19 @@
       "updatedAt": "Mis à jour le",
       "verifiedAt": "Vérifié le",
       "withdrawalMethodName": "Nom de la Méthode de Retrait",
-      "balancesReadModelName": "Nom du solde",
-      "withdrawalsAt": "Date de retrait",
-      "paymentMethodName": "Méth. Paiement",
-      "balancesReadModelId": "ID solde"
+      "withdrawalsAt": "Date de retrait"
     },
     "form": {
       "amountLabel": "Montant",
       "amountPlaceholder": "Saisir le montant",
       "applicationIdLabel": "Application",
       "applicationIdPlaceholder": "Sélectionner une application",
-      "companyIdLabel": "Entreprise",
-      "companyIdPlaceholder": "Sélectionner une entreprise",
       "balanceIdLabel": "Solde",
       "balanceIdPlaceholder": "Sélectionner un Solde",
+      "companyIdLabel": "Entreprise",
+      "companyIdPlaceholder": "Sélectionner une entreprise",
+      "dateLabel": "Date de retrait",
+      "datePlaceholder": "Veuillez Sélectionner la date",
       "init": {
         "description": "Initier un nouveau retrait.",
         "submit": "Initier",
@@ -3531,9 +3536,7 @@
       "notesLabel": "Notes",
       "notesPlaceholder": "Saisir des notes",
       "withdrawalMethodIdLabel": "Méthode de Retrait",
-      "withdrawalMethodIdPlaceholder": "Sélectionner une méthode de retrait",
-      "dateLabel": "Date de retrait",
-      "datePlaceholder": "Veuillez Sélectionner la date"
+      "withdrawalMethodIdPlaceholder": "Sélectionner une méthode de retrait"
     },
     "headers": {
       "details": "Détails"
@@ -3561,13 +3564,16 @@
       "accountNumber": "N° Compte",
       "amount": "Montant",
       "applicationName": "Application",
+      "auditInfo": "Info suplementaire",
       "companyName": "Entreprise",
       "createdAt": "Créé le",
+      "creator": "Initier par",
       "currencySymbol": "Devise",
       "feeAppliedAmount": "Frais Appliqués",
       "internalFeeAmount": "Frais Internes",
       "internalReference": "Référence Interne",
       "netAmount": "Montant Net",
+      "notes": "Notes",
       "paymentMethodName": "Méth. Paiement",
       "providerFeeAmount": "Frais Fournisseur",
       "providerFinalReference": "Réf. Finale Fournisseur",
@@ -3577,12 +3583,9 @@
       "status": "Statut",
       "transactionId": "ID Trans.",
       "verificationAttempts": "Tentatives Vérif.",
-      "withdrawalMethodName": "Méthode Retrait",
-      "creator": "Initier par",
       "verificator": "Vérifié par",
-      "notes": "Notes",
       "verifiedAt": "Vérifié le",
-      "auditInfo":"Info suplementaire",
+      "withdrawalMethodName": "Méthode Retrait",
       "withdrawalsAt": "Date de retrait"
     }
   },

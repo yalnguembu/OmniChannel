@@ -1,12 +1,10 @@
-import { useNavigate } from "@tanstack/react-router"
 import { useTranslation } from "react-i18next"
 import { useEffect, useMemo, useState } from "react"
 import { DataGrid } from "@/shared/components/data-grid/data-grid"
-import { DataGridColumnHeader, DataGridRowEntry, DataGridSort } from "@/shared/types"
+import { DataGridColumnHeader, DataGridSort } from "@/shared/types"
 import { SortDirection } from "@/shared/enums/data-grid"
 import { Button } from "@/shared/components/ui/button"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/shared/components/ui/dropdown-menu"
-import { MoreHorizontal, Eye, Edit, Trash2, Plus } from "lucide-react"
+import { Plus } from "lucide-react"
 import { useSetting } from "@/features/settings/hooks/useSetting"
 import { BaseFilter } from "@/shared/components/filter/base-filter"
 import { zSearchSettingRequest } from "@/shared/api/zod.gen"
@@ -17,7 +15,6 @@ import { ModalWrapper } from "@/shared/components/ModalWrapper"
 import { SettingCreateForm } from "@/features/settings/components/SettingCreateForm"
 
 export function SettingsTab({ companyId }: { companyId: string }) {
-  const navigate = useNavigate()
   const { t } = useTranslation()
 
   const [showCreateModal, setShowCreateModal] = useState(false)
@@ -43,8 +40,6 @@ export function SettingsTab({ companyId }: { companyId: string }) {
     changePageSize,
     changeSort,
     setSelectedRows,
-    deleteSetting,
-    bulkDeleteMutation,
     createMutation,
   } = useSetting()
 
@@ -131,31 +126,12 @@ export function SettingsTab({ companyId }: { companyId: string }) {
     return settings.map((item) => new CommonDataGridEntry(item as Entity))
   }, [settings])
 
-  const handleView = (id: string) => {
-    navigate({ to: `/administration/settings/${id}` })
-  }
-
-  const handleEdit = (id: string) => {
-    navigate({ to: `/administration/settings/${id}/edit` })
-  }
-
-  const handleDelete = (id: string) => {
-    if (confirm(t("settings.messages.delete.confirm"))) {
-      deleteSetting(id)
-    }
-  }
-
-  const handleBulkDelete = () => {
-    if (confirm(t("settings.bulk.deleteConfirm", { count: selectedRows.length }))) {
-      bulkDeleteMutation.mutate(selectedRows)
-    }
-  }
 
   const sortConfig: DataGridSort | undefined = sortBy
     ? {
-        column: sortBy,
-        direction: sortDirection === "desc" ? SortDirection.DESC : SortDirection.ASC,
-      }
+      column: sortBy,
+      direction: sortDirection === "desc" ? SortDirection.DESC : SortDirection.ASC,
+    }
     : undefined
 
   const handleSortChange = (config: DataGridSort) => {
@@ -172,16 +148,6 @@ export function SettingsTab({ companyId }: { companyId: string }) {
     changePageSize(size)
   }
 
-  const bulkActions = hasSelection
-    ? [
-        {
-          label: bulkDeleteMutation.isPending ? t("settings.bulk.deleting") : t("settings.bulk.delete", { count: selectedRows.length }),
-          action: handleBulkDelete,
-          variant: "destructive" as const,
-          loading: bulkDeleteMutation.isPending,
-        },
-      ]
-    : undefined
 
   const handleSubmit = (data: UpdateSettingRequest) => {
     createMutation.mutate(
@@ -234,8 +200,8 @@ export function SettingsTab({ companyId }: { companyId: string }) {
             onSortChange={handleSortChange}
             enableColumnVisibility={true}
             hiddenColumns={[]}
-            onColumnVisibilityChange={() => {}}
-            bulkActions={bulkActions}
+            onColumnVisibilityChange={() => { }}
+            dispatch={() => { }}
           />
         </CardContent>
       </Card>

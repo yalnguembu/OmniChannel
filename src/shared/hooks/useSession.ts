@@ -8,7 +8,6 @@ import {
   postApiAuthCookieLoginMutation,
   getApiUserMeOptions,
   postApiAuthCookieLogoutMutation,
-  /*, postApiAuthLoginMutation */
 } from "@/shared/api/@tanstack/react-query.gen"
 import { LoginRequest } from "../api/types.gen"
 import { authPersistence } from "../lib/api/authPersistence"
@@ -16,34 +15,6 @@ import { USER_TYPE } from "../enums/session"
 import { UserSession } from "../types/session"
 import { useMutation, useQuery } from "@tanstack/react-query"
 
-const cspHeader = `
-  default-src *;
-  script-src * 'unsafe-eval' 'unsafe-inline' data: blob:;
-  style-src * 'unsafe-inline' data: blob:;
-  img-src * data: blob:;
-  font-src * data: blob:;
-  object-src *;
-  base-uri *;
-  form-action *;
-  frame-ancestors *;
-  connect-src *;
-  media-src *;
-  worker-src *;
-  child-src *;
-  frame-src *;
-`
-  .replace(/\s{2,}/g, " ")
-  .trim()
-
-const headers = {
-  "Content-Security-Policy": cspHeader,
-  "Content-Type": "application/json",
-  "X-Content-Type-Options": "nosniff",
-  "X-Frame-Options": "DENY",
-  "X-XSS-Protection": "1; mode=block",
-  "Referrer-Policy": "strict-origin-when-cross-origin",
-  "Permissions-Policy": "camera=(), microphone=(), geolocation=(), payment=()",
-}
 export const useSession = () => {
   const sessionStore = useSessionStore()
 
@@ -61,9 +32,6 @@ export const useSession = () => {
     })
 
   const loginMutation = useMutation({
-    // ...postApiAuthLoginMutation({
-    //   headers,
-    // }),
     ...postApiAuthCookieLoginMutation(),
     onMutate: () => {
       sessionStore.setLoading(true)
@@ -73,12 +41,7 @@ export const useSession = () => {
       if (response.data?.user) {
         sessionStore.setUser(response.data.user as UserSession)
         authPersistence.storeUserData(response.data.user as UserSession)
-        // authPersistence.storeAuthToken(response.data.accessToken ?? "")
-        // authPersistence.storeAuthTokenExpirationDate(response.data.accessTokenExpiresAt ?? "")
-        // authPersistence.storeRefreshToken(response.data.refreshToken ?? "")
-        // authPersistence.storeRefreshTokenExpirationDate(response.data.refreshTokenExpiresAt ?? "")
         authPersistence.storeUserType(response.data.user.userType as USER_TYPE)
-        // setAccessToken()
       }
 
       toast.success("Successfully logged in")

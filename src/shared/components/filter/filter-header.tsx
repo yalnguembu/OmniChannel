@@ -33,7 +33,6 @@ export const FilterHeader: React.FC<FilterHeaderProps> = ({
   title = "Filters",
   viewMode,
   setViewMode,
-  refreshData,
   hasSelection,
   selectionCount,
   onImport,
@@ -44,9 +43,6 @@ export const FilterHeader: React.FC<FilterHeaderProps> = ({
   searchValue = "",
 }) => {
   const { t } = useTranslation()
-  const handleRefresh = () => {
-    refreshData()
-  }
 
   const [searchText, setSearchText] = useState(searchValue)
 

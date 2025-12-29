@@ -3,36 +3,14 @@ import { useState } from "react"
 import { Area, AreaChart, Bar, BarChart, CartesianGrid, XAxis, Label, Pie, PieChart, YAxis, LabelList } from "recharts"
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent, ChartLegend, ChartLegendContent } from "@/shared/components/ui/chart"
 import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/components/ui/card"
-import { PolarAngleAxis, PolarGrid, Radar, RadarChart } from "recharts"
-
 import { ToggleGroup, ToggleGroupItem } from "@/shared/components/ui/toggle-group"
-import CardWrapper from "@/shared/components/CardWrapper"
-import { Globe, DollarSign, CircleAlert, TrendingUp, List, Building, AppWindow, Users, ArrowDownCircle, ArrowUp, ArrowDownRightFromSquareIcon, Eye } from "lucide-react"
+import { ArrowDownCircle, ArrowUp, ArrowDownRightFromSquareIcon, Eye, CircleAlert, TrendingUp } from "lucide-react"
 import { Link } from "@tanstack/react-router"
-import { createElement, useEffect } from "react"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/shared/components/ui/tooltip"
 import { DateRangeInput } from "@/shared/components/ui/date-range-input"
 import { Badge } from "@/shared/components/ui/badge"
 
-export function OverviewTab({ companyId }: { companyId: string }) {
-  const radarChartData = [
-    { month: "Fjisat", om: 186, momo: 80 },
-    { month: "Reabo", om: 305, momo: 200 },
-    { month: "Fujisatcam", om: 237, momo: 120 },
-    { month: "FujiMbile", om: 73, momo: 190 },
-    { month: "May", om: 209, momo: 130 },
-    { month: "June", om: 214, momo: 140 },
-  ]
-  const radarChartConfig = {
-    om: {
-      label: "OM",
-      color: "var(--om)",
-    },
-    momo: {
-      label: "MOMO",
-      color: "var(--momo)",
-    },
-  } satisfies ChartConfig
+export function OverviewTab() {
 
   const areaChartData = [
     { date: "2025-04-01", om: 186, momo: 80 },
@@ -137,55 +115,9 @@ export function OverviewTab({ companyId }: { companyId: string }) {
   } satisfies ChartConfig
 
   const { t } = useTranslation()
-  const quickAtions = [
-    {
-      label: "menu.countries",
-      path: "/administration/countries",
-      icon: Globe,
-    },
-    {
-      label: "menu.users",
-      path: "/access-control/users",
-      icon: Users,
-      addPagePath: "/access-control/users/add",
-      addButtonLabel: "menu.addUser",
-    },
-    {
-      label: "menu.companies",
-      path: "/companies",
-      icon: Building,
-      addPagePath: "/companies/add",
-      addButtonLabel: "menu.addCompany",
-    },
-    {
-      label: "menu.applications",
-      path: "/applications",
-      icon: AppWindow,
-      addPagePath: "/applications/add",
-      addButtonLabel: "menu.addApplication",
-    },
-    {
-      label: "menu.all",
-      path: "/transactions",
-      icon: List,
-    },
-    {
-      label: "menu.receipts",
-      path: "/transactions/receipts",
-      icon: DollarSign,
-    },
-    {
-      label: "menu.withdrawals",
-      path: "/transactions/withdrawals",
-      icon: ArrowDownCircle,
-    },
-  ]
+
   const [dateRage, setDateRange] = useState()
   const [timeRange, setTimeRange] = useState("90d")
-
-  useEffect(() => {
-    // getApiReceiptsReadModelGetAllStatus()
-  }, [])
 
   return (
     <div>

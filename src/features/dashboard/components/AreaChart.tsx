@@ -12,7 +12,6 @@ export function AreaChart({
   data,
   config,
   dataKey,
-  width,
   height = 350,
   margin = defaultMargin,
   className,

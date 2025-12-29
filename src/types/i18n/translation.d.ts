@@ -204,8 +204,11 @@ export default {
       "balanceDistributionDesc": "Balance allocation across payment methods",
       "balanceHealthDashboard": "Balance Health Dashboard",
       "balanceHealthDesc": "Comprehensive balance monitoring and status",
+      "balanceType": "Balance Type",
       "combinedVolume": "transactions + balances",
+      "credit": "Credit",
       "currentBalance": "Current Balance",
+      "debit": "Debit",
       "excellentMargin": "Excellent profit margin",
       "goodMargin": "Good profit margin",
       "improvementNeeded": "Margin improvement needed",
@@ -224,6 +227,7 @@ export default {
       "systemEfficiency": "System Efficiency",
       "totalEcosystemValue": "Total Ecosystem Value",
       "totalTransactions": "total transactions",
+      "transaction": "Transaction",
       "transactionTrends": "Transaction Trends",
       "transactionTrendsDesc": "Daily transaction volume patterns",
       "utilizationRate": "Utilization Rate",
@@ -264,7 +268,7 @@ export default {
     },
     "geo": {
       "acrossRegions": "across all regions",
-      "allRegions": "_allRegions",
+      "allRegions": "All Regions",
       "avgGrowth": "Average Growth",
       "avgPenetration": "average penetration",
       "cameroonRegionsMap": "Cameroon Regions Map",
@@ -275,21 +279,21 @@ export default {
       "geographicDistribution": "Geographic Distribution",
       "geographicDistributionDesc": "Users by area type",
       "growth": "Growth",
-      "heatmaps": "_heatmaps",
-      "interactiveMap": "_interactiveMap",
-      "mapDescription": "_mapDescription",
-      "mapFeatureDescription": "_mapFeatureDescription",
-      "mapFeatureTitle": "_mapFeatureTitle",
+      "heatmaps": "Heatmaps",
+      "interactiveMap": "Interactive Map",
+      "mapDescription": "Map Description",
+      "mapFeatureDescription": "Map Feature Description",
+      "mapFeatureTitle": "Map Feature Title",
       "marketPenetration": "Market Penetration",
       "penetration": "Penetration",
       "region": "Region",
       "regionalPerformance": "Regional Performance Dashboard",
       "regionalPerformanceDesc": "Comprehensive regional metrics and performance indicators",
-      "regionTracking": "_regionTracking",
+      "regionTracking": "Region Tracking",
       "status": "Status",
       "topRegionsByUsers": "Top Regions by Users",
       "topRegionsDesc": "Regions with highest user adoption",
-      "totalTransactions": "_totalTransactions",
+      "totalTransactions": "Total Transactions",
       "totalUsers": "Total Users",
       "totalVolume": "Total Volume",
       "transactions": "transactions",
@@ -468,13 +472,13 @@ export default {
         }
       },
       "overview": {
-        "avgErrorRate": "_avgErrorRate",
-        "avgRate": "_avgRate",
+        "avgErrorRate": "Average Error Rate",
+        "avgRate": "Average Rate",
         "avgResponseTime": "Avg Response Time",
         "avgUptime": "Average Uptime",
-        "daily": "_daily",
+        "daily": "Daily",
         "errorRate": "Error Rate",
-        "errors": "_errors",
+        "errors": "Errors",
         "performance": "system performance",
         "reliability": "system reliability",
         "totalApiCalls": "Total API Calls",
@@ -505,9 +509,10 @@ export default {
     "title": "Analytics Dashboard",
     "transactions": {
       "counts": "Operations",
+      "cummulatedBalance": "Cummulated Balance",
       "fundTransfers": "Fund Transfers",
-      "momo": "_momo",
-      "om": "_om",
+      "momo": "MTN Mobile Money",
+      "om": "Orange Money",
       "paymentMethods": {
         "amount": "Amount",
         "avgAmount": "Avg Amount",
@@ -567,8 +572,8 @@ export default {
         "cancel": "Cancel",
         "confirm": "Delete All",
         "description": "Are you sure you want to delete {{count}} applications? This action cannot be undone.",
-        "description_one": "_description",
-        "description_other": "_description",
+        "description_one": "Description",
+        "description_other": "Description",
         "title": "Delete Applications"
       },
       "delete": {
@@ -715,7 +720,7 @@ export default {
   "balances": {
     "messages": {
       "dropdown": {
-        "error": "_error"
+        "error": "Error"
       }
     }
   },
@@ -894,10 +899,10 @@ export default {
       "more": "More Actions",
       "view": "View"
     },
-    "backToList": "_backToList",
+    "backToList": "Back To List",
     "cancel": "Cancel",
-    "confirm": "_confirm",
-    "createdAt": "_createdAt",
+    "confirm": "Confirm",
+    "createdAt": "Created At",
     "dataGrid": {
       "items": "Items",
       "total": "Total"
@@ -924,11 +929,11 @@ export default {
     "form": {
       "valueLabel": "Value"
     },
-    "loading": "_loading",
-    "na": "_na",
-    "no": "_no",
-    "updatedAt": "_updatedAt",
-    "yes": "_yes"
+    "loading": "Loading",
+    "na": "N/A",
+    "no": "No",
+    "updatedAt": "Updated At",
+    "yes": "Yes"
   },
   "companies": {
     "actions": {
@@ -1624,7 +1629,7 @@ export default {
     "edit": "Edit Fee Configuration",
     "form": {
       "applicationId": {
-        "placeholder": "_placeholder"
+        "placeholder": "Placeholder"
       },
       "companyId": {
         "placeholder": "Select a company"
@@ -1635,7 +1640,7 @@ export default {
         "title": "Create Fee Configuration"
       },
       "currency": {
-        "placeholder": "_placeholder"
+        "placeholder": "Placeholder"
       },
       "edit": {
         "loadError": "Failed to load configuration."
@@ -1644,8 +1649,8 @@ export default {
         "placeholder": "Select fee type"
       },
       "fields": {
-        "applicationId": "_applicationId",
-        "companyId": "_companyId",
+        "applicationId": "Application Id",
+        "companyId": "Company Id",
         "currency": "Currency",
         "endDate": "End Date",
         "feeTypeId": "Fee Type",
@@ -2347,7 +2352,7 @@ export default {
       "customerEmail": "Email client",
       "customerName": "Nom Client",
       "externalReference": "External Ref.",
-      "externalRefutilerence": "_externalRefutilerence",
+      "externalRefutilerence": "External Refutilerence",
       "fee": "Fees",
       "feeAppliedAmount": "Fee Applied",
       "internalFeeAmount": "Internal Fee",
@@ -2356,13 +2361,13 @@ export default {
       "paymentMethodCode": "Pay Method Code",
       "phoneNumberEncrypted": "Phone",
       "providerFeeAmount": "Provider Fee",
-      "providerFinalReference": "_providerFinalReference",
-      "providerInitialReference": "_providerInitialReference",
+      "providerFinalReference": "Provider Final Reference",
+      "providerInitialReference": "Provider Initial Reference",
       "providerReference": "Provider Ref.",
-      "range": "_range",
+      "range": "Range",
       "references": "References",
       "status": "Status",
-      "transaction": "_transaction",
+      "transaction": "Transaction",
       "transactionId": "Txn ID"
     }
   },
@@ -2402,8 +2407,8 @@ export default {
         "cancel": "Cancel",
         "confirm": "Delete All",
         "description": "Are you sure you want to delete {{count}} receipts? This action cannot be undone.",
-        "description_one": "_description",
-        "description_other": "_description",
+        "description_one": "Description",
+        "description_other": "Description",
         "title": "Delete Receipts"
       }
     },
@@ -2496,7 +2501,7 @@ export default {
         "success_other": "{{count}} receipts deleted."
       },
       "export": {
-        "success": "_success"
+        "success": "Success"
       },
       "noData": "No receipts found.",
       "search": {
@@ -2663,30 +2668,30 @@ export default {
     "totalCount_other": "{{count}} settings",
     "userProfile": {
       "actions": {
-        "returnToDashboard": "_returnToDashboard"
+        "returnToDashboard": "Return To Dashboard"
       },
       "fields": {
-        "companyId": "_companyId",
-        "companyName": "_companyName",
-        "email": "_email",
-        "firstName": "_firstName",
-        "lastLogin": "_lastLogin",
-        "lastName": "_lastName",
-        "profileId": "_profileId",
-        "profileName": "_profileName",
-        "publicId": "_publicId",
-        "status": "_status",
-        "userType": "_userType"
+        "companyId": "Company Id",
+        "companyName": "Company Name",
+        "email": "Email",
+        "firstName": "First Name",
+        "lastLogin": "Last Login",
+        "lastName": "Last Name",
+        "profileId": "Profile Id",
+        "profileName": "Profile Name",
+        "publicId": "Public Id",
+        "status": "Status",
+        "userType": "User Type"
       },
       "messages": {
-        "loadError": "_loadError"
+        "loadError": "Load Error"
       },
       "sections": {
-        "accountInfo": "_accountInfo",
-        "companyInfo": "_companyInfo",
-        "permissions": "_permissions",
-        "personalInfo": "_personalInfo",
-        "profilePermissions": "_profilePermissions"
+        "accountInfo": "Account Info",
+        "companyInfo": "Company Info",
+        "permissions": "Permissions",
+        "personalInfo": "Personal Info",
+        "profilePermissions": "Profile Permissions"
       },
       "title": "Profile"
     }
@@ -2817,7 +2822,7 @@ export default {
   },
   "statusBadges": {
     "active": "Active",
-    "ALL": "_ALL",
+    "ALL": "All",
     "APPLICATION": "APPLICATION",
     "CANCELLED": "CANCELLED",
     "COMPANY": "COMPANY",
@@ -2910,9 +2915,9 @@ export default {
     "form": {
       "assignPermissions": {
         "description": "Permissions assigned to a profile will confer access to user, do it prudently",
-        "noPermissions": "_noPermissions",
-        "selectAll": "_selectAll",
-        "submit": "_submit",
+        "noPermissions": "No Permissions",
+        "selectAll": "Select All",
+        "submit": "Submit",
         "title": "Assign Permissions"
       },
       "create": {
@@ -2927,7 +2932,7 @@ export default {
     },
     "messages": {
       "assign": {
-        "success": "_success"
+        "success": "Success"
       },
       "create": {
         "error": "Creation failed.",
@@ -2965,21 +2970,21 @@ export default {
   },
   "userProfiles": {
     "actions": {
-      "assignPermissions": "_assignPermissions",
-      "edit": "_edit"
+      "assignPermissions": "Assign Permissions",
+      "edit": "Edit"
     },
     "details": {
       "sections": {
-        "information": "_information",
-        "permissions": "_permissions"
+        "information": "Information",
+        "permissions": "Permissions"
       },
-      "title": "_title"
+      "title": "Title"
     },
     "fields": {
-      "active": "_active",
-      "description": "_description",
-      "name": "_name",
-      "systemProfile": "_systemProfile"
+      "active": "Active",
+      "description": "Description",
+      "name": "Name",
+      "systemProfile": "System Profile"
     },
     "form": {
       "descriptionLabel": "Description",
@@ -2996,7 +3001,7 @@ export default {
       "permissionsPlaceholder": "Select permissions"
     },
     "messages": {
-      "notFound": "_notFound"
+      "notFound": "Not Found"
     },
     "title": "User Profiles"
   },
@@ -3008,7 +3013,7 @@ export default {
       "delete": "Delete",
       "edit": "Edit",
       "more": "More Actions",
-      "toggleStatus": "_toggleStatus",
+      "toggleStatus": "Toggle Status",
       "view": "View"
     },
     "bulk": {
@@ -3027,8 +3032,8 @@ export default {
         "cancel": "Cancel",
         "confirm": "Delete All",
         "description": "Are you sure you want to delete {{count}} users? This action cannot be undone.",
-        "description_one": "_description",
-        "description_other": "_description",
+        "description_one": "Description",
+        "description_other": "Description",
         "title": "Delete Users"
       },
       "delete": {
@@ -3119,12 +3124,12 @@ export default {
       }
     },
     "stats": {
-      "active": "_active",
-      "allTime": "_allTime",
-      "blocked": "_blocked",
-      "company": "_company",
-      "system": "_system",
-      "total": "_total"
+      "active": "Active",
+      "allTime": "All Time",
+      "blocked": "Blocked",
+      "company": "Company",
+      "system": "System",
+      "total": "Total"
     },
     "title": "Users",
     "totalCount_one": "1 user",
@@ -3334,10 +3339,13 @@ export default {
       "add": "New Withdrawal Method"
     },
     "form": {
+      "accountNumberLabel": "Account Number",
+      "accountNumberPlaceholder": "Enter account number",
       "companyIdLabel": "Company",
       "companyIdPlaceholder": "Select a company",
       "create": {
         "description": "Add a new withdrawal method.",
+        "infoMessage": "Veillez entrer 0 dans les champs limites journaliere mensuelles et limite uniques pour pouvoir effectuer des retraits a l'infinie",
         "title": "Create Withdrawal Method"
       },
       "dailyLimitLabel": "Daily Limit",
@@ -3376,97 +3384,105 @@ export default {
   },
   "withdrawals": {
     "actions": {
-      "approve": "_approve",
-      "cancel": "_cancel",
-      "complete": "_complete",
+      "approve": "Approve",
+      "cancel": "Cancel",
+      "complete": "Complete",
       "view": "View"
     },
     "confirmations": {
       "cancel": {
-        "cancel": "_cancel",
-        "confirm": "_confirm",
-        "description": "_description",
-        "reasonPlaceholder": "_reasonPlaceholder",
-        "title": "_title"
+        "cancel": "Cancel",
+        "confirm": "Confirm",
+        "description": "Description",
+        "reasonPlaceholder": "Reason Placeholder",
+        "title": "Title"
       },
       "complete": {
-        "cancel": "_cancel",
-        "confirm": "_confirm",
-        "description": "_description",
-        "referencePlaceholder": "_referencePlaceholder",
-        "title": "_title"
+        "cancel": "Cancel",
+        "confirm": "Confirm",
+        "description": "Description",
+        "referencePlaceholder": "Reference Placeholder",
+        "title": "Title"
       },
       "delete": {
-        "cancel": "_cancel",
-        "confirm": "_confirm",
-        "description": "_description",
-        "title": "_title"
+        "cancel": "Cancel",
+        "confirm": "Confirm",
+        "description": "Description",
+        "title": "Title"
       }
     },
     "details": {
-      "accountNumber": "_accountNumber",
-      "additionalInfo": "_additionalInfo",
-      "amount": "_amount",
-      "amounts": "_amounts",
-      "applicationName": "_applicationName",
-      "companyApplication": "_companyApplication",
-      "companyName": "_companyName",
-      "copyEvents": "_copyEvents",
-      "createdAt": "_createdAt",
-      "currency": "_currency",
-      "currentVersion": "_currentVersion",
-      "feeAppliedAmount": "_feeAppliedAmount",
-      "internalReference": "_internalReference",
-      "netAmount": "_netAmount",
-      "notes": "_notes",
-      "overview": "_overview",
-      "processedAt": "_processedAt",
-      "providerFeeAmount": "_providerFeeAmount",
-      "providerFinalReference": "_providerFinalReference",
-      "providerInitialReference": "_providerInitialReference",
-      "providerMessage": "_providerMessage",
-      "providerReference": "_providerReference",
-      "references": "_references",
-      "status": "_status",
-      "title": "_title",
-      "updatedAt": "_updatedAt",
-      "verifiedAt": "_verifiedAt",
-      "withdrawalMethodName": "_withdrawalMethodName"
+      "accountNumber": "Account Number",
+      "additionalInfo": "Additional Info",
+      "amount": "Amount",
+      "amounts": "Amounts",
+      "applicationName": "Application Name",
+      "balancesReadModelId": "Balance ID",
+      "balancesReadModelName": "Balance name",
+      "companyApplication": "Company Application",
+      "companyName": "Company Name",
+      "copyEvents": "Copy Events",
+      "createdAt": "Created At",
+      "currency": "Currency",
+      "currentVersion": "Current Version",
+      "feeAppliedAmount": "Fee Applied Amount",
+      "internalReference": "Internal Reference",
+      "netAmount": "Net Amount",
+      "notes": "Notes",
+      "overview": "Overview",
+      "paymentMethodName": "Payment Method",
+      "processedAt": "Processed At",
+      "providerFeeAmount": "Provider Fee Amount",
+      "providerFinalReference": "Provider Final Reference",
+      "providerInitialReference": "Provider Initial Reference",
+      "providerMessage": "Provider Message",
+      "providerReference": "Provider Reference",
+      "references": "References",
+      "status": "Status",
+      "title": "Title",
+      "updatedAt": "Updated At",
+      "verifiedAt": "Verified At",
+      "withdrawalMethodName": "Withdrawal Method Name",
+      "withdrawalsAt": "Withdrawals date"
     },
     "form": {
-      "amountLabel": "_amountLabel",
-      "amountPlaceholder": "_amountPlaceholder",
-      "applicationIdLabel": "_applicationIdLabel",
-      "applicationIdPlaceholder": "_applicationIdPlaceholder",
-      "companyIdLabel": "_companyIdLabel",
-      "companyIdPlaceholder": "_companyIdPlaceholder",
+      "amountLabel": "Amount Label",
+      "amountPlaceholder": "Amount Placeholder",
+      "applicationIdLabel": "Application Id Label",
+      "applicationIdPlaceholder": "Application Id Placeholder",
+      "balanceIdLabel": "Balance",
+      "balanceIdPlaceholder": "Select a balance",
+      "companyIdLabel": "Company Id Label",
+      "companyIdPlaceholder": "Company Id Placeholder",
+      "dateLabel": "Date",
+      "datePlaceholder": "Select a date",
       "init": {
-        "description": "_description",
-        "submit": "_submit",
-        "systemTitle": "_systemTitle"
+        "description": "Description",
+        "submit": "Submit",
+        "systemTitle": "System Title"
       },
-      "notesLabel": "_notesLabel",
-      "notesPlaceholder": "_notesPlaceholder",
-      "withdrawalMethodIdLabel": "_withdrawalMethodIdLabel",
-      "withdrawalMethodIdPlaceholder": "_withdrawalMethodIdPlaceholder"
+      "notesLabel": "Withdrawals date",
+      "notesPlaceholder": "Select Withdrawals date",
+      "withdrawalMethodIdLabel": "Withdrawal Method Id Label",
+      "withdrawalMethodIdPlaceholder": "Withdrawal Method Id Placeholder"
     },
     "headers": {
-      "details": "_details"
+      "details": "Details"
     },
     "messages": {
       "approve": {
-        "error": "_error",
-        "success": "_success"
+        "error": "Error",
+        "success": "Success"
       },
       "cancel": {
-        "error": "_error",
-        "reasonRequired": "_reasonRequired",
-        "success": "_success"
+        "error": "Error",
+        "reasonRequired": "Reason Required",
+        "success": "Success"
       },
       "complete": {
-        "error": "_error",
-        "referenceRequired": "_referenceRequired",
-        "success": "_success"
+        "error": "Error",
+        "referenceRequired": "Reference Required",
+        "success": "Success"
       },
       "noData": "No withdrawals found."
     }
@@ -3476,23 +3492,29 @@ export default {
       "accountNumber": "Account Number",
       "amount": "Amount",
       "applicationName": "Application",
+      "auditInfo": "Spplement Infos",
       "companyName": "Company",
       "createdAt": "Created At",
+      "creator": "Initate by",
       "currencySymbol": "Currency",
       "feeAppliedAmount": "Fee Applied",
       "internalFeeAmount": "Internal Fee",
-      "internalReference": "_internalReference",
+      "internalReference": "Internal Reference",
       "netAmount": "Net Amount",
+      "notes": "Notes",
       "paymentMethodName": "Payment Method",
       "providerFeeAmount": "Provider Fee",
-      "providerFinalReference": "_providerFinalReference",
-      "providerInitialReference": "_providerInitialReference",
+      "providerFinalReference": "Provider Final Reference",
+      "providerInitialReference": "Provider Initial Reference",
       "providerReference": "Provider Ref.",
-      "references": "_references",
+      "references": "References",
       "status": "Status",
       "transactionId": "Transaction ID",
       "verificationAttempts": "Verification Attempts",
-      "withdrawalMethodName": "Withdrawal Method"
+      "verificator": "Verify by",
+      "verifiedAt": "Verified At",
+      "withdrawalMethodName": "Withdrawal Method",
+      "withdrawalsAt": "Withdrawals date"
     }
   },
   "withdrawalsReadModels": {
@@ -3529,22 +3551,22 @@ export default {
       "withdrawalMethodIdLabel": "Withdrawal Method"
     },
     "headers": {
-      "accountNumber": "_accountNumber",
-      "amount": "_amount",
-      "applicationName": "_applicationName",
-      "companyName": "_companyName",
-      "createdAt": "_createdAt",
-      "currencySymbol": "_currencySymbol",
-      "feeAppliedAmount": "_feeAppliedAmount",
-      "internalFeeAmount": "_internalFeeAmount",
-      "netAmount": "_netAmount",
-      "paymentMethodName": "_paymentMethodName",
-      "providerFeeAmount": "_providerFeeAmount",
-      "providerReference": "_providerReference",
-      "status": "_status",
-      "transactionId": "_transactionId",
-      "verificationAttempts": "_verificationAttempts",
-      "withdrawalMethodName": "_withdrawalMethodName"
+      "accountNumber": "Account Number",
+      "amount": "Amount",
+      "applicationName": "Application Name",
+      "companyName": "Company Name",
+      "createdAt": "Created At",
+      "currencySymbol": "Currency Symbol",
+      "feeAppliedAmount": "Fee Applied Amount",
+      "internalFeeAmount": "Internal Fee Amount",
+      "netAmount": "Net Amount",
+      "paymentMethodName": "Payment Method Name",
+      "providerFeeAmount": "Provider Fee Amount",
+      "providerReference": "Provider Reference",
+      "status": "Status",
+      "transactionId": "Transaction Id",
+      "verificationAttempts": "Verification Attempts",
+      "withdrawalMethodName": "Withdrawal Method Name"
     },
     "messages": {
       "noData": "No withdrawals found.",

@@ -110,7 +110,7 @@ export function ReceiptsTab({ companyId }: { companyId: string }) {
     navigate({ to: `/transactions/receipts/${id}` })
   }
 
-  const enum paymentMethodCode {
+  enum paymentMethodCode {
     MTN_MOMO = "/icons/momo.png",
     ORANGE_MONEY = "/icons/om.png",
   }
@@ -151,7 +151,7 @@ export function ReceiptsTab({ companyId }: { companyId: string }) {
                 </span>
               </div>
               <div className="flex gap-x-1.5">
-                <StatusBadge text={item.getTextFor("status")} />
+                <StatusBadge text={item.getTextFor("status") as string ?? ""} />
               </div>
             </div>
           )
@@ -211,7 +211,7 @@ export function ReceiptsTab({ companyId }: { companyId: string }) {
             </div>
           )
         case "createdAt":
-          return <span className="text-muted-foreground">{item.getTextFor("createdAt") ? formatDate(item.getTextFor("createdAt")) : "N/A"}</span>
+          return <span className="text-muted-foreground">{item.getTextFor("createdAt") ? formatDate(item.getTextFor("createdAt") as string ?? " ") : "N/A"}</span>
 
         case "actions":
           return <ActionButtonGroup view={view} isLoading={isLoading} row={item} actions={actions as ACTION[]} dispatch={handleDispatch} />
@@ -237,7 +237,7 @@ export function ReceiptsTab({ companyId }: { companyId: string }) {
                 }
               />
               <DetailsCardItem label={t("receiptsreadmodels.headers.netAmount")} value={item.getTextFor("netAmount")} />
-              <DetailsCardItem label={t("receiptsreadmodels.headers.status")} value={<StatusBadge text={item.getTextFor("status")} />} />
+              <DetailsCardItem label={t("receiptsreadmodels.headers.status")} value={<StatusBadge text={item.getTextFor("status") as string ?? ""} />} />
             </div>
           )
         case "fee":
@@ -304,9 +304,9 @@ export function ReceiptsTab({ companyId }: { companyId: string }) {
 
   const sortConfig: DataGridSort | undefined = sortBy
     ? {
-        column: sortBy,
-        direction: sortDirection === "desc" ? SortDirection.DESC : SortDirection.ASC,
-      }
+      column: sortBy,
+      direction: sortDirection === "desc" ? SortDirection.DESC : SortDirection.ASC,
+    }
     : undefined
 
   const handleSortChange = (config: DataGridSort) => {
@@ -334,13 +334,13 @@ export function ReceiptsTab({ companyId }: { companyId: string }) {
 
   const bulkActions = hasSelection
     ? [
-        {
-          label: bulkDeleteMutation.isPending ? t("receiptsReadModels.bulk.deleting") : t("receiptsReadModels.bulk.delete", { count: selectedRows.length }),
-          action: handleBulkDelete,
-          variant: "destructive" as const,
-          loading: bulkDeleteMutation.isPending,
-        },
-      ]
+      {
+        label: bulkDeleteMutation.isPending ? t("receiptsReadModels.bulk.deleting") : t("receiptsReadModels.bulk.delete", { count: selectedRows.length }),
+        action: handleBulkDelete,
+        variant: "destructive" as const,
+        loading: bulkDeleteMutation.isPending,
+      },
+    ]
     : undefined
 
   return (
@@ -380,7 +380,7 @@ export function ReceiptsTab({ companyId }: { companyId: string }) {
             onSortChange={handleSortChange}
             enableColumnVisibility={true}
             hiddenColumns={[]}
-            onColumnVisibilityChange={() => {}}
+            onColumnVisibilityChange={() => { }}
             bulkActions={bulkActions}
             renderCell={renderCell}
             dispatch={handleDispatch}

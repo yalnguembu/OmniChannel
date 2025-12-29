@@ -8,7 +8,7 @@ import { BarChartStacked, LineChartMultiAxis, generateChartConfig } from "@/feat
 import { TrendingUp, Activity, CreditCard, PiggyBank, TrendingDown, Loader } from "lucide-react"
 import { BalancesReadModelDto } from "@/shared/api/types.gen"
 import { useDashboard } from "./hooks/useDashboard"
-import { CartesianGrid, Line, LineChart, XAxis } from "recharts"
+import { CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts"
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/shared/components/ui/chart"
 import { formatCurrency, formatAmount } from "@/shared/utils/formatCurrency"
 
@@ -30,7 +30,6 @@ export function DashboardPage() {
   const loading = isLoadingMetrics || isLoadingPaymentMethods || isLoadingBalances
 
   const currentMetrics = metrics[0]
-  // Create default metrics for when no data is available
   const defaultMetrics = {
     totalVolume: 0,
     netRevenue: 0,
@@ -53,12 +52,10 @@ export function DashboardPage() {
   const effectiveMetrics = currentMetrics || defaultMetrics
   const effectiveMetricsArray = metrics.length > 0 ? metrics : []
 
-  // Use API balances or fallback to empty array
   const effectiveBalances = useMemo(() => {
     return apiBalances.length > 0 ? apiBalances : ([] as BalancesReadModelDto[])
   }, [apiBalances])
 
-  // Advanced analytics calculations
   const analytics = useMemo(() => {
     const totalBalance = effectiveBalances.filter((bal) => bal.balanceType === "MAIN").reduce((sum, bal) => sum + (bal.currentBalance || 0), 0)
     const totalAllTimeBalance = effectiveBalances.filter((bal) => bal.balanceType === "MAIN").reduce((sum, bal) => sum + (bal.totalCredits || 0), 0)
@@ -74,9 +71,8 @@ export function DashboardPage() {
     const liquidityRatio = totalBalance > 0 ? (totalAvailable / totalBalance) * 100 : 0
     const reserveRatio = totalBalance > 0 ? (totalReserved / totalBalance) * 100 : 0
 
-    // Risk assessment based on balances and metrics
     const reconciliationRisk = effectiveBalances.filter((bal) => bal.reconciliationStatus !== "RECONCILED").length
-    const riskLevel = reconciliationRisk > 0 ? "MEDIUM" : effectiveMetrics.failureRate > 5 ? "HIGH" : "LOW"
+    const riskLevel = reconciliationRisk > 0 ? "MEDIUM" : (effectiveMetrics.failureRate && effectiveMetrics.failureRate > 5) ? "HIGH" : "LOW"
 
     return {
       totalBalance,
@@ -97,7 +93,7 @@ export function DashboardPage() {
   }, [effectiveBalances, effectiveMetrics])
 
   const transactionTrendsData = effectiveMetricsArray.slice(-7).map((metric) => ({
-    date: new Date(metric.metricDate).toLocaleDateString("en", { month: "short", day: "numeric" }),
+    date: new Date(metric.metricDate ?? "").toLocaleDateString("en", { month: "short", day: "numeric" }),
     receipts: metric.totalReceipts || 0,
     withdrawals: metric.totalWithdrawals || 0,
     transfers: metric.totalFundTransfers || 0,
@@ -105,9 +101,9 @@ export function DashboardPage() {
   }))
 
   const performanceMetricsData = effectiveMetricsArray.map((metric) => ({
-    date: new Date(metric.metricDate).toLocaleDateString("fr", { month: "short", day: "numeric" }),
-    global: metric.totalReceiptsAmount,
-    count: metric.totalReceipts,
+    date: new Date(metric.metricDate ?? "").toLocaleDateString("fr", { month: "short", day: "numeric" }),
+    global: metric.totalReceiptsAmount || 0,
+    count: metric.totalReceipts || 0,
   }))
 
   const trendsConfig = generateChartConfig(["receipts", "withdrawals", "transfers", "volume"])
@@ -124,7 +120,7 @@ export function DashboardPage() {
     },
   } satisfies ChartConfig
 
-  const enum paymentMethodCode {
+  enum paymentMethodCode {
     MTN_MOMO = "/icons/momo.png",
     ORANGE_MONEY = "/icons/om.png",
   }
@@ -151,7 +147,7 @@ export function DashboardPage() {
                 </div>
               ) : (
                 <>
-                  <div className="text-xl lg:text-base xl:text-2xl font-bold text-primary">{formatCurrency(analytics.totalBalance?.toFixed(2))}</div>
+                  <div className="text-xl lg:text-base xl:text-2xl font-bold text-primary">{formatCurrency(analytics.totalBalance?.toFixed(2) as unknown as number)}</div>
                   <div className="flex items-center gap-1 text-xs text-muted-foreground">
                     <TrendingUp className="h-3 w-3 text-green-600" />
                     <span className="font-semibold">{analytics.omAllTimeCount + analytics.momoAllTimeCount} (100%)</span>
@@ -176,7 +172,7 @@ export function DashboardPage() {
                 </div>
               ) : (
                 <>
-                  <div className="text-xl lg:text-base xl:text-2xl font-bold">{formatCurrency(analytics?.omBalance?.toFixed(2))}</div>
+                  <div className="text-xl lg:text-base xl:text-2xl font-bold">{formatCurrency(analytics?.omBalance?.toFixed(2) as unknown as number)}</div>
                   <div className="flex items-center gap-1 text-xs text-muted-foreground">
                     {(analytics?.omAllTimeBalance / analytics.totalAllTimeBalance) * 100 > (analytics?.momoAllTimeBalance / analytics.totalAllTimeBalance) * 100 ? (
                       <TrendingUp className="h-3 w-3 text-green-600" />
@@ -207,7 +203,7 @@ export function DashboardPage() {
                 </div>
               ) : (
                 <>
-                  <div className="text-xl lg:text-base xl:text-2xl font-bold">{formatCurrency(analytics?.momoBalance?.toFixed(2))}</div>
+                  <div className="text-xl lg:text-base xl:text-2xl font-bold">{formatCurrency(analytics?.momoBalance?.toFixed(2) as unknown as number)}</div>
                   <div className="flex items-center gap-1 text-xs text-muted-foreground">
                     {(analytics?.momoAllTimeBalance * 100) / analytics.totalAllTimeBalance > (analytics?.omAllTimeBalance * 100) / analytics.totalAllTimeBalance ? (
                       <TrendingUp className="h-3 w-3 text-green-600" />
@@ -291,8 +287,9 @@ export function DashboardPage() {
                   >
                     <CartesianGrid vertical={false} />
                     <XAxis dataKey="date" tickLine={false} axisLine={false} tickMargin={8} />
+                    <YAxis dataKey="global" tickLine={false} axisLine={false} tickMargin={8} />
                     <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
-                    <Line dataKey="global" type="basis" stroke="var(--primary)" strokeWidth={2} dot={false}>
+                    <Line dataKey="global" type="monotone" stroke="var(--primary)" strokeWidth={2} dot={false}>
                       {/* <LabelList position="top" offset={12} className="fill-foreground" fontSize={12} /> */}
                     </Line>
                     <Line dataKey="count" type="monotone" stroke="var(--secondary)" strokeWidth={2} dot={false} />
@@ -335,7 +332,7 @@ export function DashboardPage() {
                       <tr key={balance.id || index} className="border-b hover:bg-muted/50">
                         <td className="p-2">
                           <div className="flex gap-2">
-                            <img src={`${paymentMethodCode[balance.paymentMethodCode]}`} className="h-6 w-6 text-muted- rounded-lg" />
+                            <img src={`${paymentMethodCode[(balance.paymentMethodCode ?? "ORANGE_MONEY") as keyof typeof paymentMethodCode]}`} className="h-6 w-6 text-muted- rounded-lg" />
                             <div>
                               <div className="font-medium">{balance.paymentMethodName}</div>
                             </div>
@@ -380,31 +377,31 @@ export function DashboardPage() {
                     <div className="space-y-3">
                       <div className="grid grid-cols-4 gap-4 py-2">
                         <div className="font-medium">{t("analytics.overview.transactionBreakdown.receipts")}</div>
-                        <div>{effectiveMetrics.totalReceipts.toLocaleString()}</div>
-                        <div>{effectiveMetrics.successfulReceipts.toLocaleString()}</div>
+                        <div>{effectiveMetrics.totalReceipts?.toLocaleString()}</div>
+                        <div>{effectiveMetrics.successfulReceipts?.toLocaleString()}</div>
                         <div>
                           <Badge variant="outline" className="bg-green-50 text-green-600">
-                            {effectiveMetrics.receiptsSuccessRate.toFixed(1)}%
+                            {effectiveMetrics.receiptsSuccessRate?.toFixed(1)}%
                           </Badge>
                         </div>
                       </div>
                       <div className="grid grid-cols-4 gap-4 py-2">
                         <div className="font-medium">{t("analytics.overview.transactionBreakdown.withdrawals")}</div>
-                        <div>{effectiveMetrics.totalWithdrawals.toLocaleString()}</div>
-                        <div>{effectiveMetrics.successfulWithdrawals.toLocaleString()}</div>
+                        <div>{effectiveMetrics.totalWithdrawals?.toLocaleString()}</div>
+                        <div>{effectiveMetrics.successfulWithdrawals?.toLocaleString()}</div>
                         <div>
                           <Badge variant="outline" className="bg-blue-50 text-blue-600">
-                            {effectiveMetrics.withdrawalsSuccessRate.toFixed(1)}%
+                            {effectiveMetrics.withdrawalsSuccessRate?.toFixed(1)}%
                           </Badge>
                         </div>
                       </div>
                       <div className="grid grid-cols-4 gap-4 py-2">
                         <div className="font-medium">{t("analytics.overview.transactionBreakdown.fundTransfers")}</div>
-                        <div>{effectiveMetrics.totalFundTransfers.toLocaleString()}</div>
-                        <div>{effectiveMetrics.successfulFundTransfers.toLocaleString()}</div>
+                        <div>{effectiveMetrics.totalFundTransfers?.toLocaleString()}</div>
+                        <div>{effectiveMetrics.successfulFundTransfers?.toLocaleString()}</div>
                         <div>
                           <Badge variant="outline" className="bg-purple-50 text-purple-600">
-                            {effectiveMetrics.fundTransfersSuccessRate.toFixed(1)}%
+                            {effectiveMetrics.fundTransfersSuccessRate?.toFixed(1)}%
                           </Badge>
                         </div>
                       </div>
@@ -437,11 +434,11 @@ export function DashboardPage() {
                       {paymentMethodMetrics.map((method) => (
                         <div key={method.paymentMethodId} className="grid grid-cols-4 gap-4 py-2">
                           <div className="font-medium">{method.paymentMethodName}</div>
-                          <div>{method.transactionCount.toLocaleString()}</div>
-                          <div>{formatAmount(method.totalAmount)} XAF</div>
+                          <div>{method.transactionCount?.toLocaleString()}</div>
+                          <div>{formatAmount(method.totalAmount ?? 0)} XAF</div>
                           <div>
                             <Badge variant="outline" className="bg-green-50 text-green-600">
-                              {method.successRate.toFixed(1)}%
+                              {method.successRate?.toFixed(1)}%
                             </Badge>
                           </div>
                         </div>

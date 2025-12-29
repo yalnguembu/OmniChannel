@@ -2,7 +2,7 @@ import React from "react"
 import { Control } from "react-hook-form"
 import { FormControl, FormField, FormItem, FormMessage } from "@/shared/components/ui/form"
 import { cn } from "@/shared/lib/utils"
-import { FilterFieldConfig } from "@/shared/types"
+import { FilterFieldConfig } from "../../types/filter"
 import { FilterFieldControl } from "./filter-field-controls"
 
 interface FilterFieldProps {

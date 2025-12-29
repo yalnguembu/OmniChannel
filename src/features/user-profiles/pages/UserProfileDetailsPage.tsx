@@ -1,7 +1,7 @@
 import { useNavigate, useParams } from "@tanstack/react-router"
 import { Button } from "@/shared/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/shared/components/ui/card"
-import { Edit, ArrowLeft, Loader2, Shield, User, Mail, Calendar, Clock, Building2 } from "lucide-react"
+import { Edit, ArrowLeft, Loader2, Shield, User, Calendar, Clock, LucideIcon } from "lucide-react"
 import { useUserProfile } from "../hooks/useUserProfile"
 import { Label } from "@/shared/components/ui/label"
 import { Separator } from "@/shared/components/ui/separator"

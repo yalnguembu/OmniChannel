@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next"
 import { DataGrid } from "@/shared/components/data-grid/data-grid"
 import { DataGridColumnHeader, DataGridSort, ACTION } from "@/shared/types"
 import { SortDirection } from "@/shared/enums/data-grid"
-import { UpdateWebhookRequest } from "@/shared/api/types.gen"
+import { SearchWebhookResponse, UpdateWebhookRequest } from "@/shared/api/types.gen"
 import { useWebhook } from "../hooks/useWebhook"
 import { WebhookDataGridEntry } from "../lib/data-grid/WebhookDataGridEntry"
 import { Label } from "@/shared/components/ui/label"
@@ -39,7 +39,6 @@ export const WebhookDataGrid: React.FC = () => {
     setSelectedRows,
     searchWebhooks,
     updateWebhookWithValidation,
-    deleteMutation,
     getApiWebhookGetWebhookSecretById,
     regenerateWebhookSecretById,
   } = useWebhook()
@@ -54,7 +53,7 @@ export const WebhookDataGrid: React.FC = () => {
   const [showDetailsModal, setShowDetailsModal] = useState(false)
   const toggleShowDetailsModal = () => setShowDetailsModal((prev) => !prev)
 
-  const [selectedItem, setSelectedItem] = useState(null)
+  const [selectedItem, setSelectedItem] = useState<SearchWebhookResponse | null>(null)
 
   const columnHeaders: DataGridColumnHeader[] = [
     {
@@ -123,9 +122,9 @@ export const WebhookDataGrid: React.FC = () => {
 
   const sortConfig: DataGridSort | undefined = sortBy
     ? {
-        column: sortBy,
-        direction: sortDirection === "desc" ? SortDirection.DESC : SortDirection.ASC,
-      }
+      column: sortBy,
+      direction: sortDirection === "desc" ? SortDirection.DESC : SortDirection.ASC,
+    }
     : undefined
 
   const handleSortChange = (config: DataGridSort) => {
@@ -142,15 +141,6 @@ export const WebhookDataGrid: React.FC = () => {
     changePageSize(size)
   }
 
-  const handleDelete = (id: string) => {
-    deleteMutation.mutate(
-      { path: id },
-      {
-        onSuccess: () => toggleShowEditModal(),
-      },
-    )
-  }
-
   const handleEdit = (data: UpdateWebhookRequest, setError: any) => {
     updateWebhookWithValidation(data, setError, () => {
       toggleShowEditModal()
@@ -159,7 +149,7 @@ export const WebhookDataGrid: React.FC = () => {
 
   const handleDispatch = (action: ACTION, id: string) => {
     const selectedWebhook = webhooks.find((webhook) => webhook.id === id)
-    setSelectedItem(selectedWebhook)
+    if (selectedWebhook) setSelectedItem(selectedWebhook)
     if (action === "view") {
       toggleShowDetailsModal()
     } else if (action === "edit") {
@@ -218,10 +208,10 @@ export const WebhookDataGrid: React.FC = () => {
         dispatch={handleDispatch}
       />
 
-      {showEditModal && (
+      {showEditModal && selectedItem && (
         <ModalWrapper title="" description="" open={showEditModal} onOpenChange={toggleShowEditModal}>
           <div className="-m-6">
-            <WebhookEditForm webhookId={selectedItem.id} initialData={selectedItem} onSubmit={handleEdit} onCancel={toggleShowEditModal} isLoading={false} />
+            <WebhookEditForm webhookId={selectedItem?.id ?? ""} initialData={selectedItem} onSubmit={handleEdit} onCancel={toggleShowEditModal} isLoading={false} />
           </div>
         </ModalWrapper>
       )}
@@ -240,13 +230,13 @@ export const WebhookDataGrid: React.FC = () => {
                   </CardTitle>
 
                   <CardAction>
-                    <Button variant="outline" size="sm" className="h-8 rounded-lg" disabled={isKepending} onClick={() => regenerateWebhookSecretById(selectedItem.id)}>
+                    <Button variant="outline" size="sm" className="h-8 rounded-lg" disabled={isKepending} onClick={() => regenerateWebhookSecretById(selectedItem.id ?? "")}>
                       {isKepending ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <RotateCcwKey className="h-4 w-4 mr-2" />}
                       Regenerate
                     </Button>
                   </CardAction>
                 </div>
-                <ApiKeyDetailItem label="Key:" value={keys?.data?.webhookSecret} Icon={Key} />
+                <ApiKeyDetailItem label="Key:" value={keys?.data?.webhookSecret} />
 
                 {Object.entries(selectedItem).map(([key, value]) => {
                   if (key === "id") return null // Don't show ID by default

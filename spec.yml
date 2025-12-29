@@ -28242,6 +28242,9 @@ components:
         withdrawalMethodPhoneNumber:
           type: string
           nullable: true
+        withdrawalsAt:
+          type: string
+          nullable: true
         publicId:
           type: string
           nullable: true

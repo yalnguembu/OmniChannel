@@ -1,18 +1,14 @@
 import { useMemo } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/components/ui/card"
 import { Badge } from "@/shared/components/ui/badge"
-import { AreaChartGradient, BarChartStacked, LineChartMultiAxis, HalfDonutChart, PieChartWithLabels, generateChartConfig } from "@/features/dashboard/components"
+import { AreaChartGradient, BarChartStacked, LineChartMultiAxis, HalfDonutChart, generateChartConfig } from "@/features/dashboard/components"
 import {
   TrendingUp,
-  DollarSign,
   Activity,
   CreditCard,
   Wallet,
   PiggyBank,
   Zap,
-  Percent,
-  CheckCircle,
-  AlertCircle,
   ArrowDown,
   ArrowUp,
   TrendingDown,
@@ -39,7 +35,6 @@ export default function OverviewTab({
   currentMetrics,
   totalTransactions,
   overallSuccessRate,
-  profitMargin,
   balances = [],
   isLoading = false,
 }: EnhancedOverviewTabProps) {
@@ -80,7 +75,7 @@ export default function OverviewTab({
 
     // Risk assessment based on balances and metrics
     const reconciliationRisk = effectiveBalances.filter((bal) => bal.reconciliationStatus !== "RECONCILED").length
-    const riskLevel = reconciliationRisk > 0 ? "MEDIUM" : effectiveMetrics.failureRate > 5 ? "HIGH" : "LOW"
+    const riskLevel = reconciliationRisk > 0 ? "MEDIUM" : (effectiveMetrics.failureRate || 0) > 5 ? "HIGH" : "LOW"
 
     return {
       totalBalance,
@@ -142,7 +137,7 @@ export default function OverviewTab({
                 <div className="text-2xl font-bold text-primary">{((currentMetrics?.totalVolume || 0) / 1000000).toFixed(1)}M XAF</div>
                 <div className="flex items-center gap-1 text-xs text-muted-foreground">
                   <TrendingUp className="h-3 w-3 text-green-600" />
-                  <span className="font-semibold">{currentMetrics?.totalReceipts + currentMetrics?.totalWithdrawals + currentMetrics?.totalFundTransfers || 0}</span>{" "}
+                  <span className="font-semibold">{(currentMetrics?.totalReceipts || 0) + (currentMetrics?.totalWithdrawals || 0) + (currentMetrics?.totalFundTransfers || 0)}</span>{" "}
                   {t("analytics.transactions.counts")}
                 </div>
               </>
@@ -258,31 +253,31 @@ export default function OverviewTab({
               <div className="space-y-3">
                 <div className="grid grid-cols-4 gap-4 py-2">
                   <div className="font-medium">{t("analytics.overview.transactionBreakdown.receipts")}</div>
-                  <div>{effectiveMetrics.totalReceipts.toLocaleString()}</div>
-                  <div>{effectiveMetrics.successfulReceipts.toLocaleString()}</div>
+                  <div>{effectiveMetrics.totalReceipts?.toLocaleString()}</div>
+                  <div>{effectiveMetrics.successfulReceipts?.toLocaleString()}</div>
                   <div>
                     <Badge variant="outline" className="bg-green-50 text-green-600">
-                      {effectiveMetrics.receiptsSuccessRate.toFixed(1)}%
+                      {effectiveMetrics.receiptsSuccessRate?.toFixed(1)}%
                     </Badge>
                   </div>
                 </div>
                 <div className="grid grid-cols-4 gap-4 py-2">
                   <div className="font-medium">{t("analytics.overview.transactionBreakdown.withdrawals")}</div>
-                  <div>{effectiveMetrics.totalWithdrawals.toLocaleString()}</div>
-                  <div>{effectiveMetrics.successfulWithdrawals.toLocaleString()}</div>
+                  <div>{effectiveMetrics.totalWithdrawals?.toLocaleString()}</div>
+                  <div>{effectiveMetrics.successfulWithdrawals?.toLocaleString()}</div>
                   <div>
                     <Badge variant="outline" className="bg-blue-50 text-blue-600">
-                      {effectiveMetrics.withdrawalsSuccessRate.toFixed(1)}%
+                      {effectiveMetrics.withdrawalsSuccessRate?.toFixed(1)}%
                     </Badge>
                   </div>
                 </div>
                 <div className="grid grid-cols-4 gap-4 py-2">
                   <div className="font-medium">{t("analytics.overview.transactionBreakdown.fundTransfers")}</div>
-                  <div>{effectiveMetrics.totalFundTransfers.toLocaleString()}</div>
-                  <div>{effectiveMetrics.successfulFundTransfers.toLocaleString()}</div>
+                  <div>{effectiveMetrics.totalFundTransfers?.toLocaleString()}</div>
+                  <div>{effectiveMetrics.successfulFundTransfers?.toLocaleString()}</div>
                   <div>
                     <Badge variant="outline" className="bg-purple-50 text-purple-600">
-                      {effectiveMetrics.fundTransfersSuccessRate.toFixed(1)}%
+                      {effectiveMetrics.fundTransfersSuccessRate?.toFixed(1)}%
                     </Badge>
                   </div>
                 </div>
@@ -309,11 +304,11 @@ export default function OverviewTab({
                 {paymentMethodMetrics.map((method) => (
                   <div key={method.paymentMethodId} className="grid grid-cols-4 gap-4 py-2">
                     <div className="font-medium">{method.paymentMethodName}</div>
-                    <div>{method.transactionCount.toLocaleString()}</div>
-                    <div>{(method.totalAmount / 1000000).toFixed(1)}M</div>
+                    <div>{method.transactionCount?.toLocaleString()}</div>
+                    <div>{((method.totalAmount || 0) / 1000000).toFixed(1)}M</div>
                     <div>
                       <Badge variant="outline" className="bg-green-50 text-green-600">
-                        {method.successRate.toFixed(1)}%
+                        {method.successRate?.toFixed(1)}%
                       </Badge>
                     </div>
                   </div>

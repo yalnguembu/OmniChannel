@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import { Control } from "react-hook-form"
 import { ChevronDown, ChevronUp } from "lucide-react"
-import { FilterSection as FilterSectionType } from "@/shared/types"
+import { FilterSection as FilterSectionType } from "@/shared/types/filter"
 import { FilterField } from "./filter-field"
 
 interface FilterSectionProps {

@@ -117,7 +117,7 @@ export const CompanyDataGrid: React.FC = () => {
                 <span className="">{item.getTextFor("companySize")}</span>
               </div>
               <div className="flex flex-wrap gap-2 items-center">
-                <StatusBadge theme={BadgeStyles.GREEN} text={item.getTextFor("status")} />
+                <StatusBadge theme={BadgeStyles.GREEN} text={item.getTextFor("status") as string ?? ""} />
                 {item.getTextFor("isVerified") === "true" && <StatusBadge Icon={Verified} theme={BadgeStyles.BLUE} text={t("companies.fields.isVerified")} />}
               </div>
             </div>
@@ -183,7 +183,7 @@ export const CompanyDataGrid: React.FC = () => {
             <div className="flex flex-col gap-y-1 px-4">
               <div className="flex items-center gap-x-2">
                 <span className="font-semibold text-lg text-primary">{item.getTextFor("name")}</span>
-                <StatusBadge theme={BadgeStyles.GREEN} text={item.getTextFor("status")} />
+                <StatusBadge theme={BadgeStyles.GREEN} text={item.getTextFor("status") as string ?? ""} />
                 {item.getTextFor("isVerified") === "true" && <StatusBadge Icon={Verified} theme={BadgeStyles.BLUE} text={t("companies.fields.isVerified")} />}
               </div>
               <div className="flex flex-col gap-y-1 text-sm text-muted-foreground">
@@ -233,9 +233,9 @@ export const CompanyDataGrid: React.FC = () => {
 
   const sortConfig: DataGridSort | undefined = sortBy
     ? {
-        column: sortBy,
-        direction: sortDirection === "desc" ? SortDirection.DESC : SortDirection.ASC,
-      }
+      column: sortBy,
+      direction: sortDirection === "desc" ? SortDirection.DESC : SortDirection.ASC,
+    }
     : undefined
 
   const handleSortChange = (config: DataGridSort) => {
@@ -254,13 +254,13 @@ export const CompanyDataGrid: React.FC = () => {
 
   const bulkActions = hasSelection
     ? [
-        {
-          label: bulkDeleteMutation.isPending ? t("companies.bulk.deleting") : t("companies.bulk.delete", { count: selectedRows.length }),
-          action: handleBulkDelete,
-          variant: "destructive" as const,
-          loading: bulkDeleteMutation.isPending,
-        },
-      ]
+      {
+        label: bulkDeleteMutation.isPending ? t("companies.bulk.deleting") : t("companies.bulk.delete", { count: selectedRows.length }),
+        action: handleBulkDelete,
+        variant: "destructive" as const,
+        loading: bulkDeleteMutation.isPending,
+      },
+    ]
     : undefined
 
   const handleDispatch = (action: ACTION, id: string) => {
@@ -299,7 +299,7 @@ export const CompanyDataGrid: React.FC = () => {
         onSortChange={handleSortChange}
         enableColumnVisibility={true}
         hiddenColumns={[]}
-        onColumnVisibilityChange={() => {}}
+        onColumnVisibilityChange={() => { }}
         bulkActions={bulkActions}
         renderCell={renderCell}
         actions={["edit", "delete", "view"]}

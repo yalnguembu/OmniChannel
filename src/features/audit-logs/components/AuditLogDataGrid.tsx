@@ -13,7 +13,7 @@ import { AuditLogDto } from "@/shared/api/types.gen"
 export const AuditLogDataGrid: React.FC = () => {
   const { t } = useTranslation()
 
-  const [selectedItem, setSelectedItem] = useState<AuditLogDto | null>(null)
+  const [selectedItem] = useState<AuditLogDto | null>(null)
 
   const { auditLogs, currentPage, pageSize, totalItems, sortBy, sortDirection, selectedRows, isLoading, changePage, changePageSize, changeSort, setSelectedRows } = useAuditLog()
 
@@ -176,9 +176,9 @@ export const AuditLogDataGrid: React.FC = () => {
 
   const sortConfig: DataGridSort | undefined = sortBy
     ? {
-        column: sortBy,
-        direction: sortDirection === "desc" ? SortDirection.DESC : SortDirection.ASC,
-      }
+      column: sortBy,
+      direction: sortDirection === "desc" ? SortDirection.DESC : SortDirection.ASC,
+    }
     : undefined
 
   const handleSortChange = (config: DataGridSort) => {
@@ -248,7 +248,8 @@ export const AuditLogDataGrid: React.FC = () => {
         onSortChange={handleSortChange}
         enableColumnVisibility={true}
         hiddenColumns={[]}
-        onColumnVisibilityChange={() => {}}
+        onColumnVisibilityChange={() => { }}
+        dispatch={() => { }}
       />
       {showDetailsModal && !!selectedItem && <BlockedIpDetails data={selectedItem} open={showDetailsModal} onCancel={toggleShowDetailsModal} />}
     </div>

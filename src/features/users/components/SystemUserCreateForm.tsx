@@ -35,7 +35,7 @@ export const SystemUserCreateForm: React.FC<SystemUserCreateFormProps> = ({ onSu
   const { data: userProfileResponse, isLoading: isUserProfilesLoading } = getUserProfiles()
 
   const userProfileOptions = useMemo(
-    () => userProfileResponse?.data.map((userProfile) => ({ value: userProfile.id ?? "", label: userProfile.name ?? "" })) ?? [],
+    () => userProfileResponse?.data?.map((userProfile) => ({ value: userProfile.id ?? "", label: userProfile.name ?? "" })) ?? [],
     [userProfileResponse],
   )
 

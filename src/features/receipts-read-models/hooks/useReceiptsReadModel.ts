@@ -169,12 +169,6 @@ export const useReceiptsReadModel = () => {
       ...getApiReceiptsReadModelGetAllPaymentEventsByIdOptions({ path: { id } }),
       enabled: !!id,
       staleTime: 5 * 60 * 1000,
-      select: (data) => {
-        if (data.success && data.data) {
-          store.setSelectedItem(data.data)
-        }
-        return data
-      },
     })
 
   const getApiReceiptsReadModelGetAllStatus = () =>

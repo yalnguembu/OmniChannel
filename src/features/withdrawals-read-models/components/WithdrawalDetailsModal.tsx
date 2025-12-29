@@ -51,17 +51,16 @@ export const WithdrawalDetailsModal: React.FC<WithdrawalDetailsModalProps> = ({ 
     <div className="grid grid-cols-1 md:grid-cols-5 gap-2 py-2 border-b last:border-0">
       <Label className="font-semibold md:col-span-2 text-muted-foreground text-sm wrap-break-word">{label}</Label>
       <div
-        className={`md:col-span-3 wrap-break-word ${
-          highlight === "success"
-            ? "text-green-600 font-semibold"
-            : highlight === "error"
-              ? "text-red-600 font-semibold"
-              : highlight === "warning"
-                ? "text-yellow-600 font-semibold"
-                : highlight === "info"
-                  ? "text-blue-600 font-semibold"
-                  : ""
-        }`}
+        className={`md:col-span-3 wrap-break-word ${highlight === "success"
+          ? "text-green-600 font-semibold"
+          : highlight === "error"
+            ? "text-red-600 font-semibold"
+            : highlight === "warning"
+              ? "text-yellow-600 font-semibold"
+              : highlight === "info"
+                ? "text-blue-600 font-semibold"
+                : ""
+          }`}
       >
         {value ?? "N/A"}
       </div>
@@ -169,7 +168,7 @@ export const WithdrawalDetailsModal: React.FC<WithdrawalDetailsModalProps> = ({ 
             toast.error(t("withdrawals.messages.cancel.reasonRequired"))
             return
           }
-          onCancelWithdrawal(withdrawalQueryResponse.data.id!, cancelReason)
+          onCancelWithdrawal(withdrawalQueryResponse.data?.id!, cancelReason)
           setShowCancelModal(false)
           onOpenChange()
         }}
@@ -189,7 +188,7 @@ export const WithdrawalDetailsModal: React.FC<WithdrawalDetailsModalProps> = ({ 
             toast.error(t("withdrawals.messages.complete.referenceRequired"))
             return
           }
-          onCompleteWithdrawal(withdrawalQueryResponse.data.id!, completeReference)
+          onCompleteWithdrawal(withdrawalQueryResponse.data?.id!, completeReference)
           setShowCompleteModal(false)
           onOpenChange()
         }}

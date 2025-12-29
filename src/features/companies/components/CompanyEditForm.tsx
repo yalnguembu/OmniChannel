@@ -36,7 +36,7 @@ export const CompanyEditForm: React.FC<CompanyEditFormProps> = ({ companyId, ini
 
   const handleSubmit = (values: UpdateCompanyRequest) => {
     if (onSubmit) {
-      onSubmit({ ...values, id: companyId }, form.setError)
+      onSubmit({ ...values, id: companyId })
     }
   }
   const { getDropdownQuery } = useCountry()

@@ -11,10 +11,6 @@ export { ChartLoading, ChartLoadingSpinner } from "./ChartLoading"
 export { ChartError, ChartErrorInline } from "./ChartError"
 export { ChartEmpty, ChartEmptyMinimal } from "./ChartEmpty"
 
-// Chart Showcase Component
-export { ChartShowcase } from "./ChartShowcase"
-export { AllChartsExample } from "./AllChartsExample"
-
 // Types and Interfaces
 export type {
   BaseChartData,
@@ -39,7 +35,6 @@ export type {
 // Data Structures and Helpers
 export type { ChartDataPoint, TimeSeriesData, MultiSeriesData, PieChartData, RadarChartData } from "./data-structures"
 
-export { sampleTimeSeriesData, sampleMultiSeriesData, samplePieData, sampleRadarData, validateChartData, getNumericKeys } from "./data-structures"
 
 // Utility Functions
 export {

@@ -21399,6 +21399,10 @@ export const SearchWithdrawalsReadModelResponseSchema = {
             type: 'string',
             nullable: true
         },
+        withdrawalsAt: {
+            type: 'string',
+            nullable: true
+        },
         publicId: {
             type: 'string',
             nullable: true
@@ -25521,6 +25525,15 @@ export const WithdrawalsReadModelDtoSchema = {
         updatedBy: {
             type: 'string',
             format: 'uuid',
+            nullable: true
+        },
+        balancesReadModelId: {
+            type: 'string',
+            format: 'uuid',
+            nullable: true
+        },
+        balancesReadModelName: {
+            type: 'string',
             nullable: true
         }
     },

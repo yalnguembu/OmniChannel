@@ -4,10 +4,9 @@ import { useForm } from "react-hook-form"
 import { z } from "zod"
 
 import { Form } from "@/shared/components/ui/form"
-import { BaseFilterProps, FilterFieldConfig, type FilterSection as FilterSectionType } from "@/shared/types"
+import { BaseFilterProps, FilterFieldConfig, type FilterSection as FilterSectionType } from "../../types/filter"
 import { FilterHeader } from "./filter-header"
 import { FilterSection } from "./filter-section"
-import { FilterActions } from "./filter-actions"
 import { CollapsibleContainer } from "./collapsible-container"
 import { EXCLUDED_FIELDS } from "@/shared/lib/constant"
 import { FilterSectionBuilder, generateFilterFieldsFromSchema } from "../../lib/filter"
@@ -20,14 +19,11 @@ export function BaseFilter<T extends Record<string, unknown>>({
   defaultValues,
   isLoading = false,
   enableDateRange = true,
-  showResetButton = true,
-  showFilterButton = true,
   className,
   collapsible = true,
   defaultCollapsed = true,
   viewMode,
   setViewMode,
-  refreshData,
   hasSelection,
   selectionCount,
   onImport,
@@ -36,11 +32,9 @@ export function BaseFilter<T extends Record<string, unknown>>({
   sections,
   fieldTranslationPrefix = "common",
 }: BaseFilterProps<T>) {
-  // Simple auto-collapse state
   const [isCollapsed, setIsCollapsed] = useState(defaultCollapsed)
   const [wasAutoCollapsed, setWasAutoCollapsed] = useState(false)
 
-  // Auto-collapse on scroll functionality
   useEffect(() => {
     if (!collapsible) return
 
@@ -49,13 +43,11 @@ export function BaseFilter<T extends Record<string, unknown>>({
     const handleScroll = () => {
       const currentScrollY = document.getElementById("scroll-container")?.scrollTop || 0
 
-      // Scrolling down and past threshold - auto collapse if not already collapsed
       if (currentScrollY > lastScrollY && currentScrollY > 100 && !isCollapsed) {
         setIsCollapsed(true)
         setWasAutoCollapsed(true)
       }
 
-      // Scrolling up to near top - reopen if was auto-collapsed and originally expanded
       if (currentScrollY < lastScrollY && currentScrollY <= 50 && wasAutoCollapsed && !defaultCollapsed) {
         setIsCollapsed(false)
         setWasAutoCollapsed(false)

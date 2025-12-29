@@ -1,7 +1,6 @@
 import { z } from "zod"
 import { FilterFieldType } from "../enums/filter"
 
-// Filter types
 export interface FilterOption {
   label: string
   value: string

@@ -20,7 +20,7 @@ import {
   getApiCompanyGetAllTypeOptions,
   // postApiDailyMetricSearchMutation,
 } from "@/shared/api/@tanstack/react-query.gen"
-import { SearchCompanyResponseIPagedListFujiPayApiResponse, CreateCompanyRequest, UpdateCompanyRequest } from "@/shared/api/types.gen"
+import { SearchCompanyResponseIPagedListFujiPayApiResponseReadable, CreateCompanyRequest, UpdateCompanyRequest } from "@/shared/api/types.gen"
 import type { UseFormSetError } from "react-hook-form"
 
 const getCompanySearchQueryKey = (cacheKey: string) => ["company", "search", cacheKey]
@@ -29,7 +29,7 @@ const isSuccessResponse = (response: any): boolean => {
   return response?.success === true
 }
 
-const isValidSearchResponse = (data: any): data is SearchCompanyResponseIPagedListFujiPayApiResponse => {
+const isValidSearchResponse = (data: any): data is SearchCompanyResponseIPagedListFujiPayApiResponseReadable => {
   return data !== null && typeof data === "object" && typeof data.success === "boolean" && Array.isArray(data.data)
 }
 
@@ -66,7 +66,7 @@ export const useCompany = () => {
         store.setPaginationData(total, totalPages)
 
         const cacheKey = JSON.stringify(variables.body)
-        queryClient.setQueryData<SearchCompanyResponseIPagedListFujiPayApiResponse>(getCompanySearchQueryKey(cacheKey), data as SearchCompanyResponseIPagedListFujiPayApiResponse)
+        queryClient.setQueryData<SearchCompanyResponseIPagedListFujiPayApiResponseReadable>(getCompanySearchQueryKey(cacheKey), data as SearchCompanyResponseIPagedListFujiPayApiResponseReadable)
       }
     },
     onError: () =>
@@ -90,7 +90,7 @@ export const useCompany = () => {
 
     const cacheKey = JSON.stringify(searchParams)
 
-    const cachedData = queryClient.getQueryData<SearchCompanyResponseIPagedListFujiPayApiResponse>(getCompanySearchQueryKey(cacheKey))
+    const cachedData = queryClient.getQueryData<SearchCompanyResponseIPagedListFujiPayApiResponseReadable>(getCompanySearchQueryKey(cacheKey))
 
     if (isValidSearchResponse(cachedData) && cachedData.success === true) {
       store.setLoading(true)
@@ -99,7 +99,7 @@ export const useCompany = () => {
           const items = Array.isArray(cachedData.data) ? cachedData.data : []
           store.setCompany(items)
           const total = (cachedData.metadata?.totalItems || items.length) as number
-          const totalPages = data.data.totalPages || 0
+          const totalPages = cachedData.data?.totalPages || 0
           store.setPaginationData(total, totalPages)
         }
         store.setLoading(false)

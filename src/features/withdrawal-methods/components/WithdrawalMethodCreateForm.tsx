@@ -41,7 +41,7 @@ export const WithdrawalMethodCreateForm: React.FC<WithdrawalMethodCreateFormProp
   })
 
   const form = useForm<CreateWithdrawalMethodRequest>({
-    resolver: zodResolver(zCreateWithdrawalMethodRequest),
+    resolver: zodResolver(zCreateWithdrawalMethodRequest as any),
     defaultValues: {
       ...defaultValues,
       companyId: companyId || undefined,

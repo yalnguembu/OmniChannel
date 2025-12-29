@@ -2,7 +2,6 @@ import React from "react"
 import { ControllerRenderProps } from "react-hook-form"
 import { CalendarIcon, ChevronDown, Search, X } from "lucide-react"
 import { format } from "date-fns"
-
 import { Button } from "@/shared/components/ui/button"
 import { Input } from "@/shared/components/ui/input"
 import { Label } from "@/shared/components/ui/label"
@@ -12,8 +11,8 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/shared/components/ui/
 import { Calendar } from "@/shared/components/ui/calendar"
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from "@/shared/components/ui/command"
 import { cn } from "@/shared/lib/utils"
-import { FilterFieldConfig } from "@/shared/types"
-import { SearchDropdown } from "@/shared/components/dropdowns/search-dropdown"
+import { FilterFieldConfig } from "../../types/filter"
+import { SearchDropdown, SearchDropdownOption } from "@/shared/components/dropdowns/search-dropdown"
 
 interface FilterFieldControlProps {
   field: FilterFieldConfig
@@ -235,7 +234,7 @@ const SearchDropdownFieldControl: React.FC<FilterFieldControlProps> = ({ field, 
   <SearchDropdown
     value={formField.value || null}
     onChange={(val) => formField.onChange(val)}
-    options={field.options || []}
+    options={field.options as SearchDropdownOption[] || []}
     placeholder={field.placeholder || field.label}
     disabled={field.disabled || isLoading}
     isLoading={field.isLoadingOptions || isLoading}

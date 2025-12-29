@@ -1,4 +1,4 @@
-import { CartesianGrid, Line, LineChart as RechartsLineChart, ResponsiveContainer, XAxis, YAxis, LabelList } from "recharts"
+import { CartesianGrid, Line, LineChart as RechartsLineChart, ResponsiveContainer, XAxis, YAxis } from "recharts"
 import { ChartContainer, ChartTooltip, ChartTooltipContent, ChartLegend, ChartLegendContent } from "@/shared/components/ui/chart"
 import { LineChartProps } from "./types"
 import { ChartLoading } from "./ChartLoading"
@@ -9,10 +9,9 @@ import { useMemo } from "react"
 import { cn } from "@/shared/lib/utils"
 
 export function LineChart({
-data,
+  data,
   config,
   dataKey,
-  width,
   height = 350,
   margin = defaultMargin,
   className,
@@ -98,20 +97,20 @@ data,
                   dot={
                     showDots
                       ? {
-                          fill: color,
-                          strokeWidth: 0,
-                          r: dotSize,
-                        }
+                        fill: color,
+                        strokeWidth: 0,
+                        r: dotSize,
+                      }
                       : false
                   }
                   activeDot={
                     showDots
                       ? {
-                          r: activeDotSize,
-                          fill: color,
-                          stroke: color,
-                          strokeWidth: 2,
-                        }
+                        r: activeDotSize,
+                        fill: color,
+                        stroke: color,
+                        strokeWidth: 2,
+                      }
                       : false
                   }
                   connectNulls={connectNulls}

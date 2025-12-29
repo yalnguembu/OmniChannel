@@ -7,7 +7,7 @@ import { Input } from "@/shared/components/ui/input"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/shared/components/ui/form"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/components/ui/card"
 import { LoaderIcon, CalendarIcon } from "lucide-react"
-import { getApiBalancesReadModelDropdown } from "@/shared/api"
+import { getApiBalancesReadModelDropdown, GetAllBalancesReadModelResponseIEnumerableFujiPayApiResponse } from "@/shared/api"
 import { useCompany } from "@/features/companies/hooks/useCompany"
 import { SearchDropdown } from "@/shared/components/dropdowns/search-dropdown"
 import { useApplication } from "@/features/companies/hooks/useApplication"
@@ -48,7 +48,7 @@ interface WithdrawalInitFormProps {
 export const WithdrawalInitForm: React.FC<WithdrawalInitFormProps> = ({ onSubmit, onCancel, isLoading = false, defaultValues }) => {
   const { t } = useTranslation()
 
-  const [balancesResponse, setBalances] = React.useState({})
+  const [balancesResponse, setBalancesResponse] = React.useState<GetAllBalancesReadModelResponseIEnumerableFujiPayApiResponse | null>(null)
   const [isBalancesLoading, setIsBalancesLoading] = React.useState<boolean>(false)
 
   const form = useForm<WithdrawalsInitRequest>({
@@ -70,7 +70,7 @@ export const WithdrawalInitForm: React.FC<WithdrawalInitFormProps> = ({ onSubmit
     () =>
       balancesResponse?.data?.map((balance) => ({
         value: balance.id ?? "",
-        label: `${balance.paymentMethodName} ${balance.currentBalance} ${balance.currency}` ?? "",
+        label: `${balance.paymentMethodName ?? ""} ${balance.currentBalance ?? ""} ${balance.currency ?? ""}`,
       })) ?? [],
     [balancesResponse],
   )
@@ -95,7 +95,7 @@ export const WithdrawalInitForm: React.FC<WithdrawalInitFormProps> = ({ onSubmit
     setIsBalancesLoading(false)
     console.log(response.data)
 
-    if (response.data) setBalances(response.data)
+    if (response.data) setBalancesResponse(response.data)
   }
 
   useEffect(() => {

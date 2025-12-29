@@ -10,7 +10,20 @@ import { Label } from "@/shared/components/ui/label"
 import { ModalWrapper } from "@/shared/components/ModalWrapper"
 import { Card, CardContent, CardHeader, CardTitle } from "@/shared/components/ui/card"
 import { WithdrawalMethodEditForm } from "./WithdrawalMethodEditForm"
-// import { ModalWrapper } from "@/shared/components/ModalWrapper"
+
+type LocalUpdateWithdrawalMethodRequest = {
+  id?: string
+  companyId?: string
+  name: string
+  phoneNumber?: string
+  paymentMethodId: string
+  verificationReference?: string | null
+  isDefault?: boolean
+  isVerified?: boolean
+  dailyLimit?: string | null
+  monthlyLimit?: string | null
+  singleWithdrawalLimit?: string | null
+}
 
 export const WithdrawalMethodDataGrid: React.FC = () => {
   const { t } = useTranslation()
@@ -167,9 +180,9 @@ export const WithdrawalMethodDataGrid: React.FC = () => {
 
   const sortConfig: DataGridSort | undefined = sortBy
     ? {
-        column: sortBy,
-        direction: sortDirection === "desc" ? SortDirection.DESC : SortDirection.ASC,
-      }
+      column: sortBy,
+      direction: sortDirection === "desc" ? SortDirection.DESC : SortDirection.ASC,
+    }
     : undefined
 
   const handleSortChange = (config: DataGridSort) => {
@@ -186,9 +199,9 @@ export const WithdrawalMethodDataGrid: React.FC = () => {
     changePageSize(size)
   }
 
-  const handleSubmit = (data: UpdateWithdrawalMethodRequest) => {
+  const handleSubmit = (data: LocalUpdateWithdrawalMethodRequest) => {
     updateMutation.mutate(
-      { body: data },
+      { body: data as UpdateWithdrawalMethodRequest },
       {
         onSuccess: () => toggleShowEditModal(),
       },
@@ -215,7 +228,7 @@ export const WithdrawalMethodDataGrid: React.FC = () => {
         onSortChange={handleSortChange}
         enableColumnVisibility={true}
         hiddenColumns={[]}
-        onColumnVisibilityChange={() => {}}
+        onColumnVisibilityChange={() => { }}
         actions={["view", "edit", "delete"]}
         dispatch={handleDispatch}
       />
@@ -223,7 +236,7 @@ export const WithdrawalMethodDataGrid: React.FC = () => {
         <ModalWrapper style="lg:max-h-3/5 overflow-y-scroll" size="2xl" open={showEditModal} onOpenChange={toggleShowEditModal} title="">
           <div className="max-h-2/3 -m-4">
             <WithdrawalMethodEditForm
-              initialData={selectedItem}
+              initialData={selectedItem as any}
               withdrawalMethodId={selectedItem.id ?? ""}
               onSubmit={handleSubmit}
               onCancel={toggleShowEditModal}

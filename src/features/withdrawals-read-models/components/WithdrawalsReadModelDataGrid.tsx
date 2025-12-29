@@ -144,7 +144,7 @@ export const WithdrawalsReadModelDataGrid: React.FC = () => {
 
   const actions: ACTION[] = ["view", "delete", "approve", "cancel", "complete"]
 
-  const enum paymentMethodCode {
+  enum paymentMethodCode {
     MOMO = "/icons/momo.png",
     OM = "/icons/om.png",
   }
@@ -171,7 +171,7 @@ export const WithdrawalsReadModelDataGrid: React.FC = () => {
     if (view === "list") {
       switch (column.key) {
         case "paymentMethod":
-          return <img src={paymentMethodCode[item.getTextFor("paymentMethodName") as unknown]} alt="Payment Method" className="h-6 w-6 rounded-md" />
+          return <img src={paymentMethodCode[item.getTextFor("paymentMethodName") as keyof typeof paymentMethodCode]} alt="Payment Method" className="h-6 w-6 rounded-md" />
         case "amount":
           return (
             <div className="flex flex-col gap-y-1 text-muted-foreground/80">
@@ -234,15 +234,15 @@ export const WithdrawalsReadModelDataGrid: React.FC = () => {
             <div className="flex flex-col gap-y-1 text-muted-foreground/80">
               <div className="flex gap-x-1.5">
                 <span className="font-medium">{t("withdrawalsreadmodels.headers.createdAt")}:</span>
-                <span className="text-blue-500 font-semibold">{formatDate(item.getTextFor("createdAt"))}</span>
+                <span className="text-blue-500 font-semibold">{formatDate(item.getTextFor("createdAt") as string ?? "")}</span>
               </div>
               <div className="flex gap-x-1.5">
                 <span className="font-medium">{t("withdrawalsreadmodels.headers.withdrawalsAt")}:</span>
-                <span className="text-blue-500 font-semibold truncate max-w-24">{formatDate(item.getTextFor("withdrawalsAt"))}</span>
+                <span className="text-blue-500 font-semibold truncate max-w-24">{formatDate(item.getTextFor("withdrawalsAt") as string ?? "")}</span>
               </div>
               <div className="flex gap-x-1.5">
                 <span className="font-medium">{t("withdrawalsreadmodels.headers.verifiedAt")}:</span>
-                <span className="text-blue-500 font-semibold">{formatDate(item.getTextFor("verifiedAt"))}</span>
+                <span className="text-blue-500 font-semibold">{formatDate((item.getTextFor("verifiedAt") ?? "") as string)}</span>
               </div>
             </div>
           )
@@ -262,13 +262,13 @@ export const WithdrawalsReadModelDataGrid: React.FC = () => {
           return (
             <div className="flex flex-row justify-between px-4 mt-auto border-b">
               <img src={paymentMethodCode[item.getTextFor("paymentMethodName") as keyof typeof paymentMethodCode]} alt="Payment Method" className="h-6 w-6 rounded-md" />
-              <ActionButtonGroup view={view} isLoading={isLoading} row={item} actions={getActionsForStatus(item.getTextFor("status")) as ACTION[]} dispatch={handleDispatch} />
+              <ActionButtonGroup view={view} isLoading={isLoading} row={item} actions={getActionsForStatus(item.getTextFor("status") as string) as ACTION[]} dispatch={handleDispatch} />
             </div>
           )
         case "amount":
           return (
             <div className="flex flex-col gap-y-1 px-4">
-              <ActionButtonGroup view={view} isLoading={isLoading} row={item} actions={getActionsForStatus(item.getTextFor("status")) as ACTION[]} dispatch={handleDispatch} />
+              <ActionButtonGroup view={view} isLoading={isLoading} row={item} actions={getActionsForStatus(item.getTextFor("status") as string) as ACTION[]} dispatch={handleDispatch} />
               <DetailsCardItem
                 label={t("withdrawalsreadmodels.headers.amount")}
                 value={
@@ -304,7 +304,7 @@ export const WithdrawalsReadModelDataGrid: React.FC = () => {
               />
               <DetailsCardItem label={t("withdrawals.details.balancesReadModelName")} value={<span className="font-bold">{item.getTextFor("balancesReadModelName")}</span>} />
               <DetailsCardItem label={t("withdrawals.headers.details")} value={<span className="font-semibold">{item.getTextFor("paymentMethodName")}</span>} />
-              <DetailsCardItem label={t("withdrawalsreadmodels.headers.status")} value={<StatusBadge text={item.getTextFor("status")} />} />
+              <DetailsCardItem label={t("withdrawalsreadmodels.headers.status")} value={<StatusBadge text={item.getTextFor("status") as string} />} />
             </div>
           )
         case "auditInfo":
@@ -331,12 +331,12 @@ export const WithdrawalsReadModelDataGrid: React.FC = () => {
         case "createdAt":
           return (
             <div className="flex flex-col gap-y-1 px-4 text-sm text-muted-foreground">
-              <DetailsCardItem label={t("withdrawalsreadmodels.headers.createdAt")} value={<span className="font-semibold">{formatDate(item.getTextFor("createdAt"))}</span>} />
+              <DetailsCardItem label={t("withdrawalsreadmodels.headers.createdAt")} value={<span className="font-semibold">{formatDate(item.getTextFor("createdAt") as string ?? "")}</span>} />
               <DetailsCardItem
                 label={t("withdrawalsreadmodels.headers.withdrawalsAt")}
                 value={<span className="font-semibold truncate max-w-24">{item.getTextFor("withdrawalsAt")}</span>}
               />
-              <DetailsCardItem label={t("withdrawalsreadmodels.headers.verifiedAt")} value={<span className="font-semibold">{formatDate(item.getTextFor("verifiedAt"))}</span>} />
+              <DetailsCardItem label={t("withdrawalsreadmodels.headers.verifiedAt")} value={<span className="font-semibold">{formatDate(item.getTextFor("verifiedAt") as string ?? "")}</span>} />
             </div>
           )
         case "actions":
@@ -349,9 +349,9 @@ export const WithdrawalsReadModelDataGrid: React.FC = () => {
 
   const sortConfig: DataGridSort | undefined = sortBy
     ? {
-        column: sortBy,
-        direction: sortDirection === "desc" ? SortDirection.DESC : SortDirection.ASC,
-      }
+      column: sortBy,
+      direction: sortDirection === "desc" ? SortDirection.DESC : SortDirection.ASC,
+    }
     : undefined
 
   const handleSortChange = (config: DataGridSort) => {

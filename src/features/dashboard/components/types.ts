@@ -67,7 +67,7 @@ export interface PieChartProps extends Omit<BaseChartProps, "showGrid"> {
   startAngle?: number
   endAngle?: number
   showLabels?: boolean
-  labelPosition?: "inside" | "outside" | "insideStart" | "insideStartTop"
+  labelPosition?: "inside" | "outside" | "insideStart" | "top" | "left" | "right" | "bottom" | "insideLeft" | "insideRight" | "insideTop" | "insideBottom" | "insideTopLeft" | "insideBottomLeft" | "insideTopRight" | "insideBottomRight" | "insideStart" | "insideEnd" | "end" | "center" | "centerTop" | "centerBottom" | "middle"
   labelFormatter?: (value: any) => string
   valueFormatter?: (value: number) => string
   colorScheme?: "default" | "category" | "diverging" | "sequential"
@@ -82,11 +82,9 @@ export interface DonutChartProps extends PieChartProps {
 export interface RadarChartProps extends BaseChartProps {
   dataKey: string | string[]
   polarGridType?: "polygon" | "circle"
-  radialGridType?: "polygon" | "circle"
   showPolarGrid?: boolean
   showRadialGrid?: boolean
   tickCount?: number
-  angleAxisDomain?: [number, number]
   radiusAxisDomain?: [number, number]
   fillOpacity?: number
 }

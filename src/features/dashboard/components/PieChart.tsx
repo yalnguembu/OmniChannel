@@ -93,7 +93,7 @@ export function PieChart({
                   <ChartTooltipContent
                     formatter={(value) => [formatTooltipValue(value as number), ""]}
                     labelFormatter={(label, payload) => {
-                      if (payload && payload.length > 0) {
+                      if (payload && payload.length > 0 && payload[0].payload) {
                         return payload[0].payload[nameKey]
                       }
                       return label
@@ -123,7 +123,7 @@ export function PieChart({
               animationDuration={animate ? 750 : 0}
             >
               {data.map((entry, index) => {
-                const color = entry.fill || config[entry[nameKey]]?.color || `var(--chart-${(index % 5) + 1})`
+                const color = (entry as any).fill || config[String(entry[nameKey])]?.color || `var(--chart-${(index % 5) + 1})`
                 return <Cell key={`cell-${index}`} fill={color} />
               })}
 
@@ -139,7 +139,7 @@ export function PieChart({
                     <ChartTooltipContent
                       formatter={(value) => [formatTooltipValue(value as number), ""]}
                       labelFormatter={(label, payload) => {
-                        if (payload && payload.length > 0) {
+                        if (payload && payload.length > 0 && payload[0].payload) {
                           return payload[0].payload[nameKey]
                         }
                         return label
@@ -169,7 +169,7 @@ export function PieChart({
                 animationDuration={animate ? 750 : 0}
               >
                 {data.map((entry, index) => {
-                  const color = entry.fill || config[entry[nameKey]]?.color || `var(--chart-${(index % 5) + 1})`
+                  const color = (entry as any).fill || config[String(entry[nameKey])]?.color || `var(--chart-${(index % 5) + 1})`
                   return <Cell key={`cell-${index}`} fill={color} />
                 })}
 

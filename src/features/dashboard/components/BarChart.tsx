@@ -12,7 +12,6 @@ export function BarChart({
   data,
   config,
   dataKey,
-  width,
   height = 350,
   margin = defaultMargin,
   className,
@@ -81,11 +80,7 @@ export function BarChart({
           <RechartsBarChart
             data={data}
             margin={margin}
-            onClick={handleClick}
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
             layout={isHorizontal ? "horizontal" : "vertical"}
-            maxBarSize={maxBarSize}
             barGap={barGap}
             barCategoryGap={barCategoryGap}
           >
@@ -116,7 +111,11 @@ export function BarChart({
                   dataKey={key}
                   stackId={stackId}
                   fill={color}
+                  maxBarSize={maxBarSize}
                   radius={stacked ? (index === 0 ? [0, 0, 4, 4] : index === dataKeys.length - 1 ? [4, 4, 0, 0] : [0, 0, 0, 0]) : [4, 4, 0, 0]}
+                  onClick={(data, index) => handleClick(data, index)}
+                  onMouseEnter={(data, index) => handleMouseEnter(data, index)}
+                  onMouseLeave={handleMouseLeave}
                   isAnimationActive={animate}
                   animationDuration={animate ? 750 : 0}
                 >
@@ -131,8 +130,8 @@ export function BarChart({
   )
 }
 
-export function BarChartStacked({ data, config, dataKeys, stacked = true, ...props }: Omit<BarChartProps, "dataKey" | "stacked"> & { dataKeys: string[] }) {
-  return <BarChart {...props} data={data} config={config} dataKey={dataKeys} stacked={stacked} />
+export function BarChartStacked({ data, config, dataKeys, ...props }: Omit<BarChartProps, "dataKey" | "stacked"> & { dataKeys: string[] }) {
+  return <BarChart {...props} data={data} config={config} dataKey={dataKeys} stacked={true} />
 }
 
 export function BarChartHorizontal({ data, config, dataKey, orientation = "horizontal", ...props }: BarChartProps) {

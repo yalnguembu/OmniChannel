@@ -12,7 +12,6 @@ export function RadarChart({
   data,
   config,
   dataKey,
-  width,
   height = 350,
   className,
   showTooltip = true,
@@ -24,11 +23,9 @@ export function RadarChart({
   onDataPointClick,
   onDataPointHover,
   polarGridType = "polygon",
-  radialGridType = "polygon",
   showPolarGrid = true,
   showRadialGrid = true,
   tickCount = 5,
-  angleAxisDomain,
   radiusAxisDomain,
   fillOpacity = 0.6,
 }: RadarChartProps) {
@@ -87,11 +84,12 @@ export function RadarChart({
 
             {dataKeys.map((key, index) => {
               const color = config[key]?.color || `var(--chart-${index + 1})`
+              const name = typeof config[key]?.label === "string" ? (config[key]?.label as string) : key
 
               return (
                 <Radar
                   key={key}
-                  name={config[key]?.label || key}
+                  name={name}
                   dataKey={key}
                   stroke={color}
                   fill={color}

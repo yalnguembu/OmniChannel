@@ -12,18 +12,15 @@ interface TransactionAnalyticsTabProps {
   isLoading?: boolean
 }
 
-// Safe division helper to avoid NaN
 const safeDivide = (numerator: number, denominator: number, defaultValue = 0): number => {
   if (!denominator || denominator === 0) return defaultValue
   return numerator / denominator
 }
 
-// Safe percentage helper
 const safePercentage = (numerator: number, denominator: number, defaultValue = 0): number => {
   return safeDivide(numerator, denominator, defaultValue) * 100
 }
 
-// Chart configurations
 const volumeChartConfig = {
   totalReceipts: { label: "Receipts", color: "hsl(var(--chart-1))" },
   totalWithdrawals: { label: "Withdrawals", color: "hsl(var(--chart-2))" },
@@ -222,7 +219,7 @@ export default function TransactionAnalyticsTab({ metrics, paymentMethodMetrics,
             <ChartContainer config={paymentMethodChartConfig} className="h-[350px]">
               <PieChart>
                 <Pie data={effectivePaymentMethodMetrics} dataKey="transactionCount" nameKey="paymentMethodName" cx="50%" cy="50%" outerRadius={100} fill="hsl(var(--chart-1))">
-                  {effectivePaymentMethodMetrics.map((entry, index) => (
+                  {effectivePaymentMethodMetrics.map((_entry, index) => (
                     <Cell key={`cell-${index}`} fill={`hsl(var(--chart-${(index % 5) + 1}))`} />
                   ))}
                   <LabelList dataKey="transactionCount" position="outside" formatter={(value: number) => value.toLocaleString()} className="text-xs font-medium" />
@@ -274,19 +271,19 @@ export default function TransactionAnalyticsTab({ metrics, paymentMethodMetrics,
 
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">{t("analytics.transactions.paymentMethods.transactions")}:</span>
-                    <span className="font-bold">{method.transactionCount.toLocaleString()}</span>
+                    <span className="font-bold">{method.transactionCount?.toLocaleString()}</span>
                   </div>
 
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">{t("analytics.transactions.paymentMethods.successRate")}:</span>
-                    <span className={`font-bold ${method.successRate >= 95 ? "text-green-600" : method.successRate >= 90 ? "text-yellow-600" : "text-red-600"}`}>
-                      {method.successRate.toFixed(1)}%
+                    <span className={`font-bold ${(method.successRate || 0) >= 95 ? "text-green-600" : (method.successRate || 0) >= 90 ? "text-yellow-600" : "text-red-600"}`}>
+                      {(method.successRate || 0)?.toFixed(1)}%
                     </span>
                   </div>
 
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">{t("analytics.transactions.paymentMethods.totalVolume")}:</span>
-                    <span className="font-bold">{safeDivide(method.totalAmount, 1000000).toFixed(1)}M XAF</span>
+                    <span className="font-bold">{safeDivide(method.totalAmount || 0, 1000000).toFixed(1)}M XAF</span>
                   </div>
 
                   <div className="flex justify-between">
@@ -296,7 +293,7 @@ export default function TransactionAnalyticsTab({ metrics, paymentMethodMetrics,
 
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">{t("analytics.transactions.paymentMethods.failures")}:</span>
-                    <span className="text-red-600 font-medium">{method.failedTransactions.toLocaleString()}</span>
+                    <span className="text-red-600 font-medium">{method.failedTransactions?.toLocaleString()}</span>
                   </div>
                 </div>
               </div>
@@ -333,10 +330,10 @@ export default function TransactionAnalyticsTab({ metrics, paymentMethodMetrics,
               </thead>
               <tbody>
                 {effectivePaymentMethodMetrics
-                  .sort((a, b) => b.transactionCount - a.transactionCount)
+                  .sort((a, b) => (b.transactionCount || 0) - (a.transactionCount || 0))
                   .map((method, index) => {
-                    const totalTransactions = effectivePaymentMethodMetrics.reduce((sum, m) => sum + m.transactionCount, 0)
-                    const marketShare = safePercentage(method.transactionCount, totalTransactions)
+                    const totalTransactions = effectivePaymentMethodMetrics.reduce((sum, m) => sum + (m.transactionCount || 0), 0)
+                    const marketShare = safePercentage(method.transactionCount || 0, totalTransactions)
 
                     return (
                       <tr key={method.paymentMethodId || index} className="border-b hover:bg-muted/50">
@@ -349,8 +346,8 @@ export default function TransactionAnalyticsTab({ metrics, paymentMethodMetrics,
                             </div>
                           </div>
                         </td>
-                        <td className="p-2 text-right font-mono">{method.transactionCount.toLocaleString()}</td>
-                        <td className="p-2 text-right font-mono">{safeDivide(method.totalAmount, 1000000).toFixed(1)}M</td>
+                        <td className="p-2 text-right font-mono">{method.transactionCount?.toLocaleString()}</td>
+                        <td className="p-2 text-right font-mono">{safeDivide(method.totalAmount || 0, 1000000).toFixed(1)}M</td>
                         <td className="p-2 text-right">
                           <span
                             className={`font-bold ${(method.successRate || 0) >= 95 ? "text-green-600" : (method.successRate || 0) >= 90 ? "text-yellow-600" : "text-red-600"}`}

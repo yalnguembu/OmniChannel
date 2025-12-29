@@ -23,8 +23,7 @@ export const TransactionDetailsModal: React.FC<TransactionDetailsModalProps> = (
     <div className="grid grid-cols-1 md:grid-cols-5 gap-2 py-2 border-b last:border-0">
       <Label className="font-semibold md:col-span-2 text-muted-foreground text-sm wrap-break-word">{label}</Label>
       <div
-        className={`md:col-span-3 wrap-break-word ${
-          highlight === "success"
+        className={`md:col-span-3 wrap-break-word ${highlight === "success"
             ? "text-green-600 font-semibold"
             : highlight === "error"
               ? "text-red-600 font-semibold"
@@ -33,14 +32,14 @@ export const TransactionDetailsModal: React.FC<TransactionDetailsModalProps> = (
                 : highlight === "info"
                   ? "text-blue-600 font-semibold"
                   : ""
-        }`}
+          }`}
       >
         {value ?? "N/A"}
       </div>
     </div>
   )
 
-  const handleCopy = () => onCopyEvent(transaction.id)
+  const handleCopy = () => onCopyEvent(transaction.id ?? "")
 
   return (
     <ModalWrapper size="3xl" withHeader open={open} onOpenChange={onOpenChange} title={t("receiptsReadModels.details.title")}>

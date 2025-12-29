@@ -144,20 +144,6 @@ export const WithdrawalMethodEditForm: React.FC<WithdrawalMethodEditFormProps> =
 
               <FormField
                 control={form.control}
-                name="verificationDate"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t("withdrawalMethods.form.verificationDateLabel")}</FormLabel>
-                    <FormControl>
-                      <Input type="text" placeholder={t("withdrawalMethods.form.verificationDatePlaceholder")} {...field} value={field.value || ""} required={false} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
                 name="verificationReference"
                 render={({ field }) => (
                   <FormItem>

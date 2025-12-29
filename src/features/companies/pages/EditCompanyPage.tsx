@@ -49,7 +49,7 @@ export function EditCompanyPage() {
           breadcrumbs={[{ label: t("navigation.dashboard"), href: "/dashboard" }, { label: t("companies.title"), href: "/companies" }, { label: t("companies.edit") }]}
         />
       }
-      content={<CompanyEditForm companyId={id} initialData={data.data} onSubmit={handleSubmit} onCancel={handleCancel} isLoading={false} />}
+      content={<CompanyEditForm companyId={id} initialData={data.data} onSubmit={handleSubmit as any} onCancel={handleCancel} isLoading={false} />}
     />
   )
 }

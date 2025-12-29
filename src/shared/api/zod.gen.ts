@@ -13466,6 +13466,10 @@ export const zSearchWithdrawalsReadModelResponse = z.object({
         z.string(),
         z.null()
     ]).optional(),
+    withdrawalsAt: z.union([
+        z.string(),
+        z.null()
+    ]).optional(),
     publicId: z.union([
         z.string(),
         z.null()
@@ -16042,6 +16046,14 @@ export const zWithdrawalsReadModelDto = z.object({
     createdBy: z.string().uuid().optional(),
     updatedBy: z.union([
         z.string().uuid(),
+        z.null()
+    ]).optional(),
+    balancesReadModelId: z.union([
+        z.string().uuid(),
+        z.null()
+    ]).optional(),
+    balancesReadModelName: z.union([
+        z.string(),
         z.null()
     ]).optional()
 });

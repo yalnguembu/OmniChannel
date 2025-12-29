@@ -92,7 +92,7 @@ export const ReceiptsReadModelDataGrid: React.FC = () => {
     searchReceiptsReadModels()
   }, [])
 
-  const enum paymentMethodCode {
+  enum paymentMethodCode {
     MTN_MOMO = "/icons/momo.png",
     ORANGE_MONEY = "/icons/om.png",
   }
@@ -139,9 +139,9 @@ export const ReceiptsReadModelDataGrid: React.FC = () => {
 
   const sortConfig: DataGridSort | undefined = sortBy
     ? {
-        column: sortBy,
-        direction: sortDirection === "desc" ? SortDirection.DESC : SortDirection.ASC,
-      }
+      column: sortBy,
+      direction: sortDirection === "desc" ? SortDirection.DESC : SortDirection.ASC,
+    }
     : undefined
 
   const handleSortChange = (config: DataGridSort) => {
@@ -160,13 +160,13 @@ export const ReceiptsReadModelDataGrid: React.FC = () => {
 
   const bulkActions = hasSelection
     ? [
-        {
-          label: bulkDeleteMutation.isPending ? t("receiptsReadModels.bulk.deleting") : t("receiptsReadModels.bulk.delete", { count: selectedRows.length }),
-          action: handleBulkDelete,
-          variant: "destructive" as const,
-          loading: bulkDeleteMutation.isPending,
-        },
-      ]
+      {
+        label: bulkDeleteMutation.isPending ? t("receiptsReadModels.bulk.deleting") : t("receiptsReadModels.bulk.delete", { count: selectedRows.length }),
+        action: handleBulkDelete,
+        variant: "destructive" as const,
+        loading: bulkDeleteMutation.isPending,
+      },
+    ]
     : undefined
 
   const actions: ACTION[] = ["checkStatus", "view", "changeStatus"]
@@ -207,7 +207,7 @@ export const ReceiptsReadModelDataGrid: React.FC = () => {
                 <span className="font-black text-primary">{item.getTextFor("phoneNumberEncrypted")}</span>
               </div>
               <div className="flex gap-x-1.5">
-                <StatusBadge text={item.getTextFor("status")} />
+                <StatusBadge text={item.getTextFor("status") as string} />
               </div>
             </div>
           )
@@ -290,7 +290,7 @@ export const ReceiptsReadModelDataGrid: React.FC = () => {
                 label={t("receiptsreadmodels.headers.phoneNumberEncrypted")}
                 value={<span className="text-primary font-bold">{item.getTextFor("phoneNumberEncrypted")}</span>}
               />
-              <DetailsCardItem label={t("receiptsreadmodels.headers.status")} value={<StatusBadge text={item.getTextFor("status")} />} />
+              <DetailsCardItem label={t("receiptsreadmodels.headers.status")} value={<StatusBadge text={item.getTextFor("status") as string} />} />
             </div>
           )
         case "references":

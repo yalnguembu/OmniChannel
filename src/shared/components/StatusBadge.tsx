@@ -57,7 +57,7 @@ type StatusBadgeProps = {
   text: string
   theme?: BadgeStyles
   Icon?: React.ElementType
-  t?: (key: string) => string
+  t?: (...args: any[]) => string
 }
 
 const StatusBadge = ({ text, theme, Icon, t }: StatusBadgeProps) => {

@@ -1,7 +1,7 @@
 import { useNavigate, useParams, useSearch } from "@tanstack/react-router"
 import { Button } from "@/shared/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/components/ui/card"
-import { Edit, ArrowLeft, Loader2, Home, DollarSign, AppWindow, Verified, Users, User, Settings, FileText, Link, MapPin, Mail, PhoneCall } from "lucide-react"
+import { Edit, ArrowLeft, Loader2, Home, DollarSign, AppWindow, Verified, User, FileText, Link, MapPin, Mail, PhoneCall } from "lucide-react"
 import { useCompany } from "../hooks/useCompany"
 import { ListPageHeader } from "@/shared/components/ListPageHeader"
 import { ListPageLayout, StandardListPageLayout } from "@/shared/components/layouts/ListPageLayout"
@@ -10,9 +10,7 @@ import { DocumentsTypeDataGrid } from "@/features/document-types/components/Docu
 import { useTranslation } from "react-i18next"
 import { DashboardPage } from "@/features/dashboard/page"
 import { ApplicationsTab } from "../components/tabs/Applications"
-import { UsersTab } from "../components/tabs/Users"
 import { ReceiptsTab } from "../components/tabs/Receipts"
-import { CompanySettingsTab } from "../components/tabs/settings"
 import { useState } from "react"
 import FujiPayLogo from "@/assets/images/logo/icon.png"
 import StatusBadge from "@/shared/components/StatusBadge"
@@ -188,7 +186,7 @@ export function CompanyDetailsPage() {
                   <span className="">{companyDetails.companySize}</span>
                 </div>
                 <div className="flex flex-wrap gap-2 items-center">
-                  <StatusBadge theme={BadgeStyles.GREEN} text={companyDetails.status} />
+                  <StatusBadge theme={BadgeStyles.GREEN} text={companyDetails.status ?? ""} />
                 </div>
               </div>
               <div className="flex flex-col gap-y-1 text-muted-foreground/80">
@@ -211,7 +209,7 @@ export function CompanyDetailsPage() {
               <div className="flex flex-col gap-y-1 text-muted-foreground/80">
                 <div className="flex gap-x-1.5 lg:text-md">
                   <span className="font-semibold">{t("companies.fields.countryName")} :</span>
-                  <span>{companyDetails.countryName}</span>
+                  <span>{companyDetails.name}</span>
                 </div>
                 <div className="flex gap-x-1.5 lg:text-md">
                   <span className="font-semibold">{t("companies.fields.businessRegistrationNumber")} :</span>

@@ -1,10 +1,10 @@
-import { useState, useMemo } from "react"
+import { useState } from "react"
 import { useTranslation } from "react-i18next"
 import { ToggleGroup, ToggleGroupItem } from "@/shared/components/ui/toggle-group"
 import { DateRangeInput } from "@/shared/components/ui/date-range-input"
 import { CollapsibleContainer } from "@/shared/components/filter/collapsible-container"
 import { Card, CardContent, CardHeader, CardTitle } from "@/shared/components/ui/card"
-import { TrendingUp, Activity, ArrowDown, ArrowUp, TrendingDown, ArrowLeftRight, Zap, Loader } from "lucide-react"
+import { TrendingUp, Activity, ArrowDown, ArrowUp, TrendingDown, Zap, Loader } from "lucide-react"
 import { useQuery } from "@tanstack/react-query"
 import { postApiDailyMetricSearchOptions } from "@/shared/api/@tanstack/react-query.gen"
 import { formatCurrency } from "@/shared/utils/formatCurrency"
@@ -13,33 +13,6 @@ export function TransactionStatisticCards() {
   const { t } = useTranslation()
   const [dateRange, setDateRange] = useState<any>()
   const [timeRange, setTimeRange] = useState("7d")
-
-  // Memoize the effective date range to prevent infinite loops
-  const effectiveDateRange = useMemo(() => {
-    if (dateRange) return dateRange
-
-    const now = new Date()
-    const startDate = new Date()
-
-    switch (timeRange) {
-      case "7d":
-        startDate.setDate(now.getDate() - 7)
-        break
-      case "30d":
-        startDate.setDate(now.getDate() - 30)
-        break
-      case "90d":
-        startDate.setDate(now.getDate() - 90)
-        break
-      default:
-        startDate.setDate(now.getDate() - 7)
-    }
-
-    return {
-      startDate: startDate.toISOString(),
-      endDate: now.toISOString(),
-    }
-  }, [dateRange, timeRange])
 
   // Fetch daily metrics
   const { data, isLoading } = useQuery({
@@ -55,7 +28,7 @@ export function TransactionStatisticCards() {
     staleTime: 1000 * 60 * 5,
   })
 
-  const currentMetrics = data?.data?.[0]
+  const currentMetrics = data?.data?.items ? data?.data?.items?.[0] : null
 
   return (
     <CollapsibleContainer

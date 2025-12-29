@@ -98,9 +98,9 @@ export const FrontEventLogDataGrid: React.FC = () => {
 
   const sortConfig: DataGridSort | undefined = sortBy
     ? {
-        column: sortBy,
-        direction: sortDirection === "desc" ? SortDirection.DESC : SortDirection.ASC,
-      }
+      column: sortBy,
+      direction: sortDirection === "desc" ? SortDirection.DESC : SortDirection.ASC,
+    }
     : undefined
 
   const handleSortChange = (config: DataGridSort) => {
@@ -117,7 +117,7 @@ export const FrontEventLogDataGrid: React.FC = () => {
     changePageSize(size)
   }
 
-  const [selectedItem, setSelectedItem] = useState<FrontEventLogDto | null>(null)
+  const [selectedItem] = useState<FrontEventLogDto | null>(null)
   const [showDetailsModal, setShowDetailsModal] = useState(false)
   const toggleShowDetailsModal = () => setShowDetailsModal((prev) => !prev)
 
@@ -151,7 +151,7 @@ export const FrontEventLogDataGrid: React.FC = () => {
     </ModalWrapper>
   )
 
-  const handleDisptach = () => {}
+  const handleDisptach = () => { }
   return (
     <div className="w-full max-w-full overflow-hidden">
       <DataGrid
@@ -172,8 +172,8 @@ export const FrontEventLogDataGrid: React.FC = () => {
         onSortChange={handleSortChange}
         enableColumnVisibility={true}
         hiddenColumns={[]}
-        onColumnVisibilityChange={() => {}}
-        dispatch={() => {}}
+        onColumnVisibilityChange={() => { }}
+        dispatch={handleDisptach}
         actions={["view"]}
       />
       {showDetailsModal && !!selectedItem && <BlockedIpDetails data={selectedItem} open={showDetailsModal} onCancel={toggleShowDetailsModal} />}

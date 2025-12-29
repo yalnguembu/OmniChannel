@@ -146,7 +146,7 @@ export function ApplicationDetailsPage() {
           <Button variant="ghost" size="sm" className="h-5" onClick={toggleVisibility}>
             {visible ? <EyeClosed className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
           </Button>
-          <Button variant="ghost" size="sm" className="h-5" onClick={() => handleCopy(value)}>
+          <Button variant="ghost" size="sm" className="h-5" onClick={() => handleCopy(value ?? "")}>
             <Copy className="h-4 w-4" />
           </Button>
         </div>
@@ -188,12 +188,12 @@ export function ApplicationDetailsPage() {
                   </CardTitle>
                   <CardDescription className="text-blue-400 hover:text-blue-600 flex gap-x-2">
                     <Building className="h-4 w-4" />
-                    <Link href={`/companies/${companyDetails.companyId || ""}`} className="link hover:underline" target="_blank" rel="noopener noreferrer">
-                      {companyDetails.companyName || "https://fujisatpay.com"}
+                    <Link to={`/companies/${companyDetails.companyId || ""}/` as `/companies`} className="link hover:underline" target="_blank" rel="noopener noreferrer">
+                      {companyDetails.name || "https://fujisatpay.com"}
                     </Link>
                   </CardDescription>
                   <div className="flex flex-wrap gap-2 items-center pt-2">
-                    <StatusBadge theme={BadgeStyles.GREEN} text={companyDetails.status} />
+                    <StatusBadge theme={BadgeStyles.GREEN} text={companyDetails.status ?? ""} />
                   </div>
                 </div>
               </CardHeader>
@@ -223,14 +223,14 @@ export function ApplicationDetailsPage() {
                 </CardAction>
               </CardHeader>
               <CardContent>
-                <ApiKeyDetailItem label="Key:" value={keys?.data.apiKey} Icon={Key} />
-                <ApiKeyDetailItem label="Secret:" value={keys?.data.apiSecret} Icon={Key} />
+                <ApiKeyDetailItem label="Key:" value={keys?.data?.apiKey || "-"} />
+                <ApiKeyDetailItem label="Secret:" value={keys?.data?.apiSecret || "-"} />
 
                 <div className=" text-xs flex items-center mt-2">
                   <span className="text-muted-foreground/80">
                     <Calendar className="h-3.5 w-3.5 inline mr-1" /> {t("applications.apiKeyExpiresAtUtc")} :
                   </span>
-                  <span className="ml-2">{keys?.data.apiKeyExpiresAtUtc ? formatDate(keys?.data.apiKeyExpiresAtUtc, DateFormat.DATETIME_SHORT) : "-"}</span>
+                  <span className="ml-2">{keys?.data?.apiKeyExpiresAtUtc ? formatDate(keys?.data.apiKeyExpiresAtUtc, DateFormat.DATETIME_SHORT) : "-"}</span>
                 </div>
               </CardContent>
             </Card>

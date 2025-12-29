@@ -6,7 +6,7 @@ import { ACTION, DataGridColumnHeader, DataGridRowEntry, DataGridSort, ViewMode 
 import { SortDirection } from "@/shared/enums/data-grid"
 import { Button } from "@/shared/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/shared/components/ui/dropdown-menu"
-import { MoreHorizontal, Eye, Edit, Trash2, Mail, PhoneCall, Power } from "lucide-react"
+import { MoreHorizontal, Eye, Trash2, Mail, PhoneCall, Power } from "lucide-react"
 import { useUser } from "../hooks/useUser"
 import { UserDataGridEntry } from "../lib/data-grid/UserDataGridEntry"
 import StatusBadge from "@/shared/components/StatusBadge"
@@ -294,9 +294,9 @@ export const UserDataGrid: React.FC = () => {
 
   const sortConfig: DataGridSort | undefined = sortBy
     ? {
-        column: sortBy,
-        direction: sortDirection === "desc" ? SortDirection.DESC : SortDirection.ASC,
-      }
+      column: sortBy,
+      direction: sortDirection === "desc" ? SortDirection.DESC : SortDirection.ASC,
+    }
     : undefined
 
   const handleSortChange = (config: DataGridSort) => {
@@ -315,13 +315,13 @@ export const UserDataGrid: React.FC = () => {
 
   const bulkActions = hasSelection
     ? [
-        {
-          label: bulkDeleteMutation.isPending ? t("users.bulk.deleting") : t("users.bulk.delete", { count: selectedRows.length }),
-          action: handleBulkDelete,
-          variant: "destructive" as const,
-          loading: bulkDeleteMutation.isPending,
-        },
-      ]
+      {
+        label: bulkDeleteMutation.isPending ? t("users.bulk.deleting") : t("users.bulk.delete", { count: selectedRows.length }),
+        action: handleBulkDelete,
+        variant: "destructive" as const,
+        loading: bulkDeleteMutation.isPending,
+      },
+    ]
     : undefined
 
   return (
@@ -344,9 +344,9 @@ export const UserDataGrid: React.FC = () => {
         onSortChange={handleSortChange}
         enableColumnVisibility={true}
         hiddenColumns={[]}
-        onColumnVisibilityChange={() => {}}
+        onColumnVisibilityChange={() => { }}
         bulkActions={bulkActions}
-        actions={actions as ACTION}
+        actions={actions as ACTION[]}
         dispatch={handleDispatch}
         renderCell={renderCell}
       />

@@ -1,12 +1,8 @@
-import { useNavigate } from "@tanstack/react-router"
 import { useTranslation } from "react-i18next"
 import { useMemo } from "react"
 import { DataGrid } from "@/shared/components/data-grid/data-grid"
-import { DataGridColumnHeader, DataGridRowEntry, DataGridSort } from "@/shared/types"
+import { DataGridColumnHeader, DataGridSort } from "@/shared/types"
 import { SortDirection } from "@/shared/enums/data-grid"
-import { Button } from "@/shared/components/ui/button"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/shared/components/ui/dropdown-menu"
-import { MoreHorizontal, Eye } from "lucide-react"
 import { useWithdrawalsReadModel } from "@/features/withdrawals-read-models/hooks/useWithdrawalsReadModel"
 import { BaseFilter } from "@/shared/components/filter/base-filter"
 import { zSearchWithdrawalsReadModelRequest } from "@/shared/api/zod.gen"
@@ -15,7 +11,6 @@ import { CommonDataGridEntry, Entity } from "@/shared/components/data-grid/adapt
 import { Card, CardContent } from "@/shared/components/ui/card"
 
 export function WithdrawalsTab({ companyId }: { companyId: string }) {
-  const navigate = useNavigate()
   const { t } = useTranslation()
 
   console.log(companyId)
@@ -151,39 +146,11 @@ export function WithdrawalsTab({ companyId }: { companyId: string }) {
     return withdrawalsReadModels.map((item) => new CommonDataGridEntry(item as Entity))
   }, [withdrawalsReadModels])
 
-  const handleView = (id: string) => {
-    navigate({ to: `/transactions/withdrawals/${id}` })
-  }
-
-  const renderCell = (item: DataGridRowEntry, columnKey: string) => {
-    switch (columnKey) {
-      case "actions":
-        return (
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-8 w-8 p-0">
-                <span className="sr-only">Open menu</span>
-                <MoreHorizontal className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={() => handleView(item.getId())}>
-                <Eye className="mr-2 h-4 w-4" />
-                {t("withdrawals.actions.view")}
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        )
-      default:
-        return item.getTextFor(columnKey) || "N/A"
-    }
-  }
-
   const sortConfig: DataGridSort | undefined = sortBy
     ? {
-        column: sortBy,
-        direction: sortDirection === "desc" ? SortDirection.DESC : SortDirection.ASC,
-      }
+      column: sortBy,
+      direction: sortDirection === "desc" ? SortDirection.DESC : SortDirection.ASC,
+    }
     : undefined
 
   const handleSortChange = (config: DataGridSort) => {
@@ -237,8 +204,8 @@ export function WithdrawalsTab({ companyId }: { companyId: string }) {
             onSortChange={handleSortChange}
             enableColumnVisibility={true}
             hiddenColumns={[]}
-            onColumnVisibilityChange={() => {}}
-            renderCell={renderCell}
+            onColumnVisibilityChange={() => { }}
+            dispatch={() => { }}
           />
         </CardContent>
       </Card>
