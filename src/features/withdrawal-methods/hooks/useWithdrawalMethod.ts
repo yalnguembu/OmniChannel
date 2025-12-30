@@ -9,7 +9,7 @@ import {
   postApiWithdrawalMethodMutation,
   putApiWithdrawalMethodMutation,
   deleteApiWithdrawalMethodByIdMutation,
-  getApiWithdrawalMethodByIdOptions,
+  getApiWithdrawalMethodByIdOptions
 } from "@/shared/api/@tanstack/react-query.gen"
 
 export const withdrawalMethodQueryKeys = {

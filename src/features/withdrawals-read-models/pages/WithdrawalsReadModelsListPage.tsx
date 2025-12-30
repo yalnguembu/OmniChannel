@@ -14,20 +14,22 @@ import { useSessionStore } from "@/shared/stores/sessionStore"
 export function WithdrawalsReadModelsListPage() {
   const { t } = useTranslation()
   const { userPermissions } = useSessionStore()
-  const { isLoading, isError, error, viewMode, setViewMode, refreshData, hasSelection, selectedRows, applyFilters, clearFilters, createWithdrawalReadModelWithValidation } =
+  const { isLoading, isError, error, viewMode, setViewMode, refreshData, hasSelection, selectedRows, applyFilters, clearFilters, createWithdrawalReadModelWithValidation, performExport } =
     useWithdrawalsReadModel()
 
   const [showCreateForm, setShowCreateForm] = useState<boolean>(false)
 
   const toggleShowCreateForm = () => setShowCreateForm((prev) => !prev)
 
-  const handleExport = () => {
-    // Implement export logic
-  }
   const handleSubmitWithdrawalInit = (data: WithdrawalsInitRequest, setError: any) => {
     createWithdrawalReadModelWithValidation(data, setError, () => {
       toggleShowCreateForm()
     })
+  }
+
+  const handleExport = () => {
+    performExport()
+    console.log("export")
   }
 
   const mainContent = () => {

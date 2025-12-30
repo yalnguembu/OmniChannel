@@ -12,6 +12,7 @@ import {
   putApiWithdrawalsReadModelCancelByIdMutation,
   putApiWithdrawalsReadModelCompleteByIdMutation,
   getApiWithdrawalsReadModelDetailByIdOptions,
+  postApiWithdrawalsReadModelExportExcelMutation,
 } from "@/shared/api/@tanstack/react-query.gen"
 import { UseFormSetError } from "react-hook-form"
 import { WithdrawalsInitRequest } from "@/shared"
@@ -217,6 +218,54 @@ export const useWithdrawalsReadModel = () => {
     })
   }
 
+  const exportExcelWithdrawalModelsMutation = useMutation({
+    ...postApiWithdrawalsReadModelExportExcelMutation({}),
+    onMutate: () => {
+      store.setLoading(true)
+      store.setError(null)
+    },
+    onSuccess: (data) => {
+      if (data) {
+        const filename = `ReceiptsReadModel-${new Date().toISOString()}.xlsx`
+        const url = window.URL.createObjectURL(data as unknown as Blob)
+        const link = document.createElement("a")
+        link.href = url
+        link.setAttribute("download", filename)
+        document.body.appendChild(link)
+        link.click()
+        link.remove()
+
+        window.URL.revokeObjectURL(url)
+        toast.success(t("receiptsReadModels.messages.export.success"))
+      }
+    },
+    onError: (error) => {
+      const message = error.message || t("receiptsReadModels.messages.search.error")
+      store.setError(message)
+      toast.error(message)
+    },
+    onSettled: () => {
+      store.setLoading(false)
+    },
+  })
+
+  const performExport = (overrideFilters?: Partial<typeof store.filters>) => {
+    const currentState = useWithdrawalsReadModelStore.getState()
+    const filters = overrideFilters !== undefined ? { ...currentState.filters, ...overrideFilters } : currentState.filters
+
+    const searchParams = {
+      pageNumber: currentState.currentPage,
+      pageSize: currentState.pageSize,
+      sortBy: currentState.sortBy || undefined,
+      sortDirection: currentState.sortDirection || undefined,
+      ...filters,
+      paymentMethodCode: filters?.paymentMethodCode === "ALL" ? "" : filters?.paymentMethodCode,
+      customerIpAddress: "",
+    }
+
+    exportExcelWithdrawalModelsMutation.mutate({ body: searchParams, responseType: "blob" })
+  }
+
   const search = () => {
     searchWithdrawalsReadModels()
   }
@@ -275,5 +324,6 @@ export const useWithdrawalsReadModel = () => {
     onCancelWithdrawal,
     completeWithdrawalMutation,
     onCompleteWithdrawal,
+    performExport,
   }
 }

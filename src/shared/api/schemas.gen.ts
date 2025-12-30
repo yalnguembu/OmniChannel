@@ -21264,6 +21264,124 @@ export const SearchWithdrawalsReadModelRequestSchema = {
     additionalProperties: false
 } as const;
 
+export const ExportWithdrawalsReadModelRequestSchema = {
+    type: 'object',
+    properties: {
+        pageNumber: {
+            maximum: 2147483647,
+            minimum: 1,
+            type: 'integer',
+            format: 'int32'
+        },
+        pageSize: {
+            type: 'integer',
+            format: 'int32'
+        },
+        searchTerm: {
+            type: 'string',
+            nullable: true
+        },
+        createdFrom: {
+            type: 'string',
+            format: 'date-time',
+            nullable: true
+        },
+        createdTo: {
+            type: 'string',
+            format: 'date-time',
+            nullable: true
+        },
+        sortBy: {
+            maxLength: 50,
+            minLength: 0,
+            type: 'string',
+            nullable: true
+        },
+        sortDirection: {
+            maxLength: 10,
+            minLength: 0,
+            type: 'string',
+            nullable: true
+        },
+        ids: {
+            type: 'array',
+            items: {
+                type: 'string',
+                format: 'uuid'
+            },
+            nullable: true
+        },
+        internalReference: {
+            type: 'string',
+            nullable: true
+        },
+        currency: {
+            type: 'string',
+            nullable: true
+        },
+        providerReference: {
+            type: 'string',
+            nullable: true
+        },
+        providerInitialReference: {
+            type: 'string',
+            nullable: true
+        },
+        providerFinalReference: {
+            type: 'string',
+            nullable: true
+        },
+        status: {
+            type: 'string',
+            nullable: true
+        },
+        companyName: {
+            type: 'string',
+            nullable: true
+        },
+        applicationName: {
+            type: 'string',
+            nullable: true
+        },
+        paymentMethodName: {
+            type: 'string',
+            nullable: true
+        },
+        paymentMethodCode: {
+            type: 'string',
+            nullable: true
+        },
+        processedByName: {
+            type: 'string',
+            nullable: true
+        },
+        verifiedByName: {
+            type: 'string',
+            nullable: true
+        },
+        providerMessage: {
+            type: 'string',
+            nullable: true
+        },
+        applicationId: {
+            type: 'string',
+            format: 'uuid',
+            nullable: true
+        },
+        companyId: {
+            type: 'string',
+            format: 'uuid',
+            nullable: true
+        },
+        withdrawalMethodId: {
+            type: 'string',
+            format: 'uuid',
+            nullable: true
+        }
+    },
+    additionalProperties: false
+} as const;
+
 export const SearchWithdrawalsReadModelResponseSchema = {
     type: 'object',
     properties: {

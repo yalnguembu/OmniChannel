@@ -7526,6 +7526,33 @@ export type SearchWithdrawalsReadModelRequest = {
     withdrawalMethodId?: string | null;
 };
 
+export type ExportWithdrawalsReadModelRequest = {
+    pageNumber?: number;
+    pageSize?: number;
+    searchTerm?: string | null;
+    createdFrom?: string | null;
+    createdTo?: string | null;
+    sortBy?: string | null;
+    sortDirection?: string | null;
+    ids?: Array<string> | null;
+    internalReference?: string | null;
+    currency?: string | null;
+    providerReference?: string | null;
+    providerInitialReference?: string | null;
+    providerFinalReference?: string | null;
+    status?: string | null;
+    companyName?: string | null;
+    applicationName?: string | null;
+    paymentMethodName?: string | null;
+    paymentMethodCode?: string | null;
+    processedByName?: string | null;
+    verifiedByName?: string | null;
+    providerMessage?: string | null;
+    applicationId?: string | null;
+    companyId?: string | null;
+    withdrawalMethodId?: string | null;
+};
+
 export type SearchWithdrawalsReadModelResponse = {
     id?: string;
     createdAt?: string;
@@ -18921,6 +18948,43 @@ export type GetApiWithdrawalsReadModelGetAllStatusResponses = {
 };
 
 export type GetApiWithdrawalsReadModelGetAllStatusResponse = GetApiWithdrawalsReadModelGetAllStatusResponses[keyof GetApiWithdrawalsReadModelGetAllStatusResponses];
+
+export type PostApiWithdrawalsReadModelExportExcelData = {
+    body?: ExportWithdrawalsReadModelRequest;
+    path?: never;
+    query?: never;
+    url: '/api/WithdrawalsReadModel/export-excel';
+};
+
+export type PostApiWithdrawalsReadModelExportExcelErrors = {
+    /**
+     * Bad Request
+     */
+    400: ObjectFujiPayApiResponse;
+    /**
+     * Unauthorized
+     */
+    401: ObjectFujiPayApiResponse;
+    /**
+     * Forbidden
+     */
+    403: ObjectFujiPayApiResponse;
+    /**
+     * Internal Server Error
+     */
+    500: ObjectFujiPayApiResponse;
+};
+
+export type PostApiWithdrawalsReadModelExportExcelError = PostApiWithdrawalsReadModelExportExcelErrors[keyof PostApiWithdrawalsReadModelExportExcelErrors];
+
+export type PostApiWithdrawalsReadModelExportExcelResponses = {
+    /**
+     * OK
+     */
+    200: Blob | File;
+};
+
+export type PostApiWithdrawalsReadModelExportExcelResponse = PostApiWithdrawalsReadModelExportExcelResponses[keyof PostApiWithdrawalsReadModelExportExcelResponses];
 
 export type GetApiWithdrawalsReadModelGetAllWithdrawlsEventsByIdData = {
     body?: never;

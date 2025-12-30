@@ -13339,6 +13339,99 @@ export const zSearchWithdrawalsReadModelRequest = z.object({
     ]).optional()
 });
 
+export const zExportWithdrawalsReadModelRequest = z.object({
+    pageNumber: z.number().int().gte(1).lte(2147483647).optional(),
+    pageSize: z.number().int().optional(),
+    searchTerm: z.union([
+        z.string(),
+        z.null()
+    ]).optional(),
+    createdFrom: z.union([
+        z.string().datetime(),
+        z.null()
+    ]).optional(),
+    createdTo: z.union([
+        z.string().datetime(),
+        z.null()
+    ]).optional(),
+    sortBy: z.union([
+        z.string().min(0).max(50),
+        z.null()
+    ]).optional(),
+    sortDirection: z.union([
+        z.string().min(0).max(10),
+        z.null()
+    ]).optional(),
+    ids: z.union([
+        z.array(z.string().uuid()),
+        z.null()
+    ]).optional(),
+    internalReference: z.union([
+        z.string(),
+        z.null()
+    ]).optional(),
+    currency: z.union([
+        z.string(),
+        z.null()
+    ]).optional(),
+    providerReference: z.union([
+        z.string(),
+        z.null()
+    ]).optional(),
+    providerInitialReference: z.union([
+        z.string(),
+        z.null()
+    ]).optional(),
+    providerFinalReference: z.union([
+        z.string(),
+        z.null()
+    ]).optional(),
+    status: z.union([
+        z.string(),
+        z.null()
+    ]).optional(),
+    companyName: z.union([
+        z.string(),
+        z.null()
+    ]).optional(),
+    applicationName: z.union([
+        z.string(),
+        z.null()
+    ]).optional(),
+    paymentMethodName: z.union([
+        z.string(),
+        z.null()
+    ]).optional(),
+    paymentMethodCode: z.union([
+        z.string(),
+        z.null()
+    ]).optional(),
+    processedByName: z.union([
+        z.string(),
+        z.null()
+    ]).optional(),
+    verifiedByName: z.union([
+        z.string(),
+        z.null()
+    ]).optional(),
+    providerMessage: z.union([
+        z.string(),
+        z.null()
+    ]).optional(),
+    applicationId: z.union([
+        z.string().uuid(),
+        z.null()
+    ]).optional(),
+    companyId: z.union([
+        z.string().uuid(),
+        z.null()
+    ]).optional(),
+    withdrawalMethodId: z.union([
+        z.string().uuid(),
+        z.null()
+    ]).optional()
+});
+
 export const zSearchWithdrawalsReadModelResponse = z.object({
     id: z.string().uuid().optional(),
     createdAt: z.string().datetime().optional(),
@@ -19402,6 +19495,18 @@ export const zGetApiWithdrawalsReadModelGetAllStatusData = z.object({
  * OK
  */
 export const zGetApiWithdrawalsReadModelGetAllStatusResponse = zWithdrawalStatusIEnumerableFujiPayApiResponse;
+
+export const zPostApiWithdrawalsReadModelExportExcelData = z.object({
+    body: zExportWithdrawalsReadModelRequest.optional(),
+    headers: z.never().optional(),
+    path: z.never().optional(),
+    query: z.never().optional()
+});
+
+/**
+ * OK
+ */
+export const zPostApiWithdrawalsReadModelExportExcelResponse = z.string();
 
 export const zGetApiWithdrawalsReadModelGetAllWithdrawlsEventsByIdData = z.object({
     body: z.never().optional(),

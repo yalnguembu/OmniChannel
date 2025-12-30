@@ -31,6 +31,7 @@ export function ReceiptsReadModelsListPage() {
   useEffect(() => {
     searchReceiptsReadModels()
   }, [])
+
   const handleImport = () => {
     // Implement import logic
   }
