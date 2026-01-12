@@ -57,11 +57,12 @@ export const useErrorHandling = () => {
       toastMessage?: string
       showToast?: boolean
       onError?: (error: any) => void
+      prefix?: string
     } = {},
   ) => {
     return (error: any) => {
       // Try to map validation errors to form fields
-      const mapped = mapValidationErrorsToForm(error, setError)
+      const mapped = mapValidationErrorsToForm(error, setError, { prefix: options.prefix })
 
       // If no validation errors were mapped, show the error via toast
       if (!mapped) {

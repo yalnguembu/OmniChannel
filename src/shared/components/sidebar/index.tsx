@@ -4,7 +4,7 @@ import Header from "./Header"
 import { adminMenus } from "@/shared/lib/menu"
 import { Info } from "lucide-react"
 import { useTranslation } from "react-i18next"
-import { useSessionStore } from "@/shared/stores/sessionStore"
+import { useSessionStore } from "@/features/auth/stores/sessionStore"
 import { filterMenuByPermissions } from "@/shared/utils/permissions"
 import { useMemo } from "react"
 

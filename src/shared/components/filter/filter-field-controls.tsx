@@ -169,11 +169,10 @@ const DateFieldControl: React.FC<FilterFieldControlProps> = ({ field, formField,
 
 const DateRangeFieldControl: React.FC<FilterFieldControlProps> = ({ field, formField, isLoading }) => {
   const dateRange = React.useMemo(() => {
-    if (typeof formField.value === "string" && formField.value.includes("_")) {
-      const [from, to] = formField.value.split("_")
+    if (formField.value && typeof formField.value === "object") {
       return {
-        from: from ? new Date(from) : undefined,
-        to: to ? new Date(to) : undefined,
+        from: formField.value.from ? new Date(formField.value.from) : undefined,
+        to: formField.value.to ? new Date(formField.value.to) : undefined,
       }
     }
     return { from: undefined, to: undefined }
@@ -208,7 +207,7 @@ const DateRangeFieldControl: React.FC<FilterFieldControlProps> = ({ field, formF
               className="absolute right-1 top-1/2 -translate-y-1/2 h-6 w-6 p-0"
               onClick={(e) => {
                 e.stopPropagation()
-                formField.onChange("")
+                formField.onChange({ from: null, to: null })
               }}
             >
               <X className="h-4 w-4" />
@@ -222,7 +221,7 @@ const DateRangeFieldControl: React.FC<FilterFieldControlProps> = ({ field, formF
           mode="range"
           defaultMonth={dateRange?.from}
           selected={dateRange}
-          onSelect={(range) => formField.onChange(`${range?.from?.toISOString() || ""}_${range?.to?.toISOString() || ""}`)}
+          onSelect={(range) => formField.onChange({ from: range?.from || null, to: range?.to || null })}
           numberOfMonths={2}
         />
       </PopoverContent>

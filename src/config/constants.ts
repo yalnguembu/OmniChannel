@@ -8,8 +8,8 @@ export const APP_CONFIG = {
   name: env.VITE_APP_NAME,
   version: env.VITE_APP_VERSION,
   description: "Your payment solution template",
-  author: "FujiPay Team",
-  repository: "https://github.com/fujipay/template-web",
+  author: "templateweb Team",
+  repository: "https://github.com/templateweb/template-web",
 } as const
 
 // Feature flags
@@ -30,7 +30,7 @@ export const UI_CONSTANTS = {
 } as const
 
 // Storage prefixes
-export const STORAGE_PREFIX = "fujipay_"
+export const STORAGE_PREFIX = "templateweb_"
 
 // Query keys
 export const QUERY_KEYS = {

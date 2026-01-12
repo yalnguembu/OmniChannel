@@ -43,10 +43,10 @@ export default function Navbar() {
       <div className="container mx-auto flex items-center justify-between px-4 py-4">
         <div className="flex items-center gap-x-8 lg:w-full">
           <Link to="/" className="flex items-center gap-x-2">
-            <img src="/images/icon.png" alt="FujiPay logo" className="size-12" />
+            <img src="/images/icon.png" alt="TemplateWeb logo" className="size-12" />
             <span className="text-lg lg:text-3xl font-black lg:hidden xl:inline">
-              <span className="text-accent">FUJISAT</span>
-              <span className="text-primary pl-1">Pay</span>
+              <span className="text-accent">Template</span>
+              <span className="text-primary pl-1">Web</span>
             </span>
           </Link>
           <nav className="hidden items-center lg:w-full lg:justify-center font-normal text-muted-foreground/80 gap-x-3 lg:gap-x-6 xl:gap-x-8 lg:flex">

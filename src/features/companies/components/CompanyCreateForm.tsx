@@ -11,8 +11,7 @@ import { Card, CardContent, CardDescription, CardHeader } from "@/shared/compone
 import { LoaderIcon } from "lucide-react"
 import { CreateCompanyRequest } from "@/shared/api"
 import { zCreateCompanyRequest } from "@/shared/api/zod.gen"
-import { useCountry } from "@/features/countries/hooks/useCountry"
-import { useCompany } from "../hooks/useCompany"
+import { useCompanyOptions } from "../hooks/useCompanyOptions"
 
 interface CompanyCreateFormProps {
   onSubmit: (data: CreateCompanyRequest, setError: any) => void
@@ -32,10 +31,9 @@ export const CompanyCreateForm: React.FC<CompanyCreateFormProps> = ({ onSubmit, 
     },
   })
 
-  const { getDropdownQuery } = useCountry()
-  const { getAllCompanyStatusQuery, getAllCompanyTypesQuery } = useCompany()
+  const { getAllCompanyStatusQuery, getAllCompanyTypesQuery, getCountryOptionsQuery } = useCompanyOptions()
 
-  const { data: countryDropdownData, isLoading: isCountryLoading } = getDropdownQuery()
+  const { data: countryDropdownData, isLoading: isCountryLoading } = getCountryOptionsQuery()
   const countryOptions = countryDropdownData?.data?.map((c) => ({ value: c.id, label: c.name })) || []
 
   const { data: companyStatusDropdownData, isLoading: isCompanyStatusLoading } = getAllCompanyStatusQuery()
@@ -276,6 +274,13 @@ export const CompanyCreateForm: React.FC<CompanyCreateFormProps> = ({ onSubmit, 
                 )}
               />
             </div>
+
+            {form.formState.errors.root && (
+              <div className="bg-destructive/15 text-destructive text-sm font-medium p-3 rounded-md animate-in fade-in slide-in-from-top-1">
+                {form.formState.errors.root.message}
+              </div>
+            )}
+
             <div className="flex justify-end space-x-4 pt-6">
               <Button type="button" variant="outline" onClick={onCancel} disabled={isLoading}>
                 {t("common.cancel")}

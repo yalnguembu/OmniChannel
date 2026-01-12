@@ -7,7 +7,7 @@ const Header: React.FC = () => {
     <SidebarHeader className="group-data-[collapsible=icon]:p-0">
       <Link to="/" className="flex items-center gap-2 py-0">
         <div>
-          <img src={AppLogo} title="FujiPay" className="size-7" />
+          <img src={AppLogo} title="TemplateWeb" className="size-7" />
         </div>
         <div className="grid flex-1 text-left text-sm leading-tight group-data-[collapsible=icon]:hidden">
           <span className="truncate font-medium text-primary text-lg">FujiSat Pay</span>

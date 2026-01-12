@@ -1,5 +1,5 @@
 import { createFileRoute, redirect } from "@tanstack/react-router"
-import { useSessionStore } from "@/shared/stores/sessionStore"
+import { useSessionStore } from "@/features/auth/stores/sessionStore"
 
 import { authPersistence } from "@/shared/lib/api/authPersistence"
 

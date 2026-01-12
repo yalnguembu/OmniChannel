@@ -16,7 +16,7 @@ import { Button } from "../ui"
 import { ThemeModeToggle } from "../ThemeModeToggle"
 import { useNavigate } from "@tanstack/react-router"
 import { CONTEXT } from "@/shared/types/ui"
-import { useSession } from "@/shared/hooks/useSession"
+import { useSession } from "@/features/auth/hooks/useSession"
 import LanguageToggle from "../LanguageToggle"
 
 export function UserDropdown() {
@@ -105,7 +105,7 @@ export function UserDropdown() {
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem onClick={() => navigate({ to: "/settings/profile" })}>
+              <DropdownMenuItem onClick={() => navigate({ to: "/" /*settings/profile*/ })}>
                 <User />
                 My Profile
               </DropdownMenuItem>

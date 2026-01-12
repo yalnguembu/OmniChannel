@@ -3,13 +3,13 @@ import { useNavigate } from "@tanstack/react-router"
 import { StandardListPageLayout } from "@/shared/components/layouts/ListPageLayout"
 import { CreatePageHeader } from "@/shared/components/CreatePageHeader"
 import { CompanyCreateForm } from "../components/CompanyCreateForm"
-import { useCompany } from "../hooks/useCompany"
+import { useCompanyMutations } from "../hooks/useCompanyMutations"
 import { CreateCompanyRequest } from "@/shared/api"
 
 export function CreateCompanyPage() {
   const navigate = useNavigate()
   const { t } = useTranslation()
-  const { createCompanyWithValidation } = useCompany()
+  const { createCompanyWithValidation } = useCompanyMutations()
 
   const handleSubmit = (data: CreateCompanyRequest, setError: any) => {
     createCompanyWithValidation(data, setError, () => {

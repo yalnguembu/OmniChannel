@@ -6,11 +6,18 @@ export interface FilterOption {
   value: string
 }
 
+export interface DateRangeValue {
+  from: string | Date | null
+  to: string | Date | null
+}
+
 export interface FilterFieldConfig {
   key: string
   label?: string
+  labelKey?: string // Explicit translation key
   type: FilterFieldType
   placeholder?: string
+  placeholderKey?: string // Explicit translation key
   options?: FilterOption[]
   required?: boolean
   disabled?: boolean
@@ -21,17 +28,19 @@ export interface FilterFieldConfig {
   description?: string
   fetchOptions?: () => any
   isLoadingOptions?: boolean
+  transform?: (value: any) => Record<string, any>
 }
 
 export interface FilterSection {
-  title: string
+  title?: string
+  titleKey?: string
   fields: FilterFieldConfig[]
   collapsible?: boolean
   defaultCollapsed?: boolean
 }
 export type ViewMode = "list" | "grid"
 export interface BaseFilterProps<T = Record<string, any>> {
-  schema: z.ZodSchema<T>
+  schema?: z.ZodSchema<T>
   onFilter: (values: T) => void
   onReset?: () => void
   defaultValues?: Partial<T>
@@ -52,4 +61,5 @@ export interface BaseFilterProps<T = Record<string, any>> {
   enableDateRange?: boolean
   sections?: FilterSection[]
   fieldTranslationPrefix?: string
+  containerRef?: React.RefObject<HTMLDivElement>
 }

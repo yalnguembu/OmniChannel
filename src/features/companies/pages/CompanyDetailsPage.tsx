@@ -1,18 +1,12 @@
-import { useNavigate, useParams, useSearch } from "@tanstack/react-router"
+import { useNavigate, useParams } from "@tanstack/react-router"
 import { Button } from "@/shared/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/components/ui/card"
-import { Edit, ArrowLeft, Loader2, Home, DollarSign, AppWindow, Verified, User, FileText, Link, MapPin, Mail, PhoneCall } from "lucide-react"
-import { useCompany } from "../hooks/useCompany"
+import { Edit, ArrowLeft, Loader2, Verified, User, Link, MapPin, Mail, PhoneCall } from "lucide-react"
+import { useCompanyDetail } from "../hooks/useCompanyDetail"
 import { ListPageHeader } from "@/shared/components/ListPageHeader"
 import { ListPageLayout, StandardListPageLayout } from "@/shared/components/layouts/ListPageLayout"
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/shared/components/ui/tabs"
-import { DocumentsTypeDataGrid } from "@/features/document-types/components/DocumentTypesDataGrid"
 import { useTranslation } from "react-i18next"
-import { DashboardPage } from "@/features/dashboard/page"
-import { ApplicationsTab } from "../components/tabs/Applications"
-import { ReceiptsTab } from "../components/tabs/Receipts"
-import { useState } from "react"
-import FujiPayLogo from "@/assets/images/logo/icon.png"
+import TemplateWebLogo from "@/assets/images/logo/icon.png"
 import StatusBadge from "@/shared/components/StatusBadge"
 import { BadgeStyles } from "@/shared/types/enums"
 
@@ -27,10 +21,8 @@ declare module "@tanstack/react-router" {
 export function CompanyDetailsPage() {
   const navigate = useNavigate()
   const { id } = useParams({ from: "/_protected/companies/$id/" })
-  const search = useSearch({ from: "/_protected/companies/$id/" })
 
-  const [activeTab, setActiveTab] = useState(search.tab || "overview")
-  const { getCompanyQuery, isError } = useCompany()
+  const { company: companyDetails, isLoading: isPending, isError } = useCompanyDetail(id)
   const { t } = useTranslation()
 
   const handleEdit = () => {
@@ -39,19 +31,6 @@ export function CompanyDetailsPage() {
 
   const handleBack = () => {
     navigate({ to: `/companies` })
-  }
-
-  const { data, isPending } = getCompanyQuery(id)
-
-  const companyDetails = data?.data
-
-  const handleTabChange = (value: string) => {
-    setActiveTab(value)
-    navigate({
-      to: `/companies/${id}`,
-      search: (prev) => ({ ...prev, tab: value }),
-      replace: true,
-    })
   }
 
   if (isPending) {
@@ -82,51 +61,6 @@ export function CompanyDetailsPage() {
     )
   }
 
-  const tabs = [
-    {
-      title: "Overview",
-      value: "overview",
-      icon: Home,
-      component: DashboardPage,
-    },
-    {
-      title: "Receipts",
-      value: "receipts",
-      icon: DollarSign,
-      component: ReceiptsTab,
-    },
-    {
-      title: "Withdrawal",
-      value: "withdrawals",
-      icon: DollarSign,
-      component: ReceiptsTab,
-    },
-    {
-      title: "Applications",
-      value: "applications",
-      icon: AppWindow,
-      component: ApplicationsTab,
-    },
-    // {
-    //   title: "Users",
-    //   value: "users",
-    //   icon: Users,
-    //   component: UsersTab,
-    // },
-    // {
-    //   title: "Settings",
-    //   value: "settings",
-    //   icon: Settings,
-    //   component: CompanySettingsTab,
-    // },
-    {
-      title: "Documents",
-      value: "documents",
-      icon: FileText,
-      component: DocumentsTypeDataGrid,
-    },
-  ]
-
   return (
     <StandardListPageLayout
       header={
@@ -152,7 +86,7 @@ export function CompanyDetailsPage() {
           <Card className="grid lg:grid-cols-3 gap-2 mt-4 gap-y-4">
             <CardHeader className="flex items-center">
               <div className="w-24 h-24 rounded-lg block bg-muted">
-                <img src={/*companyDetails. || */ FujiPayLogo} alt="" className="w-full h-full object-contain object-center rounded-lg" />
+                <img src={/*companyDetails. || */ TemplateWebLogo} alt="" className="w-full h-full object-contain object-center rounded-lg" />
               </div>
               <div className="flex flex-col gap-y-1">
                 {companyDetails.isVerified && (
@@ -166,7 +100,7 @@ export function CompanyDetailsPage() {
                 <CardDescription className="text-blue-400 hover:text-blue-600 flex gap-x-2">
                   <Link className="h-4 w-4" />
                   <a href={companyDetails.website || ""} className="link hover:underline" target="_blank" rel="noopener noreferrer">
-                    {companyDetails.website || "https://fujisatpay.com"}
+                    {companyDetails.website || "https://templateweb.com"}
                   </a>
                 </CardDescription>
               </div>
@@ -226,31 +160,6 @@ export function CompanyDetailsPage() {
               </div>
             </CardContent>
           </Card>
-
-          <Tabs value={activeTab} onValueChange={handleTabChange} defaultValue={activeTab} className="w-full">
-            <div className="sticky -top-4 z-20 pt-3 rounded bg-background overflow-x-auto">
-              <TabsList className="flex flex-row gap-0 px-2 pb-0 bg-transparent border-b" style={{ boxShadow: "none" }}>
-                {tabs.map((tab) => (
-                  <TabsTrigger
-                    key={tab.value}
-                    value={tab.value}
-                    className="2xl:min-w-[100px] hover:cursor-pointer lg:px-2 2xl:px-4 py-2 border-b-4 border-transparent text-default font-medium text-base rounded-none data-[state=active]:border-b-primary data-[state=active]:shadow-none data-[state=active]:text-primary transition-colors"
-                  >
-                    <div className="mb-3 px-1 lg:px-2 gap-x-1 lg:gap-x-3 flex items-center">
-                      <tab.icon className="h-4 w-4 lg:h-6 lg:w-6" />
-                      <span className="max-w-4 md:flex text-xs lg:text-sm break-words md:max-w-20 truncate lg:w-auto">{tab.title}</span>
-                    </div>
-                  </TabsTrigger>
-                ))}
-              </TabsList>
-            </div>
-
-            {tabs.map((tab) => (
-              <TabsContent key={tab.value} value={tab.value}>
-                {<tab.component companyId={id} />}
-              </TabsContent>
-            ))}
-          </Tabs>
         </div>
       }
     />

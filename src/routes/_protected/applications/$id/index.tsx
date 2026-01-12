@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router"
-import { ApplicationDetailsPage } from "@/features/companies/pages/ApplicationDetailsPage"
+import { ApplicationDetailsPage } from "@/features/applications/pages/ApplicationDetailsPage"
 import { createPermissionGuard } from "@/shared/guards/permissionGuard"
 
 import PageLoader from "@/shared/components/PageLoader"

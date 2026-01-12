@@ -1,12 +1,13 @@
 import { useTranslation } from "react-i18next"
 import DataGridActionButton from "./DataGridActionButton"
 import { ElementType, useState } from "react"
-import { ACTION, DataGridRowEntry, ViewMode } from "@/shared/types"
+import { ACTION, ViewMode } from "@/shared/types"
 import { PencilIcon, TrashIcon, EyeIcon, X, CheckIcon, EllipsisVertical, RotateCcw, Cog, Power, CheckCircle } from "lucide-react"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/shared/components/ui/dropdown-menu"
 
 type ActionButtonGroupType = {
-  row: DataGridRowEntry
+  row: any
+  getRowId?: (item: any) => string
   actions: ACTION[]
   dispatch: (action: ACTION, id: string) => void
   isLoading?: boolean
@@ -31,7 +32,7 @@ const DataGridRowActionIcon: Record<ACTION, ElementType> = {
   complete: CheckIcon,
 }
 
-const ActionButtonGroup = ({ row, actions, dispatch, isLoading, shouldCollapseTextOnMobile = true, view = "grid" }: ActionButtonGroupType) => {
+const ActionButtonGroup = ({ row, getRowId, actions, dispatch, isLoading, shouldCollapseTextOnMobile = true, view = "grid" }: ActionButtonGroupType) => {
   const { t } = useTranslation()
 
   const [activeAction, setActiveAction] = useState<string>("")
@@ -54,6 +55,7 @@ const ActionButtonGroup = ({ row, actions, dispatch, isLoading, shouldCollapseTe
             .map((action, index) => (
               <DataGridActionButton
                 row={row}
+                getRowId={getRowId}
                 key={index}
                 action={action}
                 disabled={activeAction === action.key && isLoading}
@@ -75,6 +77,7 @@ const ActionButtonGroup = ({ row, actions, dispatch, isLoading, shouldCollapseTe
             .map((action, index) => (
               <DataGridActionButton
                 row={row}
+                getRowId={getRowId}
                 key={index}
                 action={action}
                 disabled={activeAction === action.key && isLoading}
@@ -95,7 +98,10 @@ const ActionButtonGroup = ({ row, actions, dispatch, isLoading, shouldCollapseTe
                   key: action,
                 }))
                 .map((action) => (
-                  <DropdownMenuItem key={action.key} onClick={() => handleDispatch(action.key, row.getId())}>
+                  <DropdownMenuItem key={action.key} onClick={() => {
+                    const id = getRowId ? getRowId(row) : (row.id || (typeof row.getId === 'function' ? row.getId() : ''))
+                    handleDispatch(action.key, id)
+                  }}>
                     {action.icon && <action.icon className="mr-2 h-4 w-4" />}
                     {t(`common.actions.${action.key}` as any)}
                   </DropdownMenuItem>
@@ -114,6 +120,7 @@ const ActionButtonGroup = ({ row, actions, dispatch, isLoading, shouldCollapseTe
             .map((action, index) => (
               <DataGridActionButton
                 row={row}
+                getRowId={getRowId}
                 key={index}
                 action={action}
                 disabled={activeAction === action.key && isLoading}

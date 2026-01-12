@@ -1,4 +1,4 @@
-# FujiPay
+# Template Web
 
 Application front-end pour une plateforme de microcrédit, construite avec Vite, React, TypeScript, TailwindCSS et TanStack Router.
 
@@ -21,32 +21,19 @@ Ce projet est une application web moderne, typée et optimisée pour la performa
 
 Voici un récapitulatif des scripts définis dans le `package.json` :
 
-| Script          | Description                                                                 |
-|-----------------|-----------------------------------------------------------------------------|
+| Script          | Description                                                                |
+|-----------------|----------------------------------------------------------------------------|
 | `dev`           | Démarre le serveur de développement avec Vite                              |
 | `build`         | Compile TypeScript (`tsc -b`) puis construit le projet avec Vite           |
-| `lint`          | Lint tout le projet avec ESLint                                             |
+| `lint`          | Lint tout le projet avec ESLint                                            |
 | `preview`       | Lance un aperçu local de la version de production                          |
 | `format`        | Formate tous les fichiers `.ts` et `.tsx` avec Prettier                    |
 | `format:check`  | Vérifie si les fichiers sont bien formatés                                 |
 | `parse`         | Extrait les chaînes traduisibles avec `i18next-parser` et génère les types |
 | `release:dev`   | Prépare une version de pré-release (dev) avec `standard-version`           |
 | `release:prod`  | Génère une version stable avec `standard-version`                          |
-| `cypress:open`  | Ouvre l'interface utilisateur de Cypress pour les tests interactifs        |
-| `cypress:run`   | Exécute les tests Cypress en mode headless (sans interface graphique)      |
-| `test:e2e`      | Exécute tous les tests end-to-end en mode headless                        |
 
 ---
-
-## 🧪 Tests End-to-End
-
-Les tests end-to-end sont écrits avec Cypress et se trouvent dans le répertoire `/cypress`. Ils couvrent les fonctionnalités suivantes :
-
-- Flux d'authentification complet (login → vérification OTP → définition de mot de passe → scan 2FA → utilisation 2FA)
-- Tests d'accessibilité (conformité a11y de toutes les pages)
-- Gestion des erreurs et cas limites
-
-Pour en savoir plus sur la façon de lancer et de gérer les tests, consultez le [README des tests Cypress](./cypress/README.md).
 
 ---
 

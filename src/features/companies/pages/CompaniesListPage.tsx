@@ -6,18 +6,42 @@ import { BaseFilter } from "@/shared/components/filter"
 import { SearchCompanyRequest } from "@/shared/api/types.gen"
 import { zSearchCompanyRequest } from "@/shared/api/zod.gen"
 import { CompanyDataGrid } from "../components/CompanyDataGrid"
-import { useCompany } from "../hooks/useCompany"
-import { useEffect } from "react"
+import { useCompanyList } from "../hooks/useCompanyList"
+import { useCompanyMutations } from "../hooks/useCompanyMutations"
 
-export function CompanysListPage() {
+export function CompaniesListPage() {
   const navigate = useNavigate()
   const { t } = useTranslation()
-  const { isLoading, searchCompanys, viewMode, setViewMode, refreshData, hasSelection, selectedRows, applyFilters, clearFilters } = useCompany()
 
-  useEffect(() => searchCompanys(), [])
+  // Use specialized hooks
+  const {
+    companies,
+    paginationMetadata,
+    isLoading,
+    viewMode,
+    selectedRows,
+    sortBy,
+    sortDirection,
+    setViewMode,
+    setSelectedRows,
+    clearSelection,
+    changePage,
+    changePageSize,
+    changeSort,
+    applyFilters,
+    clearFilters,
+    refreshData,
+  } = useCompanyList()
+
+  const { deleteMutation, bulkDeleteMutation } = useCompanyMutations()
 
   const handleCreate = () => {
-    navigate({ to: "/companies/add" })
+    navigate({ to: `/companies/add` })
+  }
+
+  const handlePageChange = (page: number, size: number) => {
+    changePage(page)
+    changePageSize(size)
   }
 
   return (
@@ -33,19 +57,35 @@ export function CompanysListPage() {
       filter={
         <BaseFilter<SearchCompanyRequest>
           schema={zSearchCompanyRequest}
-          onFilter={applyFilters}
-          onReset={clearFilters}
+          onFilter={(f) => { applyFilters(f); clearSelection(); }}
+          onReset={() => { clearFilters(); clearSelection(); }}
           viewMode={viewMode}
           setViewMode={setViewMode}
           refreshData={refreshData}
           isLoading={isLoading}
-          hasSelection={hasSelection}
-          selectedRows={selectedRows}
-          selectionCount={selectedRows.length}
+          hasSelection={(selectedRows?.length ?? 0) > 0}
+          selectedRows={selectedRows ?? []}
+          selectionCount={selectedRows?.length ?? 0}
           fieldTranslationPrefix="companies"
         />
       }
-      content={<CompanyDataGrid />}
+      content={
+        <CompanyDataGrid
+          companies={companies}
+          paginationMetadata={paginationMetadata}
+          isLoading={isLoading}
+          viewMode={viewMode}
+          selectedRows={selectedRows}
+          onSelectionChange={setSelectedRows}
+          onPageChange={handlePageChange}
+          onSortChange={changeSort}
+          onDelete={(id) => deleteMutation.mutate({ path: { id } })}
+          onBulkDelete={() => bulkDeleteMutation.mutate(selectedRows)}
+          isDeleting={deleteMutation.isPending || bulkDeleteMutation.isPending}
+          sortBy={sortBy}
+          sortDirection={sortDirection}
+        />
+      }
     />
   )
 }

@@ -7,7 +7,7 @@ import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "
 import { LoginFormData, loginSchema } from "@/shared/lib/validation"
 import { LoaderIcon } from "lucide-react"
 import { useTranslation } from "react-i18next"
-import { useSession } from "@/shared/hooks/useSession"
+import { useSession } from "@/features/auth/hooks/useSession"
 import { useState } from "react"
 
 export const LoginForm = () => {

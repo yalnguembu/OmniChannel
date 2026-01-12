@@ -2,7 +2,6 @@ import { z } from "zod"
 import { FilterFieldConfig, FilterSection } from "../types/filter"
 import { FilterFieldType } from "../enums/filter"
 import { EXCLUDED_FIELDS } from "../lib/constant"
-import { useTranslation } from "react-i18next"
 
 export function inferFilterTypeFromZodSchema(zodType: z.ZodType<any>): FilterFieldType {
   if (zodType instanceof z.ZodString) {
@@ -38,20 +37,24 @@ export function inferFilterTypeFromZodSchema(zodType: z.ZodType<any>): FilterFie
   return FilterFieldType.TEXT
 }
 type Props<T> = {
-  schema: z.ZodObject<any>
+  schema?: z.ZodObject<any>
   fieldConfigs?: Partial<Record<keyof T, Partial<FilterFieldConfig>>>
   excludeFields?: string[]
   fieldTranslationPrefix: string
+  t: (key: any) => string
 }
+
 export function generateFilterFieldsFromSchema<T extends Record<string, any>>({
   schema,
   fieldConfigs = {},
   excludeFields = EXCLUDED_FIELDS,
   fieldTranslationPrefix,
+  t,
 }: Props<T>): FilterFieldConfig[] {
-  const shape = schema.shape as Record<string, z.ZodType<any>>
+  if (!schema) return []
 
-  const { t } = useTranslation()
+  const shape = (schema as any).shape as Record<string, z.ZodType<any>>
+  if (!shape) return []
 
   return Object.entries(shape)
     .filter(([key]) => !excludeFields.includes(key))
@@ -59,12 +62,23 @@ export function generateFilterFieldsFromSchema<T extends Record<string, any>>({
       const userConfig = fieldConfigs[key as keyof T] || {}
       const inferredType = inferFilterTypeFromZodSchema(zodType)
 
+      const label = userConfig.labelKey
+        ? t(userConfig.labelKey as any)
+        : userConfig.label
+          ? t(userConfig.label as any)
+          : t(`${fieldTranslationPrefix}.form.${key}Label` as any)
+
+      const placeholder = userConfig.placeholderKey
+        ? t(userConfig.placeholderKey as any)
+        : userConfig.placeholder
+          ? t(userConfig.placeholder as any)
+          : undefined
+
       return {
         key,
-        // @ts-expect-error config keys
-        label: t(userConfig.label || `${fieldTranslationPrefix}.form.${key}Label`),
+        label,
         type: userConfig.type || inferredType,
-        placeholder: userConfig.placeholder,
+        placeholder,
         options: userConfig.options,
         required: userConfig.required || false,
         disabled: userConfig.disabled || false,

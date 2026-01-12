@@ -1,6 +1,6 @@
 import { redirect } from "@tanstack/react-router"
 import { hasPermission, hasAnyPermission, hasAllPermissions, PermissionAction, buildPermission } from "../utils/permissions"
-import { useSessionStore } from "../stores/sessionStore"
+import { useSessionStore } from "../../features/auth/stores/sessionStore"
 
 export const permissionGuard = ({
   userPermissions,
@@ -73,15 +73,15 @@ export const createCrudPermissionGuard = (resource: string, action: PermissionAc
 
 export const createMultiPermissionGuard =
   (requiredPermissions: string[], requireAll: boolean = false) =>
-  async () => {
-    const sessionStore = useSessionStore.getState()
-    const userPermissions = sessionStore.user?.permissions || sessionStore.userPermissions || []
+    async () => {
+      const sessionStore = useSessionStore.getState()
+      const userPermissions = sessionStore.user?.permissions || sessionStore.userPermissions || []
 
-    permissionGuard({
-      userPermissions,
-      requiredPermissions,
-      requireAll,
-    })
-  }
+      permissionGuard({
+        userPermissions,
+        requiredPermissions,
+        requireAll,
+      })
+    }
 
 export { PermissionAction, buildPermission }

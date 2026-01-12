@@ -1,5 +1,6 @@
 import React, { useState } from "react"
 import { Control } from "react-hook-form"
+import { useTranslation } from "react-i18next"
 import { ChevronDown, ChevronUp } from "lucide-react"
 import { FilterSection as FilterSectionType } from "@/shared/types/filter"
 import { FilterField } from "./filter-field"
@@ -11,21 +12,24 @@ interface FilterSectionProps {
 }
 
 export const FilterSection: React.FC<FilterSectionProps> = ({ section, control, isLoading = false }) => {
+  const { t } = useTranslation()
   const [isCollapsed, setIsCollapsed] = useState(section.defaultCollapsed ?? false)
 
   const toggleCollapse = () => {
     setIsCollapsed(!isCollapsed)
   }
 
+  const displayTitle = section.titleKey ? t(section.titleKey as any) : section.title ? t(section.title as any) : ""
+
   return (
     <div className="space-y-3 py-2">
       {section.collapsible ? (
         <div className="flex items-center justify-between cursor-pointer hover:opacity-75 transition-opacity" onClick={toggleCollapse}>
-          <h4 className="text-xs font-light text-muted-foreground capitalize tracking-wide">{section.title}</h4>
+          <h4 className="text-xs font-light text-muted-foreground capitalize tracking-wide">{displayTitle}</h4>
           {isCollapsed ? <ChevronDown className="h-4 w-4" /> : <ChevronUp className="h-4 w-4" />}
         </div>
       ) : (
-        section.title && <h4 className="text-xs font-light text-muted-foreground capitalize tracking-wide">{section.title}</h4>
+        displayTitle && <h4 className="text-xs font-light text-muted-foreground capitalize tracking-wide">{displayTitle}</h4>
       )}
 
       {(!section.collapsible || !isCollapsed) && (

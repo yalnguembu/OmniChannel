@@ -10,14 +10,14 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/sha
 import { LoaderIcon } from "lucide-react"
 import { UpdateCompanyRequest } from "@/shared/api"
 import { zUpdateCompanyRequest } from "@/shared/api/zod.gen"
-import { useCountry } from "@/features/countries/hooks/useCountry"
-import { useCompany } from "../hooks/useCompany"
+import { useCompanyOptions } from "../hooks/useCompanyOptions"
+import type { UseFormSetError } from "react-hook-form"
 import { SearchDropdown } from "@/shared/components/dropdowns/search-dropdown"
 
 interface CompanyEditFormProps {
   companyId: string
   initialData: UpdateCompanyRequest
-  onSubmit: (data: UpdateCompanyRequest) => void
+  onSubmit: (data: UpdateCompanyRequest, setError: UseFormSetError<UpdateCompanyRequest>) => void
   onCancel: () => void
   isLoading?: boolean
 }
@@ -36,13 +36,12 @@ export const CompanyEditForm: React.FC<CompanyEditFormProps> = ({ companyId, ini
 
   const handleSubmit = (values: UpdateCompanyRequest) => {
     if (onSubmit) {
-      onSubmit({ ...values, id: companyId })
+      onSubmit({ ...values, id: companyId }, form.setError)
     }
   }
-  const { getDropdownQuery } = useCountry()
-  const { getAllCompanyStatusQuery, getAllCompanyTypesQuery } = useCompany()
+  const { getAllCompanyStatusQuery, getAllCompanyTypesQuery, getCountryOptionsQuery } = useCompanyOptions()
 
-  const { data: countryDropdownData, isLoading: isCountryLoading } = getDropdownQuery()
+  const { data: countryDropdownData, isLoading: isCountryLoading } = getCountryOptionsQuery()
   const countryOptions = countryDropdownData?.data?.map((c) => ({ value: c.id, label: c.name })) || []
 
   const { data: companyStatusDropdownData, isLoading: isCompanyStatusLoading } = getAllCompanyStatusQuery()
@@ -277,6 +276,13 @@ export const CompanyEditForm: React.FC<CompanyEditFormProps> = ({ companyId, ini
                 )}
               />
             </div>
+
+            {form.formState.errors.root && (
+              <div className="bg-destructive/15 text-destructive text-sm font-medium p-3 rounded-md animate-in fade-in slide-in-from-top-1">
+                {form.formState.errors.root.message}
+              </div>
+            )}
+
             <div className="flex justify-end space-x-4 pt-6">
               <Button type="button" variant="outline" onClick={onCancel} disabled={isLoading}>
                 {t("common.cancel")}

@@ -1,45 +1,61 @@
-import React, { ReactNode, useEffect, useMemo } from "react"
+import { ReactNode } from "react"
 import { useTranslation } from "react-i18next"
 import { useNavigate } from "@tanstack/react-router"
 import { DataGrid } from "@/shared/components/data-grid/data-grid"
-import { ACTION, DataGridColumnHeader, DataGridRowEntry, DataGridSort, ViewMode } from "@/shared/types"
+import { ACTION, DataGridColumnHeader, DataGridSort, ViewMode } from "@/shared/types"
 import { SortDirection } from "@/shared/enums/data-grid"
-import { useCompany } from "../hooks/useCompany"
-import { CompanyDataGridEntry } from "../lib/data-grid/CompanyDataGridEntry"
 import { Mail, PhoneCall, User, MapPin, Verified } from "lucide-react"
 import StatusBadge from "@/shared/components/StatusBadge"
 import { BadgeStyles } from "@/shared/types/enums"
 import ActionButtonGroup from "@/shared/components/data-grid/ActionButtonGroup"
 import DetailsCardItem from "@/shared/components/DetailsCardItem"
+import { SearchCompanyResponse } from "@/shared/api/types.gen"
+import { formatDate } from "@/shared/lib/date"
 
-export const CompanyDataGrid: React.FC = () => {
+interface CompanyDataGridProps {
+  companies: SearchCompanyResponse[];
+  paginationMetadata?: {
+    totalCount: number;
+    totalPages: number;
+    pageNumber: number;
+    pageSize: number;
+    startIndex?: number;
+    endIndex?: number;
+    hasPreviousPage?: boolean;
+    hasNextPage?: boolean;
+  };
+  isLoading: boolean;
+  viewMode: "grid" | "list";
+  selectedRows: string[];
+  onSelectionChange: (rows: string[]) => void;
+  onPageChange: (page: number, size: number) => void;
+  onSortChange: (column: string, direction: SortDirection | null) => void;
+  onDelete: (id: string) => void;
+  onBulkDelete: () => void;
+  isDeleting?: boolean;
+  sortBy?: string | null;
+  sortDirection?: SortDirection | null;
+}
+
+export const CompanyDataGrid: React.FC<CompanyDataGridProps> = ({
+  companies,
+  paginationMetadata,
+  isLoading,
+  viewMode,
+  selectedRows,
+  onSelectionChange,
+  onPageChange,
+  onSortChange,
+  onDelete,
+  onBulkDelete,
+  isDeleting,
+  sortBy,
+  sortDirection
+}) => {
   const { t } = useTranslation()
   const navigate = useNavigate()
 
-  const {
-    companies,
-    currentPage,
-    searchCompanys,
-    pageSize,
-    totalItems,
-    sortBy,
-    sortDirection,
-    selectedRows,
-    isLoading,
-    hasSelection,
-    changePage,
-    changePageSize,
-    changeSort,
-    setSelectedRows,
-    deleteCompany,
-    bulkDeleteMutation,
-  } = useCompany()
-
-  useEffect(() => {
-    searchCompanys()
-  }, [])
-
-  const columnHeaders: DataGridColumnHeader[] = [
+  const columnHeaders: DataGridColumnHeader<SearchCompanyResponse>[] = [
     {
       key: "basicInfo",
       label: t("companies.groups.basicInfo"),
@@ -63,6 +79,8 @@ export const CompanyDataGrid: React.FC = () => {
       label: t("companies.fields.createdAt"),
       sortable: true,
       resizable: true,
+      hidden: viewMode === "grid",
+      render: (val) => formatDate(val as string)
     },
     {
       key: "actions",
@@ -72,9 +90,6 @@ export const CompanyDataGrid: React.FC = () => {
     },
   ]
 
-  const gridItems = useMemo(() => {
-    return companies.map((item) => new CompanyDataGridEntry(item))
-  }, [companies])
 
   const handleView = (id: string) => {
     navigate({ to: `/companies/${id}` })
@@ -86,19 +101,19 @@ export const CompanyDataGrid: React.FC = () => {
 
   const handleDelete = (id: string) => {
     if (confirm(t("companies.messages.delete.confirm"))) {
-      deleteCompany(id)
+      onDelete(id)
     }
   }
 
   const handleBulkDelete = () => {
-    if (confirm(t("companies.bulk.deleteConfirm", { count: selectedRows.length }))) {
-      bulkDeleteMutation.mutate(selectedRows)
+    if (confirm(t("companies.bulk.deleteConfirm", { count: selectedRows?.length }))) {
+      onBulkDelete()
     }
   }
 
   const actions = ["view", "edit", "delete"]
 
-  const renderCell = (item: DataGridRowEntry, column: DataGridColumnHeader, view: ViewMode): ReactNode => {
+  const renderCell = (item: SearchCompanyResponse, column: DataGridColumnHeader<SearchCompanyResponse>, view: ViewMode): ReactNode => {
     if (view == "list") {
       switch (column.key) {
         case "basicInfo":
@@ -106,19 +121,19 @@ export const CompanyDataGrid: React.FC = () => {
             <div className="flex flex-col gap-y-1 text-muted-foreground/80">
               <div className="flex gap-x-1.5 lg:text-md">
                 <span className="font-semibold">{t("companies.fields.name")} :</span>
-                <span className="text-primary">{item.getTextFor("name")}</span>
+                <span className="text-primary">{item.name}</span>
               </div>
               <div className="flex gap-x-1.5">
                 <span className="font-semibold">{t("companies.fields.companyType")} :</span>
-                <span className="">{item.getTextFor("companyType")}</span>
+                <span className="">{item.companyType}</span>
               </div>
               <div className="flex gap-x-1.5">
                 <span className="font-semibold">{t("companies.fields.companySize")} :</span>
-                <span className="">{item.getTextFor("companySize")}</span>
+                <span className="">{item.companySize}</span>
               </div>
               <div className="flex flex-wrap gap-2 items-center">
-                <StatusBadge theme={BadgeStyles.GREEN} text={item.getTextFor("status") as string ?? ""} />
-                {item.getTextFor("isVerified") === "true" && <StatusBadge Icon={Verified} theme={BadgeStyles.BLUE} text={t("companies.fields.isVerified")} />}
+                <StatusBadge theme={BadgeStyles.GREEN} text={item.status ?? ""} />
+                {item.isVerified && <StatusBadge Icon={Verified} theme={BadgeStyles.BLUE} text={t("companies.fields.isVerified")} />}
               </div>
             </div>
           )
@@ -126,19 +141,19 @@ export const CompanyDataGrid: React.FC = () => {
           return (
             <div className="flex flex-col gap-y-1 text-muted-foreground/80">
               <span className="font-semibold">
-                <User className="inline size-4 mr-1" /> {item.getTextFor("contactPerson")}
+                <User className="inline size-4 mr-1" /> {item.contactPerson}
               </span>
 
               <span className="font-light">
                 <MapPin className="inline size-4 mr-1" />
-                {item.getTextFor("address")}
+                {item.address}
               </span>
               <span>
-                <Mail className="inline size-4 mr-1" /> {item.getTextFor("email")}
+                <Mail className="inline size-4 mr-1" /> {item.email}
               </span>
               <span>
                 <PhoneCall className="inline size-4 mr-1" />
-                {item.getTextFor("phoneNumber")}
+                {item.phoneNumber}
               </span>
             </div>
           )
@@ -147,33 +162,34 @@ export const CompanyDataGrid: React.FC = () => {
             <div className="flex flex-col gap-y-1 text-muted-foreground/80">
               <div className="flex gap-x-1.5 lg:text-md">
                 <span className="font-semibold">{t("companies.fields.countryName")} :</span>
-                <span>{item.getTextFor("countryName")}</span>
+                <span>{item.countryName}</span>
               </div>
               <div className="flex gap-x-1.5 lg:text-md">
                 <span className="font-semibold">{t("companies.fields.businessRegistrationNumber")} :</span>
-                <span>{item.getTextFor("businessRegistrationNumber")}</span>
+                <span>{item.businessRegistrationNumber}</span>
               </div>
               <div className="flex gap-x-1.5 lg:text-md">
                 <span className="font-semibold">{t("companies.fields.taxNumber")} :</span>
-                <span>{item.getTextFor("taxNumber")}</span>
+                <span>{item.taxNumber}</span>
               </div>
               <div className="flex gap-x-1.5 lg:text-md">
                 <span className="font-semibold">{t("companies.fields.website")} :</span>
-                <span>{item.getTextFor("website")}</span>
+                <span>{item.website}</span>
               </div>
             </div>
           )
         case "createdAt":
-          return <span className="text-muted-foreground/70">{item.getTextFor("createdAt")}</span>
+          return <span className="text-muted-foreground/70">{item.createdAt ? formatDate(item.createdAt) : "N/A"}</span>
 
         case "actions":
-          return <ActionButtonGroup view={view} isLoading={isLoading} row={item} actions={actions as ACTION[]} dispatch={handleDispatch} />
+          return <ActionButtonGroup view={view} isLoading={isLoading} row={item as any} actions={actions as ACTION[]} dispatch={handleDispatch} />
 
         default:
+          const val = (item as any)[column.key]
           return column?.isBadge ? (
-            <StatusBadge text={item.getTextFor(column.key) as string} />
+            <StatusBadge text={val as string} />
           ) : (
-            <span className="text-muted-foreground/70"> {item.getTextFor(column.key) || "N/A"}</span>
+            <span className="text-muted-foreground/70"> {val || "N/A"}</span>
           )
       }
     } else {
@@ -182,50 +198,49 @@ export const CompanyDataGrid: React.FC = () => {
           return (
             <div className="flex flex-col gap-y-1 px-4">
               <div className="flex items-center gap-x-2">
-                <span className="font-semibold text-lg text-primary">{item.getTextFor("name")}</span>
-                <StatusBadge theme={BadgeStyles.GREEN} text={item.getTextFor("status") as string ?? ""} />
-                {item.getTextFor("isVerified") === "true" && <StatusBadge Icon={Verified} theme={BadgeStyles.BLUE} text={t("companies.fields.isVerified")} />}
+                <span className="font-semibold text-lg text-primary">{item.name}</span>
+                <StatusBadge theme={BadgeStyles.GREEN} text={item.status ?? ""} />
+                {item.isVerified && <StatusBadge Icon={Verified} theme={BadgeStyles.BLUE} text={t("companies.fields.isVerified")} />}
               </div>
               <div className="flex flex-col gap-y-1 text-sm text-muted-foreground">
-                <DetailsCardItem Icon={User} label={t("companies.fields.companyType")} value={item.getTextFor("companyType")} />
-                <DetailsCardItem Icon={Mail} label={t("companies.fields.companySize")} value={item.getTextFor("companySize")} />
+                <DetailsCardItem Icon={User} label={t("companies.fields.companyType")} value={item.companyType ?? "N/A"} />
+                <DetailsCardItem Icon={Mail} label={t("companies.fields.companySize")} value={item.companySize ?? "N/A"} />
               </div>
             </div>
           )
         case "contactInfo":
           return (
             <div className="flex flex-col gap-y-1 px-4 text-sm text-muted-foreground">
-              <DetailsCardItem Icon={User} label={t("companies.fields.contactPerson")} value={item.getTextFor("contactPerson")} />
-              <DetailsCardItem Icon={Mail} label={t("companies.fields.email")} value={item.getTextFor("email")} />
-              <DetailsCardItem Icon={PhoneCall} label={t("companies.fields.phoneNumber")} value={item.getTextFor("phoneNumber")} />
-              <DetailsCardItem Icon={MapPin} label={t("companies.fields.address")} value={item.getTextFor("address")} />
+              <DetailsCardItem Icon={User} label={t("companies.fields.contactPerson")} value={item.contactPerson ?? "N/A"} />
+              <DetailsCardItem Icon={Mail} label={t("companies.fields.email")} value={item.email ?? "N/A"} />
+              <DetailsCardItem Icon={PhoneCall} label={t("companies.fields.phoneNumber")} value={item.phoneNumber ?? "N/A"} />
+              <DetailsCardItem Icon={MapPin} label={t("companies.fields.address")} value={item.address ?? "N/A"} />
             </div>
           )
         case "legalFinancial":
           return (
             <div className="flex flex-col gap-y-1 px-4 text-sm text-muted-foreground">
-              <DetailsCardItem label={t("companies.fields.countryName")} value={item.getTextFor("countryName")} />
-              <DetailsCardItem label={t("companies.fields.businessRegistrationNumber")} value={item.getTextFor("businessRegistrationNumber")} />
-              <DetailsCardItem label={t("companies.fields.taxNumber")} value={item.getTextFor("taxNumber")} />
-              <DetailsCardItem label={t("companies.fields.website")} value={item.getTextFor("website")} />
+              <DetailsCardItem label={t("companies.fields.countryName")} value={item.countryName ?? "N/A"} />
+              <DetailsCardItem label={t("companies.fields.businessRegistrationNumber")} value={item.businessRegistrationNumber ?? "N/A"} />
+              <DetailsCardItem label={t("companies.fields.taxNumber")} value={item.taxNumber ?? "N/A"} />
+              <DetailsCardItem label={t("companies.fields.website")} value={item.website ?? "N/A"} />
             </div>
           )
         case "createdAt":
           return (
             <div className="px-4 pt-1 text-xs text-muted-foreground/70">
               <span>{t("companies.fields.createdAt")}: </span>
-              <span>{item.getTextFor("createdAt")}</span>
+              <span>{item.createdAt ? formatDate(item.createdAt) : "N/A"}</span>
             </div>
           )
         case "actions":
           return (
             <div className="flex flex-row justify-between px-4 pt-2 mt-auto border-t">
-              <DetailsCardItem label="#" value={1234} />
-              <ActionButtonGroup view={view} isLoading={isLoading} row={item} actions={actions as ACTION[]} dispatch={handleDispatch} />
+              <DetailsCardItem label="#" value={item.id?.substring(0, 8) || "N/A"} />
+              <ActionButtonGroup view={view} isLoading={isLoading} row={item as any} actions={actions as ACTION[]} dispatch={handleDispatch} />
             </div>
           )
         default:
-          // This will prevent rendering any other individual fields that are now part of a group.
           return null
       }
     }
@@ -239,26 +254,16 @@ export const CompanyDataGrid: React.FC = () => {
     : undefined
 
   const handleSortChange = (config: DataGridSort) => {
-    const direction = config.direction
-    changeSort(config.column, direction)
+    onSortChange(config.column, config.direction)
   }
 
-  const handleSelectionChange = (selectedIds: string[]) => {
-    setSelectedRows(selectedIds)
-  }
-
-  const handlePageChange = (page: number, size: number) => {
-    changePage(page)
-    changePageSize(size)
-  }
-
-  const bulkActions = hasSelection
+  const bulkActions = (selectedRows?.length > 0)
     ? [
       {
-        label: bulkDeleteMutation.isPending ? t("companies.bulk.deleting") : t("companies.bulk.delete", { count: selectedRows.length }),
+        label: isDeleting ? t("companies.bulk.deleting") : t("companies.bulk.delete", { count: selectedRows?.length }),
         action: handleBulkDelete,
         variant: "destructive" as const,
-        loading: bulkDeleteMutation.isPending,
+        loading: isDeleting,
       },
     ]
     : undefined
@@ -280,20 +285,21 @@ export const CompanyDataGrid: React.FC = () => {
   }
 
   return (
-    <div className="w-full max-w-full overflow-hidden">
-      <DataGrid
+    <div className="w-full max-w-full overflow-hidden flex flex-col gap-2">
+      <DataGrid<SearchCompanyResponse>
         columnHeaders={columnHeaders}
-        items={gridItems}
-        total={totalItems}
-        page={currentPage}
-        limit={pageSize}
+        items={companies}
+        total={paginationMetadata?.totalCount ?? 0}
+        page={paginationMetadata?.pageNumber ?? 1}
+        limit={paginationMetadata?.pageSize ?? 10}
         hasPagination={true}
-        onPageChange={handlePageChange}
+        paginationMetadata={paginationMetadata}
+        onPageChange={onPageChange}
         isLoading={isLoading}
         emptyMessage={t("companies.messages.noData")}
         enableSelection={true}
         selectedRows={selectedRows}
-        onSelectionChange={handleSelectionChange}
+        onSelectionChange={onSelectionChange}
         enableSorting={true}
         sortConfig={sortConfig}
         onSortChange={handleSortChange}
@@ -302,8 +308,9 @@ export const CompanyDataGrid: React.FC = () => {
         onColumnVisibilityChange={() => { }}
         bulkActions={bulkActions}
         renderCell={renderCell}
-        actions={["edit", "delete", "view"]}
         dispatch={handleDispatch}
+        actions={actions as ACTION[]}
+        viewMode={viewMode}
       />
     </div>
   )

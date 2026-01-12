@@ -4,14 +4,16 @@ import { StandardListPageLayout } from "@/shared/components/layouts/ListPageLayo
 import { CreatePageHeader } from "@/shared/components/CreatePageHeader"
 import { CompanyEditForm } from "../components/CompanyEditForm"
 import { Loader2 } from "lucide-react"
-import { useCompany } from "../hooks/useCompany"
+import { useCompanyMutations } from "../hooks/useCompanyMutations"
+import { useCompanyDetail } from "../hooks/useCompanyDetail"
 import { UpdateCompanyRequest } from "@/shared/api"
 
 export function EditCompanyPage() {
   const navigate = useNavigate()
   const { t } = useTranslation()
   const { id } = useParams({ from: "/_protected/companies/$id/edit" })
-  const { updateCompanyWithValidation, getCompanyQuery } = useCompany()
+  const { updateCompanyWithValidation } = useCompanyMutations()
+  const { company, isLoading } = useCompanyDetail(id)
 
   const handleSubmit = (data: UpdateCompanyRequest, setError: any) => {
     updateCompanyWithValidation(data, setError, () => {
@@ -19,13 +21,11 @@ export function EditCompanyPage() {
     })
   }
 
-  const { data, isPending } = getCompanyQuery(id)
-
   const handleCancel = () => {
     navigate({ to: `/companies` })
   }
 
-  if (isPending) {
+  if (isLoading) {
     return (
       <div className="flex justify-center items-center h-64">
         <Loader2 className="h-8 w-8 animate-spin text-primary" />
@@ -33,7 +33,7 @@ export function EditCompanyPage() {
     )
   }
 
-  if (!data?.data) {
+  if (!company) {
     return (
       <div className="container mx-auto py-6 text-center">
         <p>{t("companies.form.edit.loadError")}</p>
@@ -49,7 +49,7 @@ export function EditCompanyPage() {
           breadcrumbs={[{ label: t("navigation.dashboard"), href: "/dashboard" }, { label: t("companies.title"), href: "/companies" }, { label: t("companies.edit") }]}
         />
       }
-      content={<CompanyEditForm companyId={id} initialData={data.data} onSubmit={handleSubmit as any} onCancel={handleCancel} isLoading={false} />}
+      content={<CompanyEditForm companyId={id} initialData={company} onSubmit={handleSubmit} onCancel={handleCancel} isLoading={false} />}
     />
   )
 }

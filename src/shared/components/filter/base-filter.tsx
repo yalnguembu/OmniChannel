@@ -1,10 +1,11 @@
 import { useCallback, useMemo, useEffect, useState } from "react"
+import { useTranslation } from "react-i18next"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 
 import { Form } from "@/shared/components/ui/form"
-import { BaseFilterProps, FilterFieldConfig, type FilterSection as FilterSectionType } from "../../types/filter"
+import { BaseFilterProps, FilterFieldConfig, DateRangeValue, type FilterSection as FilterSectionType } from "../../types/filter"
 import { FilterHeader } from "./filter-header"
 import { FilterSection } from "./filter-section"
 import { CollapsibleContainer } from "./collapsible-container"
@@ -28,20 +29,28 @@ export function BaseFilter<T extends Record<string, unknown>>({
   selectionCount,
   onImport,
   onExport,
-  selectedRows,
+  selectedRows = [],
   sections,
   fieldTranslationPrefix = "common",
+  containerRef,
 }: BaseFilterProps<T>) {
   const [isCollapsed, setIsCollapsed] = useState(defaultCollapsed)
   const [wasAutoCollapsed, setWasAutoCollapsed] = useState(false)
 
+  const { t } = useTranslation()
+
+  if (!schema) return null
+
   useEffect(() => {
     if (!collapsible) return
 
-    let lastScrollY = document.getElementById("scroll-container")?.scrollTop || 0
+    const container = containerRef?.current
+    if (!container) return
+
+    let lastScrollY = container.scrollTop
 
     const handleScroll = () => {
-      const currentScrollY = document.getElementById("scroll-container")?.scrollTop || 0
+      const currentScrollY = container.scrollTop
 
       if (currentScrollY > lastScrollY && currentScrollY > 100 && !isCollapsed) {
         setIsCollapsed(true)
@@ -56,10 +65,10 @@ export function BaseFilter<T extends Record<string, unknown>>({
       lastScrollY = currentScrollY
     }
 
-    document.getElementById("scroll-container")?.addEventListener("scroll", handleScroll, { passive: true })
+    container.addEventListener("scroll", handleScroll, { passive: true })
 
-    return () => document.getElementById("scroll-container")?.removeEventListener("scroll", handleScroll)
-  }, [collapsible, isCollapsed, wasAutoCollapsed, defaultCollapsed])
+    return () => container.removeEventListener("scroll", handleScroll)
+  }, [collapsible, isCollapsed, wasAutoCollapsed, defaultCollapsed, containerRef])
 
   const handleCollapsedChange = useCallback((collapsed: boolean) => {
     setIsCollapsed(collapsed)
@@ -69,7 +78,7 @@ export function BaseFilter<T extends Record<string, unknown>>({
   }, [])
 
   const filteredSchema = useMemo(() => {
-    if (!("shape" in schema)) {
+    if (!schema || !("shape" in (schema as any))) {
       return schema
     }
 
@@ -88,16 +97,53 @@ export function BaseFilter<T extends Record<string, unknown>>({
   }, [schema])
 
   const form = useForm<T>({
-    resolver: zodResolver(schema as any),
+    resolver: schema ? zodResolver(schema as any) : undefined,
     defaultValues: defaultValues as any,
   })
 
+  const filterFields = useMemo(() => {
+    const fields: FilterFieldConfig[] = []
+    if (enableDateRange) {
+      fields.push({
+        key: "dateRange",
+        label: t("common.fields.dateRange" as any),
+        type: FilterFieldType.DATERANGE,
+        placeholder: t("common.placeholders.dateRange" as any),
+        transform: (value: DateRangeValue) => ({
+          createdFrom: value.from instanceof Date ? value.from.toISOString() : value.from || null,
+          createdTo: value.to instanceof Date ? value.to.toISOString() : value.to || null,
+        }),
+      } as FilterFieldConfig)
+    }
+
+    generateFilterFieldsFromSchema({ schema: filteredSchema, fieldTranslationPrefix, t }).forEach((filterField) => fields.push(filterField))
+    return fields
+  }, [enableDateRange, t, filteredSchema, fieldTranslationPrefix])
+
+  const generatedSections: FilterSectionType[] = useMemo(() => {
+    if (sections && Array.isArray(sections) && sections.length > 0) {
+      return sections
+    }
+    return [new FilterSectionBuilder().addFields(filterFields || []).build()]
+  }, [sections, filterFields])
+
   const handleSubmit = useCallback(
     (values: T) => {
-      const cleanedValues = Object.entries(values).reduce(
+      let processedValues = { ...values } as Record<string, any>
+
+      // Apply field-specific transformations
+      filterFields.forEach((field) => {
+        if (field.transform && processedValues[field.key] !== undefined) {
+          const transformed = field.transform(processedValues[field.key])
+          delete processedValues[field.key]
+          processedValues = { ...processedValues, ...transformed }
+        }
+      })
+
+      const cleanedValues = Object.entries(processedValues || {}).reduce(
         (acc, [key, value]) => {
           if (value !== "" && value !== null && value !== undefined) {
-            if (Array.isArray(value) && value.length === 0) {
+            if (Array.isArray(value) && value?.length === 0) {
               return acc
             }
             acc[key] = value
@@ -109,7 +155,7 @@ export function BaseFilter<T extends Record<string, unknown>>({
 
       onFilter(cleanedValues as T)
     },
-    [onFilter],
+    [onFilter, filterFields],
   )
 
   const handleReset = useCallback(() => {
@@ -123,7 +169,16 @@ export function BaseFilter<T extends Record<string, unknown>>({
 
   const hasValues = useMemo(() => {
     const values = form.getValues()
-    return Object.values(values).some((value) => value !== "" && value !== null && value !== undefined && !(Array.isArray(value) && value.length === 0))
+    const checkValue = (val: any): boolean => {
+      if (val === "" || val === null || val === undefined) return false
+      if (Array.isArray(val)) return (val?.length || 0) > 0
+      if (typeof val === "object") {
+        const entries = Object.entries(val)
+        return entries.length > 0 && entries.some(([_, v]) => checkValue(v))
+      }
+      return true
+    }
+    return Object.values(values || {}).some(checkValue)
   }, [form.watch()])
 
   const handleSearch = (text: string) => {
@@ -133,19 +188,6 @@ export function BaseFilter<T extends Record<string, unknown>>({
   const handleRefreshAndSubmit = () => {
     form.handleSubmit(handleSubmit)()
   }
-
-  const filterFields: FilterFieldConfig[] = []
-  if (enableDateRange)
-    filterFields.push({
-      key: "dateRange",
-      label: "dateRange".replace(/([A-Z])/g, " $1").replace(/^./, (str) => str.toUpperCase()),
-      type: FilterFieldType.DATERANGE,
-      placeholder: "dateRange",
-    } as FilterFieldConfig)
-
-  generateFilterFieldsFromSchema({ schema: filteredSchema, fieldTranslationPrefix }).forEach((filterField) => filterFields.push(filterField))
-
-  const generatedSections: FilterSectionType[] = sections?.length ? sections : [new FilterSectionBuilder().addFields(filterFields).build()]
 
   const filterHeader = (
     <FilterHeader

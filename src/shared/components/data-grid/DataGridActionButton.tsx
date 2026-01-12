@@ -1,7 +1,8 @@
-import { ACTION, DataGridRowEntry } from "@/shared/types/data-grid"
+import { ACTION } from "@/shared/types/data-grid"
 
 export type DataGridRowActionIconType = {
-  row: DataGridRowEntry
+  row: any
+  getRowId?: (item: any) => string
   action: {
     key: ACTION
     icon: React.ElementType
@@ -35,14 +36,17 @@ enum ActionButtonStyles {
   // checkStatus = "bg-yellow-100 hover:bg-yellow-200 text-yellow-500",
 }
 
-const DataGridRowActionIcon = ({ row, action, dispatch, isLoading = false, disabled = false, shouldCollapseTextOnMobile }: DataGridRowActionIconType) => {
+const DataGridRowActionIcon = ({ row, getRowId, action, dispatch, isLoading = false, disabled = false, shouldCollapseTextOnMobile }: DataGridRowActionIconType) => {
   return (
     <div className="tooltip" data-tip={action.tooltip}>
       <button
         disabled={disabled}
         type="button"
         data-test-id={`action-${action.key}`}
-        onClick={() => dispatch(action.key, row.getId())}
+        onClick={() => {
+          const id = getRowId ? getRowId(row) : (row.id || (typeof row.getId === 'function' ? row.getId() : ''))
+          dispatch(action.key, id)
+        }}
         className={`btn border w-full lg:auto btn-sm p-2 lg:p-1 rounded-md relative border-transparent shadow-none cursor-pointer hover:shadow-md ${ActionButtonStyles[action.key as keyof typeof ActionButtonStyles]}`}
       >
         {isLoading && (

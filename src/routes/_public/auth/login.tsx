@@ -1,6 +1,6 @@
 import { createFileRoute, redirect } from "@tanstack/react-router"
 import { LoginForm } from "@/features/auth/components/LoginForm"
-import { useSessionStore } from "@/shared/stores/sessionStore"
+import { useSessionStore } from "@/features/auth/stores/sessionStore"
 import AppLogo from "@/assets/images/logo/icon.png"
 
 import PageLoader from "@/shared/components/PageLoader"
@@ -21,7 +21,7 @@ export const Route = createFileRoute("/_public/auth/login")({
       <div className="w-full max-w-md">
         <div className="flex flex-col items-center mb-8">
           <img src={AppLogo} alt="Logo" className="h-12 w-auto mb-4" />
-          <h2 className="text-2xl font-bold">Fujisat Pay Platform</h2>
+          <h2 className="text-2xl font-bold">Template Web Platform</h2>
         </div>
         <LoginForm />
       </div>

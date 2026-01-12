@@ -2,7 +2,7 @@ import { createFileRoute, useNavigate, useSearch } from "@tanstack/react-router"
 import { Button } from "@/shared/components/ui/button"
 import { useTranslation } from "react-i18next"
 import { useEffect } from "react"
-import { useSessionStore } from "@/shared/stores/sessionStore"
+import { useSessionStore } from "@/features/auth/stores/sessionStore"
 import Forbidden from "@/assets/images/illustration/forbidden.svg"
 
 import PageLoader from "@/shared/components/PageLoader"
@@ -38,7 +38,7 @@ function Unauthorized() {
       <h1 className="text-xl font-semibold mb-2 text-red-600">{t("accessDenied")}</h1>
       <p className="text-muted-foreground text-sm mb-6">{t("noPermission")}</p>
       <div className="flex gap-x-4">
-        <Button onClick={() => navigate({ to: "/dashboard" })}>{t("goHome")}</Button>
+        <Button onClick={() => navigate({ to: "/" })}>{t("goHome")}</Button>
         <Button variant="outline" onClick={() => navigate({ to: search.redirect })}>
           {t("goBack")}
         </Button>

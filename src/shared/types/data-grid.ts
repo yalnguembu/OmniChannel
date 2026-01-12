@@ -4,8 +4,8 @@ import { BadgeStyles } from "./enums"
 
 export type BadgeTheme = "active" | "deactive" | "true" | "false" | "failed" | "cancelled" | "completed" | "success" | "warn" | ""
 
-export interface DataGridColumnHeader {
-  key: string
+export interface DataGridColumnHeader<T = any> {
+  key: keyof T | string
   label: string
   sortable?: boolean
   width?: number
@@ -15,6 +15,8 @@ export interface DataGridColumnHeader {
   badgeTheme?: BadgeStyles
   shouldClick?: boolean
   style?: string
+  render?: (value: any, item: T) => ReactNode
+  hidden?: boolean
 }
 
 export interface DataGridRowEntry {
@@ -55,13 +57,27 @@ export type ViewMode = "list" | "grid"
 
 export type DataGridViewMode = Record<BreakPoint, ViewMode> | ViewMode
 
-export interface DataGridProps {
-  columnHeaders: DataGridColumnHeader[]
-  items: DataGridRowEntry[]
+export interface PaginationMetadata {
+  totalCount: number
+  totalPages: number
+  pageNumber: number
+  pageSize: number
+  startIndex?: number
+  endIndex?: number
+  hasPreviousPage?: boolean
+  hasNextPage?: boolean
+  isFirstPage?: boolean
+  isLastPage?: boolean
+}
+
+export interface DataGridProps<T = any> {
+  columnHeaders: DataGridColumnHeader<T>[]
+  items: T[]
   total?: number
   page?: number
   limit?: number
   hasPagination?: boolean
+  paginationMetadata?: PaginationMetadata
   onPageChange?: (page: number, pageSize: number) => void
   isLoading?: boolean
   emptyMessage?: string
@@ -75,12 +91,13 @@ export interface DataGridProps {
   hiddenColumns?: string[]
   onColumnVisibilityChange?: (hiddenColumns: string[]) => void
   bulkActions?: BulkAction[]
-  renderCell?: (item: DataGridRowEntry, column: DataGridColumnHeader, view: ViewMode) => ReactNode
+  renderCell?: (item: T, column: DataGridColumnHeader<T>, view: ViewMode) => ReactNode
   dispatch: (action: ACTION, id: string) => void
   actions?: ACTION[]
   showTitle?: boolean
   viewMode?: DataGridViewMode
   gridSize?: string
+  getRowId?: (item: T) => string
 }
 
 export interface BaseComponentProps {

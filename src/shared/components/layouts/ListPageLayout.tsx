@@ -13,14 +13,23 @@ interface ListPageLayoutProps {
 
 export const ListPageLayout: React.FC<ListPageLayoutProps> = ({ header, filter, content, statistic, className, contentClassName }) => {
   const { t } = useTranslation()
+  const scrollRef = React.useRef<HTMLDivElement>(null)
+
   return (
     <div className={cn("flex h-full flex-col justify-between overflow-y-hidden", className)}>
       {header && <div className="flex-shrink-0 px-4 pt-4">{header}</div>}
 
-      {/* <div className="flex flex-1 overflow-hidden w-full"> */}
-      <div id="scroll-container" className={cn("flex flex-1 flex-col overflow-x-hidden overflow-y-auto mt-2 relative px-4 ", contentClassName)}>
+      <div
+        ref={scrollRef}
+        id="scroll-container"
+        className={cn("flex flex-1 flex-col overflow-x-hidden overflow-y-auto mt-2 relative px-4 ", contentClassName)}
+      >
         {statistic && <div className="flex-shrink-0 mb-1 mt-2">{statistic}</div>}
-        {filter && <div className="flex-shrink-0 mb-1 sticky top-0 shadow z-10">{filter}</div>}
+        {filter && (
+          <div className="flex-shrink-0 mb-1 sticky top-0 shadow z-10">
+            {React.isValidElement(filter) ? React.cloneElement(filter as React.ReactElement<any>, { containerRef: scrollRef }) : filter}
+          </div>
+        )}
 
         <div className="pt-4 min-h-3/5 h-content">
           {content}
@@ -29,7 +38,6 @@ export const ListPageLayout: React.FC<ListPageLayoutProps> = ({ header, filter, 
           </div>
         </div>
       </div>
-      {/* </div> */}
     </div>
   )
 }
