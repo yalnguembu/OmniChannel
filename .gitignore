@@ -9,6 +9,12 @@ lerna-debug.log*
 
 node_modules
 dist
+/src/shared/api
+dev-dist
+.tanstack
+.vscode
+routeTree.gen.ts
+.env
 dist-ssr
 *.local
 .env

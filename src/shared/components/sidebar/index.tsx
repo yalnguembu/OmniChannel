@@ -14,19 +14,19 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 
   const filteredMenus = useMemo(() => {
     return adminMenus
-      .map((menuGroup) => ({
-        ...menuGroup,
-        elements: filterMenuByPermissions(menuGroup.elements, userPermissions),
-      }))
-      .filter((menuGroup) => menuGroup.elements.length > 0)
+    // .map((menuGroup) => ({
+    //   ...menuGroup,
+    //   elements: filterMenuByPermissions(menuGroup.elements, userPermissions),
+    // }))
+    // .filter((menuGroup) => menuGroup.elements.length > 0)
   }, [userPermissions])
 
   return (
     <Sidebar variant="sidebar" collapsible="icon" {...props}>
-      <SidebarHeader className="bg-background py-1.5">
+      {/* <SidebarHeader className="bg-background py-1.5">
         <Header />
       </SidebarHeader>
-      <SidebarSeparator className="mx-0" />
+      <SidebarSeparator className="mx-0" /> */}
       <SidebarContent className="bg-background">
         {filteredMenus.map((admin, index) => (
           <SidebarGroup key={admin.groupTitle + index}>

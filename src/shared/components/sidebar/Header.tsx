@@ -10,7 +10,7 @@ const Header: React.FC = () => {
           <img src={AppLogo} title="TemplateWeb" className="size-7" />
         </div>
         <div className="grid flex-1 text-left text-sm leading-tight group-data-[collapsible=icon]:hidden">
-          <span className="truncate font-medium text-primary text-lg">FujiSat Pay</span>
+          <span className="truncate font-medium text-primary text-lg">Omni Channel</span>
         </div>
       </Link>
     </SidebarHeader>

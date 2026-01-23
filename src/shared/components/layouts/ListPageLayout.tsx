@@ -22,11 +22,11 @@ export const ListPageLayout: React.FC<ListPageLayoutProps> = ({ header, filter, 
       <div
         ref={scrollRef}
         id="scroll-container"
-        className={cn("flex flex-1 flex-col overflow-x-hidden overflow-y-auto mt-2 relative px-4 ", contentClassName)}
+        className={cn("flex flex-1 flex-col overflow-x-hidden overflow-y-auto mt-2 relative px-4 bg-background", contentClassName)}
       >
         {statistic && <div className="flex-shrink-0 mb-1 mt-2">{statistic}</div>}
         {filter && (
-          <div className="flex-shrink-0 mb-1 sticky top-0 shadow z-10">
+          <div className="flex-shrink-0 mb-1 sticky top-0 z-10 border-none">
             {React.isValidElement(filter) ? React.cloneElement(filter as React.ReactElement<any>, { containerRef: scrollRef }) : filter}
           </div>
         )}

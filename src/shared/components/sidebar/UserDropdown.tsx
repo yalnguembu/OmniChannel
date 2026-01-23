@@ -16,21 +16,31 @@ import { Button } from "../ui"
 import { ThemeModeToggle } from "../ThemeModeToggle"
 import { useNavigate } from "@tanstack/react-router"
 import { CONTEXT } from "@/shared/types/ui"
-import { useSession } from "@/features/auth/hooks/useSession"
+// import { useSession } from "@/features/auth/hooks/useSession"
 import LanguageToggle from "../LanguageToggle"
 
 export function UserDropdown() {
-  const { isMobile } = useSidebar()
-  const { user } = useSessionStore()
+  // const { isMobile } = useSidebar()
+  const isMobile = false
+  // const { user } = useSessionStore()
   const { context, setContext } = useUIStore()
   const navigate = useNavigate()
-  const { logout } = useSession()
+  // const { logout } = useSession()
+
+  const logout = () => { }
 
   const handleSwitchContext = (newContext: CONTEXT) => {
     setContext(newContext)
     navigate({ to: `/` })
   }
-
+  const user = {
+    fullName: "Jhon Doe",
+    firstName: "Jhon",
+    lastName: "Doe",
+    email: "john.doe@example.com",
+    photo: "https://via.placeholder.com/150",
+    userType: "ADMIN",
+  }
   const avatar = (user?.fullName ?? `${user?.lastName} ${user?.firstName}`)
     .split(" ")
     .splice(0, 2)
@@ -43,10 +53,10 @@ export function UserDropdown() {
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <SidebarMenuButton size="lg" className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground">
-              <div className="hidden lg:grid flex-1 text-left text-sm leading-tight">
+              {/* <div className="hidden lg:grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-medium">{user?.fullName}</span>
-              </div>
-              <Avatar className="h-8 w-8 rounded-lg">
+              </div> */}
+              <Avatar className="h-8 w-8 rounded-full border">
                 {/* <AvatarImage src={user?.photo ?? ""} alt={user?.fullName} /> */}
                 <AvatarFallback className="rounded-full text-secondary font-black">{avatar}</AvatarFallback>
               </Avatar>

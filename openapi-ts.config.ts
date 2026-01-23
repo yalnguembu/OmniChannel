@@ -1,7 +1,7 @@
 import { defineConfig } from "@hey-api/openapi-ts"
 
 export default defineConfig({
-  input: "./spec.yml",
+  input: "./spec.yaml",
   output: "./src/shared/api",
   plugins: [
     "@hey-api/schemas",

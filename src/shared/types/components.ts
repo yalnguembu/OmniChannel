@@ -11,6 +11,7 @@ export interface CreatePageHeaderProps {
 
 export interface ListPageHeaderProps {
   title: string
+  description?: string
   addButtonText?: string
   breadcrumbs?: BreadcrumbItem[]
   onCreate?: () => void

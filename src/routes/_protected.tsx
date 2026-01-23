@@ -15,12 +15,12 @@ export const Route = createFileRoute("/_protected")({
   //     })
   //   }
   // },
-  loader: async () => {
-    const sessionStore = useSessionStore.getState()
-    return {
-      session: sessionStore.user,
-    }
-  },
+  // loader: async () => {
+  //   // const sessionStore = useSessionStore.getState()
+  //   return {
+  //     session: sessionStore.user,
+  //   }
+  // },
   pendingComponent: PageLoader,
   component: DashboardLayout,
 })

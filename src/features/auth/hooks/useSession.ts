@@ -2,13 +2,13 @@ import { useCallback } from "react"
 import { toast } from "sonner"
 import { router } from "@/app/providers/router-provider"
 import { useSessionStore } from "@/features/auth/stores/sessionStore"
-import {
-  postApiAuthLogoutAllMutation,
-  postApiAuthLogoutMutation,
-  postApiAuthCookieLoginMutation,
-  getApiUserMeOptions,
-  postApiAuthCookieLogoutMutation,
-} from "@/shared/api/@tanstack/react-query.gen"
+// import {
+//   postApiAuthLogoutAllMutation,
+//   postApiAuthLogoutMutation,
+//   postApiAuthCookieLoginMutation,
+//   getApiUserMeOptions,
+//   postApiAuthCookieLogoutMutation,
+// } from "@/shared/api/@tanstack/react-query.gen"
 import { LoginRequest } from "../../../shared/api/types.gen"
 import { authPersistence } from "../../../shared/lib/api/authPersistence"
 import { USER_TYPE } from "../../../shared/enums/session"

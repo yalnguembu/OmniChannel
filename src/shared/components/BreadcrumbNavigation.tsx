@@ -15,6 +15,7 @@ export const BreadcrumbNavigation: React.FC<BreadcrumbNavigationProps> = ({ brea
         <BreadcrumbItem>
           <Home className="inline size-4" />
         </BreadcrumbItem>
+        <BreadcrumbSeparator>/</BreadcrumbSeparator>
         {breadcrumbs.map((item, index) => (
           <React.Fragment key={index}>
             <BreadcrumbItem>
@@ -28,7 +29,7 @@ export const BreadcrumbNavigation: React.FC<BreadcrumbNavigationProps> = ({ brea
                 <BreadcrumbPage className="font-semibold">{item.label}</BreadcrumbPage>
               )}
             </BreadcrumbItem>
-            {index < breadcrumbs.length - 1 && <BreadcrumbSeparator />}
+            {index < breadcrumbs.length - 1 && <BreadcrumbSeparator>/</BreadcrumbSeparator>}
           </React.Fragment>
         ))}
       </BreadcrumbList>

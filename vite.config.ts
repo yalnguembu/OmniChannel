@@ -65,9 +65,9 @@ export default defineConfig({
       },
       includeAssets: ["favicon.ico", "apple-touch-icon.png", "mask-icon.svg"],
       manifest: {
-        name: "FUJISAT REABO",
-        short_name: "FUJISATREABO",
-        description: "Plateforme officielle FUJISAT REABO pour le réabonnement Canal+ au Cameroun. Effectuez vos réabonnements, Upgrades et gagnez des commissions.",
+        name: "OMNI CHANNEL",
+        short_name: "OmniChannel",
+        description: "Plateforme officielle Omni Channel le client au coeur de la communication",
         theme_color: "#ffffff",
         orientation: "portrait",
         display: "standalone",
@@ -109,12 +109,12 @@ export default defineConfig({
   server: {
     proxy: {
       "/api": {
-        target: "https://fujisat.cm",
+        target: "https://api.omnichannel.nguetioofa.dev",
         changeOrigin: true,
         secure: true,
       },
     },
-    // cors: true,
+    cors: true,
   },
   build: {
     rollupOptions: {
