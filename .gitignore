@@ -9,7 +9,7 @@ lerna-debug.log*
 
 node_modules
 dist
-/src/shared/api
+/src/shared/api/generated
 dev-dist
 .tanstack
 .vscode
