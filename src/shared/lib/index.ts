@@ -1,6 +1,0 @@
-export * from "./date"
-export * from "./number"
-export * from "./string"
-export { formatDate, formatDateTime, getRelativeTime } from "./date"
-export { formatCurrency, formatNumber, formatPercentage } from "./number"
-export { capitalize, slugify, getInitials } from "./string"

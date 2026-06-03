@@ -1,286 +1,5441 @@
 {
-  "accessDenied": "_accessDenied",
+  "accessDenied": "Access denied",
+  "actions": {
+    "openMenu": "Open menu"
+  },
   "applications": {
     "actions": {
-      "add": "_add",
-      "more": "_more"
+      "add": "Add application",
+      "more": "More actions"
     },
-    "apiKeyExpiresAtUtc": "_apiKeyExpiresAtUtc",
+    "apiKeyExpiresAtUtc": "API key expires at (UTC)",
     "bulk": {
-      "deleteError": "_deleteError",
-      "deleteReason": "_deleteReason",
-      "partialError_one": "_partialError",
-      "partialError_other": "_partialError"
+      "deleteError": "Error during bulk deletion",
+      "deleteReason": "Reason for deletion",
+      "partialError_one": "A partial error occurred",
+      "partialError_many": "Multiple partial errors occurred",
+      "partialError_other": "{{count}} partial errors occurred"
     },
-    "create": "_create",
-    "details": "_details",
-    "edit": "_edit",
+    "create": "Create application",
+    "details": "Application details",
+    "edit": "Edit application",
     "form": {
-      "companyIdLabel": "_companyIdLabel",
-      "companyIdPlaceholder": "_companyIdPlaceholder",
+      "companyIdLabel": "Company ID",
+      "companyIdPlaceholder": "Select a company",
       "create": {
-        "description": "_description",
-        "submit": "_submit",
-        "title": "_title"
+        "description": "Register a new application to access services.",
+        "submit": "Create application",
+        "title": "New Application"
       },
-      "descriptionLabel": "_descriptionLabel",
-      "descriptionPlaceholder": "_descriptionPlaceholder",
+      "descriptionLabel": "Description",
+      "descriptionPlaceholder": "Briefly describe the application",
       "edit": {
-        "description": "_description",
-        "loadError": "_loadError",
-        "submit": "_submit",
-        "title": "_title"
+        "description": "Update your application information.",
+        "loadError": "Error loading data",
+        "submit": "Save changes",
+        "title": "Edit application"
       },
-      "nameLabel": "_nameLabel",
-      "namePlaceholder": "_namePlaceholder"
+      "nameLabel": "Application name",
+      "namePlaceholder": "e.g., Customer Mobile App"
     },
     "headers": {
-      "companyName": "_companyName",
-      "createdAt": "_createdAt",
-      "description": "_description",
-      "environment": "_environment",
-      "keys": "_keys",
-      "name": "_name",
-      "status": "_status"
+      "companyName": "Company",
+      "createdAt": "Created at",
+      "description": "Description",
+      "environment": "Environment",
+      "keys": "API Keys",
+      "name": "Name",
+      "status": "Status"
     },
     "messages": {
       "create": {
-        "error": "_error",
-        "success": "_success"
+        "error": "Failed to create application.",
+        "success": "Application created successfully."
       },
       "delete": {
-        "confirm": "_confirm",
-        "error": "_error",
-        "success": "_success",
-        "success_one": "_success",
-        "success_other": "_success"
+        "confirm": "Are you sure you want to delete this application?",
+        "error": "Deletion failed.",
+        "success": "Application deleted.",
+        "success_one": "The application has been deleted.",
+        "success_many": "The applications have been deleted.",
+        "success_other": "{{count}} applications deleted."
       },
       "fetch": {
-        "error": "_error"
+        "error": "Error fetching applications."
       },
-      "noData": "_noData",
+      "noData": "No applications available.",
       "regenerateSecret": {
-        "error": "_error",
-        "success": "_success"
+        "error": "Failed to regenerate secret.",
+        "success": "New secret generated successfully."
       },
       "search": {
-        "error": "_error"
+        "error": "Search error."
       },
       "update": {
-        "error": "_error",
-        "success": "_success"
+        "error": "Update failed.",
+        "success": "Application updated successfully."
       }
     },
-    "title": "_title"
+    "title": "Applications"
+  },
+  "auditLog": {
+    "actions": {
+      "add": "Add log entry",
+      "more": "More details"
+    },
+    "bulk": {
+      "delete_one": "Delete log",
+      "delete_many": "Delete logs",
+      "delete_other": "Delete selected logs",
+      "deleteConfirm_one": "Confirm deletion?",
+      "deleteConfirm_many": "Confirm logs deletion?",
+      "deleteConfirm_other": "Confirm deletion of {{count}} logs?",
+      "deleteError": "Deletion error",
+      "deleteReason": "Reason for deletion",
+      "deleting": "Deleting...",
+      "partialError_one": "Partial failure on one item",
+      "partialError_many": "Multiple partial failures",
+      "partialError_other": "Failures on {{count}} items"
+    },
+    "details": {
+      "information": "Audit information",
+      "title": "Audit Log Details",
+      "view": "View"
+    },
+    "fields": {
+      "action": "Action performed",
+      "changedColumn": "Changed column",
+      "changeReason": "Change reason",
+      "companyEmail": "Company email",
+      "companyId": "Company ID",
+      "companyName": "Company name",
+      "companyStatus": "Company status",
+      "entityDisplayName": "Entity name",
+      "entityId": "Entity ID",
+      "entityName": "Entity type",
+      "entityType": "Entity category",
+      "ipAddress": "IP Address",
+      "newValues": "New values",
+      "oldValues": "Old values",
+      "riskLevel": "Risk level",
+      "userAgent": "User Agent",
+      "userEmail": "User email",
+      "userFirstName": "First name",
+      "userId": "User ID",
+      "userLastName": "Last name",
+      "userPhoneNumber": "Phone number",
+      "userStatus": "User status"
+    },
+    "messages": {
+      "create": {
+        "error": "Log creation error",
+        "success": "Log recorded"
+      },
+      "delete": {
+        "confirm": "Permanently delete?",
+        "error": "System error during deletion",
+        "success": "Deleted successfully",
+        "success_one": "Item deleted",
+        "success_many": "Items deleted",
+        "success_other": "Items deleted"
+      },
+      "loadError": "Error loading audit data",
+      "noData": "No history found",
+      "search": {
+        "error": "Error searching logs"
+      },
+      "update": {
+        "error": "Cannot update",
+        "success": "Updated"
+      }
+    },
+    "title": "Audit Logs"
   },
   "auth": {
     "login": {
-      "description": "_description",
-      "email": "_email",
-      "emailPlaceholder": "_emailPlaceholder",
-      "password": "_password",
-      "passwordPlaceholder": "_passwordPlaceholder",
-      "signIn": "_signIn",
-      "title": "_title"
+      "description": "Log in by entering your credentials.",
+      "email": "Email",
+      "emailPlaceholder": "Enter your email",
+      "password": "Password",
+      "passwordPlaceholder": "••••••••",
+      "signIn": "Sign In",
+      "title": "Log in to your account"
     }
   },
-  "common": {
-    "cancel": "_cancel",
-    "confirm": "_confirm",
-    "dataGrid": {
-      "items": "_items",
-      "total": "_total"
-    },
-    "filter": {
-      "actions": {
-        "clear": "_clear",
-        "export": "_export",
-        "filter": "_filter",
-        "import": "_import",
-        "more": "_more",
-        "refresh": "_refresh",
-        "reset": "_reset"
-      },
-      "selection": {
-        "count_one": "_count",
-        "count_other": "_count"
-      },
-      "view": {
-        "grid": "_grid",
-        "list": "_list"
-      }
-    },
-    "loading": "_loading"
-  },
-  "companies": {
+  "blocklist": {
     "actions": {
-      "add": "_add",
-      "more": "_more"
+      "add": "Add to blocklist",
+      "more": "More"
     },
     "bulk": {
-      "delete_one": "_delete",
-      "delete_other": "_delete",
-      "deleteConfirm_one": "_deleteConfirm",
-      "deleteConfirm_other": "_deleteConfirm",
-      "deleteError": "_deleteError",
-      "deleteReason": "_deleteReason",
-      "deleting": "_deleting",
-      "partialError_one": "_partialError",
-      "partialError_other": "_partialError"
+      "delete_one": "Remove",
+      "delete_many": "Remove selection",
+      "delete_other": "Remove items",
+      "deleteConfirm_one": "Do you want to remove this item?",
+      "deleteConfirm_many": "Do you want to remove these items?",
+      "deleteConfirm_other": "Do you want to remove these {{count}} items?",
+      "deleteError": "Removal error",
+      "deleteReason": "Reason for removal",
+      "deleting": "Removing...",
+      "partialError_one": "An error occurred",
+      "partialError_many": "Errors occurred",
+      "partialError_other": "Errors on {{count}} items"
     },
-    "create": "_create",
-    "details": "_details",
-    "edit": "_edit",
+    "details": {
+      "description": "_description",
+      "title": "Blocked item details"
+    },
     "fields": {
-      "address": "_address",
-      "businessRegistrationNumber": "_businessRegistrationNumber",
-      "companySize": "_companySize",
-      "companyType": "_companyType",
-      "contactPerson": "_contactPerson",
-      "countryName": "_countryName",
-      "createdAt": "_createdAt",
-      "email": "_email",
-      "isVerified": "_isVerified",
-      "name": "_name",
-      "phoneNumber": "_phoneNumber",
-      "taxNumber": "_taxNumber",
-      "website": "_website"
+      "blockType": "Block type",
+      "companyEmail": "Company email",
+      "companyId": "Company ID",
+      "companyName": "Company name",
+      "companyStatus": "Company status",
+      "data": "Data",
+      "detail": "Details",
+      "errorCode": "Error code",
+      "instance": "Instance",
+      "metadata": "Metadata",
+      "reason": "Reason for blocking",
+      "status": "Status",
+      "success": "Success",
+      "timestamp": "Timestamp",
+      "title": "Title",
+      "traceId": "Trace ID",
+      "type": "Type",
+      "validationErrors": "Validation errors",
+      "value": "Blocked value"
     },
     "form": {
-      "adressLabel": "_adressLabel",
-      "adressPlaceholder": "_adressPlaceholder",
-      "businessRegistrationNumberLabel": "_businessRegistrationNumberLabel",
-      "businessRegistrationNumberPlaceholder": "_businessRegistrationNumberPlaceholder",
-      "companySizeLabel": "_companySizeLabel",
-      "companySizePlaceholder": "_companySizePlaceholder",
-      "companyTypeLabel": "_companyTypeLabel",
-      "companyTypePlaceholder": "_companyTypePlaceholder",
-      "conctactPhoneLabel": "_conctactPhoneLabel",
-      "contactPersonLabel": "_contactPersonLabel",
-      "contactPersonPlaceholder": "_contactPersonPlaceholder",
-      "contactPhonePlaceholder": "_contactPhonePlaceholder",
-      "countryIdLabel": "_countryIdLabel",
-      "countryIdPlaceholder": "_countryIdPlaceholder",
       "create": {
-        "description": "_description",
-        "submit": "_submit"
+        "description": "Block an email, phone number, or IP address.",
+        "submit": "Add to blocklist",
+        "title": "Add blocking"
       },
       "edit": {
-        "description": "_description",
-        "loadError": "_loadError",
-        "submit": "_submit",
-        "title": "_title"
-      },
-      "emailLabel": "_emailLabel",
-      "emailPlaceholder": "_emailPlaceholder",
-      "nameLabel": "_nameLabel",
-      "namePlaceholder": "_namePlaceholder",
-      "phoneNumberLabel": "_phoneNumberLabel",
-      "phoneNumberPlaceholder": "_phoneNumberPlaceholder",
-      "statusLabel": "_statusLabel",
-      "statusPlaceholder": "_statusPlaceholder",
-      "taxNumberLabel": "_taxNumberLabel",
-      "taxNumberPlaceholder": "_taxNumberPlaceholder",
-      "websiteLabel": "_websiteLabel",
-      "websitePlaceholder": "_websitePlaceholder"
-    },
-    "groups": {
-      "basicInfo": "_basicInfo",
-      "contactInfo": "_contactInfo",
-      "legalFinancial": "_legalFinancial"
+        "description": "Edit blocking information.",
+        "submit": "Update",
+        "title": "Edit blocking"
+      }
     },
     "messages": {
       "create": {
-        "error": "_error",
-        "success": "_success"
+        "error": "Failed to add.",
+        "success": "Item blocked successfully."
       },
       "delete": {
-        "confirm": "_confirm",
-        "error": "_error",
-        "success": "_success",
-        "success_one": "_success",
-        "success_other": "_success"
+        "confirm": "Confirm unblocking?",
+        "error": "Unblocking failed.",
+        "success": "Item unblocked.",
+        "success_one": "1 item unblocked.",
+        "success_many": "Items unblocked.",
+        "success_other": "Items unblocked."
       },
-      "fetch": {
-        "error": "_error"
-      },
-      "noData": "_noData",
-      "pagination": {
-        "info": "_info"
-      },
+      "noData": "The blocklist is empty.",
       "search": {
-        "error": "_error"
+        "error": "Error during search."
       },
       "update": {
-        "error": "_error",
-        "success": "_success"
+        "error": "Update failed.",
+        "success": "Block updated."
       }
     },
-    "title": "_title"
+    "title": "Blocklist"
+  },
+  "Blocklist": {
+    "form": {
+      "blockTypeLabel": "Block type",
+      "blockTypePlaceholder": "Select type",
+      "companyIdLabel": "Company",
+      "companyIdPlaceholder": "Choose company",
+      "reasonLabel": "Reason",
+      "reasonPlaceholder": "Why block this item?",
+      "valueLabel": "Value",
+      "valuePlaceholder": "e.g., +237..."
+    }
+  },
+  "campaign": {
+    "actions": {
+      "add": "Create campaign",
+      "edit": "Edit campaign",
+      "more": "Actions"
+    },
+    "bulk": {
+      "delete_one": "Delete campaign",
+      "delete_many": "Delete campaigns",
+      "delete_other": "Delete selected campaigns",
+      "deleteConfirm_one": "Delete this campaign?",
+      "deleteConfirm_many": "Delete these campaigns?",
+      "deleteConfirm_other": "Delete {{count}} campaigns?",
+      "deleteError": "Error during bulk deletion",
+      "deleteReason": "Reason for cancellation",
+      "deleting": "Deleting...",
+      "partialError_one": "Failure on one campaign",
+      "partialError_many": "Multiple failures",
+      "partialError_other": "Failures on {{count}} campaigns"
+    },
+    "details": {
+      "information": "General information",
+      "title": "Campaign Details",
+      "view": "View statistics"
+    },
+    "fields": {
+      "campaignStatisticName": "Stats name",
+      "campaignStatisticStatus": "Stats status",
+      "campaignStatisticType": "Stats type",
+      "completedAt": "Completed at",
+      "data": "Data",
+      "description": "Description",
+      "detail": "Details",
+      "errorCode": "Error code",
+      "failedSends": "Failed sends",
+      "instance": "Instance",
+      "metadata": "Metadata",
+      "name": "Campaign name",
+      "productId": "Product ID",
+      "productName": "Associated product",
+      "productStatus": "Product status",
+      "recurrencePattern": "Frequency",
+      "scheduledAt": "Scheduled for",
+      "startedAt": "Launched at",
+      "status": "State",
+      "success": "Success",
+      "successfulSends": "Successful sends",
+      "timestamp": "Timestamp",
+      "title": "Campaign title",
+      "totalRecipients": "Total recipients",
+      "traceId": "Trace ID",
+      "type": "Channel type",
+      "validationErrors": "Validation errors"
+    },
+    "form": {
+      "create": {
+        "description": "Set up a new communication campaign.",
+        "submit": "Launch campaign",
+        "title": "New Campaign"
+      },
+      "edit": {
+        "description": "Edit settings for your ongoing or scheduled campaign.",
+        "loadError": "Could not load campaign",
+        "submit": "Save changes",
+        "title": "Edit campaign"
+      }
+    },
+    "messages": {
+      "create": {
+        "error": "Campaign creation failed.",
+        "success": "Campaign created successfully."
+      },
+      "delete": {
+        "confirm": "Do you confirm the deletion?",
+        "error": "Error during deletion.",
+        "success": "Campaign deleted.",
+        "success_one": "The campaign has been removed.",
+        "success_many": "The campaigns have been removed.",
+        "success_other": "{{count}} campaigns removed."
+      },
+      "loadError": "Error loading data.",
+      "noData": "No campaign found.",
+      "search": {
+        "error": "Search unsuccessful."
+      },
+      "update": {
+        "error": "Update failed.",
+        "success": "Campaign updated."
+      }
+    },
+    "title": "Campaigns"
+  },
+  "Campaign": {
+    "form": {
+      "completedAtLabel": "End date",
+      "completedAtPlaceholder": "Select date",
+      "descriptionLabel": "Description",
+      "descriptionPlaceholder": "Campaign details",
+      "failedSendsLabel": "Number of failures",
+      "failedSendsPlaceholder": "0",
+      "nameLabel": "Campaign name",
+      "namePlaceholder": "e.g., Christmas Promo 2024",
+      "productIdLabel": "Product",
+      "productIdPlaceholder": "Select a product",
+      "recurrencePatternLabel": "Recurrence",
+      "recurrencePatternPlaceholder": "One time / Weekly...",
+      "scheduledAtLabel": "Schedule date",
+      "scheduledAtPlaceholder": "When to send?",
+      "startedAtLabel": "Start date",
+      "startedAtPlaceholder": "Effective start",
+      "statusLabel": "Status",
+      "statusPlaceholder": "Pending / In progress",
+      "successfulSendsLabel": "Success",
+      "successfulSendsPlaceholder": "0",
+      "totalRecipientsLabel": "Total recipients",
+      "totalRecipientsPlaceholder": "Number of people",
+      "typeLabel": "Campaign type",
+      "typePlaceholder": "SMS / Email / Push"
+    }
+  },
+  "campaignChannel": {
+    "actions": {
+      "add": "Add channel",
+      "more": "More"
+    },
+    "bulk": {
+      "delete_one": "Delete this channel",
+      "delete_many": "Delete channels",
+      "delete_other": "Delete selection",
+      "deleteConfirm_one": "Remove this channel from the campaign?",
+      "deleteConfirm_many": "Remove these channels?",
+      "deleteConfirm_other": "Remove {{count}} channels?",
+      "deleteError": "Deletion error",
+      "deleteReason": "Reason",
+      "deleting": "Deleting...",
+      "partialError_one": "An error occurred",
+      "partialError_many": "Errors occurred",
+      "partialError_other": "Errors on {{count}} channels"
+    },
+    "details": {
+      "description": "_description",
+      "title": "Campaign channel details"
+    },
+    "fields": {
+      "campaignId": "Campaign ID",
+      "campaignName": "Campaign Name",
+      "campaignStatus": "Campaign Status",
+      "campaignType": "Campaign Type",
+      "channelCode": "Channel Code",
+      "channelId": "Channel ID",
+      "channelName": "Channel",
+      "data": "Data",
+      "detail": "Details",
+      "errorCode": "Error Code",
+      "instance": "Instance",
+      "metadata": "Metadata",
+      "priority": "Priority",
+      "status": "Status",
+      "success": "Success",
+      "templateId": "Template ID",
+      "templateName": "Template used",
+      "templateStatus": "Template Status",
+      "timestamp": "Timestamp",
+      "title": "Title",
+      "traceId": "Trace ID",
+      "type": "Type",
+      "validationErrors": "Validation Errors"
+    },
+    "form": {
+      "create": {
+        "description": "Add a delivery channel to this campaign.",
+        "submit": "Add channel",
+        "title": "New channel"
+      },
+      "edit": {
+        "description": "Edit channel settings.",
+        "submit": "Save",
+        "title": "Edit channel"
+      }
+    },
+    "messages": {
+      "create": {
+        "error": "Failed to add channel.",
+        "success": "Channel added successfully."
+      },
+      "delete": {
+        "confirm": "Delete channel?",
+        "error": "Error during removal.",
+        "success": "Channel removed.",
+        "success_one": "1 channel removed.",
+        "success_many": "Channels removed.",
+        "success_other": "{{count}} channels removed."
+      },
+      "noData": "No channel configured for this campaign.",
+      "search": {
+        "error": "Search error."
+      },
+      "update": {
+        "error": "Update failed.",
+        "success": "Channel updated."
+      }
+    },
+    "title": "Campaign Channels"
+  },
+  "CampaignChannel": {
+    "form": {
+      "campaignIdLabel": "Campaign",
+      "campaignIdPlaceholder": "Select campaign",
+      "channelIdLabel": "Channel",
+      "channelIdPlaceholder": "SMS, Email, etc.",
+      "priorityLabel": "Priority",
+      "priorityPlaceholder": "Sending order",
+      "templateIdLabel": "Template",
+      "templateIdPlaceholder": "Choose message template"
+    }
+  },
+  "campaignSegment": {
+    "actions": {
+      "add": "Add segment",
+      "more": "More"
+    },
+    "bulk": {
+      "delete_one": "Remove segment",
+      "delete_many": "Remove segments",
+      "delete_other": "Remove selection",
+      "deleteConfirm_one": "Do you want to remove this segment?",
+      "deleteConfirm_many": "Do you want to remove these segments?",
+      "deleteConfirm_other": "Do you want to remove {{count}} segments?",
+      "deleteError": "Error during removal",
+      "deleteReason": "Reason",
+      "deleting": "Removing...",
+      "partialError_one": "Failure on one segment",
+      "partialError_many": "Multiple failures",
+      "partialError_other": "Failures on {{count}} segments"
+    },
+    "details": {
+      "description": "_description",
+      "title": "Campaign segment details"
+    },
+    "fields": {
+      "campaignId": "Campaign ID",
+      "campaignName": "Campaign",
+      "campaignStatus": "Status",
+      "campaignType": "Type",
+      "data": "Data",
+      "detail": "Details",
+      "errorCode": "Error Code",
+      "instance": "Instance",
+      "metadata": "Metadata",
+      "segmentId": "Segment ID",
+      "segmentName": "Segment name",
+      "status": "Status",
+      "success": "Success",
+      "timestamp": "Timestamp",
+      "title": "Title",
+      "traceId": "Trace ID",
+      "type": "Type",
+      "validationErrors": "Errors"
+    },
+    "form": {
+      "create": {
+        "description": "Associate a customer segment with this campaign.",
+        "submit": "Add segment",
+        "title": "Add segment"
+      },
+      "edit": {
+        "description": "Edit segment association.",
+        "submit": "Save",
+        "title": "Edit segment"
+      }
+    },
+    "messages": {
+      "create": {
+        "error": "Failed to add.",
+        "success": "Segment added."
+      },
+      "delete": {
+        "confirm": "Confirm?",
+        "error": "System error.",
+        "success": "Segment removed.",
+        "success_one": "1 segment removed.",
+        "success_many": "Segments removed.",
+        "success_other": "Segments removed."
+      },
+      "noData": "No segment for this campaign.",
+      "search": {
+        "error": "Search error."
+      },
+      "update": {
+        "error": "Update failed.",
+        "success": "Updated."
+      }
+    },
+    "title": "Campaign Segments"
+  },
+  "CampaignSegment": {
+    "form": {
+      "campaignIdLabel": "Campaign",
+      "campaignIdPlaceholder": "Choose campaign",
+      "segmentIdLabel": "Target segment",
+      "segmentIdPlaceholder": "Choose customer segment"
+    }
+  },
+  "campaignStatistic": {
+    "actions": {
+      "add": "Add statistic",
+      "more": "More"
+    },
+    "bulk": {
+      "delete_one": "Delete",
+      "delete_many": "Delete items",
+      "delete_other": "Delete selection",
+      "deleteConfirm_one": "Confirm?",
+      "deleteConfirm_many": "Confirm deletion?",
+      "deleteConfirm_other": "Confirm for {{count}} items?",
+      "deleteError": "Error",
+      "deleteReason": "Reason",
+      "deleting": "In progress...",
+      "partialError_one": "Partial error",
+      "partialError_many": "Multiple errors",
+      "partialError_other": "Errors"
+    },
+    "details": {
+      "information": "Performance statistics",
+      "title": "Campaign Analysis",
+      "view": "Visualize"
+    },
+    "fields": {
+      "bounceRate": "Bounce rate",
+      "campaignId": "Campaign ID",
+      "campaignName": "Campaign",
+      "campaignStatus": "Status",
+      "campaignType": "Type",
+      "clickRate": "Click rate",
+      "deliveryRate": "Delivery rate",
+      "openRate": "Open rate",
+      "totalBounced": "Rejected messages",
+      "totalClicked": "Total clicks",
+      "totalCost": "Total cost",
+      "totalDelivered": "Successfully delivered",
+      "totalFailed": "Total failures",
+      "totalOpened": "Total opens",
+      "totalRecipients": "Total targets",
+      "totalSent": "Total sent"
+    },
+    "messages": {
+      "create": {
+        "error": "Creation error",
+        "success": "Statistic created"
+      },
+      "delete": {
+        "confirm": "Delete?",
+        "error": "Deletion failed",
+        "success": "Deleted",
+        "success_one": "Deleted",
+        "success_many": "Items deleted",
+        "success_other": "Deleted"
+      },
+      "loadError": "Could not load statistics",
+      "noData": "Statistical data unavailable",
+      "search": {
+        "error": "Search error"
+      },
+      "update": {
+        "error": "Update failed",
+        "success": "Updated"
+      }
+    },
+    "title": "Campaign Statistics"
+  },
+  "campaignStep": {
+    "actions": {
+      "add": "Add step",
+      "more": "Actions"
+    },
+    "bulk": {
+      "delete_one": "Delete step",
+      "delete_many": "Delete steps",
+      "delete_other": "Delete selection",
+      "deleteConfirm_one": "Do you want to delete this step?",
+      "deleteConfirm_many": "Do you want to delete these steps?",
+      "deleteConfirm_other": "Do you want to delete {{count}} steps?",
+      "deleteError": "Deletion error",
+      "deleteReason": "Reason",
+      "deleting": "Deleting...",
+      "partialError_one": "Partial failure",
+      "partialError_many": "Partial failures",
+      "partialError_other": "Failures on {{count}} steps"
+    },
+    "details": {
+      "description": "_description",
+      "title": "Step details"
+    },
+    "fields": {
+      "campaignId": "Campaign ID",
+      "campaignName": "Campaign",
+      "campaignStatus": "Status",
+      "campaignType": "Type",
+      "channelCode": "Channel Code",
+      "channelId": "Channel ID",
+      "channelName": "Channel",
+      "conditions": "Conditions",
+      "data": "Data",
+      "delayInMinutes": "Delay (min)",
+      "detail": "Details",
+      "errorCode": "Error Code",
+      "instance": "Instance",
+      "metadata": "Metadata",
+      "name": "Step name",
+      "status": "State",
+      "stepOrder": "Order",
+      "success": "Success",
+      "templateId": "Template ID",
+      "templateName": "Template",
+      "templateStatus": "Template Status",
+      "timestamp": "Timestamp",
+      "title": "Title",
+      "traceId": "Trace ID",
+      "type": "Type",
+      "validationErrors": "Errors"
+    },
+    "form": {
+      "create": {
+        "description": "Define a new step for your campaign workflow.",
+        "submit": "Create step",
+        "title": "New Step"
+      },
+      "edit": {
+        "description": "Edit settings for this step.",
+        "submit": "Save",
+        "title": "Edit step"
+      }
+    },
+    "messages": {
+      "create": {
+        "error": "Step creation failed.",
+        "success": "Step added."
+      },
+      "delete": {
+        "confirm": "Delete step?",
+        "error": "Error during deletion.",
+        "success": "Step deleted.",
+        "success_one": "Step deleted.",
+        "success_many": "Steps deleted.",
+        "success_other": "Steps deleted."
+      },
+      "noData": "No steps defined.",
+      "search": {
+        "error": "Search failed."
+      },
+      "update": {
+        "error": "Update failed.",
+        "success": "Step updated."
+      }
+    },
+    "title": "Campaign Steps"
+  },
+  "CampaignStep": {
+    "form": {
+      "campaignIdLabel": "Campaign",
+      "campaignIdPlaceholder": "Choose campaign",
+      "channelIdLabel": "Channel",
+      "channelIdPlaceholder": "Email, SMS, etc.",
+      "conditionsLabel": "Activation conditions",
+      "conditionsPlaceholder": "e.g., If not opened after 2 days",
+      "delayInMinutesLabel": "Wait before sending (min)",
+      "delayInMinutesPlaceholder": "e.g., 60",
+      "nameLabel": "Step name",
+      "namePlaceholder": "e.g., Automatic follow-up",
+      "stepOrderLabel": "Position in sequence",
+      "stepOrderPlaceholder": "1, 2, 3...",
+      "templateIdLabel": "Message template",
+      "templateIdPlaceholder": "Choose a template"
+    }
+  },
+  "channel": {
+    "actions": {
+      "add": "Add channel",
+      "edit": "Edit channel",
+      "more": "More actions"
+    },
+    "bulk": {
+      "delete_one": "Deactivate channel",
+      "delete_many": "Deactivate channels",
+      "delete_other": "Deactivate selection",
+      "deleteConfirm_one": "Do you want to delete this channel?",
+      "deleteConfirm_many": "Do you want to delete these channels?",
+      "deleteConfirm_other": "Do you want to delete these {{count}} channels?",
+      "deleteError": "Bulk deletion failure",
+      "deleteReason": "Reason",
+      "deleting": "Deleting...",
+      "partialError_one": "A partial error occurred",
+      "partialError_many": "Partial errors occurred",
+      "partialError_other": "Errors on {{count}} channels"
+    },
+    "details": {
+      "information": "Channel configuration",
+      "title": "Communication Channel Details",
+      "view": "Details"
+    },
+    "fields": {
+      "code": "Technical code",
+      "data": "Data",
+      "description": "Description",
+      "detail": "Details",
+      "errorCode": "Error code",
+      "instance": "Instance",
+      "isActive": "Active",
+      "maxContentLength": "Max content length",
+      "metadata": "Metadata",
+      "name": "Channel name",
+      "requiresOptIn": "Opt-in required",
+      "status": "Status",
+      "success": "Success",
+      "supportsAttachments": "Supports attachments",
+      "supportsRichContent": "Supports rich content",
+      "timestamp": "Timestamp",
+      "title": "Title",
+      "traceId": "Trace ID",
+      "type": "Channel type",
+      "validationErrors": "Validation errors"
+    },
+    "form": {
+      "create": {
+        "description": "Register a new communication channel in the system.",
+        "submit": "Save channel",
+        "title": "New Channel"
+      },
+      "edit": {
+        "description": "Edit channel capabilities and settings.",
+        "loadError": "Could not load channel",
+        "submit": "Update",
+        "title": "Edit Channel"
+      }
+    },
+    "messages": {
+      "create": {
+        "error": "Channel creation failed.",
+        "success": "Channel created successfully."
+      },
+      "delete": {
+        "confirm": "Permanently delete this channel?",
+        "error": "Error during deletion.",
+        "success": "Channel deleted.",
+        "success_one": "The channel has been deleted.",
+        "success_many": "The channels have been deleted.",
+        "success_other": "{{count}} channels deleted."
+      },
+      "loadError": "Loading error.",
+      "noData": "No channel available.",
+      "search": {
+        "error": "Search impossible."
+      },
+      "update": {
+        "error": "Update failed.",
+        "success": "Channel updated."
+      }
+    },
+    "title": "Channels"
+  },
+  "Channel": {
+    "form": {
+      "codeLabel": "Unique code",
+      "codePlaceholder": "e.g., SMS_GLOBAL",
+      "descriptionLabel": "Description",
+      "descriptionPlaceholder": "What is this channel for?",
+      "isActiveLabel": "Active channel",
+      "maxContentLengthLabel": "Character limit",
+      "maxContentLengthPlaceholder": "e.g., 160",
+      "nameLabel": "Public name",
+      "namePlaceholder": "e.g., International SMS",
+      "requiresOptInLabel": "Request consent (Opt-in)",
+      "supportsAttachmentsLabel": "Allow files",
+      "supportsRichContentLabel": "Allow HTML/Images"
+    }
+  },
+  "client": {
+    "actions": {
+      "add": "Add client",
+      "edit": "Edit client",
+      "more": "Actions"
+    },
+    "bulk": {
+      "delete_one": "Delete client",
+      "delete_many": "Delete clients",
+      "delete_other": "Delete selection",
+      "deleteConfirm_one": "Confirm deletion?",
+      "deleteConfirm_many": "Confirm deletion of clients?",
+      "deleteConfirm_other": "Delete {{count}} clients?",
+      "deleteError": "Deletion failed",
+      "deleteReason": "Reason",
+      "deleting": "Deleting...",
+      "partialError_one": "Partial failure",
+      "partialError_many": "Multiple failures",
+      "partialError_other": "Failures on {{count}} clients"
+    },
+    "details": {
+      "information": "Client profile",
+      "title": "Client File",
+      "view": "Full file"
+    },
+    "fields": {
+      "address": "Address",
+      "birthDate": "Date of birth",
+      "city": "City",
+      "country": "Country",
+      "customData": "Custom data",
+      "data": "Data",
+      "detail": "Details",
+      "email": "Email Address",
+      "errorCode": "Error code",
+      "externalId": "External ID",
+      "firstName": "First name",
+      "gender": "Gender",
+      "instance": "Instance",
+      "language": "Language",
+      "lastName": "Last name",
+      "metadata": "Metadata",
+      "phone": "Phone number",
+      "postalCode": "Postal code",
+      "productId": "Product ID",
+      "productName": "Product",
+      "productStatus": "Product status",
+      "status": "Account status",
+      "success": "Success",
+      "timestamp": "Updated at",
+      "timezone": "Timezone",
+      "title": "Title",
+      "traceId": "Trace ID",
+      "type": "Client type",
+      "validationErrors": "Errors"
+    },
+    "form": {
+      "create": {
+        "description": "Add a new client manually.",
+        "submit": "Create client",
+        "title": "New Client"
+      },
+      "edit": {
+        "description": "Update personal information for the client.",
+        "loadError": "Could not load client",
+        "submit": "Save",
+        "title": "Edit Client"
+      }
+    },
+    "messages": {
+      "create": {
+        "error": "Creation failed.",
+        "success": "Client created successfully."
+      },
+      "delete": {
+        "confirm": "Confirm deletion?",
+        "error": "Error during deletion.",
+        "success": "Client deleted.",
+        "success_one": "Client deleted.",
+        "success_many": "Clients deleted.",
+        "success_other": "{{count}} clients deleted."
+      },
+      "loadError": "Loading error.",
+      "noData": "No client found.",
+      "search": {
+        "error": "Search error."
+      },
+      "update": {
+        "error": "Update failed.",
+        "success": "Information updated."
+      }
+    },
+    "title": "Clients"
+  },
+  "clientChannelPreference": {
+    "actions": {
+      "add": "Add preference",
+      "more": "More"
+    },
+    "bulk": {
+      "delete_one": "Remove",
+      "delete_many": "Remove preferences",
+      "delete_other": "Delete selection",
+      "deleteConfirm_one": "Remove this preference?",
+      "deleteConfirm_many": "Remove these preferences?",
+      "deleteConfirm_other": "Remove {{count}} preferences?",
+      "deleteError": "Deletion error",
+      "deleteReason": "Reason",
+      "deleting": "Removing...",
+      "partialError_one": "Partial error",
+      "partialError_many": "Multiple errors",
+      "partialError_other": "Errors on {{count}} items"
+    },
+    "details": {
+      "description": "_description",
+      "title": "Communication preferences"
+    },
+    "fields": {
+      "channelCode": "Channel Code",
+      "channelId": "Channel ID",
+      "channelName": "Channel",
+      "clientEmail": "Client email",
+      "clientFirstName": "Client first name",
+      "clientId": "Client ID",
+      "clientLastName": "Client last name",
+      "clientStatus": "Client status",
+      "data": "Data",
+      "detail": "Details",
+      "errorCode": "Error code",
+      "instance": "Instance",
+      "isOptedIn": "Subscribed (Opt-in)",
+      "metadata": "Metadata",
+      "optedInAt": "Subscribed at",
+      "optedOutAt": "Unsubscribed at",
+      "optOutReason": "Unsubscribe reason",
+      "status": "Status",
+      "success": "Success",
+      "timestamp": "Timestamp",
+      "title": "Title",
+      "traceId": "Trace ID",
+      "type": "Type",
+      "validationErrors": "Errors"
+    },
+    "form": {
+      "create": {
+        "description": "Set the allowed channels for this client.",
+        "submit": "Add preference",
+        "title": "New Preference"
+      },
+      "edit": {
+        "description": "Edit client consent.",
+        "submit": "Save",
+        "title": "Edit Preference"
+      }
+    },
+    "messages": {
+      "create": {
+        "error": "Creation failed.",
+        "success": "Preference added."
+      },
+      "delete": {
+        "confirm": "Delete?",
+        "error": "Failed.",
+        "success": "Deleted.",
+        "success_one": "Preference deleted.",
+        "success_many": "Preferences deleted.",
+        "success_other": "Preferences deleted."
+      },
+      "noData": "No preferences recorded.",
+      "search": {
+        "error": "Search failed."
+      },
+      "update": {
+        "error": "Update error.",
+        "success": "Preference updated."
+      }
+    },
+    "title": "Channel Preferences"
+  },
+  "ClientChannelPreference": {
+    "form": {
+      "channelIdLabel": "Channel",
+      "channelIdPlaceholder": "Select a channel",
+      "clientIdLabel": "Client",
+      "clientIdPlaceholder": "Choose a client",
+      "isOptedInLabel": "Active subscription",
+      "optedInAtLabel": "Registration date",
+      "optedInAtPlaceholder": "Date",
+      "optedOutAtLabel": "Unsubscribe date",
+      "optedOutAtPlaceholder": "Date",
+      "optOutReasonLabel": "Unsubscribe reason",
+      "optOutReasonPlaceholder": "Why did the client unsubscribe?"
+    }
+  },
+  "clientImport": {
+    "actions": {
+      "add": "New import",
+      "edit": "Edit import",
+      "more": "Actions"
+    },
+    "bulk": {
+      "delete_one": "Delete import history",
+      "delete_many": "Delete history",
+      "delete_other": "Clear selection",
+      "deleteConfirm_one": "Do you want to delete this import log?",
+      "deleteConfirm_many": "Do you want to delete these logs?",
+      "deleteConfirm_other": "Do you want to delete {{count}} logs?",
+      "deleteError": "Deletion failed",
+      "deleteReason": "Reason",
+      "deleting": "Deleting...",
+      "partialError_one": "An error occurred",
+      "partialError_many": "Errors occurred",
+      "partialError_other": "Errors detected"
+    },
+    "details": {
+      "information": "File details",
+      "title": "Import Details",
+      "view": "View report"
+    },
+    "fields": {
+      "completedAt": "Completed at",
+      "data": "Data",
+      "detail": "Details",
+      "duplicateRows": "Duplicates",
+      "errorCode": "Error code",
+      "errorLog": "Error log",
+      "failedRows": "Failed rows",
+      "fileName": "File name",
+      "fileSize": "Size",
+      "fileUrl": "File URL",
+      "instance": "Instance",
+      "mappingConfiguration": "Column mapping",
+      "metadata": "Metadata",
+      "productId": "Product ID",
+      "productName": "Product",
+      "productStatus": "Status",
+      "startedAt": "Started at",
+      "status": "State",
+      "success": "Success",
+      "successfulRows": "Imported rows",
+      "timestamp": "Timestamp",
+      "title": "Title",
+      "totalRows": "Total rows",
+      "traceId": "Trace ID",
+      "type": "Import type",
+      "validationErrors": "Validation errors"
+    },
+    "form": {
+      "create": {
+        "description": "Upload a CSV or Excel file to import clients.",
+        "submit": "Start import",
+        "title": "Import clients"
+      },
+      "edit": {
+        "description": "Edit settings for this import.",
+        "loadError": "Could not load import",
+        "submit": "Save",
+        "title": "Edit Import"
+      }
+    },
+    "messages": {
+      "create": {
+        "error": "Import failed.",
+        "success": "Import launched successfully."
+      },
+      "delete": {
+        "confirm": "Permanently delete?",
+        "error": "Error during deletion.",
+        "success": "History deleted.",
+        "success_one": "Log deleted.",
+        "success_many": "Logs deleted.",
+        "success_other": "Logs deleted."
+      },
+      "loadError": "Error reading data.",
+      "noData": "No recent import.",
+      "search": {
+        "error": "Search unsuccessful."
+      },
+      "update": {
+        "error": "Update failed.",
+        "success": "Update successful."
+      }
+    },
+    "title": "Client Imports"
+  },
+  "clientSegment": {
+    "actions": {
+      "add": "Create segment",
+      "more": "More"
+    },
+    "bulk": {
+      "delete_one": "Delete segment",
+      "delete_many": "Delete segments",
+      "delete_other": "Delete selection",
+      "deleteConfirm_one": "Confirm deletion?",
+      "deleteConfirm_many": "Confirm deletion of segments?",
+      "deleteConfirm_other": "Delete {{count}} segments?",
+      "deleteError": "Deletion failed",
+      "deleteReason": "Reason",
+      "deleting": "Deleting...",
+      "partialError_one": "Partial failure",
+      "partialError_many": "Multiple failures",
+      "partialError_other": "Failures"
+    },
+    "details": {
+      "description": "_description",
+      "title": "Segment Details"
+    },
+    "fields": {
+      "clientCount": "Number of clients",
+      "criteria": "Selection criteria",
+      "data": "Data",
+      "description": "Description",
+      "detail": "Details",
+      "errorCode": "Error code",
+      "instance": "Instance",
+      "isDynamic": "Dynamic segment",
+      "lastCalculatedAt": "Last calculation",
+      "metadata": "Metadata",
+      "name": "Segment name",
+      "productId": "Product ID",
+      "productName": "Product",
+      "productStatus": "Status",
+      "status": "Status",
+      "success": "Success",
+      "timestamp": "Timestamp",
+      "title": "Title",
+      "traceId": "Trace ID",
+      "type": "Type",
+      "validationErrors": "Errors"
+    },
+    "form": {
+      "create": {
+        "description": "Create a group of clients based on specific criteria.",
+        "submit": "Create segment",
+        "title": "New Segment"
+      },
+      "edit": {
+        "description": "Edit segment criteria or name.",
+        "submit": "Save",
+        "title": "Edit Segment"
+      }
+    },
+    "messages": {
+      "create": {
+        "error": "Creation failed.",
+        "success": "Segment created."
+      },
+      "delete": {
+        "confirm": "Confirm?",
+        "error": "Failed.",
+        "success": "Segment deleted.",
+        "success_one": "Segment deleted.",
+        "success_many": "Segments deleted.",
+        "success_other": "Segments deleted."
+      },
+      "noData": "No segment found.",
+      "search": {
+        "error": "Search error."
+      },
+      "update": {
+        "error": "Update error.",
+        "success": "Segment updated."
+      }
+    },
+    "title": "Client Segments"
+  },
+  "ClientSegment": {
+    "form": {
+      "clientCountLabel": "Number of members",
+      "clientCountPlaceholder": "Calculated automatically",
+      "criteriaLabel": "Segment rules",
+      "criteriaPlaceholder": "e.g., City = Douala AND Age > 25",
+      "descriptionLabel": "Description",
+      "descriptionPlaceholder": "e.g., VIP Clients from West region",
+      "isDynamicLabel": "Automatic update (Dynamic)",
+      "lastCalculatedAtLabel": "Last calculation date",
+      "lastCalculatedAtPlaceholder": "Never",
+      "nameLabel": "Segment name",
+      "namePlaceholder": "e.g., Inactive Clients",
+      "productIdLabel": "Associated product",
+      "productIdPlaceholder": "Select product"
+    }
+  },
+  "clientSegmentMember": {
+    "actions": {
+      "add": "Add member",
+      "more": "Actions"
+    },
+    "bulk": {
+      "delete_one": "Remove from segment",
+      "delete_many": "Remove members",
+      "delete_other": "Remove selection",
+      "deleteConfirm_one": "Do you want to remove this member from the segment?",
+      "deleteConfirm_many": "Do you want to remove these members?",
+      "deleteConfirm_other": "Do you want to remove {{count}} members?",
+      "deleteError": "Removal error",
+      "deleteReason": "Reason",
+      "deleting": "Removing...",
+      "partialError_one": "Partial error",
+      "partialError_many": "Multiple failures",
+      "partialError_other": "Failures"
+    },
+    "details": {
+      "description": "_description",
+      "title": "Membership details"
+    },
+    "fields": {
+      "addedAt": "Added at",
+      "clientEmail": "Client email",
+      "clientFirstName": "Client first name",
+      "clientId": "Client ID",
+      "clientLastName": "Client last name",
+      "clientStatus": "Client status",
+      "data": "Data",
+      "detail": "Details",
+      "errorCode": "Error code",
+      "instance": "Instance",
+      "metadata": "Metadata",
+      "segmentId": "Segment ID",
+      "segmentName": "Segment name",
+      "status": "Status",
+      "success": "Success",
+      "timestamp": "Timestamp",
+      "title": "Title",
+      "traceId": "Trace ID",
+      "type": "Type",
+      "validationErrors": "Errors"
+    },
+    "form": {
+      "create": {
+        "description": "Manually add a client to this segment.",
+        "submit": "Add to segment",
+        "title": "New Member"
+      },
+      "edit": {
+        "description": "Edit member details.",
+        "submit": "Save",
+        "title": "Edit Member"
+      }
+    },
+    "messages": {
+      "create": {
+        "error": "Failed to add.",
+        "success": "Member added to segment."
+      },
+      "delete": {
+        "confirm": "Remove?",
+        "error": "Removal failed.",
+        "success": "Member removed.",
+        "success_one": "Member removed.",
+        "success_many": "Members removed.",
+        "success_other": "Members removed."
+      },
+      "noData": "This segment is empty.",
+      "search": {
+        "error": "Search error."
+      },
+      "update": {
+        "error": "Update failed.",
+        "success": "Data updated."
+      }
+    },
+    "title": "Segment Members"
+  },
+  "ClientSegmentMember": {
+    "form": {
+      "addedAtLabel": "Addition date",
+      "addedAtPlaceholder": "Date",
+      "clientIdLabel": "Client",
+      "clientIdPlaceholder": "Search for a client",
+      "segmentIdLabel": "Segment",
+      "segmentIdPlaceholder": "Choose segment"
+    }
+  },
+  "common": {
+    "actions": {
+      "activate": "Activate",
+      "deactivate": "Deactivate",
+      "delete": "Delete",
+      "edit": "Edit",
+      "more": "Actions",
+      "view": "View"
+    },
+    "back": "Back",
+    "backToList": "Back to list",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "createdAt": "Created at",
+    "dataGrid": {
+      "items": "Items",
+      "total": "Total"
+    },
+    "filter": {
+      "actions": {
+        "assignPermissions": "Assign Permissions",
+        "clear": "Clear",
+        "edit": "Edit",
+        "export": "Export",
+        "filter": "Filter",
+        "import": "Import",
+        "more": "More",
+        "refresh": "Refresh",
+        "reset": "Reset"
+      },
+      "selection": {
+        "count_one": "1 selected",
+        "count_many": "{{count}} selected",
+        "count_other": "{{count}} selected"
+      },
+      "view": {
+        "grid": "Grid",
+        "list": "List"
+      },
+      "dateRange": "From to..."
+    },
+    "form": {
+      "valueLabel": "Value"
+    },
+    "loading": "Loading...",
+    "na": "N/A",
+    "next": "Next",
+    "no": "No",
+    "of": "of",
+    "previous": "Previous",
+    "step": "Step",
+    "updatedAt": "Updated at",
+    "yes": "Yes"
+  },
+  "companies": {
+    "actions": {
+      "add": "Add Company",
+      "delete": "Delete Company",
+      "edit": "Edit Company",
+      "more": "Actions",
+      "view": "View Company"
+    },
+    "bulk": {
+      "delete_one": "Delete this company?",
+      "delete_many": "Delete these companies?",
+      "delete_other": "Delete these companies?",
+      "deleteConfirm_one": "Are you sure you want to delete this company?",
+      "deleteConfirm_many": "Are you sure you want to delete these companies?",
+      "deleteConfirm_other": "Are you sure you want to delete these {{count}} companies?",
+      "deleteError": "Error during deletion.",
+      "deleteReason": "Reason for deletion",
+      "deleting": "Deleting...",
+      "partialError_one": "A partial error occurred.",
+      "partialError_many": "Multiple partial errors occurred.",
+      "partialError_other": "{{count}} partial errors occurred."
+    },
+    "create": "Create a company",
+    "details": "Company details",
+    "edit": "Edit company",
+    "fields": {
+      "address": "Address",
+      "businessRegistrationNumber": "BRN (RCCM)",
+      "companySize": "Size",
+      "companyType": "Type",
+      "contact": "Contact",
+      "contactPerson": "Contact person",
+      "countryCode": "Country Code",
+      "countryName": "Country",
+      "createdAt": "Creation date",
+      "email": "Email",
+      "isVerified": "Verified",
+      "name": "Name",
+      "phoneNumber": "Phone",
+      "status": "Status",
+      "taxNumber": "Tax Number (TIN)",
+      "website": "Website"
+    },
+    "form": {
+      "adressLabel": "Address",
+      "adressPlaceholder": "Enter address",
+      "businessRegistrationNumberLabel": "BRN (RCCM)",
+      "businessRegistrationNumberPlaceholder": "Enter BRN",
+      "companySizeLabel": "Company size",
+      "companySizePlaceholder": "Select size",
+      "companyTypeLabel": "Company type",
+      "companyTypePlaceholder": "Select type",
+      "conctactPhoneLabel": "Contact phone",
+      "contactPersonLabel": "Contact person",
+      "contactPersonPlaceholder": "Enter contact person",
+      "contactPhonePlaceholder": "Enter contact phone",
+      "countryIdLabel": "Country",
+      "countryIdPlaceholder": "Select a country",
+      "create": {
+        "description": "Add a new company.",
+        "submit": "Create"
+      },
+      "edit": {
+        "description": "Update company details.",
+        "loadError": "Failed to load company.",
+        "submit": "Save",
+        "title": "Edit company"
+      },
+      "emailLabel": "Email",
+      "emailPlaceholder": "Enter email",
+      "nameLabel": "Company name",
+      "namePlaceholder": "Enter company name",
+      "phoneNumberLabel": "Phone number",
+      "phoneNumberPlaceholder": "Enter phone number",
+      "statusLabel": "Status",
+      "statusPlaceholder": "Select a status",
+      "taxNumberLabel": "Tax Number (TIN)",
+      "taxNumberPlaceholder": "Enter Tax Number",
+      "websiteLabel": "Website",
+      "websitePlaceholder": "Enter website URL"
+    },
+    "groups": {
+      "basicInfo": "Basic Information",
+      "contactInfo": "Contact and Location",
+      "createdAt": "Creation Date",
+      "legalFinancial": "Legal and Financial"
+    },
+    "headers": {
+      "contactPhone": "Contact Phone",
+      "countryId": "Country ID",
+      "countryName": "Country",
+      "website": "Website"
+    },
+    "messages": {
+      "create": {
+        "error": "Failed to create company.",
+        "success": "Company created successfully."
+      },
+      "delete": {
+        "confirm": "Are you sure?",
+        "error": "Deletion failed.",
+        "success": "Deletion successful.",
+        "success_one": "1 company deleted.",
+        "success_many": "Companies were successfully deleted.",
+        "success_other": "{{count}} companies deleted."
+      },
+      "dropdown": {
+        "error": "Failed to load companies."
+      },
+      "fetch": {
+        "error": "Failed to fetch companies."
+      },
+      "noData": "No company found.",
+      "pagination": {
+        "info": "Showing {{start}} to {{end}} of {{total}} companies"
+      },
+      "search": {
+        "error": "Search failed."
+      },
+      "update": {
+        "error": "Update failed.",
+        "success": "Update successful."
+      }
+    },
+    "tabs": {
+      "settings": {
+        "description": "Manage company settings."
+      }
+    },
+    "title": "Companies",
+    "totalCount_one": "1 company",
+    "totalCount_other": "{{count}} companies"
+  },
+  "company": {
+    "actions": {
+      "add": "New Entity",
+      "edit": "Edit Entity",
+      "more": "Actions"
+    },
+    "bulk": {
+      "delete_one": "Delete",
+      "delete_many": "Delete all",
+      "delete_other": "Delete items",
+      "deleteConfirm_one": "Confirm?",
+      "deleteConfirm_many": "Confirm deletion?",
+      "deleteConfirm_other": "Confirm for {{count}}?",
+      "deleteError": "Error",
+      "deleteReason": "Reason",
+      "deleting": "Deleting...",
+      "partialError_one": "Error",
+      "partialError_many": "Errors",
+      "partialError_other": "Errors"
+    },
+    "details": {
+      "information": "Company Information",
+      "title": "Company Details",
+      "view": "Consult"
+    },
+    "fields": {
+      "address": "Address",
+      "billingMode": "Billing Mode",
+      "city": "City",
+      "country": "Country",
+      "countryCode": "Country Code",
+      "countryId": "Country ID",
+      "countryName": "Country",
+      "data": "Data",
+      "defaultLanguage": "Default language",
+      "detail": "Details",
+      "email": "Email",
+      "errorCode": "Error code",
+      "instance": "Instance",
+      "isSandbox": "Sandbox Mode",
+      "legalName": "Legal Name",
+      "metadata": "Metadata",
+      "name": "Commercial Name",
+      "phone": "Phone",
+      "postalCode": "Postal Code",
+      "status": "Status",
+      "success": "Success",
+      "taxNumber": "Tax Number",
+      "timestamp": "Timestamp",
+      "timezone": "Timezone",
+      "title": "Title",
+      "traceId": "Trace ID",
+      "type": "Type",
+      "validationErrors": "Errors",
+      "walletCurrency": "Wallet currency",
+      "website": "Website"
+    },
+    "form": {
+      "create": {
+        "description": "Enter company information.",
+        "submit": "Create",
+        "title": "New Company"
+      },
+      "edit": {
+        "description": "Updating information.",
+        "loadError": "Loading error",
+        "submit": "Save",
+        "title": "Edit Company"
+      }
+    },
+    "messages": {
+      "create": {
+        "error": "Creation error",
+        "success": "Created successfully"
+      },
+      "delete": {
+        "confirm": "Confirm?",
+        "error": "Deletion error",
+        "success": "Deleted",
+        "success_one": "Item deleted",
+        "success_many": "Items deleted",
+        "success_other": "Items deleted"
+      },
+      "dropdown": {
+        "error": "Failed to load companies."
+      },
+      "loadError": "Impossible to load",
+      "noData": "No company",
+      "search": {
+        "error": "Search error"
+      },
+      "update": {
+        "error": "Update error",
+        "success": "Updated"
+      }
+    },
+    "title": "Company"
+  },
+  "companyApiKey": {
+    "actions": {
+      "add": "Generate key",
+      "more": "Actions"
+    },
+    "bulk": {
+      "delete_one": "Revoke key",
+      "delete_many": "Revoke keys",
+      "delete_other": "Revoke selection",
+      "deleteConfirm_one": "Do you want to revoke this API key?",
+      "deleteConfirm_many": "Do you want to revoke these API keys?",
+      "deleteConfirm_other": "Do you want to revoke {{count}} API keys?",
+      "deleteError": "Revocation error",
+      "deleteReason": "Reason",
+      "deleting": "Revoking...",
+      "partialError_one": "Partial failure",
+      "partialError_many": "Multiple failures",
+      "partialError_other": "Failures"
+    },
+    "details": {
+      "description": "_description",
+      "title": "API Key details"
+    },
+    "fields": {
+      "companyEmail": "Company email",
+      "companyId": "Company ID",
+      "companyName": "Company name",
+      "companyStatus": "Company status",
+      "data": "Data",
+      "detail": "Details",
+      "errorCode": "Error Code",
+      "expiresAt": "Expires at",
+      "instance": "Instance",
+      "ipWhitelist": "IP Whitelist",
+      "isActive": "Active key",
+      "lastUsedAt": "Last use",
+      "metadata": "Metadata",
+      "name": "Key name",
+      "scopes": "Permissions (Scopes)",
+      "status": "Status",
+      "success": "Success",
+      "timestamp": "Timestamp",
+      "title": "Title",
+      "traceId": "Trace ID",
+      "type": "Type",
+      "validationErrors": "Errors"
+    },
+    "form": {
+      "create": {
+        "description": "Create a secure access key for your integrations.",
+        "submit": "Generate key",
+        "title": "New API Key"
+      },
+      "edit": {
+        "description": "Edit permissions or restrictions for the key.",
+        "submit": "Save",
+        "title": "Edit Key"
+      }
+    },
+    "messages": {
+      "create": {
+        "error": "Generation failed.",
+        "success": "API key generated."
+      },
+      "delete": {
+        "confirm": "Revoke key?",
+        "error": "System error.",
+        "success": "Key revoked.",
+        "success_one": "Key revoked.",
+        "success_many": "Keys revoked.",
+        "success_other": "Keys revoked."
+      },
+      "noData": "No active API key.",
+      "search": {
+        "error": "Search error."
+      },
+      "update": {
+        "error": "Update failed.",
+        "success": "Key updated."
+      }
+    },
+    "title": "API Keys"
+  },
+  "CompanyApiKey": {
+    "form": {
+      "companyIdLabel": "Company",
+      "companyIdPlaceholder": "Choose company",
+      "expiresAtLabel": "Expiration date",
+      "expiresAtPlaceholder": "Optional",
+      "ipWhitelistLabel": "Allowed IP addresses",
+      "ipWhitelistPlaceholder": "Separate by commas",
+      "isActiveLabel": "Activate immediately",
+      "lastUsedAtLabel": "Last access",
+      "lastUsedAtPlaceholder": "Never",
+      "nameLabel": "Descriptive name",
+      "namePlaceholder": "e.g., Website Integration",
+      "scopesLabel": "Access scope",
+      "scopesPlaceholder": "Select scopes"
+    }
+  },
+  "companyapplimits": {
+    "headers": {
+      "apiRequestsLimit": "API Requests Limit",
+      "applicationId": "Application ID",
+      "applicationName": "Application",
+      "applicationStatus": "App. Status",
+      "companyEmail": "Company Email",
+      "companyId": "Company ID",
+      "companyName": "Company",
+      "companyPhoneNumber": "Company Phone",
+      "companyStatus": "Company Status",
+      "createdAt": "Created at",
+      "defaultDailyLimit": "Default Daily Limit",
+      "defaultMonthlyLimit": "Default Monthly Limit",
+      "defaultSingleTransactionLimit": "Single Trans. Limit"
+    }
+  },
+  "companyAppLimits": {
+    "actions": {
+      "add": "Add Limit",
+      "delete": "Delete",
+      "edit": "Edit",
+      "more": "Actions",
+      "view": "View"
+    },
+    "bulk": {
+      "delete_one": "Delete this limit?",
+      "delete_many": "Delete these limits?",
+      "delete_other": "Delete these limits?",
+      "deleteConfirm_one": "Are you sure you want to delete this limit?",
+      "deleteConfirm_many": "Are you sure you want to delete these limits?",
+      "deleteConfirm_other": "Are you sure you want to delete these {{count}} limits?",
+      "deleteError": "Error during deletion.",
+      "deleteReason": "Reason for deletion",
+      "deleting": "Deleting...",
+      "partialError_one": "A partial error occurred.",
+      "partialError_many": "Multiple partial errors occurred.",
+      "partialError_other": "{{count}} partial errors occurred."
+    },
+    "create": "Create an application limit",
+    "edit": "Edit application limit",
+    "form": {
+      "apiRequestsLimitLabel": "API requests limit",
+      "apiRequestsLimitPlaceholder": "Enter API requests limit",
+      "applicationIdLabel": "Application",
+      "applicationIdPlaceholder": "Select an application",
+      "companyIdLabel": "Company",
+      "companyIdPlaceholder": "Select a company",
+      "create": {
+        "description": "Add a new application limit for a company.",
+        "submit": "Create",
+        "title": "Create an application limit"
+      },
+      "defaultDailyLimitLabel": "Default daily limit",
+      "defaultDailyLimitPlaceholder": "Enter default daily limit",
+      "edit": {
+        "description": "Update the details of this application limit.",
+        "loadError": "Failed to load the limit.",
+        "submit": "Save",
+        "title": "Edit application limit"
+      }
+    },
+    "messages": {
+      "create": {
+        "error": "Creation failed.",
+        "success": "Creation successful."
+      },
+      "delete": {
+        "confirm": "Are you sure you want to delete this limit?",
+        "error": "Deletion failed.",
+        "success": "Deletion successful.",
+        "success_one": "1 limit deleted.",
+        "success_many": "Limits were successfully deleted.",
+        "success_other": "{{count}} limits deleted."
+      },
+      "noData": "No limit found.",
+      "search": {
+        "error": "Search failed."
+      },
+      "update": {
+        "error": "Update failed.",
+        "success": "Update successful."
+      }
+    },
+    "title": "Application Limits",
+    "totalCount_one": "1 limit",
+    "totalCount_other": "{{count}} limits"
+  },
+  "companyChannel": {
+    "actions": {
+      "add": "Activate Channel",
+      "more": "More"
+    },
+    "bulk": {
+      "delete_one": "Deactivate",
+      "delete_many": "Deactivate selection",
+      "delete_other": "Deactivate all",
+      "deleteConfirm_one": "Confirm?",
+      "deleteConfirm_many": "Confirm deactivation?",
+      "deleteConfirm_other": "Confirm for {{count}}?",
+      "deleteError": "Error",
+      "deleteReason": "Reason",
+      "deleting": "Processing...",
+      "partialError_one": "Error",
+      "partialError_many": "Errors",
+      "partialError_other": "Errors"
+    },
+    "details": {
+      "description": "_description",
+      "title": "Company Channel Configuration"
+    },
+    "fields": {
+      "channelCode": "Channel Code",
+      "channelId": "Channel ID",
+      "channelName": "Channel name",
+      "companyEmail": "Company email",
+      "companyId": "Company ID",
+      "companyName": "Company",
+      "companyStatus": "Status",
+      "data": "Data",
+      "detail": "Details",
+      "errorCode": "Error code",
+      "instance": "Instance",
+      "isActive": "Active",
+      "metadata": "Metadata",
+      "settings": "Settings",
+      "status": "Status",
+      "success": "Success",
+      "timestamp": "Timestamp",
+      "title": "Title",
+      "traceId": "Trace ID",
+      "type": "Type",
+      "validationErrors": "Validation errors"
+    },
+    "form": {
+      "create": {
+        "description": "Activate a new channel for this company.",
+        "submit": "Activate",
+        "title": "New Company Channel"
+      },
+      "edit": {
+        "description": "Edit channel settings.",
+        "submit": "Save",
+        "title": "Channel Edition"
+      }
+    },
+    "messages": {
+      "create": {
+        "error": "Activation failed",
+        "success": "Channel activated"
+      },
+      "delete": {
+        "confirm": "Deactivate?",
+        "error": "Error",
+        "success": "Deactivated",
+        "success_one": "Deactivated",
+        "success_many": "Deactivated",
+        "success_other": "Deactivated"
+      },
+      "noData": "No channel configured",
+      "search": {
+        "error": "Search error"
+      },
+      "update": {
+        "error": "Update error",
+        "success": "Settings saved"
+      }
+    },
+    "title": "Company Channels"
+  },
+  "CompanyChannel": {
+    "form": {
+      "channelIdLabel": "Technical channel",
+      "channelIdPlaceholder": "Choose channel",
+      "companyIdLabel": "Company",
+      "companyIdPlaceholder": "Choose company",
+      "isActiveLabel": "Available channel",
+      "settingsLabel": "JSON configuration",
+      "settingsPlaceholder": "{\"key\": \"value\"}"
+    }
+  },
+  "companySetting": {
+    "actions": {
+      "add": "Add setting",
+      "more": "More"
+    },
+    "bulk": {
+      "delete_one": "Delete",
+      "delete_many": "Delete all",
+      "delete_other": "Delete selection",
+      "deleteConfirm_one": "Delete?",
+      "deleteConfirm_many": "Delete all?",
+      "deleteConfirm_other": "Delete {{count}}?",
+      "deleteError": "Error",
+      "deleteReason": "Reason",
+      "deleting": "Deleting...",
+      "partialError_one": "Error",
+      "partialError_many": "Errors",
+      "partialError_other": "Errors"
+    },
+    "details": {
+      "description": "_description",
+      "title": "Setting details"
+    },
+    "fields": {
+      "companyEmail": "Company email",
+      "companyId": "Company ID",
+      "companyName": "Company",
+      "companyStatus": "Status",
+      "data": "Data",
+      "detail": "Details",
+      "errorCode": "Error code",
+      "instance": "Instance",
+      "metadata": "Metadata",
+      "status": "Status",
+      "success": "Success",
+      "timestamp": "Timestamp",
+      "title": "Setting key",
+      "traceId": "Trace ID",
+      "type": "Type",
+      "validationErrors": "Errors",
+      "value": "Value"
+    },
+    "form": {
+      "create": {
+        "description": "Create a company-specific setting.",
+        "submit": "Create",
+        "title": "New Setting"
+      },
+      "edit": {
+        "description": "Modify the value.",
+        "submit": "Save",
+        "title": "Edit Setting"
+      }
+    },
+    "messages": {
+      "create": {
+        "error": "Error",
+        "success": "Created"
+      },
+      "delete": {
+        "confirm": "Confirm?",
+        "error": "Error",
+        "success": "Deleted",
+        "success_one": "Deleted",
+        "success_many": "Deleted",
+        "success_other": "Deleted"
+      },
+      "noData": "No setting",
+      "search": {
+        "error": "Search error"
+      },
+      "update": {
+        "error": "Error",
+        "success": "Updated"
+      }
+    },
+    "title": "Company Settings"
+  },
+  "CompanySetting": {
+    "form": {
+      "companyIdLabel": "Company",
+      "companyIdPlaceholder": "Choose",
+      "valueLabel": "Setting value",
+      "valuePlaceholder": "e.g., 100"
+    }
+  },
+  "companyVerification": {
+    "actions": {
+      "add": "New verification",
+      "edit": "Review",
+      "more": "Actions"
+    },
+    "bulk": {
+      "delete_one": "Delete",
+      "delete_many": "Delete all",
+      "delete_other": "Delete selection",
+      "deleteConfirm_one": "Confirm?",
+      "deleteConfirm_many": "Confirm?",
+      "deleteConfirm_other": "Confirm?",
+      "deleteError": "Error",
+      "deleteReason": "Reason",
+      "deleting": "Deleting...",
+      "partialError_one": "Error",
+      "partialError_many": "Errors",
+      "partialError_other": "Errors"
+    },
+    "details": {
+      "information": "Compliance details (KYC)",
+      "title": "Company Verification",
+      "view": "Consult"
+    },
+    "fields": {
+      "companyEmail": "Company email",
+      "companyId": "Company ID",
+      "companyName": "Company",
+      "companyStatus": "Status",
+      "data": "Data",
+      "detail": "Details",
+      "documentUrl": "Document link",
+      "errorCode": "Error code",
+      "instance": "Instance",
+      "metadata": "Metadata",
+      "rejectionAt": "Rejected at",
+      "rejectionReason": "Reason for rejection",
+      "status": "Verification status",
+      "success": "Success",
+      "timestamp": "Timestamp",
+      "title": "Title",
+      "traceId": "Trace ID",
+      "type": "Type",
+      "validationErrors": "Errors",
+      "verificationType": "Doc type",
+      "verifiedAt": "Verified at",
+      "verifiedBy": "Verified by"
+    },
+    "form": {
+      "create": {
+        "description": "Submit documents for verification.",
+        "submit": "Submit",
+        "title": "KYC Submission"
+      },
+      "edit": {
+        "description": "Update status.",
+        "loadError": "Loading error",
+        "submit": "Validate",
+        "title": "Verification audit"
+      }
+    },
+    "messages": {
+      "create": {
+        "error": "Failure",
+        "success": "Submitted"
+      },
+      "delete": {
+        "confirm": "Delete?",
+        "error": "Error",
+        "success": "Deleted",
+        "success_one": "Deleted",
+        "success_many": "Deleted",
+        "success_other": "Deleted"
+      },
+      "loadError": "Impossible to load",
+      "noData": "No document",
+      "search": {
+        "error": "Search error"
+      },
+      "update": {
+        "error": "Error",
+        "success": "Status updated"
+      }
+    },
+    "title": "KYC Verifications"
+  },
+  "CompanyVerification": {
+    "form": {
+      "companyIdLabel": "Company",
+      "companyIdPlaceholder": "Choose",
+      "documentUrlLabel": "Document (Link/File)",
+      "documentUrlPlaceholder": "Upload or paste URL",
+      "rejectionAtLabel": "Rejection date",
+      "rejectionAtPlaceholder": "Automatic",
+      "rejectionReasonLabel": "Rejection reason",
+      "rejectionReasonPlaceholder": "e.g., Blurry document",
+      "statusLabel": "Final status",
+      "statusPlaceholder": "Approved / Rejected",
+      "verificationTypeLabel": "Verification type",
+      "verificationTypePlaceholder": "e.g., BRN, Tax Certificate",
+      "verifiedAtLabel": "Validation date",
+      "verifiedAtPlaceholder": "Automatic",
+      "verifiedByLabel": "Validator",
+      "verifiedByPlaceholder": "Admin name"
+    }
+  },
+  "connector": {
+    "actions": {
+      "add": "New connector",
+      "edit": "Configure",
+      "more": "Actions"
+    },
+    "bulk": {
+      "delete_one": "Delete",
+      "delete_many": "Delete all",
+      "delete_other": "Delete selected",
+      "deleteConfirm_one": "Delete this connector?",
+      "deleteConfirm_many": "Delete these connectors?",
+      "deleteConfirm_other": "Delete {{count}} connectors?",
+      "deleteError": "Error",
+      "deleteReason": "Reason",
+      "deleting": "Deleting...",
+      "partialError_one": "Error",
+      "partialError_many": "Errors",
+      "partialError_other": "Errors"
+    },
+    "description": "Management of technical bridges to providers.",
+    "details": {
+      "information": "Connector technical settings",
+      "title": "Connector Details",
+      "view": "Consult"
+    },
+    "fields": {
+      "companyEmail": "Company email",
+      "companyId": "Company ID",
+      "companyName": "Company",
+      "companyStatus": "Status",
+      "configuration": "JSON Configuration",
+      "data": "Data",
+      "detail": "Details",
+      "errorCode": "Error code",
+      "instance": "Instance",
+      "isActive": "Active",
+      "isDefault": "By default",
+      "lastTestAt": "Last test",
+      "lastTestStatus": "Test result",
+      "metadata": "Metadata",
+      "name": "Connector name",
+      "priority": "Priority",
+      "productId": "Product ID",
+      "productName": "Product",
+      "productStatus": "Status",
+      "providerCode": "Provider Code",
+      "providerId": "Provider ID",
+      "providerName": "Provider",
+      "status": "Status",
+      "success": "Success",
+      "timestamp": "Timestamp",
+      "title": "Title",
+      "traceId": "Trace ID",
+      "type": "Type",
+      "validationErrors": "Errors"
+    },
+    "form": {
+      "create": {
+        "description": "Add a new technical output channel.",
+        "submit": "Create",
+        "title": "New Connector"
+      },
+      "edit": {
+        "description": "Modify provider API keys.",
+        "loadError": "Loading error",
+        "submit": "Save",
+        "title": "Edit Connector"
+      }
+    },
+    "messages": {
+      "create": {
+        "error": "Failure",
+        "success": "Connector created"
+      },
+      "delete": {
+        "confirm": "Confirm?",
+        "error": "Error",
+        "success": "Deleted",
+        "success_one": "Deleted",
+        "success_many": "Deleted",
+        "success_other": "Deleted"
+      },
+      "loadError": "Loading error",
+      "noData": "No connector",
+      "search": {
+        "error": "Search error"
+      },
+      "update": {
+        "error": "Failure",
+        "success": "Updated"
+      }
+    },
+    "title": "Connectors"
+  },
+  "Connector": {
+    "form": {
+      "companyIdLabel": "Company",
+      "companyIdPlaceholder": "Choose",
+      "configurationLabel": "JSON Config",
+      "configurationPlaceholder": "{\"apiKey\": \"...\"}",
+      "isActiveLabel": "Active",
+      "isDefaultLabel": "Use by default",
+      "lastTestAtLabel": "Test date",
+      "lastTestAtPlaceholder": "Never",
+      "lastTestStatusLabel": "Test status",
+      "lastTestStatusPlaceholder": "N/A",
+      "nameLabel": "Name",
+      "namePlaceholder": "e.g., Twilio SMS Africa",
+      "priorityLabel": "Priority level",
+      "priorityPlaceholder": "1, 2...",
+      "productIdLabel": "Product",
+      "productIdPlaceholder": "Choose",
+      "providerIdLabel": "Provider",
+      "providerIdPlaceholder": "Choose"
+    }
   },
   "countries": {
     "form": {
       "fields": {
-        "isVerified": "_isVerified"
+        "isVerified": "Country verified"
       }
     }
   },
+  "country": {
+    "actions": {
+      "add": "Add a country",
+      "more": "More"
+    },
+    "bulk": {
+      "delete_one": "Delete",
+      "delete_many": "Delete all",
+      "delete_other": "Delete selection",
+      "deleteConfirm_one": "Confirm?",
+      "deleteConfirm_many": "Confirm?",
+      "deleteConfirm_other": "Confirm?",
+      "deleteError": "Error",
+      "deleteReason": "Reason",
+      "deleting": "Deleting...",
+      "partialError_one": "Error",
+      "partialError_many": "Errors",
+      "partialError_other": "Errors"
+    },
+    "details": {
+      "description": "_description",
+      "title": "Country details"
+    },
+    "fields": {
+      "code": "ISO Code (2)",
+      "data": "Data",
+      "detail": "Details",
+      "errorCode": "Error code",
+      "instance": "Instance",
+      "isActive": "Active",
+      "metadata": "Metadata",
+      "name": "Country name",
+      "status": "Status",
+      "success": "Success",
+      "timestamp": "Timestamp",
+      "title": "Title",
+      "traceId": "Trace ID",
+      "type": "Type",
+      "validationErrors": "Errors"
+    },
+    "form": {
+      "create": {
+        "description": "Add a country to the list.",
+        "submit": "Add",
+        "title": "New Country"
+      },
+      "edit": {
+        "description": "Modify country info.",
+        "submit": "Save",
+        "title": "Edit Country"
+      }
+    },
+    "messages": {
+      "create": {
+        "error": "Error",
+        "success": "Added"
+      },
+      "delete": {
+        "confirm": "Delete?",
+        "error": "Error",
+        "success": "Removed",
+        "success_one": "Removed",
+        "success_many": "Removed",
+        "success_other": "Removed"
+      },
+      "noData": "No country",
+      "search": {
+        "error": "Search error"
+      },
+      "update": {
+        "error": "Error",
+        "success": "Updated"
+      }
+    },
+    "title": "Countries"
+  },
+  "Country": {
+    "form": {
+      "codeLabel": "ISO Code (e.g., CM)",
+      "codePlaceholder": "CM",
+      "isActiveLabel": "Activated",
+      "nameLabel": "Name",
+      "namePlaceholder": "e.g., Cameroon"
+    }
+  },
+  "currency": {
+    "actions": {
+      "add": "Add currency",
+      "edit": "Modify",
+      "more": "Actions"
+    },
+    "bulk": {
+      "delete_one": "Delete",
+      "delete_many": "Delete all",
+      "delete_other": "Delete selected",
+      "deleteConfirm_one": "Delete?",
+      "deleteConfirm_many": "Delete?",
+      "deleteConfirm_other": "Delete?",
+      "deleteError": "Error",
+      "deleteReason": "Reason",
+      "deleting": "Deleting...",
+      "partialError_one": "Error",
+      "partialError_many": "Errors",
+      "partialError_other": "Errors"
+    },
+    "details": {
+      "information": "Monetary parameters",
+      "title": "Currency Details",
+      "view": "Consult"
+    },
+    "fields": {
+      "code": "ISO Code (e.g., XAF)",
+      "data": "Data",
+      "decimalPlaces": "Decimals",
+      "detail": "Details",
+      "errorCode": "Error code",
+      "exchangeRate": "Exchange rate",
+      "instance": "Instance",
+      "isActive": "Active",
+      "isBaseCurrency": "Base currency",
+      "lastUpdated": "Updated at",
+      "metadata": "Metadata",
+      "name": "Currency name",
+      "status": "Status",
+      "success": "Success",
+      "symbol": "Symbol (e.g., FCFA)",
+      "timestamp": "Timestamp",
+      "title": "Title",
+      "traceId": "Trace ID",
+      "type": "Type",
+      "validationErrors": "Errors"
+    },
+    "form": {
+      "create": {
+        "description": "Register a new currency.",
+        "submit": "Add",
+        "title": "New Currency"
+      },
+      "edit": {
+        "description": "Modify monetary settings.",
+        "loadError": "Loading error",
+        "submit": "Save",
+        "title": "Edit Currency"
+      }
+    },
+    "messages": {
+      "create": {
+        "error": "Error",
+        "success": "Added"
+      },
+      "delete": {
+        "confirm": "Delete?",
+        "error": "Error",
+        "success": "Deleted",
+        "success_one": "Deleted",
+        "success_many": "Deleted",
+        "success_other": "Deleted"
+      },
+      "loadError": "Impossible to load",
+      "noData": "No currency",
+      "search": {
+        "error": "Search error"
+      },
+      "update": {
+        "error": "Error",
+        "success": "Updated"
+      }
+    },
+    "title": "Currencies"
+  },
+  "Currency": {
+    "form": {
+      "codeLabel": "ISO Code",
+      "codePlaceholder": "XAF",
+      "decimalPlacesLabel": "Nb. Decimals",
+      "decimalPlacesPlaceholder": "e.g., 0 or 2",
+      "exchangeRateLabel": "Rate (Base = 1)",
+      "exchangeRatePlaceholder": "e.g., 655.95",
+      "isActiveLabel": "Activated",
+      "isBaseCurrencyLabel": "Use as base",
+      "lastUpdatedLabel": "Last update",
+      "lastUpdatedPlaceholder": "N/A",
+      "nameLabel": "Name",
+      "namePlaceholder": "CFA Franc",
+      "symbolLabel": "Symbol",
+      "symbolPlaceholder": "FCFA"
+    }
+  },
   "dataGrid": {
-    "emptyMessage": "_emptyMessage"
+    "emptyMessage": "No items to display"
+  },
+  "entityTag": {
+    "actions": {
+      "add": "Tag entity",
+      "more": "Actions"
+    },
+    "bulk": {
+      "delete_one": "Remove tag",
+      "delete_many": "Remove tags",
+      "delete_other": "Remove selection",
+      "deleteConfirm_one": "Do you want to remove this tag?",
+      "deleteConfirm_many": "Confirm removal?",
+      "deleteConfirm_other": "Confirm for {{count}}?",
+      "deleteError": "Error",
+      "deleteReason": "Reason",
+      "deleting": "Removal...",
+      "partialError_one": "Error",
+      "partialError_many": "Errors",
+      "partialError_other": "Errors"
+    },
+    "details": {
+      "description": "_description",
+      "title": "Entity tag details"
+    },
+    "fields": {
+      "data": "Data",
+      "detail": "Details",
+      "entityId": "Entity ID",
+      "entityType": "Entity Type",
+      "errorCode": "Error code",
+      "instance": "Instance",
+      "metadata": "Metadata",
+      "status": "Status",
+      "success": "Success",
+      "tagId": "Tag ID",
+      "tagName": "Tag name",
+      "timestamp": "Timestamp",
+      "title": "Title",
+      "traceId": "Trace ID",
+      "type": "Type",
+      "validationErrors": "Errors"
+    },
+    "form": {
+      "create": {
+        "description": "Assign a tag to this entity.",
+        "submit": "Assign",
+        "title": "New Entity Tag"
+      },
+      "edit": {
+        "description": "Modify assignment.",
+        "submit": "Save",
+        "title": "Edit Entity Tag"
+      }
+    },
+    "messages": {
+      "create": {
+        "error": "Error",
+        "success": "Assigned"
+      },
+      "delete": {
+        "confirm": "Remove?",
+        "error": "Error",
+        "success": "Tag removed",
+        "success_one": "Removed",
+        "success_many": "Removed",
+        "success_other": "Removed"
+      },
+      "noData": "No tag assigned",
+      "search": {
+        "error": "Search error"
+      },
+      "update": {
+        "error": "Error",
+        "success": "Updated"
+      }
+    },
+    "title": "Entity Tags"
+  },
+  "EntityTag": {
+    "form": {
+      "entityIdLabel": "Item ID",
+      "entityIdPlaceholder": "Paste ID",
+      "entityTypeLabel": "Item type",
+      "entityTypePlaceholder": "e.g., Client, Campaign...",
+      "tagIdLabel": "Tag to apply",
+      "tagIdPlaceholder": "Choose tag"
+    }
+  },
+  "file": {
+    "actions": {
+      "add": "Upload a file",
+      "edit": "File info",
+      "more": "Actions"
+    },
+    "bulk": {
+      "delete_one": "Delete",
+      "delete_many": "Delete all",
+      "delete_other": "Delete all",
+      "deleteConfirm_one": "Delete this file?",
+      "deleteConfirm_many": "Delete these files?",
+      "deleteConfirm_other": "Delete {{count}} files?",
+      "deleteError": "Error",
+      "deleteReason": "Reason",
+      "deleting": "Deletion...",
+      "partialError_one": "Error",
+      "partialError_many": "Errors",
+      "partialError_other": "Errors"
+    },
+    "details": {
+      "information": "File properties",
+      "title": "File Details",
+      "view": "Download/View"
+    },
+    "fields": {
+      "companyEmail": "Company email",
+      "companyId": "Company ID",
+      "companyName": "Company",
+      "companyStatus": "Status",
+      "createdByEmail": "Created by (Email)",
+      "createdByFirstName": "Author first name",
+      "createdByLastName": "Author last name",
+      "createdByPhoneNumber": "Author phone",
+      "createdByStatus": "Author status",
+      "data": "Data",
+      "detail": "Details",
+      "errorCode": "Error code",
+      "fileName": "Name",
+      "fileSize": "Size",
+      "fileType": "Type",
+      "instance": "Instance",
+      "isPublic": "Public File",
+      "metadata": "Metadata",
+      "mimeType": "MIME type",
+      "originalFileName": "Original name",
+      "status": "Status",
+      "storagePath": "Storage path",
+      "success": "Success",
+      "timestamp": "Uploaded at",
+      "title": "Title",
+      "traceId": "Trace ID",
+      "type": "Type",
+      "validationErrors": "Errors"
+    },
+    "form": {
+      "create": {
+        "description": "Add files to the media library.",
+        "submit": "Start upload",
+        "title": "New File"
+      },
+      "edit": {
+        "description": "Modify file metadata.",
+        "loadError": "Loading error",
+        "submit": "Save",
+        "title": "Edit File"
+      }
+    },
+    "messages": {
+      "create": {
+        "error": "Upload failed",
+        "success": "File uploaded"
+      },
+      "delete": {
+        "confirm": "Delete?",
+        "error": "Error",
+        "success": "File deleted",
+        "success_one": "Deleted",
+        "success_many": "Deleted",
+        "success_other": "Deleted"
+      },
+      "loadError": "Loading error",
+      "noData": "No file",
+      "search": {
+        "error": "Search error"
+      },
+      "update": {
+        "error": "Error",
+        "success": "Updated"
+      }
+    },
+    "title": "Media Library"
+  },
+  "File": {
+    "form": {
+      "companyIdLabel": "Company",
+      "companyIdPlaceholder": "Choose",
+      "fileNameLabel": "Displayed name",
+      "fileNamePlaceholder": "e.g., Final_logo.png",
+      "fileSizeLabel": "Size (bytes)",
+      "fileSizePlaceholder": "Auto",
+      "fileTypeLabel": "Extension",
+      "fileTypePlaceholder": "png, pdf...",
+      "isPublicLabel": "Accessible via public URL",
+      "mimeTypeLabel": "MIME type",
+      "mimeTypePlaceholder": "image/png",
+      "originalFileNameLabel": "Source name",
+      "originalFileNamePlaceholder": "Auto",
+      "storagePathLabel": "Folder",
+      "storagePathPlaceholder": "/uploads/..."
+    }
   },
   "footer": {
-    "address": "_address",
-    "bankWithdrawals": "_bankWithdrawals",
-    "contact": "_contact",
-    "copyright": "_copyright",
-    "developedBy": "_developedBy",
-    "financialReporting": "_financialReporting",
-    "kycManagement": "_kycManagement",
-    "legal": "_legal",
-    "legalNotice": "_legalNotice",
-    "mobilePayments": "_mobilePayments",
-    "moneyTransfers": "_moneyTransfers",
-    "privacyPolicy": "_privacyPolicy",
-    "quickNav": "_quickNav",
-    "services": "_services",
-    "termsOfService": "_termsOfService"
+    "address": "Douala, Cameroon",
+    "bankWithdrawals": "Bank withdrawals",
+    "contact": "Contact",
+    "copyright": "© 2025 Omni Channel. All rights reserved.",
+    "developedBy": "Developed by Graphics System SA",
+    "financialReporting": "Financial reports",
+    "kycManagement": "KYC management",
+    "legal": "Legal",
+    "legalNotice": "Legal notice",
+    "mobilePayments": "Mobile payments",
+    "moneyTransfers": "Money transfers",
+    "privacyPolicy": "Privacy policy",
+    "quickNav": "Quick navigation",
+    "services": "Services",
+    "termsOfService": "Terms of service"
   },
-  "goBack": "_goBack",
-  "goHome": "_goHome",
+  "goBack": "Back",
+  "goHome": "Home",
+  "integration": {
+    "actions": {
+      "add": "New integration",
+      "edit": "Configure",
+      "more": "Actions"
+    },
+    "bulk": {
+      "delete_one": "Uninstall",
+      "delete_many": "Uninstall all",
+      "delete_other": "Delete selection",
+      "deleteConfirm_one": "Uninstall?",
+      "deleteConfirm_many": "Uninstall all?",
+      "deleteConfirm_other": "Uninstall {{count}}?",
+      "deleteError": "Error",
+      "deleteReason": "Reason",
+      "deleting": "In progress...",
+      "partialError_one": "Error",
+      "partialError_many": "Errors",
+      "partialError_other": "Errors"
+    },
+    "details": {
+      "information": "Technical integration details",
+      "title": "Integration File",
+      "view": "Consult"
+    },
+    "fields": {
+      "companyEmail": "Company email",
+      "companyId": "Company ID",
+      "companyName": "Company",
+      "companyStatus": "Status",
+      "configuration": "Config (JSON)",
+      "data": "Data",
+      "detail": "Details",
+      "errorCode": "Error code",
+      "instance": "Instance",
+      "isActive": "Active",
+      "lastSyncAt": "Last sync",
+      "metadata": "Metadata",
+      "name": "Name",
+      "nextSyncAt": "Next sync",
+      "status": "Status",
+      "success": "Success",
+      "syncDirection": "Sync direction",
+      "timestamp": "Timestamp",
+      "title": "Title",
+      "traceId": "Trace ID",
+      "type": "Type",
+      "validationErrors": "Errors"
+    },
+    "form": {
+      "create": {
+        "description": "Connect a third-party service.",
+        "submit": "Install",
+        "title": "New Integration"
+      },
+      "edit": {
+        "description": "Modify secret keys or sync direction.",
+        "loadError": "Error",
+        "submit": "Save",
+        "title": "Edit Integration"
+      }
+    },
+    "messages": {
+      "create": {
+        "error": "Failure",
+        "success": "Installed"
+      },
+      "delete": {
+        "confirm": "Delete?",
+        "error": "Error",
+        "success": "Deleted",
+        "success_one": "Uninstalled",
+        "success_many": "Uninstalled",
+        "success_other": "Uninstalled"
+      },
+      "loadError": "Loading error",
+      "noData": "No integration",
+      "search": {
+        "error": "Search error"
+      },
+      "update": {
+        "error": "Failure",
+        "success": "Update successful"
+      }
+    },
+    "title": "Service Integrations"
+  },
+  "Integration": {
+    "form": {
+      "companyIdLabel": "Company",
+      "companyIdPlaceholder": "Choose",
+      "configurationLabel": "Options (JSON)",
+      "configurationPlaceholder": "{}",
+      "isActiveLabel": "Active",
+      "lastSyncAtLabel": "Last sync",
+      "lastSyncAtPlaceholder": "N/A",
+      "nameLabel": "Integration name",
+      "namePlaceholder": "e.g., HubSpot, Salesforce",
+      "nextSyncAtLabel": "Next sync",
+      "nextSyncAtPlaceholder": "Auto",
+      "syncDirectionLabel": "Data flow",
+      "syncDirectionPlaceholder": "Bidirectional, Incoming, Outgoing",
+      "typeLabel": "Category",
+      "typePlaceholder": "CRM, ERP, Billing..."
+    }
+  },
+  "integrationSyncLog": {
+    "actions": {
+      "add": "Manual log",
+      "edit": "Review",
+      "more": "Actions"
+    },
+    "bulk": {
+      "delete_one": "Delete log",
+      "delete_many": "Delete logs",
+      "delete_other": "Clear selection",
+      "deleteConfirm_one": "Confirm?",
+      "deleteConfirm_many": "Clear all?",
+      "deleteConfirm_other": "Confirm?",
+      "deleteError": "Error",
+      "deleteReason": "Reason",
+      "deleting": "Cleaning...",
+      "partialError_one": "Error",
+      "partialError_many": "Errors",
+      "partialError_other": "Errors"
+    },
+    "details": {
+      "information": "Synchronization report",
+      "title": "Sync Details",
+      "view": "Consult"
+    },
+    "fields": {
+      "completedAt": "Completed at",
+      "data": "Data",
+      "detail": "Details",
+      "errorCode": "Error code",
+      "errorLog": "Technical log",
+      "instance": "Instance",
+      "integrationId": "Integration ID",
+      "integrationName": "Service",
+      "integrationType": "Type",
+      "metadata": "Metadata",
+      "recordsFailed": "Failed records",
+      "recordsProcessed": "Total processed",
+      "recordsSucceeded": "Succeeded",
+      "startedAt": "Launched at",
+      "status": "Final state",
+      "success": "Success",
+      "syncType": "Sync type",
+      "timestamp": "Timestamp",
+      "title": "Title",
+      "traceId": "Trace ID",
+      "type": "Type",
+      "validationErrors": "Errors"
+    },
+    "form": {
+      "create": {
+        "description": "Record a sync log.",
+        "submit": "Add",
+        "title": "New Sync Log"
+      },
+      "edit": {
+        "description": "Review the report.",
+        "loadError": "Error",
+        "submit": "Save",
+        "title": "Edit Log"
+      }
+    },
+    "messages": {
+      "create": {
+        "error": "Error",
+        "success": "Log added"
+      },
+      "delete": {
+        "confirm": "Delete?",
+        "error": "Error",
+        "success": "Log deleted",
+        "success_one": "Cleared",
+        "success_many": "Cleared",
+        "success_other": "Cleared"
+      },
+      "loadError": "Loading error",
+      "noData": "History empty",
+      "search": {
+        "error": "Search error"
+      },
+      "update": {
+        "error": "Failure",
+        "success": "Updated"
+      }
+    },
+    "title": "Sync Logs"
+  },
+  "IntegrationSyncLog": {
+    "form": {
+      "completedAtLabel": "End time",
+      "completedAtPlaceholder": "Auto",
+      "errorLogLabel": "Error trace",
+      "errorLogPlaceholder": "Technical content",
+      "integrationIdLabel": "Source service",
+      "integrationIdPlaceholder": "Choose",
+      "recordsFailedLabel": "Nb. Failures",
+      "recordsFailedPlaceholder": "0",
+      "recordsProcessedLabel": "Nb. Total",
+      "recordsProcessedPlaceholder": "0",
+      "recordsSucceededLabel": "Nb. Successes",
+      "recordsSucceededPlaceholder": "0",
+      "startedAtLabel": "Start time",
+      "startedAtPlaceholder": "Auto",
+      "statusLabel": "Result",
+      "statusPlaceholder": "Success, Failed, Warning",
+      "syncTypeLabel": "Sync mode",
+      "syncTypePlaceholder": "Full, Incremental"
+    }
+  },
+  "invoice": {
+    "actions": {
+      "add": "Create Invoice",
+      "edit": "Modify",
+      "more": "Actions"
+    },
+    "bulk": {
+      "delete_one": "Cancel invoice",
+      "delete_many": "Cancel invoices",
+      "delete_other": "Cancel selection",
+      "deleteConfirm_one": "Cancel this invoice?",
+      "deleteConfirm_many": "Cancel these invoices?",
+      "deleteConfirm_other": "Cancel {{count}} invoices?",
+      "deleteError": "Error",
+      "deleteReason": "Cancellation reason",
+      "deleting": "Cancellation...",
+      "partialError_one": "Error",
+      "partialError_many": "Errors",
+      "partialError_other": "Errors"
+    },
+    "details": {
+      "information": "Invoice summary",
+      "title": "Detailed Invoice",
+      "view": "Download PDF"
+    },
+    "fields": {
+      "billingPeriodEnd": "Period end",
+      "billingPeriodStart": "Period start",
+      "companyEmail": "Client email",
+      "companyId": "Company ID",
+      "companyName": "Company",
+      "companyStatus": "Status",
+      "currency": "Currency",
+      "currencyCode": "Currency Code",
+      "currencyName": "Currency Name",
+      "currencySymbol": "Symbol",
+      "data": "Data",
+      "detail": "Billing lines",
+      "dueDate": "Due date",
+      "errorCode": "Error code",
+      "instance": "Instance",
+      "invoiceNumber": "Invoice N°",
+      "metadata": "Metadata",
+      "paidAt": "Paid at",
+      "status": "Payment state",
+      "subTotal": "Sub-total (Excl. Tax)",
+      "success": "Success",
+      "taxAmount": "VAT Amount",
+      "taxRate": "VAT Rate (%)",
+      "timestamp": "Issued at",
+      "title": "Subject",
+      "total": "Total (Incl. Tax)",
+      "traceId": "Trace ID",
+      "type": "Invoice type",
+      "validationErrors": "Errors"
+    },
+    "form": {
+      "create": {
+        "description": "Generate a new invoice for a client.",
+        "submit": "Generate PDF",
+        "title": "New Invoice"
+      },
+      "edit": {
+        "description": "Modify amounts or dates.",
+        "loadError": "Error",
+        "submit": "Save",
+        "title": "Edit Invoice"
+      }
+    },
+    "messages": {
+      "create": {
+        "error": "Creation failure",
+        "success": "Invoice generated"
+      },
+      "delete": {
+        "confirm": "Cancel?",
+        "error": "Error",
+        "success": "Invoice cancelled",
+        "success_one": "Cancelled",
+        "success_many": "Cancelled",
+        "success_other": "Cancelled"
+      },
+      "loadError": "Loading error",
+      "noData": "No invoice",
+      "search": {
+        "error": "Search error"
+      },
+      "update": {
+        "error": "Update failure",
+        "success": "Update successful"
+      }
+    },
+    "title": "Billing"
+  },
+  "Invoice": {
+    "form": {
+      "billingPeriodEndLabel": "Period end",
+      "billingPeriodEndPlaceholder": "Date",
+      "billingPeriodStartLabel": "Period start",
+      "billingPeriodStartPlaceholder": "Date",
+      "companyIdLabel": "Client/Company",
+      "companyIdPlaceholder": "Choose",
+      "currencyLabel": "Currency",
+      "currencyPlaceholder": "XAF, EUR, USD...",
+      "dueDateLabel": "Due date",
+      "dueDatePlaceholder": "Date",
+      "invoiceNumberLabel": "Unique number",
+      "invoiceNumberPlaceholder": "INV-2025-001",
+      "paidAtLabel": "Payment date",
+      "paidAtPlaceholder": "Select if paid",
+      "statusLabel": "Status",
+      "statusPlaceholder": "Pending, Paid, Overdue",
+      "subTotalLabel": "Amount (Excl. Tax)",
+      "subTotalPlaceholder": "0.00",
+      "taxAmountLabel": "VAT",
+      "taxAmountPlaceholder": "0.00",
+      "taxRateLabel": "VAT percentage",
+      "taxRatePlaceholder": "e.g., 19.25",
+      "totalLabel": "Amount (Incl. Tax)",
+      "totalPlaceholder": "Auto"
+    }
+  },
+  "job": {
+    "actions": {
+      "add": "New job",
+      "edit": "Relaunch",
+      "more": "Actions"
+    },
+    "bulk": {
+      "delete_one": "Delete",
+      "delete_many": "Delete all",
+      "delete_other": "Clear selection",
+      "deleteConfirm_one": "Delete this job?",
+      "deleteConfirm_many": "Delete these jobs?",
+      "deleteConfirm_other": "Delete these {{count}} jobs?",
+      "deleteError": "Error",
+      "deleteReason": "Reason",
+      "deleting": "Deleting...",
+      "partialError_one": "Error",
+      "partialError_many": "Errors",
+      "partialError_other": "Errors"
+    },
+    "details": {
+      "information": "Background job execution details",
+      "title": "Job Status",
+      "view": "Consult"
+    },
+    "fields": {
+      "attemptCount": "Attempts made",
+      "completedAt": "Completed at",
+      "data": "Data",
+      "detail": "Details",
+      "errorCode": "Error code",
+      "errorMessage": "Error message",
+      "instance": "Server",
+      "jobType": "Job type",
+      "maxAttempts": "Max attempts",
+      "metadata": "Metadata",
+      "payload": "Payload (JSON)",
+      "result": "Result",
+      "scheduledAt": "Scheduled for",
+      "startedAt": "Started at",
+      "status": "State",
+      "success": "Success",
+      "timestamp": "Created at",
+      "title": "Job name",
+      "traceId": "Trace ID",
+      "type": "Type",
+      "validationErrors": "Errors"
+    },
+    "form": {
+      "create": {
+        "description": "Schedule a background job.",
+        "submit": "Schedule",
+        "title": "New Job"
+      },
+      "edit": {
+        "description": "Modify execution settings.",
+        "loadError": "Error",
+        "submit": "Save",
+        "title": "Edit Job"
+      }
+    },
+    "messages": {
+      "create": {
+        "error": "Failure",
+        "success": "Job scheduled"
+      },
+      "delete": {
+        "confirm": "Delete?",
+        "error": "Error",
+        "success": "Job removed",
+        "success_one": "Removed",
+        "success_many": "Removed",
+        "success_other": "Removed"
+      },
+      "loadError": "Loading error",
+      "noData": "No job",
+      "search": {
+        "error": "Search error"
+      },
+      "update": {
+        "error": "Failure",
+        "success": "Job updated"
+      }
+    },
+    "title": "System Jobs"
+  },
+  "Job": {
+    "form": {
+      "attemptCountLabel": "Nb. attempts",
+      "attemptCountPlaceholder": "0",
+      "completedAtLabel": "End time",
+      "completedAtPlaceholder": "N/A",
+      "errorMessageLabel": "Last error",
+      "errorMessagePlaceholder": "No error",
+      "jobTypeLabel": "Technical class",
+      "jobTypePlaceholder": "e.g., EmailSenderJob",
+      "maxAttemptsLabel": "Attempts limit",
+      "maxAttemptsPlaceholder": "3",
+      "payloadLabel": "Arguments",
+      "payloadPlaceholder": "{}",
+      "resultLabel": "Output data",
+      "resultPlaceholder": "{}",
+      "scheduledAtLabel": "Run at",
+      "scheduledAtPlaceholder": "Now or future",
+      "startedAtLabel": "Start time",
+      "startedAtPlaceholder": "N/A",
+      "statusLabel": "Status",
+      "statusPlaceholder": "Queued, Running, Completed, Failed"
+    }
+  },
   "landingPage": {
-    "title": "_title"
+    "title": "Omni Channel Home"
   },
   "menu": {
-    "support": "_support"
+    "AuditLog": "Audit Logs",
+    "Blocklist": "Blocklist",
+    "Campaign": "Campaigns",
+    "CampaignChannel": "Campaign Channels",
+    "CampaignSegment": "Campaign Segments",
+    "CampaignStatistic": "Campaign Statistics",
+    "CampaignStep": "Campaign Steps",
+    "Channel": "Channels",
+    "Client": "Clients",
+    "ClientChannelPreference": "Client Preferences",
+    "ClientImport": "Client Imports",
+    "ClientSegment": "Client Segments",
+    "ClientSegmentMember": "Segment Members",
+    "Company": "Companies",
+    "CompanyApiKey": "Company API Keys",
+    "CompanyChannel": "Company Channels",
+    "CompanySetting": "Company Settings",
+    "CompanyVerification": "Company Verifications",
+    "Connector": "Connectors",
+    "Country": "Countries",
+    "Currency": "Currencies",
+    "Dashboard": "Dashboard",
+    "EntityTag": "Entity Tags",
+    "File": "Files",
+    "Integration": "Integrations",
+    "IntegrationSyncLog": "Sync Logs",
+    "Invoice": "Invoices",
+    "Job": "System Jobs",
+    "Message": "Message History",
+    "MessageEvent": "Message Events",
+    "Notification": "Notifications",
+    "Payment": "Payments",
+    "PaymentMethod": "Payment Methods",
+    "Pricing": "Pricing Grid",
+    "Product": "Product Catalog",
+    "ProductChannel": "Product Channels",
+    "ProductChannelStatistic": "Product Channel Stats",
+    "Provider": "Providers",
+    "ProviderCallback": "Provider Callbacks",
+    "SecureSetting": "Secure Settings",
+    "Setting": "General Settings",
+    "Subscription": "Subscriptions",
+    "SubscriptionPlan": "Subscription Plans",
+    "SysLog": "System Logs",
+    "Tag": "Tag Management",
+    "Template": "Message Templates",
+    "TemplateChannel": "Template Channels",
+    "User": "Users",
+    "UserProfile": "User Profiles",
+    "Wallet": "Wallets",
+    "WalletTransaction": "Wallet Transactions",
+    "WebhookDelivery": "Webhook Deliveries",
+    "WebhookEndpoint": "Webhook Endpoints"
+  },
+  "message": {
+    "actions": {
+      "add": "Send Message",
+      "more": "Actions"
+    },
+    "bulk": {
+      "delete_one": "Delete message",
+      "delete_many": "Delete messages",
+      "delete_other": "Delete selection",
+      "deleteConfirm_one": "Delete this message?",
+      "deleteConfirm_many": "Delete these messages?",
+      "deleteConfirm_other": "Delete {{count}} messages?",
+      "deleteError": "Error",
+      "deleteReason": "Reason",
+      "deleting": "Deleting...",
+      "partialError_one": "Error",
+      "partialError_many": "Errors",
+      "partialError_other": "Errors"
+    },
+    "details": {
+      "information": "Content and message routing",
+      "title": "Message Details",
+      "view": "Consult"
+    },
+    "fields": {
+      "attemptCount": "Attempts",
+      "campaignId": "Campaign ID",
+      "campaignName": "Campaign",
+      "campaignStatus": "Campaign Status",
+      "campaignType": "Campaign Type",
+      "channelCode": "Channel Code",
+      "channelId": "Channel ID",
+      "channelName": "Channel",
+      "clientEmail": "Client email",
+      "clientFirstName": "Client first name",
+      "clientId": "Client ID",
+      "clientLastName": "Client last name",
+      "clientStatus": "Client status",
+      "connectorId": "Connector ID",
+      "connectorName": "Via Connector",
+      "content": "Message",
+      "cost": "Cost",
+      "count": "Units",
+      "deliveredAt": "Delivered at",
+      "errorCode": "Error code",
+      "errorMessage": "Failure reason",
+      "externalMessageId": "External ID",
+      "failedAt": "Failed at",
+      "isApiCall": "Via API",
+      "maxAttempts": "Max attempts",
+      "nextRetryAt": "Next attempt",
+      "queuedAt": "Queued at",
+      "recipientAddress": "Recipient",
+      "sentAt": "Sent at",
+      "status": "Status",
+      "subject": "Subject",
+      "templateId": "Template ID",
+      "templateName": "Template used",
+      "templateStatus": "Template Status"
+    },
+    "messages": {
+      "create": {
+        "error": "Sending failure",
+        "success": "Message sent"
+      },
+      "delete": {
+        "confirm": "Delete?",
+        "error": "Error",
+        "success": "Deleted",
+        "success_one": "Cleared",
+        "success_many": "Cleared",
+        "success_other": "Cleared"
+      },
+      "loadError": "Loading error",
+      "noData": "No message",
+      "search": {
+        "error": "Search error"
+      },
+      "update": {
+        "error": "Error",
+        "success": "Update successful"
+      }
+    },
+    "title": "Message History"
+  },
+  "messageEvent": {
+    "actions": {
+      "add": "Log event",
+      "more": "Details"
+    },
+    "bulk": {
+      "delete_one": "Delete",
+      "delete_many": "Clear logs",
+      "delete_other": "Clear selection",
+      "deleteConfirm_one": "Delete?",
+      "deleteConfirm_many": "Confirm?",
+      "deleteConfirm_other": "Confirm?",
+      "deleteError": "Error",
+      "deleteReason": "Reason",
+      "deleting": "Deleting...",
+      "partialError_one": "Error",
+      "partialError_many": "Errors",
+      "partialError_other": "Errors"
+    },
+    "details": {
+      "information": "Message traceability information",
+      "title": "Message Event Details",
+      "view": "See"
+    },
+    "fields": {
+      "eventData": "Raw data",
+      "eventType": "Event type",
+      "ipAddress": "IP Address",
+      "location": "Location",
+      "messageId": "Message ID",
+      "messageStatus": "Message status",
+      "userAgent": "Technical agent"
+    },
+    "messages": {
+      "create": {
+        "error": "Error",
+        "success": "Recorded"
+      },
+      "delete": {
+        "confirm": "Delete?",
+        "error": "Error",
+        "success": "Deleted",
+        "success_one": "Cleared",
+        "success_many": "Cleared",
+        "success_other": "Cleared"
+      },
+      "loadError": "Impossible to load",
+      "noData": "No event",
+      "search": {
+        "error": "Search error"
+      },
+      "update": {
+        "error": "Error",
+        "success": "Updated"
+      }
+    },
+    "title": "Event Tracking"
   },
   "navigation": {
-    "about": "_about",
-    "contact": "_contact",
-    "dashboard": "_dashboard",
-    "developers": "_developers",
-    "faq": "_faq",
-    "features": "_features",
-    "home": "_home",
-    "login": "_login",
-    "solutions": "_solutions"
+    "about": "About",
+    "contact": "Contact",
+    "dashboard": "Dashboard",
+    "developers": "Developers",
+    "faq": "FAQ",
+    "features": "Features",
+    "home": "Home",
+    "login": "Login",
+    "requestDemo": "Request a demo",
+    "solutions": "Solutions"
   },
-  "noPermission": "_noPermission",
-  "noRessource": "_noRessource",
-  "pageNotfound": "_pageNotfound",
+  "noPermission": "You do not have permission to access this resource",
+  "noRessource": "No resource available",
+  "notification": {
+    "actions": {
+      "add": "Create notification",
+      "edit": "Manage",
+      "more": "More"
+    },
+    "bulk": {
+      "delete_one": "Delete",
+      "delete_many": "Clear",
+      "delete_other": "Delete selection",
+      "deleteConfirm_one": "Delete this alert?",
+      "deleteConfirm_many": "Clear all?",
+      "deleteConfirm_other": "Clear {{count}} notifications?",
+      "deleteError": "Error",
+      "deleteReason": "Reason",
+      "deleting": "Deleting...",
+      "partialError_one": "Error",
+      "partialError_many": "Errors",
+      "partialError_other": "Errors"
+    },
+    "details": {
+      "information": "Alert details",
+      "title": "User Alert",
+      "view": "Consult"
+    },
+    "fields": {
+      "actionLabel": "Button text",
+      "actionUrl": "Target link",
+      "alertType": "Severity",
+      "data": "Extra data",
+      "detail": "Details",
+      "errorCode": "Error code",
+      "instance": "Instance",
+      "isRead": "Read",
+      "message": "Notification body",
+      "metadata": "Metadata",
+      "readAt": "Read at",
+      "status": "Status",
+      "success": "Success",
+      "timestamp": "Received at",
+      "title": "Title",
+      "traceId": "Trace ID",
+      "type": "Category",
+      "userEmail": "Recipient email",
+      "userFirstName": "First name",
+      "userId": "User ID",
+      "userLastName": "Last name",
+      "userPhoneNumber": "Phone",
+      "userStatus": "User status",
+      "validationErrors": "Errors"
+    },
+    "form": {
+      "create": {
+        "description": "Send an in-app alert to a user.",
+        "submit": "Send",
+        "title": "New Notification"
+      },
+      "edit": {
+        "description": "Mark as read or modify.",
+        "loadError": "Error",
+        "submit": "Save",
+        "title": "Manage Notification"
+      }
+    },
+    "messages": {
+      "create": {
+        "error": "Failure",
+        "success": "Notification sent"
+      },
+      "delete": {
+        "confirm": "Delete?",
+        "error": "Error",
+        "success": "Deleted",
+        "success_one": "Cleared",
+        "success_many": "Cleared",
+        "success_other": "Cleared"
+      },
+      "loadError": "Loading error",
+      "noData": "No alert",
+      "search": {
+        "error": "Search error"
+      },
+      "update": {
+        "error": "Failure",
+        "success": "Update successful"
+      }
+    },
+    "title": "In-App Notifications"
+  },
+  "Notification": {
+    "form": {
+      "actionLabelLabel": "Action label",
+      "actionLabelPlaceholder": "e.g., See now",
+      "actionUrlLabel": "Redirect URL",
+      "actionUrlPlaceholder": "e.g., /dashboard/payment/123",
+      "alertTypeLabel": "Alert type",
+      "alertTypePlaceholder": "Info, Warning, Error",
+      "isReadLabel": "Mark as read",
+      "messageLabel": "Content",
+      "messagePlaceholder": "Your payment has been validated...",
+      "readAtLabel": "Read time",
+      "readAtPlaceholder": "Auto",
+      "titleLabel": "Notification title",
+      "titlePlaceholder": "e.g., New message received",
+      "typeLabel": "Category",
+      "typePlaceholder": "System, Transactional, Marketing",
+      "userIdLabel": "Target user",
+      "userIdPlaceholder": "Choose user"
+    }
+  },
+  "pageNotfound": "Page not found",
+  "payment": {
+    "actions": {
+      "add": "Record payment",
+      "edit": "Review",
+      "more": "Actions"
+    },
+    "bulk": {
+      "delete_one": "Cancel",
+      "delete_many": "Cancel all",
+      "delete_other": "Cancel selection",
+      "deleteConfirm_one": "Do you want to cancel this payment?",
+      "deleteConfirm_many": "Cancel these payments?",
+      "deleteConfirm_other": "Cancel {{count}} payments?",
+      "deleteError": "Cancellation error",
+      "deleteReason": "Reason",
+      "deleting": "Processing...",
+      "partialError_one": "Error",
+      "partialError_many": "Errors",
+      "partialError_other": "Errors"
+    },
+    "details": {
+      "information": "Proof of financial transaction",
+      "title": "Payment Details",
+      "view": "Consult"
+    },
+    "fields": {
+      "amount": "Amount",
+      "companyEmail": "Company email",
+      "companyId": "Company ID",
+      "companyName": "Company",
+      "companyStatus": "Status",
+      "currency": "Currency",
+      "currencyCode": "Currency Code",
+      "currencyName": "Currency",
+      "currencySymbol": "Symbol",
+      "data": "Data",
+      "detail": "Details",
+      "errorCode": "Error code",
+      "externalTransactionId": "External Transaction ID",
+      "failureReason": "Failure reason",
+      "finalTransactionId": "Final ID",
+      "instance": "Server",
+      "invoiceCurrency": "Invoice currency",
+      "invoiceId": "Invoice ID",
+      "invoiceStatus": "Invoice status",
+      "metadata": "Metadata",
+      "method": "Method",
+      "paymentMethodCurrency": "Method currency",
+      "paymentMethodId": "Method ID",
+      "paymentMethodStatus": "Method status",
+      "processedAt": "Processed at",
+      "status": "State",
+      "success": "Success",
+      "timestamp": "Effected at",
+      "title": "Label",
+      "traceId": "Trace ID",
+      "type": "Nature",
+      "validationErrors": "Errors"
+    },
+    "form": {
+      "create": {
+        "description": "Manually record a cash flow.",
+        "submit": "Record",
+        "title": "New Flow"
+      },
+      "edit": {
+        "description": "Update payment information.",
+        "loadError": "Loading error",
+        "submit": "Save",
+        "title": "Edit Payment"
+      }
+    },
+    "messages": {
+      "create": {
+        "error": "Failure",
+        "success": "Payment recorded"
+      },
+      "delete": {
+        "confirm": "Cancel?",
+        "error": "Error",
+        "success": "Payment cancelled",
+        "success_one": "Cancelled",
+        "success_many": "Cancelled",
+        "success_other": "Cancelled"
+      },
+      "loadError": "Loading error",
+      "noData": "No transaction",
+      "search": {
+        "error": "Search error"
+      },
+      "update": {
+        "error": "Failure",
+        "success": "Updated"
+      }
+    },
+    "title": "Payments"
+  },
+  "Payment": {
+    "form": {
+      "amountLabel": "Sum",
+      "amountPlaceholder": "0.00",
+      "companyIdLabel": "Client",
+      "companyIdPlaceholder": "Choose",
+      "currencyLabel": "Currency",
+      "currencyPlaceholder": "XAF, EUR...",
+      "externalTransactionIdLabel": "Bank/Mobile Reference",
+      "externalTransactionIdPlaceholder": "e.g., 123456789",
+      "failureReasonLabel": "Failure details",
+      "failureReasonPlaceholder": "Insufficient funds, etc.",
+      "finalTransactionIdLabel": "Final System ID",
+      "finalTransactionIdPlaceholder": "Auto",
+      "invoiceIdLabel": "Linked invoice",
+      "invoiceIdPlaceholder": "Choose invoice",
+      "metadataLabel": "Extra infos",
+      "metadataPlaceholder": "{}",
+      "methodLabel": "Payment type",
+      "methodPlaceholder": "Orange Money, MTN, Transfer...",
+      "paymentMethodIdLabel": "Payment configuration",
+      "paymentMethodIdPlaceholder": "Choose",
+      "processedAtLabel": "Processing time",
+      "processedAtPlaceholder": "Auto",
+      "statusLabel": "Result",
+      "statusPlaceholder": "Success, Pending, Failed"
+    }
+  },
+  "paymentMethod": {
+    "actions": {
+      "add": "New mode",
+      "edit": "Edit",
+      "more": "Actions"
+    },
+    "bulk": {
+      "delete_one": "Deactivate",
+      "delete_many": "Deactivate all",
+      "delete_other": "Deactivate selected",
+      "deleteConfirm_one": "Delete this mode?",
+      "deleteConfirm_many": "Delete these modes?",
+      "deleteConfirm_other": "Delete {{count}} modes?",
+      "deleteError": "Error",
+      "deleteReason": "Reason",
+      "deleting": "Deletion...",
+      "partialError_one": "Error",
+      "partialError_many": "Errors",
+      "partialError_other": "Errors"
+    },
+    "details": {
+      "information": "Payment mode configuration",
+      "title": "Settlement Mode",
+      "view": "Consult"
+    },
+    "fields": {
+      "code": "Technical code",
+      "data": "Data",
+      "description": "Description",
+      "detail": "Details",
+      "errorCode": "Error code",
+      "instance": "Instance",
+      "isActive": "Active",
+      "logoUrl": "Logo Link",
+      "maximumAmount": "Max amount",
+      "metadata": "Metadata",
+      "minimumAmount": "Min amount",
+      "name": "Name",
+      "requiresPhoneNumber": "Requires phone",
+      "settlementPeriod": "Settlement delay (days)",
+      "sortOrder": "Display order",
+      "status": "Status",
+      "success": "Success",
+      "timestamp": "Updated at",
+      "title": "Title",
+      "traceId": "Trace ID",
+      "type": "Type",
+      "validationErrors": "Errors"
+    },
+    "form": {
+      "create": {
+        "description": "Add a new available payment method.",
+        "submit": "Add",
+        "title": "New Payment Mode"
+      },
+      "edit": {
+        "description": "Modify limits or logo.",
+        "loadError": "Error",
+        "submit": "Save",
+        "title": "Edit Mode"
+      }
+    },
+    "messages": {
+      "create": {
+        "error": "Failure",
+        "success": "Mode added"
+      },
+      "delete": {
+        "confirm": "Delete?",
+        "error": "Error",
+        "success": "Deleted",
+        "success_one": "Cleared",
+        "success_many": "Cleared",
+        "success_other": "Cleared"
+      },
+      "loadError": "Loading error",
+      "noData": "No mode configured",
+      "search": {
+        "error": "Search error"
+      },
+      "update": {
+        "error": "Failure",
+        "success": "Updated"
+      }
+    },
+    "title": "Payment Methods"
+  },
+  "PaymentMethod": {
+    "form": {
+      "codeLabel": "Unique key (e.g., MOMO_CM)",
+      "codePlaceholder": "e.g., MTN_MOMO",
+      "descriptionLabel": "Customer infos",
+      "descriptionPlaceholder": "e.g., Payment via Mobile Money",
+      "isActiveLabel": "Activated on site",
+      "logoUrlLabel": "Icon",
+      "logoUrlPlaceholder": "https://...",
+      "maximumAmountLabel": "Ceiling",
+      "maximumAmountPlaceholder": "500000",
+      "minimumAmountLabel": "Floor",
+      "minimumAmountPlaceholder": "100",
+      "nameLabel": "Label",
+      "namePlaceholder": "e.g., MTN Mobile Money",
+      "requiresPhoneNumberLabel": "Request mobile number",
+      "settlementPeriodLabel": "Days before settlement",
+      "settlementPeriodPlaceholder": "e.g., 2",
+      "sortOrderLabel": "Position",
+      "sortOrderPlaceholder": "1"
+    }
+  },
+  "pricing": {
+    "actions": {
+      "add": "New price",
+      "edit": "Adjust",
+      "more": "Actions"
+    },
+    "bulk": {
+      "delete_one": "Delete",
+      "delete_many": "Delete all",
+      "delete_other": "Delete selection",
+      "deleteConfirm_one": "Delete this price?",
+      "deleteConfirm_many": "Delete all?",
+      "deleteConfirm_other": "Delete {{count}}?",
+      "deleteError": "Error",
+      "deleteReason": "Reason",
+      "deleting": "Deletion...",
+      "partialError_one": "Error",
+      "partialError_many": "Errors",
+      "partialError_other": "Errors"
+    },
+    "details": {
+      "information": "Price grid by channel and provider",
+      "title": "Pricing Details",
+      "view": "Consult"
+    },
+    "fields": {
+      "channelCode": "Channel Code",
+      "channelId": "Channel ID",
+      "channelName": "Channel",
+      "companyEmail": "Company email",
+      "companyId": "Company ID",
+      "companyName": "Company",
+      "companyStatus": "Status",
+      "currency": "Currency",
+      "currencyCode": "Currency Code",
+      "currencyName": "Currency",
+      "currencySymbol": "Symbol",
+      "data": "Data",
+      "detail": "Details",
+      "effectiveFrom": "Effective from",
+      "effectiveTo": "Effective to",
+      "errorCode": "Error code",
+      "instance": "Instance",
+      "metadata": "Metadata",
+      "platformFee": "Platform fee",
+      "platformFeeType": "Fee type (Flat/%)",
+      "providerCode": "Provider",
+      "providerId": "Provider ID",
+      "providerName": "Provider Name",
+      "status": "Status",
+      "success": "Success",
+      "timestamp": "Timestamp",
+      "title": "Rule name",
+      "traceId": "Trace ID",
+      "type": "Nature",
+      "unitPrice": "Unit price",
+      "validationErrors": "Errors"
+    },
+    "form": {
+      "create": {
+        "description": "Define a new price for messages or services.",
+        "submit": "Save",
+        "title": "New Price Rule"
+      },
+      "edit": {
+        "description": "Adjust effective rates.",
+        "loadError": "Error",
+        "submit": "Save",
+        "title": "Edit Price"
+      }
+    },
+    "messages": {
+      "create": {
+        "error": "Failure",
+        "success": "Price created"
+      },
+      "delete": {
+        "confirm": "Delete?",
+        "error": "Error",
+        "success": "Price removed",
+        "success_one": "Removed",
+        "success_many": "Removed",
+        "success_other": "Removed"
+      },
+      "loadError": "Loading error",
+      "noData": "No price defined",
+      "search": {
+        "error": "Search error"
+      },
+      "update": {
+        "error": "Failure",
+        "success": "Updated"
+      }
+    },
+    "title": "Pricing Grids"
+  },
+  "Pricing": {
+    "form": {
+      "channelIdLabel": "Com. method",
+      "channelIdPlaceholder": "Choose",
+      "companyIdLabel": "Specific client",
+      "companyIdPlaceholder": "Leave blank for global price",
+      "currencyLabel": "Billing currency",
+      "currencyPlaceholder": "XAF",
+      "effectiveFromLabel": "Start date",
+      "effectiveFromPlaceholder": "Select",
+      "effectiveToLabel": "End date",
+      "effectiveToPlaceholder": "Optional",
+      "platformFeeLabel": "System margin",
+      "platformFeePlaceholder": "0.00",
+      "platformFeeTypeLabel": "Margin calculation",
+      "platformFeeTypePlaceholder": "Flat, Percentage",
+      "providerIdLabel": "Provider cost",
+      "providerIdPlaceholder": "Choose",
+      "unitPriceLabel": "Net price",
+      "unitPricePlaceholder": "0.00"
+    }
+  },
+  "product": {
+    "actions": {
+      "add": "New product",
+      "more": "Actions"
+    },
+    "bulk": {
+      "delete_one": "Delete",
+      "delete_many": "Delete all",
+      "delete_other": "Clear selection",
+      "deleteConfirm_one": "Delete this product?",
+      "deleteConfirm_many": "Delete all?",
+      "deleteConfirm_other": "Delete {{count}}?",
+      "deleteError": "Error",
+      "deleteReason": "Reason",
+      "deleting": "Deletion...",
+      "partialError_one": "Error",
+      "partialError_many": "Errors",
+      "partialError_other": "Errors"
+    },
+    "details": {
+      "description": "_description",
+      "title": "Product Details"
+    },
+    "fields": {
+      "clientAttributes": "Client attributes",
+      "clientMappingConfiguration": "Client mapping",
+      "companyEmail": "Company email",
+      "companyId": "Company ID",
+      "companyName": "Company",
+      "companyStatus": "Status",
+      "data": "Data",
+      "description": "Description",
+      "detail": "Details",
+      "errorCode": "Error code",
+      "instance": "Instance",
+      "metadata": "Metadata",
+      "name": "Product name",
+      "settings": "Settings",
+      "status": "Status",
+      "success": "Success",
+      "timestamp": "Timestamp",
+      "title": "Title",
+      "traceId": "Trace ID",
+      "type": "Type",
+      "validationErrors": "Errors"
+    },
+    "form": {
+      "create": {
+        "description": "Define a new offer or application.",
+        "submit": "Create",
+        "title": "New Product"
+      },
+      "edit": {
+        "description": "Change attributes.",
+        "submit": "Save",
+        "title": "Edit Product"
+      }
+    },
+    "messages": {
+      "create": {
+        "error": "Error",
+        "success": "Product created"
+      },
+      "delete": {
+        "confirm": "Delete?",
+        "error": "Error",
+        "success": "Deleted",
+        "success_one": "Deleted",
+        "success_many": "Deleted",
+        "success_other": "Deleted"
+      },
+      "noData": "No product",
+      "search": {
+        "error": "Search error"
+      },
+      "update": {
+        "error": "Error",
+        "success": "Updated"
+      }
+    },
+    "title": "Product Catalog"
+  },
+  "Product": {
+    "form": {
+      "clientAttributesLabel": "Required client fields",
+      "clientAttributesPlaceholder": "JSON of fields",
+      "clientMappingConfigurationLabel": "Import Config",
+      "clientMappingConfigurationPlaceholder": "{}",
+      "companyIdLabel": "Owner",
+      "companyIdPlaceholder": "Choose",
+      "descriptionLabel": "Description",
+      "descriptionPlaceholder": "Product details",
+      "nameLabel": "Public name",
+      "namePlaceholder": "e.g., SMS API v2",
+      "settingsLabel": "JSON Settings",
+      "settingsPlaceholder": "{}",
+      "statusLabel": "Availability",
+      "statusPlaceholder": "Draft, Active, Archived"
+    }
+  },
+  "productChannel": {
+    "actions": {
+      "add": "Associate channel",
+      "more": "Plus"
+    },
+    "bulk": {
+      "delete_one": "Dissociate",
+      "delete_many": "Dissociate all",
+      "delete_other": "Delete selection",
+      "deleteConfirm_one": "Remove this channel?",
+      "deleteConfirm_many": "Remove all?",
+      "deleteConfirm_other": "Remove {{count}}?",
+      "deleteError": "Error",
+      "deleteReason": "Reason",
+      "deleting": "Processing...",
+      "partialError_one": "Error",
+      "partialError_many": "Errors",
+      "partialError_other": "Errors"
+    },
+    "details": {
+      "description": "_description",
+      "title": "Product channels"
+    },
+    "fields": {
+      "channelCode": "Channel Code",
+      "channelId": "Channel ID",
+      "channelName": "Channel",
+      "data": "Data",
+      "detail": "Details",
+      "errorCode": "Error code",
+      "instance": "Instance",
+      "isActive": "Active",
+      "metadata": "Metadata",
+      "priority": "Priority",
+      "productId": "Product ID",
+      "productName": "Product",
+      "productStatus": "Status",
+      "status": "Status",
+      "success": "Success",
+      "timestamp": "Timestamp",
+      "title": "Title",
+      "traceId": "Trace ID",
+      "type": "Type",
+      "validationErrors": "Errors"
+    },
+    "form": {
+      "create": {
+        "description": "Link a communication channel to this product.",
+        "submit": "Associate",
+        "title": "New Product Channel"
+      },
+      "edit": {
+        "description": "Priority settings.",
+        "submit": "Save",
+        "title": "Edit Channel"
+      }
+    },
+    "messages": {
+      "create": {
+        "error": "Error",
+        "success": "Channel linked"
+      },
+      "delete": {
+        "confirm": "Remove?",
+        "error": "Error",
+        "success": "Channel removed",
+        "success_one": "Removed",
+        "success_many": "Removed",
+        "success_other": "Removed"
+      },
+      "noData": "No channel linked",
+      "search": {
+        "error": "Search error"
+      },
+      "update": {
+        "error": "Error",
+        "success": "Updated"
+      }
+    },
+    "title": "Channels by Product"
+  },
+  "ProductChannel": {
+    "form": {
+      "channelIdLabel": "Channel",
+      "channelIdPlaceholder": "Choose",
+      "isActiveLabel": "Enabled for this product",
+      "priorityLabel": "Routing priority",
+      "priorityPlaceholder": "1, 2...",
+      "productIdLabel": "Target product",
+      "productIdPlaceholder": "Choose"
+    }
+  },
+  "productChannelStatistic": {
+    "actions": {
+      "add": "Log stats",
+      "more": "Plus"
+    },
+    "bulk": {
+      "delete_one": "Delete",
+      "delete_many": "Clear",
+      "delete_other": "Clear",
+      "deleteConfirm_one": "Delete?",
+      "deleteConfirm_many": "Confirm?",
+      "deleteConfirm_other": "Confirm?",
+      "deleteError": "Error",
+      "deleteReason": "Reason",
+      "deleting": "Cleaning...",
+      "partialError_one": "Error",
+      "partialError_many": "Errors",
+      "partialError_other": "Errors"
+    },
+    "details": {
+      "information": "Performance by channel",
+      "title": "Product/Channel Stats",
+      "view": "Consult"
+    },
+    "fields": {
+      "channelCode": "Channel Code",
+      "channelId": "Channel ID",
+      "channelName": "Channel Name",
+      "messagesDelivered": "Nb. Delivered",
+      "messagesFailed": "Nb. Failed",
+      "messagesSent": "Nb. Sent",
+      "periodEnd": "Until",
+      "periodStart": "From",
+      "productId": "Product ID",
+      "productName": "Product",
+      "productStatus": "Status",
+      "totalCost": "Consumed Cost"
+    },
+    "messages": {
+      "create": {
+        "error": "Error",
+        "success": "Recorded"
+      },
+      "delete": {
+        "confirm": "Delete?",
+        "error": "Error",
+        "success": "Deleted",
+        "success_one": "Cleared",
+        "success_many": "Cleared",
+        "success_other": "Cleared"
+      },
+      "loadError": "Impossible to load",
+      "noData": "No stats",
+      "search": {
+        "error": "Search error"
+      },
+      "update": {
+        "error": "Error",
+        "success": "Updated"
+      }
+    },
+    "title": "Channel Reporting"
+  },
+  "provider": {
+    "actions": {
+      "add": "New provider",
+      "more": "Actions"
+    },
+    "bulk": {
+      "delete_one": "Delete",
+      "delete_many": "Delete all",
+      "delete_other": "Delete selected",
+      "deleteConfirm_one": "Delete?",
+      "deleteConfirm_many": "Delete?",
+      "deleteConfirm_other": "Delete?",
+      "deleteError": "Error",
+      "deleteReason": "Reason",
+      "deleting": "Deletion...",
+      "partialError_one": "Error",
+      "partialError_many": "Errors",
+      "partialError_other": "Errors"
+    },
+    "details": {
+      "description": "_description",
+      "title": "Provider File"
+    },
+    "fields": {
+      "baseUrl": "API URL",
+      "code": "Internal Code",
+      "data": "Data",
+      "detail": "Details",
+      "documentationUrl": "Doc Link",
+      "errorCode": "Error code",
+      "instance": "Instance",
+      "isActive": "Active",
+      "isGlobal": "Global Provider",
+      "metadata": "Metadata",
+      "name": "Legal Name",
+      "status": "Status",
+      "success": "Success",
+      "timestamp": "Timestamp",
+      "title": "Title",
+      "traceId": "Trace ID",
+      "type": "Nature",
+      "validationErrors": "Errors"
+    },
+    "form": {
+      "create": {
+        "description": "Add a technical partner (e.g., Twilio, Orange, MTN).",
+        "submit": "Add",
+        "title": "New Provider"
+      },
+      "edit": {
+        "description": "Modify technical links.",
+        "submit": "Save",
+        "title": "Edit Provider"
+      }
+    },
+    "messages": {
+      "create": {
+        "error": "Error",
+        "success": "Added"
+      },
+      "delete": {
+        "confirm": "Delete?",
+        "error": "Error",
+        "success": "Deleted",
+        "success_one": "Removed",
+        "success_many": "Removed",
+        "success_other": "Removed"
+      },
+      "noData": "No provider",
+      "search": {
+        "error": "Search error"
+      },
+      "update": {
+        "error": "Error",
+        "success": "Updated"
+      }
+    },
+    "title": "Providers"
+  },
+  "Provider": {
+    "form": {
+      "baseUrlLabel": "Root Endpoint",
+      "baseUrlPlaceholder": "https://api.provider.com",
+      "codeLabel": "Technical key",
+      "codePlaceholder": "e.g., TWILIO_GLOBAL",
+      "documentationUrlLabel": "Manual link",
+      "documentationUrlPlaceholder": "https://doc...",
+      "isActiveLabel": "Usable",
+      "isGlobalLabel": "Available for all",
+      "nameLabel": "Name",
+      "namePlaceholder": "e.g., Twilio"
+    }
+  },
+  "providerCallback": {
+    "actions": {
+      "add": "Manual log",
+      "more": "Details"
+    },
+    "bulk": {
+      "delete_one": "Clear",
+      "delete_many": "Clear",
+      "delete_other": "Clear",
+      "deleteConfirm_one": "Delete?",
+      "deleteConfirm_many": "Clear?",
+      "deleteConfirm_other": "Clear?",
+      "deleteError": "Error",
+      "deleteReason": "Reason",
+      "deleting": "Cleaning...",
+      "partialError_one": "Error",
+      "partialError_many": "Errors",
+      "partialError_other": "Errors"
+    },
+    "details": {
+      "description": "_description",
+      "title": "Provider Webhook Details"
+    },
+    "fields": {
+      "data": "Data",
+      "detail": "Details",
+      "errorCode": "Error Code",
+      "errorMessage": "Error Message",
+      "externalMessageId": "External ID",
+      "instance": "Server",
+      "messageId": "Internal Message ID",
+      "messageStatus": "Returned status",
+      "metadata": "Metadata",
+      "processedAt": "Processed at",
+      "providerCode": "Provider Code",
+      "providerId": "Provider ID",
+      "providerName": "Provider",
+      "rawPayload": "Raw Payload (DLR)",
+      "status": "Log Status",
+      "success": "Success",
+      "timestamp": "Received at",
+      "title": "Title",
+      "traceId": "Trace ID",
+      "type": "Type",
+      "validationErrors": "Errors"
+    },
+    "form": {
+      "create": {
+        "description": "Simulate a provider return.",
+        "submit": "Record",
+        "title": "New Callback"
+      },
+      "edit": {
+        "description": "Review content.",
+        "submit": "Save",
+        "title": "Edit Callback"
+      }
+    },
+    "messages": {
+      "create": {
+        "error": "Error",
+        "success": "Recorded"
+      },
+      "delete": {
+        "confirm": "Clear?",
+        "error": "Error",
+        "success": "Deleted",
+        "success_one": "Cleared",
+        "success_many": "Cleared",
+        "success_other": "Cleared"
+      },
+      "noData": "No recent callback",
+      "search": {
+        "error": "Search error"
+      },
+      "update": {
+        "error": "Error",
+        "success": "Updated"
+      }
+    },
+    "title": "Provider Callbacks"
+  },
+  "ProviderCallback": {
+    "form": {
+      "errorMessageLabel": "Technical error",
+      "errorMessagePlaceholder": "N/A",
+      "externalMessageIdLabel": "Provider Message ID",
+      "externalMessageIdPlaceholder": "Paste ID",
+      "messageIdLabel": "System Message",
+      "messageIdPlaceholder": "Link to a message",
+      "processedAtLabel": "Processing time",
+      "processedAtPlaceholder": "Auto",
+      "providerIdLabel": "Provider",
+      "providerIdPlaceholder": "Choose",
+      "rawPayloadLabel": "Raw content",
+      "rawPayloadPlaceholder": "Received JSON",
+      "statusLabel": "Internal status",
+      "statusPlaceholder": "Processed, Pending, Error"
+    }
+  },
+  "readonly": "Read only",
+  "secureSetting": {
+    "actions": {
+      "add": "New secret",
+      "more": "More"
+    },
+    "bulk": {
+      "delete_one": "Destroy",
+      "delete_many": "Destroy all",
+      "delete_other": "Delete selected",
+      "deleteConfirm_one": "Delete this secret?",
+      "deleteConfirm_many": "Delete these secrets?",
+      "deleteConfirm_other": "Delete {{count}}?",
+      "deleteError": "Error",
+      "deleteReason": "Reason",
+      "deleting": "Deleting...",
+      "partialError_one": "Error",
+      "partialError_many": "Errors",
+      "partialError_other": "Errors"
+    },
+    "details": {
+      "description": "_description",
+      "title": "Secure Setting Details"
+    },
+    "fields": {
+      "description": "Description",
+      "salt": "Hashing salt",
+      "systemName": "System key",
+      "value": "Encrypted value"
+    },
+    "form": {
+      "create": {
+        "description": "_description",
+        "title": "Create a Secret"
+      },
+      "edit": {
+        "description": "_description",
+        "title": "Edit Secret"
+      }
+    },
+    "messages": {
+      "create": {
+        "error": "Error",
+        "success": "Secret created"
+      },
+      "delete": {
+        "confirm": "Delete?",
+        "error": "Error",
+        "success": "Destroyed",
+        "success_one": "Destroyed",
+        "success_many": "Destroyed",
+        "success_other": "Destroyed"
+      },
+      "noData": "No secret",
+      "search": {
+        "error": "Search error"
+      },
+      "update": {
+        "error": "Error",
+        "success": "Secret updated"
+      }
+    },
+    "title": "Secrets & Keys"
+  },
   "sessions": {
-    "access_denied": "_access_denied",
-    "network_error": "_network_error",
-    "session_expired": "_session_expired"
+    "access_denied": "Session not authorized",
+    "network_error": "Network error (Session)",
+    "session_expired": "Your session has expired, please log in again"
+  },
+  "setting": {
+    "actions": {
+      "add": "New setting",
+      "edit": "Edit",
+      "more": "More"
+    },
+    "bulk": {
+      "delete_one": "Delete",
+      "delete_many": "Delete all",
+      "delete_other": "Delete selection",
+      "deleteConfirm_one": "Delete?",
+      "deleteConfirm_many": "Delete all?",
+      "deleteConfirm_other": "Delete {{count}}?",
+      "deleteError": "Error",
+      "deleteReason": "Reason",
+      "deleting": "Deletion...",
+      "partialError_one": "Error",
+      "partialError_many": "Errors",
+      "partialError_other": "Errors"
+    },
+    "details": {
+      "information": "Global system configuration",
+      "title": "Setting Details",
+      "view": "Consult"
+    },
+    "fields": {
+      "allowedValues": "Allowed values",
+      "category": "Category",
+      "data": "Data",
+      "dataType": "Data type",
+      "description": "Description",
+      "detail": "Details",
+      "errorCode": "Error code",
+      "instance": "Instance",
+      "isEncrypted": "Is encrypted",
+      "isReadOnly": "Read only",
+      "isSystemSetting": "System setting",
+      "metadata": "Metadata",
+      "status": "Status",
+      "success": "Success",
+      "timestamp": "Timestamp",
+      "title": "Key name",
+      "traceId": "Trace ID",
+      "type": "Type",
+      "validationErrors": "Errors",
+      "validationRegex": "Validation rule (Regex)",
+      "value": "Value"
+    },
+    "form": {
+      "create": {
+        "description": "Add a system configuration variable.",
+        "submit": "Create",
+        "title": "New Setting"
+      },
+      "edit": {
+        "description": "Modify the configuration value.",
+        "loadError": "Error loading",
+        "submit": "Save",
+        "title": "Edit Setting"
+      }
+    },
+    "messages": {
+      "create": {
+        "error": "Error",
+        "success": "Setting created"
+      },
+      "delete": {
+        "confirm": "Delete?",
+        "error": "Error",
+        "success": "Deleted",
+        "success_one": "Removed",
+        "success_many": "Removed",
+        "success_other": "Removed"
+      },
+      "loadError": "Error",
+      "noData": "No setting",
+      "search": {
+        "error": "Search error"
+      },
+      "update": {
+        "error": "Failure",
+        "success": "Updated"
+      }
+    },
+    "title": "System Settings"
+  },
+  "Setting": {
+    "form": {
+      "allowedValuesLabel": "Possible options",
+      "allowedValuesPlaceholder": "e.g., auto, manual, hybrid",
+      "categoryLabel": "Group",
+      "categoryPlaceholder": "e.g., UI, Network, Security",
+      "dataTypeLabel": "Format",
+      "dataTypePlaceholder": "String, Int, Boolean, JSON",
+      "descriptionLabel": "What is it for?",
+      "descriptionPlaceholder": "e.g., Delay before automatic logout",
+      "isEncryptedLabel": "Encrypt in database",
+      "isReadOnlyLabel": "Prohibit manual modification",
+      "isSystemSettingLabel": "Required by core system",
+      "validationRegexLabel": "Validation pattern",
+      "validationRegexPlaceholder": "^[0-9]+$",
+      "valueLabel": "Current value",
+      "valuePlaceholder": "e.g., 3600"
+    }
   },
   "statusBadges": {
-    "active": "_active",
-    "false": "_false",
-    "inactive": "_inactive",
-    "true": "_true"
+    "active": "Active",
+    "ALL": "ALL",
+    "APPLICATION": "APPLICATION",
+    "CANCELLED": "CANCELLED",
+    "COMPANY": "COMPANY",
+    "COMPLETED": "COMPLETED",
+    "disabled": "Disabled",
+    "enableb": "Enabled",
+    "FAILED": "FAILED",
+    "false": "False",
+    "FUND_TRANSFER": "TRANSFER",
+    "inactive": "Inactive",
+    "MOMO": "MOMO",
+    "MTN": "MTN",
+    "OM": "OM",
+    "ORANGE": "ORANGE",
+    "PENDING": "PENDING",
+    "PROCESSING": "PROCESSING",
+    "RECEIPT": "RECEIPT",
+    "REJECTED": "REJECTED",
+    "SYSTEM": "SYSTEM",
+    "TIMEOUT": "TIMEOUT",
+    "true": "True",
+    "VALIDATING": "VALIDATING",
+    "WITHDRAWAL": "WITHDRAWAL"
+  },
+  "Step 1": "Step 1",
+  "Step 2": "Step 2",
+  "Step 3": "Step 3",
+  "subscription": {
+    "actions": {
+      "add": "New subscription",
+      "edit": "Adjust",
+      "more": "Actions"
+    },
+    "bulk": {
+      "delete_one": "Cancel",
+      "delete_many": "Cancel all",
+      "delete_other": "Delete selection",
+      "deleteConfirm_one": "Cancel this subscription?",
+      "deleteConfirm_many": "Cancel all?",
+      "deleteConfirm_other": "Cancel {{count}}?",
+      "deleteError": "Error",
+      "deleteReason": "Reason",
+      "deleting": "Cancellation...",
+      "partialError_one": "Error",
+      "partialError_many": "Errors",
+      "partialError_other": "Errors"
+    },
+    "details": {
+      "information": "Contract and quota details",
+      "title": "Subscription Details",
+      "view": "Consult"
+    },
+    "fields": {
+      "autoRenew": "Auto renew",
+      "billingCycle": "Billing cycle",
+      "cancelledAt": "Cancelled at",
+      "companyEmail": "Company email",
+      "companyId": "Company ID",
+      "companyName": "Company",
+      "companyStatus": "Status",
+      "currentPeriodEnd": "End of period",
+      "currentPeriodStart": "Start of period",
+      "data": "Data",
+      "detail": "Details",
+      "errorCode": "Error code",
+      "instance": "Instance",
+      "metadata": "Metadata",
+      "paymentCurrency": "Payment currency",
+      "paymentId": "Last payment ID",
+      "paymentStatus": "Payment status",
+      "planCode": "Plan Code",
+      "planId": "Plan ID",
+      "planName": "Chosen plan",
+      "status": "Subscription state",
+      "success": "Success",
+      "timestamp": "Timestamp",
+      "title": "Title",
+      "traceId": "Trace ID",
+      "type": "Nature",
+      "usedQuota": "Quota consumed",
+      "validationErrors": "Errors"
+    },
+    "form": {
+      "create": {
+        "description": "Subscribe a client to a plan.",
+        "submit": "Subscribe",
+        "title": "New Subscription"
+      },
+      "edit": {
+        "description": "Modify dates or quotas.",
+        "loadError": "Error",
+        "submit": "Save",
+        "title": "Edit Subscription"
+      }
+    },
+    "messages": {
+      "create": {
+        "error": "Failure",
+        "success": "Subscription activated"
+      },
+      "delete": {
+        "confirm": "Cancel?",
+        "error": "Error",
+        "success": "Cancelled",
+        "success_one": "Contract ended",
+        "success_many": "Contracts ended",
+        "success_other": "Contracts ended"
+      },
+      "loadError": "Loading error",
+      "noData": "No active subscription",
+      "search": {
+        "error": "Search error"
+      },
+      "update": {
+        "error": "Failure",
+        "success": "Update successful"
+      }
+    },
+    "title": "Subscriptions"
+  },
+  "Subscription": {
+    "form": {
+      "autoRenewLabel": "Renew automatically",
+      "billingCycleLabel": "Frequency",
+      "billingCyclePlaceholder": "Monthly, Yearly",
+      "cancelledAtLabel": "Forced end date",
+      "cancelledAtPlaceholder": "Optional",
+      "companyIdLabel": "Client",
+      "companyIdPlaceholder": "Choose",
+      "currentPeriodEndLabel": "End of current period",
+      "currentPeriodEndPlaceholder": "Date",
+      "currentPeriodStartLabel": "Start of period",
+      "currentPeriodStartPlaceholder": "Date",
+      "paymentIdLabel": "Linked payment",
+      "paymentIdPlaceholder": "Choose",
+      "planIdLabel": "Plan",
+      "planIdPlaceholder": "Free, Pro, Business...",
+      "statusLabel": "State",
+      "statusPlaceholder": "Active, PastDue, Canceled",
+      "usedQuotaLabel": "Current usage",
+      "usedQuotaPlaceholder": "0"
+    }
+  },
+  "subscriptionPlan": {
+    "actions": {
+      "add": "New plan",
+      "edit": "Edit",
+      "more": "Actions"
+    },
+    "bulk": {
+      "delete_one": "Delete",
+      "delete_many": "Delete all",
+      "delete_other": "Clear selection",
+      "deleteConfirm_one": "Delete this plan?",
+      "deleteConfirm_many": "Delete all?",
+      "deleteConfirm_other": "Delete {{count}}?",
+      "deleteError": "Error",
+      "deleteReason": "Reason",
+      "deleting": "Deletion...",
+      "partialError_one": "Error",
+      "partialError_many": "Errors",
+      "partialError_other": "Errors"
+    },
+    "details": {
+      "information": "Commercial offer specifications",
+      "title": "Plan Details",
+      "view": "Consult"
+    },
+    "fields": {
+      "code": "Technical code",
+      "data": "Data",
+      "description": "Description",
+      "detail": "Details",
+      "errorCode": "Error code",
+      "features": "Included features",
+      "instance": "Instance",
+      "isActive": "Available for sale",
+      "maxProducts": "Max products",
+      "maxUsers": "Max users",
+      "metadata": "Metadata",
+      "monthlyPrice": "Monthly price",
+      "monthlyQuota": "Monthly quota",
+      "name": "Plan name",
+      "status": "Status",
+      "success": "Success",
+      "timestamp": "Timestamp",
+      "title": "Title",
+      "traceId": "Trace ID",
+      "type": "Type",
+      "validationErrors": "Errors",
+      "yearlyPrice": "Yearly price"
+    },
+    "form": {
+      "create": {
+        "description": "Define a new subscription pricing grid.",
+        "submit": "Create plan",
+        "title": "New Plan"
+      },
+      "edit": {
+        "description": "Adjust prices or quotas of the plan.",
+        "loadError": "Error",
+        "submit": "Save",
+        "title": "Edit Plan"
+      }
+    },
+    "messages": {
+      "create": {
+        "error": "Failure",
+        "success": "Plan created"
+      },
+      "delete": {
+        "confirm": "Delete?",
+        "error": "Error",
+        "success": "Deleted",
+        "success_one": "Cleared",
+        "success_many": "Cleared",
+        "success_other": "Cleared"
+      },
+      "loadError": "Loading error",
+      "noData": "No plan defined",
+      "search": {
+        "error": "Search error"
+      },
+      "update": {
+        "error": "Failure",
+        "success": "Updated"
+      }
+    },
+    "title": "Subscription Plans"
+  },
+  "SubscriptionPlan": {
+    "form": {
+      "codeLabel": "Unique key (e.g., PRO_V1)",
+      "codePlaceholder": "PRO_V1",
+      "descriptionLabel": "Pitch",
+      "descriptionPlaceholder": "e.g., Ideal for SMEs",
+      "featuresLabel": "Benefits list (JSON)",
+      "featuresPlaceholder": "[\"Unlimited SMS\", \"24/7 Support\"]",
+      "isActiveLabel": "Active plan",
+      "maxProductsLabel": "Products limit",
+      "maxProductsPlaceholder": "e.g., 10",
+      "maxUsersLabel": "Accounts limit",
+      "maxUsersPlaceholder": "e.g., 5",
+      "monthlyPriceLabel": "Monthly price",
+      "monthlyPricePlaceholder": "0.00",
+      "monthlyQuotaLabel": "Credits / month",
+      "monthlyQuotaPlaceholder": "e.g., 1000",
+      "nameLabel": "Public name",
+      "namePlaceholder": "e.g., Professional Pack",
+      "yearlyPriceLabel": "Yearly price",
+      "yearlyPricePlaceholder": "0.00"
+    }
+  },
+  "sysLog": {
+    "actions": {
+      "add": "Manual log",
+      "more": "Details"
+    },
+    "bulk": {
+      "delete_one": "Purge",
+      "delete_many": "Purge all",
+      "delete_other": "Purge selection",
+      "deleteConfirm_one": "Confirm?",
+      "deleteConfirm_many": "Clear all?",
+      "deleteConfirm_other": "Purge {{count}}?",
+      "deleteError": "Error",
+      "deleteReason": "Reason",
+      "deleting": "Purging...",
+      "partialError_one": "Error",
+      "partialError_many": "Errors",
+      "partialError_other": "Errors"
+    },
+    "details": {
+      "information": "Raw technical information",
+      "title": "System Log",
+      "view": "Consult"
+    },
+    "fields": {
+      "additionalData": "Extra data",
+      "amount": "Amount",
+      "applicationName": "Source App",
+      "correlationId": "Correlation ID",
+      "currency": "Currency",
+      "environment": "Environment",
+      "eventType": "Event nature",
+      "exceptionMessage": "Exception Message",
+      "externalReference": "External Ref.",
+      "httpStatusCode": "HTTP Status",
+      "internalReference": "Internal Ref.",
+      "ipAddress": "Server/Client IP",
+      "isRecoveryLog": "Recovery Log",
+      "isWebhookLog": "Webhook Log",
+      "logCategory": "Category",
+      "logLevel": "Level (Severity)",
+      "machineName": "Machine name",
+      "message": "Log content",
+      "paymentProvider": "Payment Provider",
+      "providerErrorCode": "Prov. Error Code",
+      "providerErrorMessage": "Prov. Error Message",
+      "providerFinalReference": "Prov. Final Ref.",
+      "providerInitialReference": "Prov. Initial Ref.",
+      "recoveryData": "Recovery Data",
+      "requestPayload": "Request Body",
+      "requestUri": "Requested URL",
+      "responsePayload": "Response Body",
+      "stackTrace": "Stacktrace",
+      "transactionType": "Trans. Type",
+      "userId": "User ID",
+      "userName": "User Name",
+      "webhookHeaders": "Webhook Headers",
+      "webhookSignature": "Webhook Signature"
+    },
+    "messages": {
+      "create": {
+        "error": "Error",
+        "success": "Log recorded"
+      },
+      "delete": {
+        "confirm": "Confirm?",
+        "error": "Error",
+        "success": "Cleaned",
+        "success_one": "Purge done",
+        "success_many": "Purge done",
+        "success_other": "Purge done"
+      },
+      "loadError": "Impossible to load",
+      "noData": "System history empty",
+      "search": {
+        "error": "Search error"
+      },
+      "update": {
+        "error": "Error",
+        "success": "Updated"
+      }
+    },
+    "title": "System Logs"
+  },
+  "system": "System",
+  "tag": {
+    "actions": {
+      "add": "Create tag",
+      "more": "Actions"
+    },
+    "bulk": {
+      "delete_one": "Delete",
+      "delete_many": "Delete all",
+      "delete_other": "Clear selection",
+      "deleteConfirm_one": "Delete this tag?",
+      "deleteConfirm_many": "Delete all?",
+      "deleteConfirm_other": "Delete {{count}}?",
+      "deleteError": "Error",
+      "deleteReason": "Reason",
+      "deleting": "Deletion...",
+      "partialError_one": "Error",
+      "partialError_many": "Errors",
+      "partialError_other": "Errors"
+    },
+    "details": {
+      "description": "_description",
+      "title": "Tag Details"
+    },
+    "fields": {
+      "color": "Color",
+      "companyEmail": "Company email",
+      "companyId": "Company ID",
+      "companyName": "Company",
+      "companyStatus": "Status",
+      "data": "Data",
+      "detail": "Details",
+      "errorCode": "Error code",
+      "instance": "Instance",
+      "metadata": "Metadata",
+      "name": "Tag name",
+      "status": "Status",
+      "success": "Success",
+      "timestamp": "Timestamp",
+      "title": "Label",
+      "traceId": "Trace ID",
+      "type": "Nature",
+      "validationErrors": "Errors"
+    },
+    "form": {
+      "create": {
+        "description": "Create a label to organize your resources.",
+        "submit": "Create",
+        "title": "New Tag"
+      },
+      "edit": {
+        "description": "Change name or color.",
+        "submit": "Save",
+        "title": "Edit Tag"
+      }
+    },
+    "messages": {
+      "create": {
+        "error": "Error",
+        "success": "Tag created"
+      },
+      "delete": {
+        "confirm": "Delete?",
+        "error": "Error",
+        "success": "Deleted",
+        "success_one": "Cleared",
+        "success_many": "Cleared",
+        "success_other": "Cleared"
+      },
+      "noData": "No tag",
+      "search": {
+        "error": "Search error"
+      },
+      "update": {
+        "error": "Error",
+        "success": "Updated"
+      }
+    },
+    "title": "Tag Management"
+  },
+  "Tag": {
+    "form": {
+      "colorLabel": "Color code (Hex)",
+      "colorPlaceholder": "#FFFFFF",
+      "companyIdLabel": "Owner",
+      "companyIdPlaceholder": "Choose",
+      "nameLabel": "Tag name",
+      "namePlaceholder": "e.g., VIP, Urgent"
+    }
+  },
+  "template": {
+    "actions": {
+      "add": "New template",
+      "edit": "Edit template",
+      "more": "Actions"
+    },
+    "bulk": {
+      "delete_one": "Delete",
+      "delete_many": "Delete all",
+      "delete_other": "Clear selection",
+      "deleteConfirm_one": "Delete this template?",
+      "deleteConfirm_many": "Delete all?",
+      "deleteConfirm_other": "Delete {{count}}?",
+      "deleteError": "Error",
+      "deleteReason": "Reason",
+      "deleting": "Deletion...",
+      "partialError_one": "Error",
+      "partialError_many": "Errors",
+      "partialError_other": "Errors"
+    },
+    "details": {
+      "information": "Predefined message structure",
+      "title": "Template Details",
+      "view": "Preview"
+    },
+    "fields": {
+      "category": "Category",
+      "content": "Content (Body)",
+      "data": "Data",
+      "description": "Description",
+      "detail": "Details",
+      "errorCode": "Error code",
+      "instance": "Instance",
+      "language": "Language",
+      "metadata": "Metadata",
+      "name": "Template name",
+      "productId": "Product ID",
+      "productName": "Product",
+      "productStatus": "Status",
+      "status": "Status",
+      "subject": "Subject (Email)",
+      "success": "Success",
+      "timestamp": "Updated at",
+      "title": "Title",
+      "traceId": "Trace ID",
+      "type": "Type",
+      "validationErrors": "Errors",
+      "version": "Version"
+    },
+    "form": {
+      "create": {
+        "description": "Prepare a reusable message template.",
+        "submit": "Create template",
+        "title": "New Template"
+      },
+      "edit": {
+        "description": "Modify text or variables.",
+        "loadError": "Error",
+        "submit": "Save",
+        "title": "Edit Template"
+      }
+    },
+    "messages": {
+      "create": {
+        "error": "Failure",
+        "success": "Template saved"
+      },
+      "delete": {
+        "confirm": "Delete?",
+        "error": "Error",
+        "success": "Template deleted",
+        "success_one": "Cleared",
+        "success_many": "Cleared",
+        "success_other": "Cleared"
+      },
+      "loadError": "Loading error",
+      "noData": "No template",
+      "search": {
+        "error": "Search error"
+      },
+      "update": {
+        "error": "Failure",
+        "success": "Updated"
+      }
+    },
+    "title": "Message Templates"
+  },
+  "Template": {
+    "form": {
+      "categoryLabel": "Usage",
+      "categoryPlaceholder": "Marketing, OTP, Alert...",
+      "contentLabel": "Message text",
+      "contentPlaceholder": "Hello {{name}}, ...",
+      "descriptionLabel": "Internal notes",
+      "descriptionPlaceholder": "What is this template for?",
+      "languageLabel": "Language Code",
+      "languagePlaceholder": "en, fr...",
+      "nameLabel": "Technical name",
+      "namePlaceholder": "e.g., WELCOME_EMAIL_V1",
+      "productIdLabel": "Link to product",
+      "productIdPlaceholder": "Choose",
+      "statusLabel": "State",
+      "statusPlaceholder": "Draft, Approved, Rejected",
+      "subjectLabel": "Subject (if email)",
+      "subjectPlaceholder": "Welcome to our service!",
+      "versionLabel": "Version number",
+      "versionPlaceholder": "1.0.0"
+    }
+  },
+  "templateChannel": {
+    "actions": {
+      "add": "Link channel",
+      "more": "More"
+    },
+    "bulk": {
+      "delete_one": "Remove",
+      "delete_many": "Remove all",
+      "delete_other": "Remove selection",
+      "deleteConfirm_one": "Unlink this channel?",
+      "deleteConfirm_many": "Unlink all?",
+      "deleteConfirm_other": "Unlink {{count}}?",
+      "deleteError": "Error",
+      "deleteReason": "Reason",
+      "deleting": "Processing...",
+      "partialError_one": "Error",
+      "partialError_many": "Errors",
+      "partialError_other": "Errors"
+    },
+    "details": {
+      "description": "_description",
+      "title": "Allowed channels for template"
+    },
+    "fields": {
+      "channelCode": "Channel Code",
+      "channelId": "Channel ID",
+      "channelName": "Channel Name",
+      "data": "Data",
+      "detail": "Details",
+      "errorCode": "Error code",
+      "instance": "Instance",
+      "metadata": "Metadata",
+      "status": "Status",
+      "success": "Success",
+      "templateId": "Template ID",
+      "templateName": "Template",
+      "templateStatus": "Status",
+      "timestamp": "Timestamp",
+      "title": "Title",
+      "traceId": "Trace ID",
+      "type": "Type",
+      "validationErrors": "Errors"
+    },
+    "form": {
+      "create": {
+        "description": "Specify on which channels this template can be sent.",
+        "submit": "Link",
+        "title": "New Channel/Template"
+      },
+      "edit": {
+        "description": "Modify association.",
+        "submit": "Save",
+        "title": "Edit Link"
+      }
+    },
+    "messages": {
+      "create": {
+        "error": "Error",
+        "success": "Link created"
+      },
+      "delete": {
+        "confirm": "Remove?",
+        "error": "Error",
+        "success": "Link deleted",
+        "success_one": "Removed",
+        "success_many": "Removed",
+        "success_other": "Removed"
+      },
+      "noData": "No channel linked",
+      "search": {
+        "error": "Search error"
+      },
+      "update": {
+        "error": "Error",
+        "success": "Updated"
+      }
+    },
+    "title": "Template Channels"
+  },
+  "TemplateChannel": {
+    "form": {
+      "channelIdLabel": "Channel",
+      "channelIdPlaceholder": "Choose",
+      "templateIdLabel": "Template",
+      "templateIdPlaceholder": "Choose"
+    }
   },
   "themeMode": {
-    "dark": "_dark",
-    "light": "_light",
-    "system": "_system"
+    "dark": "Dark",
+    "light": "Light",
+    "system": "System"
+  },
+  "user": {
+    "actions": {
+      "add": "New user",
+      "more": "Actions"
+    },
+    "bulk": {
+      "delete_one": "Deactivate",
+      "delete_many": "Deactivate all",
+      "delete_other": "Deactivate selected",
+      "deleteConfirm_one": "Deactivate this user?",
+      "deleteConfirm_many": "Deactivate all?",
+      "deleteConfirm_other": "Deactivate {{count}}?",
+      "deleteError": "Error",
+      "deleteReason": "Reason",
+      "deleting": "Processing...",
+      "partialError_one": "Error",
+      "partialError_many": "Errors",
+      "partialError_other": "Errors"
+    },
+    "details": {
+      "information": "Identity and access",
+      "title": "User File",
+      "view": "Consult"
+    },
+    "fields": {
+      "companyEmail": "Company email",
+      "companyId": "Company ID",
+      "companyName": "Company",
+      "companyStatus": "Status",
+      "deletionReason": "Reason for removal",
+      "email": "Email Address",
+      "firstName": "First name",
+      "lastName": "Last name",
+      "phoneNumber": "Phone number",
+      "profileId": "Profile ID",
+      "profileName": "Profile / Role",
+      "status": "State",
+      "userSecurityEmail": "Security email",
+      "userSecurityFirstName": "Sec. first name",
+      "userSecurityLastName": "Sec. last name",
+      "userSecurityPhoneNumber": "Sec. phone",
+      "userSecurityStatus": "Sec. status",
+      "userType": "User type"
+    },
+    "messages": {
+      "create": {
+        "error": "Failure",
+        "success": "Account created"
+      },
+      "delete": {
+        "confirm": "Deactivate?",
+        "error": "Error",
+        "success": "Account deactivated",
+        "success_one": "Deactivated",
+        "success_many": "Deactivated",
+        "success_other": "Deactivated"
+      },
+      "loadError": "Loading error",
+      "noData": "No user",
+      "search": {
+        "error": "Search error"
+      },
+      "update": {
+        "error": "Failure",
+        "success": "Updated"
+      }
+    },
+    "title": "Users & Access"
+  },
+  "userProfile": {
+    "actions": {
+      "add": "New profile",
+      "more": "Actions"
+    },
+    "bulk": {
+      "delete_one": "Delete",
+      "delete_many": "Delete all",
+      "delete_other": "Clear selection",
+      "deleteConfirm_one": "Delete this role?",
+      "deleteConfirm_many": "Delete all?",
+      "deleteConfirm_other": "Delete {{count}}?",
+      "deleteError": "Error",
+      "deleteReason": "Reason",
+      "deleting": "Deletion...",
+      "partialError_one": "Error",
+      "partialError_many": "Errors",
+      "partialError_other": "Errors"
+    },
+    "details": {
+      "description": "_description",
+      "title": "Profile Details"
+    },
+    "fields": {
+      "data": "Data",
+      "description": "Description",
+      "detail": "Details",
+      "errorCode": "Error code",
+      "instance": "Instance",
+      "isActive": "Active",
+      "isSystemProfile": "System Profile",
+      "metadata": "Metadata",
+      "name": "Profile name",
+      "permissions": "Rights list",
+      "status": "Status",
+      "success": "Success",
+      "timestamp": "Timestamp",
+      "title": "Title",
+      "traceId": "Trace ID",
+      "type": "Type",
+      "validationErrors": "Errors"
+    },
+    "form": {
+      "create": {
+        "description": "Create a role with specific permissions.",
+        "submit": "Create profile",
+        "title": "New Profile"
+      },
+      "edit": {
+        "description": "Modify profile rights.",
+        "submit": "Save",
+        "title": "Edit Profile"
+      }
+    },
+    "messages": {
+      "create": {
+        "error": "Error",
+        "success": "Profile created"
+      },
+      "delete": {
+        "confirm": "Delete?",
+        "error": "Error",
+        "success": "Profile deleted",
+        "success_one": "Cleared",
+        "success_many": "Cleared",
+        "success_other": "Cleared"
+      },
+      "noData": "No profile defined",
+      "search": {
+        "error": "Search error"
+      },
+      "update": {
+        "error": "Error",
+        "success": "Updated"
+      }
+    },
+    "title": "Profiles & Roles"
+  },
+  "UserProfile": {
+    "form": {
+      "descriptionLabel": "Rights summary",
+      "descriptionPlaceholder": "e.g., Full access to reports",
+      "isActiveLabel": "Usable profile",
+      "isSystemProfileLabel": "System protection",
+      "nameLabel": "Role name",
+      "namePlaceholder": "e.g., Manager, Accountant",
+      "permissionsLabel": "Permissions",
+      "permissionsPlaceholder": "Select rights"
+    }
+  },
+  "values": {
+    "compliance": "We comply with the strictest regulatory standards and compliance requirements, ensuring all transactions adhere to CEMAC regulations and international financial security protocols.",
+    "excellence": "We are committed to delivering exceptional service quality, innovative solutions, and continuous improvement in everything we do for our clients.",
+    "security": "We prioritize the protection of your financial data and transactions with enterprise-grade encryption, multi-level authentication, and comprehensive audit trails.",
+    "support": "We provide dedicated technical support and customer service to ensure your success, with expert assistance available whenever you need it.",
+    "transparency": "We believe in clear communication, honest pricing, and full visibility into all transactions and operations on our platform."
+  },
+  "wallet": {
+    "actions": {
+      "add": "Create wallet",
+      "more": "Actions"
+    },
+    "bulk": {
+      "delete_one": "Freeze",
+      "delete_many": "Freeze all",
+      "delete_other": "Freeze selection",
+      "deleteConfirm_one": "Confirm?",
+      "deleteConfirm_many": "Confirm?",
+      "deleteConfirm_other": "Confirm?",
+      "deleteError": "Error",
+      "deleteReason": "Reason",
+      "deleting": "Processing...",
+      "partialError_one": "Error",
+      "partialError_many": "Errors",
+      "partialError_other": "Errors"
+    },
+    "details": {
+      "information": "Balance and financial limits",
+      "title": "Wallet Details",
+      "view": "Consult"
+    },
+    "fields": {
+      "balance": "Current balance",
+      "blockedAt": "Blocked at",
+      "blockReason": "Reason for blocking",
+      "companyEmail": "Company email",
+      "companyId": "Company ID",
+      "companyName": "Company",
+      "companyStatus": "Status",
+      "currency": "Currency",
+      "currencyCode": "Currency Code",
+      "currencyName": "Currency Name",
+      "currencySymbol": "Symbol",
+      "isBlocked": "Is blocked",
+      "lowBalanceThreshold": "Low balance alert threshold",
+      "minimumBalance": "Minimum balance required"
+    },
+    "messages": {
+      "create": {
+        "error": "Error",
+        "success": "Wallet created"
+      },
+      "delete": {
+        "confirm": "Freeze?",
+        "error": "Error",
+        "success": "Wallet frozen",
+        "success_one": "Frozen",
+        "success_many": "Frozen",
+        "success_other": "Frozen"
+      },
+      "loadError": "Loading error",
+      "noData": "No wallet",
+      "search": {
+        "error": "Search error"
+      },
+      "update": {
+        "error": "Failure",
+        "success": "Updated"
+      }
+    },
+    "title": "Wallets"
+  },
+  "walletTransaction": {
+    "actions": {
+      "add": "Manual entry",
+      "more": "Plus"
+    },
+    "bulk": {
+      "delete_one": "Cancel",
+      "delete_many": "Cancel all",
+      "delete_other": "Cancel selection",
+      "deleteConfirm_one": "Cancel this movement?",
+      "deleteConfirm_many": "Confirm?",
+      "deleteConfirm_other": "Confirm?",
+      "deleteError": "Error",
+      "deleteReason": "Reason",
+      "deleting": "Processing...",
+      "partialError_one": "Error",
+      "partialError_many": "Errors",
+      "partialError_other": "Errors"
+    },
+    "details": {
+      "information": "Fund movement details",
+      "title": "Wallet Transaction",
+      "view": "Consult"
+    },
+    "fields": {
+      "amount": "Movement amount",
+      "balanceAfter": "Balance after",
+      "balanceBefore": "Balance before",
+      "reason": "Reason / Label",
+      "referenceId": "Reference ID",
+      "referenceType": "Link type",
+      "type": "Credit/Debit",
+      "walletCurrency": "Currency",
+      "walletId": "Wallet ID"
+    },
+    "messages": {
+      "create": {
+        "error": "Error",
+        "success": "Movement recorded"
+      },
+      "delete": {
+        "confirm": "Cancel?",
+        "error": "Error",
+        "success": "Cancelled",
+        "success_one": "Cleared",
+        "success_many": "Cleared",
+        "success_other": "Cleared"
+      },
+      "loadError": "Impossible to load",
+      "noData": "No movement",
+      "search": {
+        "error": "Search error"
+      },
+      "update": {
+        "error": "Error",
+        "success": "Updated"
+      }
+    },
+    "title": "Transaction History"
+  },
+  "webhookDelivery": {
+    "actions": {
+      "add": "Manual relaunch",
+      "more": "Details"
+    },
+    "bulk": {
+      "delete_one": "Clear",
+      "delete_many": "Clear",
+      "delete_other": "Clear",
+      "deleteConfirm_one": "Delete?",
+      "deleteConfirm_many": "Clear all?",
+      "deleteConfirm_other": "Confirm?",
+      "deleteError": "Error",
+      "deleteReason": "Reason",
+      "deleting": "Deletion...",
+      "partialError_one": "Error",
+      "partialError_many": "Errors",
+      "partialError_other": "Errors"
+    },
+    "details": {
+      "information": "HTTP transmission report",
+      "title": "Webhook Delivery Details",
+      "view": "Consult"
+    },
+    "fields": {
+      "attemptCount": "Attempts",
+      "errorMessage": "HTTP/Network error",
+      "eventType": "Event nature",
+      "httpStatusCode": "HTTP Code",
+      "nextRetryAt": "Next try",
+      "payload": "Content sent",
+      "responseBody": "Client response",
+      "sentAt": "Send date",
+      "status": "Final state",
+      "webhookEndpointId": "Endpoint ID",
+      "webhookEndpointName": "Endpoint Name"
+    },
+    "messages": {
+      "create": {
+        "error": "Error",
+        "success": "Delivery recorded"
+      },
+      "delete": {
+        "confirm": "Delete?",
+        "error": "Error",
+        "success": "Deleted",
+        "success_one": "Cleared",
+        "success_many": "Cleared",
+        "success_other": "Cleared"
+      },
+      "loadError": "Impossible to load",
+      "noData": "No send log",
+      "search": {
+        "error": "Search error"
+      },
+      "update": {
+        "error": "Error",
+        "success": "Updated"
+      }
+    },
+    "title": "Webhook Delivery Logs"
+  },
+  "webhookEndpoint": {
+    "actions": {
+      "add": "New webhook",
+      "edit": "Configure",
+      "more": "Actions"
+    },
+    "bulk": {
+      "delete_one": "Delete",
+      "delete_many": "Delete all",
+      "delete_other": "Clear selection",
+      "deleteConfirm_one": "Delete this endpoint?",
+      "deleteConfirm_many": "Delete all?",
+      "deleteConfirm_other": "Delete {{count}}?",
+      "deleteError": "Error",
+      "deleteReason": "Reason",
+      "deleting": "Deletion...",
+      "partialError_one": "Error",
+      "partialError_many": "Errors",
+      "partialError_other": "Errors"
+    },
+    "details": {
+      "information": "HTTP notification target",
+      "title": "Webhook Details",
+      "view": "Consult"
+    },
+    "fields": {
+      "companyEmail": "Company email",
+      "companyId": "Company ID",
+      "companyName": "Company",
+      "companyStatus": "Status",
+      "data": "Data",
+      "description": "Description",
+      "detail": "Details",
+      "errorCode": "Error code",
+      "events": "Events listened to",
+      "instance": "Instance",
+      "isActive": "Active",
+      "lastSecretGenerated": "Last secret generated",
+      "maxRetries": "Max retries",
+      "metadata": "Metadata",
+      "retryDelaySeconds": "Retry delay (s)",
+      "status": "Status",
+      "success": "Success",
+      "timeoutSeconds": "Timeout (s)",
+      "timestamp": "Timestamp",
+      "title": "Webhook name",
+      "traceId": "Trace ID",
+      "type": "Type",
+      "url": "Target URL",
+      "validationErrors": "Errors"
+    },
+    "form": {
+      "create": {
+        "description": "Receive real-time notifications on your server.",
+        "submit": "Create Webhook",
+        "title": "New Webhook"
+      },
+      "edit": {
+        "description": "Modify URL or events.",
+        "loadError": "Loading error",
+        "submit": "Save",
+        "title": "Edit Webhook"
+      }
+    },
+    "messages": {
+      "create": {
+        "error": "Failure",
+        "success": "Webhook created"
+      },
+      "delete": {
+        "confirm": "Delete?",
+        "error": "Error",
+        "success": "Webhook deleted",
+        "success_one": "Cleared",
+        "success_many": "Cleared",
+        "success_other": "Cleared"
+      },
+      "loadError": "Loading error",
+      "noData": "No webhook configured",
+      "search": {
+        "error": "Search error"
+      },
+      "update": {
+        "error": "Failure",
+        "success": "Updated"
+      }
+    },
+    "title": "Webhooks & Callbacks"
+  },
+  "WebhookEndpoint": {
+    "form": {
+      "companyIdLabel": "Owner",
+      "companyIdPlaceholder": "Choose",
+      "descriptionLabel": "Subject",
+      "descriptionPlaceholder": "e.g., External system sync",
+      "eventsLabel": "Trigger events",
+      "eventsPlaceholder": "payment.success, message.delivered...",
+      "isActiveLabel": "Enable sending",
+      "lastSecretGeneratedLabel": "Last key",
+      "lastSecretGeneratedPlaceholder": "N/A",
+      "maxRetriesLabel": "Number of retries",
+      "maxRetriesPlaceholder": "3",
+      "retryDelaySecondsLabel": "Wait (seconds)",
+      "retryDelaySecondsPlaceholder": "60",
+      "timeoutSecondsLabel": "Max response time (s)",
+      "timeoutSecondsPlaceholder": "30",
+      "urlLabel": "HTTPS URL",
+      "urlPlaceholder": "https://your-server.com/webhook"
+    }
   }
 }

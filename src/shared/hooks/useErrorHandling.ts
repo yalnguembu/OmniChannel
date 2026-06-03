@@ -1,7 +1,11 @@
 // import { useQueryClient } from '@tanstack/react-query'
-import { createErrorHandler, handleRequestError, mapValidationErrorsToForm } from "@/shared/lib/errorHandling"
-import { RedirectRule } from "../types/error"
-import type { FieldValues, UseFormSetError } from "react-hook-form"
+import {
+  createErrorHandler,
+  handleRequestError,
+  mapValidationErrorsToForm,
+} from "@/lib/errorHandling";
+import type { FieldValues, UseFormSetError } from "react-hook-form";
+import type { RedirectRule } from "@/shared/types/error";
 
 /**
  * Hook for handling API errors consistently across the application
@@ -14,38 +18,38 @@ export const useErrorHandling = () => {
    */
   const createMutationErrorHandler = (
     options: {
-      toastMessage?: string
-      storeError?: (message: string) => void
-      redirectRules?: RedirectRule | RedirectRule[]
-      showToast?: boolean
+      toastMessage?: string;
+      storeError?: (message: string) => void;
+      redirectRules?: RedirectRule | RedirectRule[];
+      showToast?: boolean;
     } = {},
   ) => {
-    return createErrorHandler(options)
-  }
+    return createErrorHandler(options);
+  };
 
   /**
    * Create error handling config for queries
    */
   const createQueryErrorConfig = (
     options: {
-      toastMessage?: string
-      storeError?: (message: string) => void
-      redirectRules?: RedirectRule | RedirectRule[]
-      showToast?: boolean
-      onError?: (error: any) => void
+      toastMessage?: string;
+      storeError?: (message: string) => void;
+      redirectRules?: RedirectRule | RedirectRule[];
+      showToast?: boolean;
+      onError?: (error: any) => void;
     } = {},
   ) => {
-    const { onError, ...rest } = options
+    const { onError, ...rest } = options;
 
     return {
       onError: (error: any) => {
-        handleRequestError(error, rest)
+        handleRequestError(error, rest);
         if (onError) {
-          onError(error)
+          onError(error);
         }
       },
-    }
-  }
+    };
+  };
 
   /**
    * Create error handler for mutations with form validation error mapping
@@ -54,30 +58,32 @@ export const useErrorHandling = () => {
   const createFormMutationErrorHandler = <T extends FieldValues>(
     setError: UseFormSetError<T>,
     options: {
-      toastMessage?: string
-      showToast?: boolean
-      onError?: (error: any) => void
-      prefix?: string
+      toastMessage?: string;
+      showToast?: boolean;
+      onError?: (error: any) => void;
+      prefix?: string;
     } = {},
   ) => {
     return (error: any) => {
       // Try to map validation errors to form fields
-      const mapped = mapValidationErrorsToForm(error, setError, { prefix: options.prefix })
+      const mapped = mapValidationErrorsToForm(error, setError, {
+        prefix: options.prefix,
+      });
 
       // If no validation errors were mapped, show the error via toast
       if (!mapped) {
         handleRequestError(error, {
           showToast: options.showToast !== false,
           toastMessage: options.toastMessage,
-        })
+        });
       }
 
       // Call custom error handler if provided
       if (options.onError) {
-        options.onError(error)
+        options.onError(error);
       }
-    }
-  }
+    };
+  };
 
   return {
     createMutationErrorHandler,
@@ -85,5 +91,5 @@ export const useErrorHandling = () => {
     createFormMutationErrorHandler,
     handleRequestError,
     mapValidationErrorsToForm,
-  }
-}
+  };
+};

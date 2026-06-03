@@ -1,0 +1,17 @@
+{
+  "title": "Contacts",
+  "new": "Nouveau contact",
+  "import": "Importer CSV",
+  "firstName": "Prénom",
+  "lastName": "Nom",
+  "email": "Email",
+  "phone": "Téléphone",
+  "city": "Ville",
+  "country": "Pays",
+  "status_active": "Actif",
+  "status_inactive": "Inactif",
+  "status_blocked": "Bloqué",
+  "segments": "Segments",
+  "preferences": "Préférences canaux",
+  "history": "Historique messages"
+}

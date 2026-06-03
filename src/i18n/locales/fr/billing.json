@@ -1,0 +1,13 @@
+{
+  "title": "Facturation",
+  "wallet": "Wallet",
+  "balance": "Solde disponible",
+  "recharge": "Recharger",
+  "transactions": "Transactions",
+  "invoices": "Factures",
+  "subscription": "Abonnement",
+  "payment_methods": "Méthodes de paiement",
+  "status_pending": "En attente",
+  "status_paid": "Payée",
+  "status_overdue": "En retard"
+}

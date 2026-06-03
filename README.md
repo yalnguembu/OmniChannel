@@ -1,90 +1,80 @@
-# Template Web
+# OmniChannel — Frontend
 
-Application front-end pour une plateforme de microcrédit, construite avec Vite, React, TypeScript, TailwindCSS et TanStack Router.
+Interface client React + TypeScript pour la plateforme OmniChannel.
 
-## 📦 Aperçu du projet
+## Stack
 
-Ce projet est une application web moderne, typée et optimisée pour la performance, avec les technologies suivantes :
+- **React 18** + **TypeScript**
+- **TanStack Router** (file-based routing)
+- **TanStack Query** (server state)
+- **Zustand** (client state)
+- **Tailwind CSS v4** (styles)
+- **Framer Motion** (animations)
+- **React Hook Form** + **Zod** (formulaires)
+- **Sonner** (toasts)
+- **Axios** (HTTP)
 
-- **Vite** – Bundler ultra-rapide pour le développement
-- **React 19** – Librairie UI
-- **TypeScript** – Typage statique
-- **TailwindCSS 4** – Utilitaire CSS moderne
-- **TanStack Router** – Gestion avancée du routage
-- **Zustand** – Gestion légère de l’état global
-- **React Hook Form** + **Zod** – Gestion des formulaires et validation
-- **i18next** – Internationalisation
+## Démarrage rapide
 
----
+```bash
+# 1. Installer les dépendances
+npm install
 
-## 🚀 Scripts disponibles
+# 2. Configurer l'environnement
+cp .env.example .env
+# Éditer VITE_API_URL avec l'URL de votre API
 
-Voici un récapitulatif des scripts définis dans le `package.json` :
+# 3. Lancer en développement
+npm run dev
 
-| Script          | Description                                                                |
-|-----------------|----------------------------------------------------------------------------|
-| `dev`           | Démarre le serveur de développement avec Vite                              |
-| `build`         | Compile TypeScript (`tsc -b`) puis construit le projet avec Vite           |
-| `lint`          | Lint tout le projet avec ESLint                                            |
-| `preview`       | Lance un aperçu local de la version de production                          |
-| `format`        | Formate tous les fichiers `.ts` et `.tsx` avec Prettier                    |
-| `format:check`  | Vérifie si les fichiers sont bien formatés                                 |
-| `parse`         | Extrait les chaînes traduisibles avec `i18next-parser` et génère les types |
-| `release:dev`   | Prépare une version de pré-release (dev) avec `standard-version`           |
-| `release:prod`  | Génère une version stable avec `standard-version`                          |
-
----
-
----
-
-## 🔐 Authentification & Sécurité
-
-L’authentification est gérée dans le répertoire [`/src/auth/*`](./src/auth/), avec une logique centralisée dans le **store Zustand `authStore`**.
-
-Les routes protégées sont définies dans le répertoire [`/_protected/*`](./src/routes/_protected).  
-Le fichier [`_protected.tsx`](./src/routes/_protected.tsx) s’occupe de la vérification de l’authentification à chaque chargement :
-
-```tsx
-beforeLoad: async () => {
-  const { user, fetchUser } = useAuthStore.getState()
-  if (!user) {
-    try {
-      await fetchUser()
-    } catch (e) {
-      throw redirect({ to: "/auth/login" })
-    }
-  }
-
-  const { isAuthenticated } = useAuthStore.getState()
-  if (!isAuthenticated) {
-    throw redirect({
-      to: "/auth/login",
-      search: { redirect: window.location.pathname },
-    })
-  }
-}
+# 4. Build production
+npm run build
 ```
 
-## 🌍 Internationalisation
+## Structure
 
-L'internationalisation est assurée par i18next avec les plugins suivants :
+```
+src/
+├── api/              # Client HTTP, services générés, hooks React Query
+├── components/       # Composants UI réutilisables
+│   ├── ui/           # Badge, Button, Input, Modal, Toggle, ...
+│   ├── layout/       # Sidebar, Header, Breadcrumbs
+│   ├── feedback/     # EmptyState, PageLoader, KPICard
+│   ├── data-table/   # DataTable + Pagination
+│   └── charts/       # DeliveryRateChart, WalletBalanceChart, ...
+├── lib/              # Utils, date, currency, validators (Zod), animations
+├── routes/           # Pages (TanStack Router file-based)
+│   ├── _portal/      # Espace client (dashboard, produits, contacts, ...)
+│   └── _admin/       # Backoffice admin
+├── store/            # Zustand stores (auth, ui, notifications, campaigns)
+├── i18n/             # Internationalisation (fr)
+└── types/            # Types TypeScript globaux
+```
 
--i18next-browser-languagedetector
--i18next-http-backend
--react-i18next
+## Portail client (`/`)
 
-Utilise le script npm run parse pour extraire les chaînes traduisibles et générer les types.
+| Route | Page |
+|-------|------|
+| `/dashboard` | KPIs globaux |
+| `/products` | Gestion des produits |
+| `/contacts` | Contacts + segments + import |
+| `/campaigns` | Campagnes + wizard 5 étapes |
+| `/templates` | Éditeur de templates |
+| `/messages` | Historique messages |
+| `/billing/*` | Wallet, factures, abonnement |
+| `/integrations/*` | Connecteurs, webhooks, API keys |
+| `/settings/*` | Company, utilisateurs, rôles, canaux, blocklist, tags |
 
-## ⚙️ Variables d’environnement
-Le fichier .env.example contient les variables d’environnement nécessaires pour démarrer le projet.
-Copiez ce fichier et renommez-le .env, puis complétez les valeurs : 
+## Backoffice admin (`/admin`)
 
-# cp .env.example .env
-
-
-## 🧪 Qualité du code
-
-# Linting : npm run lint
-# Formatage : npm run format / format:check
-
-Typage strict via TypeScript + ESLint + Prettier
+| Route | Page |
+|-------|------|
+| `/admin` | Dashboard global |
+| `/admin/companies` | Toutes les companies |
+| `/admin/providers` | Providers SMS/Email/WhatsApp |
+| `/admin/pricing` | Grille tarifaire |
+| `/admin/messages` | Messages cross-companies |
+| `/admin/channels` | Canaux plateforme |
+| `/admin/logs/audit` | Audit log |
+| `/admin/logs/system` | Logs système |
+| `/admin/settings` | Paramètres système |

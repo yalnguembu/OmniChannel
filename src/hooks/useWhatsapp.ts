@@ -1,0 +1,251 @@
+import {
+  useMutation,
+  useQuery,
+  useQueryClient,
+  useInfiniteQuery,
+} from "@tanstack/react-query";
+import { toast } from "sonner";
+import type {
+  Conversation,
+  ConversationStatus,
+  Message,
+  Stats,
+  User,
+} from "@/models/whatsapp.models";
+import {
+  getApiConversationSearch,
+  getApiConversationStats,
+  getApiConversationMessageSearch,
+  putApiConversationStatus,
+  putApiConversationAssign,
+  postApiWhatsAppSendText,
+  postApiWhatsAppSendReply,
+  postApiWhatsAppSendImage,
+  postApiWhatsAppSendDocument,
+  postApiWhatsAppSendFlow,
+  postApiWhatsAppSendBulkJ0,
+  postApiWhatsAppSendBulkJ3,
+  postApiUserSearch,
+} from "@/shared/api/generated/sdk.gen";
+
+// ─── Payload types (kept stable for consumers) ───────────────────────────────
+
+export interface ConversationSearchParams {
+  pageNumber?: number;
+  pageSize?: number;
+  status?: ConversationStatus;
+  unreadOnly?: boolean;
+  searchTerm?: string;
+}
+export interface SendTextPayload {
+  to: string;
+  body: string;
+}
+export interface SendReplyPayload {
+  to: string;
+  body: string;
+  replyToExternalMessageId: string;
+}
+export interface SendMediaPayload {
+  to: string;
+  type: "image" | "audio" | "document";
+  file: File;
+  caption?: string;
+}
+export interface SendFlowPayload {
+  to: string;
+  flowToken: string;
+}
+export interface BulkSendPayload {
+  type: "j0" | "j3";
+  file: File;
+}
+
+const PAGE_SIZE = 60;
+
+// ─── Response helpers (hey-api result → envelope.data payload) ────────────────
+
+function listOf<T>(res: any): T[] {
+  const payload = res?.data?.data;
+  return (Array.isArray(payload) ? payload : (payload?.items ?? [])) as T[];
+}
+function singleOf<T>(res: any): T | null {
+  return (res?.data?.data ?? null) as T | null;
+}
+
+// ─── Query Keys ──────────────────────────────────────────────────────────────
+
+export const whatsappKeys = {
+  all: ["whatsapp"] as const,
+  conversations: (params: ConversationSearchParams) =>
+    [...whatsappKeys.all, "conversations", params] as const,
+  messages: (convId: string) =>
+    [...whatsappKeys.all, "messages", convId] as const,
+  stats: () => [...whatsappKeys.all, "stats"] as const,
+  users: () => [...whatsappKeys.all, "users"] as const,
+};
+
+// ─── Conversations ────────────────────────────────────────────────────────────
+
+export function useConversations(params: ConversationSearchParams) {
+  return useInfiniteQuery({
+    queryKey: whatsappKeys.conversations(params),
+    queryFn: async ({ pageParam }) => {
+      const res = await getApiConversationSearch({
+        query: {
+          pageNumber: pageParam as number,
+          pageSize: PAGE_SIZE,
+          status: params.status,
+          unreadOnly: params.unreadOnly,
+          searchTerm: params.searchTerm,
+        },
+      });
+      return { items: listOf<Conversation>(res) };
+    },
+    initialPageParam: 1,
+    getNextPageParam: (lastPage, allPages) =>
+      lastPage.items.length === PAGE_SIZE ? allPages.length + 1 : undefined,
+    staleTime: 30_000,
+    refetchInterval: 60_000,
+  });
+}
+
+export function useStats() {
+  return useQuery({
+    queryKey: whatsappKeys.stats(),
+    queryFn: async () =>
+      singleOf<Stats>(await getApiConversationStats({ query: {} })),
+    staleTime: 30_000,
+    refetchInterval: 30_000,
+  });
+}
+
+export function useUsers() {
+  return useQuery({
+    queryKey: whatsappKeys.users(),
+    queryFn: async () =>
+      listOf<User>(
+        await postApiUserSearch({ body: { pageNumber: 1, pageSize: 100 } }),
+      ),
+    staleTime: 300_000,
+  });
+}
+
+export function useUpdateConversationStatus() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, status }: { id: string; status: ConversationStatus }) =>
+      putApiConversationStatus({ body: { id, status } }),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: whatsappKeys.all });
+      toast.success("Statut mis à jour");
+    },
+    onError: () => toast.error("Erreur lors de la mise à jour du statut"),
+  });
+}
+
+export function useAssignConversation() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, userId }: { id: string; userId: string }) =>
+      putApiConversationAssign({ body: { id, userId } }),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: whatsappKeys.all });
+      toast.success("Conversation assignée");
+    },
+    onError: () => toast.error("Erreur lors de l'assignation"),
+  });
+}
+
+// ─── Messages ────────────────────────────────────────────────────────────────
+
+export function useMessages(convId: string | null) {
+  return useQuery({
+    queryKey: whatsappKeys.messages(convId ?? ""),
+    queryFn: async () =>
+      listOf<Message>(
+        await getApiConversationMessageSearch({
+          query: { id: convId!, pageNumber: 1, pageSize: 250 },
+        }),
+      ),
+    enabled: !!convId,
+    staleTime: 0,
+  });
+}
+
+// ─── Send ─────────────────────────────────────────────────────────────────────
+
+export function useSendText() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (payload: SendTextPayload) =>
+      postApiWhatsAppSendText({ body: { to: payload.to, body: payload.body } }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: whatsappKeys.all }),
+    onError: () => toast.error("Erreur lors de l'envoi du message"),
+  });
+}
+
+export function useSendReply() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (payload: SendReplyPayload) =>
+      postApiWhatsAppSendReply({
+        body: {
+          to: payload.to,
+          body: payload.body,
+          replyToExternalMessageId: payload.replyToExternalMessageId,
+        },
+      }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: whatsappKeys.all }),
+    onError: () => toast.error("Erreur lors de l'envoi de la réponse"),
+  });
+}
+
+export function useSendMedia() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (payload: SendMediaPayload) => {
+      const body = {
+        To: payload.to,
+        File: payload.file,
+        Caption: payload.caption,
+      };
+      return payload.type === "image"
+        ? postApiWhatsAppSendImage({ body })
+        : postApiWhatsAppSendDocument({ body });
+    },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: whatsappKeys.all });
+      toast.success("Fichier envoyé");
+    },
+    onError: () => toast.error("Erreur lors de l'envoi du fichier"),
+  });
+}
+
+export function useSendFlow() {
+  return useMutation({
+    mutationFn: (payload: SendFlowPayload) =>
+      postApiWhatsAppSendFlow({
+        body: { to: payload.to, flowToken: payload.flowToken },
+      }),
+    onSuccess: () => toast.success("Flow envoyé ✓"),
+    onError: () => toast.error("Erreur lors de l'envoi du flow"),
+  });
+}
+
+export function useBulkSend() {
+  return useMutation({
+    mutationFn: (payload: BulkSendPayload) =>
+      payload.type === "j0"
+        ? postApiWhatsAppSendBulkJ0({ body: { file: payload.file } })
+        : postApiWhatsAppSendBulkJ3({ body: { file: payload.file } }),
+    onSuccess: (res: any) => {
+      const data = res?.data?.data ?? {};
+      toast.success(
+        `Campagne envoyée ✓ (Succès: ${data.successCount || 0}, Échecs: ${data.failureCount || 0})`,
+      );
+    },
+    onError: (err: any) =>
+      toast.error(err?.message || "Erreur lors de l'envoi de la campagne"),
+  });
+}

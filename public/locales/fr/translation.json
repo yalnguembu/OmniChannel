@@ -3,80 +3,210 @@
   "actions": {
     "openMenu": "Ouvrir le menu"
   },
+  "menu": {
+    "Dashboard": "Tableau de bord",
+    "Campaign": "Campagnes",
+    "CampaignChannel": "Canaux de Campagne",
+    "CampaignSegment": "Segments de Campagne",
+    "CampaignStatistic": "Statistiques de Campagne",
+    "CampaignStep": "Étapes de Campagne",
+    "Template": "Modèles de Message",
+    "TemplateChannel": "Canaux des Modèles",
+    "Client": "Clients",
+    "ClientChannelPreference": "Préférences Clients",
+    "ClientImport": "Importations Clients",
+    "ClientSegment": "Segments Clients",
+    "ClientSegmentMember": "Membres du Segment",
+    "User": "Utilisateurs",
+    "UserProfile": "Profils Utilisateurs",
+    "Channel": "Canaux",
+    "Message": "Historique Messages",
+    "MessageEvent": "Événements Message",
+    "Notification": "Notifications",
+    "WebhookDelivery": "Livraisons Webhook",
+    "WebhookEndpoint": "Configuration Webhook",
+    "Company": "Entreprises",
+    "CompanyApiKey": "Clés API Entreprise",
+    "CompanyChannel": "Canaux Entreprise",
+    "CompanySetting": "Paramètres Entreprise",
+    "CompanyVerification": "Vérifications KYC",
+    "Product": "Catalogue Produits",
+    "ProductChannel": "Canaux Produits",
+    "ProductChannelStatistic": "Stats Canaux Produits",
+    "Invoice": "Factures",
+    "Payment": "Paiements",
+    "PaymentMethod": "Modes de Paiement",
+    "Pricing": "Grille Tarifaire",
+    "Subscription": "Abonnements",
+    "SubscriptionPlan": "Plans d'Abonnement",
+    "Wallet": "Portefeuilles",
+    "WalletTransaction": "Transactions Portefeuille",
+    "Currency": "Devises",
+    "AuditLog": "Journaux d'Audit",
+    "Blocklist": "Liste Noire",
+    "Connector": "Connecteurs",
+    "Country": "Pays",
+    "EntityTag": "Tags d'Entité",
+    "File": "Fichiers",
+    "Integration": "Intégrations",
+    "IntegrationSyncLog": "Logs de Synchro",
+    "Job": "Tâches Système",
+    "Provider": "Fournisseurs",
+    "ProviderCallback": "Callbacks Fournisseur",
+    "SecureSetting": "Paramètres Sécurisés",
+    "Setting": "Paramètres Généraux",
+    "SysLog": "Logs Système",
+    "Tag": "Gestion des Tags"
+  },
   "applications": {
     "actions": {
-      "add": "_add",
-      "more": "_more"
+      "add": "Ajouter une application",
+      "more": "Plus d'actions"
     },
-    "apiKeyExpiresAtUtc": "_apiKeyExpiresAtUtc",
+    "apiKeyExpiresAtUtc": "Clé API expire le (UTC)",
     "bulk": {
-      "deleteError": "_deleteError",
-      "deleteReason": "_deleteReason",
-      "partialError_one": "_partialError",
-      "partialError_many": "_partialError",
-      "partialError_other": "_partialError"
+      "deleteError": "Erreur lors de la suppression groupée",
+      "deleteReason": "Motif de suppression",
+      "partialError_one": "Une erreur partielle s'est produite",
+      "partialError_many": "Plusieurs erreurs partielles se sont produites",
+      "partialError_other": "{{count}} erreurs partielles se sont produites"
     },
-    "create": "_create",
-    "details": "_details",
-    "edit": "_edit",
+    "create": "Créer une application",
+    "details": "Détails de l'application",
+    "edit": "Modifier l'application",
     "form": {
-      "companyIdLabel": "_companyIdLabel",
-      "companyIdPlaceholder": "_companyIdPlaceholder",
+      "companyIdLabel": "ID de l'entreprise",
+      "companyIdPlaceholder": "Sélectionnez une entreprise",
       "create": {
-        "description": "_description",
-        "submit": "_submit",
-        "title": "_title"
+        "description": "Enregistrez une nouvelle application pour accéder aux services.",
+        "submit": "Créer l'application",
+        "title": "Nouvelle Application"
       },
-      "descriptionLabel": "_descriptionLabel",
-      "descriptionPlaceholder": "_descriptionPlaceholder",
+      "descriptionLabel": "Description",
+      "descriptionPlaceholder": "Décrivez brièvement l'application",
       "edit": {
-        "description": "_description",
-        "loadError": "_loadError",
-        "submit": "_submit",
-        "title": "_title"
+        "description": "Mettez à jour les informations de votre application.",
+        "loadError": "Erreur lors du chargement des données",
+        "submit": "Enregistrer les modifications",
+        "title": "Modifier l'application"
       },
-      "nameLabel": "_nameLabel",
-      "namePlaceholder": "_namePlaceholder"
+      "nameLabel": "Nom de l'application",
+      "namePlaceholder": "Ex: Application Mobile Client"
     },
     "headers": {
-      "companyName": "_companyName",
-      "createdAt": "_createdAt",
-      "description": "_description",
-      "environment": "_environment",
-      "keys": "_keys",
-      "name": "_name",
-      "status": "_status"
+      "companyName": "Entreprise",
+      "createdAt": "Créé le",
+      "description": "Description",
+      "environment": "Environnement",
+      "keys": "Clés API",
+      "name": "Nom",
+      "status": "Statut"
     },
     "messages": {
       "create": {
-        "error": "_error",
-        "success": "_success"
+        "error": "Impossible de créer l'application.",
+        "success": "Application créée avec succès."
       },
       "delete": {
-        "confirm": "_confirm",
-        "error": "_error",
-        "success": "_success",
-        "success_one": "_success",
-        "success_many": "_success",
-        "success_other": "_success"
+        "confirm": "Voulez-vous vraiment supprimer cette application ?",
+        "error": "Erreur lors de la suppression.",
+        "success": "Application supprimée.",
+        "success_one": "L'application a été supprimée.",
+        "success_many": "Les applications ont été supprimées.",
+        "success_other": "{{count}} applications supprimées."
       },
       "fetch": {
-        "error": "_error"
+        "error": "Erreur lors de la récupération des applications."
       },
-      "noData": "_noData",
+      "noData": "Aucune application disponible.",
       "regenerateSecret": {
-        "error": "_error",
-        "success": "_success"
+        "error": "Échec de la régénération du secret.",
+        "success": "Nouveau secret généré avec succès."
       },
       "search": {
-        "error": "_error"
+        "error": "Erreur lors de la recherche."
       },
       "update": {
-        "error": "_error",
-        "success": "_success"
+        "error": "Échec de la mise à jour.",
+        "success": "Application mise à jour avec succès."
       }
     },
-    "title": "_title"
+    "title": "Applications",
+    "description": "Gérez les applications clientes (mobiles, web) qui interagissent avec la plateforme via l'API."
+  },
+  "auditLog": {
+    "actions": {
+      "add": "Ajouter un log",
+      "more": "Plus de détails"
+    },
+    "bulk": {
+      "delete_one": "Supprimer le log",
+      "delete_many": "Supprimer les logs",
+      "delete_other": "Supprimer les logs sélectionnés",
+      "deleteConfirm_one": "Confirmer la suppression ?",
+      "deleteConfirm_many": "Confirmer la suppression des logs ?",
+      "deleteConfirm_other": "Confirmer la suppression de {{count}} logs ?",
+      "deleteError": "Erreur de suppression",
+      "deleteReason": "Raison de la suppression",
+      "deleting": "Suppression en cours...",
+      "partialError_one": "Échec partiel sur un élément",
+      "partialError_many": "Échecs partiels",
+      "partialError_other": "Échecs sur {{count}} éléments"
+    },
+    "details": {
+      "information": "Informations d'audit",
+      "title": "Détails du Log d'Audit",
+      "view": "Consulter"
+    },
+    "fields": {
+      "action": "Action effectuée",
+      "changedColumn": "Colonne modifiée",
+      "changeReason": "Raison du changement",
+      "companyEmail": "Email entreprise",
+      "companyId": "ID Entreprise",
+      "companyName": "Nom entreprise",
+      "companyStatus": "Statut entreprise",
+      "entityDisplayName": "Nom de l'entité",
+      "entityId": "ID de l'entité",
+      "entityName": "Type d'entité",
+      "entityType": "Catégorie d'entité",
+      "ipAddress": "Adresse IP",
+      "newValues": "Nouvelles valeurs",
+      "oldValues": "Anciennes valeurs",
+      "riskLevel": "Niveau de risque",
+      "userAgent": "Agent Utilisateur",
+      "userEmail": "Email utilisateur",
+      "userFirstName": "Prénom",
+      "userId": "ID Utilisateur",
+      "userLastName": "Nom",
+      "userPhoneNumber": "Téléphone",
+      "userStatus": "Statut utilisateur"
+    },
+    "messages": {
+      "create": {
+        "error": "Erreur de création du log",
+        "success": "Log enregistré"
+      },
+      "delete": {
+        "confirm": "Supprimer définitivement ?",
+        "error": "Erreur système lors de la suppression",
+        "success": "Supprimé avec succès",
+        "success_one": "Élément supprimé",
+        "success_many": "Éléments supprimés",
+        "success_other": "Éléments supprimés"
+      },
+      "loadError": "Erreur de chargement des données d'audit",
+      "noData": "Aucun historique trouvé",
+      "search": {
+        "error": "Erreur lors de la recherche des logs"
+      },
+      "update": {
+        "error": "Mise à jour impossible",
+        "success": "Mis à jour"
+      }
+    },
+    "title": "Journaux d'Audit",
+    "description": "Consultez l'historique complet des activités pour la traçabilité, la sécurité et la conformité des opérations."
   },
   "auth": {
     "login": {
@@ -89,6 +219,1161 @@
       "title": "Connectez-vous à votre compte"
     }
   },
+  "blocklist": {
+    "actions": {
+      "add": "Ajouter à la liste noire",
+      "more": "Plus"
+    },
+    "bulk": {
+      "delete_one": "Retirer",
+      "delete_many": "Retirer la sélection",
+      "delete_other": "Retirer les éléments",
+      "deleteConfirm_one": "Voulez-vous retirer cet élément ?",
+      "deleteConfirm_many": "Voulez-vous retirer ces éléments ?",
+      "deleteConfirm_other": "Voulez-vous retirer ces {{count}} éléments ?",
+      "deleteError": "Erreur de retrait",
+      "deleteReason": "Motif du retrait",
+      "deleting": "Retrait en cours...",
+      "partialError_one": "Une erreur est survenue",
+      "partialError_many": "Des erreurs sont survenues",
+      "partialError_other": "Erreurs sur {{count}} éléments"
+    },
+    "details": {
+      "description": "Consultez les détails et la raison du blocage de cet élément.",
+      "title": "Détails de l'élément bloqué"
+    },
+    "fields": {
+      "blockType": "Type de blocage",
+      "companyEmail": "Email Entreprise",
+      "companyId": "ID Entreprise",
+      "companyName": "Nom Entreprise",
+      "companyStatus": "Statut Entreprise",
+      "data": "Données",
+      "detail": "Détails",
+      "errorCode": "Code erreur",
+      "instance": "Instance",
+      "metadata": "Métadonnées",
+      "reason": "Raison du blocage",
+      "status": "Statut",
+      "success": "Succès",
+      "timestamp": "Horodatage",
+      "title": "Titre",
+      "traceId": "ID de suivi",
+      "type": "Type",
+      "validationErrors": "Erreurs de validation",
+      "value": "Valeur bloquée"
+    },
+    "form": {
+      "create": {
+        "description": "Bloquer un email, un numéro ou une adresse IP.",
+        "submit": "Ajouter au blocage",
+        "title": "Ajouter un blocage"
+      },
+      "edit": {
+        "description": "Modifier les informations du blocage.",
+        "submit": "Mettre à jour",
+        "title": "Modifier le blocage"
+      }
+    },
+    "messages": {
+      "create": {
+        "error": "Échec de l'ajout.",
+        "success": "Élément bloqué avec succès."
+      },
+      "delete": {
+        "confirm": "Confirmer le déblocage ?",
+        "error": "Échec du déblocage.",
+        "success": "Élément débloqué.",
+        "success_one": "1 élément débloqué.",
+        "success_many": "Éléments débloqués.",
+        "success_other": "Éléments débloqués."
+      },
+      "noData": "La liste noire est vide.",
+      "search": {
+        "error": "Erreur lors de la recherche."
+      },
+      "update": {
+        "error": "Échec de la mise à jour.",
+        "success": "Blocage mis à jour."
+      }
+    },
+    "title": "Liste Noire",
+    "description": "Gérez les adresses (e-mail, téléphone, IP) qui sont explicitement interdites de communication."
+  },
+  "Blocklist": {
+    "form": {
+      "blockTypeLabel": "Type de blocage",
+      "blockTypePlaceholder": "Sélectionnez le type",
+      "companyIdLabel": "Entreprise",
+      "companyIdPlaceholder": "Choisir l'entreprise",
+      "reasonLabel": "Raison",
+      "reasonPlaceholder": "Pourquoi bloquer cet élément ?",
+      "valueLabel": "Valeur",
+      "valuePlaceholder": "Ex: +237..."
+    }
+  },
+  "campaign": {
+    "actions": {
+      "add": "Créer une campagne",
+      "edit": "Modifier la campagne",
+      "more": "Actions"
+    },
+    "bulk": {
+      "delete_one": "Supprimer la campagne",
+      "delete_many": "Supprimer les campagnes",
+      "delete_other": "Supprimer les campagnes sélectionnées",
+      "deleteConfirm_one": "Supprimer cette campagne ?",
+      "deleteConfirm_many": "Supprimer ces campagnes ?",
+      "deleteConfirm_other": "Supprimer {{count}} campagnes ?",
+      "deleteError": "Erreur lors de la suppression groupée",
+      "deleteReason": "Raison de l'annulation",
+      "deleting": "Suppression...",
+      "partialError_one": "Échec sur une campagne",
+      "partialError_many": "Plusieurs échecs",
+      "partialError_other": "Échecs sur {{count}} campagnes"
+    },
+    "details": {
+      "information": "Informations générales",
+      "title": "Détails de la Campagne",
+      "view": "Voir les statistiques"
+    },
+    "fields": {
+      "campaignStatisticName": "Nom des stats",
+      "campaignStatisticStatus": "Statut des stats",
+      "campaignStatisticType": "Type de stats",
+      "completedAt": "Terminée le",
+      "data": "Données",
+      "description": "Description",
+      "detail": "Détails",
+      "errorCode": "Code erreur",
+      "failedSends": "Échecs d'envoi",
+      "instance": "Instance",
+      "metadata": "Métadonnées",
+      "name": "Nom de la campagne",
+      "productId": "ID Produit",
+      "productName": "Produit associé",
+      "productStatus": "Statut produit",
+      "recurrencePattern": "Fréquence",
+      "scheduledAt": "Planifiée pour",
+      "startedAt": "Lancée le",
+      "status": "État",
+      "success": "Succès",
+      "successfulSends": "Envois réussis",
+      "timestamp": "Horodatage",
+      "title": "Titre de la campagne",
+      "totalRecipients": "Destinataires totaux",
+      "traceId": "Trace ID",
+      "type": "Type de canal",
+      "validationErrors": "Erreurs de validation"
+    },
+    "form": {
+      "create": {
+        "description": "Paramétrez une nouvelle campagne de communication.",
+        "submit": "Lancer la campagne",
+        "title": "Nouvelle Campagne"
+      },
+      "edit": {
+        "description": "Modifiez les paramètres de votre campagne en cours ou programmée.",
+        "loadError": "Impossible de charger la campagne",
+        "submit": "Enregistrer les modifications",
+        "title": "Modifier la campagne"
+      }
+    },
+    "messages": {
+      "create": {
+        "error": "Échec de création de la campagne.",
+        "success": "Campagne créée avec succès."
+      },
+      "delete": {
+        "confirm": "Confirmez-vous la suppression ?",
+        "error": "Erreur lors de la suppression.",
+        "success": "Campagne supprimée.",
+        "success_one": "La campagne a été retirée.",
+        "success_many": "Les campagnes ont été retirées.",
+        "success_other": "{{count}} campagnes retirées."
+      },
+      "loadError": "Erreur lors du chargement des données.",
+      "noData": "Aucune campagne trouvée.",
+      "search": {
+        "error": "Recherche infructueuse."
+      },
+      "update": {
+        "error": "Mise à jour échouée.",
+        "success": "Campagne mise à jour."
+      }
+    },
+    "title": "Campagnes",
+    "description": "Planifiez, exécutez et analysez vos opérations marketing et de communication multicanal."
+  },
+  "Campaign": {
+    "form": {
+      "completedAtLabel": "Date de fin",
+      "completedAtPlaceholder": "Sélectionner la date",
+      "descriptionLabel": "Description",
+      "descriptionPlaceholder": "Détails de la campagne",
+      "failedSendsLabel": "Nombre d'échecs",
+      "failedSendsPlaceholder": "0",
+      "nameLabel": "Nom de la campagne",
+      "namePlaceholder": "Ex: Promotion Noël 2024",
+      "productIdLabel": "Produit",
+      "productIdPlaceholder": "Sélectionner un produit",
+      "recurrencePatternLabel": "Récurrence",
+      "recurrencePatternPlaceholder": "Une seule fois / Hebdomadaire...",
+      "scheduledAtLabel": "Date de planification",
+      "scheduledAtPlaceholder": "Quand envoyer ?",
+      "startedAtLabel": "Date de début",
+      "startedAtPlaceholder": "Début effectif",
+      "statusLabel": "Statut",
+      "statusPlaceholder": "En attente / En cours",
+      "successfulSendsLabel": "Succès",
+      "successfulSendsPlaceholder": "0",
+      "totalRecipientsLabel": "Total destinataires",
+      "totalRecipientsPlaceholder": "Nombre de personnes",
+      "typeLabel": "Type de campagne",
+      "typePlaceholder": "SMS / Email / Push"
+    }
+  },
+  "campaignChannel": {
+    "actions": {
+      "add": "Ajouter un canal",
+      "more": "Plus"
+    },
+    "bulk": {
+      "delete_one": "Supprimer ce canal",
+      "delete_many": "Supprimer les canaux",
+      "delete_other": "Supprimer la sélection",
+      "deleteConfirm_one": "Retirer ce canal de la campagne ?",
+      "deleteConfirm_many": "Retirer ces canaux ?",
+      "deleteConfirm_other": "Retirer {{count}} canaux ?",
+      "deleteError": "Erreur de suppression",
+      "deleteReason": "Motif",
+      "deleting": "Suppression en cours...",
+      "partialError_one": "Une erreur est survenue",
+      "partialError_many": "Des erreurs sont survenues",
+      "partialError_other": "Erreurs sur {{count}} canaux"
+    },
+    "details": {
+      "description": "Détails de la configuration et des performances de ce canal.",
+      "title": "Détails du canal de campagne"
+    },
+    "fields": {
+      "campaignId": "ID Campagne",
+      "campaignName": "Nom Campagne",
+      "campaignStatus": "Statut Campagne",
+      "campaignType": "Type Campagne",
+      "channelCode": "Code Canal",
+      "channelId": "ID Canal",
+      "channelName": "Canal",
+      "data": "Données",
+      "detail": "Détails",
+      "errorCode": "Code Erreur",
+      "instance": "Instance",
+      "metadata": "Métadonnées",
+      "priority": "Priorité",
+      "status": "Statut",
+      "success": "Succès",
+      "templateId": "ID Modèle",
+      "templateName": "Modèle utilisé",
+      "templateStatus": "Statut Modèle",
+      "timestamp": "Horodatage",
+      "title": "Titre",
+      "traceId": "ID Trace",
+      "type": "Type",
+      "validationErrors": "Erreurs de validation"
+    },
+    "form": {
+      "create": {
+        "description": "Ajoutez un canal de diffusion à cette campagne.",
+        "submit": "Ajouter le canal",
+        "title": "Nouveau canal"
+      },
+      "edit": {
+        "description": "Modifier les paramètres du canal.",
+        "submit": "Enregistrer",
+        "title": "Modifier le canal"
+      }
+    },
+    "messages": {
+      "create": {
+        "error": "Échec de l'ajout du canal.",
+        "success": "Canal ajouté avec succès."
+      },
+      "delete": {
+        "confirm": "Supprimer le canal ?",
+        "error": "Erreur lors du retrait.",
+        "success": "Canal retiré.",
+        "success_one": "1 canal retiré.",
+        "success_many": "Canaux retirés.",
+        "success_other": "{{count}} canaux retirés."
+      },
+      "noData": "Aucun canal configuré pour cette campagne.",
+      "search": {
+        "error": "Erreur de recherche."
+      },
+      "update": {
+        "error": "Échec de la mise à jour.",
+        "success": "Canal mis à jour."
+      }
+    },
+    "title": "Canaux de Campagne",
+    "description": "Associez les canaux de communication (SMS, Email) à utiliser pour une campagne spécifique."
+  },
+  "CampaignChannel": {
+    "form": {
+      "campaignIdLabel": "Campagne",
+      "campaignIdPlaceholder": "Sélectionner la campagne",
+      "channelIdLabel": "Canal",
+      "channelIdPlaceholder": "SMS, Email, etc.",
+      "priorityLabel": "Priorité",
+      "priorityPlaceholder": "Ordre d'envoi",
+      "templateIdLabel": "Modèle",
+      "templateIdPlaceholder": "Choisir un modèle de message"
+    }
+  },
+  "campaignSegment": {
+    "actions": {
+      "add": "Ajouter un segment",
+      "more": "Plus"
+    },
+    "bulk": {
+      "delete_one": "Retirer le segment",
+      "delete_many": "Retirer les segments",
+      "delete_other": "Retirer la sélection",
+      "deleteConfirm_one": "Voulez-vous retirer ce segment ?",
+      "deleteConfirm_many": "Voulez-vous retirer ces segments ?",
+      "deleteConfirm_other": "Voulez-vous retirer {{count}} segments ?",
+      "deleteError": "Erreur lors du retrait",
+      "deleteReason": "Motif",
+      "deleting": "Retrait...",
+      "partialError_one": "Échec sur un segment",
+      "partialError_many": "Plusieurs échecs",
+      "partialError_other": "Échecs sur {{count}} segments"
+    },
+    "details": {
+      "description": "Informations détaillées sur le segment utilisé dans cette campagne.",
+      "title": "Détails du segment de campagne"
+    },
+    "fields": {
+      "campaignId": "ID Campagne",
+      "campaignName": "Campagne",
+      "campaignStatus": "Statut",
+      "campaignType": "Type",
+      "data": "Données",
+      "detail": "Détails",
+      "errorCode": "Code Erreur",
+      "instance": "Instance",
+      "metadata": "Métadonnées",
+      "segmentId": "ID Segment",
+      "segmentName": "Nom du segment",
+      "status": "Statut",
+      "success": "Succès",
+      "timestamp": "Horodatage",
+      "title": "Titre",
+      "traceId": "ID Trace",
+      "type": "Type",
+      "validationErrors": "Erreurs"
+    },
+    "form": {
+      "create": {
+        "description": "Associez un segment de clientèle à cette campagne.",
+        "submit": "Ajouter le segment",
+        "title": "Ajouter un segment"
+      },
+      "edit": {
+        "description": "Modifier l'association du segment.",
+        "submit": "Enregistrer",
+        "title": "Modifier le segment"
+      }
+    },
+    "messages": {
+      "create": {
+        "error": "Échec de l'ajout.",
+        "success": "Segment ajouté."
+      },
+      "delete": {
+        "confirm": "Confirmer ?",
+        "error": "Erreur système.",
+        "success": "Segment retiré.",
+        "success_one": "1 segment retiré.",
+        "success_many": "Segments retirés.",
+        "success_other": "Segments retirés."
+      },
+      "noData": "Aucun segment pour cette campagne.",
+      "search": {
+        "error": "Erreur de recherche."
+      },
+      "update": {
+        "error": "Échec de mise à jour.",
+        "success": "Mis à jour."
+      }
+    },
+    "title": "Segments de Campagne",
+    "description": "Ciblez vos campagnes en les associant à des segments de clients spécifiques."
+  },
+  "CampaignSegment": {
+    "form": {
+      "campaignIdLabel": "Campagne",
+      "campaignIdPlaceholder": "Choisir la campagne",
+      "segmentIdLabel": "Segment cible",
+      "segmentIdPlaceholder": "Choisir le segment de clients"
+    }
+  },
+  "campaignStatistic": {
+    "actions": {
+      "add": "Ajouter une statistique",
+      "more": "Plus"
+    },
+    "bulk": {
+      "delete_one": "Supprimer",
+      "delete_many": "Supprimer les éléments",
+      "delete_other": "Supprimer la sélection",
+      "deleteConfirm_one": "Confirmer ?",
+      "deleteConfirm_many": "Confirmer la suppression ?",
+      "deleteConfirm_other": "Confirmer pour {{count}} éléments ?",
+      "deleteError": "Erreur",
+      "deleteReason": "Raison",
+      "deleting": "En cours...",
+      "partialError_one": "Erreur partielle",
+      "partialError_many": "Erreurs multiples",
+      "partialError_other": "Erreurs"
+    },
+    "details": {
+      "information": "Statistiques de performance",
+      "title": "Analyse de la Campagne",
+      "view": "Visualiser"
+    },
+    "fields": {
+      "bounceRate": "Taux de rebond",
+      "campaignId": "ID Campagne",
+      "campaignName": "Campagne",
+      "campaignStatus": "Statut",
+      "campaignType": "Type",
+      "clickRate": "Taux de clic",
+      "deliveryRate": "Taux de livraison",
+      "openRate": "Taux d'ouverture",
+      "totalBounced": "Messages rejetés",
+      "totalClicked": "Total clics",
+      "totalCost": "Coût total",
+      "totalDelivered": "Livrés avec succès",
+      "totalFailed": "Échecs totaux",
+      "totalOpened": "Total ouvertures",
+      "totalRecipients": "Cibles totales",
+      "totalSent": "Total envoyés"
+    },
+    "messages": {
+      "create": {
+        "error": "Erreur de création",
+        "success": "Statistique créée"
+      },
+      "delete": {
+        "confirm": "Supprimer ?",
+        "error": "Échec de suppression",
+        "success": "Supprimé",
+        "success_one": "Supprimé",
+        "success_many": "Éléments supprimés",
+        "success_other": "Supprimés"
+      },
+      "loadError": "Impossible de charger les statistiques",
+      "noData": "Données statistiques indisponibles",
+      "search": {
+        "error": "Erreur de recherche"
+      },
+      "update": {
+        "error": "Échec mise à jour",
+        "success": "Mis à jour"
+      }
+    },
+    "title": "Statistiques de Campagne",
+    "description": "Analysez les indicateurs de performance clés (KPI) pour évaluer l'efficacité de vos campagnes."
+  },
+  "campaignStep": {
+    "actions": {
+      "add": "Ajouter une étape",
+      "more": "Actions"
+    },
+    "bulk": {
+      "delete_one": "Supprimer l'étape",
+      "delete_many": "Supprimer les étapes",
+      "delete_other": "Supprimer la sélection",
+      "deleteConfirm_one": "Voulez-vous supprimer cette étape ?",
+      "deleteConfirm_many": "Voulez-vous supprimer ces étapes ?",
+      "deleteConfirm_other": "Voulez-vous supprimer {{count}} étapes ?",
+      "deleteError": "Erreur de suppression",
+      "deleteReason": "Motif",
+      "deleting": "Suppression...",
+      "partialError_one": "Échec partiel",
+      "partialError_many": "Échecs partiels",
+      "partialError_other": "Échecs sur {{count}} étapes"
+    },
+    "details": {
+      "description": "Configuration et conditions d'exécution de cette étape.",
+      "title": "Détails de l'étape"
+    },
+    "fields": {
+      "campaignId": "ID Campagne",
+      "campaignName": "Campagne",
+      "campaignStatus": "Statut",
+      "campaignType": "Type",
+      "channelCode": "Code Canal",
+      "channelId": "ID Canal",
+      "channelName": "Canal",
+      "conditions": "Conditions",
+      "data": "Données",
+      "delayInMinutes": "Délai (min)",
+      "detail": "Détails",
+      "errorCode": "Code Erreur",
+      "instance": "Instance",
+      "metadata": "Métadonnées",
+      "name": "Nom de l'étape",
+      "status": "État",
+      "stepOrder": "Ordre",
+      "success": "Succès",
+      "templateId": "ID Modèle",
+      "templateName": "Modèle",
+      "templateStatus": "Statut Modèle",
+      "timestamp": "Horodatage",
+      "title": "Titre",
+      "traceId": "Trace ID",
+      "type": "Type",
+      "validationErrors": "Erreurs"
+    },
+    "form": {
+      "create": {
+        "description": "Définissez une nouvelle étape pour votre workflow de campagne.",
+        "submit": "Créer l'étape",
+        "title": "Nouvelle Étape"
+      },
+      "edit": {
+        "description": "Modifiez les paramètres de cette étape.",
+        "submit": "Enregistrer",
+        "title": "Modifier l'étape"
+      }
+    },
+    "messages": {
+      "create": {
+        "error": "Échec de création de l'étape.",
+        "success": "Étape ajoutée."
+      },
+      "delete": {
+        "confirm": "Supprimer l'étape ?",
+        "error": "Erreur lors de la suppression.",
+        "success": "Étape supprimée.",
+        "success_one": "Étape supprimée.",
+        "success_many": "Étapes supprimées.",
+        "success_other": "Étapes supprimées."
+      },
+      "noData": "Aucune étape définie.",
+      "search": {
+        "error": "Recherche échouée."
+      },
+      "update": {
+        "error": "Mise à jour échouée.",
+        "success": "Étape mise à jour."
+      }
+    },
+    "title": "Étapes de Campagne",
+    "description": "Construisez des scénarios automatisés (workflows) en définissant des séquences d'actions et de conditions."
+  },
+  "CampaignStep": {
+    "form": {
+      "campaignIdLabel": "Campagne",
+      "campaignIdPlaceholder": "Choisir la campagne",
+      "channelIdLabel": "Canal",
+      "channelIdPlaceholder": "Email, SMS, etc.",
+      "conditionsLabel": "Conditions d'activation",
+      "conditionsPlaceholder": "Ex: Si non ouvert après 2 jours",
+      "delayInMinutesLabel": "Attente avant envoi (min)",
+      "delayInMinutesPlaceholder": "Ex: 60",
+      "nameLabel": "Nom de l'étape",
+      "namePlaceholder": "Ex: Relance automatique",
+      "stepOrderLabel": "Position dans la séquence",
+      "stepOrderPlaceholder": "1, 2, 3...",
+      "templateIdLabel": "Modèle de message",
+      "templateIdPlaceholder": "Choisir un modèle"
+    }
+  },
+  "channel": {
+    "actions": {
+      "add": "Ajouter un canal",
+      "edit": "Modifier le canal",
+      "more": "Plus d'actions"
+    },
+    "bulk": {
+      "delete_one": "Désactiver le canal",
+      "delete_many": "Désactiver les canaux",
+      "delete_other": "Désactiver la sélection",
+      "deleteConfirm_one": "Voulez-vous supprimer ce canal ?",
+      "deleteConfirm_many": "Voulez-vous supprimer ces canaux ?",
+      "deleteConfirm_other": "Voulez-vous supprimer ces {{count}} canaux ?",
+      "deleteError": "Échec de suppression groupée",
+      "deleteReason": "Motif",
+      "deleting": "Suppression en cours...",
+      "partialError_one": "Une erreur partielle est survenue",
+      "partialError_many": "Des erreurs partielles sont survenues",
+      "partialError_other": "Erreurs sur {{count}} canaux"
+    },
+    "details": {
+      "information": "Configuration du canal",
+      "title": "Détails du Canal de Communication",
+      "view": "Détails"
+    },
+    "fields": {
+      "code": "Code technique",
+      "data": "Données",
+      "description": "Description",
+      "detail": "Détails",
+      "errorCode": "Code erreur",
+      "instance": "Instance",
+      "isActive": "Actif",
+      "maxContentLength": "Longueur max. contenu",
+      "metadata": "Métadonnées",
+      "name": "Nom du canal",
+      "requiresOptIn": "Opt-in requis",
+      "status": "Statut",
+      "success": "Succès",
+      "supportsAttachments": "Pièces jointes supportées",
+      "supportsRichContent": "Contenu riche supporté",
+      "timestamp": "Horodatage",
+      "title": "Titre",
+      "traceId": "ID de suivi",
+      "type": "Type de canal",
+      "validationErrors": "Erreurs de validation"
+    },
+    "form": {
+      "create": {
+        "description": "Enregistrez un nouveau canal de communication dans le système.",
+        "submit": "Enregistrer le canal",
+        "title": "Nouveau Canal"
+      },
+      "edit": {
+        "description": "Modifiez les capacités et les paramètres du canal.",
+        "loadError": "Impossible de charger le canal",
+        "submit": "Mettre à jour",
+        "title": "Modifier le Canal"
+      }
+    },
+    "messages": {
+      "create": {
+        "error": "Échec de création du canal.",
+        "success": "Canal créé avec succès."
+      },
+      "delete": {
+        "confirm": "Supprimer définitivement ce canal ?",
+        "error": "Erreur lors de la suppression.",
+        "success": "Canal supprimé.",
+        "success_one": "Le canal a été supprimé.",
+        "success_many": "Les canaux ont été supprimés.",
+        "success_other": "{{count}} canaux supprimés."
+      },
+      "loadError": "Erreur de chargement.",
+      "noData": "Aucun canal disponible.",
+      "search": {
+        "error": "Recherche impossible."
+      },
+      "update": {
+        "error": "Échec de mise à jour.",
+        "success": "Canal mis à jour."
+      }
+    },
+    "title": "Canaux",
+    "description": "Configurez les différents moyens de communication (SMS, Email, Push, etc.) disponibles sur la plateforme."
+  },
+  "Channel": {
+    "form": {
+      "codeLabel": "Code unique",
+      "codePlaceholder": "Ex: SMS_GLOBAL",
+      "descriptionLabel": "Description",
+      "descriptionPlaceholder": "À quoi sert ce canal ?",
+      "isActiveLabel": "Canal actif",
+      "maxContentLengthLabel": "Limite de caractères",
+      "maxContentLengthPlaceholder": "Ex: 160",
+      "nameLabel": "Nom public",
+      "namePlaceholder": "Ex: SMS International",
+      "requiresOptInLabel": "Demander le consentement (Opt-in)",
+      "supportsAttachmentsLabel": "Autoriser les fichiers",
+      "supportsRichContentLabel": "Autoriser HTML/Images"
+    }
+  },
+  "client": {
+    "actions": {
+      "add": "Ajouter un client",
+      "edit": "Modifier le client",
+      "more": "Actions"
+    },
+    "bulk": {
+      "delete_one": "Supprimer le client",
+      "delete_many": "Supprimer les clients",
+      "delete_other": "Supprimer la sélection",
+      "deleteConfirm_one": "Confirmer la suppression ?",
+      "deleteConfirm_many": "Confirmer la suppression des clients ?",
+      "deleteConfirm_other": "Supprimer {{count}} clients ?",
+      "deleteError": "Échec de suppression",
+      "deleteReason": "Motif",
+      "deleting": "Suppression...",
+      "partialError_one": "Échec partiel",
+      "partialError_many": "Échecs multiples",
+      "partialError_other": "Échecs sur {{count}} clients"
+    },
+    "details": {
+      "information": "Profil client",
+      "title": "Fiche Client",
+      "view": "Fiche complète"
+    },
+    "fields": {
+      "address": "Adresse",
+      "birthDate": "Date de naissance",
+      "city": "Ville",
+      "country": "Pays",
+      "customData": "Données personnalisées",
+      "data": "Données",
+      "detail": "Détails",
+      "email": "Adresse Email",
+      "errorCode": "Code erreur",
+      "externalId": "ID Externe",
+      "firstName": "Prénom",
+      "gender": "Genre",
+      "instance": "Instance",
+      "language": "Langue",
+      "lastName": "Nom",
+      "metadata": "Métadonnées",
+      "phone": "Numéro de téléphone",
+      "postalCode": "Code postal",
+      "productId": "ID Produit",
+      "productName": "Produit",
+      "productStatus": "Statut produit",
+      "status": "État du compte",
+      "success": "Succès",
+      "timestamp": "Mis à jour le",
+      "timezone": "Fuseau horaire",
+      "title": "Civilité",
+      "traceId": "Trace ID",
+      "type": "Type de client",
+      "validationErrors": "Erreurs"
+    },
+    "form": {
+      "create": {
+        "description": "Ajoutez un nouveau client manuellement.",
+        "submit": "Créer le client",
+        "title": "Nouveau Client"
+      },
+      "edit": {
+        "description": "Mettez à jour les informations personnelles du client.",
+        "loadError": "Impossible de charger le client",
+        "submit": "Enregistrer",
+        "title": "Modifier le Client"
+      }
+    },
+    "messages": {
+      "create": {
+        "error": "Échec de création.",
+        "success": "Client créé avec succès."
+      },
+      "delete": {
+        "confirm": "Confirmer la suppression ?",
+        "error": "Échec lors de la suppression.",
+        "success": "Client supprimé.",
+        "success_one": "Client supprimé.",
+        "success_many": "Clients supprimés.",
+        "success_other": "{{count}} clients supprimés."
+      },
+      "loadError": "Erreur de chargement.",
+      "noData": "Aucun client trouvé.",
+      "search": {
+        "error": "Erreur de recherche."
+      },
+      "update": {
+        "error": "Mise à jour échouée.",
+        "success": "Informations mises à jour."
+      }
+    },
+    "title": "Clients",
+    "description": "Gérez votre base de données de contacts, leurs informations personnelles et leurs préférences."
+  },
+  "clientChannelPreference": {
+    "actions": {
+      "add": "Ajouter préférence",
+      "more": "Plus"
+    },
+    "bulk": {
+      "delete_one": "Retirer",
+      "delete_many": "Retirer les préférences",
+      "delete_other": "Supprimer la sélection",
+      "deleteConfirm_one": "Retirer cette préférence ?",
+      "deleteConfirm_many": "Retirer ces préférences ?",
+      "deleteConfirm_other": "Retirer {{count}} préférences ?",
+      "deleteError": "Erreur de suppression",
+      "deleteReason": "Motif",
+      "deleting": "Retrait...",
+      "partialError_one": "Erreur partielle",
+      "partialError_many": "Plusieurs erreurs",
+      "partialError_other": "Erreurs sur {{count}} éléments"
+    },
+    "details": {
+      "description": "Détails sur les préférences de communication du client.",
+      "title": "Préférences de communication"
+    },
+    "fields": {
+      "channelCode": "Code Canal",
+      "channelId": "ID Canal",
+      "channelName": "Canal",
+      "clientEmail": "Email client",
+      "clientFirstName": "Prénom client",
+      "clientId": "ID Client",
+      "clientLastName": "Nom client",
+      "clientStatus": "Statut client",
+      "data": "Données",
+      "detail": "Détails",
+      "errorCode": "Code erreur",
+      "instance": "Instance",
+      "isOptedIn": "Abonné (Opt-in)",
+      "metadata": "Métadonnées",
+      "optedInAt": "Abonné le",
+      "optedOutAt": "Désabonné le",
+      "optOutReason": "Raison du désabonnement",
+      "status": "Statut",
+      "success": "Succès",
+      "timestamp": "Horodatage",
+      "title": "Titre",
+      "traceId": "Trace ID",
+      "type": "Type",
+      "validationErrors": "Erreurs"
+    },
+    "form": {
+      "create": {
+        "description": "Définissez les canaux autorisés pour ce client.",
+        "submit": "Ajouter la préférence",
+        "title": "Nouvelle Préférence"
+      },
+      "edit": {
+        "description": "Modifier le consentement du client.",
+        "submit": "Enregistrer",
+        "title": "Modifier la Préférence"
+      }
+    },
+    "messages": {
+      "create": {
+        "error": "Échec de création.",
+        "success": "Préférence ajoutée."
+      },
+      "delete": {
+        "confirm": "Supprimer ?",
+        "error": "Échec.",
+        "success": "Supprimé.",
+        "success_one": "Préférence supprimée.",
+        "success_many": "Préférences supprimées.",
+        "success_other": "Préférences supprimées."
+      },
+      "noData": "Aucune préférence enregistrée.",
+      "search": {
+        "error": "Recherche échouée."
+      },
+      "update": {
+        "error": "Erreur de mise à jour.",
+        "success": "Préférence mise à jour."
+      }
+    },
+    "title": "Préférences Canaux",
+    "description": "Suivez et modifiez les consentements de communication (opt-in/opt-out) pour chaque client et chaque canal."
+  },
+  "ClientChannelPreference": {
+    "form": {
+      "channelIdLabel": "Canal",
+      "channelIdPlaceholder": "Sélectionner un canal",
+      "clientIdLabel": "Client",
+      "clientIdPlaceholder": "Choisir un client",
+      "isOptedInLabel": "Abonnement actif",
+      "optedInAtLabel": "Date d'inscription",
+      "optedInAtPlaceholder": "Date",
+      "optedOutAtLabel": "Date de désinscription",
+      "optedOutAtPlaceholder": "Date",
+      "optOutReasonLabel": "Raison de sortie",
+      "optOutReasonPlaceholder": "Pourquoi le client se désinscrit ?"
+    }
+  },
+  "clientImport": {
+    "actions": {
+      "add": "Nouvel import",
+      "edit": "Modifier l'import",
+      "more": "Actions"
+    },
+    "bulk": {
+      "delete_one": "Supprimer l'historique d'import",
+      "delete_many": "Supprimer l'historique",
+      "delete_other": "Effacer la sélection",
+      "deleteConfirm_one": "Voulez-vous supprimer ce log d'import ?",
+      "deleteConfirm_many": "Voulez-vous supprimer ces logs ?",
+      "deleteConfirm_other": "Voulez-vous supprimer {{count}} logs ?",
+      "deleteError": "Échec de suppression",
+      "deleteReason": "Motif",
+      "deleting": "Suppression...",
+      "partialError_one": "Une erreur est survenue",
+      "partialError_many": "Des erreurs sont survenues",
+      "partialError_other": "Erreurs détectées"
+    },
+    "details": {
+      "information": "Détails du fichier",
+      "title": "Détails de l'Importation",
+      "view": "Voir le rapport"
+    },
+    "fields": {
+      "completedAt": "Terminé le",
+      "data": "Données",
+      "detail": "Détails",
+      "duplicateRows": "Doublons",
+      "errorCode": "Code erreur",
+      "errorLog": "Log d'erreurs",
+      "failedRows": "Lignes en échec",
+      "fileName": "Nom du fichier",
+      "fileSize": "Taille",
+      "fileUrl": "URL du fichier",
+      "instance": "Instance",
+      "mappingConfiguration": "Mapping colonnes",
+      "metadata": "Métadonnées",
+      "productId": "ID Produit",
+      "productName": "Produit",
+      "productStatus": "Statut",
+      "startedAt": "Démarré le",
+      "status": "État",
+      "success": "Succès",
+      "successfulRows": "Lignes importées",
+      "timestamp": "Horodatage",
+      "title": "Titre",
+      "totalRows": "Total lignes",
+      "traceId": "Trace ID",
+      "type": "Type d'import",
+      "validationErrors": "Erreurs de validation"
+    },
+    "form": {
+      "create": {
+        "description": "Téléchargez un fichier CSV ou Excel pour importer des clients.",
+        "submit": "Démarrer l'import",
+        "title": "Importer des clients"
+      },
+      "edit": {
+        "description": "Modifier les paramètres de cet import.",
+        "loadError": "Impossible de charger l'import",
+        "submit": "Enregistrer",
+        "title": "Modifier l'Import"
+      }
+    },
+    "messages": {
+      "create": {
+        "error": "Échec de l'importation.",
+        "success": "Importation lancée avec succès."
+      },
+      "delete": {
+        "confirm": "Supprimer définitivement ?",
+        "error": "Erreur lors de la suppression.",
+        "success": "Historique supprimé.",
+        "success_one": "Log supprimé.",
+        "success_many": "Logs supprimés.",
+        "success_other": "Logs supprimés."
+      },
+      "loadError": "Erreur lors de la lecture des données.",
+      "noData": "Aucun import récent.",
+      "search": {
+        "error": "Recherche infructueuse."
+      },
+      "update": {
+        "error": "Échec de mise à jour.",
+        "success": "Mise à jour réussie."
+      }
+    },
+    "title": "Importations Clients",
+    "description": "Importez en masse des listes de clients à partir de fichiers et suivez le statut de traitement."
+  },
+  "clientSegment": {
+    "actions": {
+      "add": "Créer un segment",
+      "more": "Plus"
+    },
+    "bulk": {
+      "delete_one": "Supprimer le segment",
+      "delete_many": "Supprimer les segments",
+      "delete_other": "Supprimer la sélection",
+      "deleteConfirm_one": "Confirmer la suppression ?",
+      "deleteConfirm_many": "Confirmer la suppression des segments ?",
+      "deleteConfirm_other": "Supprimer {{count}} segments ?",
+      "deleteError": "Échec de suppression",
+      "deleteReason": "Motif",
+      "deleting": "Suppression...",
+      "partialError_one": "Échec partiel",
+      "partialError_many": "Échecs multiples",
+      "partialError_other": "Échecs"
+    },
+    "details": {
+      "description": "Informations complètes sur le segment et ses critères.",
+      "title": "Détails du Segment"
+    },
+    "fields": {
+      "clientCount": "Nombre de clients",
+      "criteria": "Critères de sélection",
+      "data": "Données",
+      "description": "Description",
+      "detail": "Détails",
+      "errorCode": "Code erreur",
+      "instance": "Instance",
+      "isDynamic": "Segment dynamique",
+      "lastCalculatedAt": "Dernier calcul",
+      "metadata": "Métadonnées",
+      "name": "Nom du segment",
+      "productId": "ID Produit",
+      "productName": "Produit",
+      "productStatus": "Statut",
+      "status": "Statut",
+      "success": "Succès",
+      "timestamp": "Horodatage",
+      "title": "Titre",
+      "traceId": "Trace ID",
+      "type": "Type",
+      "validationErrors": "Erreurs"
+    },
+    "form": {
+      "create": {
+        "description": "Créez un groupe de clients basé sur des critères spécifiques.",
+        "submit": "Créer le segment",
+        "title": "Nouveau Segment"
+      },
+      "edit": {
+        "description": "Modifiez les critères ou le nom du segment.",
+        "submit": "Enregistrer",
+        "title": "Modifier le Segment"
+      }
+    },
+    "messages": {
+      "create": {
+        "error": "Échec de création.",
+        "success": "Segment créé."
+      },
+      "delete": {
+        "confirm": "Confirmer ?",
+        "error": "Échec.",
+        "success": "Segment supprimé.",
+        "success_one": "Segment supprimé.",
+        "success_many": "Segments supprimés.",
+        "success_other": "Segments supprimés."
+      },
+      "noData": "Aucun segment trouvé.",
+      "search": {
+        "error": "Erreur de recherche."
+      },
+      "update": {
+        "error": "Erreur de mise à jour.",
+        "success": "Segment mis à jour."
+      }
+    },
+    "title": "Segments Clients",
+    "description": "Créez des groupes de clients dynamiques ou statiques basés sur des règles et des critères précis."
+  },
+  "ClientSegment": {
+    "form": {
+      "clientCountLabel": "Nombre de membres",
+      "clientCountPlaceholder": "Calculé automatiquement",
+      "criteriaLabel": "Règles du segment",
+      "criteriaPlaceholder": "Ex: Ville = Douala AND Age > 25",
+      "descriptionLabel": "Description",
+      "descriptionPlaceholder": "Ex: Clients VIP de la région Ouest",
+      "isDynamicLabel": "Mise à jour automatique (Dynamique)",
+      "lastCalculatedAtLabel": "Date du dernier calcul",
+      "lastCalculatedAtPlaceholder": "Jamais",
+      "nameLabel": "Nom du segment",
+      "namePlaceholder": "Ex: Clients Inactifs",
+      "productIdLabel": "Produit associé",
+      "productIdPlaceholder": "Sélectionner le produit"
+    }
+  },
+  "clientSegmentMember": {
+    "actions": {
+      "add": "Ajouter un membre",
+      "more": "Actions"
+    },
+    "bulk": {
+      "delete_one": "Retirer du segment",
+      "delete_many": "Retirer les membres",
+      "delete_other": "Retirer la sélection",
+      "deleteConfirm_one": "Voulez-vous retirer ce membre du segment ?",
+      "deleteConfirm_many": "Voulez-vous retirer ces membres ?",
+      "deleteConfirm_other": "Voulez-vous retirer {{count}} membres ?",
+      "deleteError": "Erreur de retrait",
+      "deleteReason": "Motif",
+      "deleting": "Retrait en cours...",
+      "partialError_one": "Erreur partielle",
+      "partialError_many": "Échecs multiples",
+      "partialError_other": "Échecs"
+    },
+    "details": {
+      "description": "Détails sur l'appartenance du client au segment.",
+      "title": "Détails de l'appartenance"
+    },
+    "fields": {
+      "addedAt": "Ajouté le",
+      "clientEmail": "Email client",
+      "clientFirstName": "Prénom client",
+      "clientId": "ID Client",
+      "clientLastName": "Nom client",
+      "clientStatus": "Statut client",
+      "data": "Données",
+      "detail": "Détails",
+      "errorCode": "Code erreur",
+      "instance": "Instance",
+      "metadata": "Métadonnées",
+      "segmentId": "ID Segment",
+      "segmentName": "Nom du segment",
+      "status": "Statut",
+      "success": "Succès",
+      "timestamp": "Horodatage",
+      "title": "Titre",
+      "traceId": "Trace ID",
+      "type": "Type",
+      "validationErrors": "Erreurs"
+    },
+    "form": {
+      "create": {
+        "description": "Ajoutez manuellement un client à ce segment.",
+        "submit": "Ajouter au segment",
+        "title": "Nouveau Membre"
+      },
+      "edit": {
+        "description": "Modifier les détails du membre.",
+        "submit": "Enregistrer",
+        "title": "Modifier le Membre"
+      }
+    },
+    "messages": {
+      "create": {
+        "error": "Échec de l'ajout.",
+        "success": "Membre ajouté au segment."
+      },
+      "delete": {
+        "confirm": "Retirer ?",
+        "error": "Échec du retrait.",
+        "success": "Membre retiré.",
+        "success_one": "Membre retiré.",
+        "success_many": "Membres retirés.",
+        "success_other": "Membres retirés."
+      },
+      "noData": "Ce segment est vide.",
+      "search": {
+        "error": "Erreur de recherche."
+      },
+      "update": {
+        "error": "Échec de mise à jour.",
+        "success": "Données mises à jour."
+      }
+    },
+    "title": "Membres du Segment",
+    "description": "Visualisez et gérez les clients individuels qui composent un segment particulier."
+  },
+  "ClientSegmentMember": {
+    "form": {
+      "addedAtLabel": "Date d'ajout",
+      "addedAtPlaceholder": "Date",
+      "clientIdLabel": "Client",
+      "clientIdPlaceholder": "Rechercher un client",
+      "segmentIdLabel": "Segment",
+      "segmentIdPlaceholder": "Choisir le segment"
+    }
+  },
   "common": {
     "actions": {
       "activate": "Activer",
@@ -98,7 +1383,8 @@
       "more": "Actions",
       "view": "Voir"
     },
-    "backToList": "Retour a la liste",
+    "back": "Retour",
+    "backToList": "Retour à la liste",
     "cancel": "Annuler",
     "confirm": "Confirmer",
     "createdAt": "Créé le",
@@ -108,7 +1394,7 @@
     },
     "filter": {
       "actions": {
-        "assignPermissions": "Assigner Permission",
+        "assignPermissions": "Assigner Permissions",
         "clear": "Effacer",
         "edit": "Modifier",
         "export": "Exporter",
@@ -126,14 +1412,19 @@
       "view": {
         "grid": "Grille",
         "list": "Liste"
-      }
+      },
+      "dateRange": "From to..."
     },
     "form": {
       "valueLabel": "Valeur"
     },
     "loading": "Chargement...",
     "na": "N/A",
+    "next": "Suivant",
     "no": "Non",
+    "of": "sur",
+    "previous": "Précédent",
+    "step": "Étape",
     "updatedAt": "Modifié le",
     "yes": "Oui"
   },
@@ -251,7 +1542,7 @@
       },
       "noData": "Aucune entreprise trouvée.",
       "pagination": {
-        "info": "_info"
+        "info": "Affichage de {{from}} à {{to}} sur {{total}} entreprises"
       },
       "search": {
         "error": "La recherche a échoué."
@@ -267,113 +1558,1016 @@
       }
     },
     "title": "Entreprises",
+    "description": "Gérez les comptes de vos clients professionnels, leurs informations légales et leurs contacts.",
     "totalCount_one": "1 entreprise",
     "totalCount_other": "{{count}} entreprises"
   },
   "company": {
-    "messages": {
-      "dropdown": {
-        "error": "Échec du chargement des entreprises."
-      }
-    }
-  },
-  "companyapplimits": {
-    "headers": {
-      "apiRequestsLimit": "Limite Requêtes API",
-      "applicationId": "ID Application",
-      "applicationName": "Application",
-      "applicationStatus": "Statut App.",
-      "companyEmail": "Email Entreprise",
-      "companyId": "ID Entreprise",
-      "companyName": "Entreprise",
-      "companyPhoneNumber": "Tél. Entreprise",
-      "companyStatus": "Statut Entreprise",
-      "createdAt": "Créé le",
-      "defaultDailyLimit": "Limite Journ. par Défaut",
-      "defaultMonthlyLimit": "Limite Mens. par Défaut",
-      "defaultSingleTransactionLimit": "Limite Trans. Unique"
-    }
-  },
-  "companyAppLimits": {
     "actions": {
-      "add": "Ajouter Limite",
-      "delete": "Supprimer",
-      "edit": "Modifier",
-      "more": "Actions",
-      "view": "Voir"
+      "add": "Nouvelle Entité",
+      "edit": "Éditer l'Entité",
+      "more": "Actions"
     },
     "bulk": {
-      "delete_one": "Supprimer cette limite ?",
-      "delete_many": "Supprimer ces limites ?",
-      "delete_other": "Supprimer ces limites ?",
-      "deleteConfirm_one": "Êtes-vous sûr de vouloir supprimer cette limite ?",
-      "deleteConfirm_many": "Êtes-vous sûr de vouloir supprimer ces limites ?",
-      "deleteConfirm_other": "Êtes-vous sûr de vouloir supprimer ces {{count}} limites ?",
-      "deleteError": "Erreur lors de la suppression.",
-      "deleteReason": "Motif de la suppression",
-      "deleting": "Suppression en cours...",
-      "partialError_one": "Une erreur partielle est survenue.",
-      "partialError_many": "Plusieurs erreurs partielles sont survenues.",
-      "partialError_other": "{{count}} erreurs partielles sont survenues."
+      "delete_one": "Supprimer",
+      "delete_many": "Tout supprimer",
+      "delete_other": "Supprimer les éléments",
+      "deleteConfirm_one": "Confirmer ?",
+      "deleteConfirm_many": "Confirmer la suppression ?",
+      "deleteConfirm_other": "Confirmer pour {{count}} ?",
+      "deleteError": "Erreur",
+      "deleteReason": "Motif",
+      "deleting": "Suppression...",
+      "partialError_one": "Erreur",
+      "partialError_many": "Erreurs",
+      "partialError_other": "Erreurs"
     },
-    "create": "Créer une limite d'application",
-    "edit": "Modifier la limite d'application",
+    "details": {
+      "information": "Informations Entreprise",
+      "title": "Détails Entreprise",
+      "view": "Consulter"
+    },
+    "fields": {
+      "address": "Adresse",
+      "billingMode": "Mode Facturation",
+      "city": "Ville",
+      "country": "Pays",
+      "countryCode": "Code Pays",
+      "countryId": "ID Pays",
+      "countryName": "Pays",
+      "data": "Données",
+      "defaultLanguage": "Langue par défaut",
+      "detail": "Détails",
+      "email": "Email",
+      "errorCode": "Code erreur",
+      "instance": "Instance",
+      "isSandbox": "Mode Test (Sandbox)",
+      "legalName": "Raison Sociale",
+      "metadata": "Métadonnées",
+      "name": "Nom Commercial",
+      "phone": "Téléphone",
+      "postalCode": "Code Postal",
+      "status": "Statut",
+      "success": "Succès",
+      "taxNumber": "Numéro Fiscal",
+      "timestamp": "Horodatage",
+      "timezone": "Fuseau Horaire",
+      "title": "Titre",
+      "traceId": "Trace ID",
+      "type": "Type",
+      "validationErrors": "Erreurs",
+      "walletCurrency": "Devise du portefeuille",
+      "website": "Site Web"
+    },
     "form": {
-      "apiRequestsLimitLabel": "Limite de requêtes API",
-      "apiRequestsLimitPlaceholder": "Saisir la limite de requêtes API",
-      "applicationIdLabel": "Application",
-      "applicationIdPlaceholder": "Sélectionnez une application",
-      "companyIdLabel": "Entreprise",
-      "companyIdPlaceholder": "Sélectionnez une entreprise",
       "create": {
-        "description": "Ajouter une nouvelle limite d'application pour une entreprise.",
+        "description": "Saisissez les informations de l'entreprise.",
         "submit": "Créer",
-        "title": "Créer une limite d'application"
+        "title": "Nouvelle Entreprise"
       },
-      "defaultDailyLimitLabel": "Limite quotidienne par défaut",
-      "defaultDailyLimitPlaceholder": "Saisir la limite quotidienne par défaut",
       "edit": {
-        "description": "Mettre à jour les détails de cette limite d'application.",
-        "loadError": "Échec du chargement de la limite.",
-        "submit": "Enregistrer",
-        "title": "Modifier la limite d'application"
+        "description": "Mise à jour des informations.",
+        "loadError": "Erreur de chargement",
+        "submit": "Sauvegarder",
+        "title": "Édition Entreprise"
       }
     },
     "messages": {
       "create": {
-        "error": "La création a échoué.",
-        "success": "Création réussie."
+        "error": "Erreur de création",
+        "success": "Créé avec succès"
       },
       "delete": {
-        "confirm": "Êtes-vous sûr de vouloir supprimer cette limite ?",
-        "error": "La suppression a échoué.",
-        "success": "Suppression réussie.",
-        "success_one": "1 limite supprimée.",
-        "success_many": "Les limites ont été supprimées avec succès.",
-        "success_other": "{{count}} limites supprimées."
+        "confirm": "Confirmer ?",
+        "error": "Erreur suppression",
+        "success": "Supprimé",
+        "success_one": "Élément supprimé",
+        "success_many": "Éléments supprimés",
+        "success_other": "Éléments supprimés"
       },
-      "noData": "Aucune limite trouvée.",
+      "dropdown": {
+        "error": "Échec du chargement des entreprises."
+      },
+      "loadError": "Chargement impossible",
+      "noData": "Aucune entreprise",
       "search": {
-        "error": "La recherche a échoué."
+        "error": "Erreur recherche"
       },
       "update": {
-        "error": "La mise à jour a échoué.",
-        "success": "Mise à jour réussie."
+        "error": "Erreur mise à jour",
+        "success": "Mis à jour"
       }
     },
-    "title": "Limites d'application",
-    "totalCount_one": "1 limite",
-    "totalCount_other": "{{count}} limites"
+    "title": "Entreprise",
+    "description": "Accédez aux informations détaillées, aux paramètres et à la configuration d'une entreprise spécifique."
+  },
+  "companyApiKey": {
+    "actions": {
+      "add": "Générer une clé",
+      "more": "Actions"
+    },
+    "bulk": {
+      "delete_one": "Révoquer la clé",
+      "delete_many": "Révoquer les clés",
+      "delete_other": "Révoquer la sélection",
+      "deleteConfirm_one": "Voulez-vous révoquer cette clé API ?",
+      "deleteConfirm_many": "Voulez-vous révoquer ces clés API ?",
+      "deleteConfirm_other": "Voulez-vous révoquer {{count}} clés API ?",
+      "deleteError": "Erreur de révocation",
+      "deleteReason": "Motif",
+      "deleting": "Révocation...",
+      "partialError_one": "Échec partiel",
+      "partialError_many": "Plusieurs échecs",
+      "partialError_other": "Échecs"
+    },
+    "details": {
+      "description": "Détails de la clé API et ses permissions.",
+      "title": "Détails de la clé API"
+    },
+    "fields": {
+      "companyEmail": "Email entreprise",
+      "companyId": "ID Entreprise",
+      "companyName": "Nom entreprise",
+      "companyStatus": "Statut entreprise",
+      "data": "Données",
+      "detail": "Détails",
+      "errorCode": "Code Erreur",
+      "expiresAt": "Expire le",
+      "instance": "Instance",
+      "ipWhitelist": "Whitelist IP",
+      "isActive": "Clé active",
+      "lastUsedAt": "Dernière utilisation",
+      "metadata": "Métadonnées",
+      "name": "Nom de la clé",
+      "scopes": "Permissions (Scopes)",
+      "status": "Statut",
+      "success": "Succès",
+      "timestamp": "Horodatage",
+      "title": "Titre",
+      "traceId": "Trace ID",
+      "type": "Type",
+      "validationErrors": "Erreurs"
+    },
+    "form": {
+      "create": {
+        "description": "Créez une clé d'accès sécurisée pour vos intégrations.",
+        "submit": "Générer la clé",
+        "title": "Nouvelle Clé API"
+      },
+      "edit": {
+        "description": "Modifier les permissions ou restrictions de la clé.",
+        "submit": "Enregistrer",
+        "title": "Modifier la Clé"
+      }
+    },
+    "messages": {
+      "create": {
+        "error": "Échec de génération.",
+        "success": "Clé API générée."
+      },
+      "delete": {
+        "confirm": "Révoquer la clé ?",
+        "error": "Erreur système.",
+        "success": "Clé révoquée.",
+        "success_one": "Clé révoquée.",
+        "success_many": "Clés révoquées.",
+        "success_other": "Clés révoquées."
+      },
+      "noData": "Aucune clé API active.",
+      "search": {
+        "error": "Erreur de recherche."
+      },
+      "update": {
+        "error": "Mise à jour échouée.",
+        "success": "Clé mise à jour."
+      }
+    },
+    "title": "Clés API",
+    "description": "Générez et gérez les clés d'accès sécurisées pour permettre à vos applications d'interagir avec la plateforme."
+  },
+  "CompanyApiKey": {
+    "form": {
+      "companyIdLabel": "Entreprise",
+      "companyIdPlaceholder": "Choisir l'entreprise",
+      "expiresAtLabel": "Date d'expiration",
+      "expiresAtPlaceholder": "Optionnel",
+      "ipWhitelistLabel": "Adresses IP autorisées",
+      "ipWhitelistPlaceholder": "Séparez par des virgules",
+      "isActiveLabel": "Activer immédiatement",
+      "lastUsedAtLabel": "Dernier accès",
+      "lastUsedAtPlaceholder": "Jamais",
+      "nameLabel": "Nom descriptif",
+      "namePlaceholder": "Ex: Intégration Site Web",
+      "scopesLabel": "Périmètre d'accès",
+      "scopesPlaceholder": "Sélectionner les scopes"
+    }
+  },
+  "companyChannel": {
+    "actions": {
+      "add": "Activer Canal",
+      "more": "Plus"
+    },
+    "bulk": {
+      "delete_one": "Désactiver",
+      "delete_many": "Désactiver sélection",
+      "delete_other": "Tout désactiver",
+      "deleteConfirm_one": "Confirmer ?",
+      "deleteConfirm_many": "Confirmer la désactivation ?",
+      "deleteConfirm_other": "Confirmer pour {{count}} ?",
+      "deleteError": "Erreur",
+      "deleteReason": "Motif",
+      "deleting": "Traitement...",
+      "partialError_one": "Erreur",
+      "partialError_many": "Erreurs",
+      "partialError_other": "Erreurs"
+    },
+    "details": {
+      "description": "Configuration spécifique du canal pour cette entreprise.",
+      "title": "Configuration Canal Entreprise"
+    },
+    "fields": {
+      "channelCode": "Code Canal",
+      "channelId": "ID Canal",
+      "channelName": "Nom du canal",
+      "companyEmail": "Email entreprise",
+      "companyId": "ID Entreprise",
+      "companyName": "Entreprise",
+      "companyStatus": "Statut",
+      "data": "Données",
+      "detail": "Détails",
+      "errorCode": "Code erreur",
+      "instance": "Instance",
+      "isActive": "Actif",
+      "metadata": "Métadonnées",
+      "settings": "Paramètres",
+      "status": "Statut",
+      "success": "Succès",
+      "timestamp": "Horodatage",
+      "title": "Titre",
+      "traceId": "Trace ID",
+      "type": "Type",
+      "validationErrors": "Erreurs de validation"
+    },
+    "form": {
+      "create": {
+        "description": "Activez un nouveau canal pour cette entreprise.",
+        "submit": "Activer",
+        "title": "Nouveau Canal Entreprise"
+      },
+      "edit": {
+        "description": "Modifier les réglages du canal.",
+        "submit": "Enregistrer",
+        "title": "Édition Canal"
+      }
+    },
+    "messages": {
+      "create": {
+        "error": "Échec activation",
+        "success": "Canal activé"
+      },
+      "delete": {
+        "confirm": "Désactiver ?",
+        "error": "Erreur",
+        "success": "Désactivé",
+        "success_one": "Désactivé",
+        "success_many": "Désactivés",
+        "success_other": "Désactivés"
+      },
+      "noData": "Aucun canal configuré",
+      "search": {
+        "error": "Erreur recherche"
+      },
+      "update": {
+        "error": "Erreur mise à jour",
+        "success": "Réglages enregistrés"
+      }
+    },
+    "title": "Canaux Entreprise",
+    "description": "Activez et configurez les canaux de communication spécifiques pour chaque entreprise cliente."
+  },
+  "CompanyChannel": {
+    "form": {
+      "channelIdLabel": "Canal technique",
+      "channelIdPlaceholder": "Choisir le canal",
+      "companyIdLabel": "Entreprise",
+      "companyIdPlaceholder": "Choisir l'entreprise",
+      "isActiveLabel": "Canal disponible",
+      "settingsLabel": "Configuration JSON",
+      "settingsPlaceholder": "{\"key\": \"value\"}"
+    }
+  },
+  "companySetting": {
+    "actions": {
+      "add": "Ajouter paramètre",
+      "more": "Plus"
+    },
+    "bulk": {
+      "delete_one": "Supprimer",
+      "delete_many": "Tout supprimer",
+      "delete_other": "Supprimer sélection",
+      "deleteConfirm_one": "Supprimer ?",
+      "deleteConfirm_many": "Supprimer tous ?",
+      "deleteConfirm_other": "Supprimer {{count}} ?",
+      "deleteError": "Erreur",
+      "deleteReason": "Motif",
+      "deleting": "Suppression...",
+      "partialError_one": "Erreur",
+      "partialError_many": "Erreurs",
+      "partialError_other": "Erreurs"
+    },
+    "details": {
+      "description": "Détails de la valeur et de la portée du paramètre.",
+      "title": "Détails du paramètre"
+    },
+    "fields": {
+      "companyEmail": "Email entreprise",
+      "companyId": "ID Entreprise",
+      "companyName": "Entreprise",
+      "companyStatus": "Statut",
+      "data": "Données",
+      "detail": "Détails",
+      "errorCode": "Code erreur",
+      "instance": "Instance",
+      "metadata": "Métadonnées",
+      "status": "Statut",
+      "success": "Succès",
+      "timestamp": "Horodatage",
+      "title": "Clé du paramètre",
+      "traceId": "Trace ID",
+      "type": "Type",
+      "validationErrors": "Erreurs",
+      "value": "Valeur"
+    },
+    "form": {
+      "create": {
+        "description": "Créer un paramètre spécifique à l'entreprise.",
+        "submit": "Créer",
+        "title": "Nouveau Paramètre"
+      },
+      "edit": {
+        "description": "Modifier la valeur.",
+        "submit": "Enregistrer",
+        "title": "Édition Paramètre"
+      }
+    },
+    "messages": {
+      "create": {
+        "error": "Erreur",
+        "success": "Créé"
+      },
+      "delete": {
+        "confirm": "Confirmer ?",
+        "error": "Erreur",
+        "success": "Supprimé",
+        "success_one": "Supprimé",
+        "success_many": "Supprimés",
+        "success_other": "Supprimés"
+      },
+      "noData": "Aucun réglage",
+      "search": {
+        "error": "Erreur recherche"
+      },
+      "update": {
+        "error": "Erreur",
+        "success": "Mis à jour"
+      }
+    },
+    "title": "Réglages Entreprise",
+    "description": "Définissez des configurations personnalisées qui s'appliquent uniquement à une entreprise spécifique."
+  },
+  "CompanySetting": {
+    "form": {
+      "companyIdLabel": "Entreprise",
+      "companyIdPlaceholder": "Choisir",
+      "valueLabel": "Valeur du réglage",
+      "valuePlaceholder": "Ex: 100"
+    }
+  },
+  "companyVerification": {
+    "actions": {
+      "add": "Nouvelle vérification",
+      "edit": "Réviser",
+      "more": "Actions"
+    },
+    "bulk": {
+      "delete_one": "Supprimer",
+      "delete_many": "Tout supprimer",
+      "delete_other": "Supprimer sélection",
+      "deleteConfirm_one": "Confirmer ?",
+      "deleteConfirm_many": "Confirmer ?",
+      "deleteConfirm_other": "Confirmer ?",
+      "deleteError": "Erreur",
+      "deleteReason": "Motif",
+      "deleting": "Suppression...",
+      "partialError_one": "Erreur",
+      "partialError_many": "Erreurs",
+      "partialError_other": "Erreurs"
+    },
+    "details": {
+      "information": "Détails de conformité (KYC)",
+      "title": "Vérification Entreprise",
+      "view": "Consulter"
+    },
+    "fields": {
+      "companyEmail": "Email entreprise",
+      "companyId": "ID Entreprise",
+      "companyName": "Entreprise",
+      "companyStatus": "Statut",
+      "data": "Données",
+      "detail": "Détails",
+      "documentUrl": "Lien du document",
+      "errorCode": "Code erreur",
+      "instance": "Instance",
+      "metadata": "Métadonnées",
+      "rejectionAt": "Rejeté le",
+      "rejectionReason": "Motif du rejet",
+      "status": "État de vérification",
+      "success": "Succès",
+      "timestamp": "Horodatage",
+      "title": "Titre",
+      "traceId": "Trace ID",
+      "type": "Type",
+      "validationErrors": "Erreurs",
+      "verificationType": "Type de doc",
+      "verifiedAt": "Vérifié le",
+      "verifiedBy": "Vérifié par"
+    },
+    "form": {
+      "create": {
+        "description": "Soumettre des documents pour vérification.",
+        "submit": "Soumettre",
+        "title": "Soumission KYC"
+      },
+      "edit": {
+        "description": "Mettre à jour le statut.",
+        "loadError": "Erreur chargement",
+        "submit": "Valider",
+        "title": "Audit de vérification"
+      }
+    },
+    "messages": {
+      "create": {
+        "error": "Échec",
+        "success": "Soumis"
+      },
+      "delete": {
+        "confirm": "Supprimer ?",
+        "error": "Erreur",
+        "success": "Supprimé",
+        "success_one": "Supprimé",
+        "success_many": "Supprimés",
+        "success_other": "Supprimés"
+      },
+      "loadError": "Impossible de charger",
+      "noData": "Aucun document",
+      "search": {
+        "error": "Erreur recherche"
+      },
+      "update": {
+        "error": "Erreur",
+        "success": "Statut mis à jour"
+      }
+    },
+    "title": "Vérifications KYC",
+    "description": "Suivez et gérez le processus de vérification d'identité (Know Your Customer) pour chaque entreprise."
+  },
+  "CompanyVerification": {
+    "form": {
+      "companyIdLabel": "Entreprise",
+      "companyIdPlaceholder": "Choisir",
+      "documentUrlLabel": "Document (Lien/Fichier)",
+      "documentUrlPlaceholder": "Uploader ou coller URL",
+      "rejectionAtLabel": "Date de rejet",
+      "rejectionAtPlaceholder": "Automatique",
+      "rejectionReasonLabel": "Raison du rejet",
+      "rejectionReasonPlaceholder": "Ex: Document flou",
+      "statusLabel": "Statut final",
+      "statusPlaceholder": "Approuvé / Rejeté",
+      "verificationTypeLabel": "Type de vérification",
+      "verificationTypePlaceholder": "Ex: RCCM, Attestation fiscale",
+      "verifiedAtLabel": "Date validation",
+      "verifiedAtPlaceholder": "Automatique",
+      "verifiedByLabel": "Validateur",
+      "verifiedByPlaceholder": "Nom de l'admin"
+    }
+  },
+  "connector": {
+    "actions": {
+      "add": "Nouveau connecteur",
+      "edit": "Configurer",
+      "more": "Actions"
+    },
+    "bulk": {
+      "delete_one": "Supprimer",
+      "delete_many": "Supprimer tout",
+      "delete_other": "Supprimer sélectionnés",
+      "deleteConfirm_one": "Supprimer ce connecteur ?",
+      "deleteConfirm_many": "Supprimer ces connecteurs ?",
+      "deleteConfirm_other": "Supprimer {{count}} connecteurs ?",
+      "deleteError": "Erreur",
+      "deleteReason": "Motif",
+      "deleting": "Suppression...",
+      "partialError_one": "Erreur",
+      "partialError_many": "Erreurs",
+      "partialError_other": "Erreurs"
+    },
+    "description": "Gestion des ponts techniques vers les fournisseurs.",
+    "details": {
+      "information": "Paramètres techniques du connecteur",
+      "title": "Détails Connecteur",
+      "view": "Consulter"
+    },
+    "fields": {
+      "companyEmail": "Email entreprise",
+      "companyId": "ID Entreprise",
+      "companyName": "Entreprise",
+      "companyStatus": "Statut",
+      "configuration": "Configuration JSON",
+      "data": "Données",
+      "detail": "Détails",
+      "errorCode": "Code erreur",
+      "instance": "Instance",
+      "isActive": "Actif",
+      "isDefault": "Par défaut",
+      "lastTestAt": "Dernier test",
+      "lastTestStatus": "Résultat test",
+      "metadata": "Métadonnées",
+      "name": "Nom du connecteur",
+      "priority": "Priorité",
+      "productId": "ID Produit",
+      "productName": "Produit",
+      "productStatus": "Statut",
+      "providerCode": "Code Fournisseur",
+      "providerId": "ID Fournisseur",
+      "providerName": "Fournisseur",
+      "status": "Statut",
+      "success": "Succès",
+      "timestamp": "Horodatage",
+      "title": "Titre",
+      "traceId": "Trace ID",
+      "type": "Type",
+      "validationErrors": "Erreurs"
+    },
+    "form": {
+      "create": {
+        "description": "Ajoutez un nouveau canal de sortie technique.",
+        "submit": "Créer",
+        "title": "Nouveau Connecteur"
+      },
+      "edit": {
+        "description": "Modifier les clés d'API fournisseur.",
+        "loadError": "Erreur chargement",
+        "submit": "Sauvegarder",
+        "title": "Édition Connecteur"
+      }
+    },
+    "messages": {
+      "create": {
+        "error": "Échec",
+        "success": "Connecteur créé"
+      },
+      "delete": {
+        "confirm": "Confirmer ?",
+        "error": "Erreur",
+        "success": "Supprimé",
+        "success_one": "Supprimé",
+        "success_many": "Supprimés",
+        "success_other": "Supprimés"
+      },
+      "loadError": "Erreur chargement",
+      "noData": "Aucun connecteur",
+      "search": {
+        "error": "Erreur recherche"
+      },
+      "update": {
+        "error": "Échec",
+        "success": "Mis à jour"
+      }
+    },
+    "title": "Connecteurs"
+  },
+  "Connector": {
+    "form": {
+      "companyIdLabel": "Entreprise",
+      "companyIdPlaceholder": "Choisir",
+      "configurationLabel": "Config JSON",
+      "configurationPlaceholder": "{\"apiKey\": \"...\"}",
+      "isActiveLabel": "Actif",
+      "isDefaultLabel": "Utiliser par défaut",
+      "lastTestAtLabel": "Date test",
+      "lastTestAtPlaceholder": "Jamais",
+      "lastTestStatusLabel": "Statut test",
+      "lastTestStatusPlaceholder": "N/A",
+      "nameLabel": "Nom",
+      "namePlaceholder": "Ex: Twilio SMS Afrique",
+      "priorityLabel": "Niveau priorité",
+      "priorityPlaceholder": "1, 2...",
+      "productIdLabel": "Produit",
+      "productIdPlaceholder": "Choisir",
+      "providerIdLabel": "Fournisseur",
+      "providerIdPlaceholder": "Choisir"
+    }
   },
   "countries": {
     "form": {
       "fields": {
-        "isVerified": "_isVerified"
+        "isVerified": "Pays vérifié"
       }
+    }
+  },
+  "country": {
+    "actions": {
+      "add": "Ajouter un pays",
+      "more": "Plus"
+    },
+    "bulk": {
+      "delete_one": "Supprimer",
+      "delete_many": "Tout supprimer",
+      "delete_other": "Supprimer sélection",
+      "deleteConfirm_one": "Confirmer ?",
+      "deleteConfirm_many": "Confirmer ?",
+      "deleteConfirm_other": "Confirmer ?",
+      "deleteError": "Erreur",
+      "deleteReason": "Motif",
+      "deleting": "Suppression...",
+      "partialError_one": "Erreur",
+      "partialError_many": "Erreurs",
+      "partialError_other": "Erreurs"
+    },
+    "details": {
+      "description": "Informations sur le pays et son statut.",
+      "title": "Détails du pays"
+    },
+    "fields": {
+      "code": "Code ISO (2)",
+      "data": "Données",
+      "detail": "Détails",
+      "errorCode": "Code erreur",
+      "instance": "Instance",
+      "isActive": "Actif",
+      "metadata": "Métadonnées",
+      "name": "Nom du pays",
+      "status": "Statut",
+      "success": "Succès",
+      "timestamp": "Horodatage",
+      "title": "Titre",
+      "traceId": "Trace ID",
+      "type": "Type",
+      "validationErrors": "Erreurs"
+    },
+    "form": {
+      "create": {
+        "description": "Ajouter un pays à la liste.",
+        "submit": "Ajouter",
+        "title": "Nouveau Pays"
+      },
+      "edit": {
+        "description": "Modifier les infos du pays.",
+        "submit": "Enregistrer",
+        "title": "Édition Pays"
+      }
+    },
+    "messages": {
+      "create": {
+        "error": "Erreur",
+        "success": "Ajouté"
+      },
+      "delete": {
+        "confirm": "Supprimer ?",
+        "error": "Erreur",
+        "success": "Retiré",
+        "success_one": "Retiré",
+        "success_many": "Retirés",
+        "success_other": "Retirés"
+      },
+      "noData": "Aucun pays",
+      "search": {
+        "error": "Erreur recherche"
+      },
+      "update": {
+        "error": "Erreur",
+        "success": "Mis à jour"
+      }
+    },
+    "title": "Pays",
+    "description": "Gérez la liste des pays pris en charge par la plateforme, y compris leurs codes et statuts."
+  },
+  "Country": {
+    "form": {
+      "codeLabel": "Code ISO (Ex: CM)",
+      "codePlaceholder": "CM",
+      "isActiveLabel": "Activé",
+      "nameLabel": "Nom",
+      "namePlaceholder": "Ex: Cameroun"
+    }
+  },
+  "currency": {
+    "actions": {
+      "add": "Ajouter devise",
+      "edit": "Modifier",
+      "more": "Actions"
+    },
+    "bulk": {
+      "delete_one": "Supprimer",
+      "delete_many": "Tout supprimer",
+      "delete_other": "Supprimer sélectionnés",
+      "deleteConfirm_one": "Supprimer ?",
+      "deleteConfirm_many": "Supprimer ?",
+      "deleteConfirm_other": "Supprimer ?",
+      "deleteError": "Erreur",
+      "deleteReason": "Motif",
+      "deleting": "Suppression...",
+      "partialError_one": "Erreur",
+      "partialError_many": "Erreurs",
+      "partialError_other": "Erreurs"
+    },
+    "details": {
+      "information": "Paramètres monétaires",
+      "title": "Détails Devise",
+      "view": "Consulter"
+    },
+    "fields": {
+      "code": "Code ISO (Ex: XAF)",
+      "data": "Données",
+      "decimalPlaces": "Décimales",
+      "detail": "Détails",
+      "errorCode": "Code erreur",
+      "exchangeRate": "Taux de change",
+      "instance": "Instance",
+      "isActive": "Actif",
+      "isBaseCurrency": "Devise de base",
+      "lastUpdated": "Mis à jour le",
+      "metadata": "Métadonnées",
+      "name": "Nom de la devise",
+      "status": "Statut",
+      "success": "Succès",
+      "symbol": "Symbole (Ex: FCFA)",
+      "timestamp": "Horodatage",
+      "title": "Titre",
+      "traceId": "Trace ID",
+      "type": "Type",
+      "validationErrors": "Erreurs"
+    },
+    "form": {
+      "create": {
+        "description": "Enregistrer une nouvelle devise.",
+        "submit": "Ajouter",
+        "title": "Nouvelle Devise"
+      },
+      "edit": {
+        "description": "Modifier les réglages monétaires.",
+        "loadError": "Erreur chargement",
+        "submit": "Enregistrer",
+        "title": "Édition Devise"
+      }
+    },
+    "messages": {
+      "create": {
+        "error": "Erreur",
+        "success": "Ajoutée"
+      },
+      "delete": {
+        "confirm": "Supprimer ?",
+        "error": "Erreur",
+        "success": "Supprimée",
+        "success_one": "Supprimée",
+        "success_many": "Supprimées",
+        "success_other": "Supprimées"
+      },
+      "loadError": "Impossible de charger",
+      "noData": "Aucune devise",
+      "search": {
+        "error": "Erreur recherche"
+      },
+      "update": {
+        "error": "Erreur",
+        "success": "Mis à jour"
+      }
+    },
+    "title": "Devises",
+    "description": "Configurez les devises acceptées, leurs symboles, taux de change et autres paramètres financiers."
+  },
+  "Currency": {
+    "form": {
+      "codeLabel": "Code ISO",
+      "codePlaceholder": "XAF",
+      "decimalPlacesLabel": "Nb. Décimales",
+      "decimalPlacesPlaceholder": "Ex: 0 ou 2",
+      "exchangeRateLabel": "Taux (Base = 1)",
+      "exchangeRatePlaceholder": "Ex: 655.95",
+      "isActiveLabel": "Activée",
+      "isBaseCurrencyLabel": "Utiliser comme base",
+      "lastUpdatedLabel": "Dernière MAJ",
+      "lastUpdatedPlaceholder": "N/A",
+      "nameLabel": "Nom",
+      "namePlaceholder": "Franc CFA",
+      "symbolLabel": "Symbole",
+      "symbolPlaceholder": "FCFA"
     }
   },
   "dataGrid": {
     "emptyMessage": "Aucun élément à afficher"
+  },
+  "entityTag": {
+    "actions": {
+      "add": "Taguer l'entité",
+      "more": "Actions"
+    },
+    "bulk": {
+      "delete_one": "Retirer le tag",
+      "delete_many": "Retirer les tags",
+      "delete_other": "Retirer sélection",
+      "deleteConfirm_one": "Voulez-vous retirer ce tag ?",
+      "deleteConfirm_many": "Confirmer le retrait ?",
+      "deleteConfirm_other": "Confirmer pour {{count}} ?",
+      "deleteError": "Erreur",
+      "deleteReason": "Motif",
+      "deleting": "Retrait...",
+      "partialError_one": "Erreur",
+      "partialError_many": "Erreurs",
+      "partialError_other": "Erreurs"
+    },
+    "details": {
+      "description": "Détails sur l'association du tag à l'entité.",
+      "title": "Détails du tag d'entité"
+    },
+    "fields": {
+      "data": "Données",
+      "detail": "Détails",
+      "entityId": "ID Entité",
+      "entityType": "Type Entité",
+      "errorCode": "Code erreur",
+      "instance": "Instance",
+      "metadata": "Métadonnées",
+      "status": "Statut",
+      "success": "Succès",
+      "tagId": "ID Tag",
+      "tagName": "Nom du tag",
+      "timestamp": "Horodatage",
+      "title": "Titre",
+      "traceId": "Trace ID",
+      "type": "Type",
+      "validationErrors": "Erreurs"
+    },
+    "form": {
+      "create": {
+        "description": "Assigner un tag à cette entité.",
+        "submit": "Assigner",
+        "title": "Nouveau Tag Entité"
+      },
+      "edit": {
+        "description": "Modifier l'assignation.",
+        "submit": "Enregistrer",
+        "title": "Édition Tag Entité"
+      }
+    },
+    "messages": {
+      "create": {
+        "error": "Erreur",
+        "success": "Assigné"
+      },
+      "delete": {
+        "confirm": "Retirer ?",
+        "error": "Erreur",
+        "success": "Tag retiré",
+        "success_one": "Retiré",
+        "success_many": "Retirés",
+        "success_other": "Retirés"
+      },
+      "noData": "Aucun tag assigné",
+      "search": {
+        "error": "Erreur recherche"
+      },
+      "update": {
+        "error": "Erreur",
+        "success": "Mis à jour"
+      }
+    },
+    "title": "Tags d'Entité",
+    "description": "Associez des étiquettes (tags) à diverses ressources (clients, campagnes) pour une meilleure organisation et un filtrage facile."
+  },
+  "EntityTag": {
+    "form": {
+      "entityIdLabel": "ID de l'élément",
+      "entityIdPlaceholder": "Coller l'ID",
+      "entityTypeLabel": "Type d'élément",
+      "entityTypePlaceholder": "Ex: Client, Campagne...",
+      "tagIdLabel": "Tag à appliquer",
+      "tagIdPlaceholder": "Choisir le tag"
+    }
+  },
+  "file": {
+    "actions": {
+      "add": "Uploader un fichier",
+      "edit": "Infos fichier",
+      "more": "Actions"
+    },
+    "bulk": {
+      "delete_one": "Supprimer",
+      "delete_many": "Tout supprimer",
+      "delete_other": "Tout supprimer",
+      "deleteConfirm_one": "Supprimer ce fichier ?",
+      "deleteConfirm_many": "Supprimer ces fichiers ?",
+      "deleteConfirm_other": "Supprimer {{count}} fichiers ?",
+      "deleteError": "Erreur",
+      "deleteReason": "Motif",
+      "deleting": "Suppression...",
+      "partialError_one": "Erreur",
+      "partialError_many": "Erreurs",
+      "partialError_other": "Erreurs"
+    },
+    "details": {
+      "information": "Propriétés du fichier",
+      "title": "Détails du Fichier",
+      "view": "Télécharger/Voir"
+    },
+    "fields": {
+      "companyEmail": "Email entreprise",
+      "companyId": "ID Entreprise",
+      "companyName": "Entreprise",
+      "companyStatus": "Statut",
+      "createdByEmail": "Créé par (Email)",
+      "createdByFirstName": "Prénom auteur",
+      "createdByLastName": "Nom auteur",
+      "createdByPhoneNumber": "Tél. auteur",
+      "createdByStatus": "Statut auteur",
+      "data": "Données",
+      "detail": "Détails",
+      "errorCode": "Code erreur",
+      "fileName": "Nom",
+      "fileSize": "Taille",
+      "fileType": "Type",
+      "instance": "Instance",
+      "isPublic": "Fichier Public",
+      "metadata": "Métadonnées",
+      "mimeType": "Type MIME",
+      "originalFileName": "Nom original",
+      "status": "Statut",
+      "storagePath": "Chemin stockage",
+      "success": "Succès",
+      "timestamp": "Uploader le",
+      "title": "Titre",
+      "traceId": "Trace ID",
+      "type": "Type",
+      "validationErrors": "Erreurs"
+    },
+    "form": {
+      "create": {
+        "description": "Ajoutez des fichiers à la bibliothèque média.",
+        "submit": "Démarrer l'upload",
+        "title": "Nouveau Fichier"
+      },
+      "edit": {
+        "description": "Modifier les métadonnées du fichier.",
+        "loadError": "Erreur chargement",
+        "submit": "Enregistrer",
+        "title": "Édition Fichier"
+      }
+    },
+    "messages": {
+      "create": {
+        "error": "Échec upload",
+        "success": "Fichier uploader"
+      },
+      "delete": {
+        "confirm": "Supprimer ?",
+        "error": "Erreur",
+        "success": "Fichier supprimé",
+        "success_one": "Supprimé",
+        "success_many": "Supprimés",
+        "success_other": "Supprimés"
+      },
+      "loadError": "Erreur chargement",
+      "noData": "Aucun fichier",
+      "search": {
+        "error": "Erreur recherche"
+      },
+      "update": {
+        "error": "Erreur",
+        "success": "Mis à jour"
+      }
+    },
+    "title": "Médiathèque",
+    "description": "Gérez et stockez tous vos fichiers et médias (images, documents) de manière centralisée et sécurisée."
+  },
+  "File": {
+    "form": {
+      "companyIdLabel": "Entreprise",
+      "companyIdPlaceholder": "Choisir",
+      "fileNameLabel": "Nom affiché",
+      "fileNamePlaceholder": "Ex: Logo_final.png",
+      "fileSizeLabel": "Taille (octets)",
+      "fileSizePlaceholder": "Auto",
+      "fileTypeLabel": "Extension",
+      "fileTypePlaceholder": "png, pdf...",
+      "isPublicLabel": "Accessible via URL publique",
+      "mimeTypeLabel": "Type MIME",
+      "mimeTypePlaceholder": "image/png",
+      "originalFileNameLabel": "Nom source",
+      "originalFileNamePlaceholder": "Auto",
+      "storagePathLabel": "Dossier",
+      "storagePathPlaceholder": "/uploads/..."
+    }
   },
   "footer": {
     "address": "Douala, Cameroun",
@@ -394,64 +2588,659 @@
   },
   "goBack": "Retour",
   "goHome": "Accueil",
+  "integration": {
+    "actions": {
+      "add": "Nouvelle intégration",
+      "edit": "Configurer",
+      "more": "Actions"
+    },
+    "bulk": {
+      "delete_one": "Désinstaller",
+      "delete_many": "Tout désinstaller",
+      "delete_other": "Supprimer sélection",
+      "deleteConfirm_one": "Désinstaller ?",
+      "deleteConfirm_many": "Tout désinstaller ?",
+      "deleteConfirm_other": "Désinstaller {{count}} ?",
+      "deleteError": "Erreur",
+      "deleteReason": "Motif",
+      "deleting": "En cours...",
+      "partialError_one": "Erreur",
+      "partialError_many": "Erreurs",
+      "partialError_other": "Erreurs"
+    },
+    "details": {
+      "information": "Détails techniques de l'intégration",
+      "title": "Fiche Intégration",
+      "view": "Consulter"
+    },
+    "fields": {
+      "companyEmail": "Email entreprise",
+      "companyId": "ID Entreprise",
+      "companyName": "Entreprise",
+      "companyStatus": "Statut",
+      "configuration": "Config (JSON)",
+      "data": "Données",
+      "detail": "Détails",
+      "errorCode": "Code erreur",
+      "instance": "Instance",
+      "isActive": "Active",
+      "lastSyncAt": "Dernière synchro",
+      "metadata": "Métadonnées",
+      "name": "Nom",
+      "nextSyncAt": "Prochaine synchro",
+      "status": "Statut",
+      "success": "Succès",
+      "syncDirection": "Sens synchro",
+      "timestamp": "Horodatage",
+      "title": "Titre",
+      "traceId": "Trace ID",
+      "type": "Type",
+      "validationErrors": "Erreurs"
+    },
+    "form": {
+      "create": {
+        "description": "Connectez un service tiers.",
+        "submit": "Installer",
+        "title": "Nouvelle Intégration"
+      },
+      "edit": {
+        "description": "Modifier les clés secrètes ou le sens de synchro.",
+        "loadError": "Erreur",
+        "submit": "Sauvegarder",
+        "title": "Édition Intégration"
+      }
+    },
+    "messages": {
+      "create": {
+        "error": "Échec",
+        "success": "Installée"
+      },
+      "delete": {
+        "confirm": "Supprimer ?",
+        "error": "Erreur",
+        "success": "Supprimée",
+        "success_one": "Désinstallée",
+        "success_many": "Désinstallées",
+        "success_other": "Désinstallées"
+      },
+      "loadError": "Erreur chargement",
+      "noData": "Aucune intégration",
+      "search": {
+        "error": "Erreur recherche"
+      },
+      "update": {
+        "error": "Échec",
+        "success": "Mise à jour réussie"
+      }
+    },
+    "title": "Intégrations Services",
+    "description": "Connectez la plateforme à vos outils externes (CRM, ERP, etc.) pour synchroniser les données."
+  },
+  "Integration": {
+    "form": {
+      "companyIdLabel": "Entreprise",
+      "companyIdPlaceholder": "Choisir",
+      "configurationLabel": "Options (JSON)",
+      "configurationPlaceholder": "{}",
+      "isActiveLabel": "Active",
+      "lastSyncAtLabel": "Dernière synchro",
+      "lastSyncAtPlaceholder": "N/A",
+      "nameLabel": "Nom de l'intégration",
+      "namePlaceholder": "Ex: HubSpot, Salesforce",
+      "nextSyncAtLabel": "Prochaine synchro",
+      "nextSyncAtPlaceholder": "Auto",
+      "syncDirectionLabel": "Flux de données",
+      "syncDirectionPlaceholder": "Bidirectionnel, Entrant, Sortant",
+      "typeLabel": "Catégorie",
+      "typePlaceholder": "CRM, ERP, Billing..."
+    }
+  },
+  "integrationSyncLog": {
+    "actions": {
+      "add": "Log manuel",
+      "edit": "Réviser",
+      "more": "Actions"
+    },
+    "bulk": {
+      "delete_one": "Supprimer log",
+      "delete_many": "Supprimer logs",
+      "delete_other": "Vider sélection",
+      "deleteConfirm_one": "Confirmer ?",
+      "deleteConfirm_many": "Tout vider ?",
+      "deleteConfirm_other": "Confirmer ?",
+      "deleteError": "Erreur",
+      "deleteReason": "Motif",
+      "deleting": "Nettoyage...",
+      "partialError_one": "Erreur",
+      "partialError_many": "Erreurs",
+      "partialError_other": "Erreurs"
+    },
+    "details": {
+      "information": "Rapport de synchronisation",
+      "title": "Détails de Synchro",
+      "view": "Consulter"
+    },
+    "fields": {
+      "completedAt": "Terminé le",
+      "data": "Données",
+      "detail": "Détails",
+      "errorCode": "Code erreur",
+      "errorLog": "Log technique",
+      "instance": "Instance",
+      "integrationId": "ID Intégration",
+      "integrationName": "Service",
+      "integrationType": "Type",
+      "metadata": "Métadonnées",
+      "recordsFailed": "Enregistrements échoués",
+      "recordsProcessed": "Total traités",
+      "recordsSucceeded": "Réussis",
+      "startedAt": "Lancé le",
+      "status": "État final",
+      "success": "Succès",
+      "syncType": "Type synchro",
+      "timestamp": "Horodatage",
+      "title": "Titre",
+      "traceId": "Trace ID",
+      "type": "Type",
+      "validationErrors": "Erreurs"
+    },
+    "form": {
+      "create": {
+        "description": "Enregistrer un log de synchro.",
+        "submit": "Ajouter",
+        "title": "Nouveau Log Synchro"
+      },
+      "edit": {
+        "description": "Réviser le rapport.",
+        "loadError": "Erreur",
+        "submit": "Enregistrer",
+        "title": "Édition Log"
+      }
+    },
+    "messages": {
+      "create": {
+        "error": "Erreur",
+        "success": "Log ajouté"
+      },
+      "delete": {
+        "confirm": "Supprimer ?",
+        "error": "Erreur",
+        "success": "Log supprimé",
+        "success_one": "Effacé",
+        "success_many": "Effacés",
+        "success_other": "Effacés"
+      },
+      "loadError": "Erreur chargement",
+      "noData": "Historique vide",
+      "search": {
+        "error": "Erreur recherche"
+      },
+      "update": {
+        "error": "Échec",
+        "success": "Mis à jour"
+      }
+    },
+    "title": "Logs de Synchronisation",
+    "description": "Consultez l'historique détaillé des synchronisations de données avec les services intégrés."
+  },
+  "IntegrationSyncLog": {
+    "form": {
+      "completedAtLabel": "Heure de fin",
+      "completedAtPlaceholder": "Auto",
+      "errorLogLabel": "Trace d'erreur",
+      "errorLogPlaceholder": "Contenu technique",
+      "integrationIdLabel": "Service source",
+      "integrationIdPlaceholder": "Choisir",
+      "recordsFailedLabel": "Nb. Échecs",
+      "recordsFailedPlaceholder": "0",
+      "recordsProcessedLabel": "Nb. Total",
+      "recordsProcessedPlaceholder": "0",
+      "recordsSucceededLabel": "Nb. Réussites",
+      "recordsSucceededPlaceholder": "0",
+      "startedAtLabel": "Heure de début",
+      "startedAtPlaceholder": "Auto",
+      "statusLabel": "Résultat",
+      "statusPlaceholder": "Success, Failed, Warning",
+      "syncTypeLabel": "Mode de synchro",
+      "syncTypePlaceholder": "Full, Incremental"
+    }
+  },
+  "invoice": {
+    "actions": {
+      "add": "Créer Facture",
+      "edit": "Modifier",
+      "more": "Actions"
+    },
+    "bulk": {
+      "delete_one": "Annuler facture",
+      "delete_many": "Annuler factures",
+      "delete_other": "Annuler sélection",
+      "deleteConfirm_one": "Annuler cette facture ?",
+      "deleteConfirm_many": "Annuler ces factures ?",
+      "deleteConfirm_other": "Annuler {{count}} factures ?",
+      "deleteError": "Erreur",
+      "deleteReason": "Motif annulation",
+      "deleting": "Annulation...",
+      "partialError_one": "Erreur",
+      "partialError_many": "Erreurs",
+      "partialError_other": "Erreurs"
+    },
+    "details": {
+      "information": "Sommaire de la facture",
+      "title": "Facture Détaillée",
+      "view": "Télécharger PDF"
+    },
+    "fields": {
+      "billingPeriodEnd": "Fin période",
+      "billingPeriodStart": "Début période",
+      "companyEmail": "Email client",
+      "companyId": "ID Entreprise",
+      "companyName": "Entreprise",
+      "companyStatus": "Statut",
+      "currency": "Devise",
+      "currencyCode": "Code Devise",
+      "currencyName": "Nom Devise",
+      "currencySymbol": "Symbole",
+      "data": "Données",
+      "detail": "Lignes de facturation",
+      "dueDate": "Échéance",
+      "errorCode": "Code erreur",
+      "instance": "Instance",
+      "invoiceNumber": "N° Facture",
+      "metadata": "Métadonnées",
+      "paidAt": "Payée le",
+      "status": "État de paiement",
+      "subTotal": "Sous-total HT",
+      "success": "Succès",
+      "taxAmount": "Montant TVA",
+      "taxRate": "Taux TVA (%)",
+      "timestamp": "Émise le",
+      "title": "Objet",
+      "total": "Total TTC",
+      "traceId": "Trace ID",
+      "type": "Type facture",
+      "validationErrors": "Erreurs"
+    },
+    "form": {
+      "create": {
+        "description": "Générez une nouvelle facture pour un client.",
+        "submit": "Générer PDF",
+        "title": "Nouvelle Facture"
+      },
+      "edit": {
+        "description": "Modifier les montants ou dates.",
+        "loadError": "Erreur",
+        "submit": "Sauvegarder",
+        "title": "Édition Facture"
+      }
+    },
+    "messages": {
+      "create": {
+        "error": "Échec création",
+        "success": "Facture générée"
+      },
+      "delete": {
+        "confirm": "Annuler ?",
+        "error": "Erreur",
+        "success": "Facture annulée",
+        "success_one": "Annulée",
+        "success_many": "Annulées",
+        "success_other": "Annulées"
+      },
+      "loadError": "Erreur chargement",
+      "noData": "Aucune facture",
+      "search": {
+        "error": "Erreur recherche"
+      },
+      "update": {
+        "error": "Échec MAJ",
+        "success": "Mise à jour réussie"
+      }
+    },
+    "title": "Facturation",
+    "description": "Créez, suivez et gérez les factures de vos clients, et consultez leur statut de paiement."
+  },
+  "Invoice": {
+    "form": {
+      "billingPeriodEndLabel": "Période fin",
+      "billingPeriodEndPlaceholder": "Date",
+      "billingPeriodStartLabel": "Période début",
+      "billingPeriodStartPlaceholder": "Date",
+      "companyIdLabel": "Client/Entreprise",
+      "companyIdPlaceholder": "Choisir",
+      "currencyLabel": "Monnaie",
+      "currencyPlaceholder": "FCFA, EUR, USD...",
+      "dueDateLabel": "Date limite",
+      "dueDatePlaceholder": "Date",
+      "invoiceNumberLabel": "Numéro unique",
+      "invoiceNumberPlaceholder": "FAC-2025-001",
+      "paidAtLabel": "Date règlement",
+      "paidAtPlaceholder": "Sélectionner si payée",
+      "statusLabel": "Statut",
+      "statusPlaceholder": "Pending, Paid, Overdue",
+      "subTotalLabel": "Montant HT",
+      "subTotalPlaceholder": "0.00",
+      "taxAmountLabel": "TVA",
+      "taxAmountPlaceholder": "0.00",
+      "taxRateLabel": "Pourcentage TVA",
+      "taxRatePlaceholder": "Ex: 19.25",
+      "totalLabel": "Montant TTC",
+      "totalPlaceholder": "Auto"
+    }
+  },
+  "job": {
+    "actions": {
+      "add": "Nouvelle tâche",
+      "edit": "Relancer",
+      "more": "Actions"
+    },
+    "bulk": {
+      "delete_one": "Supprimer",
+      "delete_many": "Tout supprimer",
+      "delete_other": "Vider sélection",
+      "deleteConfirm_one": "Supprimer ce job ?",
+      "deleteConfirm_many": "Supprimer ces jobs ?",
+      "deleteConfirm_other": "Supprimer ces {{count}} jobs ?",
+      "deleteError": "Erreur",
+      "deleteReason": "Motif",
+      "deleting": "Suppression...",
+      "partialError_one": "Erreur",
+      "partialError_many": "Erreurs",
+      "partialError_other": "Erreurs"
+    },
+    "details": {
+      "information": "Détails d'exécution du background job",
+      "title": "Statut de la Tâche",
+      "view": "Consulter"
+    },
+    "fields": {
+      "attemptCount": "Essais effectués",
+      "completedAt": "Terminé le",
+      "data": "Données",
+      "detail": "Détails",
+      "errorCode": "Code erreur",
+      "errorMessage": "Message d'erreur",
+      "instance": "Serveur",
+      "jobType": "Type de tâche",
+      "maxAttempts": "Essais max.",
+      "metadata": "Métadonnées",
+      "payload": "Payload (JSON)",
+      "result": "Résultat",
+      "scheduledAt": "Prévu pour",
+      "startedAt": "Démarré le",
+      "status": "État",
+      "success": "Succès",
+      "timestamp": "Créé le",
+      "title": "Nom du job",
+      "traceId": "Trace ID",
+      "type": "Type",
+      "validationErrors": "Erreurs"
+    },
+    "form": {
+      "create": {
+        "description": "Planifier une tâche de fond.",
+        "submit": "Planifier",
+        "title": "Nouveau Job"
+      },
+      "edit": {
+        "description": "Modifier les paramètres d'exécution.",
+        "loadError": "Erreur",
+        "submit": "Enregistrer",
+        "title": "Édition Job"
+      }
+    },
+    "messages": {
+      "create": {
+        "error": "Échec",
+        "success": "Job planifié"
+      },
+      "delete": {
+        "confirm": "Supprimer ?",
+        "error": "Erreur",
+        "success": "Job retiré",
+        "success_one": "Retiré",
+        "success_many": "Retirés",
+        "success_other": "Retirés"
+      },
+      "loadError": "Erreur chargement",
+      "noData": "Aucune tâche",
+      "search": {
+        "error": "Erreur recherche"
+      },
+      "update": {
+        "error": "Échec",
+        "success": "Job mis à jour"
+      }
+    },
+    "title": "Tâches Système",
+    "description": "Supervisez les processus automatisés et les tâches d'arrière-plan du système."
+  },
+  "Job": {
+    "form": {
+      "attemptCountLabel": "Nb. essais",
+      "attemptCountPlaceholder": "0",
+      "completedAtLabel": "Heure fin",
+      "completedAtPlaceholder": "N/A",
+      "errorMessageLabel": "Dernière erreur",
+      "errorMessagePlaceholder": "Pas d'erreur",
+      "jobTypeLabel": "Classe technique",
+      "jobTypePlaceholder": "Ex: EmailSenderJob",
+      "maxAttemptsLabel": "Limite essais",
+      "maxAttemptsPlaceholder": "3",
+      "payloadLabel": "Arguments",
+      "payloadPlaceholder": "{}",
+      "resultLabel": "Données de sortie",
+      "resultPlaceholder": "{}",
+      "scheduledAtLabel": "Exécuter à",
+      "scheduledAtPlaceholder": "Maintenant ou futur",
+      "startedAtLabel": "Heure début",
+      "startedAtPlaceholder": "N/A",
+      "statusLabel": "Statut",
+      "statusPlaceholder": "Queued, Running, Completed, Failed"
+    }
+  },
   "landingPage": {
-    "title": "_title"
+    "title": "Accueil Omni Channel"
   },
   "menu": {
-    "access-control": "Contrôle d'accès",
-    "addApplication": "Ajouter Application",
-    "addBalanceType": "Ajouter Type de Solde",
-    "addCompany": "Ajouter Entreprise",
-    "addCompanyAppLimit": "Ajouter Limite App",
-    "addCountry": "Ajouter Pays",
-    "addDocumentType": "Ajouter Type de Doc",
-    "addFeeConfiguration": "Ajouter Config. Frais",
-    "addFeeType": "Ajouter Type de Frais",
-    "addPaymentMethod": "Ajouter Méth. Paiement",
-    "addSecureSetting": "Ajouter Param. Sécurisé",
-    "addSetting": "Ajouter Paramètre",
-    "addUser": "Ajouter Utilisateur",
-    "addUserProfile": "Ajouter Profil",
-    "addWebhook": "Ajouter Webhook",
-    "administration": "Administration",
-    "all": "Tous",
-    "allowedIps": "IPs Autorisées",
-    "analytics": "Analyses",
-    "applications": "Applications",
-    "auditLogs": "Journaux d'Audit",
-    "auditSecurity": "Audit et Sécurité",
-    "balanceType": "Types de Solde",
-    "blockedIps": "IPs Bloquées",
-    "companies": "Entreprises",
-    "companyAppLimit": "Limites d'App",
-    "countries": "Pays",
-    "currencies": "Devises",
+    "AuditLog": "Journaux d'Audit",
+    "Blocklist": "Liste Noire",
+    "Campaign": "Campagnes",
+    "CampaignChannel": "Canaux de Campagne",
+    "CampaignSegment": "Segments de Campagne",
+    "CampaignStatistic": "Statistiques de Campagne",
+    "CampaignStep": "Étapes de Campagne",
+    "Channel": "Canaux",
+    "Client": "Clients",
+    "ClientChannelPreference": "Préférences Clients",
+    "ClientImport": "Importations Clients",
+    "ClientSegment": "Segments Clients",
+    "ClientSegmentMember": "Membres du Segment",
+    "Company": "Entreprises",
+    "CompanyApiKey": "Clés API Entreprise",
+    "CompanyChannel": "Canaux Entreprise",
+    "CompanySetting": "Paramètres Entreprise",
+    "CompanyVerification": "Vérifications KYC",
+    "Connector": "Connecteurs",
+    "Country": "Pays",
+    "Currency": "Devises",
     "Dashboard": "Tableau de bord",
-    "documentType": "Types de Document",
-    "feeConfigurations": "Config. Frais",
-    "feeTypes": "Types de Frais",
-    "frontEvents": "Événements Frontend",
-    "general": "Général",
-    "it": "Technique",
-    "logs": "Journaux",
-    "monitoring": "Surveillance",
-    "paymentMethod": "Méthodes de Paiement",
-    "payments": "Paiements",
-    "permissions": "Permissions",
-    "receipts": "Reçus",
-    "secureSettings": "Paramètres Sécurisés",
-    "settings": "Paramètres",
-    "support": "Support",
-    "system": "Système",
-    "systemMetric": "Métriques Système",
-    "transactions": "Transactions",
-    "userDevices": "Appareils Utilisateurs",
-    "userProfiles": "Profils Utilisateurs",
-    "users": "Utilisateurs",
-    "webHookLogs": "Logs Webhook",
-    "webhooks": "Webhooks",
-    "withdrawalMethod": "Méthodes de Retrait",
-    "withdrawals": "Retraits"
+    "EntityTag": "Tags d'Entité",
+    "File": "Fichiers",
+    "Integration": "Intégrations",
+    "IntegrationSyncLog": "Logs de Synchro",
+    "Invoice": "Factures",
+    "Job": "Tâches Système",
+    "Message": "Historique Messages",
+    "MessageEvent": "Événements Message",
+    "Notification": "Notifications",
+    "Payment": "Paiements",
+    "PaymentMethod": "Modes de Paiement",
+    "Pricing": "Grille Tarifaire",
+    "Product": "Catalogue Produits",
+    "ProductChannel": "Canaux Produits",
+    "ProductChannelStatistic": "Stats Canaux Produits",
+    "Provider": "Fournisseurs",
+    "ProviderCallback": "Callbacks Fournisseur",
+    "SecureSetting": "Paramètres Sécurisés",
+    "Setting": "Paramètres Généraux",
+    "Subscription": "Abonnements",
+    "SubscriptionPlan": "Plans d'Abonnement",
+    "SysLog": "Logs Système",
+    "Tag": "Gestion des Tags",
+    "Template": "Modèles de Message",
+    "TemplateChannel": "Canaux des Modèles",
+    "User": "Utilisateurs",
+    "UserProfile": "Profils Utilisateurs",
+    "Wallet": "Portefeuilles",
+    "WalletTransaction": "Transactions Portefeuille",
+    "WebhookDelivery": "Livraisons Webhook",
+    "WebhookEndpoint": "Configuration Webhook"
+  },
+  "message": {
+    "actions": {
+      "add": "Envoyer Message",
+      "more": "Actions"
+    },
+    "bulk": {
+      "delete_one": "Supprimer message",
+      "delete_many": "Supprimer les messages",
+      "delete_other": "Supprimer sélection",
+      "deleteConfirm_one": "Supprimer ce message ?",
+      "deleteConfirm_many": "Supprimer ces messages ?",
+      "deleteConfirm_other": "Supprimer {{count}} messages ?",
+      "deleteError": "Erreur",
+      "deleteReason": "Motif",
+      "deleting": "Suppression...",
+      "partialError_one": "Erreur",
+      "partialError_many": "Erreurs",
+      "partialError_other": "Erreurs"
+    },
+    "details": {
+      "information": "Contenu et routage du message",
+      "title": "Détails du Message",
+      "view": "Consulter"
+    },
+    "fields": {
+      "attemptCount": "Essais",
+      "campaignId": "ID Campagne",
+      "campaignName": "Campagne",
+      "campaignStatus": "Statut Campagne",
+      "campaignType": "Type Campagne",
+      "channelCode": "Code Canal",
+      "channelId": "ID Canal",
+      "channelName": "Canal",
+      "clientEmail": "Email client",
+      "clientFirstName": "Prénom client",
+      "clientId": "ID Client",
+      "clientLastName": "Nom client",
+      "clientStatus": "Statut client",
+      "connectorId": "ID Connecteur",
+      "connectorName": "Via Connecteur",
+      "content": "Message",
+      "cost": "Coût",
+      "count": "Unités",
+      "deliveredAt": "Livré le",
+      "errorCode": "Code erreur",
+      "errorMessage": "Raison échec",
+      "externalMessageId": "ID Externe",
+      "failedAt": "Échec le",
+      "isApiCall": "Via API",
+      "maxAttempts": "Essais max",
+      "nextRetryAt": "Prochain essai",
+      "queuedAt": "En file le",
+      "recipientAddress": "Destinataire",
+      "sentAt": "Envoyé le",
+      "status": "Statut",
+      "subject": "Sujet",
+      "templateId": "ID Modèle",
+      "templateName": "Modèle utilisé",
+      "templateStatus": "Statut Modèle"
+    },
+    "messages": {
+      "create": {
+        "error": "Échec envoi",
+        "success": "Message envoyé"
+      },
+      "delete": {
+        "confirm": "Supprimer ?",
+        "error": "Erreur",
+        "success": "Supprimé",
+        "success_one": "Effacé",
+        "success_many": "Effacés",
+        "success_other": "Effacés"
+      },
+      "loadError": "Erreur chargement",
+      "noData": "Aucun message",
+      "search": {
+        "error": "Erreur recherche"
+      },
+      "update": {
+        "error": "Erreur",
+        "success": "Mise à jour réussie"
+      }
+    },
+    "title": "Historique Messages",
+    "description": "Consultez le journal de tous les messages envoyés, leur contenu, leur destinataire et leur statut de livraison."
+  },
+  "messageEvent": {
+    "actions": {
+      "add": "Log événement",
+      "more": "Détails"
+    },
+    "bulk": {
+      "delete_one": "Supprimer",
+      "delete_many": "Vider logs",
+      "delete_other": "Vider sélection",
+      "deleteConfirm_one": "Supprimer ?",
+      "deleteConfirm_many": "Confirmer ?",
+      "deleteConfirm_other": "Confirmer ?",
+      "deleteError": "Erreur",
+      "deleteReason": "Motif",
+      "deleting": "Suppression...",
+      "partialError_one": "Erreur",
+      "partialError_many": "Erreurs",
+      "partialError_other": "Erreurs"
+    },
+    "details": {
+      "information": "Informations de traçabilité du message",
+      "title": "Détails Événement Message",
+      "view": "Voir"
+    },
+    "fields": {
+      "eventData": "Données brutes",
+      "eventType": "Type d'événement",
+      "ipAddress": "Adresse IP",
+      "location": "Localisation",
+      "messageId": "ID Message",
+      "messageStatus": "Statut du message",
+      "userAgent": "Agent technique"
+    },
+    "messages": {
+      "create": {
+        "error": "Erreur",
+        "success": "Enregistré"
+      },
+      "delete": {
+        "confirm": "Supprimer ?",
+        "error": "Erreur",
+        "success": "Supprimé",
+        "success_one": "Effacé",
+        "success_many": "Effacés",
+        "success_other": "Effacés"
+      },
+      "loadError": "Impossible de charger",
+      "noData": "Aucun événement",
+      "search": {
+        "error": "Erreur recherche"
+      },
+      "update": {
+        "error": "Erreur",
+        "success": "Mis à jour"
+      }
+    },
+    "title": "Suivi des Événements",
+    "description": "Analysez les événements de tracking associés aux messages (ex: ouvert, cliqué, rejeté) pour un suivi détaillé."
   },
   "navigation": {
     "about": "À propos",
@@ -467,12 +3256,1101 @@
   },
   "noPermission": "Vous n'avez pas la permission d'accéder à cette ressource",
   "noRessource": "Aucune ressource disponible",
+  "notification": {
+    "actions": {
+      "add": "Créer notification",
+      "edit": "Gérer",
+      "more": "Plus"
+    },
+    "bulk": {
+      "delete_one": "Supprimer",
+      "delete_many": "Vider",
+      "delete_other": "Supprimer sélection",
+      "deleteConfirm_one": "Supprimer cette alerte ?",
+      "deleteConfirm_many": "Tout vider ?",
+      "deleteConfirm_other": "Vider {{count}} notifications ?",
+      "deleteError": "Erreur",
+      "deleteReason": "Motif",
+      "deleting": "Suppression...",
+      "partialError_one": "Erreur",
+      "partialError_many": "Erreurs",
+      "partialError_other": "Erreurs"
+    },
+    "details": {
+      "information": "Détails de l'alerte",
+      "title": "Alerte Utilisateur",
+      "view": "Consulter"
+    },
+    "fields": {
+      "actionLabel": "Texte du bouton",
+      "actionUrl": "Lien cible",
+      "alertType": "Sévérité",
+      "data": "Données supplémentaires",
+      "detail": "Détails",
+      "errorCode": "Code erreur",
+      "instance": "Instance",
+      "isRead": "Lue",
+      "message": "Corps de la notification",
+      "metadata": "Métadonnées",
+      "readAt": "Lue le",
+      "status": "Statut",
+      "success": "Succès",
+      "timestamp": "Reçue le",
+      "title": "Titre",
+      "traceId": "Trace ID",
+      "type": "Catégorie",
+      "userEmail": "Email destinataire",
+      "userFirstName": "Prénom",
+      "userId": "ID Utilisateur",
+      "userLastName": "Nom",
+      "userPhoneNumber": "Tél.",
+      "userStatus": "Statut utilisateur",
+      "validationErrors": "Erreurs"
+    },
+    "form": {
+      "create": {
+        "description": "Envoyer une alerte in-app à un utilisateur.",
+        "submit": "Envoyer",
+        "title": "Nouvelle Notification"
+      },
+      "edit": {
+        "description": "Marquer comme lue ou modifier.",
+        "loadError": "Erreur",
+        "submit": "Enregistrer",
+        "title": "Gérer Notification"
+      }
+    },
+    "messages": {
+      "create": {
+        "error": "Échec",
+        "success": "Notification envoyée"
+      },
+      "delete": {
+        "confirm": "Supprimer ?",
+        "error": "Erreur",
+        "success": "Supprimée",
+        "success_one": "Effacée",
+        "success_many": "Effacées",
+        "success_other": "Effacées"
+      },
+      "loadError": "Erreur chargement",
+      "noData": "Aucune alerte",
+      "search": {
+        "error": "Erreur recherche"
+      },
+      "update": {
+        "error": "Échec",
+        "success": "Mise à jour réussie"
+      }
+    },
+    "title": "Notifications In-App",
+    "description": "Gérez les alertes et les notifications envoyées aux utilisateurs directement dans l'interface de la plateforme."
+  },
+  "Notification": {
+    "form": {
+      "actionLabelLabel": "Libellé de l'action",
+      "actionLabelPlaceholder": "Ex: Voir maintenant",
+      "actionUrlLabel": "URL de redirection",
+      "actionUrlPlaceholder": "Ex: /dashboard/payment/123",
+      "alertTypeLabel": "Type d'alerte",
+      "alertTypePlaceholder": "Info, Warning, Error",
+      "isReadLabel": "Marquer comme lue",
+      "messageLabel": "Contenu",
+      "messagePlaceholder": "Votre paiement a été validé...",
+      "readAtLabel": "Heure de lecture",
+      "readAtPlaceholder": "Auto",
+      "titleLabel": "Titre de la notification",
+      "titlePlaceholder": "Ex: Nouveau message reçu",
+      "typeLabel": "Catégorie",
+      "typePlaceholder": "System, Transactional, Marketing",
+      "userIdLabel": "Utilisateur cible",
+      "userIdPlaceholder": "Choisir l'utilisateur"
+    }
+  },
   "pageNotfound": "Page non trouvée",
+  "payment": {
+    "actions": {
+      "add": "Enregistrer paiement",
+      "edit": "Réviser",
+      "more": "Actions"
+    },
+    "bulk": {
+      "delete_one": "Annuler",
+      "delete_many": "Tout annuler",
+      "delete_other": "Annuler sélection",
+      "deleteConfirm_one": "Voulez-vous annuler ce paiement ?",
+      "deleteConfirm_many": "Annuler ces paiements ?",
+      "deleteConfirm_other": "Annuler {{count}} paiements ?",
+      "deleteError": "Erreur annulation",
+      "deleteReason": "Motif",
+      "deleting": "Traitement...",
+      "partialError_one": "Erreur",
+      "partialError_many": "Erreurs",
+      "partialError_other": "Erreurs"
+    },
+    "details": {
+      "information": "Preuve de la transaction financière",
+      "title": "Détails du Paiement",
+      "view": "Consulter"
+    },
+    "fields": {
+      "amount": "Montant",
+      "companyEmail": "Email entreprise",
+      "companyId": "ID Entreprise",
+      "companyName": "Entreprise",
+      "companyStatus": "Statut",
+      "currency": "Devise",
+      "currencyCode": "Code Devise",
+      "currencyName": "Monnaie",
+      "currencySymbol": "Symbole",
+      "data": "Données",
+      "detail": "Détails",
+      "errorCode": "Code erreur",
+      "externalTransactionId": "ID Transaction Externe",
+      "failureReason": "Motif de l'échec",
+      "finalTransactionId": "ID Final",
+      "instance": "Serveur",
+      "invoiceCurrency": "Devise facture",
+      "invoiceId": "ID Facture",
+      "invoiceStatus": "Statut facture",
+      "metadata": "Métadonnées",
+      "method": "Méthode",
+      "paymentMethodCurrency": "Devise méthode",
+      "paymentMethodId": "ID Méthode",
+      "paymentMethodStatus": "Statut méthode",
+      "processedAt": "Traité le",
+      "status": "État",
+      "success": "Succès",
+      "timestamp": "Effectué le",
+      "title": "Libellé",
+      "traceId": "Trace ID",
+      "type": "Nature",
+      "validationErrors": "Erreurs"
+    },
+    "form": {
+      "create": {
+        "description": "Enregistrer manuellement un flux de trésorerie.",
+        "submit": "Enregistrer",
+        "title": "Nouveau Flux"
+      },
+      "edit": {
+        "description": "Mettre à jour les informations du paiement.",
+        "loadError": "Erreur chargement",
+        "submit": "Sauvegarder",
+        "title": "Édition Paiement"
+      }
+    },
+    "messages": {
+      "create": {
+        "error": "Échec",
+        "success": "Paiement enregistré"
+      },
+      "delete": {
+        "confirm": "Annuler ?",
+        "error": "Erreur",
+        "success": "Paiement annulé",
+        "success_one": "Annulé",
+        "success_many": "Annulés",
+        "success_other": "Annulés"
+      },
+      "loadError": "Erreur chargement",
+      "noData": "Aucune transaction",
+      "search": {
+        "error": "Erreur recherche"
+      },
+      "update": {
+        "error": "Échec",
+        "success": "Mis à jour"
+      }
+    },
+    "title": "Paiements",
+    "description": "Suivez toutes les transactions financières, consultez les détails et gérez les statuts de paiement."
+  },
+  "Payment": {
+    "form": {
+      "amountLabel": "Somme",
+      "amountPlaceholder": "0.00",
+      "companyIdLabel": "Client",
+      "companyIdPlaceholder": "Choisir",
+      "currencyLabel": "Devise",
+      "currencyPlaceholder": "XAF, EUR...",
+      "externalTransactionIdLabel": "Référence Banque/Mobile",
+      "externalTransactionIdPlaceholder": "Ex: 123456789",
+      "failureReasonLabel": "Détails échec",
+      "failureReasonPlaceholder": "Fonds insuffisants, etc.",
+      "finalTransactionIdLabel": "ID Système Final",
+      "finalTransactionIdPlaceholder": "Auto",
+      "invoiceIdLabel": "Facture liée",
+      "invoiceIdPlaceholder": "Choisir la facture",
+      "metadataLabel": "Infos extras",
+      "metadataPlaceholder": "{}",
+      "methodLabel": "Type de paiement",
+      "methodPlaceholder": "Orange Money, MTN, Virement...",
+      "paymentMethodIdLabel": "Configuration de paie",
+      "paymentMethodIdPlaceholder": "Choisir",
+      "processedAtLabel": "Heure de traitement",
+      "processedAtPlaceholder": "Auto",
+      "statusLabel": "Résultat",
+      "statusPlaceholder": "Success, Pending, Failed"
+    }
+  },
+  "paymentMethod": {
+    "actions": {
+      "add": "Nouveau mode",
+      "edit": "Éditer",
+      "more": "Actions"
+    },
+    "bulk": {
+      "delete_one": "Désactiver",
+      "delete_many": "Tout désactiver",
+      "delete_other": "Désactiver sélectionnés",
+      "deleteConfirm_one": "Supprimer ce mode ?",
+      "deleteConfirm_many": "Supprimer ces modes ?",
+      "deleteConfirm_other": "Supprimer {{count}} modes ?",
+      "deleteError": "Erreur",
+      "deleteReason": "Motif",
+      "deleting": "Suppression...",
+      "partialError_one": "Erreur",
+      "partialError_many": "Erreurs",
+      "partialError_other": "Erreurs"
+    },
+    "details": {
+      "information": "Configuration du mode de paiement",
+      "title": "Mode de Règlement",
+      "view": "Consulter"
+    },
+    "fields": {
+      "code": "Code technique",
+      "data": "Données",
+      "description": "Description",
+      "detail": "Détails",
+      "errorCode": "Code erreur",
+      "instance": "Instance",
+      "isActive": "Actif",
+      "logoUrl": "Lien Logo",
+      "maximumAmount": "Montant max.",
+      "metadata": "Métadonnées",
+      "minimumAmount": "Montant min.",
+      "name": "Nom",
+      "requiresPhoneNumber": "Requiert téléphone",
+      "settlementPeriod": "Délai de reversement (jours)",
+      "sortOrder": "Ordre d'affichage",
+      "status": "Statut",
+      "success": "Succès",
+      "timestamp": "Mis à jour le",
+      "title": "Titre",
+      "traceId": "Trace ID",
+      "type": "Type",
+      "validationErrors": "Erreurs"
+    },
+    "form": {
+      "create": {
+        "description": "Ajoutez un nouveau moyen de paiement disponible.",
+        "submit": "Ajouter",
+        "title": "Nouveau Mode de Paiement"
+      },
+      "edit": {
+        "description": "Modifier les limites ou le logo.",
+        "loadError": "Erreur",
+        "submit": "Enregistrer",
+        "title": "Édition Mode"
+      }
+    },
+    "messages": {
+      "create": {
+        "error": "Échec",
+        "success": "Mode ajouté"
+      },
+      "delete": {
+        "confirm": "Supprimer ?",
+        "error": "Erreur",
+        "success": "Supprimé",
+        "success_one": "Effacé",
+        "success_many": "Effacés",
+        "success_other": "Effacés"
+      },
+      "loadError": "Erreur chargement",
+      "noData": "Aucun mode configuré",
+      "search": {
+        "error": "Erreur recherche"
+      },
+      "update": {
+        "error": "Échec",
+        "success": "Mis à jour"
+      }
+    },
+    "title": "Modes de Paiement",
+    "description": "Configurez les différentes méthodes de paiement (Mobile Money, Virement) disponibles pour les transactions."
+  },
+  "PaymentMethod": {
+    "form": {
+      "codeLabel": "Clé unique (Ex: MOMO_CM)",
+      "codePlaceholder": "Ex: MTN_MOMO",
+      "descriptionLabel": "Infos clients",
+      "descriptionPlaceholder": "Ex: Paiement via Mobile Money",
+      "isActiveLabel": "Activé sur le site",
+      "logoUrlLabel": "Icône",
+      "logoUrlPlaceholder": "https://...",
+      "maximumAmountLabel": "Plafond",
+      "maximumAmountPlaceholder": "500000",
+      "minimumAmountLabel": "Plancher",
+      "minimumAmountPlaceholder": "100",
+      "nameLabel": "Libellé",
+      "namePlaceholder": "Ex: MTN Mobile Money",
+      "requiresPhoneNumberLabel": "Demander numéro mobile",
+      "settlementPeriodLabel": "Jours avant reversement",
+      "settlementPeriodPlaceholder": "Ex: 2",
+      "sortOrderLabel": "Position",
+      "sortOrderPlaceholder": "1"
+    }
+  },
+  "pricing": {
+    "actions": {
+      "add": "Nouveau tarif",
+      "edit": "Ajuster",
+      "more": "Actions"
+    },
+    "bulk": {
+      "delete_one": "Supprimer",
+      "delete_many": "Tout supprimer",
+      "delete_other": "Supprimer sélection",
+      "deleteConfirm_one": "Supprimer ce tarif ?",
+      "deleteConfirm_many": "Tout supprimer ?",
+      "deleteConfirm_other": "Supprimer {{count}} ?",
+      "deleteError": "Erreur",
+      "deleteReason": "Motif",
+      "deleting": "Suppression...",
+      "partialError_one": "Erreur",
+      "partialError_many": "Erreurs",
+      "partialError_other": "Erreurs"
+    },
+    "details": {
+      "information": "Grille tarifaire par canal et fournisseur",
+      "title": "Détails de la Tarification",
+      "view": "Consulter"
+    },
+    "fields": {
+      "channelCode": "Code Canal",
+      "channelId": "ID Canal",
+      "channelName": "Canal",
+      "companyEmail": "Email entreprise",
+      "companyId": "ID Entreprise",
+      "companyName": "Entreprise",
+      "companyStatus": "Statut",
+      "currency": "Devise",
+      "currencyCode": "Code Monnaie",
+      "currencyName": "Monnaie",
+      "currencySymbol": "Symbole",
+      "data": "Données",
+      "detail": "Détails",
+      "effectiveFrom": "Applicable du",
+      "effectiveTo": "Applicable jusqu'au",
+      "errorCode": "Code erreur",
+      "instance": "Instance",
+      "metadata": "Métadonnées",
+      "platformFee": "Frais plateforme",
+      "platformFeeType": "Type frais (Fixe/%)",
+      "providerCode": "Fournisseur",
+      "providerId": "ID Fournisseur",
+      "providerName": "Nom Fournisseur",
+      "status": "Statut",
+      "success": "Succès",
+      "timestamp": "Horodatage",
+      "title": "Nom de la règle",
+      "traceId": "Trace ID",
+      "type": "Nature",
+      "unitPrice": "Prix unitaire",
+      "validationErrors": "Erreurs"
+    },
+    "form": {
+      "create": {
+        "description": "Définir un nouveau prix pour les messages ou services.",
+        "submit": "Enregistrer",
+        "title": "Nouvelle Règle Prix"
+      },
+      "edit": {
+        "description": "Ajuster les tarifs en vigueur.",
+        "loadError": "Erreur",
+        "submit": "Sauvegarder",
+        "title": "Édition Tarif"
+      }
+    },
+    "messages": {
+      "create": {
+        "error": "Échec",
+        "success": "Tarif créé"
+      },
+      "delete": {
+        "confirm": "Supprimer ?",
+        "error": "Erreur",
+        "success": "Tarif retiré",
+        "success_one": "Retiré",
+        "success_many": "Retirés",
+        "success_other": "Retirés"
+      },
+      "loadError": "Erreur chargement",
+      "noData": "Aucun tarif défini",
+      "search": {
+        "error": "Erreur recherche"
+      },
+      "update": {
+        "error": "Échec",
+        "success": "Mis à jour"
+      }
+    },
+    "title": "Grilles Tarifaires",
+    "description": "Définissez et gérez les coûts des services, que ce soit au niveau global, par client ou par fournisseur."
+  },
+  "Pricing": {
+    "form": {
+      "channelIdLabel": "Moyen de com.",
+      "channelIdPlaceholder": "Choisir",
+      "companyIdLabel": "Client spécifique",
+      "companyIdPlaceholder": "Laissez vide pour prix global",
+      "currencyLabel": "Monnaie de facturation",
+      "currencyPlaceholder": "XAF",
+      "effectiveFromLabel": "Date de début",
+      "effectiveFromPlaceholder": "Sélectionner",
+      "effectiveToLabel": "Date de fin",
+      "effectiveToPlaceholder": "Optionnel",
+      "platformFeeLabel": "Marge système",
+      "platformFeePlaceholder": "0.00",
+      "platformFeeTypeLabel": "Calcul de la marge",
+      "platformFeeTypePlaceholder": "Flat, Percentage",
+      "providerIdLabel": "Coût fournisseur",
+      "providerIdPlaceholder": "Choisir",
+      "unitPriceLabel": "Prix net",
+      "unitPricePlaceholder": "0.00"
+    }
+  },
+  "product": {
+    "actions": {
+      "add": "Nouveau produit",
+      "more": "Actions"
+    },
+    "bulk": {
+      "delete_one": "Supprimer",
+      "delete_many": "Tout supprimer",
+      "delete_other": "Vider sélection",
+      "deleteConfirm_one": "Supprimer ce produit ?",
+      "deleteConfirm_many": "Tout supprimer ?",
+      "deleteConfirm_other": "Supprimer {{count}} ?",
+      "deleteError": "Erreur",
+      "deleteReason": "Motif",
+      "deleting": "Suppression...",
+      "partialError_one": "Erreur",
+      "partialError_many": "Erreurs",
+      "partialError_other": "Erreurs"
+    },
+    "details": {
+      "description": "Détails complets sur le produit et ses paramètres.",
+      "title": "Détails du Produit"
+    },
+    "fields": {
+      "clientAttributes": "Attributs clients",
+      "clientMappingConfiguration": "Mapping clients",
+      "companyEmail": "Email entreprise",
+      "companyId": "ID Entreprise",
+      "companyName": "Entreprise",
+      "companyStatus": "Statut",
+      "data": "Données",
+      "description": "Description",
+      "detail": "Détails",
+      "errorCode": "Code erreur",
+      "instance": "Instance",
+      "metadata": "Métadonnées",
+      "name": "Nom du produit",
+      "settings": "Paramètres",
+      "status": "Statut",
+      "success": "Succès",
+      "timestamp": "Horodatage",
+      "title": "Titre",
+      "traceId": "Trace ID",
+      "type": "Type",
+      "validationErrors": "Erreurs"
+    },
+    "form": {
+      "create": {
+        "description": "Définir une nouvelle offre ou application.",
+        "submit": "Créer",
+        "title": "Nouveau Produit"
+      },
+      "edit": {
+        "description": "Changer les attributs.",
+        "submit": "Enregistrer",
+        "title": "Édition Produit"
+      }
+    },
+    "messages": {
+      "create": {
+        "error": "Erreur",
+        "success": "Produit créé"
+      },
+      "delete": {
+        "confirm": "Supprimer ?",
+        "error": "Erreur",
+        "success": "Supprimé",
+        "success_one": "Supprimé",
+        "success_many": "Supprimés",
+        "success_other": "Supprimés"
+      },
+      "noData": "Aucun produit",
+      "search": {
+        "error": "Erreur recherche"
+      },
+      "update": {
+        "error": "Erreur",
+        "success": "Mis à jour"
+      }
+    },
+    "title": "Catalogue Produits",
+    "description": "Gérez les produits ou services que vous offrez, y compris leurs paramètres et configurations spécifiques."
+  },
+  "Product": {
+    "form": {
+      "clientAttributesLabel": "Champs clients requis",
+      "clientAttributesPlaceholder": "JSON des champs",
+      "clientMappingConfigurationLabel": "Config Import",
+      "clientMappingConfigurationPlaceholder": "{}",
+      "companyIdLabel": "Propriétaire",
+      "companyIdPlaceholder": "Choisir",
+      "descriptionLabel": "Description",
+      "descriptionPlaceholder": "Détails du produit",
+      "nameLabel": "Nom public",
+      "namePlaceholder": "Ex: API SMS v2",
+      "settingsLabel": "Réglages JSON",
+      "settingsPlaceholder": "{}",
+      "statusLabel": "Disponibilité",
+      "statusPlaceholder": "Draft, Active, Archived"
+    }
+  },
+  "productChannel": {
+    "actions": {
+      "add": "Associer canal",
+      "more": "Plus"
+    },
+    "bulk": {
+      "delete_one": "Désassocier",
+      "delete_many": "Tout désassocier",
+      "delete_other": "Supprimer sélection",
+      "deleteConfirm_one": "Retirer ce canal ?",
+      "deleteConfirm_many": "Tout retirer ?",
+      "deleteConfirm_other": "Retirer {{count}} ?",
+      "deleteError": "Erreur",
+      "deleteReason": "Motif",
+      "deleting": "Traitement...",
+      "partialError_one": "Erreur",
+      "partialError_many": "Erreurs",
+      "partialError_other": "Erreurs"
+    },
+    "details": {
+      "description": "Configuration de l'association canal-produit.",
+      "title": "Canaux du produit"
+    },
+    "fields": {
+      "channelCode": "Code Canal",
+      "channelId": "ID Canal",
+      "channelName": "Canal",
+      "data": "Données",
+      "detail": "Détails",
+      "errorCode": "Code erreur",
+      "instance": "Instance",
+      "isActive": "Actif",
+      "metadata": "Métadonnées",
+      "priority": "Priorité",
+      "productId": "ID Produit",
+      "productName": "Produit",
+      "productStatus": "Statut",
+      "status": "Statut",
+      "success": "Succès",
+      "timestamp": "Horodatage",
+      "title": "Titre",
+      "traceId": "Trace ID",
+      "type": "Type",
+      "validationErrors": "Erreurs"
+    },
+    "form": {
+      "create": {
+        "description": "Lier un canal de communication à ce produit.",
+        "submit": "Associer",
+        "title": "Nouveau Canal Produit"
+      },
+      "edit": {
+        "description": "Réglages priorité.",
+        "submit": "Enregistrer",
+        "title": "Édition Canal"
+      }
+    },
+    "messages": {
+      "create": {
+        "error": "Erreur",
+        "success": "Canal lié"
+      },
+      "delete": {
+        "confirm": "Retirer ?",
+        "error": "Erreur",
+        "success": "Canal retiré",
+        "success_one": "Retiré",
+        "success_many": "Retirés",
+        "success_other": "Retirés"
+      },
+      "noData": "Aucun canal lié",
+      "search": {
+        "error": "Erreur recherche"
+      },
+      "update": {
+        "error": "Erreur",
+        "success": "Mis à jour"
+      }
+    },
+    "title": "Canaux par Produit",
+    "description": "Associez des canaux de communication spécifiques (SMS, Email) à chaque produit de votre catalogue."
+  },
+  "ProductChannel": {
+    "form": {
+      "channelIdLabel": "Canal",
+      "channelIdPlaceholder": "Choisir",
+      "isActiveLabel": "Activé pour ce produit",
+      "priorityLabel": "Priorité de routage",
+      "priorityPlaceholder": "1, 2...",
+      "productIdLabel": "Produit cible",
+      "productIdPlaceholder": "Choisir"
+    }
+  },
+  "productChannelStatistic": {
+    "actions": {
+      "add": "Log stats",
+      "more": "Plus"
+    },
+    "bulk": {
+      "delete_one": "Supprimer",
+      "delete_many": "Vider",
+      "delete_other": "Vider",
+      "deleteConfirm_one": "Supprimer ?",
+      "deleteConfirm_many": "Confirmer ?",
+      "deleteConfirm_other": "Confirmer ?",
+      "deleteError": "Erreur",
+      "deleteReason": "Motif",
+      "deleting": "Nettoyage...",
+      "partialError_one": "Erreur",
+      "partialError_many": "Erreurs",
+      "partialError_other": "Erreurs"
+    },
+    "details": {
+      "information": "Performance par canal",
+      "title": "Stats Produit/Canal",
+      "view": "Consulter"
+    },
+    "fields": {
+      "channelCode": "Code Canal",
+      "channelId": "ID Canal",
+      "channelName": "Nom Canal",
+      "messagesDelivered": "Nb. Livrés",
+      "messagesFailed": "Nb. Échecs",
+      "messagesSent": "Nb. Envoyés",
+      "periodEnd": "Jusqu'au",
+      "periodStart": "À partir du",
+      "productId": "ID Produit",
+      "productName": "Produit",
+      "productStatus": "Statut",
+      "totalCost": "Coût Consommé"
+    },
+    "messages": {
+      "create": {
+        "error": "Erreur",
+        "success": "Enregistré"
+      },
+      "delete": {
+        "confirm": "Supprimer ?",
+        "error": "Erreur",
+        "success": "Supprimé",
+        "success_one": "Effacé",
+        "success_many": "Effacés",
+        "success_other": "Effacés"
+      },
+      "loadError": "Impossible de charger",
+      "noData": "Pas de stats",
+      "search": {
+        "error": "Erreur recherche"
+      },
+      "update": {
+        "error": "Erreur",
+        "success": "Mis à jour"
+      }
+    },
+    "title": "Reporting Canaux",
+    "description": "Analysez les statistiques d'utilisation et de coût des canaux de communication, regroupées par produit."
+  },
+  "provider": {
+    "actions": {
+      "add": "Nouveau fournisseur",
+      "more": "Actions"
+    },
+    "bulk": {
+      "delete_one": "Supprimer",
+      "delete_many": "Tout supprimer",
+      "delete_other": "Supprimer sélectionnés",
+      "deleteConfirm_one": "Supprimer ?",
+      "deleteConfirm_many": "Supprimer ?",
+      "deleteConfirm_other": "Supprimer ?",
+      "deleteError": "Erreur",
+      "deleteReason": "Motif",
+      "deleting": "Suppression...",
+      "partialError_one": "Erreur",
+      "partialError_many": "Erreurs",
+      "partialError_other": "Erreurs"
+    },
+    "details": {
+      "description": "_description",
+      "title": "Fiche Fournisseur"
+    },
+    "fields": {
+      "baseUrl": "URL API",
+      "code": "Code Interne",
+      "data": "Données",
+      "detail": "Détails",
+      "documentationUrl": "Lien Doc",
+      "errorCode": "Code erreur",
+      "instance": "Instance",
+      "isActive": "Actif",
+      "isGlobal": "Fournisseur Global",
+      "metadata": "Métadonnées",
+      "name": "Raison Sociale",
+      "status": "Statut",
+      "success": "Succès",
+      "timestamp": "Horodatage",
+      "title": "Titre",
+      "traceId": "Trace ID",
+      "type": "Nature",
+      "validationErrors": "Erreurs"
+    },
+    "form": {
+      "create": {
+        "description": "Ajoutez un partenaire technique (ex: Twilio, Orange, MTN).",
+        "submit": "Ajouter",
+        "title": "Nouveau Fournisseur"
+      },
+      "edit": {
+        "description": "Modifier les liens techniques.",
+        "submit": "Sauvegarder",
+        "title": "Édition Fournisseur"
+      }
+    },
+    "messages": {
+      "create": {
+        "error": "Erreur",
+        "success": "Ajouté"
+      },
+      "delete": {
+        "confirm": "Supprimer ?",
+        "error": "Erreur",
+        "success": "Supprimé",
+        "success_one": "Retiré",
+        "success_many": "Retirés",
+        "success_other": "Retirés"
+      },
+      "noData": "Aucun fournisseur",
+      "search": {
+        "error": "Erreur recherche"
+      },
+      "update": {
+        "error": "Erreur",
+        "success": "Mis à jour"
+      }
+    },
+    "title": "Fournisseurs (Providers)",
+    "description": "Gérez les informations et configurations des fournisseurs de services externes (API, documentation)."
+  },
+  "Provider": {
+    "form": {
+      "baseUrlLabel": "Endpoint Racine",
+      "baseUrlPlaceholder": "https://api.provider.com",
+      "codeLabel": "Clé technique",
+      "codePlaceholder": "EX: TWILIO_GLOBAL",
+      "documentationUrlLabel": "Lien manuel",
+      "documentationUrlPlaceholder": "https://doc...",
+      "isActiveLabel": "Utilisable",
+      "isGlobalLabel": "Disponible pour tous",
+      "nameLabel": "Nom",
+      "namePlaceholder": "Ex: Twilio"
+    }
+  },
+  "providerCallback": {
+    "actions": {
+      "add": "Log manuel",
+      "more": "Détails"
+    },
+    "bulk": {
+      "delete_one": "Effacer",
+      "delete_many": "Vider",
+      "delete_other": "Vider",
+      "deleteConfirm_one": "Supprimer ?",
+      "deleteConfirm_many": "Vider ?",
+      "deleteConfirm_other": "Vider ?",
+      "deleteError": "Erreur",
+      "deleteReason": "Motif",
+      "deleting": "Nettoyage...",
+      "partialError_one": "Erreur",
+      "partialError_many": "Erreurs",
+      "partialError_other": "Erreurs"
+    },
+    "details": {
+      "description": "Détails et statut du callback reçu.",
+      "title": "Détails du Webhook Fournisseur"
+    },
+    "fields": {
+      "data": "Données",
+      "detail": "Détails",
+      "errorCode": "Code Erreur",
+      "errorMessage": "Message Erreur",
+      "externalMessageId": "ID Externe",
+      "instance": "Serveur",
+      "messageId": "ID Message Interne",
+      "messageStatus": "Statut retourné",
+      "metadata": "Métadonnées",
+      "processedAt": "Traité le",
+      "providerCode": "Code Fournisseur",
+      "providerId": "ID Fournisseur",
+      "providerName": "Fournisseur",
+      "rawPayload": "Payload Brut (DLR)",
+      "status": "Statut Log",
+      "success": "Succès",
+      "timestamp": "Reçu le",
+      "title": "Titre",
+      "traceId": "Trace ID",
+      "type": "Type",
+      "validationErrors": "Erreurs"
+    },
+    "form": {
+      "create": {
+        "description": "Simuler un retour fournisseur.",
+        "submit": "Enregistrer",
+        "title": "Nouveau Callback"
+      },
+      "edit": {
+        "description": "Réviser le contenu.",
+        "submit": "Enregistrer",
+        "title": "Édition Callback"
+      }
+    },
+    "messages": {
+      "create": {
+        "error": "Erreur",
+        "success": "Enregistré"
+      },
+      "delete": {
+        "confirm": "Effacer ?",
+        "error": "Erreur",
+        "success": "Supprimé",
+        "success_one": "Effacé",
+        "success_many": "Effacés",
+        "success_other": "Effacés"
+      },
+      "noData": "Aucun callback récent",
+      "search": {
+        "error": "Erreur recherche"
+      },
+      "update": {
+        "error": "Erreur",
+        "success": "Mis à jour"
+      }
+    },
+    "title": "Callbacks Fournisseurs",
+    "description": "Consultez les journaux des notifications et des rapports de livraison (DLR) reçus des fournisseurs externes."
+  },
+  "ProviderCallback": {
+    "form": {
+      "errorMessageLabel": "Erreur technique",
+      "errorMessagePlaceholder": "N/A",
+      "externalMessageIdLabel": "ID Message Provider",
+      "externalMessageIdPlaceholder": "Coller l'ID",
+      "messageIdLabel": "Message Système",
+      "messageIdPlaceholder": "Lier à un message",
+      "processedAtLabel": "Heure traitement",
+      "processedAtPlaceholder": "Auto",
+      "providerIdLabel": "Fournisseur",
+      "providerIdPlaceholder": "Choisir",
+      "rawPayloadLabel": "Contenu brut",
+      "rawPayloadPlaceholder": "JSON reçu",
+      "statusLabel": "Statut interne",
+      "statusPlaceholder": "Processed, Pending, Error"
+    }
+  },
   "readonly": "Lecture seule",
+  "secureSetting": {
+    "actions": {
+      "add": "Nouveau secret",
+      "more": "Plus"
+    },
+    "bulk": {
+      "delete_one": "Détruire",
+      "delete_many": "Tout détruire",
+      "delete_other": "Supprimer sélectionnés",
+      "deleteConfirm_one": "Supprimer ce secret ?",
+      "deleteConfirm_many": "Supprimer ces secrets ?",
+      "deleteConfirm_other": "Supprimer {{count}} ?",
+      "deleteError": "Erreur",
+      "deleteReason": "Motif",
+      "deleting": "Suppression...",
+      "partialError_one": "Erreur",
+      "partialError_many": "Erreurs",
+      "partialError_other": "Erreurs"
+    },
+    "details": {
+      "description": "Information sensible chiffrée.",
+      "title": "Détails du Paramètre Sécurisé"
+    },
+    "fields": {
+      "description": "Description",
+      "salt": "Sel de hachage",
+      "systemName": "Clé système",
+      "value": "Valeur chiffrée"
+    },
+    "form": {
+      "create": {
+        "description": "Enregistrez une donnée sensible (mot de passe, clé API).",
+        "title": "Créer un Secret"
+      },
+      "edit": {
+        "description": "Mettre à jour la valeur sécurisée.",
+        "title": "Édition du Secret"
+      }
+    },
+    "messages": {
+      "create": {
+        "error": "Erreur",
+        "success": "Secret créé"
+      },
+      "delete": {
+        "confirm": "Supprimer ?",
+        "error": "Erreur",
+        "success": "Détruit",
+        "success_one": "Détruit",
+        "success_many": "Détruits",
+        "success_other": "Détruits"
+      },
+      "noData": "Aucun secret",
+      "search": {
+        "error": "Erreur recherche"
+      },
+      "update": {
+        "error": "Erreur",
+        "success": "Secret mis à jour"
+      }
+    },
+    "title": "Secrets & Clés",
+    "description": "Gérez de manière sécurisée les informations sensibles telles que les clés API et les mots de passe système."
+  },
   "sessions": {
-    "access_denied": "_access_denied",
-    "network_error": "_network_error",
-    "session_expired": "_session_expired"
+    "access_denied": "Session non autorisée",
+    "network_error": "Erreur réseau (Session)",
+    "session_expired": "Votre session a expiré, veuillez vous reconnecter"
+  },
+  "setting": {
+    "actions": {
+      "add": "Nouveau réglage",
+      "edit": "Modifier",
+      "more": "Plus"
+    },
+    "bulk": {
+      "delete_one": "Supprimer",
+      "delete_many": "Tout supprimer",
+      "delete_other": "Supprimer sélection",
+      "deleteConfirm_one": "Supprimer ?",
+      "deleteConfirm_many": "Tout supprimer ?",
+      "deleteConfirm_other": "Supprimer {{count}} ?",
+      "deleteError": "Erreur",
+      "deleteReason": "Motif",
+      "deleting": "Suppression...",
+      "partialError_one": "Erreur",
+      "partialError_many": "Erreurs",
+      "partialError_other": "Erreurs"
+    },
+    "details": {
+      "information": "Configuration globale du système",
+      "title": "Détails du Paramètre",
+      "view": "Consulter"
+    },
+    "fields": {
+      "allowedValues": "Valeurs autorisées",
+      "category": "Catégorie",
+      "data": "Données",
+      "dataType": "Type de donnée",
+      "description": "Description",
+      "detail": "Détails",
+      "errorCode": "Code erreur",
+      "instance": "Instance",
+      "isEncrypted": "Est chiffré",
+      "isReadOnly": "Lecture seule",
+      "isSystemSetting": "Réglage système",
+      "metadata": "Métadonnées",
+      "status": "Statut",
+      "success": "Succès",
+      "timestamp": "Horodatage",
+      "title": "Nom de la clé",
+      "traceId": "Trace ID",
+      "type": "Type",
+      "validationErrors": "Erreurs",
+      "validationRegex": "Règle de validation (Regex)",
+      "value": "Valeur"
+    },
+    "form": {
+      "create": {
+        "description": "Ajoutez une variable de configuration système.",
+        "submit": "Créer",
+        "title": "Nouveau Paramètre"
+      },
+      "edit": {
+        "description": "Modifier la valeur de configuration.",
+        "loadError": "Erreur chargement",
+        "submit": "Sauvegarder",
+        "title": "Édition Paramètre"
+      }
+    },
+    "messages": {
+      "create": {
+        "error": "Erreur",
+        "success": "Paramètre créé"
+      },
+      "delete": {
+        "confirm": "Supprimer ?",
+        "error": "Erreur",
+        "success": "Supprimé",
+        "success_one": "Retiré",
+        "success_many": "Retirés",
+        "success_other": "Retirés"
+      },
+      "loadError": "Erreur",
+      "noData": "Aucun réglage",
+      "search": {
+        "error": "Erreur recherche"
+      },
+      "update": {
+        "error": "Échec",
+        "success": "Mis à jour"
+      }
+    },
+    "title": "Paramètres Système",
+    "description": "Configurez les variables et les réglages globaux qui affectent le comportement de toute la plateforme."
+  },
+  "Setting": {
+    "form": {
+      "allowedValuesLabel": "Options possibles",
+      "allowedValuesPlaceholder": "Ex: auto, manual, hybrid",
+      "categoryLabel": "Groupe",
+      "categoryPlaceholder": "Ex: UI, Network, Security",
+      "dataTypeLabel": "Format",
+      "dataTypePlaceholder": "String, Int, Boolean, JSON",
+      "descriptionLabel": "À quoi ça sert ?",
+      "descriptionPlaceholder": "Ex: Délai avant déconnexion automatique",
+      "isEncryptedLabel": "Chiffrer en base de données",
+      "isReadOnlyLabel": "Interdire la modification manuelle",
+      "isSystemSettingLabel": "Requis par le cœur du système",
+      "validationRegexLabel": "Pattern de validation",
+      "validationRegexPlaceholder": "^[0-9]+$",
+      "valueLabel": "Valeur actuelle",
+      "valuePlaceholder": "Ex: 3600"
+    }
   },
   "statusBadges": {
     "active": "Actif",
@@ -501,11 +4379,776 @@
     "VALIDATING": "VALIDATION",
     "WITHDRAWAL": "RETRAIT"
   },
+  "Step 1": "Étape 1",
+  "Step 2": "Étape 2",
+  "Step 3": "Étape 3",
+  "subscription": {
+    "actions": {
+      "add": "Nouvel abonnement",
+      "edit": "Ajuster",
+      "more": "Actions"
+    },
+    "bulk": {
+      "delete_one": "Résilier",
+      "delete_many": "Tout résilier",
+      "delete_other": "Supprimer sélection",
+      "deleteConfirm_one": "Résilier cet abonnement ?",
+      "deleteConfirm_many": "Tout résilier ?",
+      "deleteConfirm_other": "Résilier {{count}} ?",
+      "deleteError": "Erreur",
+      "deleteReason": "Motif",
+      "deleting": "Résiliation...",
+      "partialError_one": "Erreur",
+      "partialError_many": "Erreurs",
+      "partialError_other": "Erreurs"
+    },
+    "details": {
+      "information": "Détails du contrat et quotas",
+      "title": "Détails Abonnement",
+      "view": "Consulter"
+    },
+    "fields": {
+      "autoRenew": "Renouvellement auto",
+      "billingCycle": "Cycle de facturation",
+      "cancelledAt": "Résilié le",
+      "companyEmail": "Email entreprise",
+      "companyId": "ID Entreprise",
+      "companyName": "Entreprise",
+      "companyStatus": "Statut",
+      "currentPeriodEnd": "Fin de période",
+      "currentPeriodStart": "Début de période",
+      "data": "Données",
+      "detail": "Détails",
+      "errorCode": "Code erreur",
+      "instance": "Instance",
+      "metadata": "Métadonnées",
+      "paymentCurrency": "Devise paiement",
+      "paymentId": "ID Dernier paiement",
+      "paymentStatus": "Statut paiement",
+      "planCode": "Code Plan",
+      "planId": "ID Plan",
+      "planName": "Formule choisie",
+      "status": "État de l'abonnement",
+      "success": "Succès",
+      "timestamp": "Horodatage",
+      "title": "Titre",
+      "traceId": "Trace ID",
+      "type": "Nature",
+      "usedQuota": "Quota consommé",
+      "validationErrors": "Erreurs"
+    },
+    "form": {
+      "create": {
+        "description": "Souscrire un client à un plan.",
+        "submit": "Abonner",
+        "title": "Nouvelle Souscription"
+      },
+      "edit": {
+        "description": "Modifier les dates ou quotas.",
+        "loadError": "Erreur",
+        "submit": "Sauvegarder",
+        "title": "Édition Abonnement"
+      }
+    },
+    "messages": {
+      "create": {
+        "error": "Échec",
+        "success": "Abonnement activé"
+      },
+      "delete": {
+        "confirm": "Résilier ?",
+        "error": "Erreur",
+        "success": "Résilié",
+        "success_one": "Contrat terminé",
+        "success_many": "Contrats terminés",
+        "success_other": "Contrats terminés"
+      },
+      "loadError": "Erreur chargement",
+      "noData": "Aucun abonnement actif",
+      "search": {
+        "error": "Erreur recherche"
+      },
+      "update": {
+        "error": "Échec",
+        "success": "Mise à jour réussie"
+      }
+    },
+    "title": "Abonnements",
+    "description": "Gérez les abonnements des clients aux différents plans, suivez les cycles de facturation et les statuts."
+  },
+  "Subscription": {
+    "form": {
+      "autoRenewLabel": "Renouveler automatiquement",
+      "billingCycleLabel": "Fréquence",
+      "billingCyclePlaceholder": "Monthly, Yearly",
+      "cancelledAtLabel": "Date de fin forcée",
+      "cancelledAtPlaceholder": "Optionnel",
+      "companyIdLabel": "Client",
+      "companyIdPlaceholder": "Choisir",
+      "currentPeriodEndLabel": "Fin période en cours",
+      "currentPeriodEndPlaceholder": "Date",
+      "currentPeriodStartLabel": "Début période",
+      "currentPeriodStartPlaceholder": "Date",
+      "paymentIdLabel": "Paiement lié",
+      "paymentIdPlaceholder": "Choisir",
+      "planIdLabel": "Formule",
+      "planIdPlaceholder": "Free, Pro, Business...",
+      "statusLabel": "État",
+      "statusPlaceholder": "Active, PastDue, Canceled",
+      "usedQuotaLabel": "Usage actuel",
+      "usedQuotaPlaceholder": "0"
+    }
+  },
+  "subscriptionPlan": {
+    "actions": {
+      "add": "Nouveau plan",
+      "edit": "Éditer",
+      "more": "Actions"
+    },
+    "bulk": {
+      "delete_one": "Supprimer",
+      "delete_many": "Tout supprimer",
+      "delete_other": "Vider sélection",
+      "deleteConfirm_one": "Supprimer ce plan ?",
+      "deleteConfirm_many": "Tout supprimer ?",
+      "deleteConfirm_other": "Supprimer {{count}} ?",
+      "deleteError": "Erreur",
+      "deleteReason": "Motif",
+      "deleting": "Suppression...",
+      "partialError_one": "Erreur",
+      "partialError_many": "Erreurs",
+      "partialError_other": "Erreurs"
+    },
+    "details": {
+      "information": "Spécifications de l'offre commerciale",
+      "title": "Détails du Plan",
+      "view": "Consulter"
+    },
+    "fields": {
+      "code": "Code technique",
+      "data": "Données",
+      "description": "Description",
+      "detail": "Détails",
+      "errorCode": "Code erreur",
+      "features": "Fonctionnalités incluses",
+      "instance": "Instance",
+      "isActive": "Disponible à la vente",
+      "maxProducts": "Nb. max produits",
+      "maxUsers": "Nb. max utilisateurs",
+      "metadata": "Métadonnées",
+      "monthlyPrice": "Prix mensuel",
+      "monthlyQuota": "Quota mensuel",
+      "name": "Nom du plan",
+      "status": "Statut",
+      "success": "Succès",
+      "timestamp": "Horodatage",
+      "title": "Titre",
+      "traceId": "Trace ID",
+      "type": "Type",
+      "validationErrors": "Erreurs",
+      "yearlyPrice": "Prix annuel"
+    },
+    "form": {
+      "create": {
+        "description": "Définir une nouvelle grille tarifaire d'abonnement.",
+        "submit": "Créer le plan",
+        "title": "Nouveau Plan"
+      },
+      "edit": {
+        "description": "Ajuster les prix ou quotas du plan.",
+        "loadError": "Erreur",
+        "submit": "Enregistrer",
+        "title": "Édition Plan"
+      }
+    },
+    "messages": {
+      "create": {
+        "error": "Échec",
+        "success": "Plan créé"
+      },
+      "delete": {
+        "confirm": "Supprimer ?",
+        "error": "Erreur",
+        "success": "Supprimé",
+        "success_one": "Effacé",
+        "success_many": "Effacés",
+        "success_other": "Effacés"
+      },
+      "loadError": "Erreur chargement",
+      "noData": "Aucun plan défini",
+      "search": {
+        "error": "Erreur recherche"
+      },
+      "update": {
+        "error": "Échec",
+        "success": "Mis à jour"
+      }
+    },
+    "title": "Plans d'Abonnement",
+    "description": "Créez et configurez les différentes offres d'abonnement, leurs prix, leurs quotas et leurs fonctionnalités."
+  },
+  "SubscriptionPlan": {
+    "form": {
+      "codeLabel": "Clé unique (Ex: PRO_V1)",
+      "codePlaceholder": "PRO_V1",
+      "descriptionLabel": "Argumentaire",
+      "descriptionPlaceholder": "Ex: Idéal pour les PME",
+      "featuresLabel": "Liste avantages (JSON)",
+      "featuresPlaceholder": "[\"SMS illimités\", \"Support 24/7\"]",
+      "isActiveLabel": "Plan actif",
+      "maxProductsLabel": "Limite produits",
+      "maxProductsPlaceholder": "Ex: 10",
+      "maxUsersLabel": "Limite comptes",
+      "maxUsersPlaceholder": "Ex: 5",
+      "monthlyPriceLabel": "Prix / mois",
+      "monthlyPricePlaceholder": "0.00",
+      "monthlyQuotaLabel": "Crédits / mois",
+      "monthlyQuotaPlaceholder": "Ex: 1000",
+      "nameLabel": "Nom public",
+      "namePlaceholder": "Ex: Pack Professionnel",
+      "yearlyPriceLabel": "Prix / an",
+      "yearlyPricePlaceholder": "0.00"
+    }
+  },
+  "sysLog": {
+    "actions": {
+      "add": "Log manuel",
+      "more": "Détails"
+    },
+    "bulk": {
+      "delete_one": "Purger",
+      "delete_many": "Tout purger",
+      "delete_other": "Purger sélection",
+      "deleteConfirm_one": "Confirmer ?",
+      "deleteConfirm_many": "Tout vider ?",
+      "deleteConfirm_other": "Purger {{count}} ?",
+      "deleteError": "Erreur",
+      "deleteReason": "Motif",
+      "deleting": "Purge...",
+      "partialError_one": "Erreur",
+      "partialError_many": "Erreurs",
+      "partialError_other": "Erreurs"
+    },
+    "details": {
+      "information": "Informations techniques brutes",
+      "title": "Log Système",
+      "view": "Consulter"
+    },
+    "fields": {
+      "additionalData": "Données en extra",
+      "amount": "Montant",
+      "applicationName": "App Source",
+      "correlationId": "Correlation ID",
+      "currency": "Devise",
+      "environment": "Environnement",
+      "eventType": "Nature événement",
+      "exceptionMessage": "Message Exception",
+      "externalReference": "Réf. Externe",
+      "httpStatusCode": "Status HTTP",
+      "internalReference": "Réf. Interne",
+      "ipAddress": "IP Serveur/Client",
+      "isRecoveryLog": "Log Récupération",
+      "isWebhookLog": "Log Webhook",
+      "logCategory": "Catégorie",
+      "logLevel": "Sévérité (Level)",
+      "machineName": "Nom machine",
+      "message": "Contenu du log",
+      "paymentProvider": "Fournisseur Paiement",
+      "providerErrorCode": "Code Erreur Prov.",
+      "providerErrorMessage": "Message Erreur Prov.",
+      "providerFinalReference": "Réf. Finale Prov.",
+      "providerInitialReference": "Réf. Initiale Prov.",
+      "recoveryData": "Données Recup.",
+      "requestPayload": "Body Requête",
+      "requestUri": "URL Appelée",
+      "responsePayload": "Body Réponse",
+      "stackTrace": "Pile d'exécution (Stacktrace)",
+      "transactionType": "Type Trans.",
+      "userId": "ID User",
+      "userName": "Nom User",
+      "webhookHeaders": "Headers Webhook",
+      "webhookSignature": "Signature Webhook"
+    },
+    "messages": {
+      "create": {
+        "error": "Erreur",
+        "success": "Log enregistré"
+      },
+      "delete": {
+        "confirm": "Confirmer ?",
+        "error": "Erreur",
+        "success": "Nettoyé",
+        "success_one": "Purge faite",
+        "success_many": "Purge faite",
+        "success_other": "Purge faite"
+      },
+      "loadError": "Impossible de charger",
+      "noData": "Historique système vide",
+      "search": {
+        "error": "Erreur recherche"
+      },
+      "update": {
+        "error": "Erreur",
+        "success": "Mis à jour"
+      }
+    },
+    "title": "Journaux Système (Logs)",
+    "description": "Accédez aux journaux techniques détaillés pour le débogage, la surveillance et l'analyse des incidents."
+  },
   "system": "Système",
+  "tag": {
+    "actions": {
+      "add": "Créer un tag",
+      "more": "Actions"
+    },
+    "bulk": {
+      "delete_one": "Supprimer",
+      "delete_many": "Tout supprimer",
+      "delete_other": "Vider sélection",
+      "deleteConfirm_one": "Supprimer ce tag ?",
+      "deleteConfirm_many": "Tout supprimer ?",
+      "deleteConfirm_other": "Supprimer {{count}} ?",
+      "deleteError": "Erreur",
+      "deleteReason": "Motif",
+      "deleting": "Suppression...",
+      "partialError_one": "Erreur",
+      "partialError_many": "Erreurs",
+      "partialError_other": "Erreurs"
+    },
+    "details": {
+      "description": "Détails de l'étiquette et utilisation.",
+      "title": "Détails du Tag"
+    },
+    "fields": {
+      "color": "Couleur",
+      "companyEmail": "Email entreprise",
+      "companyId": "ID Entreprise",
+      "companyName": "Entreprise",
+      "companyStatus": "Statut",
+      "data": "Données",
+      "detail": "Détails",
+      "errorCode": "Code erreur",
+      "instance": "Instance",
+      "metadata": "Métadonnées",
+      "name": "Nom du tag",
+      "status": "Statut",
+      "success": "Succès",
+      "timestamp": "Horodatage",
+      "title": "Libellé",
+      "traceId": "Trace ID",
+      "type": "Nature",
+      "validationErrors": "Erreurs"
+    },
+    "form": {
+      "create": {
+        "description": "Créez une étiquette pour organiser vos ressources.",
+        "submit": "Créer",
+        "title": "Nouveau Tag"
+      },
+      "edit": {
+        "description": "Changer le nom ou la couleur.",
+        "submit": "Enregistrer",
+        "title": "Édition Tag"
+      }
+    },
+    "messages": {
+      "create": {
+        "error": "Erreur",
+        "success": "Tag créé"
+      },
+      "delete": {
+        "confirm": "Supprimer ?",
+        "error": "Erreur",
+        "success": "Supprimé",
+        "success_one": "Effacé",
+        "success_many": "Effacés",
+        "success_other": "Effacés"
+      },
+      "noData": "Aucun tag",
+      "search": {
+        "error": "Erreur recherche"
+      },
+      "update": {
+        "error": "Erreur",
+        "success": "Mis à jour"
+      }
+    },
+    "title": "Gestion des Tags",
+    "description": "Créez et gérez des étiquettes (tags) pour catégoriser et organiser efficacement vos différentes ressources."
+  },
+  "Tag": {
+    "form": {
+      "colorLabel": "Code couleur (Hex)",
+      "colorPlaceholder": "#FFFFFF",
+      "companyIdLabel": "Propriétaire",
+      "companyIdPlaceholder": "Choisir",
+      "nameLabel": "Nom de l'étiquette",
+      "namePlaceholder": "Ex: VIP, Urgent"
+    }
+  },
+  "template": {
+    "actions": {
+      "add": "Nouveau modèle",
+      "edit": "Éditer modèle",
+      "more": "Actions"
+    },
+    "bulk": {
+      "delete_one": "Supprimer",
+      "delete_many": "Tout supprimer",
+      "delete_other": "Vider sélection",
+      "deleteConfirm_one": "Supprimer ce modèle ?",
+      "deleteConfirm_many": "Tout supprimer ?",
+      "deleteConfirm_other": "Supprimer {{count}} ?",
+      "deleteError": "Erreur",
+      "deleteReason": "Motif",
+      "deleting": "Suppression...",
+      "partialError_one": "Erreur",
+      "partialError_many": "Erreurs",
+      "partialError_other": "Erreurs"
+    },
+    "details": {
+      "information": "Structure du message prédéfini",
+      "title": "Détails du Modèle",
+      "view": "Aperçu"
+    },
+    "fields": {
+      "category": "Catégorie",
+      "content": "Contenu (Body)",
+      "data": "Données",
+      "description": "Description",
+      "detail": "Détails",
+      "errorCode": "Code erreur",
+      "instance": "Instance",
+      "language": "Langue",
+      "metadata": "Métadonnées",
+      "name": "Nom du modèle",
+      "productId": "ID Produit",
+      "productName": "Produit",
+      "productStatus": "Statut",
+      "status": "Statut",
+      "subject": "Sujet (Email)",
+      "success": "Succès",
+      "timestamp": "Mis à jour le",
+      "title": "Titre",
+      "traceId": "Trace ID",
+      "type": "Type",
+      "validationErrors": "Erreurs",
+      "version": "Version"
+    },
+    "form": {
+      "create": {
+        "description": "Préparez un modèle de message réutilisable.",
+        "submit": "Créer le modèle",
+        "title": "Nouveau Modèle"
+      },
+      "edit": {
+        "description": "Modifier le texte ou les variables.",
+        "loadError": "Erreur",
+        "submit": "Sauvegarder",
+        "title": "Édition Modèle"
+      }
+    },
+    "messages": {
+      "create": {
+        "error": "Échec",
+        "success": "Modèle enregistré"
+      },
+      "delete": {
+        "confirm": "Supprimer ?",
+        "error": "Erreur",
+        "success": "Modèle supprimé",
+        "success_one": "Effacé",
+        "success_many": "Effacés",
+        "success_other": "Effacés"
+      },
+      "loadError": "Erreur chargement",
+      "noData": "Aucun modèle",
+      "search": {
+        "error": "Erreur recherche"
+      },
+      "update": {
+        "error": "Échec",
+        "success": "Mis à jour"
+      }
+    },
+    "title": "Modèles de Messages",
+    "description": "Créez et gérez des messages pré-définis et réutilisables pour vos communications transactionnelles et marketing."
+  },
+  "Template": {
+    "form": {
+      "categoryLabel": "Usage",
+      "categoryPlaceholder": "Marketing, OTP, Alert...",
+      "contentLabel": "Texte du message",
+      "contentPlaceholder": "Bonjour {{name}}, ...",
+      "descriptionLabel": "Notes internes",
+      "descriptionPlaceholder": "À quoi sert ce modèle ?",
+      "languageLabel": "Code Langue",
+      "languagePlaceholder": "fr, en...",
+      "nameLabel": "Nom technique",
+      "namePlaceholder": "Ex: WELCOME_EMAIL_V1",
+      "productIdLabel": "Lier au produit",
+      "productIdPlaceholder": "Choisir",
+      "statusLabel": "État",
+      "statusPlaceholder": "Draft, Approved, Rejected",
+      "subjectLabel": "Objet (si email)",
+      "subjectPlaceholder": "Bienvenue chez nous !",
+      "versionLabel": "Numéro version",
+      "versionPlaceholder": "1.0.0"
+    }
+  },
+  "templateChannel": {
+    "actions": {
+      "add": "Lier canal",
+      "more": "Plus"
+    },
+    "bulk": {
+      "delete_one": "Retirer",
+      "delete_many": "Tout retirer",
+      "delete_other": "Retirer sélection",
+      "deleteConfirm_one": "Délier ce canal ?",
+      "deleteConfirm_many": "Tout délier ?",
+      "deleteConfirm_other": "Délier {{count}} ?",
+      "deleteError": "Erreur",
+      "deleteReason": "Motif",
+      "deleting": "Traitement...",
+      "partialError_one": "Erreur",
+      "partialError_many": "Erreurs",
+      "partialError_other": "Erreurs"
+    },
+    "details": {
+      "description": "Configuration du canal pour ce modèle.",
+      "title": "Canaux autorisés pour le modèle"
+    },
+    "fields": {
+      "channelCode": "Code Canal",
+      "channelId": "ID Canal",
+      "channelName": "Nom Canal",
+      "data": "Données",
+      "detail": "Détails",
+      "errorCode": "Code erreur",
+      "instance": "Instance",
+      "metadata": "Métadonnées",
+      "status": "Statut",
+      "success": "Succès",
+      "templateId": "ID Modèle",
+      "templateName": "Modèle",
+      "templateStatus": "Statut",
+      "timestamp": "Horodatage",
+      "title": "Titre",
+      "traceId": "Trace ID",
+      "type": "Type",
+      "validationErrors": "Erreurs"
+    },
+    "form": {
+      "create": {
+        "description": "Spécifiez sur quels canaux ce modèle peut être envoyé.",
+        "submit": "Lier",
+        "title": "Nouveau Canal/Modèle"
+      },
+      "edit": {
+        "description": "Modifier l'association.",
+        "submit": "Enregistrer",
+        "title": "Édition Lien"
+      }
+    },
+    "messages": {
+      "create": {
+        "error": "Erreur",
+        "success": "Lien créé"
+      },
+      "delete": {
+        "confirm": "Retirer ?",
+        "error": "Erreur",
+        "success": "Lien supprimé",
+        "success_one": "Retiré",
+        "success_many": "Retirés",
+        "success_other": "Retirés"
+      },
+      "noData": "Pas de canal lié",
+      "search": {
+        "error": "Erreur recherche"
+      },
+      "update": {
+        "error": "Erreur",
+        "success": "Mis à jour"
+      }
+    },
+    "title": "Canaux des Modèles",
+    "description": "Définissez les canaux de communication autorisés pour l'envoi de chaque modèle de message."
+  },
+  "TemplateChannel": {
+    "form": {
+      "channelIdLabel": "Canal",
+      "channelIdPlaceholder": "Choisir",
+      "templateIdLabel": "Modèle",
+      "templateIdPlaceholder": "Choisir"
+    }
+  },
   "themeMode": {
     "dark": "Sombre",
     "light": "Clair",
     "system": "Système"
+  },
+  "user": {
+    "actions": {
+      "add": "Nouvel utilisateur",
+      "more": "Actions"
+    },
+    "bulk": {
+      "delete_one": "Désactiver",
+      "delete_many": "Tout désactiver",
+      "delete_other": "Désactiver sélectionnés",
+      "deleteConfirm_one": "Désactiver cet utilisateur ?",
+      "deleteConfirm_many": "Tout désactiver ?",
+      "deleteConfirm_other": "Désactiver {{count}} ?",
+      "deleteError": "Erreur",
+      "deleteReason": "Motif",
+      "deleting": "Traitement...",
+      "partialError_one": "Erreur",
+      "partialError_many": "Erreurs",
+      "partialError_other": "Erreurs"
+    },
+    "details": {
+      "information": "Identité et accès",
+      "title": "Fiche Utilisateur",
+      "view": "Consulter"
+    },
+    "fields": {
+      "companyEmail": "Email entreprise",
+      "companyId": "ID Entreprise",
+      "companyName": "Entreprise",
+      "companyStatus": "Statut",
+      "deletionReason": "Raison retrait",
+      "email": "Adresse Email",
+      "firstName": "Prénom",
+      "lastName": "Nom de famille",
+      "phoneNumber": "Téléphone",
+      "profileId": "ID Profil",
+      "profileName": "Profil / Rôle",
+      "status": "État",
+      "userSecurityEmail": "Email sécurité",
+      "userSecurityFirstName": "Prénom séc.",
+      "userSecurityLastName": "Nom séc.",
+      "userSecurityPhoneNumber": "Tél. séc.",
+      "userSecurityStatus": "Statut séc.",
+      "userType": "Type d'utilisateur"
+    },
+    "messages": {
+      "create": {
+        "error": "Échec",
+        "success": "Compte créé"
+      },
+      "delete": {
+        "confirm": "Désactiver ?",
+        "error": "Erreur",
+        "success": "Compte désactivé",
+        "success_one": "Désactivé",
+        "success_many": "Désactivés",
+        "success_other": "Désactivés"
+      },
+      "loadError": "Erreur chargement",
+      "noData": "Aucun utilisateur",
+      "search": {
+        "error": "Erreur recherche"
+      },
+      "update": {
+        "error": "Échec",
+        "success": "Mis à jour"
+      }
+    },
+    "title": "Utilisateurs & Accès",
+    "description": "Gérez les comptes des utilisateurs, leurs informations personnelles et leurs droits d'accès à la plateforme."
+  },
+  "userProfile": {
+    "actions": {
+      "add": "Nouveau profil",
+      "more": "Actions"
+    },
+    "bulk": {
+      "delete_one": "Supprimer",
+      "delete_many": "Tout supprimer",
+      "delete_other": "Vider sélection",
+      "deleteConfirm_one": "Supprimer ce rôle ?",
+      "deleteConfirm_many": "Tout supprimer ?",
+      "deleteConfirm_other": "Supprimer {{count}} ?",
+      "deleteError": "Erreur",
+      "deleteReason": "Motif",
+      "deleting": "Suppression...",
+      "partialError_one": "Erreur",
+      "partialError_many": "Erreurs",
+      "partialError_other": "Erreurs"
+    },
+    "details": {
+      "description": "Détails et permissions du profil utilisateur.",
+      "title": "Détails du Profil"
+    },
+    "fields": {
+      "data": "Données",
+      "description": "Description",
+      "detail": "Détails",
+      "errorCode": "Code erreur",
+      "instance": "Instance",
+      "isActive": "Actif",
+      "isSystemProfile": "Profil Système",
+      "metadata": "Métadonnées",
+      "name": "Nom du profil",
+      "permissions": "Liste des droits",
+      "status": "Statut",
+      "success": "Succès",
+      "timestamp": "Horodatage",
+      "title": "Titre",
+      "traceId": "Trace ID",
+      "type": "Type",
+      "validationErrors": "Erreurs"
+    },
+    "form": {
+      "create": {
+        "description": "Créez un rôle avec des permissions spécifiques.",
+        "submit": "Créer le profil",
+        "title": "Nouveau Profil"
+      },
+      "edit": {
+        "description": "Modifier les droits du profil.",
+        "submit": "Enregistrer",
+        "title": "Édition Profil"
+      }
+    },
+    "messages": {
+      "create": {
+        "error": "Erreur",
+        "success": "Profil créé"
+      },
+      "delete": {
+        "confirm": "Supprimer ?",
+        "error": "Erreur",
+        "success": "Profil supprimé",
+        "success_one": "Effacé",
+        "success_many": "Effacés",
+        "success_other": "Effacés"
+      },
+      "noData": "Aucun profil défini",
+      "search": {
+        "error": "Erreur recherche"
+      },
+      "update": {
+        "error": "Erreur",
+        "success": "Mis à jour"
+      }
+    },
+    "title": "Profils & Rôles",
+    "description": "Définissez des groupes d'utilisateurs avec des permissions spécifiques pour contrôler l'accès aux fonctionnalités."
+  },
+  "UserProfile": {
+    "form": {
+      "descriptionLabel": "Résumé des droits",
+      "descriptionPlaceholder": "Ex: Accès complet aux rapports",
+      "isActiveLabel": "Profil utilisable",
+      "isSystemProfileLabel": "Protection système",
+      "nameLabel": "Nom du rôle",
+      "namePlaceholder": "Ex: Manager, Comptable",
+      "permissionsLabel": "Permissions",
+      "permissionsPlaceholder": "Sélectionner les droits"
+    }
   },
   "values": {
     "compliance": "Nous respectons les normes réglementaires et les exigences de conformité les plus strictes, garantissant que toutes les transactions respectent les réglementations CEMAC et les protocoles de sécurité financière internationaux.",
@@ -513,5 +5156,306 @@
     "security": "Nous priorisons la protection de vos données financières et transactions avec un chiffrement de niveau entreprise, une authentification multi-niveaux et des pistes d'audit complètes.",
     "support": "Nous fournissons un support technique dédié et un service client pour assurer votre réussite, avec une assistance experte disponible quand vous en avez besoin.",
     "transparency": "Nous croyons en une communication claire, une tarification honnête et une visibilité complète sur toutes les transactions et opérations de notre plateforme."
+  },
+  "wallet": {
+    "actions": {
+      "add": "Créer portefeuille",
+      "more": "Actions"
+    },
+    "bulk": {
+      "delete_one": "Geler",
+      "delete_many": "Tout geler",
+      "delete_other": "Geler sélection",
+      "deleteConfirm_one": "Confirmer ?",
+      "deleteConfirm_many": "Confirmer ?",
+      "deleteConfirm_other": "Confirmer ?",
+      "deleteError": "Erreur",
+      "deleteReason": "Motif",
+      "deleting": "Traitement...",
+      "partialError_one": "Erreur",
+      "partialError_many": "Erreurs",
+      "partialError_other": "Erreurs"
+    },
+    "details": {
+      "information": "Solde et limites financières",
+      "title": "Détails Portefeuille",
+      "view": "Consulter"
+    },
+    "fields": {
+      "balance": "Solde actuel",
+      "blockedAt": "Bloqué le",
+      "blockReason": "Raison du blocage",
+      "companyEmail": "Email entreprise",
+      "companyId": "ID Entreprise",
+      "companyName": "Entreprise",
+      "companyStatus": "Statut",
+      "currency": "Devise",
+      "currencyCode": "Code Devise",
+      "currencyName": "Nom Devise",
+      "currencySymbol": "Symbole",
+      "isBlocked": "Est bloqué",
+      "lowBalanceThreshold": "Seuil d'alerte solde bas",
+      "minimumBalance": "Solde minimum requis"
+    },
+    "messages": {
+      "create": {
+        "error": "Erreur",
+        "success": "Portefeuille créé"
+      },
+      "delete": {
+        "confirm": "Geler ?",
+        "error": "Erreur",
+        "success": "Portefeuille gelé",
+        "success_one": "Gelé",
+        "success_many": "Gelés",
+        "success_other": "Gelés"
+      },
+      "loadError": "Erreur chargement",
+      "noData": "Aucun portefeuille",
+      "search": {
+        "error": "Erreur recherche"
+      },
+      "update": {
+        "error": "Échec",
+        "success": "Mis à jour"
+      }
+    },
+    "title": "Portefeuilles (Wallets)",
+    "description": "Gérez les soldes financiers, définissez des seuils d'alerte et suivez les fonds disponibles pour chaque entreprise."
+  },
+  "walletTransaction": {
+    "actions": {
+      "add": "Écriture manuelle",
+      "more": "Plus"
+    },
+    "bulk": {
+      "delete_one": "Annuler",
+      "delete_many": "Tout annuler",
+      "delete_other": "Annuler sélection",
+      "deleteConfirm_one": "Annuler ce mouvement ?",
+      "deleteConfirm_many": "Confirmer ?",
+      "deleteConfirm_other": "Confirmer ?",
+      "deleteError": "Erreur",
+      "deleteReason": "Motif",
+      "deleting": "Traitement...",
+      "partialError_one": "Erreur",
+      "partialError_many": "Erreurs",
+      "partialError_other": "Erreurs"
+    },
+    "details": {
+      "information": "Détails du mouvement de fonds",
+      "title": "Transaction Portefeuille",
+      "view": "Consulter"
+    },
+    "fields": {
+      "amount": "Montant mouvement",
+      "balanceAfter": "Solde après",
+      "balanceBefore": "Solde avant",
+      "reason": "Motif / Libellé",
+      "referenceId": "ID Référence",
+      "referenceType": "Type de lien",
+      "type": "Crédit/Débit",
+      "walletCurrency": "Devise",
+      "walletId": "ID Portefeuille"
+    },
+    "messages": {
+      "create": {
+        "error": "Erreur",
+        "success": "Mouvement enregistré"
+      },
+      "delete": {
+        "confirm": "Annuler ?",
+        "error": "Erreur",
+        "success": "Annulé",
+        "success_one": "Effacé",
+        "success_many": "Effacés",
+        "success_other": "Effacés"
+      },
+      "loadError": "Impossible de charger",
+      "noData": "Aucun mouvement",
+      "search": {
+        "error": "Erreur recherche"
+      },
+      "update": {
+        "error": "Erreur",
+        "success": "Mis à jour"
+      }
+    },
+    "title": "Historique Transactions",
+    "description": "Consultez l'historique détaillé de toutes les opérations de crédit et de débit sur les portefeuilles."
+  },
+  "webhookDelivery": {
+    "actions": {
+      "add": "Relancer manuellement",
+      "more": "Détails"
+    },
+    "bulk": {
+      "delete_one": "Effacer",
+      "delete_many": "Vider",
+      "delete_other": "Vider",
+      "deleteConfirm_one": "Supprimer ?",
+      "deleteConfirm_many": "Tout vider ?",
+      "deleteConfirm_other": "Confirmer ?",
+      "deleteError": "Erreur",
+      "deleteReason": "Motif",
+      "deleting": "Suppression...",
+      "partialError_one": "Erreur",
+      "partialError_many": "Erreurs",
+      "partialError_other": "Erreurs"
+    },
+    "details": {
+      "information": "Rapport de transmission HTTP",
+      "title": "Détails Livraison Webhook",
+      "view": "Consulter"
+    },
+    "fields": {
+      "attemptCount": "Tentatives",
+      "errorMessage": "Erreur HTTP/Réseau",
+      "eventType": "Nature événement",
+      "httpStatusCode": "Code HTTP",
+      "nextRetryAt": "Prochain essai",
+      "payload": "Contenu envoyé",
+      "responseBody": "Réponse client",
+      "sentAt": "Date envoi",
+      "status": "État final",
+      "webhookEndpointId": "ID Endpoint",
+      "webhookEndpointName": "Nom Endpoint"
+    },
+    "messages": {
+      "create": {
+        "error": "Erreur",
+        "success": "Livraison enregistrée"
+      },
+      "delete": {
+        "confirm": "Supprimer ?",
+        "error": "Erreur",
+        "success": "Supprimée",
+        "success_one": "Effacée",
+        "success_many": "Effacées",
+        "success_other": "Effacées"
+      },
+      "loadError": "Impossible de charger",
+      "noData": "Aucun log d'envoi",
+      "search": {
+        "error": "Erreur recherche"
+      },
+      "update": {
+        "error": "Erreur",
+        "success": "Mis à jour"
+      }
+    },
+    "title": "Logs d'Envois Webhooks",
+    "description": "Suivez le statut de livraison de chaque notification envoyée via webhook, y compris les tentatives et les erreurs."
+  },
+  "webhookEndpoint": {
+    "actions": {
+      "add": "Nouveau webhook",
+      "edit": "Configurer",
+      "more": "Actions"
+    },
+    "bulk": {
+      "delete_one": "Supprimer",
+      "delete_many": "Tout supprimer",
+      "delete_other": "Vider sélection",
+      "deleteConfirm_one": "Supprimer ce point d'accès ?",
+      "deleteConfirm_many": "Tout supprimer ?",
+      "deleteConfirm_other": "Supprimer {{count}} ?",
+      "deleteError": "Erreur",
+      "deleteReason": "Motif",
+      "deleting": "Suppression...",
+      "partialError_one": "Erreur",
+      "partialError_many": "Erreurs",
+      "partialError_other": "Erreurs"
+    },
+    "details": {
+      "information": "Cible de notification HTTP",
+      "title": "Détails Webhook",
+      "view": "Consulter"
+    },
+    "fields": {
+      "companyEmail": "Email entreprise",
+      "companyId": "ID Entreprise",
+      "companyName": "Entreprise",
+      "companyStatus": "Statut",
+      "data": "Données",
+      "description": "Description",
+      "detail": "Détails",
+      "errorCode": "Code erreur",
+      "events": "Événements écoutés",
+      "instance": "Instance",
+      "isActive": "Actif",
+      "lastSecretGenerated": "Dernier secret généré",
+      "maxRetries": "Essais max",
+      "metadata": "Métadonnées",
+      "retryDelaySeconds": "Délai entre essais (s)",
+      "status": "Statut",
+      "success": "Succès",
+      "timeoutSeconds": "Timeout (s)",
+      "timestamp": "Horodatage",
+      "title": "Nom du webhook",
+      "traceId": "Trace ID",
+      "type": "Type",
+      "url": "URL de destination",
+      "validationErrors": "Erreurs"
+    },
+    "form": {
+      "create": {
+        "description": "Recevez des notifications en temps réel sur votre serveur.",
+        "submit": "Créer Webhook",
+        "title": "Nouveau Webhook"
+      },
+      "edit": {
+        "description": "Modifier l'URL ou les événements.",
+        "loadError": "Erreur chargement",
+        "submit": "Sauvegarder",
+        "title": "Édition Webhook"
+      }
+    },
+    "messages": {
+      "create": {
+        "error": "Échec",
+        "success": "Webhook créé"
+      },
+      "delete": {
+        "confirm": "Supprimer ?",
+        "error": "Erreur",
+        "success": "Webhook supprimé",
+        "success_one": "Effacé",
+        "success_many": "Effacés",
+        "success_other": "Effacés"
+      },
+      "loadError": "Erreur chargement",
+      "noData": "Aucun webhook configuré",
+      "search": {
+        "error": "Erreur recherche"
+      },
+      "update": {
+        "error": "Échec",
+        "success": "Mis à jour"
+      }
+    },
+    "title": "Webhooks & Callbacks",
+    "description": "Configurez des points de terminaison (endpoints) pour recevoir des notifications automatiques en temps réel."
+  },
+  "WebhookEndpoint": {
+    "form": {
+      "companyIdLabel": "Propriétaire",
+      "companyIdPlaceholder": "Choisir",
+      "descriptionLabel": "Objet",
+      "descriptionPlaceholder": "Ex: Synchro système externe",
+      "eventsLabel": "Événements déclencheurs",
+      "eventsPlaceholder": "payment.success, message.delivered...",
+      "isActiveLabel": "Activer les envois",
+      "lastSecretGeneratedLabel": "Dernière clé",
+      "lastSecretGeneratedPlaceholder": "N/A",
+      "maxRetriesLabel": "Nombre de relances",
+      "maxRetriesPlaceholder": "3",
+      "retryDelaySecondsLabel": "Attente (secondes)",
+      "retryDelaySecondsPlaceholder": "60",
+      "timeoutSecondsLabel": "Délai de réponse max (s)",
+      "timeoutSecondsPlaceholder": "30",
+      "urlLabel": "URL HTTPS",
+      "urlPlaceholder": "https://votre-serveur.com/webhook"
+    }
   }
 }

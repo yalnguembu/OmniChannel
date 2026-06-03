@@ -1,0 +1,19 @@
+{
+  "title": "Campagnes",
+  "new": "Nouvelle campagne",
+  "type_standard": "Standard",
+  "type_ai": "IA · Automatisé",
+  "type_trigger": "Déclenché",
+  "type_recurring": "Récurrent",
+  "status_active": "Actif",
+  "status_completed": "Terminé",
+  "status_scheduled": "Planifié",
+  "status_draft": "Brouillon",
+  "wizard_title": "Nouvelle campagne",
+  "wizard_subtitle": "Configurez votre campagne en 5 étapes",
+  "step_general": "Infos générales",
+  "step_channels": "Canaux",
+  "step_segments": "Ciblage",
+  "step_schedule": "Planification",
+  "step_review": "Confirmation"
+}
