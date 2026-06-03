@@ -11,7 +11,7 @@ import {
 } from "@/components/data-table/DataTable";
 import { formatDateTime } from "@/lib/date";
 import { cn } from "@/lib/utils";
-import type { IntegrationSyncLogDto } from "@/api/generated/types";
+import type { IntegrationSyncLogDto } from "@/shared/api/types";
 
 const integTabs = [
   { to: "/integrations/connectors", label: "Connecteurs" },

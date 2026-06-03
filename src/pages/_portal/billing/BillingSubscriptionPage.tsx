@@ -18,7 +18,7 @@ import { statusLabel, cn } from "@/lib/utils";
 import type {
   SubscriptionDto,
   SubscriptionPlanDto,
-} from "@/api/generated/types";
+} from "@/shared/api/types";
 
 const billingTabs = [
   { to: "/billing/wallet", label: "Wallet" },

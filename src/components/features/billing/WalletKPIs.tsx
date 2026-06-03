@@ -3,7 +3,7 @@ import { ShieldCheck, ShieldAlert } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { formatCurrency } from "@/lib/currency";
 import { staggerContainer, cardItem } from "@/lib/animations";
-import type { WalletDto } from "@/api/generated/types";
+import type { WalletDto } from "@/shared/api/types";
 
 export function WalletKPIs({ wallet }: { wallet?: WalletDto }) {
   const currency = wallet?.currency ?? "XAF";

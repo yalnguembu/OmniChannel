@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import type { NotificationDto } from '@/api/generated/types'
+import type { NotificationDto } from '@/shared/api/types'
 
 interface NotificationState {
   notifications: NotificationDto[]

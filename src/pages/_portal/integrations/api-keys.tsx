@@ -13,7 +13,7 @@ import { EmptyState } from "@/components/feedback/EmptyState";
 import { PageLoader } from "@/components/feedback/PageLoader";
 import { formatDate, formatRelative } from "@/lib/date";
 import { cn } from "@/lib/utils";
-import type { CompanyApiKeyDto } from "@/api/generated/types";
+import type { CompanyApiKeyDto } from "@/shared/api/types";
 
 const integTabs = [
   { to: "/integrations/connectors", label: "Connecteurs" },

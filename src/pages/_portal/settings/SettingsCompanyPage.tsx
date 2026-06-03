@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { toast } from "sonner";
 import { CompanyService } from "@/shared/api/services";
 import { PageLoader } from "@/components/feedback/PageLoader";
-import type { CompanyDto } from "@/api/generated/types";
+import type { CompanyDto } from "@/shared/api/types";
 import { fadeInUp } from "@/lib/animations";
 
 import { SettingsSidebar } from "@/components/features/settings/SettingsSidebar";

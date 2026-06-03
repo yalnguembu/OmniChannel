@@ -14,7 +14,7 @@ import { EmptyState } from "@/components/feedback/EmptyState";
 import { PageLoader } from "@/components/feedback/PageLoader";
 import { formatRelative } from "@/lib/date";
 import { cn } from "@/lib/utils";
-import type { ConnectorDto, ProviderDto } from "@/api/generated/types";
+import type { ConnectorDto, ProviderDto } from "@/shared/api/types";
 import { staggerContainer, cardItem } from "@/lib/animations";
 
 const integTabs = [

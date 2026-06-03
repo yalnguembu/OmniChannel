@@ -34,7 +34,7 @@ import type {
   ClientDto,
   MessageDto,
   ClientChannelPreferenceDto,
-} from "@/api/generated/types";
+} from "@/shared/api/types";
 import type { z } from "zod";
 import { motion } from "framer-motion";
 import { fadeInUp } from "@/lib/animations";

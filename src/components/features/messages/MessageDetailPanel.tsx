@@ -1,4 +1,4 @@
-import type { MessageDto } from "@/api/generated/types";
+import type { MessageDto } from "@/shared/api/types";
 import { formatRelative, formatDateTime } from "@/lib/date";
 import { chMeta, statusMeta } from "./constant";
 

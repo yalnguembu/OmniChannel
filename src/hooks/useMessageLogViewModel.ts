@@ -5,7 +5,7 @@ import {
   postApiMessageEventSearchOptions,
 } from "@/shared/api/generated/@tanstack/react-query.gen";
 import { useErrorHandling } from "@/shared/hooks/useErrorHandling";
-import type { MessageDto } from "@/api/generated/types";
+import type { MessageDto } from "@/shared/api/types";
 
 /**
  * ViewModel for the global Message Log page.

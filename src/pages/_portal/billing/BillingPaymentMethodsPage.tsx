@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { PageLoader } from "@/components/feedback/PageLoader";
 import { cn } from "@/lib/utils";
-import type { PaymentMethodDto } from "@/api/generated/types";
+import type { PaymentMethodDto } from "@/shared/api/types";
 
 const billingTabs = [
   { to: "/billing/wallet", label: "Wallet" },

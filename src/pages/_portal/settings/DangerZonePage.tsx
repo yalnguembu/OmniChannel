@@ -6,7 +6,7 @@ import { useAuthStore } from "@/store/authStore";
 import { Button } from "@/components/ui/Button";
 import { Modal } from "@/components/ui/Modal";
 import { Input } from "@/components/ui/Input";
-import type { CompanyDto } from "@/api/generated/types";
+import type { CompanyDto } from "@/shared/api/types";
 import { SettingsSidebar } from "@/components/features/settings/SettingsSidebar";
 import { CompanyDangerZoneCard } from "@/components/features/settings/CompanyDangerZoneCard";
 

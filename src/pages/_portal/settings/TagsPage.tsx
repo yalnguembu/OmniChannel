@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/Button";
 import { Modal } from "@/components/ui/Modal";
 import { Input } from "@/components/ui/Input";
 import { PageLoader } from "@/components/feedback/PageLoader";
-import type { TagDto } from "@/api/generated/types";
+import type { TagDto } from "@/shared/api/types";
 import { SettingsSidebar } from "@/components/features/settings/SettingsSidebar";
 
 const TAG_COLORS = [

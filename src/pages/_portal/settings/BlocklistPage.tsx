@@ -15,7 +15,7 @@ import {
   type Column,
 } from "@/components/data-table/DataTable";
 import { formatRelative } from "@/lib/date";
-import type { BlocklistDto } from "@/api/generated/types";
+import type { BlocklistDto } from "@/shared/api/types";
 import { SettingsSidebar } from "@/components/features/settings/SettingsSidebar";
 
 export function BlocklistPage() {

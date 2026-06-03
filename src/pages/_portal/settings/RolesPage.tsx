@@ -13,7 +13,7 @@ import { Input } from "@/components/ui/Input";
 import { Toggle } from "@/components/ui/Toggle";
 import { PageLoader } from "@/components/feedback/PageLoader";
 import { cn } from "@/lib/utils";
-import type { UserProfileDto } from "@/api/generated/types";
+import type { UserProfileDto } from "@/shared/api/types";
 import { SettingsSidebar } from "@/components/features/settings/SettingsSidebar";
 
 const schema = z.object({

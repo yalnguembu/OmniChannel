@@ -1,4 +1,4 @@
-import type { MessageDto } from "@/api/generated/types";
+import type { MessageDto } from "@/shared/api/types";
 import { formatRelative } from "@/lib/date";
 import { Pagination } from "@/components/data-table/DataTable";
 import { chMeta, statusMeta } from "./constant";

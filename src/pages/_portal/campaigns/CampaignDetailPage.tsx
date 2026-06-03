@@ -34,7 +34,7 @@ import { formatDate } from "@/lib/date";
 import { formatCurrency } from "@/lib/currency";
 import { fmt, statusLabel, cn } from "@/lib/utils";
 import { fadeInUp } from "@/lib/animations";
-import type { MessageDto } from "@/api/generated/types";
+import type { MessageDto } from "@/shared/api/types";
 
 // ViewModels
 import { useCampaignDetailViewModel } from "@/hooks/useCampaignDetailViewModel";

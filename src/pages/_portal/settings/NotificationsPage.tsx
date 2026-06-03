@@ -6,7 +6,7 @@ import { Toggle } from "@/components/ui/Toggle";
 import { PageLoader } from "@/components/feedback/PageLoader";
 import { formatRelative } from "@/lib/date";
 import { cn } from "@/lib/utils";
-import type { NotificationDto } from "@/api/generated/types";
+import type { NotificationDto } from "@/shared/api/types";
 import { SettingsSidebar } from "@/components/features/settings/SettingsSidebar";
 
 const ALERT_RULES = [

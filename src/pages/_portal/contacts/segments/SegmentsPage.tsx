@@ -17,7 +17,7 @@ import { PageLoader } from "@/components/feedback/PageLoader";
 import { EmptyState } from "@/components/feedback/EmptyState";
 import { Pagination } from "@/components/data-table/DataTable";
 import { fmt, cn } from "@/lib/utils";
-import type { ClientSegmentDto } from "@/api/generated/types";
+import type { ClientSegmentDto } from "@/shared/api/types";
 import { staggerContainer, cardItem } from "@/lib/animations";
 
 export function SegmentsPage() {

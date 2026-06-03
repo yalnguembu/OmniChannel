@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 import { useLoginViewModel } from "@/hooks/useLoginViewModel";
+import { OctoLogo } from "../landing/components/OctoLogo";
 
 export function LoginPage() {
   const vm = useLoginViewModel();
@@ -12,43 +13,21 @@ export function LoginPage() {
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.35, ease: [0.25, 0.46, 0.45, 0.94] }}
-        className="w-full max-w-[400px]"
+        className="w-full max-w-140"
       >
-        <div className="flex items-center gap-3 mb-8 justify-center">
-          <div className="w-10 h-10 rounded-[11px] bg-[#0D2137] flex items-center justify-center shadow-[0_4px_12px_rgba(13,33,55,0.2)]">
-            <svg width="22" height="22" viewBox="0 0 18 18" fill="none">
-              <circle
-                cx="9"
-                cy="9"
-                r="3.2"
-                stroke="#6AB8D4"
-                strokeWidth="1.3"
-              />
-              <path
-                d="M9 2v2M9 14v2M2 9h2M14 9h2M3.93 3.93l1.41 1.41M12.66 12.66l1.41 1.41M3.93 14.07l1.41-1.41M12.66 5.34l1.41-1.41"
-                stroke="#E8541A"
-                strokeWidth="1.1"
-                strokeLinecap="round"
-              />
-            </svg>
+        <div className="bg-white rounded-xl shadow-[0_4px_24px_rgba(13,33,55,0.08)] border border-[#E5E7EB]/60 p-8">
+          <div className="w-full flex justify-center">
+            <OctoLogo size={100} />
           </div>
-          <span className="text-[20px] font-semibold text-[#0D2137] tracking-tight">
-            OmniChannel
-          </span>
-        </div>
 
-        <div className="bg-white rounded-[20px] shadow-[0_4px_24px_rgba(13,33,55,0.08)] border border-[#E5E7EB]/60 p-8">
-          <h1 className="text-[22px] font-semibold text-[#0D2137] tracking-tight mb-1">
+          <h1 className="text-[22px] text-center font-semibold text-[#0D2137] tracking-tight mb-1">
             Connexion
           </h1>
-          <p className="text-[13px] text-[#4A7A94] mb-7">
+          <p className="text-[13px] text-center text-[#4A7A94] mb-7">
             Accédez à votre espace OmniChannel
           </p>
 
-          <form
-            onSubmit={vm.handleSubmit}
-            className="flex flex-col gap-4"
-          >
+          <form onSubmit={vm.handleSubmit} className="flex flex-col gap-4">
             <Input
               label="Email"
               type="email"

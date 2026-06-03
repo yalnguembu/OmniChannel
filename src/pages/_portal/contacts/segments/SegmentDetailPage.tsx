@@ -9,7 +9,7 @@ import { DataTable, type Column } from "@/components/data-table/DataTable";
 import { PageLoader } from "@/components/feedback/PageLoader";
 import { formatDate, formatRelative } from "@/lib/date";
 import { fmt, getInitials, avatarColor, statusLabel } from "@/lib/utils";
-import type { ClientDto } from "@/api/generated/types";
+import type { ClientDto } from "@/shared/api/types";
 
 export function SegmentDetailPage({ segmentId }: { segmentId: string }) {
   const navigate = useNavigate();

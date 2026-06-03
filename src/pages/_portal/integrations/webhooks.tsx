@@ -13,7 +13,7 @@ import { PageLoader } from "@/components/feedback/PageLoader";
 import { EmptyState } from "@/components/feedback/EmptyState";
 import { formatRelative } from "@/lib/date";
 import { cn } from "@/lib/utils";
-import type { WebhookEndpointDto } from "@/api/generated/types";
+import type { WebhookEndpointDto } from "@/shared/api/types";
 
 const integTabs = [
   { to: "/integrations/connectors", label: "Connecteurs" },

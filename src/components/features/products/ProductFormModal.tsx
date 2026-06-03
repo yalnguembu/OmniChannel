@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Select } from "@/components/ui/Select";
 import { Textarea } from "@/components/ui/Textarea";
-import type { ProductDto } from "@/api/generated/types";
+import type { ProductDto } from "@/shared/api/types";
 import type { z } from "zod";
 
 type ProductForm = z.infer<typeof productSchema>;

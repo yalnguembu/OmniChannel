@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { WalletService, WalletTransactionService } from "@/shared/api/services";
 import { PageLoader } from "@/components/feedback/PageLoader";
-import type { WalletDto, WalletTransactionDto } from "@/api/generated/types";
+import type { WalletDto, WalletTransactionDto } from "@/shared/api/types";
 
 import { BillingTabs } from "@/components/features/billing/BillingTabs";
 import { LowBalanceAlert } from "@/components/features/billing/LowBalanceAlert";

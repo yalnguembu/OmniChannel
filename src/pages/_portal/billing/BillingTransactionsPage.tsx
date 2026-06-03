@@ -11,7 +11,7 @@ import {
 import { formatDateTime } from "@/lib/date";
 import { formatCurrency } from "@/lib/currency";
 import { cn } from "@/lib/utils";
-import type { WalletTransactionDto } from "@/api/generated/types";
+import type { WalletTransactionDto } from "@/shared/api/types";
 
 const billingTabs = [
   { to: "/billing/wallet", label: "Wallet" },

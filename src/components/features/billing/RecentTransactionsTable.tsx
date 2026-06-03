@@ -5,7 +5,7 @@ import { DataTable, type Column } from "@/components/data-table/DataTable";
 import { formatCurrency } from "@/lib/currency";
 import { formatDateTime } from "@/lib/date";
 import { cn } from "@/lib/utils";
-import type { WalletTransactionDto } from "@/api/generated/types";
+import type { WalletTransactionDto } from "@/shared/api/types";
 
 export function RecentTransactionsTable({ transactions, currency }: { transactions: WalletTransactionDto[], currency?: string }) {
   const txColumns: Column<WalletTransactionDto>[] = [

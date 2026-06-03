@@ -5,7 +5,7 @@ import { Toggle } from "@/components/ui/Toggle";
 import { Button } from "@/components/ui/Button";
 import { PageLoader } from "@/components/feedback/PageLoader";
 import { Radio, Settings } from "lucide-react";
-import type { ChannelDto } from "@/api/generated/types";
+import type { ChannelDto } from "@/shared/api/types";
 import type { CompanyChannelDto } from "@/shared/api/generated/types.gen";
 import { SettingsSidebar } from "@/components/features/settings/SettingsSidebar";
 
