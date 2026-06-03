@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite --host",
-    "prebuild": "pnpm generate:api",
+    "prebuild": "pnpm generate:api && pnpm generate:route",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "generate:route": "tsr generate",
@@ -13,7 +13,7 @@
     "generate:api": "npx @hey-api/openapi-ts"
   },
   "dependencies": {
-    "@fontsource-variable/geist": "^5.2.9",
+  "@fontsource-variable/geist": "^5.2.9",
     "@hookform/resolvers": "^3.9.0",
     "@microsoft/signalr": "^10.0.0",
     "@tanstack/react-query": "^5.56.2",
