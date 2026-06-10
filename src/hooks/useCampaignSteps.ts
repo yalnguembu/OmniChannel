@@ -7,6 +7,11 @@ import {
   deleteApiCampaignStepByIdMutation,
   postApiCampaignStepSearchQueryKey,
 } from "@/shared/api/generated/@tanstack/react-query.gen";
+import type {
+  SearchCampaignStepResponse,
+  CreateCampaignStepRequest,
+  UpdateCampaignStepRequest,
+} from "@/shared/api/generated/types.gen";
 
 /**
  * Hook for managing campaign's specific steps (automation sequence).
@@ -23,7 +28,8 @@ export function useCampaignSteps(
     ...postApiCampaignStepSearchOptions({
       body: { campaignId, pageSize: 100 },
     }),
-    select: (res) => res?.data?.items || [],
+    select: (res) =>
+      (res?.data?.items as SearchCampaignStepResponse[]) || [],
     enabled: !!campaignId && isEnabled,
   });
 
@@ -63,8 +69,10 @@ export function useCampaignSteps(
     isLoading: stepsQuery.isLoading,
 
     // Actions
-    handleAdd: (body: any) => addMutation.mutate({ body: { campaignId, ...body } }),
-    handleUpdate: (body: any) => updateMutation.mutate({ body: { ...body, campaignId } }),
+    handleAdd: (body: Omit<CreateCampaignStepRequest, "campaignId">) =>
+      addMutation.mutate({ body: { campaignId, ...body } }),
+    handleUpdate: (body: Omit<UpdateCampaignStepRequest, "campaignId">) =>
+      updateMutation.mutate({ body: { ...body, campaignId } }),
     handleDelete: (id: string) => deleteMutation.mutate({ path: { id } }),
     isActionPending:
       addMutation.isPending ||

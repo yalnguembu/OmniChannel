@@ -5,7 +5,15 @@ import { toast } from "sonner";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { UserProfileService } from "@/shared/api/services";
+import {
+  postApiUserProfileSearchOptions,
+  postApiUserProfileSearchQueryKey,
+  deleteApiUserProfileByIdMutation,
+} from "@/shared/api/generated/@tanstack/react-query.gen";
+import {
+  postApiUserProfile,
+  putApiUserProfile,
+} from "@/shared/api/generated/sdk.gen";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { Modal } from "@/components/ui/Modal";
@@ -30,11 +38,12 @@ export function RolesPage() {
   const [editTarget, setEditTarget] = useState<UserProfileDto | null>(null);
   const [isActive, setIsActive] = useState(true);
 
-  const { data, isLoading } = useQuery({
-    queryKey: ["user-profiles"],
-    queryFn: () => UserProfileService.search({ pageNumber: 1, pageSize: 50 }),
+  const { data: profiles = [], isLoading } = useQuery({
+    ...postApiUserProfileSearchOptions({
+      body: { pageNumber: 1, pageSize: 50 },
+    }),
+    select: (res: any) => (res?.data?.items ?? []) as UserProfileDto[],
   });
-  const profiles: UserProfileDto[] = data?.data?.items ?? [];
 
   const {
     register,
@@ -54,25 +63,29 @@ export function RolesPage() {
         : "";
       if (editTarget) {
         // Explicit pick of UpdateUserProfileRequest — no audit / read-only fields
-        return UserProfileService.update({
-          id: editTarget.id,
+        return putApiUserProfile({
+          body: {
+            id: editTarget.id,
+            name: d.name,
+            description: d.description,
+            permissions: perms,
+            isActive,
+            isSystemProfile: editTarget.isSystemProfile,
+          } as any,
+        });
+      }
+      // CreateUserProfileRequest
+      return postApiUserProfile({
+        body: {
           name: d.name,
           description: d.description,
           permissions: perms,
           isActive,
-          isSystemProfile: editTarget.isSystemProfile,
-        });
-      }
-      // CreateUserProfileRequest
-      return UserProfileService.create({
-        name: d.name,
-        description: d.description,
-        permissions: perms,
-        isActive,
+        } as any,
       });
     },
     onSuccess: () => {
-      qc.invalidateQueries({ queryKey: ["user-profiles"] });
+      qc.invalidateQueries({ queryKey: postApiUserProfileSearchQueryKey() });
       setModal(false);
       setEditTarget(null);
       toast.success(editTarget ? "Rôle modifié" : "Rôle créé");
@@ -80,9 +93,9 @@ export function RolesPage() {
     onError: () => toast.error("Erreur"),
   });
   const deleteMut = useMutation({
-    mutationFn: (id: string) => UserProfileService.delete(id),
+    ...deleteApiUserProfileByIdMutation(),
     onSuccess: () => {
-      qc.invalidateQueries({ queryKey: ["user-profiles"] });
+      qc.invalidateQueries({ queryKey: postApiUserProfileSearchQueryKey() });
       toast.success("Rôle supprimé");
     },
     onError: () => toast.error("Erreur"),
@@ -186,7 +199,9 @@ export function RolesPage() {
                     <Button
                       size="sm"
                       variant="danger"
-                      onClick={() => deleteMut.mutate(profile.id)}
+                      onClick={() =>
+                        deleteMut.mutate({ path: { id: profile.id } })
+                      }
                       loading={deleteMut.isPending}
                     >
                       <Trash2 size={12} />
@@ -280,7 +295,7 @@ export function RolesPage() {
             <textarea
               {...register("permissions")}
               rows={4}
-              className="w-full px-3 py-2.5 border border-[#E5E7EB] rounded-[10px] text-[12px] font-mono outline-none resize-none focus:border-[#2E8FAD] focus:shadow-[0_0_0_3px_rgba(46,143,173,0.1)] text-[#0D2137] placeholder-[#8BAFC0]"
+              className="w-full px-3 py-2.5 border border-[#E5E7EB] rounded-md text-[12px] font-mono outline-none resize-none focus:border-[#2E8FAD] focus:shadow-[0_0_0_3px_rgba(46,143,173,0.1)] text-[#0D2137] placeholder-[#8BAFC0]"
               placeholder="campaigns:read, campaigns:write, contacts:read, contacts:write, messages:read"
             />
             <div className="mt-2 flex flex-wrap gap-1.5">
@@ -322,7 +337,7 @@ export function RolesPage() {
               ))}
             </div>
           </div>
-          <div className="flex items-center justify-between p-3.5 bg-[#F7F8F9] border border-[#E5E7EB] rounded-[10px]">
+          <div className="flex items-center justify-between p-3.5 bg-[#F7F8F9] border border-[#E5E7EB] rounded-md">
             <div>
               <p className="text-[13px] font-medium text-[#0D2137]">
                 Rôle actif

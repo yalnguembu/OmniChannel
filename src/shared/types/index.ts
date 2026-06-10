@@ -395,7 +395,7 @@ export interface UserDto {
   lastName: string;
   email: string;
   phoneNumber?: string;
-  userType: "company" | "system";
+  userType: "SYSTEM_ADMIN" | "COMPANY_ADMIN" | "COMPANY_USER" | "SYSTEM_USER";
   status: "active" | "inactive" | "suspended";
   updatedAt?: string;
   isDeleted?: boolean;

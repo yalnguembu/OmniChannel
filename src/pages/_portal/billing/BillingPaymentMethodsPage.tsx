@@ -2,7 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { Plus } from "lucide-react";
 import { toast } from "sonner";
-import { PaymentMethodService } from "@/shared/api/services";
+import { postApiPaymentMethodSearchOptions } from "@/shared/api/generated/@tanstack/react-query.gen";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { PageLoader } from "@/components/feedback/PageLoader";
@@ -18,12 +18,12 @@ const billingTabs = [
 ];
 
 export function BillingPaymentMethodsPage() {
-  const { data, isLoading } = useQuery({
-    queryKey: ["payment-methods"],
-    queryFn: () => PaymentMethodService.search({ pageNumber: 1, pageSize: 20 }) as any,
+  const { data: methods = [], isLoading } = useQuery({
+    ...postApiPaymentMethodSearchOptions({
+      body: { pageNumber: 1, pageSize: 20 },
+    }),
+    select: (res: any) => (res?.data?.items ?? []) as PaymentMethodDto[],
   });
-
-  const methods: PaymentMethodDto[] = data?.data?.items ?? [];
 
   if (isLoading) return <PageLoader />;
 
@@ -75,7 +75,7 @@ export function BillingPaymentMethodsPage() {
             <div
               key={m.id}
               className={cn(
-                "flex items-center gap-3.5 p-4 border rounded-[10px] cursor-pointer hover:shadow-[0_3px_12px_rgba(13,33,55,0.06)] transition-all",
+                "flex items-center gap-3.5 p-4 border rounded-md cursor-pointer hover:shadow-[0_3px_12px_rgba(13,33,55,0.06)] transition-all",
                 i === 0
                   ? "border-[#2E8FAD]/35 bg-[#E8F4F8]"
                   : "border-[#E5E7EB] bg-white hover:border-[#6AB8D4]",
@@ -129,7 +129,7 @@ export function BillingPaymentMethodsPage() {
                 "Les méthodes de paiement disponibles sont gérées par la plateforme.",
               )
             }
-            className="flex items-center gap-3 p-4 border border-dashed border-[#E5E7EB] rounded-[10px] cursor-pointer hover:bg-white hover:border-[#2E8FAD]/40 hover:border-solid transition-all"
+            className="flex items-center gap-3 p-4 border border-dashed border-[#E5E7EB] rounded-md cursor-pointer hover:bg-white hover:border-[#2E8FAD]/40 hover:border-solid transition-all"
           >
             <div className="w-[42px] h-[28px] rounded-[6px] bg-[#F0F2F4] border border-[#E5E7EB] flex items-center justify-center">
               <Plus size={14} className="text-[#8BAFC0]" />

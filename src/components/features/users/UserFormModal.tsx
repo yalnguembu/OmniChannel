@@ -7,9 +7,11 @@ import { Modal } from "@/components/ui/Modal";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Select } from "@/components/ui/Select";
+import { Toggle } from "@/components/ui/Toggle";
 import { getApiUserProfileDropdownOptions } from "@/shared/api/generated/@tanstack/react-query.gen";
-import type { UserType } from "@/shared/api/generated/types.gen";
+import type { UserType, UserStatus } from "@/shared/api/generated/types.gen";
 import type { UserFormData } from "@/hooks/useUsersViewModel";
+import { USER_TYPE } from "@/lib/auth";
 
 const schema = z.object({
   firstName: z.string().min(1, "Prénom requis"),
@@ -18,6 +20,9 @@ const schema = z.object({
   phoneNumber: z.string().optional(),
   userType: z.string().optional(),
   profileId: z.string().optional(),
+  initialPassword: z.string().optional(),
+  forcePasswordChange: z.boolean().default(true),
+  initialStatus: z.string().optional(),
 });
 type FormValues = z.infer<typeof schema>;
 
@@ -27,6 +32,7 @@ interface UserFormModalProps {
   onSubmit: (data: UserFormData) => void;
   isPending: boolean;
   types: UserType[];
+  statuses: UserStatus[];
   scope: "company" | "system";
 }
 
@@ -36,12 +42,15 @@ export function UserFormModal({
   onSubmit,
   isPending,
   types,
+  statuses,
   scope,
 }: UserFormModalProps) {
   const {
     register,
     handleSubmit,
     reset,
+    watch,
+    setValue,
     formState: { errors },
   } = useForm<FormValues>({ resolver: zodResolver(schema) });
 
@@ -60,11 +69,20 @@ export function UserFormModal({
         lastName: "",
         email: "",
         phoneNumber: "",
-        userType: types[0]?.code ?? (scope === "company" ? "company" : "system"),
+        userType:
+          types[0]?.code ??
+          (scope === "company"
+            ? USER_TYPE.COMPANY_USER
+            : USER_TYPE.SYSTEM_USER),
         profileId: profiles[0]?.id ?? "",
+        initialPassword: "",
+        forcePasswordChange: true,
+        initialStatus: "",
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen, types, scope, reset]);
+
+  const forcePasswordChange = watch("forcePasswordChange");
 
   return (
     <Modal
@@ -130,7 +148,9 @@ export function UserFormModal({
           />
         )}
 
-        {types.length > 0 && (
+        {/* Type d'utilisateur — scope company uniquement : CreateSystemUserRequest
+            n'accepte pas de userType (porté par le profil côté système). */}
+        {scope === "company" && types.length > 0 && (
           <Select
             label="Type d'utilisateur"
             {...register("userType")}
@@ -140,6 +160,45 @@ export function UserFormModal({
             }))}
           />
         )}
+
+        {/* Statut initial — scope company uniquement (CreateCompanyUserRequest) */}
+        {scope === "company" && statuses.length > 0 && (
+          <Select
+            label="Statut initial"
+            {...register("initialStatus")}
+            options={[
+              { value: "", label: "Par défaut" },
+              ...statuses.map((s) => ({
+                value: s.code ?? "",
+                label: s.displayName ?? s.code ?? "",
+              })),
+            ]}
+          />
+        )}
+
+        {/* Mot de passe initial (optionnel) */}
+        <Input
+          label="Mot de passe initial"
+          type="password"
+          {...register("initialPassword")}
+          placeholder="Laisser vide pour envoyer une invitation"
+          hint="Si renseigné, l'utilisateur recevra ce mot de passe au lieu d'une invitation."
+        />
+
+        <div className="flex items-center justify-between p-4 bg-[#F7F8F9] border border-[#E5E7EB] rounded-md">
+          <div>
+            <p className="text-[13px] font-medium text-[#0D2137]">
+              Forcer le changement de mot de passe
+            </p>
+            <p className="text-[12px] text-[#8BAFC0] mt-0.5">
+              À la première connexion
+            </p>
+          </div>
+          <Toggle
+            checked={forcePasswordChange}
+            onChange={(v) => setValue("forcePasswordChange", v)}
+          />
+        </div>
       </div>
     </Modal>
   );

@@ -5,18 +5,23 @@ import {
   postApiClientSegmentMemberSearchOptions,
   postApiClientSearchOptions,
   postApiClientSegmentSearchOptions,
-  getApiProductDetailByIdOptions,
   postApiClientMutation,
   putApiClientMutation,
-  putApiProductMutation,
   deleteApiClientByIdMutation,
   postApiClientSearchQueryKey,
 } from "@/shared/api/generated/@tanstack/react-query.gen";
 import {
   mapToClientModels,
   mapToSegmentModels,
+  mapSegmentMembersToClients,
   type ClientModel,
 } from "@/models/client.model";
+import type {
+  CreateClientRequest,
+  UpdateClientRequest,
+  SearchClientResponse,
+  SearchClientSegmentResponse,
+} from "@/shared/api/generated/types.gen";
 import { useErrorHandling } from "@/shared/hooks/useErrorHandling";
 
 /**
@@ -28,7 +33,6 @@ export function useProductContacts(productId: string) {
   const { handleRequestError, createMutationErrorHandler } = useErrorHandling();
 
   // --- UI State ---
-  const [activeSubTab, setActiveSubTab] = useState<"list" | "configs">("list");
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [segmentId, setSegmentId] = useState("all");
@@ -57,26 +61,11 @@ export function useProductContacts(productId: string) {
         searchTerm: search || undefined,
       },
     }),
-    select: (res) => {
-      const data = res?.data as any;
-      const items: ClientModel[] = (data?.items || []).map((m: any) => ({
-        id: m.clientId || m.id,
-        firstName: m.clientFirstName || "",
-        lastName: m.clientLastName || "",
-        email: m.clientEmail || null,
-        phone: "", // Not provided in segment member search
-        status: (m.clientStatus || "active").toLowerCase() as any,
-        createdAt: m.createdAt || "",
-        updatedAt: m.createdAt || "",
-        metadata: {},
-      }));
-
-      return {
-        items,
-        totalCount: data?.totalCount || 0,
-      };
-    },
-    enabled: !!productId && activeSubTab === "list" && isSegmentFilter,
+    select: (res) => ({
+      items: mapSegmentMembersToClients([...(res?.data?.items ?? [])]),
+      totalCount: res?.data?.totalCount || 0,
+    }),
+    enabled: !!productId && isSegmentFilter,
   });
 
   // 1. Contacts List via Client
@@ -88,13 +77,15 @@ export function useProductContacts(productId: string) {
         pageSize,
         searchTerm: search || undefined,
         status: statusFilter !== "all" ? statusFilter : undefined,
-      } as any,
+      },
     }),
     select: (res) => ({
-      items: mapToClientModels(res?.data?.items || []),
+      items: mapToClientModels(
+        (res?.data?.items || []) as SearchClientResponse[],
+      ),
       totalCount: res?.data?.totalCount || 0,
     }),
-    enabled: !!productId && activeSubTab === "list" && !isSegmentFilter,
+    enabled: !!productId && !isSegmentFilter,
   });
 
   const activeContactsQuery = isSegmentFilter ? segmentMembersQuery : clientsQuery;
@@ -114,35 +105,17 @@ export function useProductContacts(productId: string) {
         pageSize: 100,
       },
     }),
-    select: (res) => mapToSegmentModels(res?.data?.items || []),
+    select: (res) =>
+      mapToSegmentModels(
+        (res?.data?.items || []) as SearchClientSegmentResponse[],
+      ),
     enabled: !!productId,
   });
 
-  // 3. Product Configs (Attributes/Mapping)
-  const productQuery = useQuery({
-    ...getApiProductDetailByIdOptions({
-      path: { id: productId },
-    }),
-    select: (res) => res?.data, // We just need the raw data for editing
-    enabled: !!productId && activeSubTab === "configs",
-  });
-
-  const [configData, setConfigData] = useState<{
-    clientAttributes: any[];
-    clientMappingConfiguration: Record<string, string>;
-  } | null>(null);
-
-  useEffect(() => {
-    if (productQuery.data) {
-      const p = productQuery.data as any;
-      setConfigData({
-        clientAttributes: JSON.parse(p.clientAttributes || "[]"),
-        clientMappingConfiguration: JSON.parse(
-          p.clientMappingConfiguration || "{}",
-        ),
-      });
-    }
-  }, [productQuery.data]);
+  // 3. Product Configs (Attributes/Mapping) — no longer fetched/edited here.
+  // The attribute schema + import mapping moved to the dedicated SchemaTab, which
+  // uses the attribute-schema / client-mapping sub-resources (see SchemaTab +
+  // useProductAttributeSchema) instead of the legacy ProductDto JSON blob.
 
   // --- Mutations ---
 
@@ -171,19 +144,6 @@ export function useProductContacts(productId: string) {
     onError: createMutationErrorHandler(),
   });
 
-  const saveConfigsMutation = useMutation({
-    ...putApiProductMutation(),
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ["getApiProductDetailById"], // We don't have the exact key generator here easily, but we can just use the base key
-      });
-      toast.success("Configurations enregistrées");
-    },
-    onError: createMutationErrorHandler({
-      toastMessage: "Erreur lors de l'enregistrement",
-    }),
-  });
-
   const deleteMutation = useMutation({
     ...deleteApiClientByIdMutation(),
     onSuccess: () => {
@@ -203,30 +163,31 @@ export function useProductContacts(productId: string) {
   }, []);
 
   const handleSubmit = useCallback(
-    (data: any) => {
+    (data: CreateClientRequest) => {
       if (editingContact) {
         // Explicit pick of UpdateClientRequest fields only
-        updateMutation.mutate({
-          body: {
-            id: editingContact.id,
-            productId: (editingContact as any).productId ?? productId,
-            externalId: data.externalId ?? (editingContact as any).externalId,
-            email: data.email ?? editingContact.email,
-            phone: data.phone ?? editingContact.phone,
-            firstName: data.firstName ?? editingContact.firstName,
-            lastName: data.lastName ?? editingContact.lastName,
-            gender: data.gender ?? (editingContact as any).gender,
-            birthDate: data.birthDate ?? undefined,
-            language: data.language ?? undefined,
-            timezone: data.timezone ?? undefined,
-            address: data.address ?? undefined,
-            city: data.city ?? undefined,
-            postalCode: data.postalCode ?? undefined,
-            country: data.country ?? undefined,
-            status: data.status ?? editingContact.status,
-            customData: data.customData ?? undefined,
-          } as any,
-        });
+        const body: UpdateClientRequest = {
+          id: editingContact.id,
+          // NOTE: productId absent de ClientModel (non exposé par le mapper)
+          productId:
+            (editingContact as { productId?: string }).productId ?? productId,
+          externalId: data.externalId ?? editingContact.externalId,
+          email: data.email ?? editingContact.email,
+          phone: data.phone ?? editingContact.phone,
+          firstName: data.firstName ?? editingContact.firstName,
+          lastName: data.lastName ?? editingContact.lastName,
+          gender: data.gender ?? editingContact.gender,
+          birthDate: data.birthDate ?? undefined,
+          language: data.language ?? undefined,
+          timezone: data.timezone ?? undefined,
+          address: data.address ?? undefined,
+          city: data.city ?? undefined,
+          postalCode: data.postalCode ?? undefined,
+          country: data.country ?? undefined,
+          status: data.status ?? editingContact.status,
+          customData: data.customData ?? undefined,
+        };
+        updateMutation.mutate({ body });
       } else {
         createMutation.mutate({ body: { ...data, productId } });
       }
@@ -234,31 +195,8 @@ export function useProductContacts(productId: string) {
     [editingContact, updateMutation, createMutation, productId],
   );
 
-  const handleSaveConfigs = useCallback(() => {
-    if (configData && productQuery.data) {
-      const p = productQuery.data as any;
-      // Explicit pick of UpdateProductRequest fields — no read-only/audit columns
-      saveConfigsMutation.mutate({
-        body: {
-          id: p.id,
-          companyId: p.companyId,
-          name: p.name,
-          description: p.description,
-          status: p.status,
-          settings: p.settings,
-          clientAttributes: JSON.stringify(configData.clientAttributes),
-          clientMappingConfiguration: JSON.stringify(
-            configData.clientMappingConfiguration,
-          ),
-        },
-      });
-    }
-  }, [configData, productQuery.data, saveConfigsMutation]);
-
   return {
     // State
-    activeSubTab,
-    setActiveSubTab,
     contacts: activeContactsQuery.data?.items || [],
     totalCount: activeContactsQuery.data?.totalCount || 0,
     segments: segmentsQuery.data || [],
@@ -267,14 +205,7 @@ export function useProductContacts(productId: string) {
     segmentId,
     page,
     isLoading: activeContactsQuery.isLoading,
-    isActionPending:
-      createMutation.isPending ||
-      updateMutation.isPending ||
-      saveConfigsMutation.isPending,
-
-    // Config state
-    configData,
-    setConfigData,
+    isActionPending: createMutation.isPending || updateMutation.isPending,
 
     // UI state
     isModalOpen,
@@ -298,7 +229,6 @@ export function useProductContacts(productId: string) {
     },
     setPage,
     handleSubmit,
-    handleSaveConfigs,
     handleEdit: (c: ClientModel) => {
       setEditingContact(c);
       setIsModalOpen(true);

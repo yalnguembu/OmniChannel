@@ -3,13 +3,13 @@ import { Badge } from "@/components/ui/Badge";
 import { DataTable, type Column } from "@/components/data-table/DataTable";
 import { formatRelative } from "@/lib/date";
 import { statusLabel } from "@/lib/utils";
-import type { CompanyDto } from "@/shared/api/generated/types.gen";
+import type { SearchCompanyResponse } from "@/shared/api/generated/types.gen";
 import { STATUS_V } from "./companyStatus";
 
 interface CompaniesTableProps {
-  companies: CompanyDto[];
+  companies: SearchCompanyResponse[];
   isLoading: boolean;
-  onRowClick: (company: CompanyDto) => void;
+  onRowClick: (company: SearchCompanyResponse) => void;
 }
 
 export function CompaniesTable({
@@ -17,7 +17,7 @@ export function CompaniesTable({
   isLoading,
   onRowClick,
 }: CompaniesTableProps) {
-  const columns: Column<CompanyDto>[] = [
+  const columns: Column<SearchCompanyResponse>[] = [
     {
       key: "name",
       label: "Company",

@@ -6,7 +6,10 @@ import { Modal } from "@/components/ui/Modal";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Toggle } from "@/components/ui/Toggle";
-import type { SubscriptionPlanDto } from "@/shared/api/generated/types.gen";
+import type {
+  CreateSubscriptionPlanRequest,
+  SearchSubscriptionPlanResponse,
+} from "@/shared/api/generated/types.gen";
 
 const schema = z.object({
   name: z.string().min(1, "Nom requis"),
@@ -23,8 +26,8 @@ type FormValues = z.infer<typeof schema>;
 interface PlanFormModalProps {
   isOpen: boolean;
   onClose: () => void;
-  editing: SubscriptionPlanDto | null;
-  onSubmit: (data: Partial<SubscriptionPlanDto>) => void;
+  editing: SearchSubscriptionPlanResponse | null;
+  onSubmit: (data: CreateSubscriptionPlanRequest) => void;
   isPending: boolean;
 }
 
@@ -77,7 +80,9 @@ export function PlanFormModal({
           </Button>
           <Button
             variant="primary"
-            onClick={handleSubmit((d) => onSubmit(d))}
+            onClick={handleSubmit((d) =>
+              onSubmit(d satisfies CreateSubscriptionPlanRequest),
+            )}
             loading={isPending}
           >
             {editing ? "Enregistrer" : "Créer"}
@@ -124,7 +129,7 @@ export function PlanFormModal({
             placeholder="200000"
           />
         </div>
-        <div className="flex items-center justify-between p-4 bg-[#F7F8F9] border border-[#E5E7EB] rounded-[10px]">
+        <div className="flex items-center justify-between p-4 bg-[#F7F8F9] border border-[#E5E7EB] rounded-md">
           <div>
             <p className="text-[13px] font-medium text-[#0D2137]">Plan actif</p>
             <p className="text-[12px] text-[#8BAFC0] mt-0.5">

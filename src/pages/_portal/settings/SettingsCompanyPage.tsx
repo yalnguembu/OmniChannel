@@ -2,7 +2,11 @@ import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
-import { CompanyService } from "@/shared/api/services";
+import {
+  postApiCompanySearchOptions,
+  postApiCompanySearchQueryKey,
+  putApiCompanyMutation,
+} from "@/shared/api/generated/@tanstack/react-query.gen";
 import { PageLoader } from "@/components/feedback/PageLoader";
 import type { CompanyDto } from "@/shared/api/types";
 import { fadeInUp } from "@/lib/animations";
@@ -16,17 +20,16 @@ export function SettingsCompanyPage() {
   const qc = useQueryClient();
   const [editOpen, setEditOpen] = useState(false);
 
-  const { data, isLoading } = useQuery({
-    queryKey: ["company"],
-    queryFn: () => CompanyService.search({ pageNumber: 1, pageSize: 1 }),
+  const { data: company, isLoading } = useQuery({
+    ...postApiCompanySearchOptions({ body: { pageNumber: 1, pageSize: 1 } }),
+    select: (res: any) =>
+      (res?.data?.items?.[0] ?? undefined) as CompanyDto | undefined,
   });
 
-  const company: CompanyDto | undefined = data?.data?.items?.[0];
-
   const updateMutation = useMutation({
-    mutationFn: (body: Partial<CompanyDto>) => CompanyService.update(body),
+    ...putApiCompanyMutation(),
     onSuccess: () => {
-      qc.invalidateQueries({ queryKey: ["company"] });
+      qc.invalidateQueries({ queryKey: postApiCompanySearchQueryKey() });
       setEditOpen(false);
       toast.success("Profil mis à jour");
     },
@@ -70,7 +73,7 @@ export function SettingsCompanyPage() {
             onClose={() => setEditOpen(false)}
             company={company}
             isPending={updateMutation.isPending}
-            onSubmit={(data) => updateMutation.mutate(data as any)}
+            onSubmit={(data) => updateMutation.mutate({ body: data as any })}
           />
         </div>
       </div>

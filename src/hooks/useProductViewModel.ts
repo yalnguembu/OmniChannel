@@ -11,7 +11,11 @@ import {
 import { mapToProductModels, type ProductModel } from "@/models/product.model";
 import { useErrorHandling } from "@/shared/hooks/useErrorHandling";
 import { useDebounce } from "@/shared/hooks/useDebounce";
-import type { ProductDto } from "@/shared/api/generated/types.gen";
+import type {
+  SearchProductResponse,
+  CreateProductRequest,
+  UpdateProductRequest,
+} from "@/shared/api/generated/types.gen";
 
 export type ProductFilterType = "all" | "active" | "paused" | "draft";
 export type ProductSortBy = "createdAt" | "name" | "updatedAt";
@@ -53,7 +57,9 @@ export function useProductViewModel() {
       },
     }),
     select: (res) => ({
-      items: mapToProductModels(res?.data?.items || []),
+      items: mapToProductModels(
+        (res?.data?.items ?? []) as SearchProductResponse[],
+      ),
       totalCount: res?.data?.totalCount ?? 0,
       totalPages: res?.data?.totalPages ?? 1,
       pageNumber: res?.data?.pageNumber ?? 1,
@@ -114,22 +120,23 @@ export function useProductViewModel() {
   const handleCloseWizard = useCallback(() => { setIsWizardOpen(false); setEditingProduct(null); }, []);
 
   const handleSubmit = useCallback(
-    (data: any) => {
-      const companyId = data.companyId || editingProduct?.companyId || "019b99fe-5808-76dd-9d67-ed89827e5fd6";
+    (data: CreateProductRequest) => {
+      const companyId =
+        data.companyId || editingProduct?.companyId || "019b99fe-5808-76dd-9d67-ed89827e5fd6";
       if (editingProduct) {
-        updateMutation.mutate({
-          body: {
-            id: editingProduct.id,
-            companyId,
-            name: data.name ?? editingProduct.name,
-            description: data.description ?? editingProduct.description,
-            status: data.status ?? editingProduct.status,
-            clientAttributes: data.clientAttributes ?? editingProduct.clientAttributes,
-            clientMappingConfiguration: data.clientMappingConfiguration ?? editingProduct.clientMappingConfiguration,
-          },
-        });
+        const body: UpdateProductRequest = {
+          id: editingProduct.id,
+          companyId,
+          name: data.name ?? editingProduct.name,
+          description: data.description ?? editingProduct.description,
+          status: data.status ?? editingProduct.status,
+          // clientAttributes & clientMappingConfiguration moved to dedicated
+          // /api/Product/attribute-schema and /api/Product/client-mapping endpoints
+        };
+        updateMutation.mutate({ body });
       } else {
-        createMutation.mutate({ body: { ...data, companyId } });
+        const body: CreateProductRequest = { ...data, companyId };
+        createMutation.mutate({ body });
       }
     },
     [editingProduct, updateMutation, createMutation],

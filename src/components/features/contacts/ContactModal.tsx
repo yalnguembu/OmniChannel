@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/Input'
 import { Select } from '@/components/ui/Select'
 import { clientSchema } from '@/lib/validators'
 import type { ClientModel } from '@/models/client.model'
+import type { CreateClientRequest } from '@/shared/api/generated/types.gen'
 import type { z } from 'zod'
 
 type ClientForm = z.infer<typeof clientSchema>;
@@ -16,7 +17,7 @@ interface ContactModalProps {
   open: boolean;
   onClose: () => void;
   editing: ClientModel | null;
-  onSubmit: (data: ClientForm) => void;
+  onSubmit: (data: CreateClientRequest) => void;
   loading: boolean;
 }
 

@@ -99,19 +99,19 @@ export function ContactTable({
         </Badge>
       ),
     },
-    {
-      key: "channels",
-      label: "Canaux",
-      width: "100px",
-      render: (c) => (
-        <div className="flex items-center gap-1">
-          {/* Mock channels */}
-          <div className="w-[7px] h-[7px] rounded-full bg-[#2E8FAD]" title="SMS"></div>
-          <div className="w-[7px] h-[7px] rounded-full bg-[#1B5E82]" title="Email"></div>
-          <div className="w-[7px] h-[7px] rounded-full bg-[#25D366]" title="WhatsApp"></div>
-        </div>
-      ),
-    },
+    // {
+    //   key: "channels",
+    //   label: "Canaux",
+    //   width: "100px",
+    //   render: (c) => (
+    //     <div className="flex items-center gap-1">
+    //       {/* Mock channels */}
+    //       <div className="w-1.75 h-1.75 rounded-full bg-[#2E8FAD]" title="SMS"></div>
+    //       <div className="w-1.75 h-1.75 rounded-full bg-[#1B5E82]" title="Email"></div>
+    //       <div className="w-1.75 h-1.75 rounded-full bg-[#25D366]" title="WhatsApp"></div>
+    //     </div>
+    //   ),
+    // },
     {
       key: "updatedAt",
       label: "Dernière act.",
@@ -134,7 +134,7 @@ export function ContactTable({
               e.stopPropagation();
               onView(c);
             }}
-            className="w-[26px] h-[26px] rounded-[6px] border border-transparent bg-transparent flex items-center justify-center text-[#8BAFC0] hover:bg-[#E8F4F8] hover:text-[#2E8FAD] hover:border-[#2E8FAD]/20 transition-all"
+            className="w-6.5 h-6.5 rounded-sm border border-transparent bg-transparent flex items-center justify-center text-[#8BAFC0] hover:bg-[#E8F4F8] hover:text-[#2E8FAD] hover:border-[#2E8FAD]/20 transition-all"
             title="Détails"
           >
             <Eye size={13} />
@@ -144,7 +144,7 @@ export function ContactTable({
               e.stopPropagation();
               onEdit(c);
             }}
-            className="w-[26px] h-[26px] rounded-[6px] border border-transparent bg-transparent flex items-center justify-center text-[#8BAFC0] hover:bg-[#E8F4F8] hover:text-[#2E8FAD] hover:border-[#2E8FAD]/20 transition-all"
+            className="w-6.5 h-6.5 rounded-sm border border-transparent bg-transparent flex items-center justify-center text-[#8BAFC0] hover:bg-[#E8F4F8] hover:text-[#2E8FAD] hover:border-[#2E8FAD]/20 transition-all"
             title="Modifier"
           >
             <Edit size={13} />
@@ -154,7 +154,7 @@ export function ContactTable({
               e.stopPropagation();
               onDelete(c.id);
             }}
-            className="w-[26px] h-[26px] rounded-[6px] border border-transparent bg-transparent flex items-center justify-center text-[#8BAFC0] hover:bg-[#FEE2E2] hover:text-[#DC2626] hover:border-[#FCA5A5] transition-all"
+            className="w-6.5 h-6.5 rounded-sm border border-transparent bg-transparent flex items-center justify-center text-[#8BAFC0] hover:bg-[#FEE2E2] hover:text-[#DC2626] hover:border-[#FCA5A5] transition-all"
             title="Supprimer"
           >
             <Trash2 size={13} />

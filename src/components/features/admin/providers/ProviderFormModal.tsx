@@ -6,7 +6,10 @@ import { Modal } from "@/components/ui/Modal";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Toggle } from "@/components/ui/Toggle";
-import type { ProviderDto } from "@/shared/api/generated/types.gen";
+import type {
+  CreateProviderRequest,
+  SearchProviderResponse,
+} from "@/shared/api/generated/types.gen";
 
 const schema = z.object({
   name: z.string().min(1, "Nom requis"),
@@ -20,8 +23,8 @@ type FormValues = z.infer<typeof schema>;
 interface ProviderFormModalProps {
   isOpen: boolean;
   onClose: () => void;
-  editing: ProviderDto | null;
-  onSubmit: (data: Partial<ProviderDto>) => void;
+  editing: SearchProviderResponse | null;
+  onSubmit: (data: CreateProviderRequest) => void;
   isPending: boolean;
 }
 
@@ -72,7 +75,15 @@ export function ProviderFormModal({
           </Button>
           <Button
             variant="primary"
-            onClick={handleSubmit((d) => onSubmit(d))}
+            onClick={handleSubmit((d) =>
+              onSubmit({
+                name: d.name,
+                code: d.code,
+                baseUrl: d.baseUrl || null,
+                documentationUrl: d.documentationUrl || null,
+                isGlobal: d.isGlobal,
+              } satisfies CreateProviderRequest)
+            )}
             loading={isPending}
           >
             {editing ? "Enregistrer" : "Créer"}
@@ -105,7 +116,7 @@ export function ProviderFormModal({
           {...register("documentationUrl")}
           placeholder="https://docs.twilio.com"
         />
-        <div className="flex items-center justify-between p-4 bg-[#F7F8F9] border border-[#E5E7EB] rounded-[10px]">
+        <div className="flex items-center justify-between p-4 bg-[#F7F8F9] border border-[#E5E7EB] rounded-md">
           <div>
             <p className="text-[13px] font-medium text-[#0D2137]">
               Provider global

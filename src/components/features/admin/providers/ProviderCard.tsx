@@ -5,12 +5,12 @@ import { Can } from "@/security/components/Can";
 import { ACTION } from "@/security/enums";
 import { formatRelative } from "@/lib/date";
 import { cardItem } from "@/lib/animations";
-import type { ProviderDto } from "@/shared/api/generated/types.gen";
+import type { SearchProviderResponse } from "@/shared/api/generated/types.gen";
 import { getProviderTheme } from "./providerTheme";
 
 interface ProviderCardProps {
-  provider: ProviderDto;
-  onEdit: (provider: ProviderDto) => void;
+  provider: SearchProviderResponse;
+  onEdit: (provider: SearchProviderResponse) => void;
 }
 
 export function ProviderCard({ provider, onEdit }: ProviderCardProps) {

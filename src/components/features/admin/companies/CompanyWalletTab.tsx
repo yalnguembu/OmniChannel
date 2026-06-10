@@ -5,20 +5,20 @@ import { formatDateTime } from "@/lib/date";
 import { formatCurrency } from "@/lib/currency";
 import { cn } from "@/lib/utils";
 import type {
-  WalletDto,
-  WalletTransactionDto,
+  SearchWalletResponse,
+  SearchWalletTransactionResponse,
 } from "@/shared/api/generated/types.gen";
 
 interface CompanyWalletTabProps {
-  wallet: WalletDto | null;
-  transactions: WalletTransactionDto[];
+  wallet: SearchWalletResponse | null;
+  transactions: SearchWalletTransactionResponse[];
 }
 
 export function CompanyWalletTab({
   wallet,
   transactions,
 }: CompanyWalletTabProps) {
-  const txColumns: Column<WalletTransactionDto>[] = [
+  const txColumns: Column<SearchWalletTransactionResponse>[] = [
     {
       key: "createdAt",
       label: "Date",

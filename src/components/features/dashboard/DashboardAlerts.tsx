@@ -1,4 +1,3 @@
-import React from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/Button";
@@ -24,15 +23,13 @@ export function DashboardAlerts({
           exit={{ opacity: 0, height: 0, marginBottom: 0 }}
           className="overflow-hidden"
         >
-          <div className="flex items-center gap-4 p-5 bg-[#FFFBEB] border border-[#FCD34D] rounded shadow-sm">
-            <div className="w-12 h-12 rounded-xl bg-[#FCD34D]/20 flex items-center justify-center shrink-0">
-              <AlertCircle size={24} className="text-[#D97706]" />
-            </div>
+          <div className="flex items-center gap-3 p-4 bg-[#FFFBEB] border border-[#FCD34D] rounded-[12px]">
+            <AlertCircle size={15} className="text-[#D97706] shrink-0" />
             <div className="flex-1">
-              <p className="text-[14.5px] font-bold text-[#92400E]">
-                Attention : Solde Wallet Bas
+              <p className="text-[13px] font-medium text-[#92400E]">
+                Solde wallet bas
               </p>
-              <p className="text-[13px] text-[#D97706] mt-0.5 font-medium">
+              <p className="text-[12px] text-[#D97706] mt-0.5">
                 Votre solde actuel est de{" "}
                 <strong>{formatCurrency(balance, currency)}</strong>. Rechargez
                 pour éviter une interruption de vos campagnes.
@@ -41,10 +38,10 @@ export function DashboardAlerts({
             <Button
               size="sm"
               variant="primary"
-              className="bg-[#D97706] hover:bg-[#B45309] border-none shadow-md"
+              className="bg-[#D97706] hover:bg-[#B45309] border-none shrink-0"
               onClick={onRecharge}
             >
-              Recharger maintenant
+              Recharger
             </Button>
           </div>
         </motion.div>

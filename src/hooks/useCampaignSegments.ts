@@ -7,6 +7,10 @@ import {
   deleteApiCampaignSegmentByIdMutation,
   postApiCampaignSegmentSearchQueryKey,
 } from "@/shared/api/generated/@tanstack/react-query.gen";
+import type {
+  SearchCampaignSegmentResponse,
+  CreateCampaignSegmentRequest,
+} from "@/shared/api/generated/types.gen";
 
 /**
  * Hook for managing campaign's specific segments targeting.
@@ -24,7 +28,8 @@ export function useCampaignSegments(
     ...postApiCampaignSegmentSearchOptions({
       body: { campaignId, pageSize: 100 },
     }),
-    select: (res: any) => res?.data?.items || [],
+    select: (res) =>
+      (res?.data?.items as SearchCampaignSegmentResponse[]) || [],
     enabled: !!campaignId && isEnabled,
   });
 
@@ -61,7 +66,10 @@ export function useCampaignSegments(
     isLoading: segmentsQuery.isLoading,
 
     // Actions
-    handleAdd: (segmentId: string) => addMutation.mutate({ body: { campaignId, segmentId } }),
+    handleAdd: (segmentId: string) => {
+      const body: CreateCampaignSegmentRequest = { campaignId, segmentId };
+      addMutation.mutate({ body });
+    },
     handleRemove: (id: string) => removeMutation.mutate({ path: { id } }),
     isActionPending: addMutation.isPending || removeMutation.isPending,
   };

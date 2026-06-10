@@ -4,7 +4,7 @@ import {
   postApiSysLogSearchOptions,
   postApiSysLogSearchQueryKey,
 } from "@/shared/api/generated/@tanstack/react-query.gen";
-import type { SysLogDto } from "@/shared/api/generated/types.gen";
+import type { SearchSysLogResponse } from "@/shared/api/generated/types.gen";
 import { useErrorHandling } from "@/shared/hooks/useErrorHandling";
 
 const PAGE_SIZE = 30;
@@ -30,10 +30,10 @@ export function useAdminSystemLogsViewModel() {
         pageNumber: page,
         pageSize: PAGE_SIZE,
         logLevel: levelFilter || undefined,
-      } as any,
+      },
     }),
-    select: (res: any) => ({
-      items: (res?.data?.items ?? []) as SysLogDto[],
+    select: (res) => ({
+      items: (res?.data?.items ?? []) as SearchSysLogResponse[],
       total: (res?.data?.totalCount ?? 0) as number,
     }),
   });

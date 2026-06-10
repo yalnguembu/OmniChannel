@@ -100,7 +100,7 @@ interface TemplateModalProps {
   open: boolean;
   onClose: () => void;
   editing: TemplateModel | null;
-  onSubmit: (data: any) => void;
+  onSubmit: (data: TemplateModel) => void;
   loading: boolean;
   initialValues?: TemplateModel;
   products: ProductModel[];
@@ -238,7 +238,7 @@ export function TemplateModal({
             Contenu du message *
           </label>
           <div
-            className={`border rounded-[10px] overflow-hidden ${
+            className={`border rounded-md overflow-hidden ${
               hasContentError
                 ? "border-red-300 tpl-modal-quill-error"
                 : "border-[#E5E7EB]"
@@ -276,7 +276,7 @@ export function TemplateModal({
         </div>
 
         {/* ── Variable pills ── */}
-        <div className="bg-[#F7F8F9] rounded-[10px] p-3 border border-[#E5E7EB]">
+        <div className="bg-[#F7F8F9] rounded-md p-3 border border-[#E5E7EB]">
           <p className="text-[11px] font-medium text-[#8BAFC0] uppercase tracking-wider mb-2">
             Variables disponibles — cliquez pour insérer
           </p>

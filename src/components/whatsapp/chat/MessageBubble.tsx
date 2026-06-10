@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils';
 import { MessageTicks } from '../shared/MessageTicks';
 import type { MessageViewModel } from '@/hooks/chatViewModel';
 import type { Media } from '@/models/whatsapp.models';
-import { BASE_URL } from '@/shared/api/services/whatsapp';
+import { BASE_URL } from '@/shared/api/whatsappBaseUrl';
 
 function getFullUrl(url: string | null | undefined) {
   if (!url) return '';
@@ -265,7 +265,7 @@ export const MessageBubble: React.FC<MessageBubbleProps> = ({
   return (
     <div
       className={cn(
-        'flex my-px relative group',
+        'flex my-1 relative group',
         vm.isOutbound ? 'justify-end' : 'justify-start'
       )}
       onMouseEnter={() => setIsHovering(true)}

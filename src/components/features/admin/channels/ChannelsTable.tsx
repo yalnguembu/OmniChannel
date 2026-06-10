@@ -4,13 +4,13 @@ import { Button } from "@/components/ui/Button";
 import { Can } from "@/security/components/Can";
 import { ACTION } from "@/security/enums";
 import { DataTable, type Column } from "@/components/data-table/DataTable";
-import type { ChannelDto } from "@/shared/api/generated/types.gen";
+import type { SearchChannelResponse } from "@/shared/api/generated/types.gen";
 import { CH_META, CH_FB } from "./ChannelCard";
 
 interface ChannelsTableProps {
-  channels: ChannelDto[];
+  channels: SearchChannelResponse[];
   isLoading: boolean;
-  onEdit: (channel: ChannelDto) => void;
+  onEdit: (channel: SearchChannelResponse) => void;
 }
 
 export function ChannelsTable({
@@ -18,7 +18,7 @@ export function ChannelsTable({
   isLoading,
   onEdit,
 }: ChannelsTableProps) {
-  const columns: Column<ChannelDto>[] = [
+  const columns: Column<SearchChannelResponse>[] = [
     {
       key: "name",
       label: "Canal",

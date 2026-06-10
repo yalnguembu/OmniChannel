@@ -1,10 +1,11 @@
 import React from "react";
-import {  useNavigate } from "@tanstack/react-router";
+import { useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { ArrowLeft, Upload, FileText, Check, AlertCircle } from "lucide-react";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { ArrowLeft, Upload, FileText, Check, AlertCircle, History } from "lucide-react";
 import { toast } from "sonner";
-import { ClientImportService } from "@/shared/api/services";
+import { getApiProductDropdownOptions } from "@/shared/api/generated/@tanstack/react-query.gen";
+import { postApiClientImportUpload } from "@/shared/api/generated/sdk.gen";
 import { Button } from "@/components/ui/Button";
 import { Select } from "@/components/ui/Select";
 import { Toggle } from "@/components/ui/Toggle";
@@ -64,9 +65,11 @@ export function ContactImportPage() {
   const navigate = useNavigate();
   const qc = useQueryClient();
   const [step, setStep] = useState(1);
+  const [file, setFile] = useState<File | null>(null);
   const [fileUploaded, setFileUploaded] = useState(false);
   const [fileName, setFileName] = useState("");
   const [rowCount, setRowCount] = useState(0);
+  const [productId, setProductId] = useState("");
   const [mapping, setMapping] = useState<Record<string, string>>({
     first_name: "firstName",
     last_name: "lastName",
@@ -80,38 +83,58 @@ export function ContactImportPage() {
   const [optInSms, setOptInSms] = useState(true);
   const [addToSegment, setAddToSegment] = useState(false);
 
+  // Product dropdown for the upload
+  const { data: productsData } = useQuery({
+    ...getApiProductDropdownOptions(),
+    select: (res: any) => (res?.data || []) as Array<{ id: string; name: string }>,
+  });
+
   const importMutation = useMutation({
-    mutationFn: (body: Record<string, unknown>) =>
-      ClientImportService.create(body),
+    mutationFn: () => {
+      if (!file) throw new Error("Aucun fichier sélectionné");
+      if (!productId) throw new Error("Veuillez sélectionner un produit");
+      return postApiClientImportUpload({
+        body: {
+          file,
+          productId,
+          mappingOverride: JSON.stringify(mapping),
+          dryRun: false,
+        },
+      });
+    },
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["contacts"] });
       toast.success("Import lancé avec succès");
       navigate({ to: "/contacts" });
     },
-    onError: () => toast.error("Erreur lors de l'import"),
+    onError: (err: any) =>
+      toast.error("Erreur lors de l'import : " + (err?.message || "Erreur inconnue")),
   });
+
+  const acceptFile = (f: File) => {
+    if (!["csv", "xls", "xlsx"].includes(f.name.split(".").pop()?.toLowerCase() || "")) {
+      toast.error("Format non supporté — CSV uniquement");
+      return;
+    }
+    setFile(f);
+    setFileName(f.name);
+    setRowCount(Math.round(f.size / 50)); // rough estimate until server parses
+    setFileUploaded(true);
+  };
 
   const handleFileDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
-    const file = e.dataTransfer.files[0];
-    if (file) {
-      setFileName(file.name);
-      setRowCount(Math.floor(Math.random() * 2000) + 200);
-      setFileUploaded(true);
-    }
+    const f = e.dataTransfer.files[0];
+    if (f) acceptFile(f);
   };
 
   const handleFileClick = () => {
     const input = document.createElement("input");
     input.type = "file";
-    input.accept = ".csv";
+    input.accept = ".csv,.xls,.xlsx";
     input.onchange = (e) => {
-      const file = (e.target as HTMLInputElement).files?.[0];
-      if (file) {
-        setFileName(file.name);
-        setRowCount(Math.floor(Math.random() * 2000) + 200);
-        setFileUploaded(true);
-      }
+      const f = (e.target as HTMLInputElement).files?.[0];
+      if (f) acceptFile(f);
     };
     input.click();
   };
@@ -133,13 +156,21 @@ export function ContactImportPage() {
         Contacts
       </button>
 
-      <div className="mb-6">
-        <h1 className="text-[18px] font-semibold text-[#0D2137] tracking-tight">
-          Importer des contacts
-        </h1>
-        <p className="text-[12.5px] text-[#4A7A94] mt-1">
-          Importez vos contacts depuis un fichier CSV
-        </p>
+      <div className="mb-6 flex items-end justify-between">
+        <div>
+          <h1 className="text-[18px] font-semibold text-[#0D2137] tracking-tight">
+            Importer des contacts
+          </h1>
+          <p className="text-[12.5px] text-[#4A7A94] mt-1">
+            Importez vos contacts depuis un fichier CSV
+          </p>
+        </div>
+        <Button
+          variant="secondary"
+          onClick={() => navigate({ to: "/contacts/imports" })}
+        >
+          <History size={14} /> Historique
+        </Button>
       </div>
 
       {/* Stepper */}
@@ -252,7 +283,7 @@ export function ContactImportPage() {
                 <p className="text-[12.5px] text-[#4A7A94] mb-4">
                   Associez chaque colonne CSV à un champ OmniChannel.
                 </p>
-                <div className="border border-[#E5E7EB] rounded-[10px] overflow-hidden">
+                <div className="border border-[#E5E7EB] rounded-md overflow-hidden">
                   <table className="w-full border-collapse text-[12.5px]">
                     <thead>
                       <tr className="bg-[#F7F8F9] border-b border-[#E5E7EB]">
@@ -310,6 +341,25 @@ export function ContactImportPage() {
 
             {step === 3 && (
               <div className="flex flex-col gap-4">
+                {/* Product selector — required for upload */}
+                <div>
+                  <label className="block text-[12px] font-medium text-[#4A7A94] mb-1.5">
+                    Produit cible <span className="text-[#DC2626]">*</span>
+                  </label>
+                  <Select
+                    value={productId}
+                    onChange={(e) => setProductId(e.target.value)}
+                  >
+                    <option value="">Sélectionner un produit…</option>
+                    {(productsData || []).map((p: any) => (
+                      <option key={p.id} value={p.id}>{p.name}</option>
+                    ))}
+                  </Select>
+                  <p className="text-[11.5px] text-[#8BAFC0] mt-1">
+                    Les contacts seront rattachés à ce produit.
+                  </p>
+                </div>
+
                 {[
                   {
                     label: "Ignorer les doublons",
@@ -332,7 +382,7 @@ export function ContactImportPage() {
                 ].map((opt) => (
                   <div
                     key={opt.label}
-                    className="flex items-start justify-between p-4 bg-[#F7F8F9] border border-[#E5E7EB] rounded-[10px] gap-6"
+                    className="flex items-start justify-between p-4 bg-[#F7F8F9] border border-[#E5E7EB] rounded-md gap-6"
                   >
                     <div>
                       <p className="text-[13px] font-medium text-[#0D2137]">
@@ -350,7 +400,7 @@ export function ContactImportPage() {
 
             {step === 4 && (
               <div>
-                <div className="flex items-center gap-3 p-4 bg-[#DCFCE7] border border-[#86EFAC] rounded-[10px] mb-5">
+                <div className="flex items-center gap-3 p-4 bg-[#DCFCE7] border border-[#86EFAC] rounded-md mb-5">
                   <Check size={16} className="text-[#16A34A] shrink-0" />
                   <p className="text-[12.5px] text-[#16A34A] font-medium">
                     Tout est prêt — votre import est configuré.
@@ -413,23 +463,19 @@ export function ContactImportPage() {
                 <Button
                   variant="primary"
                   onClick={() => setStep(step + 1)}
-                  disabled={step === 1 && !fileUploaded}
+                  disabled={
+                    (step === 1 && !fileUploaded) ||
+                    (step === 3 && !productId)
+                  }
                 >
                   Suivant →
                 </Button>
               ) : (
                 <Button
                   variant="primary"
-                  onClick={() =>
-                    importMutation.mutate({
-                      // CreateClientImportRequest — only valid fields
-                      fileName: fileName || undefined,
-                      fileSize: undefined,
-                      fileUrl: undefined, // TODO: wire real upload
-                      mappingConfiguration: JSON.stringify(mapping),
-                    })
-                  }
+                  onClick={() => importMutation.mutate()}
                   loading={importMutation.isPending}
+                  disabled={!file || !productId}
                 >
                   🚀 Lancer l'import
                 </Button>

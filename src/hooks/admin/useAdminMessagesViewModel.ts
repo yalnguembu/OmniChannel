@@ -6,7 +6,12 @@ import {
   postApiJobSearchOptions,
   postApiJobSearchQueryKey,
 } from "@/shared/api/generated/@tanstack/react-query.gen";
-import type { MessageDto, JobDto } from "@/shared/api/generated/types.gen";
+import type {
+  SearchMessageRequest,
+  SearchMessageResponse,
+  SearchJobRequest,
+  SearchJobResponse,
+} from "@/shared/api/generated/types.gen";
 import { useErrorHandling } from "@/shared/hooks/useErrorHandling";
 import { useDebounce } from "@/shared/hooks/useDebounce";
 
@@ -37,10 +42,10 @@ export function useAdminMessagesViewModel() {
         pageNumber: page,
         pageSize: PAGE_SIZE,
         searchTerm: debouncedSearch || undefined,
-      } as any,
+      } satisfies SearchMessageRequest,
     }),
     select: (res: any) => ({
-      items: (res?.data?.items ?? []) as MessageDto[],
+      items: (res?.data?.items ?? []) as SearchMessageResponse[],
       total: (res?.data?.totalCount ?? 0) as number,
     }),
     enabled: tab === "messages",
@@ -56,10 +61,10 @@ export function useAdminMessagesViewModel() {
       body: {
         pageNumber: page,
         pageSize: PAGE_SIZE,
-      } as any,
+      } satisfies SearchJobRequest,
     }),
     select: (res: any) => ({
-      items: (res?.data?.items ?? []) as JobDto[],
+      items: (res?.data?.items ?? []) as SearchJobResponse[],
       total: (res?.data?.totalCount ?? 0) as number,
     }),
     enabled: tab === "jobs",

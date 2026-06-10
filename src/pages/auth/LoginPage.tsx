@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { Link } from "@tanstack/react-router";
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 import { useLoginViewModel } from "@/hooks/useLoginViewModel";
@@ -49,9 +50,12 @@ export function LoginPage() {
                   Se souvenir de moi
                 </span>
               </label>
-              <span className="text-[13px] text-[#2E8FAD] cursor-pointer hover:text-[#1B5E82] transition-colors">
+              <Link
+                to="/forgot-password"
+                className="text-[13px] text-[#2E8FAD] cursor-pointer hover:text-[#1B5E82] transition-colors"
+              >
                 Mot de passe oublié ?
-              </span>
+              </Link>
             </div>
             <Button
               variant="primary"

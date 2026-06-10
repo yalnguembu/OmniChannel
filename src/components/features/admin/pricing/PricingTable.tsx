@@ -4,12 +4,12 @@ import { Can } from "@/security/components/Can";
 import { ACTION } from "@/security/enums";
 import { DataTable, type Column } from "@/components/data-table/DataTable";
 import { formatCurrency } from "@/lib/currency";
-import type { PricingDto } from "@/shared/api/generated/types.gen";
+import type { SearchPricingResponse } from "@/shared/api/generated/types.gen";
 
 interface PricingTableProps {
-  pricings: PricingDto[];
+  pricings: SearchPricingResponse[];
   isLoading: boolean;
-  onEdit: (pricing: PricingDto) => void;
+  onEdit: (pricing: SearchPricingResponse) => void;
   onDelete: (id: string) => void;
 }
 
@@ -19,7 +19,7 @@ export function PricingTable({
   onEdit,
   onDelete,
 }: PricingTableProps) {
-  const columns: Column<PricingDto>[] = [
+  const columns: Column<SearchPricingResponse>[] = [
     {
       key: "channelCode",
       label: "Canal",

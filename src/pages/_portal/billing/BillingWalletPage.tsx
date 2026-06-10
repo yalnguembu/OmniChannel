@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { WalletService, WalletTransactionService } from "@/shared/api/services";
+import {
+  postApiWalletSearchOptions,
+  postApiWalletTransactionSearchOptions,
+} from "@/shared/api/generated/@tanstack/react-query.gen";
 import { PageLoader } from "@/components/feedback/PageLoader";
 import type { WalletDto, WalletTransactionDto } from "@/shared/api/types";
 
@@ -16,19 +19,19 @@ export function BillingWalletPage() {
   const [rechargeOpen, setRechargeOpen] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
 
-  const { data: walletData, isLoading } = useQuery({
-    queryKey: ["wallet"],
-    queryFn: () => WalletService.search({ pageNumber: 1, pageSize: 1 }) as any,
+  const { data: wallet, isLoading } = useQuery({
+    ...postApiWalletSearchOptions({ body: { pageNumber: 1, pageSize: 1 } }),
+    select: (res: any) =>
+      (res?.data?.items?.[0] ?? undefined) as WalletDto | undefined,
   });
 
-  const { data: txData } = useQuery({
-    queryKey: ["transactions", "recent"],
-    queryFn: () =>
-      WalletTransactionService.search({ pageNumber: 1, pageSize: 5 }) as any,
+  const { data: recentTx = [] } = useQuery({
+    ...postApiWalletTransactionSearchOptions({
+      body: { pageNumber: 1, pageSize: 5 },
+    }),
+    select: (res: any) => (res?.data?.items ?? []) as WalletTransactionDto[],
   });
 
-  const wallet: WalletDto | undefined = walletData?.data?.items?.[0];
-  const recentTx: WalletTransactionDto[] = txData?.data?.items ?? [];
   const isLowBalance =
     wallet && (wallet.balance ?? 0) < (wallet.lowBalanceThreshold ?? 150000);
 

@@ -33,7 +33,7 @@ export function StepSequence({
 
   if (!campaignId) {
     return (
-      <div className="bg-white p-10 rounded-[24px] border border-[#E5E7EB] text-center">
+      <div className="bg-white p-8 rounded-[14px] border border-[#E5E7EB] text-center">
         <p className="text-[14px] text-[#8BAFC0]">
           Enregistrez d'abord les informations de la campagne pour configurer la
           séquence.
@@ -68,7 +68,7 @@ export function StepSequence({
   return (
     <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-400">
       <div>
-        <h2 className="text-[17px] font-bold text-[#0D2137]">
+        <h2 className="text-[16px] font-semibold text-[#0D2137]">
           Séquence d'envoi
         </h2>
         <p className="text-[13px] text-[#8BAFC0] mt-0.5">
@@ -83,11 +83,11 @@ export function StepSequence({
           <Loader2 className="animate-spin text-[#2E8FAD]" size={28} />
         </div>
       ) : ordered.length === 0 ? (
-        <div className="bg-[#F7F8F9] border border-dashed border-[#E5E7EB] rounded-[22px] p-10 text-center">
-          <div className="w-12 h-12 rounded-2xl bg-white border border-[#E5E7EB] flex items-center justify-center mx-auto mb-3 text-[#8BAFC0]">
+        <div className="bg-[#F7F8F9] border border-dashed border-[#E5E7EB] rounded-[14px] p-8 text-center">
+          <div className="w-12 h-12 rounded-md bg-white border border-[#E5E7EB] flex items-center justify-center mx-auto mb-3 text-[#8BAFC0]">
             <Layers size={22} />
           </div>
-          <p className="text-[14px] font-bold text-[#0D2137]">
+          <p className="text-[14px] font-medium text-[#0D2137]">
             Aucune étape configurée
           </p>
           <p className="text-[12.5px] text-[#8BAFC0] mt-1">
@@ -98,16 +98,16 @@ export function StepSequence({
         <div className="space-y-2">
           {ordered.map((s: any, i: number) => (
             <div key={s.id}>
-              <div className="bg-white border border-[#E5E7EB] rounded-[18px] p-4 flex items-center gap-4 group">
-                <div className="w-9 h-9 rounded-full bg-[#0D2137] text-white flex items-center justify-center text-[12px] font-bold shrink-0">
+              <div className="bg-white border border-[#E5E7EB] rounded-[14px] p-4 flex items-center gap-4 group">
+                <div className="w-9 h-9 rounded-full bg-[#0D2137] text-white flex items-center justify-center text-[12px] font-semibold shrink-0">
                   {i + 1}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-[14px] font-bold text-[#0D2137] truncate">
+                  <p className="text-[14px] font-medium text-[#0D2137] truncate">
                     {s.name || `Étape ${i + 1}`}
                   </p>
                   <div className="flex items-center gap-2 mt-0.5 flex-wrap">
-                    <span className="text-[11px] font-bold uppercase tracking-wider text-[#2E8FAD] bg-[#E8F4F8] px-2 py-0.5 rounded-full">
+                    <span className="text-[11px] font-medium uppercase tracking-wider text-[#2E8FAD] bg-[#E8F4F8] px-2 py-0.5 rounded-full">
                       {channelName(s.channelId)}
                     </span>
                     <span className="text-[11.5px] text-[#8BAFC0]">
@@ -139,8 +139,8 @@ export function StepSequence({
       )}
 
       {/* Add step form */}
-      <div className="bg-[#FAFBFC] border border-[#E5E7EB] rounded-[22px] p-6 space-y-4">
-        <p className="text-[13px] font-bold text-[#0D2137]">
+      <div className="bg-[#F7F8F9] border border-[#E5E7EB] rounded-[14px] p-6 space-y-4">
+        <p className="text-[13px] font-medium text-[#0D2137]">
           Ajouter une étape
         </p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -202,7 +202,7 @@ export function StepSequence({
             onClick={onAdd}
             disabled={!canAdd}
             loading={isActionPending}
-            className="font-bold"
+            className="font-medium"
           >
             <Plus size={14} className={cn("mr-1.5")} />
             Ajouter l'étape

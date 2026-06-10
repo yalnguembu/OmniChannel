@@ -1,6 +1,9 @@
 import { z } from "zod";
 import { BaseModelSchema } from "./base.model";
-import type { CampaignDto } from "@/shared/api/generated/types.gen";
+import type {
+  CampaignDto,
+  SearchCampaignResponse,
+} from "@/shared/api/generated/types.gen";
 
 export const CampaignStatusSchema = z
   .enum(["active", "draft", "paused", "completed", "scheduled"])
@@ -25,8 +28,12 @@ export const CampaignSchema = BaseModelSchema.extend({
   status: CampaignStatusSchema,
   type: CampaignTypeSchema,
   productId: z.string().min(1, "L'espace produit est obligatoire"),
+  productName: z.string().optional().nullable().default(null),
   clientId: z.string().optional().nullable().default(null),
   scheduledAt: z.string().optional().nullable().default(null),
+  startedAt: z.string().optional().nullable().default(null),
+  completedAt: z.string().optional().nullable().default(null),
+  recurrencePattern: z.string().optional().nullable().default(null),
   content: CampaignContentSchema,
   // Delivery stats
   totalRecipients: z.number().default(0),
@@ -40,7 +47,11 @@ export type CampaignModel = z.infer<typeof CampaignSchema>;
  * Safely maps a CampaignDto (from API) to our precise CampaignModel.
  */
 export function mapToCampaignModel(
-  dto: Partial<CampaignDto> | null | undefined,
+  dto:
+    | Partial<CampaignDto>
+    | Partial<SearchCampaignResponse>
+    | null
+    | undefined,
 ): CampaignModel {
   if (!dto)
     return CampaignSchema.parse({
@@ -60,7 +71,7 @@ export function mapToCampaignModel(
 }
 
 export function mapToCampaignModels(
-  dtos: (Partial<CampaignDto> | null | undefined)[],
+  dtos: (Partial<SearchCampaignResponse> | null | undefined)[],
 ): CampaignModel[] {
   return (dtos || []).map(mapToCampaignModel);
 }

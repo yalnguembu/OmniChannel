@@ -3,10 +3,10 @@ import { DataTable, type Column } from "@/components/data-table/DataTable";
 import { formatDateTime } from "@/lib/date";
 import { formatCurrency } from "@/lib/currency";
 import { cn } from "@/lib/utils";
-import type { WalletTransactionDto } from "@/shared/api/generated/types.gen";
+import type { SearchWalletTransactionResponse } from "@/shared/api/generated/types.gen";
 
 interface TransactionsTableProps {
-  transactions: WalletTransactionDto[];
+  transactions: SearchWalletTransactionResponse[];
   isLoading: boolean;
 }
 
@@ -14,7 +14,7 @@ export function TransactionsTable({
   transactions,
   isLoading,
 }: TransactionsTableProps) {
-  const columns: Column<WalletTransactionDto>[] = [
+  const columns: Column<SearchWalletTransactionResponse>[] = [
     {
       key: "createdAt",
       label: "Date",

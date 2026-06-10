@@ -24,6 +24,14 @@ import {
 } from "@/shared/api/generated/@tanstack/react-query.gen";
 import { useCampaignDraftStore } from "@/store/campaignDraftStore";
 import { mapToCampaignModel } from "@/models/campaign.model";
+import type {
+  CreateCampaignRequest,
+  UpdateCampaignRequest,
+  CreateCampaignChannelRequest,
+  CreateCampaignSegmentRequest,
+  SearchCampaignChannelResponse,
+  SearchCampaignSegmentResponse,
+} from "@/shared/api/generated/types.gen";
 import { useErrorHandling } from "@/shared/hooks/useErrorHandling";
 
 export function useCampaignWizard({
@@ -74,20 +82,25 @@ export function useCampaignWizard({
         ]);
 
         const camp = mapToCampaignModel(campRes.data);
-        const channelItems = channelsRes.data?.items ?? [];
+        const channelItems = (channelsRes.data?.items ??
+          []) as SearchCampaignChannelResponse[];
 
-        const channelIds = channelItems.map((c: any) => c.channelId);
-        const templateIds = channelItems.reduce(
-          (acc: any, c: any) => ({ ...acc, [c.channelId]: c.templateId }),
+        const channelIds = channelItems
+          .map((c) => c.channelId)
+          .filter((id): id is string => !!id);
+        const templateIds = channelItems.reduce<Record<string, string>>(
+          (acc, c) => ({ ...acc, [c.channelId!]: c.templateId! }),
           {},
         );
-        const priorities = channelItems.reduce(
-          (acc: any, c: any) => ({ ...acc, [c.channelId]: c.priority }),
+        const priorities = channelItems.reduce<Record<string, number>>(
+          (acc, c) => ({ ...acc, [c.channelId!]: c.priority! }),
           {},
         );
-        const segmentIds = (segmentsRes.data?.items ?? []).map(
-          (s: any) => s.segmentId,
-        );
+        const segmentIds = (
+          (segmentsRes.data?.items ?? []) as SearchCampaignSegmentResponse[]
+        )
+          .map((s) => s.segmentId)
+          .filter((id): id is string => !!id);
 
         updateDraft({
           id: camp.id,
@@ -217,14 +230,13 @@ export function useCampaignWizard({
         toast.error("Erreur lors du retrait du canal");
       }
     } else {
-      addChannelMutation.mutate({
-        body: {
-          campaignId: draft.id,
-          channelId,
-          templateId,
-          priority: priority ?? 1,
-        },
-      });
+      const body: CreateCampaignChannelRequest = {
+        campaignId: draft.id,
+        channelId,
+        templateId,
+        priority: priority ?? 1,
+      };
+      addChannelMutation.mutate({ body });
     }
   };
 
@@ -251,21 +263,20 @@ export function useCampaignWizard({
         body: { campaignId, pageSize: 200 },
       }),
     );
-    const currentItems = (currentRes.data?.items ?? []) as Array<{
-      id: string;
-      segmentId: string;
-    }>;
+    const currentItems = (currentRes.data?.items ??
+      []) as SearchCampaignSegmentResponse[];
     const currentIds = currentItems.map((s) => s.segmentId);
 
     const toAdd = wantedIds.filter((id) => !currentIds.includes(id));
-    const toRemove = currentItems.filter((s) => !wantedIds.includes(s.segmentId));
+    const toRemove = currentItems.filter((s) => !wantedIds.includes(s.segmentId!));
 
     await Promise.all([
-      ...toAdd.map((segmentId) =>
-        addSegmentMutation.mutateAsync({ body: { campaignId, segmentId } }),
-      ),
+      ...toAdd.map((segmentId) => {
+        const body: CreateCampaignSegmentRequest = { campaignId, segmentId };
+        return addSegmentMutation.mutateAsync({ body });
+      }),
       ...toRemove.map((s) =>
-        removeSegmentMutation.mutateAsync({ path: { id: s.id } }),
+        removeSegmentMutation.mutateAsync({ path: { id: s.id! } }),
       ),
     ]);
   };
@@ -313,7 +324,7 @@ export function useCampaignWizard({
       if (!finalProductId)
         return toast.error("Veuillez sélectionner un produit");
 
-      const payload = {
+      const payload: CreateCampaignRequest = {
         name: draft.name,
         productId: finalProductId,
         type: draft.type || "standard",
@@ -322,7 +333,8 @@ export function useCampaignWizard({
       };
 
       if (draft.id) {
-        updateCampaignMutation.mutate({ body: { ...payload, id: draft.id } });
+        const updateBody: UpdateCampaignRequest = { ...payload, id: draft.id };
+        updateCampaignMutation.mutate({ body: updateBody });
       } else {
         createCampaignMutation.mutate({ body: payload });
       }
@@ -369,13 +381,12 @@ export function useCampaignWizard({
         } catch {
           // syncSegments toasts individual errors; we continue to finalize
         }
-        finalizeMutation.mutate({
-          body: {
-            id: draft.id,
-            status: draft.scheduledAt ? "scheduled" : "active",
-            scheduledAt: draft.scheduledAt,
-          },
-        });
+        const finalizeBody: UpdateCampaignRequest = {
+          id: draft.id,
+          status: draft.scheduledAt ? "scheduled" : "active",
+          scheduledAt: draft.scheduledAt,
+        };
+        finalizeMutation.mutate({ body: finalizeBody });
       },
       isPending:
         finalizeMutation.isPending ||

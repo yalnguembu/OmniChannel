@@ -5,8 +5,12 @@ import { Modal } from "@/components/ui/Modal";
 import { Input } from "@/components/ui/Input";
 import { Select } from "@/components/ui/Select";
 import { Button } from "@/components/ui/Button";
-import { PaymentService } from "@/shared/api/services";
-import { getApiPaymentMethodDropdownOptions } from "@/shared/api/generated/@tanstack/react-query.gen";
+import {
+  postApiPaymentMutation,
+  postApiWalletSearchQueryKey,
+  postApiWalletTransactionSearchQueryKey,
+  getApiPaymentMethodDropdownOptions,
+} from "@/shared/api/generated/@tanstack/react-query.gen";
 import { formatCurrency } from "@/lib/currency";
 
 const MIN_AMOUNT = 10000;
@@ -47,16 +51,12 @@ export function RechargeWalletModal({
   };
 
   const rechargeMutation = useMutation({
-    mutationFn: () =>
-      PaymentService.create({
-        amount,
-        currency,
-        paymentMethodId: paymentMethodId || undefined,
-        metadata: phone ? JSON.stringify({ phoneNumber: phone }) : null,
-      }),
+    ...postApiPaymentMutation(),
     onSuccess: () => {
-      qc.invalidateQueries({ queryKey: ["wallet"] });
-      qc.invalidateQueries({ queryKey: ["transactions"] });
+      qc.invalidateQueries({ queryKey: postApiWalletSearchQueryKey() });
+      qc.invalidateQueries({
+        queryKey: postApiWalletTransactionSearchQueryKey(),
+      });
       toast.success("Demande de rechargement enregistrée");
       close();
     },
@@ -79,7 +79,18 @@ export function RechargeWalletModal({
             variant="primary"
             disabled={!isValid}
             loading={rechargeMutation.isPending}
-            onClick={() => rechargeMutation.mutate()}
+            onClick={() =>
+              rechargeMutation.mutate({
+                body: {
+                  amount,
+                  currency,
+                  paymentMethodId: paymentMethodId || undefined,
+                  metadata: phone
+                    ? JSON.stringify({ phoneNumber: phone })
+                    : null,
+                } as any,
+              })
+            }
           >
             Confirmer le rechargement
           </Button>
@@ -123,7 +134,7 @@ export function RechargeWalletModal({
             ]}
           />
         ) : (
-          <div className="text-[12.5px] text-[#8BAFC0] bg-[#F7F8F9] border border-[#E5E7EB] rounded-[10px] p-3">
+          <div className="text-[12.5px] text-[#8BAFC0] bg-[#F7F8F9] border border-[#E5E7EB] rounded-md p-3">
             Aucune méthode de paiement configurée.{" "}
             <a href="/billing/payment-methods" className="text-[#2E8FAD] underline">
               Ajouter une méthode
@@ -138,7 +149,7 @@ export function RechargeWalletModal({
           onChange={(e) => setPhone(e.target.value)}
         />
 
-        <div className="bg-[#F7F8F9] border border-[#E5E7EB] rounded-[10px] p-3.5">
+        <div className="bg-[#F7F8F9] border border-[#E5E7EB] rounded-md p-3.5">
           <div className="flex justify-between text-[12.5px] mb-2">
             <span className="text-[#8BAFC0]">Montant</span>
             <span className="font-medium">

@@ -1,7 +1,7 @@
 import { defineConfig } from "@hey-api/openapi-ts";
 
 export default defineConfig({
-  input: "./spec.yaml",
+  input: "./swagger.json",
   output: "./src/shared/api/generated",
   parser: {
     hooks: {

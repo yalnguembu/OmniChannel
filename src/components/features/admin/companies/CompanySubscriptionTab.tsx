@@ -3,10 +3,10 @@ import { Badge } from "@/components/ui/Badge";
 import { Card, CardHeader, CardBody } from "@/components/ui/Card";
 import { formatDate } from "@/lib/date";
 import { statusLabel } from "@/lib/utils";
-import type { SubscriptionDto } from "@/shared/api/generated/types.gen";
+import type { SearchSubscriptionResponse } from "@/shared/api/generated/types.gen";
 
 interface CompanySubscriptionTabProps {
-  subscription: SubscriptionDto | null;
+  subscription: SearchSubscriptionResponse | null;
 }
 
 export function CompanySubscriptionTab({

@@ -2,11 +2,20 @@ import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
 import { Sidebar } from "@/components/layout/Sidebar";
 import { Header } from "@/components/layout/Header";
 import { useAuthStore } from "@/store/authStore";
+import { isSystemUser } from "@/lib/auth";
 
 export const Route = createFileRoute("/_portal")({
   beforeLoad: () => {
-    const isAuthenticated = useAuthStore.getState().isAuthenticated;
+    const { isAuthenticated, user, requiresPasswordChange } =
+      useAuthStore.getState();
     // if (!isAuthenticated) throw redirect({ to: "/login" });
+    if (isAuthenticated && requiresPasswordChange) {
+      // throw redirect({ to: "/change-password" });
+    }
+    // The portal is for company members only — send system staff to the backoffice.
+    if (isAuthenticated && isSystemUser(user?.userType)) {
+      throw redirect({ to: "/admin" });
+    }
   },
   component: PortalLayout,
 });

@@ -3,7 +3,7 @@ import { useNavigate } from "@tanstack/react-router";
 import { CampaignWizard } from "@/components/features/campaigns/CampaignWizard";
 import { useCampaignDraftStore } from "@/store/campaignDraftStore";
 
-export function EditCampaignPage({campaignId}:{campaignId: string}) {
+export function EditCampaignPage({ campaignId }: { campaignId: string }) {
   const navigate = useNavigate();
   const { updateDraft, resetDraft } = useCampaignDraftStore();
 
@@ -18,9 +18,5 @@ export function EditCampaignPage({campaignId}:{campaignId: string}) {
     navigate({ to: "/campaigns/$campaignId", params: { campaignId } });
   };
 
-  return (
-    <div className="h-screen bg-white">
-      <CampaignWizard onClose={handleClose} />
-    </div>
-  );
+  return <CampaignWizard onClose={handleClose} />;
 }

@@ -1,7 +1,10 @@
 import { Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { WalletService, WalletTransactionService } from "@/shared/api/services";
+import {
+  postApiWalletSearchOptions,
+  postApiWalletTransactionSearchOptions,
+} from "@/shared/api/generated/@tanstack/react-query.gen";
 import { Badge } from "@/components/ui/Badge";
 import {
   DataTable,
@@ -25,21 +28,23 @@ export function BillingTransactionsPage() {
   const [page, setPage] = useState(1);
   const pageSize = 25;
 
-  const { data: walletData } = useQuery({
-    queryKey: ["wallet"],
-    queryFn: () => WalletService.search({ pageNumber: 1, pageSize: 1 }) as any,
+  const { data: wallet } = useQuery({
+    ...postApiWalletSearchOptions({ body: { pageNumber: 1, pageSize: 1 } }),
+    select: (res: any) => res?.data?.items?.[0],
   });
-
-  const wallet = walletData?.data?.items?.[0];
 
   const { data, isLoading } = useQuery({
-    queryKey: ["transactions", page],
-    queryFn: () =>
-      WalletTransactionService.search({ pageNumber: page, pageSize }) as any,
+    ...postApiWalletTransactionSearchOptions({
+      body: { pageNumber: page, pageSize },
+    }),
+    select: (res: any) => ({
+      items: (res?.data?.items ?? []) as WalletTransactionDto[],
+      total: (res?.data?.totalCount ?? 0) as number,
+    }),
   });
 
-  const transactions: WalletTransactionDto[] = data?.data?.items ?? [];
-  const total: number = data?.data?.totalCount ?? 0;
+  const transactions = data?.items ?? [];
+  const total = data?.total ?? 0;
 
   const exportCsv = () => {
     if (transactions.length === 0) return;

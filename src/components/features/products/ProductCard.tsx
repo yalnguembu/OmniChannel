@@ -8,10 +8,10 @@ import { formatRelative } from "@/lib/date";
 import { cardItem } from "@/lib/animations";
 import { ChannelTags, type ChannelLike } from "@/components/ui/ChannelTags";
 import { useProductStats } from "@/hooks/useProductStats";
-import { ChannelService } from "@/shared/api/services";
 import {
   postApiClientSearchOptions,
   postApiCampaignSearchOptions,
+  getApiChannelDropdownOptions,
 } from "@/shared/api/generated/@tanstack/react-query.gen";
 import type { ProductModel } from "@/models/product.model";
 
@@ -74,35 +74,34 @@ export function ProductCard({ product, onEdit, onDelete }: ProductCardProps) {
   // per visible card; the grid is paginated so the count stays bounded.
   const { data: contactsCount } = useQuery({
     ...postApiClientSearchOptions({
-      body: { productId: product.id, pageNumber: 1, pageSize: 1 } as any,
+      body: { productId: product.id, pageNumber: 1, pageSize: 1 },
     }),
-    select: (res: any) => res?.data?.totalCount ?? 0,
+    select: (res) => res?.data?.totalCount ?? 0,
     enabled: !!product.id,
     staleTime: 2 * 60 * 1000,
   });
 
   const { data: campaignsCount } = useQuery({
     ...postApiCampaignSearchOptions({
-      body: { productId: product.id, pageNumber: 1, pageSize: 1 } as any,
+      body: { productId: product.id, pageNumber: 1, pageSize: 1 },
     }),
-    select: (res: any) => res?.data?.totalCount ?? 0,
+    select: (res) => res?.data?.totalCount ?? 0,
     enabled: !!product.id,
     staleTime: 2 * 60 * 1000,
   });
 
   // Channels dropdown — shared queryKey, so React Query dedupes it to a
   // single request across every card on the (paginated) grid.
-  const { data: channelsData } = useQuery({
-    queryKey: ["channels", "dropdown"],
-    queryFn: () => ChannelService.getDropdown() as any,
+  const { data: allChannels = [] } = useQuery({
+    ...getApiChannelDropdownOptions(),
+    select: (res: any) => (res?.data ?? []) as any[],
     staleTime: 5 * 60 * 1000,
   });
-  const allChannels: any[] = channelsData?.data ?? [];
 
   // Cross-reference the channelIds present in the stats with the dropdown to
   // resolve each channel's type for the tag chips.
   const channels = React.useMemo<ChannelLike[]>(() => {
-    const ids = new Set(stats.stats.map((s: any) => s.channelId));
+    const ids = new Set(stats.stats.map((s) => s.channelId));
     return Array.from(ids).map((id) => {
       const ch = allChannels.find((c) => c.id === id);
       return { type: ch?.type ?? ch?.code, name: ch?.name };
@@ -131,7 +130,7 @@ export function ProductCard({ product, onEdit, onDelete }: ProductCardProps) {
           <div className="flex items-start gap-3 flex-1 min-w-0">
             {/* Icon */}
             <div
-              className="w-10 h-10 rounded-[10px] flex items-center justify-center flex-shrink-0 border-[0.5px] border-[#E5E7EB]"
+              className="w-10 h-10 rounded-md flex items-center justify-center flex-shrink-0 border-[0.5px] border-[#E5E7EB]"
               style={{ background: st.iconBg }}
             >
               <svg width="18" height="18" viewBox="0 0 18 18" fill="none">

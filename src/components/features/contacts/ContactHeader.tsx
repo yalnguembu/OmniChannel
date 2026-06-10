@@ -1,5 +1,5 @@
 import React from "react";
-import { Filter, Download, UserPlus } from "lucide-react";
+import { Filter, Download, UserPlus, Users } from "lucide-react";
 import { Modal } from "@/components/ui/Modal";
 
 interface ContactHeaderProps {
@@ -24,6 +24,10 @@ interface ContactHeaderProps {
   segments: { id: string; name: string }[];
   segmentId: string;
   setSegmentId: (v: string) => void;
+  products: { id: string; name: string }[];
+  productId: string;
+  setProductId: (v: string) => void;
+  onManageSegments: () => void;
 }
 
 export function ContactHeader({
@@ -46,6 +50,10 @@ export function ContactHeader({
   segments,
   segmentId,
   setSegmentId,
+  products,
+  productId,
+  setProductId,
+  onManageSegments,
 }: ContactHeaderProps) {
   return (
     <>
@@ -69,6 +77,23 @@ export function ContactHeader({
             className="w-full border-none outline-none bg-transparent text-[12.5px] text-[#0D2137] placeholder:text-[#8BAFC0]"
           />
         </div>
+
+        <div className="w-[1px] h-[18px] bg-[#E5E7EB] shrink-0 mx-1"></div>
+
+        {/* Product filter */}
+        <select
+          value={productId}
+          onChange={(e) => setProductId(e.target.value)}
+          title="Filtrer par produit"
+          className="h-[34px] max-w-[180px] rounded-full border border-[#E5E7EB] bg-white px-3 text-[12px] text-[#0D2137] outline-none transition-colors focus:border-[#2E8FAD]"
+        >
+          <option value="all">Tous les produits</option>
+          {products.map((p) => (
+            <option key={p.id} value={p.id}>
+              {p.name}
+            </option>
+          ))}
+        </select>
 
         <div className="w-[1px] h-[18px] bg-[#E5E7EB] shrink-0 mx-1"></div>
 
@@ -97,6 +122,14 @@ export function ContactHeader({
           <span className="text-[12px] text-[#8BAFC0] flex items-center mr-1">
             {totalCount.toLocaleString("fr")} contacts
           </span>
+
+          <button
+            onClick={onManageSegments}
+            className="text-[12px] font-normal px-3 py-[5px] rounded-full bg-white text-[#0D2137] border border-[#E5E7EB] cursor-pointer transition-colors hover:bg-[#F0F2F4] whitespace-nowrap inline-flex items-center gap-1.5"
+          >
+            <Users size={12} strokeWidth={1.5} />
+            Segments
+          </button>
 
           <button
             onClick={() => setIsFilterModalOpen(true)}

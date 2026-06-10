@@ -41,7 +41,7 @@ export function ProductDeleteModal({
         </>
       }
     >
-      <div className="flex items-start gap-3 p-4 bg-[#FEE2E2] border border-[#FCA5A5] rounded-[10px]">
+      <div className="flex items-start gap-3 p-4 bg-[#FEE2E2] border border-[#FCA5A5] rounded-md">
         <Trash2 size={15} className="text-[#DC2626] shrink-0 mt-0.5" />
         <p className="text-[12.5px] text-[#DC2626] leading-relaxed">
           Supprimer <strong>{product.name}</strong> supprimera

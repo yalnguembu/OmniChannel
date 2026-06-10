@@ -4,6 +4,9 @@ import { RouterProvider } from "@tanstack/react-router";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "sonner";
 import { queryClient } from "@/shared/api/queryClient";
+// Side-effect import: configures the generated axios client (baseURL +
+// Bearer-token request interceptor + 401 refresh). MUST run before any request.
+import "@/shared/api/setup";
 import { SecurityProvider } from "./security/SecurityProvider";
 import { ABACStrategy } from "./security/strategies/ABACStrategy";
 import { router } from "./router";

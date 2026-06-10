@@ -18,7 +18,7 @@ export function StepGeneral({
 }) {
   return (
     <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-6 animate-in fade-in slide-in-from-bottom-4 duration-400">
-      <div className="bg-white p-8 rounded-lg border border-border space-y-6">
+      <div className="bg-white p-6 rounded-[14px] border border-[#E5E7EB] space-y-6">
         <Input
           label="Nom de la campagne *"
           placeholder="ex: Promo Printemps - SMS"
@@ -48,8 +48,8 @@ export function StepGeneral({
         />
       </div>
 
-      <div className="bg-white p-8 rounded-lg border border-border">
-        <p className="text-[13.5px] font-bold text-[#0D2137] mb-5">
+      <div className="bg-white p-6 rounded-[14px] border border-[#E5E7EB]">
+        <p className="text-[13px] font-medium text-[#0D2137] mb-5">
           Type de diffusion
         </p>
         <div className="grid grid-cols-2 gap-4">
@@ -86,7 +86,7 @@ export function StepGeneral({
                 key={t.id}
                 onClick={() => updateDraft({ type: t.id as any })}
                 className={cn(
-                  "p-4.5 p-[18px] border-2 rounded-[20px] cursor-pointer transition-all hover:bg-[#FBFBFC] relative",
+                  "p-[18px] border-2 rounded-[14px] cursor-pointer transition-all hover:bg-[#F7F8F9] relative",
                   sel
                     ? "border-[#2E8FAD] bg-[#E8F4F8]"
                     : "border-[#F0F2F4] bg-white hover:border-[#B8CDD8]",
@@ -94,9 +94,9 @@ export function StepGeneral({
               >
                 <div
                   className={cn(
-                    "w-10 h-10 rounded-xl flex items-center justify-center mb-3",
+                    "w-10 h-10 rounded-[9px] flex items-center justify-center mb-3",
                     sel
-                      ? "bg-[#2E8FAD] text-white shadow-lg shadow-[#2E8FAD]/20"
+                      ? "bg-[#2E8FAD] text-white"
                       : "bg-[#F3F4F6] text-[#8BAFC0]",
                   )}
                 >
@@ -104,7 +104,7 @@ export function StepGeneral({
                 </div>
                 <p
                   className={cn(
-                    "text-[14.5px] font-bold",
+                    "text-[14px] font-medium",
                     sel ? "text-[#0D2137]" : "text-[#4A7A94]",
                   )}
                 >

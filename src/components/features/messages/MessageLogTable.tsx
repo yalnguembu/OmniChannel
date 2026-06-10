@@ -1,13 +1,13 @@
-import type { MessageDto } from "@/shared/api/types";
+import type { SearchMessageResponse } from "@/shared/api/generated/types.gen";
 import { formatRelative } from "@/lib/date";
 import { Pagination } from "@/components/data-table/DataTable";
 import { chMeta, statusMeta } from "./constant";
 
 type MessageLogPageProps = {
-  messages: MessageDto[];
+  messages: SearchMessageResponse[];
   isLoading: boolean;
   activeMsgId?: string;
-  onSelectMessage: (m: MessageDto) => void;
+  onSelectMessage: (m: SearchMessageResponse) => void;
   page: number;
   pageSize: number;
   totalCount: number;
@@ -92,7 +92,8 @@ export function MessageLogTable({
                 if (m.channelCode?.toLowerCase() === "push") cm = chMeta.push;
 
                 const st =
-                  statusMeta[m.status.toLowerCase()] || statusMeta.default;
+                  statusMeta[(m.status ?? "").toLowerCase()] ||
+                  statusMeta.default;
 
                 return (
                   <tr
@@ -194,7 +195,7 @@ export function MessageLogTable({
                       </div>
                     </td>
                     <td className="px-3.5 text-[12.5px] text-[#0D2137] align-middle truncate font-mono text-[11px] text-[#4A7A94]">
-                      {m.id.slice(0, 10).toUpperCase()}
+                      {(m.id ?? "").slice(0, 10).toUpperCase()}
                     </td>
                     <td className="px-3.5 text-[12.5px] text-[#0D2137] align-middle truncate">
                       <div className="font-medium">

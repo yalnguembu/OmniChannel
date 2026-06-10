@@ -11,7 +11,7 @@ interface GuardOptions {
 export function requirePermission(
   user: UserSession | null,
   strategy: IPermissionStrategy,
-  { action, resource, redirectTo = '/403' }: GuardOptions,
+  { action, resource, redirectTo = '/forbidden' }: GuardOptions,
 ) {
   if (!strategy.can(user, action, resource)) {
     throw redirect({ to: redirectTo });

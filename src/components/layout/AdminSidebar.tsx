@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Link, useRouterState } from "@tanstack/react-router";
 import {
   LayoutDashboard,
@@ -10,10 +11,12 @@ import {
   Network,
   ScrollText,
   Settings,
+  ChevronRight,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAuthStore } from "@/store/authStore";
 import { getInitials, avatarColor } from "@/lib/utils";
+import { MyProfileModal } from "@/components/features/users/MyProfileModal";
 
 const nav = [
   {
@@ -59,6 +62,7 @@ export function AdminSidebar() {
   const user = useAuthStore((s) => s.user);
   const router = useRouterState();
   const currentPath = router.location.pathname;
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
 
   const isActive = (to: string, exact?: boolean) =>
     exact ? currentPath === to : currentPath.startsWith(to);
@@ -134,7 +138,12 @@ export function AdminSidebar() {
       </nav>
 
       <div className="p-3.5 border-t border-white/10 shrink-0">
-        <div className="flex items-center gap-2.5">
+        <button
+          type="button"
+          onClick={() => setIsProfileOpen(true)}
+          title="Mon profil"
+          className="w-full flex items-center gap-2.5 rounded-[8px] p-1 -m-1 hover:bg-white/5 transition-all cursor-pointer text-left"
+        >
           <div
             className="w-8 h-8 rounded-full flex items-center justify-center text-[11px] font-semibold shrink-0"
             style={{
@@ -144,14 +153,20 @@ export function AdminSidebar() {
           >
             {getInitials(user?.firstName, user?.lastName)}
           </div>
-          <div className="min-w-0">
+          <div className="min-w-0 flex-1">
             <p className="text-[12.5px] font-medium text-white truncate">
               {user?.firstName} {user?.lastName}
             </p>
             <p className="text-[11px] text-white/40 truncate">Administrateur</p>
           </div>
-        </div>
+          <ChevronRight size={14} className="text-white/30 shrink-0" />
+        </button>
       </div>
+
+      <MyProfileModal
+        isOpen={isProfileOpen}
+        onClose={() => setIsProfileOpen(false)}
+      />
     </aside>
   );
 }

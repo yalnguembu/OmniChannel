@@ -1,5 +1,8 @@
+import { useState } from "react";
 import { AnimatePresence } from "framer-motion";
-import { Plus, FileText, Eye } from "lucide-react";
+import { Plus, FileText, Eye, Download } from "lucide-react";
+import { useMutation } from "@tanstack/react-query";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/Button";
 import { SearchInput } from "@/components/ui/SearchInput";
 import { Modal } from "@/components/ui/Modal";
@@ -9,8 +12,9 @@ import { Pagination } from "@/components/data-table/DataTable";
 import { TemplateList } from "@/components/features/templates/TemplateList";
 import { TemplateDetail } from "@/components/features/templates/TemplateDetail";
 import { TemplateModal } from "@/components/features/templates/TemplateModal";
+import { TemplateVariantModal } from "@/components/features/templates/TemplateVariantModal";
+import { postApiTemplateImportWhatsappMutation } from "@/shared/api/generated/@tanstack/react-query.gen";
 import { useTemplateViewModel } from "@/hooks/useTemplateViewModel";
-import { useState } from "react";
 import { cn } from "@/lib/utils";
 
 const CHANNEL_FILTERS = [
@@ -25,10 +29,18 @@ type ChannelFilter = (typeof CHANNEL_FILTERS)[number]["key"];
 export function TemplatesPage() {
   const vm = useTemplateViewModel();
   const [channelFilter, setChannelFilter] = useState<ChannelFilter>("all");
+  const [variantChannelId, setVariantChannelId] = useState<string | null>(null);
 
   const filteredTemplates = vm.templates.filter((t) => {
     if (channelFilter === "all") return true;
     return true; // Channel filter would need channel data on template — show all for now
+  });
+
+  // WhatsApp template import from Meta
+  const importWhatsappMutation = useMutation({
+    ...postApiTemplateImportWhatsappMutation(),
+    onSuccess: () => toast.success("Import WhatsApp lancé — les templates apparaîtront sous peu"),
+    onError: () => toast.error("Erreur lors de l'import WhatsApp"),
   });
 
   return (
@@ -38,9 +50,22 @@ export function TemplatesPage() {
 
         {/* Header */}
         <div className="px-4 py-4 border-b border-[#E5E7EB] shrink-0">
-          <p className="text-[15px] font-semibold text-[#0D2137] tracking-tight mb-2.5">
-            {vm.totalCount} template{vm.totalCount !== 1 ? "s" : ""}
-          </p>
+          <div className="flex items-center justify-between mb-2.5">
+            <p className="text-[15px] font-semibold text-[#0D2137] tracking-tight">
+              {vm.totalCount} template{vm.totalCount !== 1 ? "s" : ""}
+            </p>
+            {/* Import WhatsApp templates from Meta */}
+            <Button
+              variant="ghost"
+              size="sm"
+              loading={importWhatsappMutation.isPending}
+              onClick={() => importWhatsappMutation.mutate({})}
+              title="Importer les templates depuis WhatsApp Business"
+            >
+              <Download size={13} />
+              Import WA
+            </Button>
+          </div>
 
           {/* Search */}
           <div className="mb-2.5">
@@ -105,7 +130,7 @@ export function TemplatesPage() {
           <div className="px-2 pb-2">
             <button
               onClick={vm.handleOpenCreateModal}
-              className="w-full flex items-center gap-2 px-3.5 py-2.5 rounded-[10px] border border-dashed border-[#E5E7EB] bg-none text-[13px] text-[#4A7A94] cursor-pointer transition-all hover:bg-white hover:border-[#6AB8D4] hover:border-solid hover:text-[#1B5E82]"
+              className="w-full flex items-center gap-2 px-3.5 py-2.5 rounded-md border border-dashed border-[#E5E7EB] bg-none text-[13px] text-[#4A7A94] cursor-pointer transition-all hover:bg-white hover:border-[#6AB8D4] hover:border-solid hover:text-[#1B5E82]"
             >
               <Plus size={15} />
               Nouveau template
@@ -126,6 +151,7 @@ export function TemplatesPage() {
             onDelete={vm.handleConfirmDelete}
             onToggleChannel={vm.handleToggleChannel}
             onSave={vm.handleInlineSave}
+            onEditVariant={setVariantChannelId}
             isSaving={vm.isUpdateLoading}
           />
         ) : (
@@ -147,6 +173,13 @@ export function TemplatesPage() {
         onSubmit={vm.handleSubmit}
         loading={vm.isActionLoading}
         products={vm.products}
+      />
+
+      {/* Template Channel Variant editor */}
+      <TemplateVariantModal
+        open={!!variantChannelId}
+        onClose={() => setVariantChannelId(null)}
+        templateChannelId={variantChannelId}
       />
 
       {/* Delete Confirmation Modal */}

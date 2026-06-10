@@ -47,7 +47,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
             ref={ref}
             id={selectId}
             className={cn(
-              "w-full px-3 py-2 pr-10 border rounded-[10px] text-[13px] text-[#0D2137] bg-white outline-none transition-all duration-150 cursor-pointer appearance-none",
+              "w-full px-3 py-2 pr-10 border rounded-md text-[13px] text-[#0D2137] bg-white outline-none transition-all duration-150 cursor-pointer appearance-none",
               prefixIcon && "pl-10",
               error
                 ? "border-[#FCA5A5] focus:border-[#DC2626]"

@@ -4,7 +4,7 @@ import {
   postApiAuditLogSearchOptions,
   postApiAuditLogSearchQueryKey,
 } from "@/shared/api/generated/@tanstack/react-query.gen";
-import type { AuditLogDto } from "@/shared/api/generated/types.gen";
+import type { SearchAuditLogResponse } from "@/shared/api/generated/types.gen";
 import { useErrorHandling } from "@/shared/hooks/useErrorHandling";
 import { useDebounce } from "@/shared/hooks/useDebounce";
 
@@ -37,8 +37,8 @@ export function useAdminAuditLogsViewModel() {
         riskLevel: riskFilter || undefined,
       } as any,
     }),
-    select: (res: any) => ({
-      items: (res?.data?.items ?? []) as AuditLogDto[],
+    select: (res) => ({
+      items: (res?.data?.items ?? []) as SearchAuditLogResponse[],
       total: (res?.data?.totalCount ?? 0) as number,
     }),
   });

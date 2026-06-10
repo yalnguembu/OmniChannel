@@ -10,9 +10,9 @@ import { UsersManager } from "@/components/features/users/UsersManager";
 const TABS = [
   { id: "settings", label: "Settings globaux" },
   { id: "secure", label: "Settings sécurisés" },
-  { id: "users", label: "Users système" },
   { id: "countries", label: "Pays" },
   { id: "currencies", label: "Devises" },
+  { id: "users", label: "Users système" },
   { id: "profiles", label: "Profils utilisateurs" },
 ];
 
@@ -36,7 +36,7 @@ export default function SettingsPage() {
             className={cn(
               "px-4 py-2.5 text-[13px] border-b-2 border-transparent transition-all cursor-pointer whitespace-nowrap",
               vm.activeTab === t.id
-                ? "text-[#1B5E82] font-medium !border-[#2E8FAD]"
+                ? "text-[#1B5E82] font-medium border-[#2E8FAD]"
                 : "text-[#4A7A94] hover:text-[#0D2137]",
             )}
           >

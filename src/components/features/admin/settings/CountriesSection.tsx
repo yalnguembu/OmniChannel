@@ -4,14 +4,14 @@ import { Button } from "@/components/ui/Button";
 import { Can } from "@/security/components/Can";
 import { ACTION } from "@/security/enums";
 import { DataTable, type Column } from "@/components/data-table/DataTable";
-import type { CountryDto } from "@/shared/api/generated/types.gen";
+import type { SearchCountryResponse } from "@/shared/api/generated/types.gen";
 import { useAdminSettingsViewModel } from "@/hooks/admin/useAdminSettingsViewModel";
 import { CountryFormModal } from "./CountryFormModal";
 
 type Vm = ReturnType<typeof useAdminSettingsViewModel>;
 
 export function CountriesSection({ vm }: { vm: Vm }) {
-  const cols: Column<CountryDto>[] = [
+  const cols: Column<SearchCountryResponse>[] = [
     {
       key: "name",
       label: "Pays",

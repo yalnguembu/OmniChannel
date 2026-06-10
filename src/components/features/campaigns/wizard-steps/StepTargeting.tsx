@@ -18,7 +18,7 @@ export function StepTargeting({
     <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-400">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-[17px] font-bold text-[#0D2137]">
+          <h2 className="text-[16px] font-semibold text-[#0D2137]">
             Ciblage de l'audience
           </h2>
           <p className="text-[12px] text-[#8BAFC0] mt-1">
@@ -28,7 +28,7 @@ export function StepTargeting({
         <Button
           variant="secondary"
           size="sm"
-          className="gap-1.5 px-4 font-bold bg-white border-[#E5E7EB]"
+          className="gap-1.5 px-4 font-medium bg-white border-[#E5E7EB]"
           onClick={() => setShowSegmentModal(true)}
         >
           <Plus size={14} /> Nouveau segment
@@ -47,16 +47,16 @@ export function StepTargeting({
                 updateDraft({ segmentIds: newIds });
               }}
               className={cn(
-                "p-5 rounded-[22px] border-2 cursor-pointer transition-all flex items-center justify-between",
+                "p-5 rounded-[14px] border-2 cursor-pointer transition-all flex items-center justify-between",
                 isSelected
-                  ? "border-[#2E8FAD] bg-[#E8F4F8] shadow-md shadow-[#2E8FAD]/5"
+                  ? "border-[#2E8FAD] bg-[#E8F4F8]"
                   : "border-[#E5E7EB] bg-white hover:border-[#B8CDD8]",
               )}
             >
               <div className="flex items-center gap-4">
                 <div
                   className={cn(
-                    "w-10 h-10 rounded-xl flex items-center justify-center",
+                    "w-10 h-10 rounded-[9px] flex items-center justify-center",
                     isSelected
                       ? "bg-[#2E8FAD] text-white"
                       : "bg-[#F3F4F6] text-[#8BAFC0]",
@@ -67,14 +67,11 @@ export function StepTargeting({
                 <div>
                   <p
                     className={cn(
-                      "text-[14.5px] font-bold",
+                      "text-[14px] font-medium",
                       isSelected ? "text-[#0D2137]" : "text-[#4A7A94]",
                     )}
                   >
                     {seg.name}
-                  </p>
-                  <p className="text-[11px] text-[#8BAFC0] mt-0.5">
-                    {seg.count || 0} contacts
                   </p>
                 </div>
               </div>

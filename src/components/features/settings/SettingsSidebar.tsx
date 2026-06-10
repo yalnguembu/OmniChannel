@@ -9,6 +9,7 @@ import {
   Bell,
   AlertTriangle,
   ShieldCheck,
+  Send,
 } from "lucide-react";
 
 interface SettingsGroup {
@@ -34,6 +35,7 @@ const settingsGroups: SettingsGroup[] = [
     title: "CONFIGURATION",
     items: [
       { to: "/settings/channels", label: "Canaux actifs", icon: <Radio size={16} /> },
+      { to: "/settings/senders", label: "Expéditeurs", icon: <Send size={16} /> },
       { to: "/settings/blocklist", label: "Blocklist", icon: <Ban size={16} /> },
       { to: "/settings/tags", label: "Tags", icon: <Tag size={16} /> },
     ],

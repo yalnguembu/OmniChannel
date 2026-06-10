@@ -12,7 +12,7 @@ export default function MessagesPage() {
         <div className="flex-1 flex flex-col overflow-hidden min-w-0 bg-white">
           {/* KPI strip */}
           <div className="grid grid-cols-5 gap-2.5 p-4 px-5 bg-white border-b border-[#E5E7EB] shrink-0">
-            <div className="p-3 px-3.5 bg-[#F7F8F9] rounded-[10px] border border-[#E5E7EB]">
+            <div className="p-3 px-3.5 bg-[#F7F8F9] rounded-md border border-[#E5E7EB]">
               <div className="text-[10.5px] text-[#8BAFC0] uppercase tracking-[0.06em] mb-1.5">
                 Envoyés (24h)
               </div>
@@ -32,7 +32,7 @@ export default function MessagesPage() {
                 +18%
               </div>
             </div>
-            <div className="p-3 px-3.5 bg-[#F7F8F9] rounded-[10px] border border-[#E5E7EB]">
+            <div className="p-3 px-3.5 bg-[#F7F8F9] rounded-md border border-[#E5E7EB]">
               <div className="text-[10.5px] text-[#8BAFC0] uppercase tracking-[0.06em] mb-1.5">
                 Livrés
               </div>
@@ -52,7 +52,7 @@ export default function MessagesPage() {
                 93.9%
               </div>
             </div>
-            <div className="p-3 px-3.5 bg-[#F7F8F9] rounded-[10px] border border-[#E5E7EB]">
+            <div className="p-3 px-3.5 bg-[#F7F8F9] rounded-md border border-[#E5E7EB]">
               <div className="text-[10.5px] text-[#8BAFC0] uppercase tracking-[0.06em] mb-1.5">
                 Ouverts
               </div>
@@ -71,7 +71,7 @@ export default function MessagesPage() {
                 43.8%
               </div>
             </div>
-            <div className="p-3 px-3.5 bg-[#F7F8F9] rounded-[10px] border border-[#E5E7EB]">
+            <div className="p-3 px-3.5 bg-[#F7F8F9] rounded-md border border-[#E5E7EB]">
               <div className="text-[10.5px] text-[#8BAFC0] uppercase tracking-[0.06em] mb-1.5">
                 Échoués
               </div>
@@ -91,7 +91,7 @@ export default function MessagesPage() {
                 6.1%
               </div>
             </div>
-            <div className="p-3 px-3.5 bg-[#F7F8F9] rounded-[10px] border border-[#E5E7EB]">
+            <div className="p-3 px-3.5 bg-[#F7F8F9] rounded-md border border-[#E5E7EB]">
               <div className="text-[10.5px] text-[#8BAFC0] uppercase tracking-[0.06em] mb-1.5">
                 Coût (24h)
               </div>
@@ -108,7 +108,6 @@ export default function MessagesPage() {
           </div>
 
           <MessageLogHeader
-          // @ts-expect-error
             totalCount={vm.totalCount}
             search={vm.search}
             onSearchChange={vm.handleSearch}
@@ -139,14 +138,12 @@ export default function MessagesPage() {
           />
 
           <MessageLogTable
-          // @ts-expect-error
             messages={vm.messages}
             isLoading={vm.isLoading}
             activeMsgId={vm.activeMsg?.id}
             onSelectMessage={(m) => vm.handleSelectMessage(m)}
             page={vm.page}
             pageSize={vm.pageSize}
-          // @ts-expect-error
             totalCount={vm.totalCount}
             onPageChange={vm.setPage}
           />

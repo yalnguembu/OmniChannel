@@ -2,7 +2,12 @@ import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Plus, Trash2 } from "lucide-react";
 import { toast } from "sonner";
-import { BlocklistService } from "@/shared/api/services";
+import {
+  postApiBlocklistSearchOptions,
+  postApiBlocklistSearchQueryKey,
+  postApiBlocklistMutation,
+  deleteApiBlocklistByIdMutation,
+} from "@/shared/api/generated/@tanstack/react-query.gen";
 import { useAuthStore } from "@/store/authStore";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
@@ -30,17 +35,23 @@ export function BlocklistPage() {
   const pageSize = 20;
 
   const { data, isLoading } = useQuery({
-    queryKey: ["blocklist", page],
-    queryFn: () => BlocklistService.search({ pageNumber: page, pageSize }),
+    ...postApiBlocklistSearchOptions({ body: { pageNumber: page, pageSize } }),
+    select: (res: any) => {
+      const items = (res?.data?.items ?? []) as BlocklistDto[];
+      return {
+        items,
+        total: (res?.data?.totalCount ?? items.length) as number,
+      };
+    },
   });
 
-  const entries: BlocklistDto[] = data?.data?.items ?? [];
-  const total: number = data?.data?.totalCount ?? entries.length;
+  const entries = data?.items ?? [];
+  const total = data?.total ?? 0;
 
   const createMutation = useMutation({
-    mutationFn: (body: Partial<BlocklistDto>) => BlocklistService.create(body),
+    ...postApiBlocklistMutation(),
     onSuccess: () => {
-      qc.invalidateQueries({ queryKey: ["blocklist"] });
+      qc.invalidateQueries({ queryKey: postApiBlocklistSearchQueryKey() });
       setModalOpen(false);
       toast.success("Entrée ajoutée");
     },
@@ -48,9 +59,9 @@ export function BlocklistPage() {
   });
 
   const deleteMutation = useMutation({
-    mutationFn: (id: string) => BlocklistService.delete(id),
+    ...deleteApiBlocklistByIdMutation(),
     onSuccess: () => {
-      qc.invalidateQueries({ queryKey: ["blocklist"] });
+      qc.invalidateQueries({ queryKey: postApiBlocklistSearchQueryKey() });
       setDeleteTarget(null);
       toast.success("Entrée retirée");
     },
@@ -170,7 +181,14 @@ export function BlocklistPage() {
             <Button
               variant="primary"
               onClick={() =>
-                createMutation.mutate({ blockType, value, reason, companyId: companyId ?? undefined })
+                createMutation.mutate({
+                  body: {
+                    blockType,
+                    value,
+                    reason,
+                    companyId: companyId ?? undefined,
+                  } as any,
+                })
               }
               loading={createMutation.isPending}
             >
@@ -225,7 +243,8 @@ export function BlocklistPage() {
             <Button
               variant="primary"
               onClick={() =>
-                deleteTarget && deleteMutation.mutate(deleteTarget.id)
+                deleteTarget &&
+                deleteMutation.mutate({ path: { id: deleteTarget.id } })
               }
               loading={deleteMutation.isPending}
             >

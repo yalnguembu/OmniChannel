@@ -1,7 +1,17 @@
-import { useState, useEffect } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { postApiCompanySearchOptions } from "@/shared/api/generated/@tanstack/react-query.gen";
-import type { CompanyDto } from "@/shared/api/generated/types.gen";
+import { useState, useEffect, useCallback } from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
+import {
+  postApiCompanySearchOptions,
+  postApiCompanySearchQueryKey,
+  postApiCompanyMutation,
+  getApiCountryDropdownOptions,
+} from "@/shared/api/generated/@tanstack/react-query.gen";
+import type {
+  CreateCompanyRequest,
+  SearchCompanyRequest,
+  SearchCompanyResponse,
+} from "@/shared/api/generated/types.gen";
 import { useErrorHandling } from "@/shared/hooks/useErrorHandling";
 import { useDebounce } from "@/shared/hooks/useDebounce";
 
@@ -21,12 +31,14 @@ export const FILTER_TABS = [
  * exposes a flat surface (data + handlers) consumed by a dumb page component.
  */
 export function useAdminCompaniesViewModel() {
-  const { handleRequestError } = useErrorHandling();
+  const queryClient = useQueryClient();
+  const { handleRequestError, createMutationErrorHandler } = useErrorHandling();
 
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [page, setPage] = useState(1);
   const [view, setView] = useState<CompanyView>("card");
+  const [isFormOpen, setIsFormOpen] = useState(false);
 
   const debouncedSearch = useDebounce(search, 400);
 
@@ -41,10 +53,10 @@ export function useAdminCompaniesViewModel() {
         pageSize: PAGE_SIZE,
         searchTerm: debouncedSearch || undefined,
         status: statusFilter !== "all" ? statusFilter : undefined,
-      } as any,
+      } satisfies SearchCompanyRequest,
     }),
     select: (res: any) => ({
-      items: (res?.data?.items ?? []) as CompanyDto[],
+      items: (res?.data?.items ?? []) as SearchCompanyResponse[],
       total: (res?.data?.totalCount ?? 0) as number,
     }),
   });
@@ -56,10 +68,52 @@ export function useAdminCompaniesViewModel() {
   const companies = query.data?.items ?? [];
   const total = query.data?.total ?? 0;
 
+  // Countries dropdown — needed to set `countryId` on creation.
+  const countriesQuery = useQuery({
+    ...getApiCountryDropdownOptions(),
+    select: (res: any) =>
+      (res?.data ?? []).map((c: any) => ({
+        id: c.id ?? "",
+        name: c.name ?? "",
+      })),
+  });
+  const countries = countriesQuery.data ?? [];
+
+  // --- Create modal ---
+  const handleCloseForm = useCallback(() => setIsFormOpen(false), []);
+  const handleOpenCreate = useCallback(() => setIsFormOpen(true), []);
+
+  const createMutation = useMutation({
+    ...postApiCompanyMutation(),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: postApiCompanySearchQueryKey(),
+      });
+      handleCloseForm();
+      toast.success("Company créée");
+    },
+    onError: createMutationErrorHandler(),
+  });
+
+  const handleSubmit = useCallback(
+    (data: CreateCompanyRequest) => {
+      createMutation.mutate({ body: data });
+    },
+    [createMutation],
+  );
+
   return {
     companies,
     total,
     isLoading: query.isLoading,
+    countries,
+
+    // create modal
+    isFormOpen,
+    isActionPending: createMutation.isPending,
+    handleOpenCreate,
+    handleCloseForm,
+    handleSubmit,
     search,
     setSearch,
     statusFilter,

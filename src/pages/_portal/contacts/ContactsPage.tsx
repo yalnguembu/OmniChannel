@@ -9,9 +9,19 @@ import { staggerContainer } from "@/lib/animations";
 import { useContactViewModel } from "@/hooks/useContactViewModel";
 import { ArrowUpRight, ArrowDownRight, Minus } from "lucide-react";
 import { Button } from "@/components/ui/Button";
+import { useNavigate } from "@tanstack/react-router";
+import { SegmentManagerModal } from "@/components/features/contacts/SegmentManagerModal";
 
 export function ContactsPage() {
   const vm = useContactViewModel();
+  const navigate = useNavigate();
+
+  // Segments are product-scoped: when a product is selected, manage them in
+  // place; otherwise jump to the global segments page.
+  const handleManageSegments = () => {
+    if (vm.productId !== "all") vm.setIsSegmentsOpen(true);
+    else navigate({ to: "/contacts/segments" });
+  };
 
   const filterOptions = [
     { value: "all", label: "Tous", count: vm.counts.all },
@@ -30,7 +40,7 @@ export function ContactsPage() {
         <div className="flex-1 flex flex-col overflow-hidden min-w-0 bg-white">
           {/* KPI strip */}
           <div className="grid grid-cols-4 gap-2.5 p-4 px-5 bg-white border-b border-[#E5E7EB] shrink-0">
-            <div className="p-3 px-3.5 bg-[#F7F8F9] rounded-[10px] border border-[#E5E7EB]">
+            <div className="p-3 px-3.5 bg-[#F7F8F9] rounded-md border border-[#E5E7EB]">
               <div className="text-[10.5px] text-[#8BAFC0] uppercase tracking-[0.06em] mb-1.5">
                 Total contacts
               </div>
@@ -41,7 +51,7 @@ export function ContactsPage() {
                 <ArrowUpRight size={11} strokeWidth={2.5} /> +312 ce mois
               </div>
             </div>
-            <div className="p-3 px-3.5 bg-[#F7F8F9] rounded-[10px] border border-[#E5E7EB]">
+            <div className="p-3 px-3.5 bg-[#F7F8F9] rounded-md border border-[#E5E7EB]">
               <div className="text-[10.5px] text-[#8BAFC0] uppercase tracking-[0.06em] mb-1.5">
                 Actifs (30j)
               </div>
@@ -52,7 +62,7 @@ export function ContactsPage() {
                 <Minus size={11} strokeWidth={2.5} /> {activePct}% du total
               </div>
             </div>
-            <div className="p-3 px-3.5 bg-[#F7F8F9] rounded-[10px] border border-[#E5E7EB]">
+            <div className="p-3 px-3.5 bg-[#F7F8F9] rounded-md border border-[#E5E7EB]">
               <div className="text-[10.5px] text-[#8BAFC0] uppercase tracking-[0.06em] mb-1.5">
                 Opt-in SMS
               </div>
@@ -63,7 +73,7 @@ export function ContactsPage() {
                 <ArrowUpRight size={11} strokeWidth={2.5} /> {optInPct}% du total
               </div>
             </div>
-            <div className="p-3 px-3.5 bg-[#F7F8F9] rounded-[10px] border border-[#E5E7EB]">
+            <div className="p-3 px-3.5 bg-[#F7F8F9] rounded-md border border-[#E5E7EB]">
               <div className="text-[10.5px] text-[#8BAFC0] uppercase tracking-[0.06em] mb-1.5">
                 Inactifs (30j)
               </div>
@@ -96,6 +106,10 @@ export function ContactsPage() {
             segments={vm.segments}
             segmentId={vm.segmentId}
             setSegmentId={vm.setSegmentId}
+            products={vm.products}
+            productId={vm.productId}
+            setProductId={vm.setProductId}
+            onManageSegments={handleManageSegments}
           />
 
           {/* Table area */}
@@ -179,6 +193,12 @@ export function ContactsPage() {
         editing={vm.editingContact}
         onSubmit={vm.handleSubmit}
         loading={vm.isActionPending}
+      />
+
+      <SegmentManagerModal
+        open={vm.isSegmentsOpen && vm.productId !== "all"}
+        onClose={() => vm.setIsSegmentsOpen(false)}
+        productId={vm.productId !== "all" ? vm.productId : ""}
       />
     </main>
   );

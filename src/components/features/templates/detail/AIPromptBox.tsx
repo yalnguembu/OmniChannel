@@ -47,13 +47,13 @@ export function AIPromptBox() {
       <div className="p-4">
         <div className="flex gap-2 mb-2.5">
           <input
-            className="flex-1 px-3.5 py-2.5 border border-[#C4B5FD]/50 rounded-[10px] text-[13px] text-[#0D2137] bg-white outline-none focus:border-[#7C3AED] focus:ring-2 focus:ring-[#7C3AED]/10 placeholder-[#8BAFC0]"
+            className="flex-1 px-3.5 py-2.5 border border-[#C4B5FD]/50 rounded-md text-[13px] text-[#0D2137] bg-white outline-none focus:border-[#7C3AED] focus:ring-2 focus:ring-[#7C3AED]/10 placeholder-[#8BAFC0]"
             placeholder="ex : Réécris ce message en ton plus chaleureux avec une offre de réduction 10%…"
             value={prompt}
             onChange={(e) => setPrompt(e.target.value)}
           />
           <button
-            className="px-4 py-2.5 rounded-[10px] text-[13px] font-medium text-white flex items-center gap-1.5 border-none cursor-pointer shrink-0 shadow-sm hover:opacity-90 transition-all disabled:opacity-50"
+            className="px-4 py-2.5 rounded-md text-[13px] font-medium text-white flex items-center gap-1.5 border-none cursor-pointer shrink-0 shadow-sm hover:opacity-90 transition-all disabled:opacity-50"
             style={{ background: "linear-gradient(135deg,#7C3AED,#9333EA)" }}
             disabled={!prompt.trim()}
           >

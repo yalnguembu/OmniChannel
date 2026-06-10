@@ -1,6 +1,4 @@
-import React from "react";
 import { motion } from "framer-motion";
-import { MessageSquare, Users, Megaphone, CreditCard } from "lucide-react";
 import { KPICard } from "@/components/feedback/KPICard";
 import { formatCurrency } from "@/lib/currency";
 import { fmt } from "@/lib/utils";
@@ -23,60 +21,52 @@ export function DashboardKPIs({
   totalCampaigns,
   walletBalance,
   walletCurrency,
-  isWalletLow
+  isWalletLow,
 }: DashboardKPIsProps) {
+  // No time-series endpoint exists, so KPIs show an honest caption rather than a
+  // fabricated up/down trend. The only real signal we can compute is a low wallet
+  // balance, which surfaces as a genuine "down" state.
+  const kpis = [
+    {
+      label: "Messages envoyés",
+      value: fmt(totalMessages),
+      caption: "Volume total",
+    },
+    {
+      label: "Contacts uniques",
+      value: fmt(totalContacts),
+      caption: "Répertoire global",
+    },
+    {
+      label: "Campagnes actives",
+      value: fmt(activeCampaignsCount),
+      caption: `sur ${fmt(totalCampaigns)} créées`,
+    },
+    {
+      label: "Solde actuel",
+      value:
+        walletBalance !== undefined
+          ? formatCurrency(walletBalance, walletCurrency || "XAF")
+          : "—",
+      caption: isWalletLow ? "Solde bas" : "Disponible",
+      trend: isWalletLow ? ("down" as const) : undefined,
+    },
+  ];
+
   return (
     <motion.div
       variants={staggerContainer}
       initial="initial"
       animate="animate"
-      className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 mb-10"
+      className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6"
     >
-      {[
-        {
-          label: "Messages envoyés",
-          value: fmt(totalMessages),
-          trend: "up" as const,
-          trendLabel: "Volume total",
-          icon: MessageSquare,
-          color: "#2E8FAD",
-        },
-        {
-          label: "Contacts uniques",
-          value: fmt(totalContacts),
-          trend: "up" as const,
-          trendLabel: "Répertoire global",
-          icon: Users,
-          color: "#1B5E82",
-        },
-        {
-          label: "Campagnes actives",
-          value: activeCampaignsCount,
-          trend:
-            activeCampaignsCount > 0
-              ? ("up" as const)
-              : ("neutral" as const),
-          trendLabel: `sur ${totalCampaigns} crées`,
-          icon: Megaphone,
-          color: "#7C3AED",
-        },
-        {
-          label: "Solde actuel",
-          value: walletBalance !== undefined
-            ? formatCurrency(walletBalance, walletCurrency || 'XAF')
-            : "—",
-          trend: isWalletLow ? ("down" as const) : ("neutral" as const),
-          trendLabel: "Disponible",
-          icon: CreditCard,
-          color: "#16A34A",
-        },
-      ].map((kpi, i) => (
+      {kpis.map((kpi, i) => (
         <motion.div key={i} variants={cardItem}>
           <KPICard
             label={kpi.label}
             value={kpi.value}
             trend={kpi.trend}
-            trendLabel={kpi.trendLabel}
+            trendLabel={kpi.caption}
           />
         </motion.div>
       ))}

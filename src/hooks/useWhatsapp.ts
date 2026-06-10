@@ -12,6 +12,7 @@ import type {
   Stats,
   User,
 } from "@/models/whatsapp.models";
+import { useWhatsAppStore } from "@/store/useWhatsappStore";
 import {
   getApiConversationSearch,
   getApiConversationStats,
@@ -25,6 +26,8 @@ import {
   postApiWhatsAppSendFlow,
   postApiWhatsAppSendBulkJ0,
   postApiWhatsAppSendBulkJ3,
+  postApiWhatsAppSendTemplateSegment,
+  postApiWhatsAppSendTemplateFile,
   postApiUserSearch,
 } from "@/shared/api/generated/sdk.gen";
 
@@ -177,9 +180,16 @@ export function useMessages(convId: string | null) {
 
 export function useSendText() {
   const qc = useQueryClient();
+  const selectedSenderId = useWhatsAppStore((s) => s.selectedSenderId);
   return useMutation({
     mutationFn: (payload: SendTextPayload) =>
-      postApiWhatsAppSendText({ body: { to: payload.to, body: payload.body } }),
+      postApiWhatsAppSendText({
+        body: {
+          to: payload.to,
+          body: payload.body,
+          senderId: selectedSenderId ?? undefined,
+        },
+      }),
     onSuccess: () => qc.invalidateQueries({ queryKey: whatsappKeys.all }),
     onError: () => toast.error("Erreur lors de l'envoi du message"),
   });
@@ -187,6 +197,7 @@ export function useSendText() {
 
 export function useSendReply() {
   const qc = useQueryClient();
+  const selectedSenderId = useWhatsAppStore((s) => s.selectedSenderId);
   return useMutation({
     mutationFn: (payload: SendReplyPayload) =>
       postApiWhatsAppSendReply({
@@ -194,6 +205,7 @@ export function useSendReply() {
           to: payload.to,
           body: payload.body,
           replyToExternalMessageId: payload.replyToExternalMessageId,
+          senderId: selectedSenderId ?? undefined,
         },
       }),
     onSuccess: () => qc.invalidateQueries({ queryKey: whatsappKeys.all }),
@@ -223,10 +235,15 @@ export function useSendMedia() {
 }
 
 export function useSendFlow() {
+  const selectedSenderId = useWhatsAppStore((s) => s.selectedSenderId);
   return useMutation({
     mutationFn: (payload: SendFlowPayload) =>
       postApiWhatsAppSendFlow({
-        body: { to: payload.to, flowToken: payload.flowToken },
+        body: {
+          to: payload.to,
+          flowToken: payload.flowToken,
+          senderId: selectedSenderId ?? undefined,
+        },
       }),
     onSuccess: () => toast.success("Flow envoyé ✓"),
     onError: () => toast.error("Erreur lors de l'envoi du flow"),
@@ -247,5 +264,63 @@ export function useBulkSend() {
     },
     onError: (err: any) =>
       toast.error(err?.message || "Erreur lors de l'envoi de la campagne"),
+  });
+}
+
+// ─── Template broadcast (approved WhatsApp template → segment / file) ──────────
+
+export interface SendTemplateSegmentPayload {
+  templateId: string;
+  senderId?: string;
+  segmentId: string;
+}
+export interface SendTemplateFilePayload {
+  templateId: string;
+  senderId?: string;
+  productId?: string;
+  file: File;
+  mappingOverride?: string;
+}
+
+function broadcastToast(res: any) {
+  const data = res?.data?.data ?? {};
+  const ok = data.successCount ?? data.sent ?? 0;
+  const ko = data.failureCount ?? data.failed ?? 0;
+  toast.success(`Diffusion lancée ✓ (Succès: ${ok}, Échecs: ${ko})`);
+}
+
+export function useSendTemplateToSegment() {
+  const selectedSenderId = useWhatsAppStore((s) => s.selectedSenderId);
+  return useMutation({
+    mutationFn: (p: SendTemplateSegmentPayload) =>
+      postApiWhatsAppSendTemplateSegment({
+        body: {
+          templateId: p.templateId,
+          senderId: p.senderId ?? selectedSenderId ?? undefined,
+          segmentId: p.segmentId,
+        },
+      }),
+    onSuccess: broadcastToast,
+    onError: (err: any) =>
+      toast.error(err?.message || "Erreur lors de la diffusion du template"),
+  });
+}
+
+export function useSendTemplateFile() {
+  const selectedSenderId = useWhatsAppStore((s) => s.selectedSenderId);
+  return useMutation({
+    mutationFn: (p: SendTemplateFilePayload) =>
+      postApiWhatsAppSendTemplateFile({
+        body: {
+          file: p.file,
+          templateId: p.templateId,
+          senderId: p.senderId ?? selectedSenderId ?? undefined,
+          productId: p.productId,
+          mappingOverride: p.mappingOverride,
+        },
+      }),
+    onSuccess: broadcastToast,
+    onError: (err: any) =>
+      toast.error(err?.message || "Erreur lors de la diffusion du template"),
   });
 }

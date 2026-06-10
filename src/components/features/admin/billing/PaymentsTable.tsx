@@ -2,10 +2,10 @@ import { Badge } from "@/components/ui/Badge";
 import { DataTable, type Column } from "@/components/data-table/DataTable";
 import { formatDate } from "@/lib/date";
 import { formatCurrency } from "@/lib/currency";
-import type { PaymentDto } from "@/shared/api/generated/types.gen";
+import type { SearchPaymentResponse } from "@/shared/api/generated/types.gen";
 
 interface PaymentsTableProps {
-  payments: PaymentDto[];
+  payments: SearchPaymentResponse[];
   isLoading: boolean;
 }
 
@@ -27,7 +27,7 @@ const statusL = (s?: string | null) =>
         : "Remboursé";
 
 export function PaymentsTable({ payments, isLoading }: PaymentsTableProps) {
-  const columns: Column<PaymentDto>[] = [
+  const columns: Column<SearchPaymentResponse>[] = [
     {
       key: "id",
       label: "ID",

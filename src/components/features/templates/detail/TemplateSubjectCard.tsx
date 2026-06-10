@@ -20,7 +20,7 @@ export function TemplateSubjectCard({ register }: TemplateSubjectCardProps) {
       </div>
       <div className="p-4">
         <input
-          className="w-full px-3.5 py-2.5 border border-[#E5E7EB] rounded-[10px] text-[13px] text-[#0D2137] bg-white outline-none focus:border-[#2E8FAD] focus:ring-2 focus:ring-[#2E8FAD]/10 font-[inherit] transition-all"
+          className="w-full px-3.5 py-2.5 border border-[#E5E7EB] rounded-md text-[13px] text-[#0D2137] bg-white outline-none focus:border-[#2E8FAD] focus:ring-2 focus:ring-[#2E8FAD]/10 font-[inherit] transition-all"
           placeholder="Objet de l'email… ex: ✅ Votre commande {{order_id}} est confirmée !"
           {...register("subject")}
         />

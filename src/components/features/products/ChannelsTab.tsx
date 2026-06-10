@@ -9,7 +9,12 @@ import { EmptyState } from "@/components/feedback/EmptyState";
 import { cn } from "@/lib/utils";
 import { useProductChannels } from "@/hooks/useProductChannels";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { ChannelService, ProductChannelService } from "@/shared/api/services";
+import { getApiChannelDropdownOptions } from "@/shared/api/generated/@tanstack/react-query.gen";
+import {
+  postApiProductChannel,
+  putApiProductChannel,
+  deleteApiProductChannelById,
+} from "@/shared/api/generated/sdk.gen";
 import { toast } from "sonner";
 
 interface ChannelsTabProps {
@@ -22,19 +27,19 @@ export function ChannelsTab({ productId }: ChannelsTabProps) {
   const [modalOpen, setModalOpen] = useState(false);
 
   // Global channels for linking (kept here as it's specific to the link modal)
-  const { data: allChannelsData } = useQuery({
-    queryKey: ["channels", "dropdown"],
-    queryFn: () => ChannelService.getDropdown() as any,
+  const { data: allChannels = [] } = useQuery({
+    ...getApiChannelDropdownOptions(),
+    select: (res: any) => (res?.data ?? []) as any[],
   });
-
-  const allChannels = allChannelsData?.data ?? [];
   const availableChannels = allChannels.filter(
-    (ac: any) => !vm.channels.some((pc: any) => pc.channelId === ac.id),
+    (ac: any) => !vm.channels.some((pc) => pc.channelId === ac.id),
   );
 
   const linkMutation = useMutation({
     mutationFn: (channelId: string) =>
-      ProductChannelService.create({ productId, channelId, isActive: true }),
+      postApiProductChannel({
+        body: { productId, channelId, isActive: true } as any,
+      }),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["product-channels", productId] });
       setModalOpen(false);
@@ -44,7 +49,7 @@ export function ChannelsTab({ productId }: ChannelsTabProps) {
   });
 
   const unlinkMutation = useMutation({
-    mutationFn: (id: string) => ProductChannelService.delete(id),
+    mutationFn: (id: string) => deleteApiProductChannelById({ path: { id } }),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["product-channels", productId] });
       toast.success("Canal retiré");
@@ -54,7 +59,7 @@ export function ChannelsTab({ productId }: ChannelsTabProps) {
 
   const toggleMutation = useMutation({
     mutationFn: ({ id, isActive }: { id: string; isActive: boolean }) =>
-      ProductChannelService.update({ id, isActive }),
+      putApiProductChannel({ body: { id, isActive } as any }),
     onSuccess: () =>
       qc.invalidateQueries({ queryKey: ["product-channels", productId] }),
   });
@@ -108,7 +113,7 @@ export function ChannelsTab({ productId }: ChannelsTabProps) {
           </div>
         ) : (
           <div className="divide-y divide-[#F3F4F6]">
-            {vm.channels.map((pc: any) => {
+            {vm.channels.map((pc) => {
               const ch = allChannels.find((c: any) => c.id === pc.channelId);
               return (
                 <div
@@ -153,17 +158,17 @@ export function ChannelsTab({ productId }: ChannelsTabProps) {
                         {pc.isActive ? "Opérationnel" : "Désactivé"}
                       </span>
                       <Toggle
-                        checked={pc.isActive}
+                        checked={!!pc.isActive}
                         onChange={() =>
                           toggleMutation.mutate({
-                            id: pc.id,
+                            id: pc.id ?? "",
                             isActive: !pc.isActive,
                           })
                         }
                       />
                     </div>
                     <button
-                      onClick={() => unlinkMutation.mutate(pc.id)}
+                      onClick={() => unlinkMutation.mutate(pc.id ?? "")}
                       title="Retirer le canal"
                       className="w-8 h-8 rounded-lg flex items-center justify-center text-[#8BAFC0] hover:text-[#DC2626] hover:bg-[#FEE2E2] transition-all cursor-pointer opacity-0 group-hover:opacity-100"
                     >

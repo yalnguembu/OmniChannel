@@ -5,7 +5,10 @@ import {
   postApiMessageEventSearchOptions,
 } from "@/shared/api/generated/@tanstack/react-query.gen";
 import { useErrorHandling } from "@/shared/hooks/useErrorHandling";
-import type { MessageDto } from "@/shared/api/types";
+import type {
+  SearchMessageResponse,
+  SearchMessageEventResponse,
+} from "@/shared/api/generated/types.gen";
 
 /**
  * ViewModel for the global Message Log page.
@@ -28,7 +31,9 @@ export function useMessageLogViewModel() {
   const [campaignId, setCampaignId] = useState("");
 
   // --- Detail State ---
-  const [activeMsg, setActiveMsg] = useState<MessageDto | null>(null);
+  const [activeMsg, setActiveMsg] = useState<SearchMessageResponse | null>(
+    null,
+  );
   const [detailTab, setDetailTab] = useState<"detail" | "events" | "content">(
     "detail",
   );
@@ -50,9 +55,11 @@ export function useMessageLogViewModel() {
       },
     }),
     select: (res) => {
-      const items = Array.isArray(res?.data) ? res.data : res?.data?.items || [];
+      const items = (
+        Array.isArray(res?.data) ? res.data : res?.data?.items || []
+      ) as SearchMessageResponse[];
       const totalCount =
-        res?.metadata?.totalCount ||
+        (res?.metadata?.totalCount as number) ||
         (Array.isArray(res?.data) ? res.data.length : res?.data?.totalCount || 0);
 
       return { items, totalCount };
@@ -73,11 +80,15 @@ export function useMessageLogViewModel() {
     () => ({
       all: listTotalCount,
       delivered: messages.filter(
-        (m: MessageDto) => m.status === "sent" || m.status === "delivered",
+        (m: SearchMessageResponse) =>
+          m.status === "sent" || m.status === "delivered",
       ).length,
-      failed: messages.filter((m: MessageDto) => m.status === "failed").length,
-      pending: messages.filter((m: MessageDto) => m.status === "pending")
-        .length,
+      failed: messages.filter(
+        (m: SearchMessageResponse) => m.status === "failed",
+      ).length,
+      pending: messages.filter(
+        (m: SearchMessageResponse) => m.status === "pending",
+      ).length,
     }),
     [messages, listTotalCount],
   );
@@ -90,12 +101,13 @@ export function useMessageLogViewModel() {
         pageSize: 50,
       },
     }),
-    select: (res) => res?.data?.items || [],
+    select: (res) =>
+      (res?.data?.items as SearchMessageEventResponse[]) || [],
     enabled: !!activeMsg && detailTab === "events",
   });
 
   // --- Handlers ---
-  const handleSelectMessage = useCallback((msg: MessageDto) => {
+  const handleSelectMessage = useCallback((msg: SearchMessageResponse) => {
     setActiveMsg(msg);
     setDetailTab("detail");
   }, []);

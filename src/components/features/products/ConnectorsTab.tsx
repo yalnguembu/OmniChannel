@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Plus, Plug, Trash2, Globe, Activity } from "lucide-react";
 import { toast } from "sonner";
-import { ConnectorService } from "@/shared/api/services";
+import { postApiConnectorSearchOptions } from "@/shared/api/generated/@tanstack/react-query.gen";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { Toggle } from "@/components/ui/Toggle";
@@ -23,12 +23,10 @@ export function ConnectorsTab({ productId }: ConnectorsTabProps) {
   const [modalOpen, setModalOpen] = useState(false);
 
   // Global connectors for linking (kept here to keep it simple)
-  const { data: allConnectorsData } = useQuery({
-    queryKey: ["global-connectors"],
-    queryFn: () => ConnectorService.search({ pageNumber: 1, pageSize: 100 }) as any,
+  const { data: allConnectors = [] } = useQuery({
+    ...postApiConnectorSearchOptions({ body: { pageNumber: 1, pageSize: 100 } }),
+    select: (res: any) => (res?.data?.items ?? []) as any[],
   });
-
-  const allConnectors = allConnectorsData?.data?.items ?? [];
   const availableConnectors = allConnectors.filter(
     (ac: any) => !vm.connectors.some((pc: any) => pc.id === ac.id),
   );

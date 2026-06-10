@@ -31,7 +31,7 @@ export function TemplateList({ templates, activeId, onSelect, onEdit }: Template
             key={t.id}
             onClick={() => onSelect(t)}
             className={cn(
-              'px-3.5 py-3 rounded-[10px] cursor-pointer transition-all border mb-1 relative group',
+              'px-3.5 py-3 rounded-md cursor-pointer transition-all border mb-1 relative group',
               activeId === t.id
                 ? 'bg-[#E8F4F8] border-[#2E8FAD]/30'
                 : 'border-transparent hover:bg-[#F0F2F4] hover:border-[#E5E7EB]'

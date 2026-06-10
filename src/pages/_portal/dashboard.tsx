@@ -35,7 +35,7 @@ function DashboardPage() {
     );
 
   return (
-    <div className="p-8 max-w-[1600px] mx-auto bg-[#F7F8F9]/30 min-h-screen">
+    <div className="p-7 max-w-[1600px] mx-auto">
       {/* Header section */}
       <DashboardHeader
         notificationsCount={vm.notifications.length}
@@ -55,14 +55,14 @@ function DashboardPage() {
         totalMessages={vm.totalMessages}
         totalContacts={vm.totalContacts}
         activeCampaignsCount={vm.activeCampaignsCount}
-        totalCampaigns={vm.campaigns.length}
+        totalCampaigns={vm.totalCampaigns}
         walletBalance={vm.wallet?.balance}
         walletCurrency={vm.wallet?.currency}
         isWalletLow={vm.isWalletLow}
       />
 
       {/* Primary Content Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-10">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-6">
         {/* Recents Campaigns */}
         <RecentCampaignsCard
           campaigns={vm.campaigns}

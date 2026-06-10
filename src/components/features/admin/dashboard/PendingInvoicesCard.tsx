@@ -35,7 +35,7 @@ export function PendingInvoicesCard({
             Aucune facture en attente
           </div>
         ) : (
-          pendingInvoices.map((inv) => (
+          pendingInvoices.slice(0, 8).map((inv) => (
             <div
               key={inv.id}
               className="flex items-center justify-between px-5 py-3.5 border-b border-[#E5E7EB] last:border-b-0 hover:bg-[#F7F8F9] cursor-pointer transition-colors"

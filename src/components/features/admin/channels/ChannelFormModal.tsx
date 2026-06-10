@@ -6,7 +6,10 @@ import { Modal } from "@/components/ui/Modal";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Toggle } from "@/components/ui/Toggle";
-import type { ChannelDto } from "@/shared/api/generated/types.gen";
+import type {
+  CreateChannelRequest,
+  SearchChannelResponse,
+} from "@/shared/api/generated/types.gen";
 
 const schema = z.object({
   name: z.string().min(1, "Nom requis"),
@@ -22,8 +25,8 @@ type FormValues = z.infer<typeof schema>;
 interface ChannelFormModalProps {
   isOpen: boolean;
   onClose: () => void;
-  editing: ChannelDto | null;
-  onSubmit: (data: Partial<ChannelDto>) => void;
+  editing: SearchChannelResponse | null;
+  onSubmit: (data: CreateChannelRequest) => void;
   isPending: boolean;
 }
 
@@ -73,7 +76,7 @@ export function ChannelFormModal({
   const isActive = watch("isActive");
 
   const submit = ({ maxLength, ...rest }: FormValues) =>
-    onSubmit({ ...rest, maxContentLength: maxLength });
+    onSubmit({ ...rest, maxContentLength: maxLength } satisfies CreateChannelRequest);
 
   return (
     <Modal
@@ -148,7 +151,7 @@ export function ChannelFormModal({
         ].map(({ label, desc, val, set }) => (
           <div
             key={label}
-            className="flex items-center justify-between p-3.5 bg-[#F7F8F9] border border-[#E5E7EB] rounded-[10px]"
+            className="flex items-center justify-between p-3.5 bg-[#F7F8F9] border border-[#E5E7EB] rounded-md"
           >
             <div>
               <p className="text-[13px] font-medium text-[#0D2137]">{label}</p>

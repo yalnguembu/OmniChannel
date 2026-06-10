@@ -57,7 +57,7 @@ export function DevicesPage() {
                     key={d.id}
                     className="flex items-center gap-4 p-4 bg-white border border-[#E5E7EB] rounded-[12px]"
                   >
-                    <div className="w-10 h-10 rounded-[10px] bg-[#E8F4F8] flex items-center justify-center text-[#2E8FAD] shrink-0">
+                    <div className="w-10 h-10 rounded-md bg-[#E8F4F8] flex items-center justify-center text-[#2E8FAD] shrink-0">
                       {isMobile ? (
                         <Smartphone size={18} />
                       ) : (

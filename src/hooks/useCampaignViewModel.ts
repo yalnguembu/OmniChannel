@@ -12,6 +12,10 @@ import {
   mapToCampaignModels,
   type CampaignModel,
 } from "@/models/campaign.model";
+import type {
+  SearchCampaignResponse,
+  CreateCampaignRequest,
+} from "@/shared/api/generated/types.gen";
 import { useErrorHandling } from "@/shared/hooks/useErrorHandling";
 import { useCampaignDraftStore } from "@/store/campaignDraftStore";
 
@@ -47,9 +51,10 @@ export function useCampaignViewModel() {
         status: filter !== "all" ? filter : undefined,
       },
     }),
-    select: (res: any) => {
+    select: (res) => {
       const items = mapToCampaignModels(
-        res?.data?.items || (Array.isArray(res?.data) ? res.data : []),
+        (res?.data?.items as SearchCampaignResponse[]) ||
+          (Array.isArray(res?.data) ? res.data : []),
       );
       const totalCount =
         (res?.metadata?.totalCount as number) || (res?.data?.totalCount as number) || items.length;
@@ -151,15 +156,15 @@ export function useCampaignViewModel() {
     handleEditCampaign,
     handleCloseWizard,
     handleDelete: (id: string) => deleteMutation.mutate({ path: { id } }),
-    handleDuplicate: (c: CampaignModel) =>
-      duplicateMutation.mutate({
-        body: {
-          name: `${c.name} (copie)`,
-          status: "draft",
-          type: c.type,
-          productId: c.productId,
-          description: c.description || undefined,
-        },
-      }),
+    handleDuplicate: (c: CampaignModel) => {
+      const body: CreateCampaignRequest = {
+        name: `${c.name} (copie)`,
+        status: "draft",
+        type: c.type,
+        productId: c.productId,
+        description: c.description || undefined,
+      };
+      duplicateMutation.mutate({ body });
+    },
   };
 }

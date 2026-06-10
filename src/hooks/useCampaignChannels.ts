@@ -9,6 +9,11 @@ import {
   putApiCampaignChannelMutation,
   postApiCampaignChannelSearchQueryKey,
 } from "@/shared/api/generated/@tanstack/react-query.gen";
+import type {
+  SearchCampaignChannelResponse,
+  CreateCampaignChannelRequest,
+  UpdateCampaignChannelRequest,
+} from "@/shared/api/generated/types.gen";
 
 /**
  * Hook for managing campaign's specific channels and template links.
@@ -20,7 +25,8 @@ export function useCampaignChannels(campaignId: string, productId?: string) {
     ...postApiCampaignChannelSearchOptions({
       body: { campaignId, pageSize: 100 },
     }),
-    select: (res: any) => res?.data?.items || [],
+    select: (res) =>
+      (res?.data?.items as SearchCampaignChannelResponse[]) || [],
     enabled: !!campaignId,
   });
 
@@ -75,9 +81,11 @@ export function useCampaignChannels(campaignId: string, productId?: string) {
     isLoading: channelsQuery.isLoading,
 
     // Actions
-    handleAdd: (body: any) => addMutation.mutate({ body: { campaignId, ...body } }),
+    handleAdd: (body: Omit<CreateCampaignChannelRequest, "campaignId">) =>
+      addMutation.mutate({ body: { campaignId, ...body } }),
     handleRemove: (id: string) => removeMutation.mutate({ path: { id } }),
-    handleUpdate: (body: any) => updateMutation.mutate({ body }),
+    handleUpdate: (body: UpdateCampaignChannelRequest) =>
+      updateMutation.mutate({ body }),
     isActionPending:
       addMutation.isPending ||
       removeMutation.isPending ||

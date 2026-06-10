@@ -4,7 +4,7 @@ import {
   postApiInvoiceSearchOptions,
   postApiInvoiceSearchQueryKey,
 } from "@/shared/api/generated/@tanstack/react-query.gen";
-import type { InvoiceDto } from "@/shared/api/generated/types.gen";
+import type { SearchInvoiceResponse } from "@/shared/api/generated/types.gen";
 import { useErrorHandling } from "@/shared/hooks/useErrorHandling";
 import { useDebounce } from "@/shared/hooks/useDebounce";
 
@@ -34,10 +34,10 @@ export function useAdminInvoicesViewModel() {
         pageNumber: page,
         pageSize: PAGE_SIZE,
         searchTerm: debouncedSearch || undefined,
-      } as any,
+      },
     }),
-    select: (res: any) => ({
-      items: (res?.data?.items ?? []) as InvoiceDto[],
+    select: (res) => ({
+      items: (res?.data?.items ?? []) as SearchInvoiceResponse[],
       total: (res?.data?.totalCount ?? 0) as number,
     }),
   });

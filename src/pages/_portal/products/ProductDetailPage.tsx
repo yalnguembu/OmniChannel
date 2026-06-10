@@ -14,6 +14,7 @@ import { CampaignsTab } from "@/components/features/products/CampaignsTab";
 import { TemplatesTab } from "@/components/features/products/TemplatesTab";
 import { ChannelsTab } from "@/components/features/products/ChannelsTab";
 import { ConnectorsTab } from "@/components/features/products/ConnectorsTab";
+import { SchemaTab } from "@/components/features/products/SchemaTab";
 
 // Detail subcomponents
 import { ProductNotFound } from "@/components/features/products/detail/ProductNotFound";
@@ -26,6 +27,7 @@ import {
 import { OverviewTab } from "@/components/features/products/detail/OverviewTab";
 import { StatsTab } from "@/components/features/products/detail/StatsTab";
 import { SettingsTab } from "@/components/features/products/detail/SettingsTab";
+import { ProductEditModal } from "@/components/features/products/detail/ProductEditModal";
 
 export default function ProductDetailPage({
   productId,
@@ -60,7 +62,7 @@ export default function ProductDetailPage({
           <ProductDetailHero
             product={product}
             onBack={() => navigate({ to: "/products" })}
-            onEdit={() => {}}
+            onEdit={vm.openEdit}
             onNewCampaign={() =>
               navigate({ to: "/campaigns/new", search: { productId } })
             }
@@ -105,12 +107,28 @@ export default function ProductDetailPage({
               {vm.activeTab === "connectors" && (
                 <ConnectorsTab productId={productId} />
               )}
+              {vm.activeTab === "schema" && <SchemaTab productId={productId} />}
               {vm.activeTab === "stats" && <StatsTab />}
-              {vm.activeTab === "settings" && <SettingsTab product={product} />}
+              {vm.activeTab === "settings" && (
+                <SettingsTab
+                  product={product}
+                  onEdit={vm.openEdit}
+                  onChangeStatus={vm.handleChangeStatus}
+                  isUpdatePending={vm.isUpdatePending}
+                />
+              )}
             </motion.div>
           </AnimatePresence>
         </div>
       </div>
+
+      <ProductEditModal
+        open={vm.isEditOpen}
+        onClose={vm.closeEdit}
+        product={product}
+        onSubmit={vm.handleUpdate}
+        isPending={vm.isUpdatePending}
+      />
     </div>
   );
 }

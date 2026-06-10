@@ -4,10 +4,10 @@ import { Badge } from "@/components/ui/Badge";
 import { DataTable, type Column } from "@/components/data-table/DataTable";
 import { formatDate } from "@/lib/date";
 import { formatCurrency } from "@/lib/currency";
-import type { InvoiceDto } from "@/shared/api/generated/types.gen";
+import type { SearchInvoiceResponse } from "@/shared/api/generated/types.gen";
 
 interface InvoicesTableProps {
-  invoices: InvoiceDto[];
+  invoices: SearchInvoiceResponse[];
   isLoading: boolean;
 }
 
@@ -29,7 +29,7 @@ const statusL = (s?: string | null) =>
         : "Annulée";
 
 export function InvoicesTable({ invoices, isLoading }: InvoicesTableProps) {
-  const columns: Column<InvoiceDto>[] = [
+  const columns: Column<SearchInvoiceResponse>[] = [
     {
       key: "invoiceNumber",
       label: "Numéro",

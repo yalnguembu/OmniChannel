@@ -5,10 +5,10 @@ import { Can } from "@/security/components/Can";
 import { ACTION } from "@/security/enums";
 import { formatCurrency } from "@/lib/currency";
 import { cardItem } from "@/lib/animations";
-import type { PricingDto } from "@/shared/api/generated/types.gen";
+import type { SearchPricingResponse } from "@/shared/api/generated/types.gen";
 
 interface PricingCardProps {
-  pricing: PricingDto;
+  pricing: SearchPricingResponse;
   onEdit: () => void;
 }
 
@@ -18,7 +18,7 @@ export function PricingCard({ pricing: p, onEdit }: PricingCardProps) {
       variants={cardItem}
       className="bg-white border border-[#E5E7EB] rounded-[16px] p-4 flex items-center gap-3 transition-all hover:shadow-[0_4px_16px_rgba(13,33,55,0.08)] hover:border-[#6AB8D4]/50 duration-[200ms]"
     >
-      <div className="w-10 h-10 rounded-[10px] bg-[#E8F4F8] flex items-center justify-center shrink-0">
+      <div className="w-10 h-10 rounded-md bg-[#E8F4F8] flex items-center justify-center shrink-0">
         <DollarSign size={16} className="text-[#2E8FAD]" />
       </div>
       <div className="flex-1 min-w-0">

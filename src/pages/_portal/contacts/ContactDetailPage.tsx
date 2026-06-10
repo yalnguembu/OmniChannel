@@ -4,11 +4,14 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { ArrowLeft, Edit, MessageSquare, Tag, Radio } from "lucide-react";
 import { toast } from "sonner";
 import {
-  ClientService,
-  MessageService,
-  ClientChannelPreferenceService,
-  ClientSegmentMemberService,
-} from "@/shared/api/services";
+  getApiClientDetailByIdOptions,
+  getApiClientDetailByIdQueryKey,
+  postApiClientSearchQueryKey,
+  postApiMessageSearchOptions,
+  postApiClientChannelPreferenceSearchOptions,
+  postApiClientSegmentMemberSearchOptions,
+  putApiClientMutation,
+} from "@/shared/api/generated/@tanstack/react-query.gen";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { Card, CardHeader, CardBody } from "@/components/ui/Card";
@@ -55,53 +58,43 @@ export function ContactDetailPage({ contactId }: { contactId: string }) {
   const [editOpen, setEditOpen] = useState(false);
 
   const { data, isLoading } = useQuery({
-    queryKey: ["contact", contactId],
-    queryFn: () => ClientService.getDetail(contactId) as any,
+    ...getApiClientDetailByIdOptions({ path: { id: contactId } }),
   });
 
   const { data: messagesData } = useQuery({
-    queryKey: ["contact-messages", contactId],
-    queryFn: () =>
-      MessageService.search({
-        clientId: contactId,
-        pageNumber: 1,
-        pageSize: 20,
-      }) as any,
+    ...postApiMessageSearchOptions({
+      body: { clientId: contactId, pageNumber: 1, pageSize: 20 },
+    }),
     enabled: tab === "messages",
   });
 
   const { data: prefsData } = useQuery({
-    queryKey: ["contact-prefs", contactId],
-    queryFn: () =>
-      ClientChannelPreferenceService.search({
-        clientId: contactId,
-        pageNumber: 1,
-        pageSize: 20,
-      }) as any,
+    ...postApiClientChannelPreferenceSearchOptions({
+      body: { clientId: contactId, pageNumber: 1, pageSize: 20 },
+    }),
     enabled: tab === "channels",
   });
 
   const { data: segmentsData } = useQuery({
-    queryKey: ["contact-segments", contactId],
-    queryFn: () =>
-      ClientSegmentMemberService.search({
-        clientId: contactId,
-        pageNumber: 1,
-        pageSize: 20,
-      }) as any,
+    ...postApiClientSegmentMemberSearchOptions({
+      body: { clientId: contactId, pageNumber: 1, pageSize: 20 },
+    }),
     enabled: tab === "segments",
   });
 
-  const contact: ClientDto = data?.data;
-  const messages: MessageDto[] = messagesData?.data?.items ?? [];
-  const prefs: ClientChannelPreferenceDto[] = prefsData?.data?.items ?? [];
-  const segments = segmentsData?.data?.items ?? [];
+  const contact: ClientDto = (data as any)?.data;
+  const messages: MessageDto[] = (messagesData as any)?.data?.items ?? [];
+  const prefs: ClientChannelPreferenceDto[] =
+    (prefsData as any)?.data?.items ?? [];
+  const segments = (segmentsData as any)?.data?.items ?? [];
 
   const updateMutation = useMutation({
-    mutationFn: (body: Partial<ClientDto>) => ClientService.update(body),
+    ...putApiClientMutation(),
     onSuccess: () => {
-      qc.invalidateQueries({ queryKey: ["contact", contactId] });
-      qc.invalidateQueries({ queryKey: ["contacts"] });
+      qc.invalidateQueries({
+        queryKey: getApiClientDetailByIdQueryKey({ path: { id: contactId } }),
+      });
+      qc.invalidateQueries({ queryKey: postApiClientSearchQueryKey() });
       setEditOpen(false);
       toast.success("Contact modifié");
     },
@@ -135,24 +128,26 @@ export function ContactDetailPage({ contactId }: { contactId: string }) {
     if (!contact) return;
     // Explicit pick — don't spread the full DTO (avoids sending audit/read-only fields)
     updateMutation.mutate({
-      id: contact.id,
-      productId: (contact as any).productId ?? undefined,
-      externalId: (contact as any).externalId ?? undefined,
-      firstName: d.firstName ?? contact.firstName ?? undefined,
-      lastName: d.lastName ?? contact.lastName ?? undefined,
-      email: d.email ?? contact.email ?? undefined,
-      phone: d.phone ?? contact.phone ?? undefined,
-      gender: contact.gender ?? undefined,
-      birthDate: (contact as any).birthDate ?? undefined,
-      language: (contact as any).language ?? undefined,
-      timezone: (contact as any).timezone ?? undefined,
-      address: (contact as any).address ?? undefined,
-      city: d.city ?? contact.city ?? undefined,
-      postalCode: (contact as any).postalCode ?? undefined,
-      country: d.country ?? contact.country ?? undefined,
-      status: d.status ?? contact.status ?? undefined,
-      customData: contact.customData ?? undefined,
-    } as any);
+      body: {
+        id: contact.id,
+        productId: (contact as any).productId ?? undefined,
+        externalId: (contact as any).externalId ?? undefined,
+        firstName: d.firstName ?? contact.firstName ?? undefined,
+        lastName: d.lastName ?? contact.lastName ?? undefined,
+        email: d.email ?? contact.email ?? undefined,
+        phone: d.phone ?? contact.phone ?? undefined,
+        gender: contact.gender ?? undefined,
+        birthDate: (contact as any).birthDate ?? undefined,
+        language: (contact as any).language ?? undefined,
+        timezone: (contact as any).timezone ?? undefined,
+        address: (contact as any).address ?? undefined,
+        city: d.city ?? contact.city ?? undefined,
+        postalCode: (contact as any).postalCode ?? undefined,
+        country: d.country ?? contact.country ?? undefined,
+        status: d.status ?? contact.status ?? undefined,
+        customData: contact.customData ?? undefined,
+      } as any,
+    });
   };
 
   if (isLoading) return <PageLoader />;

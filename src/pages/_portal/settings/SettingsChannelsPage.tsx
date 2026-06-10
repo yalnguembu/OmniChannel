@@ -1,6 +1,11 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { CompanyChannelService, ChannelService } from "@/shared/api/services";
+import {
+  postApiCompanyChannelSearchOptions,
+  postApiCompanyChannelSearchQueryKey,
+  putApiCompanyChannelMutation,
+  postApiChannelSearchOptions,
+} from "@/shared/api/generated/@tanstack/react-query.gen";
 import { Toggle } from "@/components/ui/Toggle";
 import { Button } from "@/components/ui/Button";
 import { PageLoader } from "@/components/feedback/PageLoader";
@@ -12,26 +17,22 @@ import { SettingsSidebar } from "@/components/features/settings/SettingsSidebar"
 export function SettingsChannelsPage() {
   const qc = useQueryClient();
 
-  const { data: companyChannelsData, isLoading } = useQuery({
-    queryKey: ["company-channels"],
-    queryFn: () =>
-      CompanyChannelService.search({ pageNumber: 1, pageSize: 50 }),
+  const { data: companyChannels = [], isLoading } = useQuery({
+    ...postApiCompanyChannelSearchOptions({
+      body: { pageNumber: 1, pageSize: 50 },
+    }),
+    select: (res: any) => (res?.data?.items ?? []) as CompanyChannelDto[],
   });
 
-  const { data: allChannelsData } = useQuery({
-    queryKey: ["channels", "all"],
-    queryFn: () => ChannelService.search({ pageNumber: 1, pageSize: 50 }),
+  const { data: allChannels = [] } = useQuery({
+    ...postApiChannelSearchOptions({ body: { pageNumber: 1, pageSize: 50 } }),
+    select: (res: any) => (res?.data?.items ?? []) as ChannelDto[],
   });
-
-  const companyChannels: CompanyChannelDto[] =
-    (companyChannelsData as any)?.data?.items ?? [];
-  const allChannels: ChannelDto[] = (allChannelsData as any)?.data?.items ?? [];
 
   const updateMutation = useMutation({
-    mutationFn: (body: Partial<CompanyChannelDto>) =>
-      CompanyChannelService.update(body as Partial<CompanyChannelDto>),
+    ...putApiCompanyChannelMutation(),
     onSuccess: () => {
-      qc.invalidateQueries({ queryKey: ["company-channels"] });
+      qc.invalidateQueries({ queryKey: postApiCompanyChannelSearchQueryKey() });
       toast.success("Canal mis à jour");
     },
     onError: () => toast.error("Erreur"),
@@ -107,8 +108,7 @@ export function SettingsChannelsPage() {
                     onChange={(val) => {
                       if (companyChannel) {
                         updateMutation.mutate({
-                          ...companyChannel,
-                          isActive: val,
+                          body: { ...companyChannel, isActive: val } as any,
                         });
                       }
                     }}

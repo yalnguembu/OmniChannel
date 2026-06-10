@@ -7,6 +7,7 @@ import {
   Users,
   Megaphone,
   FileText,
+  Database,
   type LucideIcon,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -18,6 +19,7 @@ export type ProductTabId =
   | "templates"
   | "channels"
   | "connectors"
+  | "schema"
   | "stats"
   | "settings";
 
@@ -34,6 +36,7 @@ export const PRODUCT_TABS: TabDef[] = [
   { id: "templates", label: "Templates", icon: FileText },
   { id: "channels", label: "Canaux", icon: Radio },
   { id: "connectors", label: "Connecteurs", icon: Plug },
+  { id: "schema", label: "Attributs", icon: Database },
   { id: "stats", label: "Statistiques", icon: BarChart2 },
   { id: "settings", label: "Paramètres", icon: Settings },
 ];

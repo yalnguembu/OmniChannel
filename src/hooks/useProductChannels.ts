@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { postApiProductChannelSearchOptions } from "@/shared/api/generated/@tanstack/react-query.gen";
 import { useErrorHandling } from "@/shared/hooks/useErrorHandling";
+import type { SearchProductChannelResponse } from "@/shared/api/generated/types.gen";
 
 /**
  * ViewModel for the Channels tab of a specific product.
@@ -17,7 +18,8 @@ export function useProductChannels(productId: string) {
         pageSize: 100,
       },
     }),
-    select: (res) => res?.data?.items || [],
+    select: (res) =>
+      (res?.data?.items ?? []) as SearchProductChannelResponse[],
     enabled: !!productId,
   });
 
@@ -31,7 +33,6 @@ export function useProductChannels(productId: string) {
     channels: query.data || [],
     isLoading: query.isLoading,
     refetch: query.refetch,
-    activeChannelsCount: (query.data || []).filter((c: any) => c.isActive)
-      .length,
+    activeChannelsCount: (query.data ?? []).filter((c) => c.isActive).length,
   };
 }

@@ -14,7 +14,7 @@ import { ACTION } from "@/security/enums";
 import { formatRelative } from "@/lib/date";
 import { cn } from "@/lib/utils";
 import { cardItem } from "@/lib/animations";
-import type { ChannelDto } from "@/shared/api/generated/types.gen";
+import type { SearchChannelResponse } from "@/shared/api/generated/types.gen";
 
 export const CH_META: Record<
   string,
@@ -65,8 +65,8 @@ export const CH_FB = {
 };
 
 interface ChannelCardProps {
-  channel: ChannelDto;
-  onEdit: (channel: ChannelDto) => void;
+  channel: SearchChannelResponse;
+  onEdit: (channel: SearchChannelResponse) => void;
 }
 
 export function ChannelCard({ channel: ch, onEdit }: ChannelCardProps) {

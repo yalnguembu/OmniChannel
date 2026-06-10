@@ -4,7 +4,7 @@ import {
   postApiWalletTransactionSearchOptions,
   postApiWalletTransactionSearchQueryKey,
 } from "@/shared/api/generated/@tanstack/react-query.gen";
-import type { WalletTransactionDto } from "@/shared/api/generated/types.gen";
+import type { SearchWalletTransactionResponse } from "@/shared/api/generated/types.gen";
 import { useErrorHandling } from "@/shared/hooks/useErrorHandling";
 
 const PAGE_SIZE = 30;
@@ -25,10 +25,10 @@ export function useAdminTransactionsViewModel() {
       body: {
         pageNumber: page,
         pageSize: PAGE_SIZE,
-      } as any,
+      },
     }),
-    select: (res: any) => ({
-      items: (res?.data?.items ?? []) as WalletTransactionDto[],
+    select: (res) => ({
+      items: (res?.data?.items ?? []) as SearchWalletTransactionResponse[],
       total: (res?.data?.totalCount ?? 0) as number,
     }),
   });

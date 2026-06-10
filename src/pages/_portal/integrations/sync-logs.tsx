@@ -1,8 +1,15 @@
 import { Link } from "@tanstack/react-router";
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { CheckCircle2, XCircle } from "lucide-react";
-import { IntegrationSyncLogService } from "@/shared/api/services";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { CheckCircle2, XCircle, ArrowDownToLine, RefreshCw } from "lucide-react";
+import { toast } from "sonner";
+import {
+  postApiIntegrationSyncLogSearchOptions,
+  postApiIntegrationSyncLogSearchQueryKey,
+  postApiIntegrationSyncPullMutation,
+  postApiIntegrationSyncClientsMutation,
+} from "@/shared/api/generated/@tanstack/react-query.gen";
+import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import {
   DataTable,
@@ -21,17 +28,47 @@ const integTabs = [
 ];
 
 export function SyncLogsPage() {
+  const qc = useQueryClient();
   const [page, setPage] = useState(1);
   const pageSize = 25;
 
   const { data, isLoading } = useQuery({
-    queryKey: ["sync-logs", page],
-    queryFn: () =>
-      IntegrationSyncLogService.search({ pageNumber: page, pageSize }),
+    ...postApiIntegrationSyncLogSearchOptions({
+      body: { pageNumber: page, pageSize },
+    }),
+    select: (res: any) => {
+      const items = (res?.data?.items ?? []) as IntegrationSyncLogDto[];
+      return {
+        items,
+        total: (res?.data?.totalCount ?? items.length) as number,
+      };
+    },
   });
 
-  const logs: IntegrationSyncLogDto[] = data?.data?.items ?? [];
-  const total: number = data?.data?.totalCount ?? logs.length;
+  const pullMutation = useMutation({
+    ...postApiIntegrationSyncPullMutation(),
+    onSuccess: () => {
+      toast.success("Sync pull lancé — les données seront mises à jour sous peu");
+      qc.invalidateQueries({
+        queryKey: postApiIntegrationSyncLogSearchQueryKey(),
+      });
+    },
+    onError: () => toast.error("Erreur lors du sync pull"),
+  });
+
+  const pushMutation = useMutation({
+    ...postApiIntegrationSyncClientsMutation(),
+    onSuccess: () => {
+      toast.success("Sync clients lancé — les contacts seront synchronisés sous peu");
+      qc.invalidateQueries({
+        queryKey: postApiIntegrationSyncLogSearchQueryKey(),
+      });
+    },
+    onError: () => toast.error("Erreur lors du sync clients"),
+  });
+
+  const logs = data?.items ?? [];
+  const total = data?.total ?? 0;
 
   const columns: Column<IntegrationSyncLogDto>[] = [
     {
@@ -161,6 +198,26 @@ export function SyncLogsPage() {
         <p className="text-[13px] text-[#4A7A94]">
           {total.toLocaleString("fr")} logs
         </p>
+        <div className="flex items-center gap-2">
+          <Button
+            variant="secondary"
+            size="sm"
+            loading={pushMutation.isPending}
+            onClick={() => pushMutation.mutate({})}
+          >
+            <RefreshCw size={13} />
+            Sync clients
+          </Button>
+          <Button
+            variant="primary"
+            size="sm"
+            loading={pullMutation.isPending}
+            onClick={() => pullMutation.mutate({})}
+          >
+            <ArrowDownToLine size={13} />
+            Sync pull
+          </Button>
+        </div>
       </div>
       <DataTable
         columns={columns}

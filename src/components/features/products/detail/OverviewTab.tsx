@@ -4,10 +4,11 @@ import { formatDate } from "@/lib/date";
 import { cn } from "@/lib/utils";
 import { DetailCard } from "./DetailCard";
 import type { ProductTabId } from "./ProductDetailTabs";
+import type { SearchProductChannelResponse } from "@/shared/api/generated/types.gen";
 
 interface OverviewTabProps {
   product: ProductModel;
-  channels: any[];
+  channels: SearchProductChannelResponse[];
   onNavigateTab: (id: ProductTabId) => void;
 }
 
@@ -54,16 +55,16 @@ export function OverviewTab({
                 <div
                   key={c.id}
                   className={cn(
-                    "border border-[#E5E7EB] rounded-[10px] p-3.5 flex items-center gap-3 bg-white transition-all",
+                    "border border-[#E5E7EB] rounded-md p-3.5 flex items-center gap-3 bg-white transition-all",
                     !c.isActive && "opacity-55",
                   )}
                 >
-                  <div className="w-[38px] h-[38px] rounded-[10px] bg-[#E8F4F8] border border-black/5 flex items-center justify-center shrink-0">
+                  <div className="w-[38px] h-[38px] rounded-md bg-[#E8F4F8] border border-black/5 flex items-center justify-center shrink-0">
                     <Radio size={18} className="text-[#2E8FAD]" />
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="text-[13px] font-medium text-[#0D2137] truncate">
-                      {c.channelId.slice(0, 12)}
+                      {(c.channelId ?? "").slice(0, 12)}
                     </div>
                     <div className="text-[11.5px] text-[#8BAFC0] mt-0.5">
                       {c.isActive ? "Online" : "Offline"}

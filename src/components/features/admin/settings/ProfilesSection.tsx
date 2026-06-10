@@ -4,14 +4,14 @@ import { Button } from "@/components/ui/Button";
 import { Can } from "@/security/components/Can";
 import { ACTION } from "@/security/enums";
 import { DataTable, type Column } from "@/components/data-table/DataTable";
-import type { UserProfileDto } from "@/shared/api/generated/types.gen";
+import type { SearchUserProfileResponse } from "@/shared/api/generated/types.gen";
 import { useAdminSettingsViewModel } from "@/hooks/admin/useAdminSettingsViewModel";
 import { ProfileFormModal } from "./ProfileFormModal";
 
 type Vm = ReturnType<typeof useAdminSettingsViewModel>;
 
 export function ProfilesSection({ vm }: { vm: Vm }) {
-  const cols: Column<UserProfileDto>[] = [
+  const cols: Column<SearchUserProfileResponse>[] = [
     {
       key: "name",
       label: "Profil",

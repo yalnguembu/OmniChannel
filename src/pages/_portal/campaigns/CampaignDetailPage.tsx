@@ -34,7 +34,8 @@ import { formatDate } from "@/lib/date";
 import { formatCurrency } from "@/lib/currency";
 import { fmt, statusLabel, cn } from "@/lib/utils";
 import { fadeInUp } from "@/lib/animations";
-import type { MessageDto } from "@/shared/api/types";
+import type { SearchMessageResponse } from "@/shared/api/generated/types.gen";
+import { DeliveryFunnel } from "@/components/charts/DeliveryRateChart";
 
 // ViewModels
 import { useCampaignDetailViewModel } from "@/hooks/useCampaignDetailViewModel";
@@ -48,10 +49,34 @@ const tabs = [
   { id: "overview", label: "Tableau de bord", icon: BarChart2 },
   { id: "channels", label: "Canaux & Templates", icon: Radio },
   { id: "segments", label: "Ciblage Audience", icon: Users },
-  { id: "steps", label: "Sequence Automatique", icon: Layers },
+  { id: "steps", label: "Séquence Automatique", icon: Layers },
   { id: "messages", label: "Journal d'Envois", icon: MessageSquare },
-  { id: "stats", label: "Performances", icon: BarChart2 },
 ];
+
+// Message statuses → French label + Badge variant (statusLabel doesn't cover
+// the message-specific values like sent/queued/bounced).
+const MSG_STATUS_LABEL: Record<string, string> = {
+  sent: "Envoyé",
+  delivered: "Livré",
+  read: "Lu",
+  opened: "Ouvert",
+  failed: "Échoué",
+  bounced: "Rejeté",
+  queued: "En file",
+  pending: "En attente",
+  scheduled: "Planifié",
+  sending: "En cours",
+};
+
+function msgStatusVariant(
+  s?: string | null,
+): "success" | "warning" | "error" | "neutral" {
+  const v = (s || "").toLowerCase();
+  if (["sent", "delivered", "read", "opened"].includes(v)) return "success";
+  if (["failed", "bounced", "error"].includes(v)) return "error";
+  if (["queued", "pending", "scheduled", "sending"].includes(v)) return "warning";
+  return "neutral";
+}
 
 export function CampaignDetailPage({campaignId}:{campaignId: string}) {
   const navigate = useNavigate();
@@ -105,11 +130,11 @@ export function CampaignDetailPage({campaignId}:{campaignId: string}) {
     );
   if (!vm.campaign)
     return (
-      <div className="p-20 text-center bg-[#F7F8F9]/50 min-h-screen">
-        <div className="w-16 h-16 bg-white border border-[#E5E7EB] rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-sm">
-          <AlertCircle size={32} className="text-[#8BAFC0] opacity-40" />
+      <div className="p-16 text-center">
+        <div className="w-14 h-14 bg-white border border-[#E5E7EB] rounded-[14px] flex items-center justify-center mx-auto mb-5">
+          <AlertCircle size={26} className="text-[#8BAFC0] opacity-50" />
         </div>
-        <h2 className="text-[18px] font-bold text-[#0D2137]">
+        <h2 className="text-[16px] font-semibold text-[#0D2137]">
           Campagne introuvable
         </h2>
         <Button
@@ -122,52 +147,97 @@ export function CampaignDetailPage({campaignId}:{campaignId: string}) {
       </div>
     );
 
+  const failed = vm.campaign.failedSends || 0;
   const kpis = [
     {
       label: "Ciblés",
       value: fmt(vm.campaign.totalRecipients || 0),
       icon: Users,
-      color: "#1B5E82",
+      danger: false,
     },
     {
       label: "Délivrés",
       value: fmt(vm.campaign.successfulSends || 0),
       icon: CheckCircle2,
-      color: "#16A34A",
+      danger: false,
     },
-    {
-      label: "Échecs",
-      value: fmt(vm.campaign.failedSends || 0),
-      icon: AlertCircle,
-      color: (vm.campaign.failedSends || 0) > 0 ? "#DC2626" : "#8BAFC0",
-    },
+    { label: "Échecs", value: fmt(failed), icon: AlertCircle, danger: failed > 0 },
     {
       label: "Canaux",
       value: channelsVm.campaignChannels.length,
       icon: Radio,
-      color: "#2E8FAD",
+      danger: false,
     },
     {
       label: "Coût",
       value: formatCurrency(statsVm.totalCost),
       icon: Calendar,
-      color: "#4A7A94",
+      danger: false,
     },
   ];
 
-  const msgColumns: Column<MessageDto>[] = [
+  // Honest delivery funnel from the real statistic response — no time-series
+  // endpoint exists, so we visualise the aggregates we actually have.
+  const base = Math.max(statsVm.totalRecipients, statsVm.totalSent, 1);
+  const pctOf = (n: number) => Math.round((n / base) * 100);
+  const funnelRows = [
+    { label: "Destinataires", count: statsVm.totalRecipients, pct: pctOf(statsVm.totalRecipients), color: "#8BAFC0" },
+    { label: "Envoyés", count: statsVm.totalSent, pct: pctOf(statsVm.totalSent), color: "#2E8FAD" },
+    { label: "Délivrés", count: statsVm.totalDelivered, pct: pctOf(statsVm.totalDelivered), color: "#1B5E82" },
+    { label: "Ouverts", count: statsVm.totalOpened, pct: pctOf(statsVm.totalOpened), color: "#2E8FAD" },
+    { label: "Cliqués", count: statsVm.totalClicked, pct: pctOf(statsVm.totalClicked), color: "#6AB8D4" },
+    { label: "Échecs", count: statsVm.totalFailed, pct: pctOf(statsVm.totalFailed), color: "#DC2626" },
+    { label: "Rebonds", count: statsVm.totalBounced, pct: pctOf(statsVm.totalBounced), color: "#D97706" },
+  ];
+
+  const rateRows = [
+    { l: "Délivrabilité", v: statsVm.deliveryRate, danger: false },
+    { l: "Ouverture", v: statsVm.openRate, danger: false },
+    { l: "Clic", v: statsVm.clickRate, danger: false },
+    { l: "Rebond", v: statsVm.bounceRate, danger: true },
+  ];
+
+  const paramRows = [
+    { k: "Type", v: statusLabel(vm.campaign.type || "standard"), icon: Layers },
+    {
+      k: "Planification",
+      v: vm.campaign.scheduledAt
+        ? formatDate(vm.campaign.scheduledAt)
+        : "Diffusion immédiate",
+      icon: Clock,
+    },
+    ...(vm.campaign.startedAt
+      ? [{ k: "Démarrée le", v: formatDate(vm.campaign.startedAt), icon: Send }]
+      : []),
+    ...(vm.campaign.completedAt
+      ? [{ k: "Terminée le", v: formatDate(vm.campaign.completedAt), icon: CheckCircle2 }]
+      : []),
+    ...(vm.campaign.recurrencePattern
+      ? [{ k: "Récurrence", v: vm.campaign.recurrencePattern, icon: Radio }]
+      : []),
+    ...(vm.campaign.productName
+      ? [{ k: "Produit", v: vm.campaign.productName, icon: Layers }]
+      : []),
+    {
+      k: "Créée le",
+      v: vm.campaign.createdAt ? formatDate(vm.campaign.createdAt) : "—",
+      icon: Calendar,
+    },
+  ];
+
+  const msgColumns: Column<SearchMessageResponse>[] = [
     {
       key: "recipientAddress",
       label: "Destinataire",
       render: (m) => (
-        <span className="font-bold text-[#0D2137]">{m.recipientAddress}</span>
+        <span className="font-medium text-[#0D2137]">{m.recipientAddress}</span>
       ),
     },
     {
       key: "channelCode",
       label: "Canal",
       render: (m) => (
-        <Badge variant="neutral" className="uppercase font-bold text-[10px]">
+        <Badge variant="neutral" className="uppercase font-medium text-[10px]">
           {m.channelCode}
         </Badge>
       ),
@@ -175,11 +245,14 @@ export function CampaignDetailPage({campaignId}:{campaignId: string}) {
     {
       key: "status",
       label: "Statut",
-      render: (m) => (
-        <Badge variant={m.status === "sent" ? "success" : "neutral"} dot>
-          {m.status}
-        </Badge>
-      ),
+      render: (m) => {
+        const v = (m.status || "").toLowerCase();
+        return (
+          <Badge variant={msgStatusVariant(m.status)} dot>
+            {MSG_STATUS_LABEL[v] ?? statusLabel(v)}
+          </Badge>
+        );
+      },
     },
     {
       key: "sentAt",
@@ -193,7 +266,7 @@ export function CampaignDetailPage({campaignId}:{campaignId: string}) {
   ];
 
   return (
-    <div className="p-8 max-w-[1500px] mx-auto min-h-screen bg-[#F7F8F9]/30">
+    <div className="p-7 max-w-[1500px] mx-auto">
       <button
         onClick={() => navigate({ to: "/campaigns" })}
         className="flex items-center gap-2 text-[12.5px] text-[#8BAFC0] hover:text-[#0D2137] mb-6 transition-colors cursor-pointer group"
@@ -207,12 +280,12 @@ export function CampaignDetailPage({campaignId}:{campaignId: string}) {
 
       <motion.div {...fadeInUp} className="space-y-6">
         {/* Main Info Card */}
-        <div className="bg-white border border-[#E5E7EB] rounded-[20px] overflow-hidden">
+        <div className="bg-white border border-[#E5E7EB] rounded-[14px] overflow-hidden">
           <div className="p-6 lg:p-8">
             <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-8">
               <div className="flex items-center gap-5">
-                <div className="w-14 h-14 rounded-[14px] bg-[#E8F4F8] flex items-center justify-center shrink-0">
-                  <Send size={24} className="text-[#2E8FAD]" />
+                <div className="w-12 h-12 rounded-[12px] bg-[#E8F4F8] flex items-center justify-center shrink-0">
+                  <Send size={22} className="text-[#2E8FAD]" />
                 </div>
                 <div>
                   <div className="flex items-center gap-3 mb-1">
@@ -238,7 +311,13 @@ export function CampaignDetailPage({campaignId}:{campaignId: string}) {
               </div>
               <div className="flex items-center gap-2.5">
                 {vm.campaign.status === "draft" && (
-                  <Button variant="primary" size="sm" className="px-6">
+                  <Button
+                    variant="primary"
+                    size="sm"
+                    className="px-6"
+                    onClick={() => vm.handleLaunch()}
+                    loading={vm.isStatusPending}
+                  >
                     Lancer
                   </Button>
                 )}
@@ -248,8 +327,20 @@ export function CampaignDetailPage({campaignId}:{campaignId: string}) {
                     size="sm"
                     className="px-6"
                     onClick={() => vm.handleUpdateStatus("paused")}
+                    loading={vm.isStatusPending}
                   >
                     Pause
+                  </Button>
+                )}
+                {vm.campaign.status === "paused" && (
+                  <Button
+                    variant="primary"
+                    size="sm"
+                    className="px-6"
+                    onClick={() => vm.handleUpdateStatus("active")}
+                    loading={vm.isStatusPending}
+                  >
+                    Reprendre
                   </Button>
                 )}
                 <Button
@@ -282,15 +373,20 @@ export function CampaignDetailPage({campaignId}:{campaignId: string}) {
                     i > 0 && "lg:border-l border-[#F3F4F6]",
                   )}
                 >
-                  <div className="flex items-center gap-1.5 opacity-60">
-                    <k.icon size={11} style={{ color: k.color }} />
-                    <span className="text-[10px] text-[#8BAFC0] uppercase font-bold tracking-[0.05em]">
+                  <div className="flex items-center gap-1.5">
+                    <k.icon
+                      size={12}
+                      className={cn("text-[#8BAFC0]", k.danger && "text-[#DC2626]")}
+                    />
+                    <span className="text-[10.5px] text-[#8BAFC0] uppercase font-medium tracking-[0.05em]">
                       {k.label}
                     </span>
                   </div>
                   <p
-                    className="text-[18px] font-bold text-[#0D2137]"
-                    style={{ color: k.color }}
+                    className={cn(
+                      "text-[19px] font-semibold text-[#0D2137]",
+                      k.danger && "text-[#DC2626]",
+                    )}
                   >
                     {k.value}
                   </p>
@@ -330,87 +426,56 @@ export function CampaignDetailPage({campaignId}:{campaignId: string}) {
               transition={{ duration: 0.25 }}
             >
               {vm.activeTab === "overview" && (
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                  <div className="lg:col-span-2 space-y-6">
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
+                  <div className="lg:col-span-2 space-y-5">
                     <Card>
-                      <CardHeader title="Analyses de Performance" />
+                      <CardHeader title="Performance de diffusion" />
                       <CardBody>
-                        <div className="grid grid-cols-3 gap-6 mb-8">
-                          {[
-                            {
-                              l: "Taux Ouverture",
-                              v: statsVm.openRate + "%",
-                              c: "#1B5E82",
-                            },
-                            {
-                              l: "Taux Clic",
-                              v: statsVm.clickRate + "%",
-                              c: "#2E8FAD",
-                            },
-                            { l: "Rebond", v: "0.2%", c: "#DC2626" },
-                          ].map((s, i) => (
-                            <div key={i} className="space-y-0.5">
-                              <p className="text-[10px] text-[#8BAFC0] font-bold uppercase tracking-wider">
-                                {s.l}
-                              </p>
-                              <p
-                                className="text-[20px] font-bold text-[#0D2137]"
-                                style={{ color: s.c }}
-                              >
-                                {s.v}
-                              </p>
+                        {statsVm.hasActivity ? (
+                          <>
+                            <div className="grid grid-cols-4 gap-4 mb-6">
+                              {rateRows.map((s) => (
+                                <div key={s.l} className="space-y-0.5">
+                                  <p className="text-[10.5px] text-[#8BAFC0] font-medium uppercase tracking-[0.05em]">
+                                    {s.l}
+                                  </p>
+                                  <p
+                                    className={cn(
+                                      "text-[20px] font-semibold text-[#0D2137]",
+                                      s.danger && s.v > 0 && "text-[#DC2626]",
+                                    )}
+                                  >
+                                    {s.v.toFixed(1)}%
+                                  </p>
+                                </div>
+                              ))}
                             </div>
-                          ))}
-                        </div>
-                        <div className="h-[120px] flex items-end gap-2 px-2 bg-[#F7F8F9] rounded-[14px] p-4">
-                          {[40, 20, 60, 30, 80, 45, 90, 55, 70, 35].map(
-                            (h, i) => (
-                              <div
-                                key={i}
-                                className="flex-1 bg-[#2E8FAD]/80 rounded-t-sm transition-all hover:bg-[#2E8FAD]"
-                                style={{ height: h + "%" }}
-                              />
-                            ),
-                          )}
-                        </div>
+                            <DeliveryFunnel rows={funnelRows} />
+                          </>
+                        ) : (
+                          <EmptyState
+                            title="Aucune donnée de diffusion"
+                            description="Les statistiques apparaîtront dès le premier envoi de cette campagne."
+                            icon={<BarChart2 size={28} />}
+                          />
+                        )}
                       </CardBody>
                     </Card>
                   </div>
-                  <div className="space-y-6">
+                  <div className="space-y-5">
                     <Card>
                       <CardHeader title="Paramètres d'envoi" />
                       <CardBody className="p-0">
-                        {[
-                          {
-                            k: "Planification",
-                            v: vm.campaign.scheduledAt
-                              ? formatDate(vm.campaign.scheduledAt)
-                              : "Diffusion Immédiate",
-                            icon: Clock,
-                          },
-                          {
-                            k: "Priorité Globale",
-                            v: "Haute (Niveau 3)",
-                            icon: Send,
-                          },
-                          {
-                            k: "Espace Produit",
-                            v: "SK_MBOA_PROD_102",
-                            icon: Layers,
-                          },
-                        ].map((row, i) => (
+                        {paramRows.map((row, i) => (
                           <div
                             key={i}
-                            className="flex flex-col gap-1 px-5 py-3.5 border-b border-[#F3F4F6] last:border-b-0 group"
+                            className="flex flex-col gap-1 px-5 py-3 border-b border-[#E5E7EB] last:border-b-0"
                           >
-                            <span className="text-[10px] text-[#8BAFC0] font-bold uppercase tracking-wider">
+                            <span className="text-[10.5px] text-[#8BAFC0] font-medium uppercase tracking-[0.05em]">
                               {row.k}
                             </span>
-                            <span className="text-[13px] font-medium text-[#0D2137] flex items-center gap-2 group-hover:text-[#2E8FAD] transition-colors">
-                              <row.icon
-                                size={12}
-                                className="text-[#8BAFC0] group-hover:text-[#2E8FAD]"
-                              />{" "}
+                            <span className="text-[13px] font-medium text-[#0D2137] flex items-center gap-2">
+                              <row.icon size={12} className="text-[#8BAFC0]" />
                               {row.v}
                             </span>
                           </div>
@@ -448,23 +513,24 @@ export function CampaignDetailPage({campaignId}:{campaignId: string}) {
                         className="bg-white border border-[#E5E7EB] rounded-[14px] p-4 hover:border-[#2E8FAD]/40 transition-all group relative"
                       >
                         <div className="flex items-center gap-4 mb-4">
-                          <div className="w-10 h-10 rounded-[10px] bg-[#E8F4F8] flex items-center justify-center shrink-0">
+                          <div className="w-10 h-10 rounded-[7px] bg-[#E8F4F8] flex items-center justify-center shrink-0">
                             <Radio size={16} className="text-[#2E8FAD]" />
                           </div>
                           <div className="overflow-hidden">
                             <p className="text-[13px] font-semibold text-[#0D2137] truncate">
                               {cc.channelName || cc.channelId}
                             </p>
-                            <span className="text-[10px] text-[#8BAFC0] font-bold uppercase tracking-[0.05em]">
-                              Séquence {cc.priority || 1}
+                            <span className="text-[10.5px] text-[#8BAFC0] font-medium uppercase tracking-[0.05em]">
+                              {cc.channelCode ? `${cc.channelCode} · ` : ""}Priorité{" "}
+                              {cc.priority || 1}
                             </span>
                           </div>
                         </div>
-                        <div className="space-y-2 pt-3 border-t border-[#F7F8F9]">
+                        <div className="space-y-2 pt-3 border-t border-[#E5E7EB]">
                           <div className="flex items-center justify-between text-[12px]">
                             <span className="text-[#8BAFC0]">Template</span>
-                            <span className="font-medium text-[#2E8FAD]">
-                              {cc.templateId ? "Custom Template" : "Standard"}
+                            <span className="font-medium text-[#2E8FAD] truncate max-w-[60%] text-right">
+                              {cc.templateName ?? "Aucun"}
                             </span>
                           </div>
                         </div>
@@ -534,15 +600,12 @@ export function CampaignDetailPage({campaignId}:{campaignId: string}) {
                           className="bg-white border border-[#E5E7EB] rounded-[14px] p-4 flex items-center justify-between group hover:border-[#2E8FAD]/30 transition-all"
                         >
                           <div className="flex items-center gap-3">
-                            <div className="w-9 h-9 rounded-lg bg-[#F3F4F6] flex items-center justify-center text-[#4A7A94] group-hover:bg-[#E8F4F8] group-hover:text-[#2E8FAD] transition-all shrink-0">
+                            <div className="w-9 h-9 rounded-[9px] bg-[#F3F4F6] flex items-center justify-center text-[#4A7A94] group-hover:bg-[#E8F4F8] group-hover:text-[#2E8FAD] transition-all shrink-0">
                               <Users size={16} />
                             </div>
                             <div className="overflow-hidden">
                               <p className="text-[13px] font-semibold text-[#0D2137] truncate">
                                 {cs.segmentName || cs.segmentId}
-                              </p>
-                              <p className="text-[11px] text-[#8BAFC0] font-medium">
-                                {fmt(cs.clientCount || 0)} clients
                               </p>
                             </div>
                           </div>
@@ -608,11 +671,11 @@ export function CampaignDetailPage({campaignId}:{campaignId: string}) {
                             <div className="absolute left-[19px] top-10 bottom-0 w-0.5 bg-[#E5E7EB]" />
                           )}
 
-                          <div className="shrink-0 w-10 h-10 rounded-full bg-[#E8F4F8] border-4 border-white shadow-sm flex items-center justify-center text-[#2E8FAD] font-bold text-[14px] z-10">
+                          <div className="shrink-0 w-10 h-10 rounded-full bg-[#E8F4F8] border-2 border-white flex items-center justify-center text-[#2E8FAD] font-semibold text-[13px] z-10">
                             {idx + 1}
                           </div>
 
-                          <div className="flex-1 bg-white border border-[#E5E7EB] rounded-[16px] p-5 hover:border-[#2E8FAD]/30 transition-all flex items-center justify-between">
+                          <div className="flex-1 bg-white border border-[#E5E7EB] rounded-[14px] p-5 hover:border-[#2E8FAD]/30 transition-all flex items-center justify-between">
                             <div className="flex items-center gap-6">
                               <div className="space-y-1">
                                 <p className="text-[14px] font-semibold text-[#0D2137]">
@@ -628,10 +691,18 @@ export function CampaignDetailPage({campaignId}:{campaignId: string}) {
                                   <div className="w-1 h-1 rounded-full bg-[#E5E7EB]" />
                                   <Badge
                                     variant="neutral"
-                                    className="text-[10px] uppercase font-bold"
+                                    className="text-[10px] font-medium"
                                   >
-                                    {step.channelId || "Inconnu"}
+                                    {step.channelName ?? step.channelCode ?? "Canal —"}
                                   </Badge>
+                                  {step.templateName && (
+                                    <Badge
+                                      variant="info"
+                                      className="text-[10px] font-medium"
+                                    >
+                                      {step.templateName}
+                                    </Badge>
+                                  )}
                                 </div>
                               </div>
                             </div>
@@ -654,27 +725,22 @@ export function CampaignDetailPage({campaignId}:{campaignId: string}) {
 
               {vm.activeTab === "messages" && (
                 <Card className="overflow-hidden">
-                  <div className="px-6 py-4 border-b border-[#F7F8F9] bg-[#FAFBFC] flex items-center justify-between">
+                  <div className="px-5 py-3.5 border-b border-[#E5E7EB] bg-[#F7F8F9] flex items-center justify-between">
                     <div>
-                      <h3 className="text-[15px] font-semibold text-[#0D2137]">
-                        Historique des Envois
+                      <h3 className="text-[13px] font-medium text-[#0D2137]">
+                        Historique des envois
                       </h3>
                       <p className="text-[12px] text-[#8BAFC0]">
                         Journal détaillé des messages expédiés
                       </p>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <Badge
-                        variant="success"
-                        className="px-3 py-1 font-semibold text-[10px] uppercase"
-                      >
-                        Livrés
-                      </Badge>
-                    </div>
+                    <Badge variant="neutral" className="text-[11px] font-medium">
+                      {fmt(messagesVm.totalCount)} messages
+                    </Badge>
                   </div>
                   <DataTable
                     columns={msgColumns}
-                    data={messagesVm.messages as any}
+                    data={messagesVm.messages}
                     loading={messagesVm.isLoading}
                     pagination={{
                       total: messagesVm.totalCount || 0,

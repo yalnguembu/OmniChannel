@@ -12,11 +12,13 @@ import { useWhatsAppStore } from "@/store/useWhatsappStore";
 interface SidebarHeaderProps {
   onRefresh: () => void;
   onBulkSend: () => void;
+  onTemplateBroadcast: () => void;
 }
 
 export const SidebarHeader: React.FC<SidebarHeaderProps> = ({
   onRefresh,
   onBulkSend,
+  onTemplateBroadcast,
 }) => {
   const { selectedSenderId, setSelectedSenderId, senders } = useWhatsAppStore();
   const senderOptions = senders.map((sender) => ({
@@ -49,6 +51,9 @@ export const SidebarHeader: React.FC<SidebarHeaderProps> = ({
       )}
       {/* Actions */}
       <div className="flex items-center gap-0.5">
+        <IconButton label="Diffusion de template" onClick={onTemplateBroadcast}>
+          <MessageSquarePlus size={20} />
+        </IconButton>
         <IconButton label="Campagne / Envoi en masse" onClick={onBulkSend}>
           <Upload size={20} />
         </IconButton>

@@ -5,13 +5,13 @@ import { Can } from "@/security/components/Can";
 import { ACTION } from "@/security/enums";
 import { DataTable, type Column } from "@/components/data-table/DataTable";
 import { formatRelative } from "@/lib/date";
-import type { ProviderDto } from "@/shared/api/generated/types.gen";
+import type { SearchProviderResponse } from "@/shared/api/generated/types.gen";
 import { getProviderTheme } from "./providerTheme";
 
 interface ProvidersTableProps {
-  providers: ProviderDto[];
+  providers: SearchProviderResponse[];
   isLoading: boolean;
-  onEdit: (provider: ProviderDto) => void;
+  onEdit: (provider: SearchProviderResponse) => void;
 }
 
 export function ProvidersTable({
@@ -19,7 +19,7 @@ export function ProvidersTable({
   isLoading,
   onEdit,
 }: ProvidersTableProps) {
-  const columns: Column<ProviderDto>[] = [
+  const columns: Column<SearchProviderResponse>[] = [
     {
       key: "name",
       label: "Provider",

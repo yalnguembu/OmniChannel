@@ -9,6 +9,7 @@ import {
   mapToCampaignModel,
   type CampaignModel,
 } from "@/models/campaign.model";
+import type { UpdateCampaignRequest } from "@/shared/api/generated/types.gen";
 import { useErrorHandling } from "@/shared/hooks/useErrorHandling";
 
 /**
@@ -59,8 +60,23 @@ export function useCampaignDetailViewModel(campaignId: string) {
     },
 
     // Actions
-    handleUpdateStatus: (status: CampaignModel["status"]) =>
-      updateStatusMutation.mutate({ body: { id: campaignId, status } }),
+    handleUpdateStatus: (status: CampaignModel["status"]) => {
+      const body: UpdateCampaignRequest = { id: campaignId, status };
+      updateStatusMutation.mutate({ body });
+    },
+    // Launch mirrors the wizard finalize: scheduled if a date is set, else active.
+    handleLaunch: () => {
+      const status: CampaignModel["status"] = campaign?.scheduledAt
+        ? "scheduled"
+        : "active";
+      const body: UpdateCampaignRequest = {
+        id: campaignId,
+        status,
+        scheduledAt: campaign?.scheduledAt ?? undefined,
+      };
+      updateStatusMutation.mutate({ body });
+    },
+    isStatusPending: updateStatusMutation.isPending,
     refetch: campaignQuery.refetch,
   };
 }

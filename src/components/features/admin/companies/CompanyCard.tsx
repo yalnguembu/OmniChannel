@@ -4,11 +4,11 @@ import { Badge } from "@/components/ui/Badge";
 import { formatRelative } from "@/lib/date";
 import { statusLabel, cn } from "@/lib/utils";
 import { cardItem } from "@/lib/animations";
-import type { CompanyDto } from "@/shared/api/generated/types.gen";
+import type { SearchCompanyResponse } from "@/shared/api/generated/types.gen";
 import { STRIPES, STATUS_V } from "./companyStatus";
 
 interface CompanyCardProps {
-  c: CompanyDto;
+  c: SearchCompanyResponse;
   onClick: () => void;
 }
 

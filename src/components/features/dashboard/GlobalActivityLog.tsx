@@ -1,7 +1,6 @@
-import React from "react";
+import { Inbox, ArrowRight } from "lucide-react";
 import { Card, CardHeader, CardBody } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
-import { Button } from "@/components/ui/Button";
 import { formatRelative } from "@/lib/date";
 import { statusLabel } from "@/lib/utils";
 
@@ -13,67 +12,73 @@ export function GlobalActivityLog({
   onNavigateAll: () => void;
 }) {
   return (
-    <Card className="rounded-md border-[#E5E7EB]">
+    <Card>
       <CardHeader
-        title="Logs d'activités"
-        className="px-8 py-6 border-b border-[#F3F4F6] bg-[#FAFBFC]"
+        title="Journal d'activité"
         action={
-          <Button
-            variant="ghost"
-            size="sm"
+          <button
             onClick={onNavigateAll}
-            className="text-[#8BAFC0] font-bold"
+            className="flex items-center gap-1 text-[12px] text-[#2E8FAD] hover:text-[#1B5E82] transition-colors cursor-pointer"
           >
-            Consulter l'historique complet
-          </Button>
+            Historique complet <ArrowRight size={11} />
+          </button>
         }
       />
       <CardBody className="p-0">
-        <div className="overflow-x-auto overflow-y-hidden">
-          <table className="w-full text-left">
-            <thead>
-              <tr className="bg-[#F7F8F9] border-b border-[#E5E7EB]">
-                {["Destinataire", "Canal", "Statut", "Heure"].map((h) => (
-                  <th
-                    key={h}
-                    className="px-8 py-3.5 text-[11px] font-bold text-[#8BAFC0] uppercase tracking-[0.1em]"
-                  >
-                    {h}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-[#F3F4F6]">
-              {messages.map((m) => (
-                <tr key={m.id} className="hover:bg-[#FAFBFC] transition-colors">
-                  <td className="px-8 py-4 text-[13.5px] font-bold text-[#0D2137]">
-                    {m.recipientAddress || "—"}
-                  </td>
-                  <td className="px-8 py-4">
-                    <Badge
-                      variant="neutral"
-                      className="uppercase text-[9.5px] font-bold tracking-widest px-2.5 py-1"
+        {messages.length === 0 ? (
+          <div className="flex items-center justify-center py-12 text-[13px] text-[#8BAFC0]">
+            <Inbox size={20} className="mr-2.5 opacity-30" />
+            Aucune activité récente
+          </div>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="w-full text-left">
+              <thead>
+                <tr className="bg-[#F7F8F9] border-b border-[#E5E7EB]">
+                  {["Destinataire", "Canal", "Statut", "Heure"].map((h) => (
+                    <th
+                      key={h}
+                      className="px-5 py-3 text-[10.5px] font-semibold text-[#8BAFC0] uppercase tracking-[0.06em]"
                     >
-                      {m.channelCode}
-                    </Badge>
-                  </td>
-                  <td className="px-8 py-4">
-                    <Badge
-                      variant={m.status === "sent" ? "success" : "neutral"}
-                      dot
-                      className="font-bold"
-                    >
-                      {statusLabel(m.status)}
-                    </Badge>
-                  </td>
-                  <td className="px-8 py-4 text-[12px] text-[#8BAFC0] font-medium font-mono lowercase tracking-tight">
-                    {formatRelative(m.sentAt)}
-                  </td>
+                      {h}
+                    </th>
+                  ))}
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody className="divide-y divide-[#E5E7EB]">
+                {messages.map((m) => (
+                  <tr
+                    key={m.id}
+                    className="hover:bg-[#F7F8F9] transition-colors"
+                  >
+                    <td className="px-5 py-3 text-[13px] font-medium text-[#0D2137]">
+                      {m.recipientAddress || "—"}
+                    </td>
+                    <td className="px-5 py-3">
+                      <Badge
+                        variant="neutral"
+                        className="uppercase text-[10px] tracking-wider"
+                      >
+                        {m.channelCode}
+                      </Badge>
+                    </td>
+                    <td className="px-5 py-3">
+                      <Badge
+                        variant={m.status === "sent" ? "success" : "neutral"}
+                        dot
+                      >
+                        {statusLabel(m.status)}
+                      </Badge>
+                    </td>
+                    <td className="px-5 py-3 text-[12px] text-[#8BAFC0]">
+                      {formatRelative(m.sentAt)}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
       </CardBody>
     </Card>
   );

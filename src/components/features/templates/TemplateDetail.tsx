@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/Button";
 import { Copy } from "lucide-react";
 import { TemplateSchema, type TemplateModel } from "@/models/template.model";
 import type { ChannelModel } from "@/models/channel.model";
-import type { TemplateChannelDto } from "@/shared/api/generated/types.gen";
+import type { SearchTemplateChannelResponse } from "@/shared/api/generated/types.gen";
 
 import { TemplateTopBar } from "./detail/TemplateTopBar";
 import { TemplateInfoCard } from "./detail/TemplateInfoCard";
@@ -17,13 +17,14 @@ import { TemplatePreviewSidebar } from "./detail/TemplatePreviewSidebar";
 
 interface TemplateDetailProps {
   template: TemplateModel;
-  tplChannels: TemplateChannelDto[];
+  tplChannels: SearchTemplateChannelResponse[];
   channels: ChannelModel[];
   onEdit: (template: TemplateModel) => void;
   onDuplicate: (template: TemplateModel) => void;
   onDelete: (template: TemplateModel) => void;
   onToggleChannel: (channelId: string, linked: boolean) => void;
   onSave: (template: TemplateModel, data: Partial<TemplateModel>) => void;
+  onEditVariant?: (templateChannelId: string) => void;
   isSaving?: boolean;
 }
 
@@ -36,6 +37,7 @@ export function TemplateDetail({
   onDelete,
   onToggleChannel,
   onSave,
+  onEditVariant,
   isSaving,
 }: TemplateDetailProps) {
   const [showDuplicateModal, setShowDuplicateModal] = useState(false);
@@ -98,6 +100,7 @@ export function TemplateDetail({
           tplChannels={tplChannels}
           channels={channels}
           onToggleChannel={onToggleChannel}
+          onEditVariant={onEditVariant}
         />
       </div>
 

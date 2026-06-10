@@ -11,9 +11,13 @@ import type { Filter } from '@/models/whatsapp.models';
 
 interface ConversationListProps {
   onBulkSend: () => void;
+  onTemplateBroadcast: () => void;
 }
 
-export const ConversationList: React.FC<ConversationListProps> = ({ onBulkSend }) => {
+export const ConversationList: React.FC<ConversationListProps> = ({
+  onBulkSend,
+  onTemplateBroadcast,
+}) => {
   const { setActiveConversationId, setMobileChatOpen } = useWhatsAppStore();
   const {
     conversationVMs,
@@ -76,8 +80,12 @@ export const ConversationList: React.FC<ConversationListProps> = ({ onBulkSend }
   };
 
   return (
-    <div className="w-full min-w-100 max-w-140 flex flex-col border-r border-wa-border p-2 lg:p-4 bg-white shrink-0 relative z-10 h-full">
-      <SidebarHeader onRefresh={refetchConvs} onBulkSend={onBulkSend} />
+    <div className="w-full min-w-100 max-w-120 lg:max-w-140 flex flex-col border-r border-wa-border p-2 lg:p-4 bg-white shrink-0 relative z-10 h-full">
+      <SidebarHeader
+        onRefresh={refetchConvs}
+        onBulkSend={onBulkSend}
+        onTemplateBroadcast={onTemplateBroadcast}
+      />
       <SearchBar value={search} onChange={handleSearchChange} />
       <StatsStrip
         stats={statsVM}

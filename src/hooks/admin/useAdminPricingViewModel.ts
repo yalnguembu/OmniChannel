@@ -14,8 +14,12 @@ import {
   deleteApiPricingByIdMutation,
 } from "@/shared/api/generated/@tanstack/react-query.gen";
 import type {
-  PricingDto,
-  SubscriptionPlanDto,
+  CreatePricingRequest,
+  UpdatePricingRequest,
+  SearchPricingResponse,
+  CreateSubscriptionPlanRequest,
+  UpdateSubscriptionPlanRequest,
+  SearchSubscriptionPlanResponse,
 } from "@/shared/api/generated/types.gen";
 import { useErrorHandling } from "@/shared/hooks/useErrorHandling";
 
@@ -41,10 +45,10 @@ export function useAdminPricingViewModel() {
 
   const [isPlanModalOpen, setIsPlanModalOpen] = useState(false);
   const [isPricingModalOpen, setIsPricingModalOpen] = useState(false);
-  const [editingPlan, setEditingPlan] = useState<SubscriptionPlanDto | null>(
-    null,
-  );
-  const [editingPricing, setEditingPricing] = useState<PricingDto | null>(null);
+  const [editingPlan, setEditingPlan] =
+    useState<SearchSubscriptionPlanResponse | null>(null);
+  const [editingPricing, setEditingPricing] =
+    useState<SearchPricingResponse | null>(null);
 
   // ── Plans query ────────────────────────────────────────────────────────────
   const plansQuery = useQuery({
@@ -52,11 +56,11 @@ export function useAdminPricingViewModel() {
       body: {
         pageNumber: 1,
         pageSize: PLANS_PAGE_SIZE,
-      } as any,
+      },
     }),
-    select: (res: any) => ({
-      items: (res?.data?.items ?? []) as SubscriptionPlanDto[],
-      total: (res?.data?.totalCount ?? 0) as number,
+    select: (res) => ({
+      items: (res?.data?.items ?? []) as SearchSubscriptionPlanResponse[],
+      total: res?.data?.totalCount ?? 0,
     }),
     enabled: activeTab === "plans",
   });
@@ -72,11 +76,11 @@ export function useAdminPricingViewModel() {
       body: {
         pageNumber: page,
         pageSize: PRICING_PAGE_SIZE,
-      } as any,
+      },
     }),
-    select: (res: any) => ({
-      items: (res?.data?.items ?? []) as PricingDto[],
-      total: (res?.data?.totalCount ?? 0) as number,
+    select: (res) => ({
+      items: (res?.data?.items ?? []) as SearchPricingResponse[],
+      total: res?.data?.totalCount ?? 0,
     }),
     enabled: activeTab === "pricing",
   });
@@ -175,19 +179,24 @@ export function useAdminPricingViewModel() {
     setIsPlanModalOpen(true);
   }, []);
 
-  const handleOpenEditPlan = useCallback((plan: SubscriptionPlanDto) => {
-    setEditingPlan(plan);
-    setIsPlanModalOpen(true);
-  }, []);
+  const handleOpenEditPlan = useCallback(
+    (plan: SearchSubscriptionPlanResponse) => {
+      setEditingPlan(plan);
+      setIsPlanModalOpen(true);
+    },
+    [],
+  );
 
   const handleSubmitPlan = useCallback(
-    (data: Partial<SubscriptionPlanDto>) => {
+    (data: CreateSubscriptionPlanRequest) => {
       if (editingPlan) {
-        updatePlanMutation.mutate({
-          body: { ...editingPlan, ...data } as any,
-        });
+        const body: UpdateSubscriptionPlanRequest = {
+          ...data,
+          id: editingPlan.id,
+        };
+        updatePlanMutation.mutate({ body });
       } else {
-        createPlanMutation.mutate({ body: data as any });
+        createPlanMutation.mutate({ body: data });
       }
     },
     [editingPlan, updatePlanMutation, createPlanMutation],
@@ -199,19 +208,18 @@ export function useAdminPricingViewModel() {
     setIsPricingModalOpen(true);
   }, []);
 
-  const handleOpenEditPricing = useCallback((pricing: PricingDto) => {
+  const handleOpenEditPricing = useCallback((pricing: SearchPricingResponse) => {
     setEditingPricing(pricing);
     setIsPricingModalOpen(true);
   }, []);
 
   const handleSubmitPricing = useCallback(
-    (data: Partial<PricingDto>) => {
+    (data: CreatePricingRequest) => {
       if (editingPricing) {
-        updatePricingMutation.mutate({
-          body: { ...editingPricing, ...data } as any,
-        });
+        const body: UpdatePricingRequest = { ...data, id: editingPricing.id };
+        updatePricingMutation.mutate({ body });
       } else {
-        createPricingMutation.mutate({ body: data as any });
+        createPricingMutation.mutate({ body: data });
       }
     },
     [editingPricing, updatePricingMutation, createPricingMutation],

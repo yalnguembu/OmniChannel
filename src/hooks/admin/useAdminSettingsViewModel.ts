@@ -25,28 +25,30 @@ import {
   deleteApiSecureSettingByIdMutation,
 } from "@/shared/api/generated/@tanstack/react-query.gen";
 import type {
-  SettingDto,
+  CreateSettingRequest,
+  UpdateSettingRequest,
+  SearchSettingResponse,
   SearchSecureSettingResponse,
-  CountryDto,
-  CurrencyDto,
-  UserProfileDto,
+  CreateCountryRequest,
+  UpdateCountryRequest,
+  SearchCountryResponse,
+  CreateCurrencyRequest,
+  UpdateCurrencyRequest,
+  SearchCurrencyResponse,
+  CreateUserProfileRequest,
+  UpdateUserProfileRequest,
+  SearchUserProfileResponse,
 } from "@/shared/api/generated/types.gen";
 import { useErrorHandling } from "@/shared/hooks/useErrorHandling";
 
 export type SettingsModal =
   | "setting"
+  | "secureSetting"
   | "country"
   | "currency"
   | "profile"
   | null;
 
-/**
- * ViewModel for the admin Settings page (system settings).
- *
- * Uses the generated TanStack Query helpers (react-query.gen) directly and
- * exposes a flat surface (data + handlers) consumed by dumb section components.
- * Each section gets its own slice of data + the shared modal/edit state.
- */
 export function useAdminSettingsViewModel() {
   const queryClient = useQueryClient();
   const { handleRequestError, createMutationErrorHandler } = useErrorHandling();
@@ -61,56 +63,56 @@ export function useAdminSettingsViewModel() {
   // ── Queries ──────────────────────────────────────────────────────────────
   const settingsQuery = useQuery({
     ...postApiSettingSearchOptions({
-      body: { pageNumber: 1, pageSize: 200 } as any,
+      body: { pageNumber: 1, pageSize: 200 },
     }),
     enabled: activeTab === "settings",
-    select: (res: any) => ({
-      items: (res?.data?.items ?? []) as SettingDto[],
-      total: (res?.data?.totalCount ?? 0) as number,
+    select: (res) => ({
+      items: (res?.data?.items ?? []) as SearchSettingResponse[],
+      total: res?.data?.totalCount ?? 0,
     }),
   });
 
   const secureQuery = useQuery({
     ...postApiSecureSettingSearchOptions({
-      body: { pageNumber: 1, pageSize: 100 } as any,
+      body: { pageNumber: 1, pageSize: 100 },
     }),
     enabled: activeTab === "secure",
-    select: (res: any) => ({
+    select: (res) => ({
       items: (res?.data?.items ?? []) as SearchSecureSettingResponse[],
-      total: (res?.data?.totalCount ?? 0) as number,
+      total: res?.data?.totalCount ?? 0,
     }),
   });
 
   const countriesQuery = useQuery({
     ...postApiCountrySearchOptions({
-      body: { pageNumber: 1, pageSize: 300 } as any,
+      body: { pageNumber: 1, pageSize: 300 },
     }),
     enabled: activeTab === "countries",
-    select: (res: any) => ({
-      items: (res?.data?.items ?? []) as CountryDto[],
-      total: (res?.data?.totalCount ?? 0) as number,
+    select: (res) => ({
+      items: (res?.data?.items ?? []) as SearchCountryResponse[],
+      total: res?.data?.totalCount ?? 0,
     }),
   });
 
   const currenciesQuery = useQuery({
     ...postApiCurrencySearchOptions({
-      body: { pageNumber: 1, pageSize: 100 } as any,
+      body: { pageNumber: 1, pageSize: 100 },
     }),
     enabled: activeTab === "currencies",
-    select: (res: any) => ({
-      items: (res?.data?.items ?? []) as CurrencyDto[],
-      total: (res?.data?.totalCount ?? 0) as number,
+    select: (res) => ({
+      items: (res?.data?.items ?? []) as SearchCurrencyResponse[],
+      total: res?.data?.totalCount ?? 0,
     }),
   });
 
   const profilesQuery = useQuery({
     ...postApiUserProfileSearchOptions({
-      body: { pageNumber: 1, pageSize: 50 } as any,
+      body: { pageNumber: 1, pageSize: 50 },
     }),
     enabled: activeTab === "profiles",
-    select: (res: any) => ({
-      items: (res?.data?.items ?? []) as UserProfileDto[],
-      total: (res?.data?.totalCount ?? 0) as number,
+    select: (res) => ({
+      items: (res?.data?.items ?? []) as SearchUserProfileResponse[],
+      total: res?.data?.totalCount ?? 0,
     }),
   });
 
@@ -282,17 +284,40 @@ export function useAdminSettingsViewModel() {
   });
 
   // ── Open handlers ────────────────────────────────────────────────────────
-  const handleOpenSettingEdit = useCallback((s: SettingDto) => {
+  const handleOpenSettingCreate = useCallback(() => {
+    setEditItem(null);
+    setModal("setting");
+  }, []);
+
+  const handleOpenSettingEdit = useCallback((s: SearchSettingResponse) => {
     setEditItem(s);
     setModal("setting");
   }, []);
+
+  const handleOpenSecureSettingCreate = useCallback(() => {
+    setEditItem(null);
+    setModal("secureSetting");
+  }, []);
+
+  const handleSubmitSecureSetting = useCallback(
+    (data: any) => {
+      if (editItem) {
+        // Update - would need putApiSecureSettingMutation if available
+        console.warn("Secure setting update not yet implemented");
+      } else {
+        // Create - would need postApiSecureSettingMutation if available
+        console.warn("Secure setting create not yet implemented");
+      }
+    },
+    [editItem],
+  );
 
   const handleOpenCountryCreate = useCallback(() => {
     setEditItem(null);
     setCountryActive(true);
     setModal("country");
   }, []);
-  const handleOpenCountryEdit = useCallback((c: CountryDto) => {
+  const handleOpenCountryEdit = useCallback((c: SearchCountryResponse) => {
     setEditItem(c);
     setCountryActive(c.isActive ?? true);
     setModal("country");
@@ -303,7 +328,7 @@ export function useAdminSettingsViewModel() {
     setCurrencyActive(true);
     setModal("currency");
   }, []);
-  const handleOpenCurrencyEdit = useCallback((c: CurrencyDto) => {
+  const handleOpenCurrencyEdit = useCallback((c: SearchCurrencyResponse) => {
     setEditItem(c);
     setCurrencyActive(c.isActive ?? true);
     setModal("currency");
@@ -314,7 +339,7 @@ export function useAdminSettingsViewModel() {
     setProfileActive(true);
     setModal("profile");
   }, []);
-  const handleOpenProfileEdit = useCallback((p: UserProfileDto) => {
+  const handleOpenProfileEdit = useCallback((p: SearchUserProfileResponse) => {
     setEditItem(p);
     setProfileActive(p.isActive ?? true);
     setModal("profile");
@@ -322,13 +347,12 @@ export function useAdminSettingsViewModel() {
 
   // ── Submit handlers ──────────────────────────────────────────────────────
   const handleSubmitSetting = useCallback(
-    (data: Partial<SettingDto>) => {
+    (data: CreateSettingRequest) => {
       if (editItem) {
-        updateSettingMutation.mutate({
-          body: { ...editItem, ...data } as any,
-        });
+        const body: UpdateSettingRequest = { ...data, id: editItem.id };
+        updateSettingMutation.mutate({ body });
       } else {
-        createSettingMutation.mutate({ body: data as any });
+        createSettingMutation.mutate({ body: data });
       }
     },
     [editItem, updateSettingMutation, createSettingMutation],
@@ -345,33 +369,44 @@ export function useAdminSettingsViewModel() {
   );
 
   const handleSubmitCountry = useCallback(
-    (data: Partial<CountryDto>) => {
-      const body = { ...data, isActive: countryActive };
+    (data: CreateCountryRequest) => {
       if (editItem) {
-        updateCountryMutation.mutate({ body: { ...editItem, ...body } as any });
+        const body: UpdateCountryRequest = {
+          ...data,
+          isActive: countryActive,
+          id: editItem.id,
+        };
+        updateCountryMutation.mutate({ body });
       } else {
-        createCountryMutation.mutate({ body: body as any });
+        const body: CreateCountryRequest = { ...data, isActive: countryActive };
+        createCountryMutation.mutate({ body });
       }
     },
     [editItem, countryActive, updateCountryMutation, createCountryMutation],
   );
 
   const handleSubmitCurrency = useCallback(
-    (data: Partial<CurrencyDto>) => {
-      const body = { ...data, isActive: currencyActive };
+    (data: CreateCurrencyRequest) => {
       if (editItem) {
-        updateCurrencyMutation.mutate({
-          body: { ...editItem, ...body } as any,
-        });
+        const body: UpdateCurrencyRequest = {
+          ...data,
+          isActive: currencyActive,
+          id: editItem.id,
+        };
+        updateCurrencyMutation.mutate({ body });
       } else {
-        createCurrencyMutation.mutate({ body: body as any });
+        const body: CreateCurrencyRequest = {
+          ...data,
+          isActive: currencyActive,
+        };
+        createCurrencyMutation.mutate({ body });
       }
     },
     [editItem, currencyActive, updateCurrencyMutation, createCurrencyMutation],
   );
 
   const handleSubmitProfile = useCallback(
-    (data: { name?: string; description?: string; permissions?: string }) => {
+    (data: CreateUserProfileRequest) => {
       const perms = data.permissions
         ? data.permissions
             .split(",")
@@ -379,11 +414,21 @@ export function useAdminSettingsViewModel() {
             .filter(Boolean)
             .join(",")
         : "";
-      const body = { ...data, permissions: perms, isActive: profileActive };
       if (editItem) {
-        updateProfileMutation.mutate({ body: { ...editItem, ...body } as any });
+        const body: UpdateUserProfileRequest = {
+          ...data,
+          permissions: perms,
+          isActive: profileActive,
+          id: editItem.id,
+        };
+        updateProfileMutation.mutate({ body });
       } else {
-        createProfileMutation.mutate({ body: body as any });
+        const body: CreateUserProfileRequest = {
+          ...data,
+          permissions: perms,
+          isActive: profileActive,
+        };
+        createProfileMutation.mutate({ body });
       }
     },
     [editItem, profileActive, updateProfileMutation, createProfileMutation],
@@ -407,6 +452,7 @@ export function useAdminSettingsViewModel() {
     // settings
     settings,
     isLoadingSettings: settingsQuery.isLoading,
+    handleOpenSettingCreate,
     handleOpenSettingEdit,
     handleSubmitSetting,
     handleDeleteSetting,
@@ -416,7 +462,10 @@ export function useAdminSettingsViewModel() {
     // secure settings
     secureSettings,
     isLoadingSecure: secureQuery.isLoading,
+    handleOpenSecureSettingCreate,
+    handleSubmitSecureSetting,
     handleDeleteSecure,
+    isSecureSettingPending: false, // Update when mutations are available
     isSecureDeletePending: deleteSecureMutation.isPending,
 
     // countries

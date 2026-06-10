@@ -9,7 +9,7 @@ interface StatCardProps {
 
 export function StatCard({ label, value, color = '#2E8FAD', sub }: StatCardProps) {
   return (
-    <div className="bg-[#F7F8F9] border border-[#E5E7EB] rounded-[10px] p-4 text-center">
+    <div className="bg-[#F7F8F9] border border-[#E5E7EB] rounded-md p-4 text-center">
       <p className="text-[32px] font-semibold tracking-tight leading-none mb-1" style={{ color }}>{value}</p>
       <p className="text-[11.5px] text-[#8BAFC0]">{label}</p>
       {sub && <p className="text-[11px] text-[#B8CDD8] mt-0.5">{sub}</p>}

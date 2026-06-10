@@ -1,7 +1,9 @@
 import { useCallback, useEffect, useMemo } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { useConversations, useStats, useUsers } from './useWhatsapp';
 import { type Filter, convPreview, fmtTime, avatarColor, getInitials } from '@/models/whatsapp.models';
 import { useWhatsAppStore } from '@/store/useWhatsappStore';
+import { getApiSenderDropdownOptions } from '@/shared/api/generated/@tanstack/react-query.gen';
 
 export interface ConversationViewModel {
   id: string;
@@ -55,15 +57,20 @@ export function useSidebarViewModel() {
   const { data: statsData } = useStats();
   const { data: usersData } = useUsers();
 
-  // Load mock senders on mount
+  // Fetch real senders from API and populate the store
+  const { data: sendersData } = useQuery({
+    ...getApiSenderDropdownOptions(),
+    staleTime: 5 * 60_000,
+  });
   useEffect(() => {
-    const mockSenders = [
-      { id: '546e3061-dc2c-f111-974b-af9fcdfc5c2c', senderName: 'My Reabo' },
-      { id: '546e3061-dc2c-f111-974b-af9fcdfc5c2d', senderName: 'Sender 2' },
-      { id: '546e3061-dc2c-f111-974b-af9fcdfc5c2e', senderName: 'Sender 3' },
-    ];
-    setSenders(mockSenders);
-  }, [setSenders]);
+    const items = (sendersData as any)?.data ?? [];
+    setSenders(
+      items.map((s: any) => ({
+        id: s.id as string,
+        senderName: s.displayName || s.address || s.id,
+      })),
+    );
+  }, [sendersData, setSenders]);
 
   // Sync to store
   useEffect(() => { 

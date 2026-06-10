@@ -4,7 +4,7 @@ import {
   postApiPaymentSearchOptions,
   postApiPaymentSearchQueryKey,
 } from "@/shared/api/generated/@tanstack/react-query.gen";
-import type { PaymentDto } from "@/shared/api/generated/types.gen";
+import type { SearchPaymentResponse } from "@/shared/api/generated/types.gen";
 import { useErrorHandling } from "@/shared/hooks/useErrorHandling";
 import { useDebounce } from "@/shared/hooks/useDebounce";
 
@@ -34,10 +34,10 @@ export function useAdminPaymentsViewModel() {
         pageNumber: page,
         pageSize: PAGE_SIZE,
         searchTerm: debouncedSearch || undefined,
-      } as any,
+      },
     }),
-    select: (res: any) => ({
-      items: (res?.data?.items ?? []) as PaymentDto[],
+    select: (res) => ({
+      items: (res?.data?.items ?? []) as SearchPaymentResponse[],
       total: (res?.data?.totalCount ?? 0) as number,
     }),
   });

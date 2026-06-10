@@ -65,7 +65,7 @@ export function Sidebar() {
         </span>
       </Link>
 
-      <button className="mx-2.5 mt-3 mb-0.5 px-3 py-2.5 bg-[#E8F4F8] border border-[#2E8FAD]/20 rounded-[10px] flex items-center justify-between cursor-pointer hover:bg-[#DFF0F8] transition-colors">
+      <button className="mx-2.5 mt-3 mb-0.5 px-3 py-2.5 bg-[#E8F4F8] border border-[#2E8FAD]/20 rounded-md flex items-center justify-between cursor-pointer hover:bg-[#DFF0F8] transition-colors">
         <span className="text-[11.5px] font-medium text-[#1B5E82] truncate">
           {user?.companyName}
         </span>
@@ -139,7 +139,7 @@ export function Sidebar() {
               {user?.firstName} {user?.lastName}
             </p>
             <p className="text-[11px] text-[#8BAFC0] truncate">
-              Manager · Acme Corp
+              {user?.profileName} · {user?.companyName}
             </p>
           </div>
         </div>

@@ -37,7 +37,7 @@ export const MessagesList: React.FC<MessagesListProps> = ({
 
   return (
     <div
-      className="flex-1 overflow-y-auto px-[5%] py-3 flex flex-col gap-px [scrollbar-width:thin] [scrollbar-color:rgba(0,0,0,0.15)_transparent]"
+      className="flex-1 overflow-y-auto px-[5%] py-3 flex flex-col gap-1 [scrollbar-width:thin] [scrollbar-color:rgba(0,0,0,0.15)_transparent]"
     >
       {isLoading ? (
         <div className="flex items-center justify-center py-12">

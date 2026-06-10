@@ -7,6 +7,7 @@ import { avatarColor, getInitials, statusLabel } from "@/lib/utils";
 import type { ClientModel } from "@/models/client.model";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import {
+  getApiClientFlatDetailedByIdOptions,
   postApiClientChannelPreferenceSearchOptions,
   postApiClientSegmentMemberSearchOptions,
   postApiMessageSearchOptions,
@@ -17,6 +18,7 @@ import {
   postApiClientChannelPreferenceMutation,
   putApiClientChannelPreferenceMutation,
 } from "@/shared/api/generated/@tanstack/react-query.gen";
+import type { ClientAttributeDetail } from "@/shared/api/generated/types.gen";
 import { formatRelative } from "@/lib/date";
 import { Plus, Check, MessageSquare, Mail, Smartphone, Bell, Users } from "lucide-react";
 import { toast } from "sonner";
@@ -66,6 +68,14 @@ export function ContactDetailPanel({
     enabled: !!contact?.id,
     select: (res) => res?.data?.items || [],
   });
+
+  // Flat detailed view → product-specific custom attributes (shown in Profil).
+  const flatDetailQuery = useQuery({
+    ...getApiClientFlatDetailedByIdOptions({ path: { id: contact?.id || "" } }),
+    enabled: !!contact?.id && activeTab === "profile",
+    select: (res) => (res?.data?.attributes ?? []) as ClientAttributeDetail[],
+  });
+  const customAttributes = flatDetailQuery.data ?? [];
 
   const channels = channelsQuery.data || [];
   const segments = segmentsQuery.data || [];
@@ -274,6 +284,28 @@ export function ContactDetailPanel({
                   </Badge>
                 }
               />
+
+              {/* Product-specific custom attributes (flat detailed endpoint) */}
+              {flatDetailQuery.isLoading ? (
+                <p className="pt-3 text-[12px] text-[#8BAFC0]">
+                  Chargement des attributs…
+                </p>
+              ) : customAttributes.length > 0 ? (
+                <div className="pt-4">
+                  <p className="mb-1 text-[11px] font-semibold uppercase tracking-[0.06em] text-[#8BAFC0]">
+                    Attributs personnalisés
+                  </p>
+                  {customAttributes.map((a, i) => (
+                    <DetailRow
+                      key={a.key ?? `attr-${i}`}
+                      label={`${a.label || a.key || "—"}${
+                        a.isDerived ? " · calculé" : ""
+                      }`}
+                      value={formatAttrValue(a.value)}
+                    />
+                  ))}
+                </div>
+              ) : null}
             </div>
           )}
 
@@ -455,4 +487,13 @@ function DetailRow({
       </span>
     </div>
   );
+}
+
+/** Renders a custom-attribute value (string / number / boolean / array / object) for display. */
+function formatAttrValue(v: unknown): string {
+  if (v === null || v === undefined || v === "") return "—";
+  if (Array.isArray(v)) return v.map((x) => String(x)).join(", ");
+  if (typeof v === "boolean") return v ? "Oui" : "Non";
+  if (typeof v === "object") return JSON.stringify(v);
+  return String(v);
 }

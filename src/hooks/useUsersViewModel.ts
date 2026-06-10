@@ -6,17 +6,20 @@ import {
   postApiUserSearchQueryKey,
   getApiUserGetAllTypeOptions,
   getApiUserGetAllStatusOptions,
+  getApiUserProfileDropdownOptions,
+  getApiUserDetailByIdOptions,
   postApiUserCompanyUsersMutation,
   postApiUserSystemUsersMutation,
-  putApiUserByIdStatusMutation,
+  putApiUserStatusByIdMutation,
 } from "@/shared/api/generated/@tanstack/react-query.gen";
 import type {
-  UserDto,
+  SearchUserResponse,
   UserType,
   UserStatus,
 } from "@/shared/api/generated/types.gen";
 import { useAuthStore } from "@/store/authStore";
 import { useErrorHandling } from "@/shared/hooks/useErrorHandling";
+import { USER_TYPE, isSystemUser } from "@/lib/auth";
 
 export type UserScope = "company" | "system";
 const PAGE_SIZE = 20;
@@ -28,6 +31,10 @@ export interface UserFormData {
   phoneNumber?: string;
   profileId?: string;
   userType?: string;
+  initialPassword?: string;
+  forcePasswordChange?: boolean;
+  /** Company scope only — initial account status. */
+  initialStatus?: string;
 }
 
 /**
@@ -49,8 +56,20 @@ export function useUsersViewModel(
 
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
+  const [statusFilter, setStatusFilter] = useState("");
+  const [profileFilter, setProfileFilter] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [statusTarget, setStatusTarget] = useState<UserDto | null>(null);
+  const [statusTarget, setStatusTarget] = useState<SearchUserResponse | null>(
+    null,
+  );
+  const [selectedUser, setSelectedUser] = useState<SearchUserResponse | null>(
+    null,
+  );
+
+  // Reset to first page whenever a filter changes.
+  useEffect(() => {
+    setPage(1);
+  }, [search, statusFilter, profileFilter]);
 
   const usersQuery = useQuery({
     ...postApiUserSearchOptions({
@@ -60,11 +79,13 @@ export function useUsersViewModel(
         searchTerm: search || undefined,
         userType: scope,
         companyId: targetCompanyId,
-      } as any,
+        status: statusFilter || undefined,
+        profileId: profileFilter || undefined,
+      },
     }),
-    select: (res: any) => ({
-      items: (res?.data?.items ?? []) as UserDto[],
-      total: (res?.data?.totalCount ?? 0) as number,
+    select: (res) => ({
+      items: (res?.data?.items ?? []) as SearchUserResponse[],
+      total: res?.data?.totalCount ?? 0,
     }),
   });
 
@@ -76,17 +97,35 @@ export function useUsersViewModel(
   // Enum dropdowns
   const typesQuery = useQuery({
     ...getApiUserGetAllTypeOptions(),
-    select: (res: any) => (res?.data ?? []) as UserType[],
+    select: (res) => (res?.data ?? []) as UserType[],
   });
   const statusesQuery = useQuery({
     ...getApiUserGetAllStatusOptions(),
-    select: (res: any) => (res?.data ?? []) as UserStatus[],
+    select: (res) => (res?.data ?? []) as UserStatus[],
+  });
+  const profilesQuery = useQuery({
+    ...getApiUserProfileDropdownOptions(),
+    select: (res: any) => (res?.data ?? []) as { id: string; name: string }[],
   });
 
-  // Types relevant to the current scope (company-bound vs system).
+  // User types offered for the current scope: company creation lists the
+  // non-system types, system (admin) creation lists the system types.
   const types = (typesQuery.data ?? []).filter((t) =>
-    scope === "company" ? t.requiresCompanyId : !t.requiresCompanyId,
+    scope === "company" ? !isSystemUser(t.code) : isSystemUser(t.code),
   );
+
+  // Detail of the currently opened user (fresh fetch; falls back to the row).
+  const detailQuery = useQuery({
+    ...getApiUserDetailByIdOptions({ path: { id: selectedUser?.id ?? "" } }),
+    select: (res: any) => res?.data as SearchUserResponse,
+    enabled: !!selectedUser?.id,
+  });
+
+  const openDetail = useCallback(
+    (user: SearchUserResponse) => setSelectedUser(user),
+    [],
+  );
+  const closeDetail = useCallback(() => setSelectedUser(null), []);
 
   const invalidate = useCallback(
     () =>
@@ -117,10 +156,11 @@ export function useUsersViewModel(
   });
 
   const statusMutation = useMutation({
-    ...putApiUserByIdStatusMutation(),
+    ...putApiUserStatusByIdMutation(),
     onSuccess: () => {
       invalidate();
       setStatusTarget(null);
+      setSelectedUser(null);
       toast.success("Statut mis à jour");
     },
     onError: createMutationErrorHandler(),
@@ -136,12 +176,16 @@ export function useUsersViewModel(
             email: data.email,
             phoneNumber: data.phoneNumber,
             profileId: data.profileId,
-            userType: data.userType ?? "company",
+            // userType choisi dans le form (types company filtrés), COMPANY_USER par défaut.
+            userType: data.userType || USER_TYPE.COMPANY_USER,
             companyId: targetCompanyId,
-            forcePasswordChange: true,
-          } as any,
+            initialPassword: data.initialPassword || undefined,
+            forcePasswordChange: data.forcePasswordChange ?? true,
+            initialStatus: data.initialStatus || undefined,
+          },
         });
       } else {
+        // NOTE: CreateSystemUserRequest n'a ni userType, ni companyId, ni initialStatus.
         createSystemMutation.mutate({
           body: {
             firstName: data.firstName,
@@ -149,8 +193,9 @@ export function useUsersViewModel(
             email: data.email,
             phoneNumber: data.phoneNumber,
             profileId: data.profileId,
-            forcePasswordChange: true,
-          } as any,
+            initialPassword: data.initialPassword || undefined,
+            forcePasswordChange: data.forcePasswordChange ?? true,
+          },
         });
       }
     },
@@ -171,15 +216,26 @@ export function useUsersViewModel(
     isLoading: usersQuery.isLoading,
     types,
     statuses: statusesQuery.data ?? [],
+    profiles: profilesQuery.data ?? [],
     page,
     setPage,
     pageSize: PAGE_SIZE,
     search,
     setSearch,
+    statusFilter,
+    setStatusFilter,
+    profileFilter,
+    setProfileFilter,
     isModalOpen,
     setIsModalOpen,
     statusTarget,
     setStatusTarget,
+    // user detail / profile
+    selectedUser,
+    detailUser: detailQuery.data ?? selectedUser,
+    isDetailLoading: detailQuery.isLoading,
+    openDetail,
+    closeDetail,
     handleCreate,
     handleChangeStatus,
     isActionPending:

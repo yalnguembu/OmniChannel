@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { CompanyService } from "@/shared/api/services";
+import { postApiCompanySearchOptions } from "@/shared/api/generated/@tanstack/react-query.gen";
+import { putApiCompany, deleteApiCompanyById } from "@/shared/api/generated/sdk.gen";
 import { useAuthStore } from "@/store/authStore";
 import { Button } from "@/components/ui/Button";
 import { Modal } from "@/components/ui/Modal";
@@ -41,11 +42,11 @@ export function DangerZonePage() {
   const [pending, setPending] = useState<DangerAction | null>(null);
   const [confirmText, setConfirmText] = useState("");
 
-  const { data } = useQuery({
-    queryKey: ["company"],
-    queryFn: () => CompanyService.search({ pageNumber: 1, pageSize: 1 }),
+  const { data: company } = useQuery({
+    ...postApiCompanySearchOptions({ body: { pageNumber: 1, pageSize: 1 } }),
+    select: (res: any) =>
+      (res?.data?.items?.[0] ?? undefined) as CompanyDto | undefined,
   });
-  const company: CompanyDto | undefined = data?.data?.items?.[0];
 
   const closeModal = () => {
     setPending(null);
@@ -56,10 +57,29 @@ export function DangerZonePage() {
     mutationFn: async (action: DangerAction) => {
       if (!company?.id) throw new Error("Company introuvable");
       if (action === "suspend") {
-        return CompanyService.update({ ...company, status: "suspended" } as any);
+        // Explicit pick of UpdateCompanyRequest fields — no audit/computed columns
+        return putApiCompany({
+          body: {
+            id: company.id,
+            name: company.name,
+            legalName: company.legalName,
+            taxNumber: company.taxNumber,
+            countryId: company.countryId,
+            status: "suspended",
+            email: company.email,
+            phone: company.phone,
+            website: company.website,
+            address: company.address,
+            city: company.city,
+            postalCode: company.postalCode,
+            country: company.country,
+            billingMode: company.billingMode,
+            timezone: company.timezone,
+          } as any,
+        });
       }
       if (action === "closeAccount") {
-        return CompanyService.delete(company.id);
+        return deleteApiCompanyById({ path: { id: company.id } });
       }
       // No dedicated "delete all data" endpoint — must go through support.
       throw new Error("SUPPORT_REQUIRED");
@@ -133,7 +153,7 @@ export function DangerZonePage() {
             }
           >
             <div className="flex flex-col gap-4">
-              <div className="p-4 bg-[#FEE2E2] border border-[#FCA5A5] rounded-[10px]">
+              <div className="p-4 bg-[#FEE2E2] border border-[#FCA5A5] rounded-md">
                 <p className="text-[13px] text-[#DC2626]">{meta?.description}</p>
               </div>
               <Input

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { postApiMessageSearchOptions } from "@/shared/api/generated/@tanstack/react-query.gen";
+import type { SearchMessageResponse } from "@/shared/api/generated/types.gen";
 import { useErrorHandling } from "@/shared/hooks/useErrorHandling";
 
 /**
@@ -24,8 +25,8 @@ export function useCampaignMessages(
         pageSize,
       },
     }),
-    select: (res: any) => ({
-      items: res?.data?.items || [],
+    select: (res) => ({
+      items: (res?.data?.items as SearchMessageResponse[]) || [],
       totalCount: res?.data?.totalCount || 0,
     }),
     enabled: !!campaignId && isEnabled,

@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { Toggle } from "@/components/ui/Toggle";
-import { FileText, Sparkles } from "lucide-react";
+import { FileText, Sparkles, Pencil } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { statusLabel } from "@/lib/utils";
 import { formatDate, formatRelative } from "@/lib/date";
 import type { TemplateModel } from "@/models/template.model";
 import type { ChannelModel } from "@/models/channel.model";
-import type { TemplateChannelDto } from "@/shared/api/generated/types.gen";
+import type { SearchTemplateChannelResponse } from "@/shared/api/generated/types.gen";
 
 const AI_SUGGESTIONS = [
   {
@@ -25,9 +25,10 @@ const AI_SUGGESTIONS = [
 
 interface TemplatePreviewSidebarProps {
   template: TemplateModel;
-  tplChannels: TemplateChannelDto[];
+  tplChannels: SearchTemplateChannelResponse[];
   channels: ChannelModel[];
   onToggleChannel: (channelId: string, linked: boolean) => void;
+  onEditVariant?: (templateChannelId: string) => void;
 }
 
 export function TemplatePreviewSidebar({
@@ -35,6 +36,7 @@ export function TemplatePreviewSidebar({
   tplChannels,
   channels,
   onToggleChannel,
+  onEditVariant,
 }: TemplatePreviewSidebarProps) {
   return (
     <div
@@ -67,9 +69,8 @@ export function TemplatePreviewSidebar({
             <p className="text-[12px] text-[#8BAFC0]">Aucun canal configuré</p>
           ) : (
             channels.map((ch) => {
-              const linked = (tplChannels || []).some(
-                (tc) => tc.channelId === ch.id,
-              );
+              const tc = (tplChannels || []).find((x) => x.channelId === ch.id);
+              const linked = !!tc;
               return (
                 <div
                   key={ch.id}
@@ -81,6 +82,15 @@ export function TemplatePreviewSidebar({
                   <span className="text-[13px] font-medium text-[#0D2137] flex-1">
                     {ch.name}
                   </span>
+                  {linked && onEditVariant && tc?.id && (
+                    <button
+                      onClick={() => onEditVariant(tc.id!)}
+                      className="p-1 text-[#8BAFC0] hover:text-[#1B5E82] hover:bg-[#E8F4F8] rounded transition-colors"
+                      title="Modifier le contenu"
+                    >
+                      <Pencil size={12} />
+                    </button>
+                  )}
                   <Toggle
                     checked={linked}
                     onChange={() => onToggleChannel(ch.id, linked)}

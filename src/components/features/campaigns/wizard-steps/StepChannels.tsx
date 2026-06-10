@@ -29,7 +29,7 @@ export function StepChannels({
   return (
     <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-400">
       <div className="flex items-center justify-between">
-        <h2 className="text-[17px] font-bold text-[#0D2137]">
+        <h2 className="text-[16px] font-semibold text-[#0D2137]">
           Canaux & Contenus
         </h2>
       </div>
@@ -41,9 +41,9 @@ export function StepChannels({
             <div
               key={ch.id}
               className={cn(
-                "bg-white border rounded-[22px] transition-all overflow-hidden",
+                "bg-white border rounded-[14px] transition-all overflow-hidden",
                 sel
-                  ? "border-[#2E8FAD] shadow-md shadow-[#2E8FAD]/5"
+                  ? "border-[#2E8FAD]"
                   : "border-[#E5E7EB]",
                 isConfig && "ring-2 ring-[#0D2137]/10",
               )}
@@ -52,7 +52,7 @@ export function StepChannels({
                 <div className="flex items-center gap-4">
                   <div
                     className={cn(
-                      "w-11 h-11 rounded-2xl flex items-center justify-center",
+                      "w-10 h-10 rounded-[9px] flex items-center justify-center",
                       sel
                         ? "bg-[#2E8FAD] text-white"
                         : "bg-[#F3F4F6] text-[#8BAFC0]",
@@ -61,10 +61,10 @@ export function StepChannels({
                     <Settings2 size={20} />
                   </div>
                   <div>
-                    <p className="text-[14.5px] font-bold text-[#0D2137]">
+                    <p className="text-[14px] font-medium text-[#0D2137]">
                       {ch.name}
                     </p>
-                    <span className="text-[10px] uppercase font-bold text-[#8BAFC0] tracking-widest">
+                    <span className="text-[10px] uppercase font-medium text-[#8BAFC0] tracking-wider">
                       {ch.type}
                     </span>
                   </div>
@@ -94,7 +94,7 @@ export function StepChannels({
                 </div>
               </div>
               {isConfig && (
-                <div className="p-6 pt-2 border-t border-[#F3F4F6] bg-[#FAFBFC] space-y-6">
+                <div className="p-6 pt-2 border-t border-[#E5E7EB] bg-[#F7F8F9] space-y-6">
                   <div className="space-y-2">
                     <div className="flex items-end gap-3">
                       <div className="flex-1">
@@ -122,7 +122,7 @@ export function StepChannels({
                       <Button
                         variant="secondary"
                         size="sm"
-                        className="h-10 mb-[2px] px-3 font-bold bg-white"
+                        className="h-10 mb-[2px] px-3 font-medium bg-white"
                         onClick={() => setShowNewTemplateModal(true)}
                       >
                         <Plus size={14} className="mr-1.5" /> Nouveau

@@ -2,15 +2,7 @@ import { z } from 'zod'
 
 export const loginSchema = z.object({
   email: z.string().email('Email invalide'),
-  password: z.string().min(6, 'Mot de passe trop court'),
-})
-
-export const productSchema = z.object({
-  name: z.string().min(1, 'Nom requis'),
-  description: z.string().optional(),
-  status: z.enum(['active', 'inactive', 'paused', 'draft']),
-  clientAttributes: z.string().optional(),
-  clientMappingConfiguration: z.string().optional(),
+  password: z.string().min(5, 'Mot de passe trop court'),
 })
 
 export const clientSchema = z.object({

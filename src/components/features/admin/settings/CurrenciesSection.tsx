@@ -4,14 +4,14 @@ import { Button } from "@/components/ui/Button";
 import { Can } from "@/security/components/Can";
 import { ACTION } from "@/security/enums";
 import { DataTable, type Column } from "@/components/data-table/DataTable";
-import type { CurrencyDto } from "@/shared/api/generated/types.gen";
+import type { SearchCurrencyResponse } from "@/shared/api/generated/types.gen";
 import { useAdminSettingsViewModel } from "@/hooks/admin/useAdminSettingsViewModel";
 import { CurrencyFormModal } from "./CurrencyFormModal";
 
 type Vm = ReturnType<typeof useAdminSettingsViewModel>;
 
 export function CurrenciesSection({ vm }: { vm: Vm }) {
-  const cols: Column<CurrencyDto>[] = [
+  const cols: Column<SearchCurrencyResponse>[] = [
     {
       key: "name",
       label: "Devise",

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Bell, Check, Clock, AlertTriangle, Info } from "lucide-react";
-import { NotificationService } from "@/shared/api/services";
+import { postApiNotificationSearchOptions } from "@/shared/api/generated/@tanstack/react-query.gen";
 import { Toggle } from "@/components/ui/Toggle";
 import { PageLoader } from "@/components/feedback/PageLoader";
 import { formatRelative } from "@/lib/date";
@@ -180,12 +180,13 @@ export function NotificationsPage() {
     "preferences",
   );
 
-  const { data, isLoading } = useQuery({
-    queryKey: ["notifications"],
-    queryFn: () => NotificationService.search({ pageNumber: 1, pageSize: 50 }),
+  const { data: notifications = [], isLoading } = useQuery({
+    ...postApiNotificationSearchOptions({
+      body: { pageNumber: 1, pageSize: 50 },
+    }),
     enabled: activeSection === "inbox",
+    select: (res: any) => (res?.data?.items ?? []) as NotificationDto[],
   });
-  const notifications: NotificationDto[] = data?.data?.items ?? [];
   const unreadCount = notifications.filter((n) => !n.isRead).length;
 
   return (
@@ -214,7 +215,7 @@ export function NotificationsPage() {
             key={id}
             onClick={() => setActiveSection(id)}
             className={cn(
-              "flex items-center gap-2 px-4 py-2 rounded-[10px] text-[13px] transition-all cursor-pointer",
+              "flex items-center gap-2 px-4 py-2 rounded-md text-[13px] transition-all cursor-pointer",
               activeSection === id
                 ? "bg-[#E8F4F8] text-[#1B5E82] font-medium border border-[#C8E8F2]"
                 : "text-[#4A7A94] hover:bg-[#F0F2F4]",

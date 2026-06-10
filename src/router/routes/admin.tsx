@@ -1,13 +1,22 @@
-import { createFileRoute, Outlet } from "@tanstack/react-router";
+import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
 import { LogOut } from "lucide-react";
 import { AdminSidebar } from "@/components/layout/AdminSidebar";
 import { useAuthStore } from "@/store/authStore";
 import { useSession } from "@/hooks/useSession";
+import { isCompanyUser } from "@/lib/auth";
 
 export const Route = createFileRoute("/admin")({
   beforeLoad: () => {
-    useAuthStore.getState().user;
+    const { isAuthenticated, user, requiresPasswordChange } =
+      useAuthStore.getState();
     // if (!user || user.userType !== "system") throw redirect({ to: "/login" });
+    if (isAuthenticated && requiresPasswordChange) {
+      // throw redirect({ to: "/change-password" });
+    }
+    // The backoffice is for system staff only — send company members to the portal.
+    if (isAuthenticated && isCompanyUser(user?.userType)) {
+      throw redirect({ to: "/dashboard" });
+    }
   },
   component: AdminLayout,
 });

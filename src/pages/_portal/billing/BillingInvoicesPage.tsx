@@ -3,8 +3,12 @@ import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { FileText } from "lucide-react";
-import { InvoiceService, PaymentService } from "@/shared/api/services";
-import { getApiPaymentMethodDropdownOptions } from "@/shared/api/generated/@tanstack/react-query.gen";
+import {
+  postApiInvoiceSearchOptions,
+  postApiInvoiceSearchQueryKey,
+  postApiPaymentMutation,
+  getApiPaymentMethodDropdownOptions,
+} from "@/shared/api/generated/@tanstack/react-query.gen";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { Modal } from "@/components/ui/Modal";
@@ -52,8 +56,11 @@ export function BillingInvoicesPage() {
   const [payMethodId, setPayMethodId] = useState("");
 
   const { data, isLoading } = useQuery({
-    queryKey: ["invoices", page],
-    queryFn: () => InvoiceService.search({ pageNumber: page, pageSize }) as any,
+    ...postApiInvoiceSearchOptions({ body: { pageNumber: page, pageSize } }),
+    select: (res: any) => ({
+      items: (res?.data?.items ?? []) as InvoiceDto[],
+      total: (res?.data?.totalCount ?? 0) as number,
+    }),
   });
 
   // Payment methods dropdown
@@ -65,19 +72,13 @@ export function BillingInvoicesPage() {
   const paymentMethods = methodsData ?? [];
 
   const qc = useQueryClient();
-  const invoices: InvoiceDto[] = data?.data?.items ?? [];
-  const total: number = data?.data?.totalCount ?? 0;
+  const invoices = data?.items ?? [];
+  const total = data?.total ?? 0;
 
   const payMutation = useMutation({
-    mutationFn: () =>
-      PaymentService.create({
-        invoiceId: payTarget!.id,
-        amount: payTarget!.total,
-        currency: payTarget!.currency,
-        paymentMethodId: payMethodId || undefined,
-      }),
+    ...postApiPaymentMutation(),
     onSuccess: () => {
-      qc.invalidateQueries({ queryKey: ["invoices"] });
+      qc.invalidateQueries({ queryKey: postApiInvoiceSearchQueryKey() });
       toast.success("Paiement initié");
       setPayTarget(null);
       setPayMethodId("");
@@ -241,7 +242,16 @@ export function BillingInvoicesPage() {
               variant="primary"
               loading={payMutation.isPending}
               disabled={!payMethodId}
-              onClick={() => payMutation.mutate()}
+              onClick={() =>
+                payMutation.mutate({
+                  body: {
+                    invoiceId: payTarget!.id,
+                    amount: payTarget!.total,
+                    currency: payTarget!.currency,
+                    paymentMethodId: payMethodId || undefined,
+                  } as any,
+                })
+              }
             >
               Confirmer
             </Button>
@@ -249,7 +259,7 @@ export function BillingInvoicesPage() {
         }
       >
         <div className="flex flex-col gap-4">
-          <div className="bg-[#F7F8F9] border border-[#E5E7EB] rounded-[10px] p-3.5">
+          <div className="bg-[#F7F8F9] border border-[#E5E7EB] rounded-md p-3.5">
             <div className="flex justify-between text-[12.5px] mb-1">
               <span className="text-[#8BAFC0]">Facture</span>
               <span className="font-mono text-[#4A7A94]">
@@ -280,7 +290,7 @@ export function BillingInvoicesPage() {
               ]}
             />
           ) : (
-            <div className="text-[12.5px] text-[#8BAFC0] bg-[#F7F8F9] border border-[#E5E7EB] rounded-[10px] p-3">
+            <div className="text-[12.5px] text-[#8BAFC0] bg-[#F7F8F9] border border-[#E5E7EB] rounded-md p-3">
               Aucune méthode de paiement configurée.{" "}
               <a
                 href="/billing/payment-methods"

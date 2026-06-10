@@ -1,4 +1,3 @@
-import React from "react";
 import { Package, ArrowRight } from "lucide-react";
 import { Card, CardHeader, CardBody } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
@@ -14,49 +13,50 @@ export function MyProductsCard({
   onNavigateDetail: (id: string) => void;
 }) {
   return (
-    <Card className="rounded-md border-[#E5E7EB]">
+    <Card>
       <CardHeader
-        title="Mes Produits"
-        className="px-8 py-6 border-b border-[#F3F4F6]"
+        title="Mes produits"
         action={
           <button
             onClick={onNavigateAll}
-            className="text-[12px] font-bold text-[#1B5E82] hover:underline flex items-center gap-1 cursor-pointer px-3 py-1.5 rounded-lg hover:bg-[#F3F4F6] transition-all"
+            className="flex items-center gap-1 text-[12px] text-[#2E8FAD] hover:text-[#1B5E82] transition-colors cursor-pointer"
           >
-            Gérer <ArrowRight size={14} />
+            Gérer <ArrowRight size={11} />
           </button>
         }
       />
       <CardBody className="p-0">
-        <div className="divide-y divide-[#F3F4F6]">
-          {products.map((p) => (
+        {products.length === 0 ? (
+          <div className="flex items-center justify-center py-12 text-[13px] text-[#8BAFC0]">
+            <Package size={20} className="mr-2.5 opacity-30" />
+            Aucun produit
+          </div>
+        ) : (
+          products.map((p) => (
             <div
               key={p.id}
               onClick={() => onNavigateDetail(p.id)}
-              className="flex items-center justify-between px-8 py-5 hover:bg-[#FBFBFC] cursor-pointer transition-all group"
+              className="flex items-center justify-between px-5 py-3 border-b border-[#E5E7EB] last:border-b-0 hover:bg-[#F7F8F9] cursor-pointer transition-colors"
             >
-              <div className="flex items-center gap-4">
-                <div className="w-10 h-10 rounded-xl bg-[#F7F8F9] flex items-center justify-center text-[#8BAFC0] group-hover:bg-[#E8F4F8] group-hover:text-[#1B5E82] transition-all shadow-sm">
-                  <Package size={18} />
+              <div className="flex items-center gap-3 min-w-0 flex-1">
+                <div className="w-7 h-7 rounded-[7px] bg-[#E8F4F8] flex items-center justify-center shrink-0 text-[#1B5E82]">
+                  <Package size={13} />
                 </div>
-                <div>
-                  <p className="text-[14px] font-bold text-[#0D2137] group-hover:text-[#1B5E82] transition-colors">
+                <div className="min-w-0">
+                  <p className="text-[13px] font-medium text-[#0D2137] truncate">
                     {p.name}
                   </p>
-                  <p className="text-[11px] text-[#8BAFC0] font-semibold uppercase tracking-wider mt-1">
+                  <p className="text-[11.5px] text-[#8BAFC0]">
                     {p.connectors?.length || 0} connecteurs actifs
                   </p>
                 </div>
               </div>
-              <Badge
-                variant={p.status === "active" ? "success" : "neutral"}
-                dot
-              >
+              <Badge variant={p.status === "active" ? "success" : "neutral"} dot>
                 {statusLabel(p.status)}
               </Badge>
             </div>
-          ))}
-        </div>
+          ))
+        )}
       </CardBody>
     </Card>
   );

@@ -8,7 +8,11 @@ import {
   putApiChannelMutation,
   deleteApiChannelByIdMutation,
 } from "@/shared/api/generated/@tanstack/react-query.gen";
-import type { ChannelDto } from "@/shared/api/generated/types.gen";
+import type {
+  CreateChannelRequest,
+  UpdateChannelRequest,
+  SearchChannelResponse,
+} from "@/shared/api/generated/types.gen";
 import { useErrorHandling } from "@/shared/hooks/useErrorHandling";
 import { useDebounce } from "@/shared/hooks/useDebounce";
 
@@ -28,7 +32,8 @@ export function useAdminChannelsViewModel() {
   const [page, setPage] = useState(1);
   const [view, setView] = useState<ChannelView>("card");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editingChannel, setEditingChannel] = useState<ChannelDto | null>(null);
+  const [editingChannel, setEditingChannel] =
+    useState<SearchChannelResponse | null>(null);
 
   const debouncedSearch = useDebounce(search, 400);
 
@@ -42,11 +47,11 @@ export function useAdminChannelsViewModel() {
         pageNumber: page,
         pageSize: PAGE_SIZE,
         searchTerm: debouncedSearch || undefined,
-      } as any,
+      },
     }),
-    select: (res: any) => ({
-      items: (res?.data?.items ?? []) as ChannelDto[],
-      total: (res?.data?.totalCount ?? 0) as number,
+    select: (res) => ({
+      items: (res?.data?.items ?? []) as SearchChannelResponse[],
+      total: res?.data?.totalCount ?? 0,
     }),
   });
 
@@ -105,24 +110,25 @@ export function useAdminChannelsViewModel() {
     setIsModalOpen(true);
   }, []);
 
-  const handleOpenEdit = useCallback((channel: ChannelDto) => {
+  const handleOpenEdit = useCallback((channel: SearchChannelResponse) => {
     setEditingChannel(channel);
     setIsModalOpen(true);
   }, []);
 
   const handleSubmit = useCallback(
-    (data: Partial<ChannelDto>) => {
+    (data: CreateChannelRequest) => {
       if (editingChannel) {
-        updateMutation.mutate({ body: { ...editingChannel, ...data } as any });
+        const body: UpdateChannelRequest = { ...data, id: editingChannel.id };
+        updateMutation.mutate({ body });
       } else {
-        createMutation.mutate({ body: data as any });
+        createMutation.mutate({ body: data });
       }
     },
     [editingChannel, updateMutation, createMutation],
   );
 
   const handleDelete = useCallback(
-    (channel: ChannelDto) => {
+    (channel: SearchChannelResponse) => {
       if (!channel.id) return;
       deleteMutation.mutate({ path: { id: channel.id } });
     },

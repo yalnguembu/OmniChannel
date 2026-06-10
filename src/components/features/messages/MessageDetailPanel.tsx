@@ -1,4 +1,7 @@
-import type { MessageDto } from "@/shared/api/types";
+import type {
+  SearchMessageResponse,
+  SearchMessageEventResponse,
+} from "@/shared/api/generated/types.gen";
 import { formatRelative, formatDateTime } from "@/lib/date";
 import { chMeta, statusMeta } from "./constant";
 
@@ -10,10 +13,10 @@ export function MessageDetailPanel({
   isEventsLoading,
   onClose,
 }: {
-  activeMsg: MessageDto | null;
+  activeMsg: SearchMessageResponse | null;
   detailTab: string;
   setDetailTab: (t: string) => void;
-  events: any[];
+  events: SearchMessageEventResponse[];
   isEventsLoading: boolean;
   onClose: () => void;
 }) {
@@ -25,7 +28,7 @@ export function MessageDetailPanel({
   if (chId.includes("whatsapp")) cm = chMeta.whatsapp;
   if (chId.includes("push")) cm = chMeta.push;
 
-  const st = statusMeta[activeMsg.status] || statusMeta.default;
+  const st = statusMeta[activeMsg.status ?? ""] || statusMeta.default;
 
   return (
     <div className="w-[420px] border-l border-[#E5E7EB] bg-white flex flex-col shrink-0 relative z-10 shadow-[-4px_0_24px_rgba(0,0,0,0.03)] animate-in slide-in-from-right duration-300">
@@ -33,7 +36,7 @@ export function MessageDetailPanel({
         <div className="flex items-start justify-between mb-3">
           <div>
             <div className="text-[11px] font-mono text-[#8BAFC0] mb-1.5">
-              {activeMsg.id.toUpperCase()}
+              {activeMsg.id?.toUpperCase()}
             </div>
             <div className="text-[15px] font-semibold text-[#0D2137] tracking-[-0.015em] mb-1">
               {activeMsg.templateId ? "Template Message" : "Message Libre"}
@@ -218,7 +221,7 @@ export function MessageDetailPanel({
 
             {activeMsg.status === "failed" && (
               <div className="mt-3.5">
-                <div className="bg-[#FEF3C7] border border-[#FCD34D] rounded-[10px] p-[10px_14px] flex items-start gap-2">
+                <div className="bg-[#FEF3C7] border border-[#FCD34D] rounded-md p-[10px_14px] flex items-start gap-2">
                   <svg
                     width="14"
                     height="14"
@@ -309,7 +312,7 @@ export function MessageDetailPanel({
               <div className="text-[11.5px] font-medium text-[#8BAFC0] uppercase tracking-[0.06em] mb-2">
                 Contenu envoyé
               </div>
-              <div className="bg-[#F7F8F9] border border-[#E5E7EB] rounded-[10px] p-[12px_14px] text-[12.5px] text-[#0D2137] leading-[1.65] whitespace-pre-wrap">
+              <div className="bg-[#F7F8F9] border border-[#E5E7EB] rounded-md p-[12px_14px] text-[12.5px] text-[#0D2137] leading-[1.65] whitespace-pre-wrap">
                 {activeMsg.content || "—"}
               </div>
             </div>

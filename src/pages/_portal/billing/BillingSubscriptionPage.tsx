@@ -4,9 +4,11 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { Check } from "lucide-react";
 import {
-  SubscriptionService,
-  SubscriptionPlanService,
-} from "@/shared/api/services";
+  postApiSubscriptionSearchOptions,
+  postApiSubscriptionSearchQueryKey,
+  postApiSubscriptionPlanSearchOptions,
+  putApiSubscriptionMutation,
+} from "@/shared/api/generated/@tanstack/react-query.gen";
 import { Button } from "@/components/ui/Button";
 import { Toggle } from "@/components/ui/Toggle";
 import { Badge } from "@/components/ui/Badge";
@@ -28,32 +30,41 @@ const billingTabs = [
   { to: "/billing/payment-methods", label: "Méthodes de paiement" },
 ];
 
+/** Pick only UpdateSubscriptionRequest fields — strips read-only DTO fields like createdAt */
+function subUpdateBody(
+  sub: SubscriptionDto,
+  overrides: Partial<SubscriptionDto>,
+): Partial<SubscriptionDto> {
+  const { id, companyId, planId, paymentId, status, billingCycle,
+          currentPeriodStart, currentPeriodEnd, usedQuota, autoRenew, cancelledAt } = sub;
+  return { id, companyId, planId, paymentId, status, billingCycle,
+           currentPeriodStart, currentPeriodEnd, usedQuota, autoRenew, cancelledAt,
+           ...overrides };
+}
+
 export function BillingSubscriptionPage() {
-  const { data: subData, isLoading } = useQuery({
-    queryKey: ["subscription"],
-    queryFn: () => SubscriptionService.search({ pageNumber: 1, pageSize: 1 }) as any,
+  const { data: subscription, isLoading } = useQuery({
+    ...postApiSubscriptionSearchOptions({
+      body: { pageNumber: 1, pageSize: 1 },
+    }),
+    select: (res: any) =>
+      (res?.data?.items?.[0] ?? undefined) as SubscriptionDto | undefined,
   });
 
-  const { data: plansData } = useQuery({
-    queryKey: ["subscription-plans"],
-    queryFn: () =>
-      SubscriptionPlanService.search({
-        pageNumber: 1,
-        pageSize: 10,
-      }) as any,
+  const { data: plans = [] } = useQuery({
+    ...postApiSubscriptionPlanSearchOptions({
+      body: { pageNumber: 1, pageSize: 10 },
+    }),
+    select: (res: any) => (res?.data?.items ?? []) as SubscriptionPlanDto[],
   });
 
   const qc = useQueryClient();
   const [cancelOpen, setCancelOpen] = useState(false);
 
-  const subscription: SubscriptionDto | undefined = subData?.data?.items?.[0];
-  const plans: SubscriptionPlanDto[] = plansData?.data?.items ?? [];
-
   const updateMut = useMutation({
-    mutationFn: (body: Partial<SubscriptionDto>) =>
-      SubscriptionService.update(body),
+    ...putApiSubscriptionMutation(),
     onSuccess: () => {
-      qc.invalidateQueries({ queryKey: ["subscription"] });
+      qc.invalidateQueries({ queryKey: postApiSubscriptionSearchQueryKey() });
       setCancelOpen(false);
       toast.success("Abonnement mis à jour");
     },
@@ -191,7 +202,9 @@ export function BillingSubscriptionPage() {
                 checked={subscription?.autoRenew ?? true}
                 onChange={(v) =>
                   subscription &&
-                  updateMut.mutate({ ...subscription, autoRenew: v })
+                  updateMut.mutate({
+                    body: subUpdateBody(subscription, { autoRenew: v }) as any,
+                  })
                 }
               />
             </div>
@@ -271,11 +284,15 @@ export function BillingSubscriptionPage() {
                       className="w-full justify-center"
                       loading={
                         updateMut.isPending &&
-                        updateMut.variables?.planId === plan.id
+                        (updateMut.variables?.body as any)?.planId === plan.id
                       }
                       onClick={() =>
                         subscription &&
-                        updateMut.mutate({ ...subscription, planId: plan.id })
+                        updateMut.mutate({
+                          body: subUpdateBody(subscription, {
+                            planId: plan.id,
+                          }) as any,
+                        })
                       }
                     >
                       Changer →
@@ -304,9 +321,10 @@ export function BillingSubscriptionPage() {
               onClick={() =>
                 subscription &&
                 updateMut.mutate({
-                  ...subscription,
-                  status: "cancelled",
-                  autoRenew: false,
+                  body: subUpdateBody(subscription, {
+                    status: "cancelled",
+                    autoRenew: false,
+                  }) as any,
                 })
               }
             >
@@ -315,7 +333,7 @@ export function BillingSubscriptionPage() {
           </>
         }
       >
-        <div className="p-4 bg-[#FEE2E2] border border-[#FCA5A5] rounded-[10px]">
+        <div className="p-4 bg-[#FEE2E2] border border-[#FCA5A5] rounded-md">
           <p className="text-[13px] text-[#DC2626]">
             Votre abonnement restera actif jusqu'au{" "}
             <strong>

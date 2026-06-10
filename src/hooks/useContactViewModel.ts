@@ -2,6 +2,7 @@ import { useState, useCallback, useMemo, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import {
+  getApiProductDropdownOptions,
   postApiClientSearchOptions,
   postApiClientSegmentSearchOptions,
   postApiClientMutation,
@@ -14,6 +15,12 @@ import {
   mapToSegmentModels,
   type ClientModel,
 } from "@/models/client.model";
+import type {
+  CreateClientRequest,
+  UpdateClientRequest,
+  SearchClientResponse,
+  SearchClientSegmentResponse,
+} from "@/shared/api/generated/types.gen";
 import { useErrorHandling } from "@/shared/hooks/useErrorHandling";
 
 /**
@@ -29,6 +36,7 @@ export function useContactViewModel() {
   const [segmentId, setSegmentId] = useState("all");
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(15);
+  const [productId, setProductId] = useState("all");
 
   // UI state
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -51,9 +59,7 @@ export function useContactViewModel() {
   const contactsQuery = useQuery({
     ...postApiClientSearchOptions({
       body: {
-        productId: "e4876c64-4a1c-4664-97b9-39f8caddb8c2",
-        createdFrom: "2023-10-25T14:30:00Z",
-        createdTo: "2026-05-14T00:00:00Z",
+        productId: productId !== "all" ? productId : undefined,
         pageNumber: page,
         pageSize,
         searchTerm: search || undefined,
@@ -61,14 +67,16 @@ export function useContactViewModel() {
         segmentIds: segmentId !== "all" ? [segmentId] : undefined,
         sortBy: sort || undefined,
         sortDirection: sortOrder || undefined,
+        // NOTE: segmentIds n'est pas typé sur SearchClientRequest (cast volontaire)
       } as any,
     }),
-    select: (res: any) => {
-      const items = mapToClientModels(
-        res?.data?.items || (Array.isArray(res?.data) ? res.data : []),
-      );
+    select: (res) => {
+      const rawItems = (res?.data?.items ||
+        (Array.isArray(res?.data) ? res.data : [])) as SearchClientResponse[];
+      const items = mapToClientModels(rawItems);
       const totalCount =
-        res?.metadata?.totalCount || (res?.data?.totalCount ?? items.length);
+        (res?.metadata?.totalCount as number | undefined) ||
+        (res?.data?.totalCount ?? items.length);
 
       return { items, totalCount };
     },
@@ -96,19 +104,28 @@ export function useContactViewModel() {
     [contacts, totalCount],
   );
 
+  const productsQuery = useQuery({
+    ...getApiProductDropdownOptions(),
+    select: (res: any) => (res?.data ?? []) as { id: string; name: string }[],
+  });
+  const products = productsQuery.data ?? [];
+
   const segmentsQuery = useQuery({
     ...postApiClientSegmentSearchOptions({
       body: {
+        productId: productId !== "all" ? productId : undefined,
         pageNumber: 1,
         pageSize: 100,
       },
     }),
-    select: (res: any) => {
-      const items = Array.isArray(res?.data?.items)
-        ? res.data.items
-        : Array.isArray(res?.data)
-          ? res.data
-          : [];
+    select: (res) => {
+      const items = (
+        Array.isArray(res?.data?.items)
+          ? res.data.items
+          : Array.isArray(res?.data)
+            ? res.data
+            : []
+      ) as SearchClientSegmentResponse[];
       return mapToSegmentModels(items);
     },
   });
@@ -157,30 +174,30 @@ export function useContactViewModel() {
   }, []);
 
   const handleSubmit = useCallback(
-    (data: any) => {
+    (data: CreateClientRequest) => {
       if (editingContact) {
         // Explicit pick of UpdateClientRequest fields — no metadata / read-only DTOs
-        updateMutation.mutate({
-          body: {
-            id: editingContact.id,
-            productId: (editingContact as any).productId ?? undefined,
-            externalId: data.externalId ?? (editingContact as any).externalId ?? undefined,
-            email: data.email ?? editingContact.email ?? undefined,
-            phone: data.phone ?? editingContact.phone ?? undefined,
-            firstName: data.firstName ?? editingContact.firstName ?? undefined,
-            lastName: data.lastName ?? editingContact.lastName ?? undefined,
-            gender: data.gender ?? (editingContact as any).gender ?? undefined,
-            birthDate: data.birthDate ?? undefined,
-            language: data.language ?? undefined,
-            timezone: data.timezone ?? undefined,
-            address: data.address ?? undefined,
-            city: data.city ?? undefined,
-            postalCode: data.postalCode ?? undefined,
-            country: data.country ?? undefined,
-            status: data.status ?? editingContact.status ?? undefined,
-            customData: data.customData ?? undefined,
-          } as any,
-        });
+        const body: UpdateClientRequest = {
+          id: editingContact.id,
+          // NOTE: productId absent de ClientModel (non exposé par le mapper)
+          productId: (editingContact as { productId?: string }).productId ?? undefined,
+          externalId: data.externalId ?? editingContact.externalId ?? undefined,
+          email: data.email ?? editingContact.email ?? undefined,
+          phone: data.phone ?? editingContact.phone ?? undefined,
+          firstName: data.firstName ?? editingContact.firstName ?? undefined,
+          lastName: data.lastName ?? editingContact.lastName ?? undefined,
+          gender: data.gender ?? editingContact.gender ?? undefined,
+          birthDate: data.birthDate ?? undefined,
+          language: data.language ?? undefined,
+          timezone: data.timezone ?? undefined,
+          address: data.address ?? undefined,
+          city: data.city ?? undefined,
+          postalCode: data.postalCode ?? undefined,
+          country: data.country ?? undefined,
+          status: data.status ?? editingContact.status ?? undefined,
+          customData: data.customData ?? undefined,
+        };
+        updateMutation.mutate({ body });
       } else {
         createMutation.mutate({ body: data });
       }
@@ -192,6 +209,7 @@ export function useContactViewModel() {
     contacts: contactsQuery.data?.items || [],
     totalCount: contactsQuery.data?.totalCount || 0,
     segments: segmentsQuery.data || [],
+    products,
     isLoading: contactsQuery.isLoading,
     isActionPending:
       createMutation.isPending ||
@@ -202,6 +220,7 @@ export function useContactViewModel() {
     search,
     statusFilter,
     segmentId,
+    productId,
     page,
     pageSize,
     counts,
@@ -224,6 +243,11 @@ export function useContactViewModel() {
     },
     setSegmentId: (v: string) => {
       setSegmentId(v);
+      setPage(1);
+    },
+    setProductId: (v: string) => {
+      setProductId(v);
+      setSegmentId("all"); // segments are product-scoped — reset on product change
       setPage(1);
     },
     setPage,

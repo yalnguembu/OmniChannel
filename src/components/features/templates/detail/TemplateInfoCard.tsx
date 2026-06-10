@@ -26,7 +26,7 @@ interface TemplateInfoCardProps {
 }
 
 const inputCls =
-  "w-full px-3.5 py-2.5 border border-[#E5E7EB] rounded-[10px] text-[13px] text-[#0D2137] bg-white outline-none focus:border-[#2E8FAD] focus:ring-2 focus:ring-[#2E8FAD]/10 font-[inherit] transition-all";
+  "w-full px-3.5 py-2.5 border border-[#E5E7EB] rounded-md text-[13px] text-[#0D2137] bg-white outline-none focus:border-[#2E8FAD] focus:ring-2 focus:ring-[#2E8FAD]/10 font-[inherit] transition-all";
 
 const labelCls = "text-[11.5px] font-medium text-[#0D2137] mb-1.5 block";
 

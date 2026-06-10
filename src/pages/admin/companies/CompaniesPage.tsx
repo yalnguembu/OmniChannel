@@ -1,16 +1,20 @@
 import { useNavigate } from "@tanstack/react-router";
 import { motion } from "framer-motion";
-import { Building2 } from "lucide-react";
+import { Building2, Plus } from "lucide-react";
+import { Button } from "@/components/ui/Button";
 import { SearchInput } from "@/components/ui/SearchInput";
 import { ViewToggle } from "@/components/ui/ViewToggle";
 import { Pagination } from "@/components/data-table/DataTable";
 import { PageLoader } from "@/components/feedback/PageLoader";
 import { EmptyState } from "@/components/feedback/EmptyState";
+import { Can } from "@/security/components/Can";
+import { ACTION } from "@/security/enums";
 import { cn } from "@/lib/utils";
 import { staggerContainer } from "@/lib/animations";
 import { useAdminCompaniesViewModel } from "@/hooks/admin/useAdminCompaniesViewModel";
 import { CompanyCard } from "@/components/features/admin/companies/CompanyCard";
 import { CompaniesTable } from "@/components/features/admin/companies/CompaniesTable";
+import { CompanyFormModal } from "@/components/features/admin/companies/CompanyFormModal";
 
 export default function CompaniesPage() {
   const vm = useAdminCompaniesViewModel();
@@ -41,6 +45,12 @@ export default function CompaniesPage() {
             containerClassName="w-56"
           />
           <ViewToggle view={vm.view} onChange={vm.setView} />
+          <Can perform={ACTION.COMPANY_WRITE}>
+            <Button variant="primary" onClick={vm.handleOpenCreate}>
+              <Plus size={13} />
+              Nouvelle company
+            </Button>
+          </Can>
         </div>
       </div>
 
@@ -97,6 +107,14 @@ export default function CompaniesPage() {
         pageSize={vm.pageSize}
         page={vm.page}
         onChange={vm.setPage}
+      />
+
+      <CompanyFormModal
+        isOpen={vm.isFormOpen}
+        onClose={vm.handleCloseForm}
+        countries={vm.countries}
+        onSubmit={vm.handleSubmit}
+        isPending={vm.isActionPending}
       />
     </div>
   );

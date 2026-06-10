@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { postApiConnectorSearchOptions } from "@/shared/api/generated/@tanstack/react-query.gen";
 import { useErrorHandling } from "@/shared/hooks/useErrorHandling";
+import type { SearchConnectorResponse } from "@/shared/api/generated/types.gen";
 
 /**
  * ViewModel for the Connectors tab of a specific product.
@@ -17,7 +18,7 @@ export function useProductConnectors(productId: string) {
         pageSize: 100,
       },
     }),
-    select: (res) => res?.data?.items || [],
+    select: (res) => (res?.data?.items ?? []) as SearchConnectorResponse[],
     enabled: !!productId,
   });
 

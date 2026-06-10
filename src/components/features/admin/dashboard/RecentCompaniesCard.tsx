@@ -4,10 +4,10 @@ import { Card, CardHeader, CardBody } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { formatRelative } from "@/lib/date";
 import { statusLabel } from "@/lib/utils";
-import type { CompanyDto } from "@/shared/api/generated/types.gen";
+import type { SearchCompanyResponse } from "@/shared/api/generated/types.gen";
 
 interface RecentCompaniesCardProps {
-  companies: CompanyDto[];
+  companies: SearchCompanyResponse[];
 }
 
 export function RecentCompaniesCard({ companies }: RecentCompaniesCardProps) {

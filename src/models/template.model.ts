@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { BaseModelSchema } from "./base.model";
-import type { TemplateDto } from "@/shared/api/generated/types.gen";
+import type { SearchTemplateResponse } from "@/shared/api/generated/types.gen";
 
 export const TemplateStatusSchema = z
   .enum(["draft", "active", "archived"])
@@ -26,11 +26,11 @@ export const TemplateSchema = BaseModelSchema.extend({
 export type TemplateModel = z.infer<typeof TemplateSchema>;
 
 /**
- * Safely maps a TemplateDto (from the API) to our precise TemplateModel.
+ * Safely maps a SearchTemplateResponse (from the API) to our precise TemplateModel.
  * Provides defaults for any missing or malformed data to ensure UI safety.
  */
 export function mapToTemplateModel(
-  dto: Partial<TemplateDto> | null | undefined,
+  dto: Partial<SearchTemplateResponse> | null | undefined,
 ): TemplateModel {
   if (!dto) {
     return TemplateSchema.parse({}); // Returns object with all defaults
@@ -47,10 +47,10 @@ export function mapToTemplateModel(
 }
 
 /**
- * Maps a list of Dto results to Model instances.
+ * Maps a list of search results to Model instances.
  */
 export function mapToTemplateModels(
-  dtos: (Partial<TemplateDto> | null | undefined)[],
+  dtos: (Partial<SearchTemplateResponse> | null | undefined)[],
 ): TemplateModel[] {
   return (dtos || []).map(mapToTemplateModel);
 }

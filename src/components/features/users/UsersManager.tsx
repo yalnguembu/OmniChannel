@@ -12,9 +12,11 @@ import {
 } from "@/components/data-table/DataTable";
 import { getInitials, avatarColor } from "@/lib/utils";
 import { formatDate } from "@/lib/date";
-import type { UserDto } from "@/shared/api/generated/types.gen";
+import type { SearchUserResponse } from "@/shared/api/generated/types.gen";
 import { useUsersViewModel, type UserScope } from "@/hooks/useUsersViewModel";
+import { isSystemUser } from "@/lib/auth";
 import { UserFormModal } from "./UserFormModal";
+import { UserDetailModal } from "./UserDetailModal";
 
 const statusVariant = (code?: string | null) => {
   const c = (code ?? "").toLowerCase();
@@ -45,7 +47,7 @@ export function UsersManager({
   const statusLabelFor = (code?: string | null) =>
     vm.statuses.find((s) => s.code === code)?.displayName ?? code ?? "—";
 
-  const columns: Column<UserDto>[] = [
+  const columns: Column<SearchUserResponse>[] = [
     {
       key: "name",
       label: "Utilisateur",
@@ -71,7 +73,7 @@ export function UsersManager({
       label: "Type",
       width: "120px",
       render: (u) => (
-        <Badge variant={u.userType === "system" ? "purple" : "info"}>
+        <Badge variant={isSystemUser(u.userType) ? "purple" : "info"}>
           {u.userType ?? "—"}
         </Badge>
       ),
@@ -139,6 +141,31 @@ export function UsersManager({
             onChange={(e) => vm.setSearch(e.target.value)}
             containerClassName="w-52"
           />
+          <div className="w-40">
+            <Select
+              value={vm.statusFilter}
+              onChange={(e) => vm.setStatusFilter(e.target.value)}
+              options={[
+                { value: "", label: "Tous les statuts" },
+                ...vm.statuses.map((s) => ({
+                  value: s.code ?? "",
+                  label: s.displayName ?? s.code ?? "",
+                })),
+              ]}
+            />
+          </div>
+          {vm.profiles.length > 0 && (
+            <div className="w-40">
+              <Select
+                value={vm.profileFilter}
+                onChange={(e) => vm.setProfileFilter(e.target.value)}
+                options={[
+                  { value: "", label: "Tous les profils" },
+                  ...vm.profiles.map((p) => ({ value: p.id, label: p.name })),
+                ]}
+              />
+            </div>
+          )}
           <Button variant="primary" onClick={() => vm.setIsModalOpen(true)}>
             <Plus size={13} />
             {scope === "company" ? "Inviter un membre" : "Nouvel utilisateur"}
@@ -152,6 +179,7 @@ export function UsersManager({
         loading={vm.isLoading}
         getRowId={(u) => u.id ?? ""}
         emptyTitle="Aucun utilisateur"
+        onRowClick={(u) => vm.openDetail(u)}
       />
       <Pagination
         total={vm.total}
@@ -166,7 +194,18 @@ export function UsersManager({
         onSubmit={vm.handleCreate}
         isPending={vm.isActionPending}
         types={vm.types}
+        statuses={vm.statuses}
         scope={scope}
+      />
+
+      <UserDetailModal
+        isOpen={!!vm.selectedUser}
+        onClose={vm.closeDetail}
+        user={vm.detailUser}
+        isLoading={vm.isDetailLoading}
+        statuses={vm.statuses}
+        onChangeStatus={vm.handleChangeStatus}
+        isPending={vm.isActionPending}
       />
 
       {/* Status change modal (enum-driven) */}

@@ -5,6 +5,7 @@ import { ACTION } from "@/security/enums";
 import { DataTable, type Column } from "@/components/data-table/DataTable";
 import type { SearchSecureSettingResponse } from "@/shared/api/generated/types.gen";
 import { useAdminSettingsViewModel } from "@/hooks/admin/useAdminSettingsViewModel";
+import { SecureSettingFormModal } from "./SecureSettingFormModal";
 
 type Vm = ReturnType<typeof useAdminSettingsViewModel>;
 
@@ -75,6 +76,15 @@ export function SecureSettingsSection({ vm }: SecureSettingsSectionProps) {
             Les valeurs sont chiffrées et masquées
           </p>
         </div>
+        <Can perform={ACTION.SECURESETTING_WRITE}>
+          <Button
+            size="sm"
+            variant="primary"
+            onClick={vm.handleOpenSecureSettingCreate}
+          >
+            + Ajouter
+          </Button>
+        </Can>
       </div>
       <div className="bg-[#EDE9FE] border border-[#C4B5FD] rounded-[12px] p-4 mb-4 flex items-center gap-3">
         <Lock size={16} className="text-[#7C3AED] shrink-0" />
@@ -89,6 +99,14 @@ export function SecureSettingsSection({ vm }: SecureSettingsSectionProps) {
         loading={vm.isLoadingSecure}
         getRowId={(s) => s.id ?? ""}
         emptyTitle="Aucun paramètre sécurisé"
+      />
+
+      <SecureSettingFormModal
+        isOpen={vm.modal === "secureSetting"}
+        onClose={vm.handleCloseModal}
+        editing={vm.editItem}
+        onSubmit={vm.handleSubmitSecureSetting}
+        isPending={vm.isSecureSettingPending}
       />
     </div>
   );

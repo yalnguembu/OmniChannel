@@ -5,7 +5,10 @@ import { z } from "zod";
 import { Modal } from "@/components/ui/Modal";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
-import type { PricingDto } from "@/shared/api/generated/types.gen";
+import type {
+  CreatePricingRequest,
+  SearchPricingResponse,
+} from "@/shared/api/generated/types.gen";
 
 const schema = z.object({
   channelCode: z.string().min(1, "Canal requis"),
@@ -18,8 +21,8 @@ type FormValues = z.infer<typeof schema>;
 interface PricingFormModalProps {
   isOpen: boolean;
   onClose: () => void;
-  editing: PricingDto | null;
-  onSubmit: (data: Partial<PricingDto>) => void;
+  editing: SearchPricingResponse | null;
+  onSubmit: (data: CreatePricingRequest) => void;
   isPending: boolean;
 }
 
@@ -70,7 +73,7 @@ export function PricingFormModal({
                 providerId: d.providerCode || undefined,
                 unitPrice: d.unitPrice,
                 platformFee: d.setupFee,
-              }),
+              } satisfies CreatePricingRequest),
             )}
             loading={isPending}
           >

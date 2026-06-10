@@ -2,6 +2,7 @@ import { useState, useCallback, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { postApiCampaignSearchOptions } from "@/shared/api/generated/@tanstack/react-query.gen";
 import { mapToCampaignModels } from "@/models/campaign.model";
+import type { SearchCampaignResponse } from "@/shared/api/generated/types.gen";
 import { useErrorHandling } from "@/shared/hooks/useErrorHandling";
 
 /**
@@ -25,7 +26,9 @@ export function useProductCampaigns(productId: string) {
       },
     }),
     select: (res) => ({
-      items: mapToCampaignModels(res?.data?.items || []),
+      items: mapToCampaignModels(
+        (res?.data?.items as SearchCampaignResponse[]) || [],
+      ),
       totalCount: res?.data?.totalCount || 0,
     }),
     enabled: !!productId,

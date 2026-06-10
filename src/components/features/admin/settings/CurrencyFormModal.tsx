@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -6,7 +6,10 @@ import { Modal } from "@/components/ui/Modal";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Toggle } from "@/components/ui/Toggle";
-import type { CurrencyDto } from "@/shared/api/generated/types.gen";
+import type {
+  CreateCurrencyRequest,
+  SearchCurrencyResponse,
+} from "@/shared/api/generated/types.gen";
 
 const schema = z.object({
   name: z.string().min(1, "Nom requis"),
@@ -14,14 +17,15 @@ const schema = z.object({
   symbol: z.string().optional(),
   decimalPlaces: z.coerce.number().optional(),
   exchangeRate: z.coerce.number().optional(),
+  isBaseCurrency: z.boolean().optional(),
 });
 type FormValues = z.infer<typeof schema>;
 
 interface CurrencyFormModalProps {
   isOpen: boolean;
   onClose: () => void;
-  editing: CurrencyDto | null;
-  onSubmit: (data: Partial<CurrencyDto>) => void;
+  editing: SearchCurrencyResponse | null;
+  onSubmit: (data: CreateCurrencyRequest) => void;
   isPending: boolean;
   active: boolean;
   onActiveChange: (v: boolean) => void;
@@ -39,16 +43,28 @@ export function CurrencyFormModal({
   const { register, handleSubmit, reset, formState: { errors } } =
     useForm<FormValues>({ resolver: zodResolver(schema) });
 
+  const [isBaseCurrency, setIsBaseCurrency] = useState(false);
+
   useEffect(() => {
-    if (isOpen)
+    if (isOpen) {
+      setIsBaseCurrency(editing?.isBaseCurrency ?? false);
       reset({
         name: editing?.name ?? "",
         code: editing?.code ?? "",
         symbol: editing?.symbol ?? "",
         decimalPlaces: editing?.decimalPlaces ?? 2,
         exchangeRate: editing?.exchangeRate ?? 1,
+        isBaseCurrency: editing?.isBaseCurrency ?? false,
       });
+    }
   }, [isOpen, editing, reset]);
+
+  const handleSubmitForm = (data: FormValues) => {
+    onSubmit({
+      ...data,
+      isBaseCurrency,
+    } as CreateCurrencyRequest);
+  };
 
   return (
     <Modal
@@ -63,7 +79,7 @@ export function CurrencyFormModal({
           </Button>
           <Button
             variant="primary"
-            onClick={handleSubmit((d) => onSubmit(d))}
+            onClick={handleSubmit(handleSubmitForm)}
             loading={isPending}
           >
             {editing ? "Enregistrer" : "Créer"}
@@ -81,9 +97,13 @@ export function CurrencyFormModal({
           <Input label="Décimales" type="number" {...register("decimalPlaces")} />
           <Input label="Taux" type="number" step="any" {...register("exchangeRate")} />
         </div>
-        <div className="flex items-center justify-between p-3.5 bg-[#F7F8F9] border border-[#E5E7EB] rounded-[10px]">
+        <div className="flex items-center justify-between p-3.5 bg-[#F7F8F9] border border-[#E5E7EB] rounded-md">
           <p className="text-[13px] font-medium text-[#0D2137]">Active</p>
           <Toggle checked={active} onChange={onActiveChange} />
+        </div>
+        <div className="flex items-center justify-between p-3.5 bg-[#F7F8F9] border border-[#E5E7EB] rounded-md">
+          <p className="text-[13px] font-medium text-[#0D2137]">Devise de base</p>
+          <Toggle checked={isBaseCurrency} onChange={setIsBaseCurrency} />
         </div>
       </div>
     </Modal>

@@ -5,16 +5,16 @@ import { Can } from "@/security/components/Can";
 import { ACTION } from "@/security/enums";
 import { DataTable, type Column } from "@/components/data-table/DataTable";
 import { formatCurrency } from "@/lib/currency";
-import type { SubscriptionPlanDto } from "@/shared/api/generated/types.gen";
+import type { SearchSubscriptionPlanResponse } from "@/shared/api/generated/types.gen";
 
 interface PlansTableProps {
-  plans: SubscriptionPlanDto[];
+  plans: SearchSubscriptionPlanResponse[];
   isLoading: boolean;
-  onEdit: (plan: SubscriptionPlanDto) => void;
+  onEdit: (plan: SearchSubscriptionPlanResponse) => void;
 }
 
 export function PlansTable({ plans, isLoading, onEdit }: PlansTableProps) {
-  const columns: Column<SubscriptionPlanDto>[] = [
+  const columns: Column<SearchSubscriptionPlanResponse>[] = [
     {
       key: "name",
       label: "Plan",

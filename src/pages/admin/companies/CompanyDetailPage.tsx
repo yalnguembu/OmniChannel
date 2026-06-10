@@ -1,9 +1,15 @@
 import { useNavigate, useParams } from "@tanstack/react-router";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Pencil, KeyRound, Trash2 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/Button";
+import { Modal } from "@/components/ui/Modal";
+import { Toggle } from "@/components/ui/Toggle";
 import { PageLoader } from "@/components/feedback/PageLoader";
+import { Can } from "@/security/components/Can";
+import { ACTION } from "@/security/enums";
 import { useAdminCompanyDetailViewModel } from "@/hooks/admin/useAdminCompanyDetailViewModel";
 import { CompanyDetailHeader } from "@/components/features/admin/companies/CompanyDetailHeader";
+import { CompanyFormModal } from "@/components/features/admin/companies/CompanyFormModal";
 import { CompanyInfoTab } from "@/components/features/admin/companies/CompanyInfoTab";
 import { CompanySubscriptionTab } from "@/components/features/admin/companies/CompanySubscriptionTab";
 import { CompanyWalletTab } from "@/components/features/admin/companies/CompanyWalletTab";
@@ -19,7 +25,9 @@ const TABS = [
 export default function CompanyDetailPage() {
   const { companyId } = useParams({ from: "/admin/companies/$companyId" });
   const navigate = useNavigate();
-  const vm = useAdminCompanyDetailViewModel(companyId);
+  const vm = useAdminCompanyDetailViewModel(companyId, {
+    onDeleted: () => navigate({ to: "/admin/companies" }),
+  });
 
   if (vm.isLoading) return <PageLoader />;
 
@@ -41,7 +49,38 @@ export default function CompanyDetailPage() {
         Retour aux companies
       </button>
 
-      <CompanyDetailHeader company={vm.company} />
+      <CompanyDetailHeader
+        company={vm.company}
+        actions={
+          <Can perform={ACTION.COMPANY_WRITE}>
+            <div className="flex items-center gap-2 mr-1 pr-3 border-r border-[#E5E7EB]">
+              <span className="text-[12.5px] text-[#4A7A94]">Sandbox</span>
+              <Toggle
+                checked={!!vm.company.isSandbox}
+                onChange={vm.handleToggleSandbox}
+                disabled={vm.isUpdatePending}
+              />
+            </div>
+            <Button variant="secondary" size="sm" onClick={vm.handleOpenEdit}>
+              <Pencil size={13} />
+              Modifier
+            </Button>
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={vm.handleRegenerateApiKey}
+              loading={vm.isRegeneratePending}
+            >
+              <KeyRound size={13} />
+              Régénérer la clé API
+            </Button>
+            <Button variant="danger" size="sm" onClick={vm.handleOpenDelete}>
+              <Trash2 size={13} />
+              Supprimer
+            </Button>
+          </Can>
+        }
+      />
 
       <div className="flex border-b border-[#E5E7EB] mb-6">
         {TABS.map((t) => (
@@ -68,6 +107,43 @@ export default function CompanyDetailPage() {
         <CompanyWalletTab wallet={vm.wallet} transactions={vm.transactions} />
       )}
       {vm.tab === "users" && <CompanyUsersTab companyId={companyId} />}
+
+      <CompanyFormModal
+        isOpen={vm.isEditOpen}
+        onClose={vm.handleCloseEdit}
+        countries={vm.countries}
+        editing={vm.company}
+        onSubmit={vm.handleUpdate}
+        isPending={vm.isUpdatePending}
+      />
+
+      <Modal
+        open={vm.isDeleteOpen}
+        onClose={vm.handleCloseDelete}
+        title="Supprimer la company"
+        subtitle={vm.company.name ?? ""}
+        size="sm"
+        footer={
+          <>
+            <Button variant="secondary" onClick={vm.handleCloseDelete}>
+              Annuler
+            </Button>
+            <Button
+              variant="danger"
+              onClick={vm.handleConfirmDelete}
+              loading={vm.isDeletePending}
+            >
+              Supprimer définitivement
+            </Button>
+          </>
+        }
+      >
+        <p className="text-[13px] text-[#4A7A94]">
+          Cette action est irréversible. La company «{" "}
+          <span className="font-medium text-[#0D2137]">{vm.company.name}</span> »
+          et ses données associées seront supprimées.
+        </p>
+      </Modal>
     </div>
   );
 }

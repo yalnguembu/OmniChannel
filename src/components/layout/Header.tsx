@@ -1,12 +1,15 @@
+import { useState } from 'react'
 import { Bell, LogOut } from 'lucide-react'
 import { useNotificationStore } from '@/store/notificationStore'
 import { formatDate } from '@/lib/date'
 import { Breadcrumbs } from './Breadcrumbs'
 import { useSession } from '@/hooks/useSession'
+import { MyProfileModal } from '@/components/features/users/MyProfileModal'
 
 export function Header() {
   const unreadCount = useNotificationStore((s) => s.unreadCount)
   const { user, logout, isLoggingOut } = useSession()
+  const [isProfileOpen, setIsProfileOpen] = useState(false)
 
   const displayName =
     [user?.firstName, user?.lastName].filter(Boolean).join(' ') ||
@@ -35,12 +38,19 @@ export function Header() {
           )}
         </button>
         <div className="flex items-center gap-2 pl-1">
-          <div className="w-8 h-8 rounded-full bg-[#E8F4F8] text-[#2E8FAD] flex items-center justify-center text-[12px] font-semibold">
-            {initials}
-          </div>
-          <span className="text-[12.5px] text-[#0D2137] font-medium max-w-[140px] truncate hidden md:block">
-            {displayName}
-          </span>
+          <button
+            type="button"
+            onClick={() => setIsProfileOpen(true)}
+            title="Mon profil"
+            className="flex items-center gap-2 rounded-[8px] p-1 -m-1 hover:bg-[#F0F2F4] transition-all cursor-pointer"
+          >
+            <div className="w-8 h-8 rounded-full bg-[#E8F4F8] text-[#2E8FAD] flex items-center justify-center text-[12px] font-semibold">
+              {initials}
+            </div>
+            <span className="text-[12.5px] text-[#0D2137] font-medium max-w-[140px] truncate hidden md:block">
+              {displayName}
+            </span>
+          </button>
           <button
             onClick={logout}
             disabled={isLoggingOut}
@@ -51,6 +61,11 @@ export function Header() {
           </button>
         </div>
       </div>
+
+      <MyProfileModal
+        isOpen={isProfileOpen}
+        onClose={() => setIsProfileOpen(false)}
+      />
     </header>
   )
 }

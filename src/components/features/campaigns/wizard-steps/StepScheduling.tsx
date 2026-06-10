@@ -25,24 +25,24 @@ export function StepScheduling({
         <div
           onClick={() => updateDraft({ scheduledAt: undefined })}
           className={cn(
-            "p-8 rounded-[24px] border-2 cursor-pointer transition-all space-y-4",
+            "p-6 rounded-[14px] border-2 cursor-pointer transition-all space-y-4",
             !draft.scheduledAt
-              ? "border-[#2E8FAD] bg-[#E8F4F8] shadow-lg shadow-[#2E8FAD]/10"
+              ? "border-[#2E8FAD] bg-[#E8F4F8]"
               : "border-[#E5E7EB] bg-white hover:border-[#B8CDD8]",
           )}
         >
           <div
             className={cn(
-              "w-14 h-14 rounded-2xl flex items-center justify-center",
+              "w-12 h-12 rounded-md flex items-center justify-center",
               !draft.scheduledAt
-                ? "bg-[#2E8FAD] text-white shadow-lg shadow-[#2E8FAD]/20"
+                ? "bg-[#2E8FAD] text-white"
                 : "bg-[#F3F4F6] text-[#8BAFC0]",
             )}
           >
             <Send size={24} />
           </div>
           <div>
-            <p className="text-[16px] font-bold text-[#0D2137]">Immédiat</p>
+            <p className="text-[15px] font-semibold text-[#0D2137]">Immédiat</p>
             <p className="text-[13px] text-[#8BAFC0] mt-1">
               Lancer la diffusion dès la validation finale.
             </p>
@@ -57,24 +57,24 @@ export function StepScheduling({
             })
           }
           className={cn(
-            "p-8 rounded-[24px] border-2 cursor-pointer transition-all space-y-4",
+            "p-6 rounded-[14px] border-2 cursor-pointer transition-all space-y-4",
             draft.scheduledAt
-              ? "border-[#2E8FAD] bg-[#E8F4F8] shadow-lg shadow-[#2E8FAD]/10"
+              ? "border-[#2E8FAD] bg-[#E8F4F8]"
               : "border-[#E5E7EB] bg-white hover:border-[#B8CDD8]",
           )}
         >
           <div
             className={cn(
-              "w-14 h-14 rounded-2xl flex items-center justify-center",
+              "w-12 h-12 rounded-md flex items-center justify-center",
               draft.scheduledAt
-                ? "bg-[#2E8FAD] text-white shadow-lg shadow-[#2E8FAD]/20"
+                ? "bg-[#2E8FAD] text-white"
                 : "bg-[#F3F4F6] text-[#8BAFC0]",
             )}
           >
             <Calendar size={24} />
           </div>
           <div>
-            <p className="text-[16px] font-bold text-[#0D2137]">Planifier</p>
+            <p className="text-[15px] font-semibold text-[#0D2137]">Planifier</p>
             <p className="text-[13px] text-[#8BAFC0] mt-1">
               Choisir une date et une heure précises.
             </p>
@@ -83,7 +83,7 @@ export function StepScheduling({
       </div>
 
       {draft.scheduledAt && (
-        <div className="bg-white p-8 rounded-[24px] border border-[#E5E7EB] space-y-4 animate-in slide-in-from-top-2 duration-300">
+        <div className="bg-white p-6 rounded-[14px] border border-[#E5E7EB] space-y-4 animate-in slide-in-from-top-2 duration-300">
           <Input
             label="Date & Heure de diffusion"
             type="datetime-local"

@@ -17,6 +17,12 @@ import {
   type TemplateModel,
 } from "@/models/template.model";
 import { useErrorHandling } from "@/shared/hooks/useErrorHandling";
+import type {
+  SearchTemplateResponse,
+  SearchTemplateChannelResponse,
+  CreateTemplateRequest,
+  UpdateTemplateRequest,
+} from "@/shared/api/generated/types.gen";
 
 /**
  * ViewModel for the Templates tab of a specific product.
@@ -44,8 +50,10 @@ export function useProductTemplates(productId: string) {
         searchTerm: search || undefined,
       },
     }),
-    select: (res: any) => ({
-      items: mapToTemplateModels(res?.data?.items || []),
+    select: (res) => ({
+      items: mapToTemplateModels(
+        (res?.data?.items as SearchTemplateResponse[]) || [],
+      ),
       totalCount: res?.data?.totalCount || 0,
     }),
     enabled: !!productId,
@@ -76,7 +84,8 @@ export function useProductTemplates(productId: string) {
         pageSize: 50,
       },
     }),
-    select: (res: any) => res?.data?.items || [],
+    select: (res) =>
+      (res?.data?.items as SearchTemplateChannelResponse[]) || [],
     enabled: !!activeTemplateId,
   });
 
@@ -138,7 +147,7 @@ export function useProductTemplates(productId: string) {
       
       if (linked) {
         const tc = templateChannelsQuery.data?.find(
-          (x: any) => x.channelId === channelId,
+          (x) => x.channelId === channelId,
         );
         if (tc && tc.id) {
           unlinkChannelMutation.mutate({ path: { id: tc.id } });
@@ -156,26 +165,33 @@ export function useProductTemplates(productId: string) {
   );
 
   const handleSubmit = useCallback(
-    (data: any) => {
+    (data: TemplateModel) => {
       if (editingTemplate) {
-        // Explicit pick of UpdateTemplateRequest fields — no id conflict, no read-only fields
-        updateMutation.mutate({
-          body: {
-            id: editingTemplate.id,
-            productId: data.productId ?? editingTemplate.productId,
-            name: data.name ?? editingTemplate.name,
-            description: data.description ?? editingTemplate.description,
-            status: data.status ?? editingTemplate.status,
-            subject: data.subject ?? (editingTemplate as any).subject,
-            content: data.content ?? (editingTemplate as any).content,
-            language: data.language ?? (editingTemplate as any).language,
-            category: data.category ?? (editingTemplate as any).category,
-            version: data.version ?? (editingTemplate as any).version,
-          } as any,
-        });
+        // Explicit pick of UpdateTemplateRequest fields — no id conflict, no read-only fields.
+        // subject/content live on the TemplateChannel variant, not the template.
+        const body: UpdateTemplateRequest = {
+          id: editingTemplate.id,
+          productId: data.productId ?? editingTemplate.productId,
+          name: data.name ?? editingTemplate.name,
+          description: data.description ?? editingTemplate.description,
+          status: data.status ?? editingTemplate.status,
+          category: data.category ?? editingTemplate.category,
+          defaultLanguage: data.language ?? editingTemplate.language,
+          version: data.version ?? editingTemplate.version,
+        };
+        updateMutation.mutate({ body });
       } else {
-        // CreateTemplateRequest — form data never contains id; safe to forward with productId
-        createMutation.mutate({ body: { ...data, productId } });
+        // CreateTemplateRequest — form data never contains id; scope to this product.
+        const body: CreateTemplateRequest = {
+          productId,
+          name: data.name,
+          description: data.description ?? undefined,
+          status: data.status,
+          category: data.category ?? undefined,
+          defaultLanguage: data.language,
+          version: data.version,
+        };
+        createMutation.mutate({ body });
       }
     },
     [editingTemplate, updateMutation, createMutation, productId],
@@ -205,36 +221,33 @@ export function useProductTemplates(productId: string) {
     setEditingTemplate,
     handleToggleChannel,
     handleSubmit,
-    // Explicit CreateTemplateRequest — no id, no timestamps
-    handleDuplicate: (t: TemplateModel) =>
-      createMutation.mutate({
-        body: {
-          productId,
-          name: `${t.name} (copie)`,
-          description: t.description ?? undefined,
-          status: "draft",
-          subject: (t as any).subject ?? undefined,
-          content: (t as any).content ?? undefined,
-          language: (t as any).language ?? undefined,
-          category: (t as any).category ?? undefined,
-          version: (t as any).version ?? undefined,
-        },
-      }),
-    // Explicit UpdateTemplateRequest
-    handleSave: (t: TemplateModel, data: Partial<TemplateModel>) =>
-      updateMutation.mutate({
-        body: {
-          id: t.id,
-          productId: t.productId,
-          name: data.name ?? t.name,
-          description: data.description ?? t.description,
-          status: data.status ?? t.status,
-          subject: (data as any).subject ?? (t as any).subject,
-          content: (data as any).content ?? (t as any).content,
-          language: (data as any).language ?? (t as any).language,
-          category: (data as any).category ?? (t as any).category,
-          version: (data as any).version ?? (t as any).version,
-        } as any,
-      }),
+    // Explicit CreateTemplateRequest — no id, no timestamps.
+    // subject/content/version live on the TemplateChannel variant —
+    // use PUT /api/TemplateChannel/variant to edit per-channel content after creation.
+    handleDuplicate: (t: TemplateModel) => {
+      const body: CreateTemplateRequest = {
+        productId,
+        name: `${t.name} (copie)`,
+        description: t.description ?? undefined,
+        status: "draft",
+        category: t.category ?? undefined,
+        defaultLanguage: t.language ?? undefined,
+      };
+      createMutation.mutate({ body });
+    },
+    // Explicit UpdateTemplateRequest — subject/content live on the variant.
+    handleSave: (t: TemplateModel, data: Partial<TemplateModel>) => {
+      const body: UpdateTemplateRequest = {
+        id: t.id,
+        productId: t.productId,
+        name: data.name ?? t.name,
+        description: data.description ?? t.description,
+        status: data.status ?? t.status,
+        category: data.category ?? t.category,
+        defaultLanguage: data.language ?? t.language,
+        version: data.version ?? t.version,
+      };
+      updateMutation.mutate({ body });
+    },
   };
 }

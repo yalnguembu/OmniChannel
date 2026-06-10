@@ -3,6 +3,7 @@ import { Toaster } from 'sonner';
 import { ConversationList } from '@/components/whatsapp/sidebar/ConversationList';
 import { ChatArea } from '@/components/whatsapp//chat/ChatArea';
 import { BulkModal } from '@/components/whatsapp//chat/Modals';
+import { TemplateBroadcastModal } from '@/components/whatsapp/chat/TemplateBroadcastModal';
 import { useSignalR } from '@/hooks/useSignalR';
 import { useBulkSend } from '@/hooks/useWhatsapp';
 import { useWhatsAppStore } from '@/store/useWhatsappStore';
@@ -10,6 +11,7 @@ import { useWhatsAppStore } from '@/store/useWhatsappStore';
 export const WhatsAppPage: React.FC = () => {
   const { activeConversationId, isMobileChatOpen } = useWhatsAppStore();
   const [bulkOpen, setBulkOpen] = useState(false);
+  const [tplOpen, setTplOpen] = useState(false);
   const bulkSend = useBulkSend();
 
   // Init SignalR
@@ -34,7 +36,10 @@ export const WhatsAppPage: React.FC = () => {
             ${isMobileChatOpen && activeConversationId ? '-translate-x-full' : 'translate-x-0'}
           `}
         >
-          <ConversationList onBulkSend={() => setBulkOpen(true)} />
+          <ConversationList
+            onBulkSend={() => setBulkOpen(true)}
+            onTemplateBroadcast={() => setTplOpen(true)}
+          />
         </div>
 
         {/* Chat area — slides in on mobile */}
@@ -56,6 +61,8 @@ export const WhatsAppPage: React.FC = () => {
         onSubmit={handleBulkSubmit}
         isSending={bulkSend.isPending}
       />
+
+      <TemplateBroadcastModal open={tplOpen} onClose={() => setTplOpen(false)} />
 
       <Toaster position="bottom-center" richColors />
     </>

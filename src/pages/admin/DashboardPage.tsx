@@ -25,7 +25,7 @@ export default function DashboardPage() {
 
       {/* Pending invoices alert */}
       <PendingInvoicesAlert
-        pendingInvoices={vm.pendingInvoices}
+        pendingInvoicesCount={vm.pendingInvoicesCount}
         pendingInvoiceAmount={vm.pendingInvoiceAmount}
       />
 

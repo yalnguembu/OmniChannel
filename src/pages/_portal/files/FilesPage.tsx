@@ -11,7 +11,12 @@ import {
   FolderOpen,
 } from "lucide-react";
 import { toast } from "sonner";
-import { FileService } from "@/shared/api/services";
+import {
+  postApiFileSearchOptions,
+  postApiFileSearchQueryKey,
+  deleteApiFileByIdMutation,
+} from "@/shared/api/generated/@tanstack/react-query.gen";
+import { client } from "@/shared/api/generated/client.gen";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { SearchInput } from "@/components/ui/SearchInput";
@@ -148,29 +153,41 @@ export function FilesPage() {
   const pageSize = 24;
 
   const { data, isLoading } = useQuery({
-    queryKey: ["files", search, page],
-    queryFn: () =>
-      FileService.search({
-        pageNumber: page,
-        pageSize,
-        searchTerm: search || undefined,
-      }),
+    ...postApiFileSearchOptions({
+      body: { pageNumber: page, pageSize, searchTerm: search || undefined },
+    }),
+    select: (res: any) => {
+      const items = (res?.data?.items ?? []) as FileDto[];
+      return {
+        items,
+        total: (res?.data?.totalCount ?? items.length) as number,
+      };
+    },
   });
-  const files: FileDto[] = data?.data?.items ?? [];
-  const total: number = data?.data?.totalCount ?? files.length;
+  const files = data?.items ?? [];
+  const total = data?.total ?? 0;
 
   const uploadMut = useMutation({
-    mutationFn: (file: File) => FileService.upload(file),
+    // The /api/File endpoint accepts a multipart form; the generated SDK only
+    // models the JSON metadata variant, so we post the multipart payload
+    // directly through the configured client instance.
+    mutationFn: (file: File) => {
+      const form = new FormData();
+      form.append("file", file);
+      return client.instance.post("/api/File", form, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+    },
     onSuccess: () => {
-      qc.invalidateQueries({ queryKey: ["files"] });
+      qc.invalidateQueries({ queryKey: postApiFileSearchQueryKey() });
       toast.success("Fichier uploadé");
     },
     onError: () => toast.error("Erreur lors de l'upload"),
   });
   const deleteMut = useMutation({
-    mutationFn: (id: string) => FileService.delete(id),
+    ...deleteApiFileByIdMutation(),
     onSuccess: () => {
-      qc.invalidateQueries({ queryKey: ["files"] });
+      qc.invalidateQueries({ queryKey: postApiFileSearchQueryKey() });
       toast.success("Fichier supprime");
     },
     onError: () => toast.error("Erreur"),
@@ -267,7 +284,7 @@ export function FilesPage() {
             variant="danger"
             onClick={(e) => {
               e.stopPropagation();
-              deleteMut.mutate(f.id);
+              deleteMut.mutate({ path: { id: f.id } });
             }}
           >
             <Trash2 size={12} />
@@ -379,7 +396,7 @@ export function FilesPage() {
             <FileCard
               key={f.id}
               f={f}
-              onDelete={() => deleteMut.mutate(f.id)}
+              onDelete={() => deleteMut.mutate({ path: { id: f.id } })}
             />
           ))}
         </motion.div>

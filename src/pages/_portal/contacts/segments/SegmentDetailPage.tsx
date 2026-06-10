@@ -1,7 +1,15 @@
+import { useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
-import { useQuery } from "@tanstack/react-query";
-import { ArrowLeft, Users, RefreshCw } from "lucide-react";
-import { ClientSegmentService, ClientService } from "@/shared/api/services";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { ArrowLeft, Users, RefreshCw, MessageSquare } from "lucide-react";
+import { toast } from "sonner";
+import {
+  getApiClientSegmentByIdOptions,
+  getApiClientSegmentByIdQueryKey,
+  postApiClientSegmentMemberSearchOptions,
+  postApiClientSegmentMemberSearchQueryKey,
+  postApiClientSegmentRecalculateByIdMutation,
+} from "@/shared/api/generated/@tanstack/react-query.gen";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { Card, CardHeader, CardBody } from "@/components/ui/Card";
@@ -9,24 +17,43 @@ import { DataTable, type Column } from "@/components/data-table/DataTable";
 import { PageLoader } from "@/components/feedback/PageLoader";
 import { formatDate, formatRelative } from "@/lib/date";
 import { fmt, getInitials, avatarColor, statusLabel } from "@/lib/utils";
-import type { ClientDto } from "@/shared/api/types";
+import {
+  mapToSegmentModel,
+  mapSegmentMembersToClients,
+  type ClientModel,
+} from "@/models/client.model";
+import { SegmentMessagesPreviewModal } from "@/components/features/contacts/SegmentMessagesPreviewModal";
 
 export function SegmentDetailPage({ segmentId }: { segmentId: string }) {
   const navigate = useNavigate();
+  const qc = useQueryClient();
+  const [previewOpen, setPreviewOpen] = useState(false);
 
-  const { data, isLoading } = useQuery({
-    queryKey: ["segment", segmentId],
-    queryFn: () => ClientSegmentService.getDetail(segmentId) as any,
+  const recalculateMutation = useMutation({
+    ...postApiClientSegmentRecalculateByIdMutation(),
+    onSuccess: () => {
+      toast.success("Recalcul lancé — les membres seront mis à jour sous peu");
+      qc.invalidateQueries({
+        queryKey: getApiClientSegmentByIdQueryKey({ path: { id: segmentId } }),
+      });
+      qc.invalidateQueries({
+        queryKey: postApiClientSegmentMemberSearchQueryKey(),
+      });
+    },
+    onError: () => toast.error("Erreur lors du recalcul du segment"),
   });
 
-  const { data: membersData } = useQuery({
-    queryKey: ["segment-members", segmentId],
-    queryFn: () =>
-      ClientService.search({ segmentId, pageNumber: 1, pageSize: 20 }) as any,
+  const { data: segment, isLoading } = useQuery({
+    ...getApiClientSegmentByIdOptions({ path: { id: segmentId } }),
+    select: (res) => (res?.data ? mapToSegmentModel(res.data) : null),
   });
 
-  const segment = data?.data;
-  const members: ClientDto[] = membersData?.data?.items ?? [];
+  const { data: members = [] } = useQuery({
+    ...postApiClientSegmentMemberSearchOptions({
+      body: { segmentId, pageNumber: 1, pageSize: 50 },
+    }),
+    select: (res) => mapSegmentMembersToClients([...(res?.data?.items ?? [])]),
+  });
 
   if (isLoading) return <PageLoader />;
   if (!segment)
@@ -36,7 +63,7 @@ export function SegmentDetailPage({ segmentId }: { segmentId: string }) {
       </div>
     );
 
-  const columns: Column<ClientDto>[] = [
+  const columns: Column<ClientModel>[] = [
     {
       key: "name",
       label: "Contact",
@@ -62,7 +89,7 @@ export function SegmentDetailPage({ segmentId }: { segmentId: string }) {
     {
       key: "phone",
       label: "Téléphone",
-      render: (c) => <span className="text-[#4A7A94]">{c.phone ?? "—"}</span>,
+      render: (c) => <span className="text-[#4A7A94]">{c.phone || "—"}</span>,
     },
     {
       key: "status",
@@ -70,7 +97,7 @@ export function SegmentDetailPage({ segmentId }: { segmentId: string }) {
       width: "110px",
       render: (c) => (
         <Badge variant={c.status === "active" ? "success" : "neutral"} dot>
-          {statusLabel(c.status)}
+          {statusLabel(c.status ?? "")}
         </Badge>
       ),
     },
@@ -107,11 +134,24 @@ export function SegmentDetailPage({ segmentId }: { segmentId: string }) {
           </div>
         </div>
         <div className="flex gap-2">
-          <Button variant="ghost" size="sm">
+          <Button
+            variant="ghost"
+            size="sm"
+            loading={recalculateMutation.isPending}
+            onClick={() => recalculateMutation.mutate({ path: { id: segmentId } })}
+          >
             <RefreshCw size={13} />
             Recalculer
           </Button>
-          <Button variant="primary" size="sm">
+          <Button variant="ghost" size="sm" onClick={() => setPreviewOpen(true)}>
+            <MessageSquare size={13} />
+            Aperçu messages
+          </Button>
+          <Button
+            variant="primary"
+            size="sm"
+            onClick={() => navigate({ to: "/campaigns/new", search: { segmentId } as any })}
+          >
             Créer une campagne
           </Button>
         </div>
@@ -128,7 +168,7 @@ export function SegmentDetailPage({ segmentId }: { segmentId: string }) {
         ].map((kpi) => (
           <div
             key={kpi.label}
-            className="bg-white border border-[#E5E7EB] rounded-[10px] px-4 py-3.5"
+            className="bg-white border border-[#E5E7EB] rounded-md px-4 py-3.5"
           >
             <p className="text-[11px] text-[#8BAFC0] uppercase tracking-[0.06em] mb-1.5">
               {kpi.label}
@@ -146,12 +186,19 @@ export function SegmentDetailPage({ segmentId }: { segmentId: string }) {
           <DataTable
             columns={columns}
             data={members}
-            getRowId={(c) => c.id}
+            getRowId={(c) => c.id ?? ""}
             emptyTitle="Aucun membre"
             emptyDescription="Ce segment ne contient pas encore de contacts"
           />
         </CardBody>
       </Card>
+
+      <SegmentMessagesPreviewModal
+        open={previewOpen}
+        onClose={() => setPreviewOpen(false)}
+        segmentId={segmentId}
+        segmentName={segment.name}
+      />
     </div>
   );
 }

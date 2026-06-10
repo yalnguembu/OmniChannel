@@ -7,7 +7,11 @@ import {
   postApiProviderMutation,
   putApiProviderMutation,
 } from "@/shared/api/generated/@tanstack/react-query.gen";
-import type { ProviderDto } from "@/shared/api/generated/types.gen";
+import type {
+  CreateProviderRequest,
+  UpdateProviderRequest,
+  SearchProviderResponse,
+} from "@/shared/api/generated/types.gen";
 import { useErrorHandling } from "@/shared/hooks/useErrorHandling";
 import { useDebounce } from "@/shared/hooks/useDebounce";
 
@@ -27,9 +31,8 @@ export function useProvidersViewModel() {
   const [page, setPage] = useState(1);
   const [view, setView] = useState<ProviderView>("card");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editingProvider, setEditingProvider] = useState<ProviderDto | null>(
-    null,
-  );
+  const [editingProvider, setEditingProvider] =
+    useState<SearchProviderResponse | null>(null);
 
   const debouncedSearch = useDebounce(search, 400);
 
@@ -43,11 +46,11 @@ export function useProvidersViewModel() {
         pageNumber: page,
         pageSize: PAGE_SIZE,
         searchTerm: debouncedSearch || undefined,
-      } as any,
+      },
     }),
-    select: (res: any) => ({
-      items: (res?.data?.items ?? []) as ProviderDto[],
-      total: (res?.data?.totalCount ?? 0) as number,
+    select: (res) => ({
+      items: (res?.data?.items ?? []) as SearchProviderResponse[],
+      total: res?.data?.totalCount ?? 0,
     }),
   });
 
@@ -97,17 +100,21 @@ export function useProvidersViewModel() {
     setIsModalOpen(true);
   }, []);
 
-  const handleOpenEdit = useCallback((provider: ProviderDto) => {
+  const handleOpenEdit = useCallback((provider: SearchProviderResponse) => {
     setEditingProvider(provider);
     setIsModalOpen(true);
   }, []);
 
   const handleSubmit = useCallback(
-    (data: Partial<ProviderDto>) => {
+    (data: CreateProviderRequest) => {
       if (editingProvider) {
-        updateMutation.mutate({ body: { ...editingProvider, ...data } as any });
+        const body: UpdateProviderRequest = {
+          ...data,
+          id: editingProvider.id,
+        };
+        updateMutation.mutate({ body });
       } else {
-        createMutation.mutate({ body: data as any });
+        createMutation.mutate({ body: data });
       }
     },
     [editingProvider, updateMutation, createMutation],

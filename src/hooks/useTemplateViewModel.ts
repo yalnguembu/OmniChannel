@@ -19,7 +19,12 @@ import {
   type TemplateModel,
 } from "@/models/template.model";
 import { useErrorHandling } from "@/shared/hooks/useErrorHandling";
-import type { TemplateDto } from "@/shared/api/generated/types.gen";
+import type {
+  SearchTemplateResponse,
+  SearchTemplateChannelResponse,
+  CreateTemplateRequest,
+  UpdateTemplateRequest,
+} from "@/shared/api/generated/types.gen";
 
 /**
  * ViewModel Hook for the Templates Page.
@@ -52,7 +57,9 @@ export function useTemplateViewModel() {
       },
     }),
     select: (res) => ({
-      items: mapToTemplateModels(res?.data?.items || []),
+      items: mapToTemplateModels(
+        (res?.data?.items as SearchTemplateResponse[]) || [],
+      ),
       totalCount: res?.data?.totalCount || 0,
     }),
     placeholderData: (prev) => prev,
@@ -91,7 +98,8 @@ export function useTemplateViewModel() {
         pageSize: 50,
       },
     }),
-    select: (res) => res?.data?.items || [],
+    select: (res) =>
+      (res?.data?.items as SearchTemplateChannelResponse[]) || [],
     enabled: !!activeTemplateId,
   });
 
@@ -201,7 +209,7 @@ export function useTemplateViewModel() {
 
       if (isLinked) {
         const tc = templateChannelsQuery.data?.find(
-          (x: any) => x.channelId === channelId,
+          (x) => x.channelId === channelId,
         );
         if (tc && tc.id) {
           unlinkChannelMutation.mutate({ path: { id: tc.id } });
@@ -225,66 +233,68 @@ export function useTemplateViewModel() {
 
   const handleDuplicate = useCallback(
     async (template: TemplateModel) => {
-      // Explicit pick of CreateTemplateRequest fields only — no id / timestamps / read-only properties
-      createMutation.mutate({
-        body: {
-          productId: template.productId,
-          name: `${template.name} (copie)`,
-          description: template.description ?? undefined,
-          status: "draft",
-          subject: (template as any).subject ?? undefined,
-          content: (template as any).content ?? undefined,
-          language: (template as any).language ?? undefined,
-          category: (template as any).category ?? undefined,
-          version: (template as any).version ?? undefined,
-        },
-      });
+      // subject/content/version live on the TemplateChannel variant —
+      // use PUT /api/TemplateChannel/variant to edit per-channel content after creation.
+      const body: CreateTemplateRequest = {
+        productId: template.productId,
+        name: `${template.name} (copie)`,
+        description: template.description ?? undefined,
+        status: "draft",
+        category: template.category ?? undefined,
+        defaultLanguage: template.language ?? undefined,
+      };
+      createMutation.mutate({ body });
     },
     [createMutation],
   );
 
   const handleInlineSave = useCallback(
     (template: TemplateModel, data: Partial<TemplateModel>) => {
-      // Explicit pick of UpdateTemplateRequest fields only
-      updateMutation.mutate({
-        body: {
-          id: template.id,
-          productId: template.productId,
-          name: data.name ?? template.name,
-          description: data.description ?? template.description,
-          status: data.status ?? template.status,
-          subject: (data as any).subject ?? (template as any).subject,
-          content: (data as any).content ?? (template as any).content,
-          language: (data as any).language ?? (template as any).language,
-          category: (data as any).category ?? (template as any).category,
-          version: (data as any).version ?? (template as any).version,
-        } as any,
-      });
+      // Explicit pick of UpdateTemplateRequest fields only.
+      // subject/content live on the TemplateChannel variant, not on the template.
+      const body: UpdateTemplateRequest = {
+        id: template.id,
+        productId: template.productId,
+        name: data.name ?? template.name,
+        description: data.description ?? template.description,
+        status: data.status ?? template.status,
+        category: data.category ?? template.category,
+        defaultLanguage: data.language ?? template.language,
+        version: data.version ?? template.version,
+      };
+      updateMutation.mutate({ body });
     },
     [updateMutation],
   );
 
   const handleSubmit = useCallback(
-    (data: any) => {
+    (data: TemplateModel) => {
       if (editingTemplate) {
-        // Explicit pick of UpdateTemplateRequest fields only
-        updateMutation.mutate({
-          body: {
-            id: editingTemplate.id,
-            productId: data.productId ?? editingTemplate.productId,
-            name: data.name ?? editingTemplate.name,
-            description: data.description ?? editingTemplate.description,
-            status: data.status ?? editingTemplate.status,
-            subject: data.subject ?? (editingTemplate as any).subject,
-            content: data.content ?? (editingTemplate as any).content,
-            language: data.language ?? (editingTemplate as any).language,
-            category: data.category ?? (editingTemplate as any).category,
-            version: data.version ?? (editingTemplate as any).version,
-          } as any,
-        });
+        // Explicit pick of UpdateTemplateRequest fields only.
+        // subject/content live on the TemplateChannel variant, not the template.
+        const body: UpdateTemplateRequest = {
+          id: editingTemplate.id,
+          productId: data.productId ?? editingTemplate.productId,
+          name: data.name ?? editingTemplate.name,
+          description: data.description ?? editingTemplate.description,
+          status: data.status ?? editingTemplate.status,
+          category: data.category ?? editingTemplate.category,
+          defaultLanguage: data.language ?? editingTemplate.language,
+          version: data.version ?? editingTemplate.version,
+        };
+        updateMutation.mutate({ body });
       } else {
-        // CreateTemplateRequest — data from form doesn't include id; safe to forward
-        createMutation.mutate({ body: data });
+        // CreateTemplateRequest — form data doesn't include id; map Model fields explicitly.
+        const body: CreateTemplateRequest = {
+          productId: data.productId,
+          name: data.name,
+          description: data.description ?? undefined,
+          status: data.status,
+          category: data.category ?? undefined,
+          defaultLanguage: data.language,
+          version: data.version,
+        };
+        createMutation.mutate({ body });
       }
     },
     [editingTemplate, updateMutation, createMutation],

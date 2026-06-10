@@ -1,16 +1,15 @@
 import { DataTable, type Column } from "@/components/data-table/DataTable";
 import { formatRelative } from "@/lib/date";
-import { formatCurrency } from "@/lib/currency";
 import { statusLabel, statusBadgeClass } from "@/lib/utils";
-import type { MessageDto } from "@/shared/api/generated/types.gen";
+import type { SearchMessageResponse } from "@/shared/api/generated/types.gen";
 
 interface MessagesTableProps {
-  messages: MessageDto[];
+  messages: SearchMessageResponse[];
   isLoading: boolean;
 }
 
 export function MessagesTable({ messages, isLoading }: MessagesTableProps) {
-  const columns: Column<MessageDto>[] = [
+  const columns: Column<SearchMessageResponse>[] = [
     {
       key: "id",
       label: "ID",
@@ -61,16 +60,6 @@ export function MessagesTable({ messages, isLoading }: MessagesTableProps) {
       render: (m) => (
         <span className="text-[12px] text-[#8BAFC0]">
           {m.sentAt ? formatRelative(m.sentAt) : "—"}
-        </span>
-      ),
-    },
-    {
-      key: "cost",
-      label: "Coût",
-      width: "100px",
-      render: (m) => (
-        <span className="font-mono text-[11.5px] text-[#4A7A94]">
-          {m.cost != null ? formatCurrency(m.cost) : "—"}
         </span>
       ),
     },

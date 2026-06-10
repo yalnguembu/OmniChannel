@@ -34,7 +34,7 @@ export function ProductGrid({
           action={
             <button
               onClick={onCreateClick}
-              className="mt-4 px-6 py-2.5 bg-[#2E8FAD] text-white rounded-[10px] text-[13px] font-semibold hover:bg-[#1B5E82] transition-colors shadow-sm"
+              className="mt-4 px-6 py-2.5 bg-[#2E8FAD] text-white rounded-md text-[13px] font-semibold hover:bg-[#1B5E82] transition-colors shadow-sm"
             >
               Créer un produit
             </button>

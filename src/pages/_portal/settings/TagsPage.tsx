@@ -2,7 +2,12 @@ import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Plus, X } from "lucide-react";
 import { toast } from "sonner";
-import { TagService } from "@/shared/api/services";
+import {
+  postApiTagSearchOptions,
+  postApiTagSearchQueryKey,
+  postApiTagMutation,
+  deleteApiTagByIdMutation,
+} from "@/shared/api/generated/@tanstack/react-query.gen";
 import { useAuthStore } from "@/store/authStore";
 import { Button } from "@/components/ui/Button";
 import { Modal } from "@/components/ui/Modal";
@@ -31,16 +36,15 @@ export function TagsPage() {
   const [tagName, setTagName] = useState("");
   const [tagColor, setTagColor] = useState(TAG_COLORS[0]);
 
-  const { data, isLoading } = useQuery({
-    queryKey: ["tags"],
-    queryFn: () => TagService.search({ pageNumber: 1, pageSize: 100 }),
+  const { data: tags = [], isLoading } = useQuery({
+    ...postApiTagSearchOptions({ body: { pageNumber: 1, pageSize: 100 } }),
+    select: (res: any) => (res?.data?.items ?? []) as TagDto[],
   });
-  const tags: TagDto[] = data?.data?.items ?? [];
 
   const createMutation = useMutation({
-    mutationFn: (body: Partial<TagDto>) => TagService.create(body),
+    ...postApiTagMutation(),
     onSuccess: () => {
-      qc.invalidateQueries({ queryKey: ["tags"] });
+      qc.invalidateQueries({ queryKey: postApiTagSearchQueryKey() });
       setModalOpen(false);
       toast.success("Tag créé");
     },
@@ -48,9 +52,9 @@ export function TagsPage() {
   });
 
   const deleteMutation = useMutation({
-    mutationFn: (id: string) => TagService.delete(id),
+    ...deleteApiTagByIdMutation(),
     onSuccess: () => {
-      qc.invalidateQueries({ queryKey: ["tags"] });
+      qc.invalidateQueries({ queryKey: postApiTagSearchQueryKey() });
       toast.success("Tag supprimé");
     },
     onError: () => toast.error("Erreur"),
@@ -110,7 +114,7 @@ export function TagsPage() {
                 {tag.name}
               </span>
               <button
-                onClick={() => deleteMutation.mutate(tag.id)}
+                onClick={() => deleteMutation.mutate({ path: { id: tag.id } })}
                 className="w-4 h-4 rounded-full bg-black/8 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-[#FEE2E2] hover:text-[#DC2626] cursor-pointer"
               >
                 <X size={8} />
@@ -138,7 +142,13 @@ export function TagsPage() {
             <Button
               variant="primary"
               onClick={() =>
-                createMutation.mutate({ name: tagName, color: tagColor, companyId: companyId ?? undefined })
+                createMutation.mutate({
+                  body: {
+                    name: tagName,
+                    color: tagColor,
+                    companyId: companyId ?? undefined,
+                  } as any,
+                })
               }
               loading={createMutation.isPending}
             >

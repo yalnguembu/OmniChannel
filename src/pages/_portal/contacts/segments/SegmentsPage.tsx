@@ -4,8 +4,13 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { Plus, Users, Trash2, Edit } from "lucide-react";
 import { toast } from "sonner";
-import { ClientSegmentService } from "@/shared/api/services";
-import { getApiProductDropdownOptions } from "@/shared/api/generated/@tanstack/react-query.gen";
+import {
+  getApiProductDropdownOptions,
+  postApiClientSegmentSearchOptions,
+  postApiClientSegmentSearchQueryKey,
+  postApiClientSegmentMutation,
+  deleteApiClientSegmentByIdMutation,
+} from "@/shared/api/generated/@tanstack/react-query.gen";
 import { Button } from "@/components/ui/Button";
 import { SearchInput } from "@/components/ui/SearchInput";
 import { Badge } from "@/components/ui/Badge";
@@ -17,7 +22,9 @@ import { PageLoader } from "@/components/feedback/PageLoader";
 import { EmptyState } from "@/components/feedback/EmptyState";
 import { Pagination } from "@/components/data-table/DataTable";
 import { fmt, cn } from "@/lib/utils";
-import type { ClientSegmentDto } from "@/shared/api/types";
+import { SegmentCriteriaModal } from "@/components/features/contacts/SegmentCriteriaModal";
+import { mapToSegmentModels, type SegmentModel } from "@/models/client.model";
+import type { ClientSegmentDto } from "@/shared/api/generated/types.gen";
 import { staggerContainer, cardItem } from "@/lib/animations";
 
 export function SegmentsPage() {
@@ -30,6 +37,8 @@ export function SegmentsPage() {
   const [segDesc, setSegDesc] = useState("");
   const [segProductId, setSegProductId] = useState("");
   const [isDynamic, setIsDynamic] = useState(false);
+  const [editorOpen, setEditorOpen] = useState(false);
+  const [editorSegment, setEditorSegment] = useState<SegmentModel | null>(null);
 
   const { data: productsData } = useQuery({
     ...getApiProductDropdownOptions(),
@@ -40,36 +49,39 @@ export function SegmentsPage() {
   const pageSize = 12;
 
   const { data, isLoading } = useQuery({
-    queryKey: ["segments", search, page],
-    queryFn: () =>
-      ClientSegmentService.search({
+    ...postApiClientSegmentSearchOptions({
+      body: {
         pageNumber: page,
         pageSize,
         searchTerm: search || undefined,
-      }) as any,
+      },
+    }),
+    select: (res) => ({
+      items: mapToSegmentModels([...(res?.data?.items ?? [])]),
+      total: res?.data?.totalCount ?? 0,
+    }),
   });
 
-  const segments: ClientSegmentDto[] = data?.data?.items ?? [];
-  const total: number = data?.data?.totalCount ?? 0;
+  const segments: SegmentModel[] = data?.items ?? [];
+  const total: number = data?.total ?? 0;
 
   const createMutation = useMutation({
-    mutationFn: (body: Partial<ClientSegmentDto>) =>
-      ClientSegmentService.create(body),
+    ...postApiClientSegmentMutation(),
     onSuccess: () => {
-      qc.invalidateQueries({ queryKey: ["segments"] });
+      qc.invalidateQueries({ queryKey: postApiClientSegmentSearchQueryKey() });
       setModalOpen(false);
       toast.success("Segment créé");
     },
-    onError: () => toast.error("Erreur"),
+    onError: () => toast.error("Erreur lors de la création"),
   });
 
   const deleteMutation = useMutation({
-    mutationFn: (id: string) => ClientSegmentService.delete(id),
+    ...deleteApiClientSegmentByIdMutation(),
     onSuccess: () => {
-      qc.invalidateQueries({ queryKey: ["segments"] });
+      qc.invalidateQueries({ queryKey: postApiClientSegmentSearchQueryKey() });
       toast.success("Segment supprimé");
     },
-    onError: () => toast.error("Erreur"),
+    onError: () => toast.error("Erreur lors de la suppression"),
   });
 
   return (
@@ -144,7 +156,7 @@ export function SegmentsPage() {
                 }
               >
                 <div className="flex items-start justify-between mb-3">
-                  <div className="w-10 h-10 rounded-[10px] bg-[#E8F4F8] flex items-center justify-center shrink-0">
+                  <div className="w-10 h-10 rounded-md bg-[#E8F4F8] flex items-center justify-center shrink-0">
                     <Users size={18} className="text-[#2E8FAD]" />
                   </div>
                   <div className="flex gap-1.5">
@@ -173,11 +185,18 @@ export function SegmentsPage() {
                     className="flex gap-1"
                     onClick={(e) => e.stopPropagation()}
                   >
-                    <button className="w-7 h-7 rounded-[6px] flex items-center justify-center text-[#8BAFC0] hover:bg-[#E8F4F8] hover:text-[#2E8FAD] transition-all cursor-pointer">
+                    <button
+                      onClick={() => {
+                        setEditorSegment(seg);
+                        setEditorOpen(true);
+                      }}
+                      title="Modifier les critères"
+                      className="w-7 h-7 rounded-[6px] flex items-center justify-center text-[#8BAFC0] hover:bg-[#E8F4F8] hover:text-[#2E8FAD] transition-all cursor-pointer"
+                    >
                       <Edit size={13} />
                     </button>
                     <button
-                      onClick={() => deleteMutation.mutate(seg.id)}
+                      onClick={() => deleteMutation.mutate({ path: { id: seg.id } })}
                       className="w-7 h-7 rounded-[6px] flex items-center justify-center text-[#8BAFC0] hover:bg-[#FEE2E2] hover:text-[#DC2626] transition-all cursor-pointer"
                     >
                       <Trash2 size={13} />
@@ -224,10 +243,12 @@ export function SegmentsPage() {
               variant="primary"
               onClick={() =>
                 createMutation.mutate({
-                  productId: segProductId || undefined,
-                  name: segName,
-                  description: segDesc,
-                  isDynamic,
+                  body: {
+                    productId: segProductId || undefined,
+                    name: segName,
+                    description: segDesc || undefined,
+                    isDynamic,
+                  },
                 })
               }
               loading={createMutation.isPending}
@@ -269,7 +290,7 @@ export function SegmentsPage() {
             value={segDesc}
             onChange={(e) => setSegDesc(e.target.value)}
           />
-          <div className="flex items-center justify-between p-4 bg-[#F7F8F9] border border-[#E5E7EB] rounded-[10px]">
+          <div className="flex items-center justify-between p-4 bg-[#F7F8F9] border border-[#E5E7EB] rounded-md">
             <div>
               <p className="text-[13px] font-medium text-[#0D2137]">
                 Segment dynamique
@@ -282,6 +303,13 @@ export function SegmentsPage() {
           </div>
         </div>
       </Modal>
+
+      <SegmentCriteriaModal
+        open={editorOpen}
+        onClose={() => setEditorOpen(false)}
+        productId={editorSegment?.productId ?? ""}
+        segment={editorSegment as unknown as ClientSegmentDto}
+      />
     </div>
   );
 }

@@ -6,7 +6,10 @@ import { Modal } from "@/components/ui/Modal";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Toggle } from "@/components/ui/Toggle";
-import type { CountryDto } from "@/shared/api/generated/types.gen";
+import type {
+  CreateCountryRequest,
+  SearchCountryResponse,
+} from "@/shared/api/generated/types.gen";
 
 const schema = z.object({
   name: z.string().min(1, "Nom requis"),
@@ -17,8 +20,8 @@ type FormValues = z.infer<typeof schema>;
 interface CountryFormModalProps {
   isOpen: boolean;
   onClose: () => void;
-  editing: CountryDto | null;
-  onSubmit: (data: Partial<CountryDto>) => void;
+  editing: SearchCountryResponse | null;
+  onSubmit: (data: CreateCountryRequest) => void;
   isPending: boolean;
   active: boolean;
   onActiveChange: (v: boolean) => void;
@@ -53,7 +56,7 @@ export function CountryFormModal({
           </Button>
           <Button
             variant="primary"
-            onClick={handleSubmit((d) => onSubmit(d))}
+            onClick={handleSubmit((d) => onSubmit(d satisfies CreateCountryRequest))}
             loading={isPending}
           >
             {editing ? "Enregistrer" : "Créer"}
@@ -64,7 +67,7 @@ export function CountryFormModal({
       <div className="flex flex-col gap-4">
         <Input label="Nom *" error={errors.name?.message} {...register("name")} placeholder="ex : Guinée" />
         <Input label="Code *" error={errors.code?.message} {...register("code")} placeholder="ex : GN" />
-        <div className="flex items-center justify-between p-3.5 bg-[#F7F8F9] border border-[#E5E7EB] rounded-[10px]">
+        <div className="flex items-center justify-between p-3.5 bg-[#F7F8F9] border border-[#E5E7EB] rounded-md">
           <p className="text-[13px] font-medium text-[#0D2137]">Actif</p>
           <Toggle checked={active} onChange={onActiveChange} />
         </div>

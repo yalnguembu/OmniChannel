@@ -8,9 +8,12 @@ import { ChannelTags, type ChannelLike } from "@/components/ui/ChannelTags";
 import { statusLabel, cn } from "@/lib/utils";
 import { formatRelative } from "@/lib/date";
 import { cardItem } from "@/lib/animations";
-import { ChannelService } from "@/shared/api/services";
-import { postApiCampaignChannelSearchOptions } from "@/shared/api/generated/@tanstack/react-query.gen";
+import {
+  postApiCampaignChannelSearchOptions,
+  getApiChannelDropdownOptions,
+} from "@/shared/api/generated/@tanstack/react-query.gen";
 import type { CampaignModel } from "@/models/campaign.model";
+import type { SearchCampaignChannelResponse } from "@/shared/api/generated/types.gen";
 
 const typeLabel: Record<string, string> = {
   standard: "Standard",
@@ -74,21 +77,22 @@ export function CampaignCard({
   /* ── Channels: campaign-channel links cross-referenced with dropdown ── */
   const { data: campChannelsData } = useQuery({
     ...postApiCampaignChannelSearchOptions({
-      body: { campaignId: campaign.id, pageNumber: 1, pageSize: 50 } as any,
+      body: { campaignId: campaign.id, pageNumber: 1, pageSize: 50 },
     }),
-    select: (res: any) => res?.data?.items ?? [],
+    select: (res) =>
+      (res?.data?.items as SearchCampaignChannelResponse[]) ?? [],
     enabled: !!campaign.id,
     staleTime: 2 * 60 * 1000,
   });
-  const campChannels: any[] = campChannelsData ?? [];
+  const campChannels: SearchCampaignChannelResponse[] = campChannelsData ?? [];
 
-  // Shared queryKey → deduped to one request across all cards on the grid.
-  const { data: channelsData } = useQuery({
-    queryKey: ["channels", "dropdown"],
-    queryFn: () => ChannelService.getDropdown() as any,
+  // Generated dropdown helper → shared deterministic key, so React Query
+  // dedupes it to one request across all cards on the grid.
+  const { data: allChannels = [] } = useQuery({
+    ...getApiChannelDropdownOptions(),
+    select: (res: any) => (res?.data ?? []) as any[],
     staleTime: 5 * 60 * 1000,
   });
-  const allChannels: any[] = channelsData?.data ?? [];
 
   const channels = React.useMemo<ChannelLike[]>(
     () =>

@@ -28,7 +28,7 @@ export default function PaymentsPage() {
         {kpis.map((k) => (
           <div
             key={k.label}
-            className="bg-white border border-[#E5E7EB] rounded-[10px] px-4 py-3.5"
+            className="bg-white border border-[#E5E7EB] rounded-md px-4 py-3.5"
           >
             <p className="text-[11px] text-[#8BAFC0] uppercase tracking-[0.06em] mb-1">
               {k.label}

@@ -5,7 +5,7 @@ import { Can } from "@/security/components/Can";
 import { ACTION } from "@/security/enums";
 import { formatCurrency } from "@/lib/currency";
 import { cardItem } from "@/lib/animations";
-import type { SubscriptionPlanDto } from "@/shared/api/generated/types.gen";
+import type { SearchSubscriptionPlanResponse } from "@/shared/api/generated/types.gen";
 
 const PLAN_COLORS = [
   "#2E8FAD",
@@ -17,7 +17,7 @@ const PLAN_COLORS = [
 ];
 
 interface PlanCardProps {
-  plan: SubscriptionPlanDto;
+  plan: SearchSubscriptionPlanResponse;
   onEdit: () => void;
 }
 
