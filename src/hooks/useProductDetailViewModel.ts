@@ -80,7 +80,6 @@ export function useProductDetailViewModel(productId: string) {
   const buildUpdateBody = useCallback(
     (patch: Partial<ProductEditData>): UpdateProductRequest => ({
       id: productId,
-      companyId: product?.companyId || undefined,
       name: patch.name ?? product?.name,
       description: patch.description ?? product?.description,
       status: patch.status ?? product?.status,

@@ -308,8 +308,28 @@
               }
             }
           },
-          "423": {
-            "description": "Locked",
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectOmniChannelApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectOmniChannelApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectOmniChannelApiResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
             "content": {
               "text/plain": {
                 "schema": {
@@ -393,6 +413,281 @@
               "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/LogoutResponseOmniChannelApiResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [ ]
+          }
+        ]
+      }
+    },
+    "/api/auth/change-password": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChangePasswordRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChangePasswordRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChangePasswordRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChangePasswordResponseOmniChannelApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChangePasswordResponseOmniChannelApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChangePasswordResponseOmniChannelApiResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectOmniChannelApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectOmniChannelApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectOmniChannelApiResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectOmniChannelApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectOmniChannelApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectOmniChannelApiResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [ ]
+          }
+        ]
+      }
+    },
+    "/api/auth/refresh": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MobileRefreshRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MobileRefreshRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/MobileRefreshRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/RefreshTokenResponseOmniChannelApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RefreshTokenResponseOmniChannelApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RefreshTokenResponseOmniChannelApiResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectOmniChannelApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectOmniChannelApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectOmniChannelApiResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/devices": {
+      "get": {
+        "tags": [
+          "Auth"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDeviceDtoListOmniChannelApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDeviceDtoListOmniChannelApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDeviceDtoListOmniChannelApiResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [ ]
+          }
+        ]
+      }
+    },
+    "/api/auth/devices/{deviceId}": {
+      "delete": {
+        "tags": [
+          "Auth"
+        ],
+        "parameters": [
+          {
+            "name": "deviceId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/RevokeDeviceResponseOmniChannelApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RevokeDeviceResponseOmniChannelApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RevokeDeviceResponseOmniChannelApiResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectOmniChannelApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectOmniChannelApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectOmniChannelApiResponse"
                 }
               }
             }
@@ -24089,74 +24384,6 @@
         }
       }
     },
-    "/api/auth/refresh": {
-      "post": {
-        "tags": [
-          "Refresh"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/MobileRefreshRequest"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/MobileRefreshRequest"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/MobileRefreshRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/RefreshTokenResponseOmniChannelApiResponse"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/RefreshTokenResponseOmniChannelApiResponse"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/RefreshTokenResponseOmniChannelApiResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ObjectOmniChannelApiResponse"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ObjectOmniChannelApiResponse"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ObjectOmniChannelApiResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/SecureSetting/search": {
       "post": {
         "tags": [
@@ -24956,117 +25183,6 @@
             }
           }
         }
-      }
-    },
-    "/api/auth/devices": {
-      "get": {
-        "tags": [
-          "Session"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/UserDeviceDtoListOmniChannelApiResponse"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UserDeviceDtoListOmniChannelApiResponse"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UserDeviceDtoListOmniChannelApiResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "403": {
-            "description": "Forbidden"
-          }
-        },
-        "security": [
-          {
-            "oauth2": [ ]
-          }
-        ]
-      }
-    },
-    "/api/auth/devices/{deviceId}": {
-      "delete": {
-        "tags": [
-          "Session"
-        ],
-        "parameters": [
-          {
-            "name": "deviceId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/RevokeDeviceResponseOmniChannelApiResponse"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/RevokeDeviceResponseOmniChannelApiResponse"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/RevokeDeviceResponseOmniChannelApiResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not Found",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ObjectOmniChannelApiResponse"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ObjectOmniChannelApiResponse"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ObjectOmniChannelApiResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "403": {
-            "description": "Forbidden"
-          }
-        },
-        "security": [
-          {
-            "oauth2": [ ]
-          }
-        ]
       }
     },
     "/api/Setting/{id}": {
@@ -30441,6 +30557,280 @@
         }
       }
     },
+    "/api/UserProfile/permissions/all": {
+      "get": {
+        "tags": [
+          "UserProfile"
+        ],
+        "responses": {
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectOmniChannelApiResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectOmniChannelApiResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectOmniChannelApiResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserPermissionModuleResponseListOmniChannelApiResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/UserProfile/permissions/all-string": {
+      "get": {
+        "tags": [
+          "UserProfile"
+        ],
+        "responses": {
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectOmniChannelApiResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectOmniChannelApiResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectOmniChannelApiResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StringListOmniChannelApiResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/UserProfile/permissions/{profileId}": {
+      "get": {
+        "tags": [
+          "UserProfile"
+        ],
+        "parameters": [
+          {
+            "name": "profileId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectOmniChannelApiResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectOmniChannelApiResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectOmniChannelApiResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProfilPermissionsResponseOmniChannelApiResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectOmniChannelApiResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "UserProfile"
+        ],
+        "parameters": [
+          {
+            "name": "profileId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "text/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectOmniChannelApiResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectOmniChannelApiResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectOmniChannelApiResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BooleanOmniChannelApiResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectOmniChannelApiResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectOmniChannelApiResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/Wallet/{id}": {
       "get": {
         "tags": [
@@ -33643,6 +34033,66 @@
         },
         "additionalProperties": { }
       },
+      "BooleanOmniChannelApiResponse": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "detail": {
+            "type": "string",
+            "nullable": true
+          },
+          "instance": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "type": "boolean"
+          },
+          "success": {
+            "type": "boolean"
+          },
+          "errorCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "traceId": {
+            "type": "string",
+            "nullable": true
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "validationErrors": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "nullable": true
+          },
+          "metadata": {
+            "type": "object",
+            "additionalProperties": { },
+            "nullable": true
+          }
+        },
+        "additionalProperties": { }
+      },
       "BuiltMessage": {
         "type": "object",
         "properties": {
@@ -34431,6 +34881,101 @@
           },
           "data": {
             "$ref": "#/components/schemas/CampaignStepDto"
+          },
+          "success": {
+            "type": "boolean"
+          },
+          "errorCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "traceId": {
+            "type": "string",
+            "nullable": true
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "validationErrors": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "nullable": true
+          },
+          "metadata": {
+            "type": "object",
+            "additionalProperties": { },
+            "nullable": true
+          }
+        },
+        "additionalProperties": { }
+      },
+      "ChangePasswordRequest": {
+        "type": "object",
+        "properties": {
+          "currentPassword": {
+            "type": "string",
+            "nullable": true
+          },
+          "newPassword": {
+            "type": "string",
+            "nullable": true
+          },
+          "confirmPassword": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ChangePasswordResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "changedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ChangePasswordResponseOmniChannelApiResponse": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "detail": {
+            "type": "string",
+            "nullable": true
+          },
+          "instance": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/ChangePasswordResponse"
           },
           "success": {
             "type": "boolean"
@@ -36793,10 +37338,6 @@
       "CreateBlocklistRequest": {
         "type": "object",
         "properties": {
-          "companyId": {
-            "type": "string",
-            "format": "uuid"
-          },
           "blockType": {
             "type": "string",
             "nullable": true
@@ -37199,10 +37740,6 @@
       "CreateCompanyChannelRequest": {
         "type": "object",
         "properties": {
-          "companyId": {
-            "type": "string",
-            "format": "uuid"
-          },
           "channelId": {
             "type": "string",
             "format": "uuid"
@@ -37289,10 +37826,6 @@
       "CreateCompanySettingRequest": {
         "type": "object",
         "properties": {
-          "companyId": {
-            "type": "string",
-            "format": "uuid"
-          },
           "value": {
             "type": "string",
             "nullable": true
@@ -37348,10 +37881,6 @@
       "CreateCompanyVerificationRequest": {
         "type": "object",
         "properties": {
-          "companyId": {
-            "type": "string",
-            "format": "uuid"
-          },
           "verificationType": {
             "type": "string",
             "nullable": true
@@ -37503,10 +38032,6 @@
       "CreateFileRequest": {
         "type": "object",
         "properties": {
-          "companyId": {
-            "type": "string",
-            "format": "uuid"
-          },
           "fileName": {
             "type": "string",
             "nullable": true
@@ -37540,10 +38065,6 @@
       "CreateIntegrationRequest": {
         "type": "object",
         "properties": {
-          "companyId": {
-            "type": "string",
-            "format": "uuid"
-          },
           "name": {
             "type": "string",
             "nullable": true
@@ -37618,10 +38139,6 @@
       "CreateInvoiceRequest": {
         "type": "object",
         "properties": {
-          "companyId": {
-            "type": "string",
-            "format": "uuid"
-          },
           "invoiceNumber": {
             "type": "string",
             "nullable": true
@@ -37809,10 +38326,6 @@
       "CreatePaymentRequest": {
         "type": "object",
         "properties": {
-          "companyId": {
-            "type": "string",
-            "format": "uuid"
-          },
           "invoiceId": {
             "type": "string",
             "format": "uuid",
@@ -37931,10 +38444,6 @@
       "CreateProductRequest": {
         "type": "object",
         "properties": {
-          "companyId": {
-            "type": "string",
-            "format": "uuid"
-          },
           "name": {
             "type": "string",
             "nullable": true
@@ -38021,10 +38530,6 @@
       "CreateSenderRequest": {
         "type": "object",
         "properties": {
-          "companyId": {
-            "type": "string",
-            "format": "uuid"
-          },
           "channelId": {
             "type": "string",
             "format": "uuid"
@@ -38138,10 +38643,6 @@
       "CreateSubscriptionRequest": {
         "type": "object",
         "properties": {
-          "companyId": {
-            "type": "string",
-            "format": "uuid"
-          },
           "planId": {
             "type": "string",
             "format": "uuid"
@@ -38218,10 +38719,6 @@
       "CreateTagRequest": {
         "type": "object",
         "properties": {
-          "companyId": {
-            "type": "string",
-            "format": "uuid"
-          },
           "name": {
             "type": "string",
             "nullable": true
@@ -38318,10 +38815,6 @@
       "CreateWebhookEndpointRequest": {
         "type": "object",
         "properties": {
-          "companyId": {
-            "type": "string",
-            "format": "uuid"
-          },
           "url": {
             "type": "string",
             "nullable": true
@@ -43120,6 +43613,9 @@
           },
           "isNewDevice": {
             "type": "boolean"
+          },
+          "requiresPasswordChange": {
+            "type": "boolean"
           }
         },
         "additionalProperties": false
@@ -44717,6 +45213,87 @@
           },
           "data": {
             "$ref": "#/components/schemas/ProductSchemaResponse"
+          },
+          "success": {
+            "type": "boolean"
+          },
+          "errorCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "traceId": {
+            "type": "string",
+            "nullable": true
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "validationErrors": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "nullable": true
+          },
+          "metadata": {
+            "type": "object",
+            "additionalProperties": { },
+            "nullable": true
+          }
+        },
+        "additionalProperties": { }
+      },
+      "ProfilPermissionsResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "profilName": {
+            "type": "string",
+            "nullable": true
+          },
+          "permissionModules": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserPermissionModuleResponse"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ProfilPermissionsResponseOmniChannelApiResponse": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "detail": {
+            "type": "string",
+            "nullable": true
+          },
+          "instance": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/ProfilPermissionsResponse"
           },
           "success": {
             "type": "boolean"
@@ -63219,6 +63796,70 @@
         },
         "additionalProperties": { }
       },
+      "StringListOmniChannelApiResponse": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "detail": {
+            "type": "string",
+            "nullable": true
+          },
+          "instance": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "success": {
+            "type": "boolean"
+          },
+          "errorCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "traceId": {
+            "type": "string",
+            "nullable": true
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "validationErrors": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "nullable": true
+          },
+          "metadata": {
+            "type": "object",
+            "additionalProperties": { },
+            "nullable": true
+          }
+        },
+        "additionalProperties": { }
+      },
       "StringObjectDictionaryIReadOnlyListOmniChannelApiResponse": {
         "type": "object",
         "properties": {
@@ -64409,10 +65050,6 @@
             "type": "string",
             "format": "uuid"
           },
-          "companyId": {
-            "type": "string",
-            "format": "uuid"
-          },
           "blockType": {
             "type": "string",
             "nullable": true
@@ -64859,10 +65496,6 @@
             "type": "string",
             "format": "uuid"
           },
-          "companyId": {
-            "type": "string",
-            "format": "uuid"
-          },
           "channelId": {
             "type": "string",
             "format": "uuid"
@@ -64957,10 +65590,6 @@
             "type": "string",
             "format": "uuid"
           },
-          "companyId": {
-            "type": "string",
-            "format": "uuid"
-          },
           "value": {
             "type": "string",
             "nullable": true
@@ -64972,10 +65601,6 @@
         "type": "object",
         "properties": {
           "id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "companyId": {
             "type": "string",
             "format": "uuid"
           },
@@ -65150,10 +65775,6 @@
             "type": "string",
             "format": "uuid"
           },
-          "companyId": {
-            "type": "string",
-            "format": "uuid"
-          },
           "fileName": {
             "type": "string",
             "nullable": true
@@ -65188,10 +65809,6 @@
         "type": "object",
         "properties": {
           "id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "companyId": {
             "type": "string",
             "format": "uuid"
           },
@@ -65274,10 +65891,6 @@
         "type": "object",
         "properties": {
           "id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "companyId": {
             "type": "string",
             "format": "uuid"
           },
@@ -65484,10 +66097,6 @@
             "type": "string",
             "format": "uuid"
           },
-          "companyId": {
-            "type": "string",
-            "format": "uuid"
-          },
           "invoiceId": {
             "type": "string",
             "format": "uuid",
@@ -65635,10 +66244,6 @@
             "type": "string",
             "format": "uuid"
           },
-          "companyId": {
-            "type": "string",
-            "format": "uuid"
-          },
           "name": {
             "type": "string",
             "nullable": true
@@ -65755,10 +66360,6 @@
         "type": "object",
         "properties": {
           "id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "companyId": {
             "type": "string",
             "format": "uuid"
           },
@@ -65901,10 +66502,6 @@
             "type": "string",
             "format": "uuid"
           },
-          "companyId": {
-            "type": "string",
-            "format": "uuid"
-          },
           "planId": {
             "type": "string",
             "format": "uuid"
@@ -65949,10 +66546,6 @@
         "type": "object",
         "properties": {
           "id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "companyId": {
             "type": "string",
             "format": "uuid"
           },
@@ -66098,10 +66691,6 @@
         "type": "object",
         "properties": {
           "id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "companyId": {
             "type": "string",
             "format": "uuid"
           },
@@ -66429,6 +67018,104 @@
           }
         },
         "additionalProperties": false
+      },
+      "UserPermissionModel": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string",
+            "nullable": true
+          },
+          "displayName": {
+            "type": "string",
+            "nullable": true
+          },
+          "isSelected": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "UserPermissionModuleResponse": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "permissions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserPermissionModel"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UserPermissionModuleResponseListOmniChannelApiResponse": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "detail": {
+            "type": "string",
+            "nullable": true
+          },
+          "instance": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserPermissionModuleResponse"
+            },
+            "nullable": true
+          },
+          "success": {
+            "type": "boolean"
+          },
+          "errorCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "traceId": {
+            "type": "string",
+            "nullable": true
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "validationErrors": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "nullable": true
+          },
+          "metadata": {
+            "type": "object",
+            "additionalProperties": { },
+            "nullable": true
+          }
+        },
+        "additionalProperties": { }
       },
       "UserProfileDto": {
         "type": "object",
@@ -67868,16 +68555,10 @@
       "name": "PublicWebhook"
     },
     {
-      "name": "Refresh"
-    },
-    {
       "name": "SecureSetting"
     },
     {
       "name": "Sender"
-    },
-    {
-      "name": "Session"
     },
     {
       "name": "Setting"

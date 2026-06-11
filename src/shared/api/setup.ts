@@ -5,10 +5,18 @@ import type {
   ApiResponse,
   FailedResponse,
 } from "@/shared/types/api";
-import { AxiosError, AxiosResponse } from "axios";
 
+// Empty VITE_API_URL (dev) → relative baseURL: requests hit the Vite origin and
+// go through its proxy (same-origin, no CORS). In prod, set VITE_API_URL to the
+// absolute API origin. Generated SDK paths already include `/api`, so this is
+// the origin only — no trailing `/api`.
 client.instance.defaults.baseURL =
-  (import.meta.env.VITE_API_URL as string) || "/api";
+  (import.meta.env.VITE_API_URL as string) || "";
+// Cookie-based auth: send/receive credentials so the browser stores the login
+// cookie and returns it. A direct cross-origin call needs the server to send a
+// specific Access-Control-Allow-Origin (not `*`) + Access-Control-Allow-
+// Credentials: true; the dev proxy sidesteps that by staying same-origin.
+client.instance.defaults.withCredentials = true;
 
 client.instance.interceptors.request.use((config) => {
   const token = useAuthStore.getState().token;
@@ -18,55 +26,15 @@ client.instance.interceptors.request.use((config) => {
   return config;
 });
 
-// ── Token refresh on 401 ─────────────────────────────────────────────────────
-// Single in-flight refresh shared across concurrent 401s.
-let refreshPromise: Promise<string | null> | null = null;
-
-async function refreshAccessToken(): Promise<string | null> {
-  const { refreshToken } = useAuthStore.getState();
-  if (!refreshToken) return null;
-  try {
-    const res = await client.instance.post("/api/auth/refresh", {
-      refreshToken,
-    });
-    const data = res.data?.data ?? res.data;
-    if (data?.accessToken) {
-      useAuthStore.getState().setTokens(data.accessToken, data.refreshToken);
-      return data.accessToken as string;
-    }
-    return null;
-  } catch {
-    return null;
-  }
-}
-
+// Any 401 → clear the session and bounce to the login page.
 client.instance.interceptors.response.use(
   (res) => res,
-  async (error: AxiosError) => {
-    const original = error.config as
-      | (typeof error.config & { __isRetry?: boolean })
-      | undefined;
-    const status = error.response?.status;
-    const url = original?.url ?? "";
-    const isAuthCall =
-      url.includes("/auth/refresh") || url.includes("/auth/login");
-
-    if (status === 401 && original && !original.__isRetry && !isAuthCall) {
-      original.__isRetry = true;
-      if (!refreshPromise) {
-        refreshPromise = refreshAccessToken().finally(() => {
-          refreshPromise = null;
-        });
-      }
-      const newToken = await refreshPromise;
-      if (newToken) {
-        original.headers = original.headers ?? {};
-        (original.headers as any).Authorization = `Bearer ${newToken}`;
-        return client.instance(original);
-      }
-      // Refresh failed → end the session.
+  (error) => {
+    if (error?.response?.status === 401) {
       useAuthStore.getState().logout();
-      if (typeof window !== "undefined") window.location.href = "/login";
+      if (typeof window !== "undefined") {
+        window.location.href = "/login";
+      }
     }
     return Promise.reject(error);
   },

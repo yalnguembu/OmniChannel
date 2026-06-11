@@ -15,7 +15,6 @@ import type {
   SearchWebhookDeliveryResponse,
   WebhookDeliveryDto,
 } from "@/shared/api/generated/types.gen";
-import { useAuthStore } from "@/store/authStore";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { Modal } from "@/components/ui/Modal";
@@ -46,7 +45,6 @@ const ALL_EVENTS = [
 
 export function WebhooksPage() {
   const qc = useQueryClient();
-  const companyId = useAuthStore((s) => s.user?.companyId);
   const [modalOpen, setModalOpen] = useState(false);
   const [deleteTarget, setDeleteTarget] = useState<WebhookEndpointDto | null>(
     null,
@@ -238,7 +236,6 @@ export function WebhooksPage() {
               onClick={() =>
                 createMutation.mutate({
                   body: {
-                    companyId: companyId ?? undefined,
                     url: urlInput,
                     // API: events is string | null (comma-separated)
                     events: selectedEvents.join(","),

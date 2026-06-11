@@ -7,6 +7,7 @@ import { formatRelative } from "@/lib/date";
 import { useDevicesViewModel } from "@/hooks/useDevicesViewModel";
 import { useSession } from "@/hooks/useSession";
 import { SettingsSidebar } from "@/components/features/settings/SettingsSidebar";
+import { ChangePasswordCard } from "@/components/features/settings/ChangePasswordCard";
 
 export function DevicesPage() {
   const vm = useDevicesViewModel();
@@ -18,12 +19,23 @@ export function DevicesPage() {
 
       <div className="flex-1 overflow-auto">
         <div className="p-7">
-          <div className="flex items-start justify-between mb-6">
+          <div className="mb-6">
+            <h1 className="text-[20px] font-semibold text-[#0D2137] tracking-tight">
+              Sécurité
+            </h1>
+            <p className="text-[12.5px] text-[#4A7A94] mt-1">
+              Mot de passe, sessions et appareils connectés.
+            </p>
+          </div>
+
+          <ChangePasswordCard />
+
+          <div className="mt-8 mb-4 flex max-w-[760px] items-end justify-between">
             <div>
-              <h1 className="text-[20px] font-semibold text-[#0D2137] tracking-tight">
-                Sessions & appareils
-              </h1>
-              <p className="text-[12.5px] text-[#4A7A94] mt-1">
+              <h2 className="text-[15px] font-semibold text-[#0D2137]">
+                Appareils & sessions
+              </h2>
+              <p className="text-[12px] text-[#8BAFC0] mt-0.5">
                 Gérez les appareils connectés à votre compte.
               </p>
             </div>

@@ -50,6 +50,7 @@ export function ChangePasswordPage() {
       changePassword({
         currentPassword: values.currentPassword || undefined,
         newPassword: values.newPassword,
+        confirmPassword: values.confirmPassword,
       }),
     onSuccess: () => {
       setRequiresPasswordChange(false);

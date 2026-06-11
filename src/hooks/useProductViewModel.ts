@@ -121,12 +121,9 @@ export function useProductViewModel() {
 
   const handleSubmit = useCallback(
     (data: CreateProductRequest) => {
-      const companyId =
-        data.companyId || editingProduct?.companyId || "019b99fe-5808-76dd-9d67-ed89827e5fd6";
       if (editingProduct) {
         const body: UpdateProductRequest = {
           id: editingProduct.id,
-          companyId,
           name: data.name ?? editingProduct.name,
           description: data.description ?? editingProduct.description,
           status: data.status ?? editingProduct.status,
@@ -135,8 +132,7 @@ export function useProductViewModel() {
         };
         updateMutation.mutate({ body });
       } else {
-        const body: CreateProductRequest = { ...data, companyId };
-        createMutation.mutate({ body });
+        createMutation.mutate({ body: data });
       }
     },
     [editingProduct, updateMutation, createMutation],

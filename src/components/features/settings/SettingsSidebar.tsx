@@ -28,7 +28,7 @@ const settingsGroups: SettingsGroup[] = [
     items: [
       { to: "/settings/company", label: "Profil company", icon: <Building size={16} /> },
       { to: "/settings/users", label: "Utilisateurs", icon: <Users size={16} /> },
-      { to: "/settings/security", label: "Sessions & appareils", icon: <ShieldCheck size={16} /> },
+      { to: "/settings/security", label: "Sécurité", icon: <ShieldCheck size={16} /> },
     ],
   },
   {

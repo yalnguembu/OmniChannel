@@ -15,17 +15,11 @@ export default defineConfig({
     },
   },
   plugins: [
-    // "@hey-api/schemas",
     "@hey-api/client-axios",
     {
       name: "@tanstack/react-query",
       queryOptions: true,
     },
-    // "zod",
-    // {
-    //   name: "@hey-api/sdk",
-    //   validator: true,
-    // },
     {
       enums: "typescript",
       name: "@hey-api/typescript",

@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { Plus, Edit, Trash2, Settings, Plug } from "lucide-react";
@@ -7,26 +7,15 @@ import { toast } from "sonner";
 import {
   postApiConnectorSearchOptions,
   postApiConnectorSearchQueryKey,
-  postApiConnectorMutation,
-  putApiConnectorMutation,
   deleteApiConnectorByIdMutation,
-  getApiProviderDropdownOptions,
-  getApiConnectorConfigByIdOptions,
-  putApiConnectorConfigureMutation,
 } from "@/shared/api/generated/@tanstack/react-query.gen";
-import type {
-  SearchConnectorResponse,
-  WaBusinessConnectorConfig,
-  WaBusinessConnectorConfigRequest,
-} from "@/shared/api/generated/types.gen";
+import type { SearchConnectorResponse } from "@/shared/api/generated/types.gen";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
-import { Modal } from "@/components/ui/Modal";
-import { Input } from "@/components/ui/Input";
-import { Select } from "@/components/ui/Select";
-import { Toggle } from "@/components/ui/Toggle";
 import { EmptyState } from "@/components/feedback/EmptyState";
 import { PageLoader } from "@/components/feedback/PageLoader";
+import { ConnectorFormModal } from "@/components/features/connectors/ConnectorFormModal";
+import { ConnectorConfigModal } from "@/components/features/connectors/ConnectorConfigModal";
 import { formatRelative } from "@/lib/date";
 import { cn } from "@/lib/utils";
 import { staggerContainer, cardItem } from "@/lib/animations";
@@ -45,19 +34,10 @@ const stripeColors: Record<number, string> = {
   3: "linear-gradient(90deg,#16A34A,#4ADE80)",
 };
 
-const emptyForm = {
-  name: "",
-  providerId: "",
-  priority: 1,
-  isActive: true,
-  isDefault: false,
-};
-
 export function IntegrationConnectorsPage() {
   const qc = useQueryClient();
   const [modalOpen, setModalOpen] = useState(false);
   const [editing, setEditing] = useState<SearchConnectorResponse | null>(null);
-  const [form, setForm] = useState(emptyForm);
   const [configureId, setConfigureId] = useState<string | null>(null);
   const [configureName, setConfigureName] = useState<string>("");
 
@@ -68,78 +48,22 @@ export function IntegrationConnectorsPage() {
   });
   const connectors = data ?? [];
 
-  const { data: providers = [] } = useQuery({
-    ...getApiProviderDropdownOptions(),
-    select: (res: unknown) =>
-      ((res as { data?: { id: string; name: string }[] })?.data ?? []),
-  });
-
-  const invalidate = () =>
-    qc.invalidateQueries({ queryKey: postApiConnectorSearchQueryKey() });
-
   const deleteMutation = useMutation({
     ...deleteApiConnectorByIdMutation(),
     onSuccess: () => {
-      invalidate();
+      qc.invalidateQueries({ queryKey: postApiConnectorSearchQueryKey() });
       toast.success("Connecteur supprimé");
     },
     onError: () => toast.error("Erreur lors de la suppression"),
   });
 
-  const onSaved = () => {
-    invalidate();
-    setModalOpen(false);
-    setEditing(null);
-    toast.success(editing ? "Connecteur mis à jour" : "Connecteur créé");
-  };
-  const createMutation = useMutation({
-    ...postApiConnectorMutation(),
-    onSuccess: onSaved,
-    onError: () => toast.error("Erreur lors de l'enregistrement"),
-  });
-  const updateMutation = useMutation({
-    ...putApiConnectorMutation(),
-    onSuccess: onSaved,
-    onError: () => toast.error("Erreur lors de l'enregistrement"),
-  });
-  const isSaving = createMutation.isPending || updateMutation.isPending;
-
   const openCreate = () => {
     setEditing(null);
-    setForm(emptyForm);
     setModalOpen(true);
   };
   const openEdit = (c: SearchConnectorResponse) => {
     setEditing(c);
-    setForm({
-      name: c.name ?? "",
-      providerId: c.providerId ?? "",
-      priority: c.priority ?? 1,
-      isActive: c.isActive ?? true,
-      isDefault: c.isDefault ?? false,
-    });
     setModalOpen(true);
-  };
-
-  const save = () => {
-    if (!form.name.trim() || !form.providerId) {
-      toast.error("Le nom et le provider sont requis");
-      return;
-    }
-    const base = {
-      name: form.name.trim(),
-      providerId: form.providerId,
-      priority: form.priority,
-      isActive: form.isActive,
-      isDefault: form.isDefault,
-    };
-    if (editing?.id) {
-      updateMutation.mutate({
-        body: { ...base, id: editing.id, productId: editing.productId ?? undefined },
-      });
-    } else {
-      createMutation.mutate({ body: base });
-    }
   };
 
   return (
@@ -200,17 +124,17 @@ export function IntegrationConnectorsPage() {
             <motion.div
               key={c.id}
               variants={cardItem}
-              className="bg-white border border-[#E5E7EB] rounded-[14px] overflow-hidden hover:border-[#6AB8D4] hover:shadow-[0_6px_20px_rgba(13,33,55,0.08)] hover:-translate-y-0.5 transition-all duration-200"
+              className="bg-white border border-[#E5E7EB] rounded-lg overflow-hidden hover:border-[#6AB8D4] hover:shadow-[0_6px_20px_rgba(13,33,55,0.08)] hover:-translate-y-0.5 transition-all duration-200"
             >
-              <div className="h-[3px]" style={{ background: stripeColors[i % 4] }} />
-              <div className="p-[18px]">
+              <div className="h-0.75" style={{ background: stripeColors[i % 4] }} />
+              <div className="p-4.5">
                 <div className="flex items-start justify-between mb-3">
                   <div className="flex items-center gap-3 flex-1 min-w-0">
                     <div className="w-10 h-10 rounded-md bg-[#F7F8F9] border border-[#E5E7EB] flex items-center justify-center text-[11px] font-bold text-[#4A7A94] shrink-0">
                       {(c.name ?? "?").slice(0, 2).toUpperCase()}
                     </div>
                     <div className="min-w-0">
-                      <p className="text-[14px] font-semibold text-[#0D2137] tracking-tight truncate">
+                      <p className="text-sm font-semibold text-[#0D2137] tracking-tight truncate">
                         {c.name || "Sans nom"}
                       </p>
                       <p className="text-[12px] text-[#8BAFC0] truncate">
@@ -273,13 +197,13 @@ export function IntegrationConnectorsPage() {
                     </button>
                     <button
                       onClick={() => openEdit(c)}
-                      className="w-7 h-7 rounded-[6px] flex items-center justify-center text-[#8BAFC0] hover:bg-[#E8F4F8] hover:text-[#2E8FAD] transition-all border border-transparent hover:border-[#2E8FAD]/20 cursor-pointer"
+                      className="w-7 h-7 rounded-sm flex items-center justify-center text-[#8BAFC0] hover:bg-[#E8F4F8] hover:text-[#2E8FAD] transition-all border border-transparent hover:border-[#2E8FAD]/20 cursor-pointer"
                     >
                       <Edit size={13} />
                     </button>
                     <button
                       onClick={() => c.id && deleteMutation.mutate({ path: { id: c.id } })}
-                      className="w-7 h-7 rounded-[6px] flex items-center justify-center text-[#8BAFC0] hover:bg-[#FEE2E2] hover:text-[#DC2626] transition-all border border-transparent hover:border-[#FCA5A5] cursor-pointer"
+                      className="w-7 h-7 rounded-sm flex items-center justify-center text-[#8BAFC0] hover:bg-[#FEE2E2] hover:text-[#DC2626] transition-all border border-transparent hover:border-[#FCA5A5] cursor-pointer"
                     >
                       <Trash2 size={13} />
                     </button>
@@ -292,7 +216,7 @@ export function IntegrationConnectorsPage() {
           <motion.div
             variants={cardItem}
             onClick={openCreate}
-            className="bg-transparent border border-dashed border-[#E5E7EB] rounded-[14px] flex flex-col items-center justify-center gap-3 p-8 cursor-pointer hover:bg-white hover:border-[#2E8FAD]/40 hover:border-solid hover:shadow-[0_4px_20px_rgba(13,33,55,0.06)] transition-all min-h-[200px]"
+            className="bg-transparent border border-dashed border-[#E5E7EB] rounded-lg flex flex-col items-center justify-center gap-3 p-8 cursor-pointer hover:bg-white hover:border-[#2E8FAD]/40 hover:border-solid hover:shadow-[0_4px_20px_rgba(13,33,55,0.06)] transition-all min-h-50"
           >
             <div className="w-11 h-11 rounded-[12px] bg-[#F0F2F4] border border-[#E5E7EB] flex items-center justify-center">
               <Plus size={20} className="text-[#4A7A94]" />
@@ -304,78 +228,14 @@ export function IntegrationConnectorsPage() {
         </motion.div>
       )}
 
-      {/* Create / edit */}
-      <Modal
+      <ConnectorFormModal
         open={modalOpen}
         onClose={() => {
           setModalOpen(false);
           setEditing(null);
         }}
-        title={editing ? `Modifier ${editing.name}` : "Nouveau connecteur"}
-        size="md"
-        footer={
-          <>
-            <Button
-              variant="secondary"
-              onClick={() => {
-                setModalOpen(false);
-                setEditing(null);
-              }}
-            >
-              Annuler
-            </Button>
-            <Button variant="primary" onClick={save} loading={isSaving}>
-              {editing ? "Enregistrer" : "Créer le connecteur"}
-            </Button>
-          </>
-        }
-      >
-        <div className="flex flex-col gap-4">
-          <Input
-            label="Nom du connecteur *"
-            placeholder="ex : Twilio Production"
-            value={form.name}
-            onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
-          />
-          <Select
-            label="Provider *"
-            value={form.providerId}
-            onChange={(e) => setForm((f) => ({ ...f, providerId: e.target.value }))}
-            options={[
-              { value: "", label: "Sélectionner un provider…" },
-              ...providers.map((p) => ({ value: p.id, label: p.name })),
-            ]}
-          />
-          <Select
-            label="Priorité"
-            value={String(form.priority)}
-            onChange={(e) =>
-              setForm((f) => ({ ...f, priority: Number(e.target.value) }))
-            }
-            options={[
-              { value: "1", label: "1 — Primaire" },
-              { value: "2", label: "2 — Secondaire" },
-              { value: "3", label: "3 — Fallback" },
-            ]}
-          />
-          <div className="flex items-center justify-between rounded-md border border-[#E5E7EB] bg-[#F7F8F9] p-3">
-            <span className="text-[13px] text-[#0D2137]">Actif</span>
-            <Toggle
-              checked={form.isActive}
-              onChange={(v) => setForm((f) => ({ ...f, isActive: v }))}
-            />
-          </div>
-          <div className="flex items-center justify-between rounded-md border border-[#E5E7EB] bg-[#F7F8F9] p-3">
-            <span className="text-[13px] text-[#0D2137]">
-              Connecteur par défaut
-            </span>
-            <Toggle
-              checked={form.isDefault}
-              onChange={(v) => setForm((f) => ({ ...f, isDefault: v }))}
-            />
-          </div>
-        </div>
-      </Modal>
+        editing={editing}
+      />
 
       <ConnectorConfigModal
         connectorId={configureId}
@@ -383,90 +243,5 @@ export function IntegrationConnectorsPage() {
         onClose={() => setConfigureId(null)}
       />
     </div>
-  );
-}
-
-const CONFIG_FIELDS: { key: keyof WaBusinessConnectorConfig; label: string; secret?: boolean }[] = [
-  { key: "phoneNumberId", label: "Phone Number ID" },
-  { key: "businessAccountId", label: "Business Account ID" },
-  { key: "businessId", label: "Business ID" },
-  { key: "appName", label: "Nom de l'app" },
-  { key: "version", label: "Version API" },
-  { key: "verifyToken", label: "Verify Token" },
-  { key: "accessToken", label: "Access Token", secret: true },
-  { key: "privateKeyPassword", label: "Mot de passe clé privée", secret: true },
-];
-
-function ConnectorConfigModal({
-  connectorId,
-  connectorName,
-  onClose,
-}: {
-  connectorId: string | null;
-  connectorName?: string;
-  onClose: () => void;
-}) {
-  const [cfg, setCfg] = useState<WaBusinessConnectorConfigRequest>({});
-
-  const { data, isLoading } = useQuery({
-    ...getApiConnectorConfigByIdOptions({ path: { id: connectorId ?? "" } }),
-    select: (res) => res?.data as WaBusinessConnectorConfig | undefined,
-    enabled: !!connectorId,
-  });
-
-  useEffect(() => {
-    if (data) setCfg({ ...data });
-  }, [data]);
-
-  const saveMutation = useMutation({
-    ...putApiConnectorConfigureMutation(),
-    onSuccess: () => {
-      toast.success("Configuration WhatsApp enregistrée");
-      onClose();
-    },
-    onError: () => toast.error("Erreur lors de l'enregistrement de la configuration"),
-  });
-
-  const save = () => {
-    if (!connectorId) return;
-    saveMutation.mutate({ body: { ...cfg, id: connectorId } });
-  };
-
-  return (
-    <Modal
-      open={!!connectorId}
-      onClose={onClose}
-      title="Configuration WhatsApp Business"
-      subtitle={connectorName || undefined}
-      size="md"
-      footer={
-        <>
-          <Button variant="secondary" onClick={onClose}>
-            Annuler
-          </Button>
-          <Button variant="primary" onClick={save} loading={saveMutation.isPending}>
-            Enregistrer
-          </Button>
-        </>
-      }
-    >
-      {isLoading ? (
-        <div className="py-8">
-          <PageLoader />
-        </div>
-      ) : (
-        <div className="flex flex-col gap-3">
-          {CONFIG_FIELDS.map((f) => (
-            <Input
-              key={f.key}
-              label={f.label}
-              type={f.secret ? "password" : "text"}
-              value={String((cfg[f.key] as string | null) ?? "")}
-              onChange={(e) => setCfg((c) => ({ ...c, [f.key]: e.target.value }))}
-            />
-          ))}
-        </div>
-      )}
-    </Modal>
   );
 }

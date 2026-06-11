@@ -13,7 +13,6 @@ import type {
 } from "@/shared/api/generated/types.gen";
 
 const schema = z.object({
-  companyId: z.string().min(1, "Company requise"),
   name: z.string().min(1, "Nom requis").max(200),
   type: z.string().min(1, "Type requis").max(1000),
   syncDirection: z.string().max(1000).optional(),
@@ -56,7 +55,6 @@ export function IntegrationFormModal({
   } = useForm<FormValues>({
     resolver: zodResolver(schema),
     defaultValues: {
-      companyId: "",
       name: "",
       type: "",
       syncDirection: "",
@@ -69,7 +67,6 @@ export function IntegrationFormModal({
   useEffect(() => {
     if (isOpen) {
       reset({
-        companyId: editing?.companyId ?? "",
         name: editing?.name ?? "",
         type: editing?.type ?? "",
         syncDirection: editing?.syncDirection ?? "",
@@ -102,7 +99,6 @@ export function IntegrationFormModal({
             variant="primary"
             onClick={handleSubmit((d) =>
               onSubmit({
-                companyId: d.companyId,
                 name: d.name,
                 type: d.type,
                 syncDirection: d.syncDirection || null,
@@ -119,24 +115,6 @@ export function IntegrationFormModal({
       }
     >
       <div className="flex flex-col gap-4">
-        <div className="flex flex-col gap-1.5">
-          <label className="text-[12.5px] font-medium text-[#0D2137]">
-            Company *
-          </label>
-          <Select {...register("companyId")} disabled={!!editing}>
-            <option value="">Sélectionner une company…</option>
-            {companies.map((c) => (
-              <option key={c.id} value={c.id}>
-                {c.name}
-              </option>
-            ))}
-          </Select>
-          {errors.companyId?.message && (
-            <p className="text-[12px] text-[#DC2626]">
-              {errors.companyId.message}
-            </p>
-          )}
-        </div>
         <Input
           label="Nom *"
           error={errors.name?.message}

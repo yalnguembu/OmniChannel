@@ -8,7 +8,6 @@ import {
   postApiBlocklistMutation,
   deleteApiBlocklistByIdMutation,
 } from "@/shared/api/generated/@tanstack/react-query.gen";
-import { useAuthStore } from "@/store/authStore";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { Modal } from "@/components/ui/Modal";
@@ -25,7 +24,6 @@ import { SettingsSidebar } from "@/components/features/settings/SettingsSidebar"
 
 export function BlocklistPage() {
   const qc = useQueryClient();
-  const companyId = useAuthStore((s) => s.user?.companyId);
   const [page, setPage] = useState(1);
   const [modalOpen, setModalOpen] = useState(false);
   const [deleteTarget, setDeleteTarget] = useState<BlocklistDto | null>(null);
@@ -186,7 +184,6 @@ export function BlocklistPage() {
                     blockType,
                     value,
                     reason,
-                    companyId: companyId ?? undefined,
                   } as any,
                 })
               }

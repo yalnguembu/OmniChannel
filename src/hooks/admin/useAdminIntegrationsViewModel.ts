@@ -130,7 +130,6 @@ export function useAdminIntegrationsViewModel() {
         const body: UpdateIntegrationRequest = {
           ...data,
           id: editingIntegration.id,
-          companyId: editingIntegration.companyId,
         };
         updateMutation.mutate({ body });
       } else {

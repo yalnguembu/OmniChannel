@@ -3,6 +3,7 @@ import { client } from "@/shared/api/generated/client.gen";
 export interface ChangePasswordPayload {
   currentPassword?: string;
   newPassword: string;
+  confirmPassword: string;
 }
 
 export interface ResetPasswordPayload {

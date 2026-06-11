@@ -8,7 +8,6 @@ import {
   postApiTagMutation,
   deleteApiTagByIdMutation,
 } from "@/shared/api/generated/@tanstack/react-query.gen";
-import { useAuthStore } from "@/store/authStore";
 import { Button } from "@/components/ui/Button";
 import { Modal } from "@/components/ui/Modal";
 import { Input } from "@/components/ui/Input";
@@ -31,7 +30,6 @@ const TAG_COLORS = [
 
 export function TagsPage() {
   const qc = useQueryClient();
-  const companyId = useAuthStore((s) => s.user?.companyId);
   const [modalOpen, setModalOpen] = useState(false);
   const [tagName, setTagName] = useState("");
   const [tagColor, setTagColor] = useState(TAG_COLORS[0]);
@@ -146,7 +144,6 @@ export function TagsPage() {
                   body: {
                     name: tagName,
                     color: tagColor,
-                    companyId: companyId ?? undefined,
                   } as any,
                 })
               }
