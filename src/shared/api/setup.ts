@@ -6,27 +6,16 @@ import type {
   FailedResponse,
 } from "@/shared/types/api";
 
-// Empty VITE_API_URL (dev) → relative baseURL: requests hit the Vite origin and
-// go through its proxy (same-origin, no CORS). In prod, set VITE_API_URL to the
-// absolute API origin. Generated SDK paths already include `/api`, so this is
-// the origin only — no trailing `/api`.
-client.instance.defaults.baseURL =
-  (import.meta.env.VITE_API_URL as string) || "";
-// Cookie-based auth: send/receive credentials so the browser stores the login
-// cookie and returns it. A direct cross-origin call needs the server to send a
-// specific Access-Control-Allow-Origin (not `*`) + Access-Control-Allow-
-// Credentials: true; the dev proxy sidesteps that by staying same-origin.
+client.instance.defaults.baseURL =(import.meta.env.VITE_API_URL as string) || "";
 client.instance.defaults.withCredentials = true;
+client.instance.defaults.headers["Content-Security-Policy"] = "unsafe";
+client.instance.defaults.headers["Content-Type"] = "application/json";
+client.instance.defaults.headers["X-Content-Type-Options"] = "nosniff";
+client.instance.defaults.headers["X-Frame-Options"] = "DENY";
+client.instance.defaults.headers["X-XSS-Protection"] = "1; mode=block";
+client.instance.defaults.headers["Referrer-Policy"] =  "strict-origin-when-cross-origin";
+client.instance.defaults.headers["Permissions-Policy"] = "camera=(), microphone=(), geolocation=(), payment=()";
 
-client.instance.interceptors.request.use((config) => {
-  const token = useAuthStore.getState().token;
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-  return config;
-});
-
-// Any 401 → clear the session and bounce to the login page.
 client.instance.interceptors.response.use(
   (res) => res,
   (error) => {
@@ -40,7 +29,6 @@ client.instance.interceptors.response.use(
   },
 );
 
-// execute request catch error smoothly
 export async function handleRequest<T>(
   requestPromise: ApiRequest<T>,
 ): Promise<ApiResponse<T>> {
