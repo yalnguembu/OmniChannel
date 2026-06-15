@@ -1,8 +1,6 @@
 import { useState } from "react";
 import { AnimatePresence } from "framer-motion";
 import { Plus, FileText, Eye, Download } from "lucide-react";
-import { useMutation } from "@tanstack/react-query";
-import { toast } from "sonner";
 import { Button } from "@/components/ui/Button";
 import { SearchInput } from "@/components/ui/SearchInput";
 import { Modal } from "@/components/ui/Modal";
@@ -13,7 +11,7 @@ import { TemplateList } from "@/components/features/templates/TemplateList";
 import { TemplateDetail } from "@/components/features/templates/TemplateDetail";
 import { TemplateModal } from "@/components/features/templates/TemplateModal";
 import { TemplateVariantModal } from "@/components/features/templates/TemplateVariantModal";
-import { postApiTemplateImportWhatsappMutation } from "@/shared/api/generated/@tanstack/react-query.gen";
+import { TemplateImportModal } from "@/components/features/templates/TemplateImportModal";
 import { useTemplateViewModel } from "@/hooks/useTemplateViewModel";
 import { cn } from "@/lib/utils";
 
@@ -30,17 +28,11 @@ export function TemplatesPage() {
   const vm = useTemplateViewModel();
   const [channelFilter, setChannelFilter] = useState<ChannelFilter>("all");
   const [variantChannelId, setVariantChannelId] = useState<string | null>(null);
+  const [importOpen, setImportOpen] = useState(false);
 
   const filteredTemplates = vm.templates.filter((t) => {
     if (channelFilter === "all") return true;
     return true; // Channel filter would need channel data on template — show all for now
-  });
-
-  // WhatsApp template import from Meta
-  const importWhatsappMutation = useMutation({
-    ...postApiTemplateImportWhatsappMutation(),
-    onSuccess: () => toast.success("Import WhatsApp lancé — les templates apparaîtront sous peu"),
-    onError: () => toast.error("Erreur lors de l'import WhatsApp"),
   });
 
   return (
@@ -58,8 +50,7 @@ export function TemplatesPage() {
             <Button
               variant="ghost"
               size="sm"
-              loading={importWhatsappMutation.isPending}
-              onClick={() => importWhatsappMutation.mutate({})}
+              onClick={() => setImportOpen(true)}
               title="Importer les templates depuis WhatsApp Business"
             >
               <Download size={13} />
@@ -180,6 +171,12 @@ export function TemplatesPage() {
         open={!!variantChannelId}
         onClose={() => setVariantChannelId(null)}
         templateChannelId={variantChannelId}
+      />
+
+      {/* WhatsApp import modal */}
+      <TemplateImportModal
+        open={importOpen}
+        onClose={() => setImportOpen(false)}
       />
 
       {/* Delete Confirmation Modal */}
