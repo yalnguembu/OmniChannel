@@ -78,7 +78,7 @@ export function TemplateList({ templates, activeId, onSelect, onEdit }: Template
 
             {/* Preview text */}
             <p className="text-[12px] text-[#8BAFC0] line-clamp-2 leading-relaxed">
-              {t.content ? t.content.slice(0, 100) : 'Aucun contenu'}
+              {t.content ? t.content?.slice(0, 100) : 'Aucun contenu'}
             </p>
 
             {/* Footer: date + version/usage */}
