@@ -27,6 +27,7 @@ import type {
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Select } from "@/components/ui/Select";
+import { Badge } from "@/components/ui/Badge";
 import { PageLoader } from "@/components/feedback/PageLoader";
 import { RegexInput } from "@/components/ui/RegexInput";
 import { cn } from "@/lib/utils";
@@ -43,8 +44,30 @@ export function SchemaTab({ productId }: { productId: string }) {
     (a) => a.key.trim() !== "" && !a.derived,
   );
 
+  // Mapping targets = reserved keywords (app-internal client fields) + custom
+  // attributes. Reserved keys must always be present in the client mapping.
+  const mappingTargets = (() => {
+    const seen = new Set<string>();
+    const reserved = vm.reservedKeyList.map((k) => ({
+      key: k,
+      label: k,
+      kind: "reserved" as const,
+    }));
+    const custom = mappedAttributes.map((a) => ({
+      key: a.key,
+      label: a.label || a.key,
+      kind: "custom" as const,
+    }));
+    return [...reserved, ...custom].filter((t) => {
+      const k = t.key.toLowerCase();
+      if (seen.has(k)) return false;
+      seen.add(k);
+      return true;
+    });
+  })();
+
   return (
-    <div className="space-y-8 max-w-3xl">
+    <div className="w-full xl:grid xl:grid-cols-2 xl:gap-4">
       {/* ── Attribute Schema ─────────────────────────────────────────────── */}
       <section className="bg-white border border-[#E5E7EB] rounded-lg overflow-hidden">
         <div className="flex items-center justify-between px-5 py-4 border-b border-[#E5E7EB]">
@@ -159,24 +182,29 @@ export function SchemaTab({ productId }: { productId: string }) {
 
         <div className="p-5 space-y-3">
           <p className="text-[12.5px] text-[#8BAFC0]">
-            Associez chaque attribut du schéma à la colonne (ou l'index) de
-            votre fichier d'import.
+            Associez chaque champ réservé et attribut du schéma à la colonne (ou
+            l'index) de votre fichier d'import. Les champs laissés vides ne sont
+            pas enregistrés.
           </p>
 
-          {mappedAttributes.length === 0 ? (
+          {mappingTargets.length === 0 ? (
             <p className="text-[13px] text-[#8BAFC0] text-center py-4">
               Définissez d'abord des attributs (avec une clé) pour pouvoir les
               mapper.
             </p>
           ) : (
-            mappedAttributes.map((attr) => (
-              <div key={attr.key} className="flex items-center gap-3">
+            mappingTargets.map((t) => (
+              <div key={t.key} className="flex items-center gap-3">
                 <div className="flex-1 min-w-0">
-                  <div className="px-3 py-2 bg-[#F9FAFB] border border-[#E5E7EB] rounded-md text-[13px] text-[#0D2137] truncate">
-                    <span className="font-medium">
-                      {attr.label || attr.key}
-                    </span>
-                    <span className="text-[#8BAFC0] ml-1.5">({attr.key})</span>
+                  <div className="px-3 py-2 bg-[#F9FAFB] border border-[#E5E7EB] rounded-md text-[13px] text-[#0D2137] truncate flex items-center gap-1.5">
+                    <span className="font-medium">{t.label}</span>
+                    {t.kind === "reserved" ? (
+                      <Badge variant="info" className="shrink-0">
+                        Réservé
+                      </Badge>
+                    ) : (
+                      <span className="text-[#8BAFC0]">({t.key})</span>
+                    )}
                   </div>
                 </div>
                 <ArrowLeftRight
@@ -186,9 +214,9 @@ export function SchemaTab({ productId }: { productId: string }) {
                 <div className="flex-1">
                   <Input
                     placeholder="Colonne CSV (ex: FIRST_NAME) ou index (0, 1…)"
-                    value={vm.mapping[attr.key] ?? ""}
+                    value={vm.mapping[t.key] ?? ""}
                     onChange={(e) =>
-                      vm.handleUpdateMapping(attr.key, e.target.value)
+                      vm.handleUpdateMapping(t.key, e.target.value)
                     }
                   />
                 </div>
@@ -200,6 +228,7 @@ export function SchemaTab({ productId }: { productId: string }) {
           <OrphanMappings
             mapping={vm.mapping}
             attributeKeys={vm.attributes.map((a) => a.key)}
+            reservedKeys={vm.reservedKeyList}
             onUpdate={vm.handleUpdateMapping}
             onRemove={vm.handleRemoveMapping}
           />
@@ -903,16 +932,23 @@ function ImpactPanel({
 function OrphanMappings({
   mapping,
   attributeKeys,
+  reservedKeys,
   onUpdate,
   onRemove,
 }: {
   mapping: Record<string, string>;
   attributeKeys: string[];
+  reservedKeys: string[];
   onUpdate: (key: string, value: string) => void;
   onRemove: (key: string) => void;
 }) {
   const known = new Set(attributeKeys);
-  const orphans = Object.keys(mapping).filter((k) => !known.has(k));
+  // Reserved keywords are the app's internal client fields — legitimate mapping
+  // targets, not orphans — so they must never appear in the "to clean up" list.
+  const reserved = new Set(reservedKeys.map((k) => k.toLowerCase()));
+  const orphans = Object.keys(mapping).filter(
+    (k) => !known.has(k) && !reserved.has(k.toLowerCase()),
+  );
   if (orphans.length === 0) return null;
 
   return (

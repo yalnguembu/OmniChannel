@@ -16,8 +16,6 @@ export function ContactsPage() {
   const vm = useContactViewModel();
   const navigate = useNavigate();
 
-  // Segments are product-scoped: when a product is selected, manage them in
-  // place; otherwise jump to the global segments page.
   const handleManageSegments = () => {
     if (vm.productId !== "all") vm.setIsSegmentsOpen(true);
     else navigate({ to: "/contacts/segments" });
@@ -193,6 +191,7 @@ export function ContactsPage() {
         editing={vm.editingContact}
         onSubmit={vm.handleSubmit}
         loading={vm.isActionPending}
+        productId={vm.productId !== "all" ? vm.productId : undefined}
       />
 
       <SegmentManagerModal

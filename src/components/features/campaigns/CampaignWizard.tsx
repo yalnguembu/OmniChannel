@@ -39,7 +39,7 @@ export function CampaignWizard({ onClose, productId }: CampaignWizardProps) {
       {/* Content column : scrollable steps + footer */}
       <div className="flex-1 flex flex-col min-h-0">
         <main className="flex-1 overflow-y-auto p-6 lg:p-8 scrollbar-custom">
-          <div className="w-full max-w-3xl mx-auto pb-12">
+          <div className="w-full max-w-6xl mx-auto pb-12">
             {wizard.step === 0 && (
               <StepGeneral
                 draft={wizard.draft}

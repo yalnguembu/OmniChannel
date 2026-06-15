@@ -37,7 +37,9 @@ export function useProductContacts(productId: string) {
   const [statusFilter, setStatusFilter] = useState("all");
   const [segmentId, setSegmentId] = useState("all");
   const [page, setPage] = useState(1);
-  const pageSize = 15;
+  const [pageSize, setPageSize] = useState(15);
+  const [sort, setSort] = useState("createdAt");
+  const [sortOrder, setSortOrder] = useState("desc");
 
   // Modals
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -46,6 +48,10 @@ export function useProductContacts(productId: string) {
   const [editingContact, setEditingContact] = useState<ClientModel | null>(
     null,
   );
+
+  // Detail side panel (same as the global contacts list)
+  const [activeContact, setActiveContact] = useState<ClientModel | null>(null);
+  const [detailTab, setDetailTab] = useState("profile");
 
   // --- Data Fetching ---
 
@@ -77,7 +83,9 @@ export function useProductContacts(productId: string) {
         pageSize,
         searchTerm: search || undefined,
         status: statusFilter !== "all" ? statusFilter : undefined,
-      },
+        sortBy: sort || undefined,
+        sortDirection: sortOrder || undefined,
+      } as any,
     }),
     select: (res) => ({
       items: mapToClientModels(
@@ -204,6 +212,9 @@ export function useProductContacts(productId: string) {
     statusFilter,
     segmentId,
     page,
+    pageSize,
+    sort,
+    sortOrder,
     isLoading: activeContactsQuery.isLoading,
     isActionPending: createMutation.isPending || updateMutation.isPending,
 
@@ -216,6 +227,10 @@ export function useProductContacts(productId: string) {
     setIsSegmentsOpen,
     editingContact,
     setEditingContact,
+    activeContact,
+    setActiveContact,
+    detailTab,
+    setDetailTab,
 
     // Handlers
     handleSearch,
@@ -227,6 +242,18 @@ export function useProductContacts(productId: string) {
       setSegmentId(v);
       setPage(1);
     },
+    setSort: (v: string) => {
+      setSort(v);
+      setPage(1);
+    },
+    setSortOrder: (v: string) => {
+      setSortOrder(v);
+      setPage(1);
+    },
+    setPageSize: (v: number) => {
+      setPageSize(v);
+      setPage(1);
+    },
     setPage,
     handleSubmit,
     handleEdit: (c: ClientModel) => {
@@ -236,10 +263,7 @@ export function useProductContacts(productId: string) {
     handleDelete: (id: string) => {
       if (window.confirm("Supprimer ce contact ?")) deleteMutation.mutate({ path: { id } });
     },
-    handleView: (c: ClientModel) => {
-      setEditingContact(c);
-      setIsModalOpen(true);
-    },
+    handleView: (c: ClientModel) => setActiveContact(c),
     handleImportSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: postApiClientSearchQueryKey(),

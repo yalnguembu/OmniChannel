@@ -1,12 +1,13 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { User, Mail, Phone, MapPin, ShieldCheck, Globe } from 'lucide-react'
+import { User, Mail, Phone, MapPin, ShieldCheck, Globe, Sparkles } from 'lucide-react'
 import { Modal } from '@/components/ui/Modal'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
 import { Select } from '@/components/ui/Select'
 import { clientSchema } from '@/lib/validators'
+import { useProductAttributeSchema } from '@/hooks/useProductAttributeSchema'
 import type { ClientModel } from '@/models/client.model'
 import type { CreateClientRequest } from '@/shared/api/generated/types.gen'
 import type { z } from 'zod'
@@ -19,12 +20,45 @@ interface ContactModalProps {
   editing: ClientModel | null;
   onSubmit: (data: CreateClientRequest) => void;
   loading: boolean;
+  /** Product the contact belongs to — drives the custom-attributes section. */
+  productId?: string;
 }
 
-export function ContactModal({ open, onClose, editing, onSubmit, loading }: ContactModalProps) {
+/** Tolerantly parse a client's customData (JSON string or object) into a flat map. */
+function parseCustomData(src: unknown): Record<string, string> {
+  if (!src) return {};
+  try {
+    const obj = typeof src === 'string' ? JSON.parse(src) : src;
+    if (obj && typeof obj === 'object') {
+      return Object.fromEntries(
+        Object.entries(obj as Record<string, unknown>).map(([k, v]) => [
+          k,
+          v == null ? '' : String(v),
+        ]),
+      );
+    }
+  } catch {
+    /* malformed customData — start empty */
+  }
+  return {};
+}
+
+export function ContactModal({ open, onClose, editing, onSubmit, loading, productId }: ContactModalProps) {
   const { register, handleSubmit, reset, formState: { errors } } = useForm<ClientForm>({
     resolver: zodResolver(clientSchema),
   });
+
+  // Custom attributes for the product (excludes derived — computed server-side).
+  const schema = useProductAttributeSchema(productId ?? '', {
+    enabled: open && !!productId,
+  });
+  const customAttributes = useMemo(
+    () => schema.attributes.filter((a) => a.key.trim() !== '' && !a.derived),
+    [schema.attributes],
+  );
+
+  // Custom attribute values, kept outside RHF since the field set is dynamic.
+  const [customValues, setCustomValues] = useState<Record<string, string>>({});
 
   useEffect(() => {
     if (editing) {
@@ -37,10 +71,26 @@ export function ContactModal({ open, onClose, editing, onSubmit, loading }: Cont
         country: editing.country || '',
         status: editing.status,
       });
+      setCustomValues(parseCustomData((editing as { customData?: unknown }).customData));
     } else {
       reset({ firstName: '', lastName: '', email: '', phone: '', city: '', country: '', status: 'active' });
+      setCustomValues({});
     }
   }, [editing, reset, open]);
+
+  const submit = handleSubmit((data) => {
+    const entries = Object.entries(customValues).filter(
+      ([, v]) => (v ?? '').trim() !== '',
+    );
+    const body: CreateClientRequest = {
+      ...(data as CreateClientRequest),
+      ...(productId ? { productId } : {}),
+      ...(entries.length > 0
+        ? { customData: JSON.stringify(Object.fromEntries(entries)) }
+        : {}),
+    };
+    onSubmit(body);
+  });
 
   return (
     <Modal
@@ -52,9 +102,9 @@ export function ContactModal({ open, onClose, editing, onSubmit, loading }: Cont
       footer={
         <div className="flex items-center justify-end gap-3 w-full">
           <Button variant="ghost" onClick={onClose} className="font-bold text-[#8BAFC0]">Annuler</Button>
-          <Button 
-            variant="primary" 
-            onClick={handleSubmit(onSubmit)} 
+          <Button
+            variant="primary"
+            onClick={submit}
             loading={loading}
             className="px-8 shadow-lg shadow-[#0D2137]/10 font-bold"
           >
@@ -149,6 +199,81 @@ export function ContactModal({ open, onClose, editing, onSubmit, loading }: Cont
             />
           </div>
         </div>
+
+        {/* Attributs personnalisés (schéma du produit) */}
+        {productId && customAttributes.length > 0 && (
+          <div className="space-y-4">
+            <div className="flex items-center gap-2 mb-2 px-1 text-[#2E8FAD]">
+              <Sparkles size={14} />
+              <span className="text-[11px] font-bold text-[#8BAFC0] uppercase tracking-[0.1em]">
+                Attributs personnalisés
+              </span>
+            </div>
+            <div className="grid grid-cols-2 gap-5">
+              {customAttributes.map((attr) => {
+                const valueKind = schema.typeInfoFor(attr.type)?.valueKind;
+                const value = customValues[attr.key] ?? '';
+                const setValue = (v: string) =>
+                  setCustomValues((prev) => ({ ...prev, [attr.key]: v }));
+                const label = `${attr.label || attr.key}${attr.required ? ' *' : ''}`;
+
+                // Select / MultiSelect — driven by the attribute's options.
+                if (attr.options.length > 0) {
+                  return (
+                    <Select
+                      key={attr.key}
+                      label={label}
+                      value={value}
+                      onChange={(e) => setValue(e.target.value)}
+                      options={[
+                        { value: '', label: 'Non renseigné' },
+                        ...attr.options.map((o) => ({
+                          value: String(o.value ?? ''),
+                          label: o.label || String(o.value ?? ''),
+                        })),
+                      ]}
+                      className="h-11 bg-[#FBFBFC]"
+                    />
+                  );
+                }
+                if (valueKind === 'boolean') {
+                  return (
+                    <Select
+                      key={attr.key}
+                      label={label}
+                      value={value}
+                      onChange={(e) => setValue(e.target.value)}
+                      options={[
+                        { value: '', label: 'Non renseigné' },
+                        { value: 'true', label: 'Oui' },
+                        { value: 'false', label: 'Non' },
+                      ]}
+                      className="h-11 bg-[#FBFBFC]"
+                    />
+                  );
+                }
+                const inputType =
+                  valueKind === 'number'
+                    ? 'number'
+                    : valueKind === 'date'
+                      ? 'date'
+                      : valueKind === 'dateTime'
+                        ? 'datetime-local'
+                        : 'text';
+                return (
+                  <Input
+                    key={attr.key}
+                    label={label}
+                    type={inputType}
+                    value={value}
+                    onChange={(e) => setValue(e.target.value)}
+                    className="h-11 bg-[#FBFBFC]"
+                  />
+                );
+              })}
+            </div>
+          </div>
+        )}
       </form>
     </Modal>
   )

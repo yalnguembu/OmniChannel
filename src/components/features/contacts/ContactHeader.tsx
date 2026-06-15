@@ -1,5 +1,5 @@
 import React from "react";
-import { Filter, Download, UserPlus, Users } from "lucide-react";
+import { Filter, Download, UserPlus, Users, ArrowDown, ArrowUp } from "lucide-react";
 import { Modal } from "@/components/ui/Modal";
 
 interface ContactHeaderProps {
@@ -13,8 +13,8 @@ interface ContactHeaderProps {
   currentFilter: string;
   onFilterChange: (v: string) => void;
   // Advanced Modal
-  isFilterModalOpen: boolean;
-  setIsFilterModalOpen: (v: boolean) => void;
+  isFilterModalOpen?: boolean;
+  setIsFilterModalOpen?: (v: boolean) => void;
   sort: string;
   setSort: (v: string) => void;
   sortOrder: string;
@@ -24,10 +24,15 @@ interface ContactHeaderProps {
   segments: { id: string; name: string }[];
   segmentId: string;
   setSegmentId: (v: string) => void;
-  products: { id: string; name: string }[];
-  productId: string;
-  setProductId: (v: string) => void;
+  products?: { id: string; name: string }[];
+  productId?: string;
+  setProductId?: (v: string) => void;
   onManageSegments: () => void;
+  /** Render the advanced filters (segment · sort · order · page size) inline in
+   * the toolbar instead of behind the "Filtres" button + modal. */
+  inlineFilters?: boolean;
+  /** Hide the product filter (e.g. when already scoped to a product). */
+  hideProductFilter?: boolean;
 }
 
 export function ContactHeader({
@@ -50,11 +55,15 @@ export function ContactHeader({
   segments,
   segmentId,
   setSegmentId,
-  products,
-  productId,
+  products = [],
+  productId = "all",
   setProductId,
   onManageSegments,
+  inlineFilters = false,
+  hideProductFilter = false,
 }: ContactHeaderProps) {
+  const compactSelect =
+    "h-[24px] rounded-full border border-[#E5E7EB] bg-white px-2 text-[12px] text-[#0D2137] outline-none transition-colors focus:border-[#2E8FAD] cursor-pointer max-w-[170px]";
   return (
     <>
       {/* Toolbar — single row: search · filters · actions (mirrors MessageLogHeader) */}
@@ -81,27 +90,31 @@ export function ContactHeader({
         <div className="w-[1px] h-[18px] bg-[#E5E7EB] shrink-0 mx-1"></div>
 
         {/* Product filter */}
-        <select
-          value={productId}
-          onChange={(e) => setProductId(e.target.value)}
-          title="Filtrer par produit"
-          className="h-[34px] max-w-[180px] rounded-full border border-[#E5E7EB] bg-white px-3 text-[12px] text-[#0D2137] outline-none transition-colors focus:border-[#2E8FAD]"
-        >
-          <option value="all">Tous les produits</option>
-          {products.map((p) => (
-            <option key={p.id} value={p.id}>
-              {p.name}
-            </option>
-          ))}
-        </select>
+        {!hideProductFilter && (
+          <>
+            <select
+              value={productId}
+              onChange={(e) => setProductId?.(e.target.value)}
+              title="Filtrer par produit"
+              className="h-[34px] max-w-[180px] rounded-full border border-[#E5E7EB] bg-white px-3 text-[12px] text-[#0D2137] outline-none transition-colors focus:border-[#2E8FAD]"
+            >
+              <option value="all">Tous les produits</option>
+              {products.map((p) => (
+                <option key={p.id} value={p.id}>
+                  {p.name}
+                </option>
+              ))}
+            </select>
 
-        <div className="w-[1px] h-[18px] bg-[#E5E7EB] shrink-0 mx-1"></div>
+            <div className="w-[1px] h-[18px] bg-[#E5E7EB] shrink-0 mx-1"></div>
+          </>
+        )}
 
         {/* Status filter pills */}
         {filterOptions.map((opt) => (
           <button
             key={opt.value}
-            className={`text-[12px] px-3 py-1.5 rounded-full border transition-colors whitespace-nowrap ${
+            className={`text-xs px-3 py-1.5 rounded-full border transition-colors whitespace-nowrap ${
               currentFilter === opt.value
                 ? "bg-[#0D2137] text-white border-[#0D2137] font-medium"
                 : "border-[#E5E7EB] bg-transparent text-[#4A7A94] hover:bg-[#F0F2F4]"
@@ -117,6 +130,58 @@ export function ContactHeader({
           </button>
         ))}
 
+        {/* Inline (flat) advanced filters — segment · sort · order · page size */}
+        {inlineFilters && (
+          <>
+            <div className="w-[1px] h-[18px] bg-[#E5E7EB] shrink-0 mx-1"></div>
+            <select
+              value={segmentId}
+              onChange={(e) => setSegmentId(e.target.value)}
+              title="Filtrer par segment"
+              className={compactSelect}
+            >
+              <option value="all">Tous les segments</option>
+              {segments.map((s) => (
+                <option key={s.id} value={s.id}>
+                  {s.name}
+                </option>
+              ))}
+            </select>
+            <select
+              value={sort}
+              onChange={(e) => setSort(e.target.value)}
+              title="Trier par"
+              className={compactSelect}
+            >
+              <option value="createdAt">Date de création</option>
+              <option value="firstName">Prénom</option>
+              <option value="lastName">Nom</option>
+              <option value="email">Email</option>
+              <option value="status">Statut</option>
+            </select>
+            <select
+              value={sortOrder}
+              onChange={(e) => setSortOrder(e.target.value)}
+              title="Ordre"
+              className={compactSelect}
+            >
+              <option value="desc">desc </option>
+              <option value="asc">asc </option>
+            </select>
+            <select
+              value={pageSize.toString()}
+              onChange={(e) => setPageSize(parseInt(e.target.value, 10))}
+              title="par page"
+              className={compactSelect}
+            >
+              <option value="15">15</option>
+              <option value="30">30</option>
+              <option value="50">50</option>
+              <option value="100">100</option>
+            </select>
+          </>
+        )}
+
         {/* Right cluster: count + actions */}
         <div className="ml-auto flex gap-2 items-center">
           <span className="text-[12px] text-[#8BAFC0] flex items-center mr-1">
@@ -131,13 +196,15 @@ export function ContactHeader({
             Segments
           </button>
 
-          <button
-            onClick={() => setIsFilterModalOpen(true)}
-            className="text-[12px] font-normal px-3 py-[5px] rounded-full bg-white text-[#0D2137] border border-[#E5E7EB] cursor-pointer transition-colors hover:bg-[#F0F2F4] whitespace-nowrap inline-flex items-center gap-1.5"
-          >
-            <Filter size={12} strokeWidth={1.5} />
-            Filtres
-          </button>
+          {!inlineFilters && (
+            <button
+              onClick={() => setIsFilterModalOpen?.(true)}
+              className="text-[12px] font-normal px-3 py-[5px] rounded-full bg-white text-[#0D2137] border border-[#E5E7EB] cursor-pointer transition-colors hover:bg-[#F0F2F4] whitespace-nowrap inline-flex items-center gap-1.5"
+            >
+              <Filter size={12} strokeWidth={1.5} />
+              Filtres
+            </button>
+          )}
 
           <button
             onClick={onImport}
@@ -158,9 +225,10 @@ export function ContactHeader({
       </div>
 
       {/* Advanced filters modal — segment · sort · order · page size */}
+      {!inlineFilters && (
       <Modal
-        open={isFilterModalOpen}
-        onClose={() => setIsFilterModalOpen(false)}
+        open={!!isFilterModalOpen}
+        onClose={() => setIsFilterModalOpen?.(false)}
         title="Filtres avancés"
         subtitle="Affiner la liste des contacts"
       >
@@ -232,6 +300,7 @@ export function ContactHeader({
           </div>
         </div>
       </Modal>
+      )}
     </>
   );
 }

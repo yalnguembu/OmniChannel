@@ -172,6 +172,12 @@ export function useProductAttributeSchema(
     () => new Set((metadata?.reservedKeys ?? []).map((k) => k.toLowerCase())),
     [metadata],
   );
+  // Raw reserved keys (native client fields, original casing) — used as mapping
+  // targets alongside custom attributes during import.
+  const reservedKeyList = useMemo(
+    () => metadata?.reservedKeys ?? [],
+    [metadata],
+  );
   const keyPattern = metadata?.keyPattern ?? null;
   const derivedFunctions = metadata?.derivedFunctions ?? [];
 
@@ -463,6 +469,7 @@ export function useProductAttributeSchema(
     // Metadata
     types,
     reservedKeys,
+    reservedKeyList,
     keyPattern,
     derivedFunctions,
     typeInfoFor,

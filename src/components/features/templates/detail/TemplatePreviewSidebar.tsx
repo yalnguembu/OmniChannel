@@ -52,7 +52,7 @@ export function TemplatePreviewSidebar({
         {/* Phone mockup */}
         <div className="p-4 flex justify-center">
           <p className="text-md text-[#0D2137] bg-gray-100 rounded-md p-3 leading-relaxed whitespace-pre-wrap">
-            {template.content.slice(0, 200)}
+            {template.content?.slice(0, 200)}
           </p>
         </div>
       </div>

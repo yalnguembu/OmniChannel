@@ -164,7 +164,7 @@ export function ContactDetailPage({ contactId }: { contactId: string }) {
       label: "Message",
       render: (m) => (
         <span className="text-[12.5px] truncate">
-          {m.content ? m.content.slice(0, 60) + "…" : "—"}
+          {m.content ? m.content?.slice(0, 60) + "…" : "—"}
         </span>
       ),
     },

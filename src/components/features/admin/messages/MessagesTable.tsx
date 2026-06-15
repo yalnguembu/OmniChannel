@@ -36,7 +36,7 @@ export function MessagesTable({ messages, isLoading }: MessagesTableProps) {
       render: (m) => (
         <span className="text-[12.5px] text-[#4A7A94] truncate max-w-[280px] block">
           {m.content
-            ? m.content.slice(0, 60) + (m.content.length > 60 ? "…" : "")
+            ? m.content?.slice(0, 60) + (m.content.length > 60 ? "…" : "")
             : "—"}
         </span>
       ),

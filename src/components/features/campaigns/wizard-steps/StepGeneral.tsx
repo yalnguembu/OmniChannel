@@ -18,7 +18,7 @@ export function StepGeneral({
 }) {
   return (
     <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-6 animate-in fade-in slide-in-from-bottom-4 duration-400">
-      <div className="bg-white p-6 rounded-[14px] border border-[#E5E7EB] space-y-6">
+      <div className="bg-white p-6 rounded-lg border border-[#E5E7EB] space-y-6">
         <Input
           label="Nom de la campagne *"
           placeholder="ex: Promo Printemps - SMS"
@@ -44,11 +44,11 @@ export function StepGeneral({
           placeholder="Détaillez le but de cette campagne..."
           value={draft.description || ""}
           onChange={(e) => updateDraft({ description: e.target.value })}
-          className="min-h-[120px]"
+          className="min-h-30"
         />
       </div>
 
-      <div className="bg-white p-6 rounded-[14px] border border-[#E5E7EB]">
+      <div className="bg-white p-6 rounded-lg border border-[#E5E7EB]">
         <p className="text-[13px] font-medium text-[#0D2137] mb-5">
           Type de diffusion
         </p>
@@ -86,7 +86,7 @@ export function StepGeneral({
                 key={t.id}
                 onClick={() => updateDraft({ type: t.id as any })}
                 className={cn(
-                  "p-[18px] border-2 rounded-[14px] cursor-pointer transition-all hover:bg-[#F7F8F9] relative",
+                  "p-4 border rounded-lg cursor-pointer transition-all hover:bg-[#F7F8F9] relative",
                   sel
                     ? "border-[#2E8FAD] bg-[#E8F4F8]"
                     : "border-[#F0F2F4] bg-white hover:border-[#B8CDD8]",
