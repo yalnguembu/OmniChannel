@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Toaster } from 'sonner';
 import { ConversationList } from '@/components/whatsapp/sidebar/ConversationList';
 import { ChatArea } from '@/components/whatsapp//chat/ChatArea';
 import { BulkModal } from '@/components/whatsapp//chat/Modals';
@@ -63,8 +62,6 @@ export const WhatsAppPage: React.FC = () => {
       />
 
       <TemplateBroadcastModal open={tplOpen} onClose={() => setTplOpen(false)} />
-
-      <Toaster position="bottom-center" richColors />
     </>
   );
 };

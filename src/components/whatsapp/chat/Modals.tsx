@@ -157,43 +157,44 @@ export const FlowModal: React.FC<FlowModalProps> = ({
         }
       }}
     >
-      <DialogContent className="max-w-sm">
+      <DialogContent className="p-6">
         <DialogHeader>
           <DialogTitle>Envoyer un Flow</DialogTitle>
         </DialogHeader>
         <p className="text-sm text-[#667781]">
-          Saisissez le token du flow à envoyer au contact{" "}
+          Saisissez le token du flow à envoyer au contact
           <strong className="text-[#111B21]">{contactAddress}</strong> :
         </p>
-        <div className="space-y-2">
-          <Label>Token du flow</Label>
-          <Input
-            {...register("flowToken")}
-            placeholder="Token du flow"
-            className={errors.flowToken ? "border-red-400" : ""}
-          />
-          {errors.flowToken && (
-            <p className="text-xs text-red-500">{errors.flowToken.message}</p>
-          )}
-        </div>
-        <div className="flex justify-end gap-2 pt-2">
-          <Button
-            variant="outline"
-            onClick={() => {
-              onClose();
-              reset();
-            }}
-          >
-            Annuler
-          </Button>
-          <Button
-            onClick={handleSubmit(submit)}
-            disabled={isSending}
-            className="bg-[#25D366] hover:bg-[#20BD5B] text-white"
-          >
-            {isSending ? "Envoi..." : "Envoyer"}
-          </Button>
-        </div>
+        <form onSubmit={handleSubmit(submit)}>
+          <div className="space-y-2">
+            <Label>Token du flow</Label>
+            <Input
+              {...register("flowToken")}
+              placeholder="Token du flow"
+              className={errors.flowToken ? "border-red-400" : ""}
+            />
+            {errors.flowToken && (
+              <p className="text-xs text-red-500">{errors.flowToken.message}</p>
+            )}
+          </div>
+          <div className="flex justify-end gap-2 pt-2">
+            <Button
+              variant="outline"
+              onClick={() => {
+                onClose();
+                reset();
+              }}
+            >
+              Annuler
+            </Button>
+            <Button
+              disabled={isSending}
+              className="bg-[#25D366] hover:bg-[#20BD5B] text-white"
+            >
+              {isSending ? "Envoi..." : "Envoyer"}
+            </Button>
+          </div>
+        </form>
       </DialogContent>
     </Dialog>
   );
