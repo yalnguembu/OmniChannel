@@ -15,13 +15,18 @@ import { useAuthStore } from "@/store/authStore";
 export function useSession() {
   const navigate = useNavigate();
   const token = useAuthStore((s) => s.token);
+  const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
   const user = useAuthStore((s) => s.user);
   const setUser = useAuthStore((s) => s.setUser);
   const logout = useAuthStore((s) => s.logout);
 
   const meQuery = useQuery({
     ...getApiUserMeOptions(),
-    enabled: !!token,
+    // Auth is cookie-based (withCredentials); run as soon as the session is
+    // authenticated even if the access token wasn't persisted. This is what
+    // enriches the slim login user with companyName / profile / permissions.
+    enabled: !!token || isAuthenticated,
+    refetchOnMount: "always",
     select: (res: any) => res?.data ?? null,
   });
 

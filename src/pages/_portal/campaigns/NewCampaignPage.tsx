@@ -10,9 +10,9 @@ export function NewCampaignPage({productId}:{productId?: string}) {
     resetDraft()
     // Navigate back to the campaigns list or the product page if provided
     if (productId) {
-      navigate({ to: '/products/$productId', params: { productId } })
+      navigate({ to: '/$productId/campaigns', params: { productId } })
     } else {
-      navigate({ to: '/campaigns' })
+      navigate({ to: '/dashboard' })
     }
   }
 

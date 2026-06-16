@@ -51,7 +51,7 @@ export function BillingPaymentMethodsPage() {
         ))}
       </div>
 
-      <div className="max-w-[620px]">
+      <div className="max-w-6xl">
         <div className="flex items-center justify-between mb-4">
           <p className="text-[13px] font-medium text-[#0D2137]">
             Méthodes disponibles
@@ -70,7 +70,7 @@ export function BillingPaymentMethodsPage() {
           </Button>
         </div>
 
-        <div className="flex flex-col gap-2">
+        <div className="grid lg:grid-cols-2 gap-2">
           {methods.map((m, i) => (
             <div
               key={m.id}
@@ -82,7 +82,7 @@ export function BillingPaymentMethodsPage() {
               )}
             >
               <div
-                className="w-[42px] h-[28px] rounded-[6px] flex items-center justify-center text-[10px] font-bold border border-black/10 shrink-0"
+                className="w-10.5 h-7 rounded-sm flex items-center justify-center text-[10px] font-bold border border-black/10 shrink-0"
                 style={{ background: "#F0F2F4" }}
               >
                 {m.code.slice(0, 2).toUpperCase()}
@@ -131,7 +131,7 @@ export function BillingPaymentMethodsPage() {
             }
             className="flex items-center gap-3 p-4 border border-dashed border-[#E5E7EB] rounded-md cursor-pointer hover:bg-white hover:border-[#2E8FAD]/40 hover:border-solid transition-all"
           >
-            <div className="w-[42px] h-[28px] rounded-[6px] bg-[#F0F2F4] border border-[#E5E7EB] flex items-center justify-center">
+            <div className="w-10.5 h-7 rounded-sm bg-[#F0F2F4] border border-[#E5E7EB] flex items-center justify-center">
               <Plus size={14} className="text-[#8BAFC0]" />
             </div>
             <span className="text-[13px] text-[#4A7A94]">

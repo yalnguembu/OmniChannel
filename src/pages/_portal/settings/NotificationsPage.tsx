@@ -232,8 +232,8 @@ export function NotificationsPage() {
       </div>
 
       {activeSection === "preferences" && (
-        <div className="max-w-[760px] flex flex-col gap-4">
-          <div className="bg-white border border-[#E5E7EB] rounded-[14px] overflow-hidden">
+        <div className="max-w-6xl flex flex-col gap-4">
+          <div className="bg-white border border-[#E5E7EB] rounded-lg overflow-hidden">
             <div className="px-5 py-3.5 border-b border-[#E5E7EB] bg-[#F7F8F9]">
               <p className="text-[13px] font-medium text-[#0D2137]">
                 Alertes operationnelles
@@ -249,7 +249,7 @@ export function NotificationsPage() {
               />
             ))}
           </div>
-          <div className="bg-white border border-[#E5E7EB] rounded-[14px] overflow-hidden">
+          <div className="bg-white border border-[#E5E7EB] rounded-lg overflow-hidden">
             <div className="px-5 py-3.5 border-b border-[#E5E7EB] bg-[#F7F8F9]">
               <p className="text-[13px] font-medium text-[#0D2137]">
                 Rapports et syntheses
@@ -265,7 +265,7 @@ export function NotificationsPage() {
               />
             ))}
           </div>
-          <div className="bg-white border border-[#E5E7EB] rounded-[14px] overflow-hidden">
+          <div className="bg-white border border-[#E5E7EB] rounded-lg overflow-hidden">
             <div className="px-5 py-3.5 border-b border-[#E5E7EB] bg-[#F7F8F9]">
               <p className="text-[13px] font-medium text-[#0D2137]">
                 Canaux de notification
@@ -305,11 +305,11 @@ export function NotificationsPage() {
       )}
 
       {activeSection === "inbox" && (
-        <div className="max-w-[760px]">
+        <div className="max-w-6xl">
           {isLoading ? (
             <PageLoader />
           ) : notifications.length === 0 ? (
-            <div className="flex flex-col items-center justify-center py-14 bg-white border border-[#E5E7EB] rounded-[14px]">
+            <div className="flex flex-col items-center justify-center py-14 bg-white border border-[#E5E7EB] rounded-lg">
               <Bell size={32} className="text-[#8BAFC0] mb-3 opacity-50" />
               <p className="text-[14px] font-medium text-[#0D2137]">
                 Aucune notification

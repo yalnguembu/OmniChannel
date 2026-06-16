@@ -2,10 +2,6 @@ import { Link, useRouterState } from "@tanstack/react-router";
 import {
   LayoutDashboard,
   Package,
-  Users,
-  Megaphone,
-  FileText,
-  MessageSquare,
   CreditCard,
   Plug,
   Settings,
@@ -14,19 +10,34 @@ import {
 } from "lucide-react";
 import { cn, getInitials, avatarColor } from "@/lib/utils";
 import { useAuthStore } from "@/store/authStore";
-// import { useUIStore } from "@/store/uiStore";
+import { OctoLogo } from "@/pages/landing/components/OctoLogo";
+import { PRODUCT_TABS } from "@/components/features/products/detail/ProductDetailTabs";
+
+const PRODUCT_SECTIONS = new Set<string>(PRODUCT_TABS.map((t) => t.id));
+
+const STATIC_TOP = new Set<string>([
+  "dashboard",
+  "products",
+  "contacts",
+  "campaigns",
+  "templates",
+  "messages",
+  "billing",
+  "integrations",
+  "files",
+  "settings",
+  "admin",
+  "whatsapp",
+]);
 
 const nav = [
   {
+    section: "",
+    items: [{ to: "/dashboard", label: "Dashboard", icon: LayoutDashboard }],
+  },
+  {
     section: "Principal",
-    items: [
-      { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
-      { to: "/products", label: "Produits", icon: Package },
-      { to: "/contacts", label: "Contacts", icon: Users },
-      { to: "/campaigns", label: "Campagnes", icon: Megaphone, badge: 3 },
-      { to: "/templates", label: "Templates", icon: FileText },
-      { to: "/messages", label: "Messages", icon: MessageSquare },
-    ],
+    items: [{ to: "/products", label: "Produits", icon: Package }],
   },
   {
     section: "Gestion",
@@ -46,22 +57,22 @@ export function Sidebar() {
 
   const isActive = (to: string) => currentPath.startsWith(to);
 
+  const seg = currentPath.split("/").filter(Boolean);
+  const activeProductId =
+    seg.length >= 2 && !STATIC_TOP.has(seg[0]) && PRODUCT_SECTIONS.has(seg[1])
+      ? seg[0]
+      : undefined;
+  const productTo = (tabId: string) => `/${activeProductId}/${tabId}`;
+
   return (
     <aside className="bg-white border-r border-[#E5E7EB]/60 flex flex-col h-screen overflow-hidden">
-      <Link to="/" className="flex items-center gap-2.5 px-4 py-[18px] border-b border-[#E5E7EB]/60 shrink-0">
-        <div className="w-8 h-8 rounded-[9px] bg-[#0D2137] flex items-center justify-center shrink-0 shadow-[0_2px_8px_rgba(13,33,55,0.2)]">
-          <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-            <circle cx="9" cy="9" r="3.2" stroke="#6AB8D4" strokeWidth="1.3" />
-            <path
-              d="M9 2v2M9 14v2M2 9h2M14 9h2M3.93 3.93l1.41 1.41M12.66 12.66l1.41 1.41M3.93 14.07l1.41-1.41M12.66 5.34l1.41-1.41"
-              stroke="#E8541A"
-              strokeWidth="1.1"
-              strokeLinecap="round"
-            />
-          </svg>
-        </div>
+      <Link
+        to="/"
+        className="flex items-center gap-2.5 px-4 py-2 border-b border-[#E5E7EB]/60 shrink-0"
+      >
+        <OctoLogo size={40} />
         <span className="text-[14px] font-semibold text-[#0D2137] tracking-tight">
-          OmniChannel
+          Omni Channel
         </span>
       </Link>
 
@@ -75,22 +86,69 @@ export function Sidebar() {
       <nav className="flex-1 overflow-y-auto py-1 [&::-webkit-scrollbar]:w-0">
         {nav.map(({ section, items }) => (
           <div key={section}>
-            <p className="px-4 pt-5 pb-1.5 text-[10px] font-semibold text-[#B8CDD8] uppercase tracking-[0.1em]">
-              {section}
-            </p>
-            {items.map(({ to, label, icon: Icon, badge }) => {
+            {section && (
+              <p className="px-4 pt-6 pb-1.5 text-[10px] font-semibold text-[#B8CDD8] uppercase tracking-widest">
+                {section}
+              </p>
+            )}
+            {items.map(({ to, label, icon: Icon }) => {
+              if (to === "/products" && activeProductId) {
+                return (
+                  <div key={to}>
+                    {PRODUCT_TABS.map(
+                      ({ id, label: tabLabel, icon: TabIcon }) => {
+                        const tabTo = productTo(id);
+                        const tabActive = currentPath === tabTo;
+                        return (
+                          <Link
+                            key={id}
+                            to={tabTo}
+                            className={cn(
+                              "flex items-center gap-2.5 px-3 py-2 mx-1.5 rounded-[6px] cursor-pointer transition-all duration-150 relative group",
+                              tabActive ? "bg-[#E8F4F8]" : "hover:bg-[#F0F2F4]",
+                            )}
+                          >
+                            {tabActive && (
+                              <span className="absolute -left-1.5 top-1/2 -translate-y-1/2 w-[3px] h-4 bg-[#2E8FAD] rounded-r-[2px]" />
+                            )}
+                            <TabIcon
+                              size={15}
+                              className={cn(
+                                "shrink-0",
+                                tabActive ? "text-[#2E8FAD]" : "text-[#8BAFC0]",
+                              )}
+                              strokeWidth={1.2}
+                            />
+                            <span
+                              className={cn(
+                                "text-[13px] flex-1",
+                                tabActive
+                                  ? "text-[#1B5E82] font-medium"
+                                  : "text-[#4A7A94]",
+                              )}
+                            >
+                              {tabLabel}
+                            </span>
+                          </Link>
+                        );
+                      },
+                    )}
+                  </div>
+                );
+              }
+
               const active = isActive(to);
               return (
                 <Link
                   key={to}
                   to={to}
                   className={cn(
-                    "flex items-center gap-2.5 px-3 py-2 mx-1.5 rounded-[6px] cursor-pointer transition-all duration-150 relative group",
+                    "flex items-center gap-2.5 px-3 py-2 mx-1.5 rounded-sm cursor-pointer transition-all duration-150 relative group",
                     active ? "bg-[#E8F4F8]" : "hover:bg-[#F0F2F4]",
                   )}
                 >
                   {active && (
-                    <span className="absolute -left-1.5 top-1/2 -translate-y-1/2 w-[3px] h-4 bg-[#2E8FAD] rounded-r-[2px]" />
+                    <span className="absolute -left-1.5 top-1/2 -translate-y-1/2 w-1 h-4 bg-[#2E8FAD] rounded-r-[2px]" />
                   )}
                   <Icon
                     size={15}
@@ -108,11 +166,6 @@ export function Sidebar() {
                   >
                     {label}
                   </span>
-                  {badge != null && (
-                    <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded-full bg-[#FFF0EA] text-[#E8541A]">
-                      {badge}
-                    </span>
-                  )}
                 </Link>
               );
             })}

@@ -135,7 +135,7 @@ export function ImportHistoryPage() {
   return (
     <div className="p-7">
       <button
-        onClick={() => navigate({ to: "/contacts" })}
+        onClick={() => navigate({ to: "/dashboard" })}
         className="mb-5 flex cursor-pointer items-center gap-2 text-[12.5px] text-[#8BAFC0] transition-colors hover:text-[#0D2137]"
       >
         <ArrowLeft size={13} />

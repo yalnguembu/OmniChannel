@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo, useEffect } from "react";
+import { useCallback, useMemo, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { toast } from "sonner";
@@ -18,6 +18,8 @@ import type {
 } from "@/shared/api/generated/types.gen";
 import { useErrorHandling } from "@/shared/hooks/useErrorHandling";
 import { useCampaignDraftStore } from "@/store/campaignDraftStore";
+import { useListFilters } from "@/hooks/useListFilters";
+import type { FilterFieldConfig } from "@/components/features/shared/ListFilterBar";
 
 export type CampaignFilterType =
   | "all"
@@ -26,30 +28,78 @@ export type CampaignFilterType =
   | "completed"
   | "draft";
 
+const ADVANCED_DEFAULTS = {
+  name: "",
+  type: "",
+  ids: "",
+  sortBy: "createdAt",
+  sortDirection: "desc",
+  pageSize: "12",
+};
+
+/** Advanced (modal) filter fields for campaigns — SearchCampaignRequest. */
+export const CAMPAIGN_FILTER_FIELDS: FilterFieldConfig[] = [
+  { key: "name", label: "Nom", type: "text", placeholder: "Nom de la campagne" },
+  { key: "type", label: "Type", type: "text", placeholder: "sms, email, whatsapp…" },
+  {
+    key: "ids",
+    label: "IDs de campagnes",
+    type: "text",
+    placeholder: "id1, id2…",
+    help: "Séparés par des virgules.",
+    fullWidth: true,
+  },
+  {
+    key: "sortBy",
+    label: "Trier par",
+    type: "select",
+    options: [
+      { value: "createdAt", label: "Date de création" },
+      { value: "name", label: "Nom" },
+      { value: "status", label: "Statut" },
+    ],
+  },
+  {
+    key: "sortDirection",
+    label: "Ordre",
+    type: "select",
+    options: [
+      { value: "desc", label: "Décroissant" },
+      { value: "asc", label: "Croissant" },
+    ],
+  },
+  {
+    key: "pageSize",
+    label: "Par page",
+    type: "select",
+    options: [
+      { value: "12", label: "12" },
+      { value: "24", label: "24" },
+      { value: "48", label: "48" },
+    ],
+  },
+];
+
 /**
  * ViewModel for the Campaigns List and Creation flow.
  */
-export function useCampaignViewModel() {
+export function useCampaignViewModel(productId?: string) {
   const queryClient = useQueryClient();
   const { handleRequestError, createMutationErrorHandler } = useErrorHandling();
-  const { updateDraft, resetDraft } = useCampaignDraftStore();
+  const { resetDraft } = useCampaignDraftStore();
   const navigate = useNavigate();
 
-  // --- List State ---
-  const [search, setSearch] = useState("");
-  const [filter, setFilter] = useState<CampaignFilterType>("all");
-  const [page, setPage] = useState(1);
-  const pageSize = 12;
+  const filters = useListFilters(ADVANCED_DEFAULTS);
 
   // --- Queries ---
   const campaignsQuery = useQuery({
     ...postApiCampaignSearchOptions({
       body: {
-        pageNumber: page,
-        pageSize,
-        searchTerm: search || undefined,
-        status: filter !== "all" ? filter : undefined,
-      },
+        ...filters.commonBody(),
+        name: filters.advanced.name?.trim() || undefined,
+        type: filters.advanced.type?.trim() || undefined,
+        productId: productId || undefined,
+      } as any,
     }),
     select: (res) => {
       const items = mapToCampaignModels(
@@ -57,7 +107,9 @@ export function useCampaignViewModel() {
           (Array.isArray(res?.data) ? res.data : []),
       );
       const totalCount =
-        (res?.metadata?.totalCount as number) || (res?.data?.totalCount as number) || items.length;
+        (res?.metadata?.totalCount as number) ||
+        (res?.data?.totalCount as number) ||
+        items.length;
 
       return { items, totalCount };
     },
@@ -72,7 +124,6 @@ export function useCampaignViewModel() {
   const campaigns = campaignsQuery.data?.items || [];
   const totalCount = campaignsQuery.data?.totalCount || 0;
 
-  // --- Derived State (Counting by status for the whole list) ---
   const counts = useMemo(
     () => ({
       all: totalCount,
@@ -104,16 +155,6 @@ export function useCampaignViewModel() {
   });
 
   // --- Handlers ---
-  const handleSearch = useCallback((val: string) => {
-    setSearch(val);
-    setPage(1);
-  }, []);
-
-  const handleFilter = useCallback((val: CampaignFilterType) => {
-    setFilter(val);
-    setPage(1);
-  }, []);
-
   const handleOpenWizard = useCallback(() => {
     resetDraft();
     navigate({ to: "/campaigns/new" });
@@ -131,7 +172,7 @@ export function useCampaignViewModel() {
 
   const handleCloseWizard = useCallback(() => {
     resetDraft();
-    navigate({ to: "/campaigns" });
+    navigate({ to: "/dashboard" });
   }, [resetDraft, navigate]);
 
   return {
@@ -141,17 +182,12 @@ export function useCampaignViewModel() {
     counts,
     isLoading: campaignsQuery.isLoading,
     isActionPending: deleteMutation.isPending || duplicateMutation.isPending,
-    search,
-    filter,
-    page,
-    pageSize,
 
-    // UI State (None, handled by routing)
+    // Filters (shared bar)
+    filters,
+    filterFields: CAMPAIGN_FILTER_FIELDS,
 
     // Handlers
-    handleSearch,
-    handleFilter,
-    setPage,
     handleOpenWizard,
     handleEditCampaign,
     handleCloseWizard,

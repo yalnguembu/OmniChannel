@@ -39,7 +39,7 @@ function DashboardPage() {
       {/* Header section */}
       <DashboardHeader
         notificationsCount={vm.notifications.length}
-        onNewCampaign={() => navigate({ to: "/campaigns" })}
+        onNewCampaign={() => navigate({ to: "/campaigns/new" })}
       />
 
       {/* Critical Alerts Area */}
@@ -66,7 +66,7 @@ function DashboardPage() {
         {/* Recents Campaigns */}
         <RecentCampaignsCard
           campaigns={vm.campaigns}
-          onNavigateAll={() => navigate({ to: "/campaigns" })}
+          onNavigateAll={() => navigate({ to: "/products" })}
           onNavigateDetail={(id) => navigate({ to: "/campaigns/$campaignId", params: { campaignId: id } })}
         />
 
@@ -81,7 +81,7 @@ function DashboardPage() {
       {/* Global Activity Log */}
       <GlobalActivityLog
         messages={vm.recentMessages}
-        onNavigateAll={() => navigate({ to: "/messages" })}
+        onNavigateAll={() => navigate({ to: "/dashboard" })}
       />
     </div>
   );

@@ -146,9 +146,9 @@ export function RolesPage() {
         </Button>
       </div>
 
-      <div className="flex flex-col gap-3 max-w-[760px]">
+      <div className="flex flex-col gap-3 max-w-6xl">
         {profiles.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-12 bg-white border border-[#E5E7EB] rounded-[14px]">
+          <div className="flex flex-col items-center justify-center py-12 bg-white border border-[#E5E7EB] rounded-lg">
             <Shield size={32} className="text-[#8BAFC0] mb-3 opacity-50" />
             <p className="text-[14px] font-medium text-[#0D2137]">
               Aucun rôle configuré
@@ -165,7 +165,7 @@ export function RolesPage() {
                 setExpandedId(expandedId === profile.id ? null : profile.id)
               }
               className={cn(
-                "bg-white border rounded-[14px] p-4 cursor-pointer transition-all",
+                "bg-white border rounded-lg p-4 cursor-pointer transition-all",
                 expandedId === profile.id
                   ? "border-[#2E8FAD] bg-[#E8F4F8] shadow-[0_3px_12px_rgba(13,33,55,0.06)]"
                   : "border-[#E5E7EB] hover:border-[#6AB8D4] hover:shadow-[0_3px_12px_rgba(13,33,55,0.06)]",

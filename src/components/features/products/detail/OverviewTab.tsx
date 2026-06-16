@@ -1,7 +1,8 @@
-import { Radio } from "lucide-react";
+import { Radio, Pause, Play } from "lucide-react";
 import type { ProductModel } from "@/models/product.model";
 import { formatDate } from "@/lib/date";
-import { cn } from "@/lib/utils";
+import { cn, statusLabel } from "@/lib/utils";
+import { Button } from "@/components/ui/Button";
 import { DetailCard } from "./DetailCard";
 import type { ProductTabId } from "./ProductDetailTabs";
 import type { SearchProductChannelResponse } from "@/shared/api/generated/types.gen";
@@ -10,7 +11,17 @@ interface OverviewTabProps {
   product: ProductModel;
   channels: SearchProductChannelResponse[];
   onNavigateTab: (id: ProductTabId) => void;
+  onEdit: () => void;
+  onChangeStatus: (status: string) => void;
+  isUpdatePending: boolean;
 }
+
+const STATUS_PILL: Record<string, string> = {
+  active: "bg-[#DCFCE7] text-[#16A34A] border-[#86EFAC]",
+  paused: "bg-[#FEF3C7] text-[#B45309] border-[#FCD34D]",
+  draft: "bg-[#F0F2F4] text-[#4A7A94] border-[#E5E7EB]",
+  inactive: "bg-[#F0F2F4] text-[#8BAFC0] border-[#E5E7EB]",
+};
 
 function CardLink({
   label,
@@ -29,12 +40,20 @@ function CardLink({
   );
 }
 
-/** "Vue d'ensemble" tab: active channels, recent activity and product info. */
+/**
+ * "Vue d'ensemble" tab — merges the activity overview with the product
+ * settings (general info + status actions) in a single view.
+ */
 export function OverviewTab({
   product,
   channels,
   onNavigateTab,
+  onEdit,
+  onChangeStatus,
+  isUpdatePending,
 }: OverviewTabProps) {
+  const isActive = product.status === "active";
+
   return (
     <div className="flex flex-col gap-3.5">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-3.5">
@@ -99,7 +118,7 @@ export function OverviewTab({
         </DetailCard>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-3.5">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-3.5">
         {/* Livraison par canal (Mock) */}
         <DetailCard
           title="Livraison par canal"
@@ -115,33 +134,84 @@ export function OverviewTab({
         >
           Données indisponibles
         </DetailCard>
+      </div>
 
-        {/* Infos produit */}
+      {/* Paramètres du produit (fusionnés depuis l'onglet Paramètres) */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-3.5">
         <DetailCard
-          title="Infos produit"
-          action={
-            <CardLink
-              label="Modifier →"
-              onClick={() => onNavigateTab("settings")}
-            />
-          }
-          bodyClassName="p-4.5"
+          title="Informations générales"
+          action={<CardLink label="Modifier" onClick={onEdit} />}
+          bodyClassName="p-4.5 flex flex-col gap-0"
         >
-          <div className="flex items-start justify-between py-2.5 border-b border-[#E5E7EB]">
-            <span className="text-[12px] text-[#8BAFC0]">Description</span>
-            <span className="text-[12.5px] text-[#0D2137] text-right max-w-[200px]">
+          <div className="flex items-start justify-between py-3.5 border-b border-[#E5E7EB]">
+            <div className="text-[13px] font-medium text-[#0D2137]">
+              Nom du produit
+            </div>
+            <span className="text-[13px] text-[#4A7A94] ml-4 shrink-0 text-right">
+              {product.name}
+            </span>
+          </div>
+          <div className="flex items-start justify-between py-3.5 border-b border-[#E5E7EB]">
+            <div className="text-[13px] font-medium text-[#0D2137]">
+              Description
+            </div>
+            <span className="text-[12px] text-[#8BAFC0] leading-relaxed max-w-[260px] ml-4 text-right">
               {product.description || "—"}
             </span>
           </div>
-          <div className="flex items-center justify-between py-2.5 border-b border-[#E5E7EB]">
-            <span className="text-[12px] text-[#8BAFC0]">Statut</span>
-            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-[5px] text-[11px] font-medium bg-[#DCFCE7] text-[#16A34A] border border-[#86EFAC]">
-              Actif
+          <div className="flex items-center justify-between py-3.5 border-b border-[#E5E7EB]">
+            <div className="text-[13px] font-medium text-[#0D2137]">Statut</div>
+            <span
+              className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-[5px] text-[11px] font-medium border ${
+                STATUS_PILL[product.status] ?? STATUS_PILL.draft
+              }`}
+            >
+              {statusLabel(product.status)}
             </span>
           </div>
-          <div className="flex items-center justify-between py-2.5">
-            <span className="text-[12px] text-[#8BAFC0]">Fuseau horaire</span>
-            <span className="text-[12.5px] text-[#0D2137]">Africa/Douala</span>
+          <div className="flex items-start justify-between py-3.5 border-b border-[#E5E7EB]">
+            <div className="text-[13px] font-medium text-[#0D2137]">
+              UUID Produit
+            </div>
+            <span className="text-[13px] font-mono text-[#1B5E82] ml-4 shrink-0 text-right">
+              {product.id}
+            </span>
+          </div>
+          <div className="flex items-start justify-between py-3.5">
+            <div className="text-[13px] font-medium text-[#0D2137]">
+              Dernière mise à jour
+            </div>
+            <span className="text-[13px] text-[#4A7A94] ml-4 shrink-0 text-right">
+              {formatDate(product.updatedAt || product.createdAt)}
+            </span>
+          </div>
+        </DetailCard>
+
+        <DetailCard
+          title="Configuration avancée"
+          bodyClassName="p-4.5 flex flex-col gap-0"
+        >
+          <div className="flex items-start justify-between py-3.5">
+            <div>
+              <div className="text-[13px] font-medium text-[#0D2137] mb-1">
+                {isActive ? "Mettre en pause" : "Activer le produit"}
+              </div>
+              <div className="text-[12px] text-[#8BAFC0] leading-relaxed max-w-[360px]">
+                {isActive
+                  ? "Suspend les envois liés à ce produit sans le supprimer."
+                  : "Réactive ce produit pour reprendre les envois."}
+              </div>
+            </div>
+            <Button
+              variant={isActive ? "danger" : "secondary"}
+              size="sm"
+              loading={isUpdatePending}
+              onClick={() => onChangeStatus(isActive ? "paused" : "active")}
+              className="ml-4 shrink-0"
+            >
+              {isActive ? <Pause size={13} /> : <Play size={13} />}
+              {isActive ? "Mettre en pause" : "Activer"}
+            </Button>
           </div>
         </DetailCard>
       </div>

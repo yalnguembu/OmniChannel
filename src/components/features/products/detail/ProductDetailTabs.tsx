@@ -3,7 +3,6 @@ import {
   BarChart2,
   Radio,
   Plug,
-  Settings,
   Users,
   Megaphone,
   FileText,
@@ -20,8 +19,7 @@ export type ProductTabId =
   | "channels"
   | "connectors"
   | "schema"
-  | "stats"
-  | "settings";
+  | "stats";
 
 interface TabDef {
   id: ProductTabId;
@@ -38,7 +36,6 @@ export const PRODUCT_TABS: TabDef[] = [
   { id: "connectors", label: "Connecteurs", icon: Plug },
   { id: "schema", label: "Attributs", icon: Database },
   { id: "stats", label: "Statistiques", icon: BarChart2 },
-  { id: "settings", label: "Paramètres", icon: Settings },
 ];
 
 interface ProductDetailTabsProps {

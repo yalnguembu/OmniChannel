@@ -53,7 +53,7 @@ export function SettingsCompanyPage() {
             </p>
           </div>
 
-          <motion.div {...fadeInUp} className="max-w-[760px]">
+          <motion.div {...fadeInUp} className="max-w-6xl">
         {/* Identity */}
         <CompanyIdentityCard
           company={company}

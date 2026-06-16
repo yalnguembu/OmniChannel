@@ -25,25 +25,83 @@ import type {
   CreateTemplateRequest,
   UpdateTemplateRequest,
 } from "@/shared/api/generated/types.gen";
+import { useListFilters } from "@/hooks/useListFilters";
+import type { FilterFieldConfig } from "@/components/features/shared/ListFilterBar";
+
+const ADVANCED_DEFAULTS = {
+  name: "",
+  category: "",
+  ids: "",
+  sortBy: "createdAt",
+  sortDirection: "desc",
+  pageSize: "30",
+};
+
+/** Advanced (modal) filter fields for templates — SearchTemplateRequest. */
+export const TEMPLATE_FILTER_FIELDS: FilterFieldConfig[] = [
+  { key: "name", label: "Nom", type: "text", placeholder: "Nom du template" },
+  {
+    key: "category",
+    label: "Catégorie",
+    type: "text",
+    placeholder: "transactionnel, marketing…",
+  },
+  {
+    key: "ids",
+    label: "IDs de templates",
+    type: "text",
+    placeholder: "id1, id2…",
+    help: "Séparés par des virgules.",
+    fullWidth: true,
+  },
+  {
+    key: "sortBy",
+    label: "Trier par",
+    type: "select",
+    options: [
+      { value: "createdAt", label: "Date de création" },
+      { value: "name", label: "Nom" },
+      { value: "status", label: "Statut" },
+    ],
+  },
+  {
+    key: "sortDirection",
+    label: "Ordre",
+    type: "select",
+    options: [
+      { value: "desc", label: "Décroissant" },
+      { value: "asc", label: "Croissant" },
+    ],
+  },
+  {
+    key: "pageSize",
+    label: "Par page",
+    type: "select",
+    options: [
+      { value: "30", label: "30" },
+      { value: "50", label: "50" },
+      { value: "100", label: "100" },
+    ],
+  },
+];
 
 /**
  * ViewModel Hook for the Templates Page.
  * Encapsulates all business logic, data fetching, and state management.
  */
-export function useTemplateViewModel() {
+export function useTemplateViewModel(productId?: string) {
   const queryClient = useQueryClient();
   const { handleRequestError, createMutationErrorHandler } = useErrorHandling();
 
+  const filters = useListFilters(ADVANCED_DEFAULTS);
+
   // --- Local State ---
-  const [search, setSearch] = useState("");
-  const [page, setPage] = useState(1);
   const [activeTemplateId, setActiveTemplateId] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingTemplate, setEditingTemplate] = useState<TemplateModel | null>(
     null,
   );
   const [deleteTarget, setDeleteTarget] = useState<TemplateModel | null>(null);
-  const pageSize = 30;
 
   // --- Data Fetching (Queries) ---
 
@@ -51,10 +109,12 @@ export function useTemplateViewModel() {
   const templatesQuery = useQuery({
     ...postApiTemplateSearchOptions({
       body: {
-        pageNumber: page,
-        pageSize,
-        searchTerm: search || undefined,
-      },
+        ...filters.commonBody(),
+        name: filters.advanced.name?.trim() || undefined,
+        category: filters.advanced.category?.trim() || undefined,
+        // Scope to a product when rendered inside a product page.
+        productId: productId || undefined,
+      } as any,
     }),
     select: (res) => ({
       items: mapToTemplateModels(
@@ -170,11 +230,6 @@ export function useTemplateViewModel() {
   });
 
   // --- Memoized Handlers ---
-
-  const handleSearch = useCallback((value: string) => {
-    setSearch(value);
-    setPage(1);
-  }, []);
 
   const handleSelectTemplate = useCallback((template: TemplateModel) => {
     setActiveTemplateId(template.id);
@@ -305,8 +360,6 @@ export function useTemplateViewModel() {
     // State
     templates: templatesQuery.data?.items || [],
     totalCount: templatesQuery.data?.totalCount || 0,
-    search,
-    page,
     activeTemplate,
     templateChannels: templateChannelsQuery.data || [],
     channels: (channelsQuery.data as any) || [],
@@ -317,14 +370,16 @@ export function useTemplateViewModel() {
       updateMutation.isPending ||
       deleteMutation.isPending,
 
+    // Filters (shared bar)
+    filters,
+    filterFields: TEMPLATE_FILTER_FIELDS,
+
     // Modal/UI state
     isModalOpen,
     editingTemplate,
     deleteTarget,
 
     // Handlers
-    handleSearch,
-    setPage,
     handleSelectTemplate,
     handleOpenCreateModal,
     handleOpenEditModal,

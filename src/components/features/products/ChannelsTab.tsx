@@ -6,6 +6,7 @@ import { Toggle } from "@/components/ui/Toggle";
 import { Modal } from "@/components/ui/Modal";
 import { PageLoader } from "@/components/feedback/PageLoader";
 import { EmptyState } from "@/components/feedback/EmptyState";
+import { ListFilterBar } from "@/components/features/shared/ListFilterBar";
 import { cn } from "@/lib/utils";
 import { useProductChannels } from "@/hooks/useProductChannels";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
@@ -24,6 +25,7 @@ interface ChannelsTabProps {
 export function ChannelsTab({ productId }: ChannelsTabProps) {
   const qc = useQueryClient();
   const vm = useProductChannels(productId);
+  const f = vm.filters;
   const [modalOpen, setModalOpen] = useState(false);
 
   // Global channels for linking (kept here as it's specific to the link modal)
@@ -64,34 +66,36 @@ export function ChannelsTab({ productId }: ChannelsTabProps) {
       qc.invalidateQueries({ queryKey: ["product-channels", productId] }),
   });
 
-  if (vm.isLoading)
-    return (
-      <div className="py-20">
-        <PageLoader />
-      </div>
-    );
-
   return (
-    <div className="space-y-5">
-      <div className="flex items-center justify-between pb-1">
-        <div>
-          <h3 className="text-[16px] font-semibold text-[#0D2137]">
-            Canaux de communication
-          </h3>
-          <p className="text-[12.5px] text-[#8BAFC0]">
-            Gérez les passerelles actives pour ce produit
-          </p>
-        </div>
-        <Button
-          variant="primary"
-          size="sm"
-          onClick={() => setModalOpen(true)}
-          className="gap-1.5"
-        >
-          <Plus size={13} /> Associer un canal
-        </Button>
+    <div className="space-y-4">
+      <div className="rounded-[14px] border border-[#E5E7EB] overflow-hidden">
+        <ListFilterBar
+          search={f.search}
+          onSearchChange={f.setSearch}
+          searchPlaceholder="Rechercher un canal…"
+          dateRange={f.dateRange}
+          onDateRangeChange={f.setDateRange}
+          advancedFields={vm.filterFields}
+          advancedValues={f.advanced}
+          advancedDefaults={f.advancedDefaults}
+          onApplyAdvanced={f.applyAdvanced}
+          isFilterModalOpen={f.isFilterModalOpen}
+          setIsFilterModalOpen={f.setIsFilterModalOpen}
+          actions={[
+            {
+              label: "Associer un canal",
+              icon: <Plus size={13} strokeWidth={2.5} />,
+              onClick: () => setModalOpen(true),
+            },
+          ]}
+        />
       </div>
 
+      {vm.isLoading ? (
+        <div className="py-20">
+          <PageLoader />
+        </div>
+      ) : (
       <div className="bg-white border border-[#E5E7EB] rounded-[14px] overflow-hidden">
         {vm.channels.length === 0 ? (
           <div className="p-20">
@@ -181,6 +185,7 @@ export function ChannelsTab({ productId }: ChannelsTabProps) {
           </div>
         )}
       </div>
+      )}
 
       <Modal
         open={modalOpen}

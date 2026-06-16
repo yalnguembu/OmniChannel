@@ -123,7 +123,7 @@ export function DangerZonePage() {
             </p>
           </div>
 
-          <div className="max-w-[760px]">
+          <div className="max-w-6xl">
             <CompanyDangerZoneCard
               onSuspend={() => setPending("suspend")}
               onDeleteData={() => setPending("deleteData")}

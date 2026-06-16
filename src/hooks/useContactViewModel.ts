@@ -22,11 +22,12 @@ import type {
   SearchClientSegmentResponse,
 } from "@/shared/api/generated/types.gen";
 import { useErrorHandling } from "@/shared/hooks/useErrorHandling";
+import type { DateRange } from "@/components/ui/DateRangePicker";
 
 /**
  * ViewModel for the global Contacts/Clients list.
  */
-export function useContactViewModel() {
+export function useContactViewModel(forcedProductId?: string) {
   const queryClient = useQueryClient();
   const { handleRequestError, createMutationErrorHandler } = useErrorHandling();
 
@@ -36,7 +37,16 @@ export function useContactViewModel() {
   const [segmentId, setSegmentId] = useState("all");
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(15);
-  const [productId, setProductId] = useState("all");
+  // When scoped to a product (product page), the filter is locked to it.
+  const [productId, setProductId] = useState(forcedProductId ?? "all");
+  const isProductLocked = !!forcedProductId;
+
+  useEffect(() => {
+    if (forcedProductId) {
+      setProductId(forcedProductId);
+      setPage(1);
+    }
+  }, [forcedProductId]);
 
   // UI state
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -48,11 +58,23 @@ export function useContactViewModel() {
   const [activeContact, setActiveContact] = useState<ClientModel | null>(null);
   const [detailTab, setDetailTab] = useState("profile"); // profile, channels, messages, segments
 
+  // Date range (createdFrom / createdTo) — toolbar filter
+  const [dateRange, setDateRange] = useState<DateRange>({
+    start: null,
+    end: null,
+  });
+
   // Advanced Filters
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
   const [sort, setSort] = useState("createdAt");
   const [sortOrder, setSortOrder] = useState("desc");
   const [advancedFilterSegment, setAdvancedFilterSegment] = useState("");
+  // Advanced text filters (SearchClientRequest) — committed via the modal.
+  const [email, setEmail] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [postalCode, setPostalCode] = useState("");
+  const [ids, setIds] = useState(""); // comma-separated client ids
 
   // --- Queries ---
 
@@ -67,6 +89,15 @@ export function useContactViewModel() {
         segmentIds: segmentId !== "all" ? [segmentId] : undefined,
         sortBy: sort || undefined,
         sortDirection: sortOrder || undefined,
+        createdFrom: dateRange.start ? dateRange.start.toISOString() : undefined,
+        createdTo: dateRange.end ? dateRange.end.toISOString() : undefined,
+        email: email.trim() || undefined,
+        firstName: firstName.trim() || undefined,
+        lastName: lastName.trim() || undefined,
+        postalCode: postalCode.trim() || undefined,
+        ids: ids.trim()
+          ? ids.split(",").map((s) => s.trim()).filter(Boolean)
+          : undefined,
         // NOTE: segmentIds n'est pas typé sur SearchClientRequest (cast volontaire)
       } as any,
     }),
@@ -221,6 +252,7 @@ export function useContactViewModel() {
     statusFilter,
     segmentId,
     productId,
+    isProductLocked,
     page,
     pageSize,
     counts,
@@ -234,9 +266,52 @@ export function useContactViewModel() {
     sort,
     sortOrder,
     advancedFilterSegment,
+    dateRange,
+    email,
+    firstName,
+    lastName,
+    postalCode,
+    ids,
 
     // Handlers
     setSearch: handleSearch,
+    setDateRange: (r: DateRange) => {
+      setDateRange(r);
+      setPage(1);
+    },
+    setEmail: (v: string) => {
+      setEmail(v);
+      setPage(1);
+    },
+    setFirstName: (v: string) => {
+      setFirstName(v);
+      setPage(1);
+    },
+    setLastName: (v: string) => {
+      setLastName(v);
+      setPage(1);
+    },
+    setPostalCode: (v: string) => {
+      setPostalCode(v);
+      setPage(1);
+    },
+    setIds: (v: string) => {
+      setIds(v);
+      setPage(1);
+    },
+    /** Clears all advanced (modal) filters; leaves toolbar filters intact. */
+    resetAdvanced: () => {
+      setEmail("");
+      setFirstName("");
+      setLastName("");
+      setPostalCode("");
+      setIds("");
+      setSort("createdAt");
+      setSortOrder("desc");
+      setPageSize(15);
+      if (!isProductLocked) setProductId("all");
+      setPage(1);
+    },
     setStatusFilter: (v: string) => {
       setStatusFilter(v);
       setPage(1);
@@ -277,5 +352,9 @@ export function useContactViewModel() {
       setIsModalOpen(true);
     },
     handleDelete: (id: string) => deleteMutation.mutate({ path: { id } }),
+    handleImportSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: postApiClientSearchQueryKey() });
+      setIsImportOpen(false);
+    },
   };
 }

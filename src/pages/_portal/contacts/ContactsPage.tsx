@@ -10,15 +10,32 @@ import { useContactViewModel } from "@/hooks/useContactViewModel";
 import { ArrowUpRight, ArrowDownRight, Minus } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { useNavigate } from "@tanstack/react-router";
+import { toast } from "sonner";
 import { SegmentManagerModal } from "@/components/features/contacts/SegmentManagerModal";
+import { ClientImportModal } from "@/components/features/contacts/ClientImportModal";
 
-export function ContactsPage() {
-  const vm = useContactViewModel();
+export function ContactsPage({ productId }: { productId?: string } = {}) {
+  const vm = useContactViewModel(productId);
   const navigate = useNavigate();
 
   const handleManageSegments = () => {
     if (vm.productId !== "all") vm.setIsSegmentsOpen(true);
     else navigate({ to: "/contacts/segments" });
+  };
+
+  // Ouvre la modale en mode création (comme l'onglet Contacts du produit).
+  const handleNewContact = () => {
+    vm.setEditingContact(null);
+    vm.setIsModalOpen(true);
+  };
+
+  // L'import est rattaché à un produit : exiger une sélection de produit.
+  const handleImport = () => {
+    if (vm.productId === "all") {
+      toast.error("Sélectionnez d'abord un produit pour importer des contacts.");
+      return;
+    }
+    vm.setIsImportOpen(true);
   };
 
   const filterOptions = [
@@ -35,61 +52,15 @@ export function ContactsPage() {
   return (
     <main className="flex flex-col h-screen overflow-hidden font-sans bg-[#F4F5F6]">
       <div className="flex-1 flex overflow-hidden">
-        <div className="flex-1 flex flex-col overflow-hidden min-w-0 bg-white">
-          {/* KPI strip */}
-          <div className="grid grid-cols-4 gap-2.5 p-4 px-5 bg-white border-b border-[#E5E7EB] shrink-0">
-            <div className="p-3 px-3.5 bg-[#F7F8F9] rounded-md border border-[#E5E7EB]">
-              <div className="text-[10.5px] text-[#8BAFC0] uppercase tracking-[0.06em] mb-1.5">
-                Total contacts
-              </div>
-              <div className="text-[20px] font-semibold text-[#0D2137] tracking-[-0.025em] leading-none">
-                {vm.counts.all.toLocaleString("fr")}
-              </div>
-              <div className="text-[11px] mt-1 flex items-center gap-[3px] text-[#16A34A]">
-                <ArrowUpRight size={11} strokeWidth={2.5} /> +312 ce mois
-              </div>
-            </div>
-            <div className="p-3 px-3.5 bg-[#F7F8F9] rounded-md border border-[#E5E7EB]">
-              <div className="text-[10.5px] text-[#8BAFC0] uppercase tracking-[0.06em] mb-1.5">
-                Actifs (30j)
-              </div>
-              <div className="text-[20px] font-semibold text-[#0D2137] tracking-[-0.025em] leading-none">
-                {vm.counts.active.toLocaleString("fr")}
-              </div>
-              <div className="text-[11px] mt-1 flex items-center gap-[3px] text-[#8BAFC0]">
-                <Minus size={11} strokeWidth={2.5} /> {activePct}% du total
-              </div>
-            </div>
-            <div className="p-3 px-3.5 bg-[#F7F8F9] rounded-md border border-[#E5E7EB]">
-              <div className="text-[10.5px] text-[#8BAFC0] uppercase tracking-[0.06em] mb-1.5">
-                Opt-in SMS
-              </div>
-              <div className="text-[20px] font-semibold text-[#0D2137] tracking-[-0.025em] leading-none">
-                7 890
-              </div>
-              <div className="text-[11px] mt-1 flex items-center gap-[3px] text-[#16A34A]">
-                <ArrowUpRight size={11} strokeWidth={2.5} /> {optInPct}% du total
-              </div>
-            </div>
-            <div className="p-3 px-3.5 bg-[#F7F8F9] rounded-md border border-[#E5E7EB]">
-              <div className="text-[10.5px] text-[#8BAFC0] uppercase tracking-[0.06em] mb-1.5">
-                Inactifs (30j)
-              </div>
-              <div className="text-[20px] font-semibold text-[#0D2137] tracking-[-0.025em] leading-none">
-                {vm.counts.inactive.toLocaleString("fr")}
-              </div>
-              <div className="text-[11px] mt-1 flex items-center gap-[3px] text-[#DC2626]">
-                <ArrowDownRight size={11} strokeWidth={2.5} /> À réactiver
-              </div>
-            </div>
-          </div>
-
+        <div className="flex-1 flex flex-col  overflow-y-auto min-w-0 bg-white">
           {/* Toolbar */}
           <ContactHeader
-            totalCount={vm.totalCount}
             search={vm.search}
             onSearchChange={vm.setSearch}
-            onNewContact={() => vm.setIsModalOpen(true)}
+            dateRange={vm.dateRange}
+            onDateRangeChange={vm.setDateRange}
+            onNewContact={handleNewContact}
+            onImport={handleImport}
             filterOptions={filterOptions}
             currentFilter={vm.statusFilter}
             onFilterChange={vm.setStatusFilter}
@@ -101,17 +72,29 @@ export function ContactsPage() {
             setSortOrder={vm.setSortOrder}
             pageSize={vm.pageSize}
             setPageSize={vm.setPageSize}
+            email={vm.email}
+            setEmail={vm.setEmail}
+            firstName={vm.firstName}
+            setFirstName={vm.setFirstName}
+            lastName={vm.lastName}
+            setLastName={vm.setLastName}
+            postalCode={vm.postalCode}
+            setPostalCode={vm.setPostalCode}
+            ids={vm.ids}
+            setIds={vm.setIds}
+            onResetAdvanced={vm.resetAdvanced}
             segments={vm.segments}
             segmentId={vm.segmentId}
             setSegmentId={vm.setSegmentId}
             products={vm.products}
             productId={vm.productId}
             setProductId={vm.setProductId}
+            hideProductFilter={vm.isProductLocked}
             onManageSegments={handleManageSegments}
           />
 
           {/* Table area */}
-          <div className="flex-1 overflow-y-auto px-5 py-4">
+          <div className="flex-1 px-5 py-4">
             <AnimatePresence mode="wait">
               {vm.isLoading ? (
                 <motion.div
@@ -136,7 +119,7 @@ export function ContactsPage() {
                       <Button
                         variant="primary"
                         size="sm"
-                        onClick={() => vm.setIsModalOpen(true)}
+                        onClick={handleNewContact}
                         className="mt-4 px-6"
                       >
                         Ajouter un contact
@@ -198,6 +181,13 @@ export function ContactsPage() {
         open={vm.isSegmentsOpen && vm.productId !== "all"}
         onClose={() => vm.setIsSegmentsOpen(false)}
         productId={vm.productId !== "all" ? vm.productId : ""}
+      />
+
+      <ClientImportModal
+        open={vm.isImportOpen && vm.productId !== "all"}
+        onClose={() => vm.setIsImportOpen(false)}
+        productId={vm.productId !== "all" ? vm.productId : ""}
+        onSuccess={vm.handleImportSuccess}
       />
     </main>
   );

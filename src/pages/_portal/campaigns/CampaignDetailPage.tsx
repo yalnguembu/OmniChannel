@@ -140,7 +140,7 @@ export function CampaignDetailPage({campaignId}:{campaignId: string}) {
         <Button
           variant="secondary"
           className="mt-4"
-          onClick={() => navigate({ to: "/campaigns" })}
+          onClick={() => navigate({ to: "/dashboard" })}
         >
           Retour à la liste
         </Button>
@@ -268,7 +268,7 @@ export function CampaignDetailPage({campaignId}:{campaignId: string}) {
   return (
     <div className="p-7 max-w-[1500px] mx-auto">
       <button
-        onClick={() => navigate({ to: "/campaigns" })}
+        onClick={() => navigate({ to: "/dashboard" })}
         className="flex items-center gap-2 text-[12.5px] text-[#8BAFC0] hover:text-[#0D2137] mb-6 transition-colors cursor-pointer group"
       >
         <ArrowLeft
@@ -359,7 +359,7 @@ export function CampaignDetailPage({campaignId}:{campaignId: string}) {
               </div>
             </div>
 
-            <p className="text-[13px] text-[#4A7A94] mb-8 leading-relaxed max-w-4xl px-1">
+            <p className="text-[13px] text-[#4A7A94] mb-8 leading-relaxed max-w-6xl px-1">
               {vm.campaign.description || "Aucune description fournie."}
             </p>
 

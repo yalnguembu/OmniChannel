@@ -10,6 +10,7 @@ import type { SearchConnectorResponse } from "@/shared/api/generated/types.gen";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { PageLoader } from "@/components/feedback/PageLoader";
+import { ListFilterBar } from "@/components/features/shared/ListFilterBar";
 import { ConnectorFormModal } from "@/components/features/connectors/ConnectorFormModal";
 import { ConnectorConfigModal } from "@/components/features/connectors/ConnectorConfigModal";
 import { formatRelative } from "@/lib/date";
@@ -23,6 +24,7 @@ interface ConnectorsTabProps {
 export function ConnectorsTab({ productId }: ConnectorsTabProps) {
   const qc = useQueryClient();
   const vm = useProductConnectors(productId);
+  const f = vm.filters;
 
   const [formOpen, setFormOpen] = useState(false);
   const [editing, setEditing] = useState<SearchConnectorResponse | null>(null);
@@ -47,34 +49,36 @@ export function ConnectorsTab({ productId }: ConnectorsTabProps) {
     setFormOpen(true);
   };
 
-  if (vm.isLoading)
-    return (
-      <div className="py-20">
-        <PageLoader />
-      </div>
-    );
-
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between pb-1 bg-white p-5 rounded-xl border border-[#E5E7EB]">
-        <div>
-          <h3 className="text-[17px] font-bold text-[#0D2137]">
-            Connecteurs techniques
-          </h3>
-          <p className="text-[12.5px] text-[#8BAFC0] mt-0.5">
-            Passerelles techniques utilisées par ce produit
-          </p>
-        </div>
-        <Button
-          variant="primary"
-          size="sm"
-          onClick={openCreate}
-          className="gap-2 px-5"
-        >
-          <Plus size={14} /> Nouveau connecteur
-        </Button>
+    <div className="space-y-4">
+      <div className="rounded-[14px] border border-[#E5E7EB] overflow-hidden">
+        <ListFilterBar
+          search={f.search}
+          onSearchChange={f.setSearch}
+          searchPlaceholder="Rechercher un connecteur…"
+          dateRange={f.dateRange}
+          onDateRangeChange={f.setDateRange}
+          advancedFields={vm.filterFields}
+          advancedValues={f.advanced}
+          advancedDefaults={f.advancedDefaults}
+          onApplyAdvanced={f.applyAdvanced}
+          isFilterModalOpen={f.isFilterModalOpen}
+          setIsFilterModalOpen={f.setIsFilterModalOpen}
+          actions={[
+            {
+              label: "Nouveau connecteur",
+              icon: <Plus size={13} strokeWidth={2.5} />,
+              onClick: openCreate,
+            },
+          ]}
+        />
       </div>
 
+      {vm.isLoading ? (
+        <div className="py-20">
+          <PageLoader />
+        </div>
+      ) : (
       <div className="bg-white border border-[#E5E7EB] rounded-xl overflow-hidden">
         {vm.connectors.length === 0 ? (
           <div className="p-20 flex flex-col items-center text-center">
@@ -181,6 +185,7 @@ export function ConnectorsTab({ productId }: ConnectorsTabProps) {
           </div>
         )}
       </div>
+      )}
 
       <ConnectorFormModal
         open={formOpen}

@@ -205,7 +205,7 @@ export function ContactDetailPage({ contactId }: { contactId: string }) {
   return (
     <div className="p-7">
       <button
-        onClick={() => navigate({ to: "/contacts" })}
+        onClick={() => navigate({ to: "/dashboard" })}
         className="flex items-center gap-2 text-[12.5px] text-[#8BAFC0] hover:text-[#0D2137] mb-5 transition-colors cursor-pointer"
       >
         <ArrowLeft size={13} />

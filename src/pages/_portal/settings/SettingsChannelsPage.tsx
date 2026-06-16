@@ -61,7 +61,7 @@ export function SettingsChannelsPage() {
             </p>
           </div>
 
-          <div className="bg-white border border-[#E5E7EB] rounded-[14px] overflow-hidden max-w-[760px]">
+          <div className="bg-white border border-[#E5E7EB] rounded-lg overflow-hidden max-w-6xl">
         <div className="px-5 py-3.5 border-b border-[#E5E7EB] bg-[#F7F8F9]">
           <p className="text-[13px] font-medium text-[#0D2137]">
             Canaux de communication

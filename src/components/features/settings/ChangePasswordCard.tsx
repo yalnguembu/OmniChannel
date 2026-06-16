@@ -52,14 +52,14 @@ export function ChangePasswordCard() {
   });
 
   return (
-    <div className="max-w-[760px] overflow-hidden rounded-[14px] border border-[#E5E7EB] bg-white">
+    <div className="max-w-6xl overflow-hidden rounded-lg border border-[#E5E7EB] bg-white">
       <div className="flex items-center gap-2 border-b border-[#E5E7EB] bg-[#F7F8F9] px-5 py-3.5">
         <KeyRound size={15} className="text-[#2E8FAD]" />
         <p className="text-[13px] font-medium text-[#0D2137]">Mot de passe</p>
       </div>
       <form
         onSubmit={handleSubmit((d) => mutation.mutate(d))}
-        className="flex max-w-[420px] flex-col gap-4 p-5"
+        className="flex flex-col gap-4 p-5"
       >
         <Input
           label="Mot de passe actuel"
@@ -86,7 +86,7 @@ export function ChangePasswordCard() {
           variant="primary"
           type="submit"
           loading={mutation.isPending}
-          className="self-start"
+          className="self-start w-full"
         >
           Mettre à jour
         </Button>

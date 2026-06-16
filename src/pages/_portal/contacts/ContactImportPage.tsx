@@ -105,7 +105,7 @@ export function ContactImportPage() {
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["contacts"] });
       toast.success("Import lancé avec succès");
-      navigate({ to: "/contacts" });
+      navigate({ to: "/dashboard" });
     },
     onError: (err: any) =>
       toast.error("Erreur lors de l'import : " + (err?.message || "Erreur inconnue")),
@@ -149,7 +149,7 @@ export function ContactImportPage() {
   return (
     <div className="p-7">
       <button
-        onClick={() => navigate({ to: "/contacts" })}
+        onClick={() => navigate({ to: "/dashboard" })}
         className="flex items-center gap-2 text-[12.5px] text-[#8BAFC0] hover:text-[#0D2137] mb-5 transition-colors cursor-pointer"
       >
         <ArrowLeft size={13} />
@@ -455,7 +455,7 @@ export function ContactImportPage() {
             <div className="flex gap-2">
               <Button
                 variant="secondary"
-                onClick={() => navigate({ to: "/contacts" })}
+                onClick={() => navigate({ to: "/dashboard" })}
               >
                 Annuler
               </Button>

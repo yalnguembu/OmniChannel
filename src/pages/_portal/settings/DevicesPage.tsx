@@ -30,7 +30,7 @@ export function DevicesPage() {
 
           <ChangePasswordCard />
 
-          <div className="mt-8 mb-4 flex max-w-[760px] items-end justify-between">
+          <div className="mt-8 mb-4 flex max-w-6xl items-end justify-between">
             <div>
               <h2 className="text-[15px] font-semibold text-[#0D2137]">
                 Appareils & sessions
@@ -59,7 +59,7 @@ export function DevicesPage() {
               description="Aucune session active n'a été trouvée."
             />
           ) : (
-            <div className="max-w-[760px] flex flex-col gap-2">
+            <div className="max-w-6xl flex flex-col gap-2">
               {vm.devices.map((d) => {
                 const isMobile = (d.platform ?? "")
                   .toLowerCase()

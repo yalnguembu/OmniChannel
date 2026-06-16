@@ -7,9 +7,7 @@
   "paths": {
     "/api/AuditLog/{id}": {
       "get": {
-        "tags": [
-          "AuditLog"
-        ],
+        "tags": ["AuditLog"],
         "parameters": [
           {
             "name": "id",
@@ -87,9 +85,7 @@
     },
     "/api/AuditLog/search": {
       "post": {
-        "tags": [
-          "AuditLog"
-        ],
+        "tags": ["AuditLog"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -165,9 +161,7 @@
     },
     "/api/AuditLog/detail/{id}": {
       "get": {
-        "tags": [
-          "AuditLog"
-        ],
+        "tags": ["AuditLog"],
         "parameters": [
           {
             "name": "id",
@@ -245,9 +239,7 @@
     },
     "/api/auth/login": {
       "post": {
-        "tags": [
-          "Auth"
-        ],
+        "tags": ["Auth"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -353,9 +345,7 @@
     },
     "/api/auth/logout": {
       "post": {
-        "tags": [
-          "Auth"
-        ],
+        "tags": ["Auth"],
         "responses": {
           "200": {
             "description": "OK",
@@ -386,16 +376,14 @@
         },
         "security": [
           {
-            "oauth2": [ ]
+            "oauth2": []
           }
         ]
       }
     },
     "/api/auth/logout-all": {
       "post": {
-        "tags": [
-          "Auth"
-        ],
+        "tags": ["Auth"],
         "responses": {
           "200": {
             "description": "OK",
@@ -426,16 +414,14 @@
         },
         "security": [
           {
-            "oauth2": [ ]
+            "oauth2": []
           }
         ]
       }
     },
     "/api/auth/change-password": {
       "post": {
-        "tags": [
-          "Auth"
-        ],
+        "tags": ["Auth"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -522,16 +508,14 @@
         },
         "security": [
           {
-            "oauth2": [ ]
+            "oauth2": []
           }
         ]
       }
     },
     "/api/auth/refresh": {
       "post": {
-        "tags": [
-          "Auth"
-        ],
+        "tags": ["Auth"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -597,9 +581,7 @@
     },
     "/api/auth/devices": {
       "get": {
-        "tags": [
-          "Auth"
-        ],
+        "tags": ["Auth"],
         "responses": {
           "200": {
             "description": "OK",
@@ -630,16 +612,14 @@
         },
         "security": [
           {
-            "oauth2": [ ]
+            "oauth2": []
           }
         ]
       }
     },
     "/api/auth/devices/{deviceId}": {
       "delete": {
-        "tags": [
-          "Auth"
-        ],
+        "tags": ["Auth"],
         "parameters": [
           {
             "name": "deviceId",
@@ -701,16 +681,14 @@
         },
         "security": [
           {
-            "oauth2": [ ]
+            "oauth2": []
           }
         ]
       }
     },
     "/api/Blocklist/{id}": {
       "get": {
-        "tags": [
-          "Blocklist"
-        ],
+        "tags": ["Blocklist"],
         "parameters": [
           {
             "name": "id",
@@ -786,9 +764,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "Blocklist"
-        ],
+        "tags": ["Blocklist"],
         "parameters": [
           {
             "name": "id",
@@ -883,9 +859,7 @@
     },
     "/api/Blocklist": {
       "post": {
-        "tags": [
-          "Blocklist"
-        ],
+        "tags": ["Blocklist"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -969,9 +943,7 @@
         }
       },
       "put": {
-        "tags": [
-          "Blocklist"
-        ],
+        "tags": ["Blocklist"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -1067,9 +1039,7 @@
     },
     "/api/Blocklist/search": {
       "post": {
-        "tags": [
-          "Blocklist"
-        ],
+        "tags": ["Blocklist"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -1145,9 +1115,7 @@
     },
     "/api/Blocklist/dropdown": {
       "get": {
-        "tags": [
-          "Blocklist"
-        ],
+        "tags": ["Blocklist"],
         "parameters": [
           {
             "name": "maxResults",
@@ -1246,9 +1214,7 @@
     },
     "/api/Blocklist/detail/{id}": {
       "get": {
-        "tags": [
-          "Blocklist"
-        ],
+        "tags": ["Blocklist"],
         "parameters": [
           {
             "name": "id",
@@ -1326,9 +1292,7 @@
     },
     "/api/Campaign/{id}": {
       "get": {
-        "tags": [
-          "Campaign"
-        ],
+        "tags": ["Campaign"],
         "parameters": [
           {
             "name": "id",
@@ -1404,9 +1368,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "Campaign"
-        ],
+        "tags": ["Campaign"],
         "parameters": [
           {
             "name": "id",
@@ -1501,9 +1463,7 @@
     },
     "/api/Campaign": {
       "post": {
-        "tags": [
-          "Campaign"
-        ],
+        "tags": ["Campaign"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -1587,9 +1547,7 @@
         }
       },
       "put": {
-        "tags": [
-          "Campaign"
-        ],
+        "tags": ["Campaign"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -1685,9 +1643,7 @@
     },
     "/api/Campaign/search": {
       "post": {
-        "tags": [
-          "Campaign"
-        ],
+        "tags": ["Campaign"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -1763,9 +1719,7 @@
     },
     "/api/Campaign/dropdown": {
       "get": {
-        "tags": [
-          "Campaign"
-        ],
+        "tags": ["Campaign"],
         "parameters": [
           {
             "name": "maxResults",
@@ -1864,9 +1818,7 @@
     },
     "/api/Campaign/detail/{id}": {
       "get": {
-        "tags": [
-          "Campaign"
-        ],
+        "tags": ["Campaign"],
         "parameters": [
           {
             "name": "id",
@@ -1944,9 +1896,7 @@
     },
     "/api/CampaignChannel/{id}": {
       "get": {
-        "tags": [
-          "CampaignChannel"
-        ],
+        "tags": ["CampaignChannel"],
         "parameters": [
           {
             "name": "id",
@@ -2022,9 +1972,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "CampaignChannel"
-        ],
+        "tags": ["CampaignChannel"],
         "parameters": [
           {
             "name": "id",
@@ -2119,9 +2067,7 @@
     },
     "/api/CampaignChannel": {
       "post": {
-        "tags": [
-          "CampaignChannel"
-        ],
+        "tags": ["CampaignChannel"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -2205,9 +2151,7 @@
         }
       },
       "put": {
-        "tags": [
-          "CampaignChannel"
-        ],
+        "tags": ["CampaignChannel"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -2303,9 +2247,7 @@
     },
     "/api/CampaignChannel/search": {
       "post": {
-        "tags": [
-          "CampaignChannel"
-        ],
+        "tags": ["CampaignChannel"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -2381,9 +2323,7 @@
     },
     "/api/CampaignChannel/dropdown": {
       "get": {
-        "tags": [
-          "CampaignChannel"
-        ],
+        "tags": ["CampaignChannel"],
         "parameters": [
           {
             "name": "maxResults",
@@ -2498,9 +2438,7 @@
     },
     "/api/CampaignChannel/detail/{id}": {
       "get": {
-        "tags": [
-          "CampaignChannel"
-        ],
+        "tags": ["CampaignChannel"],
         "parameters": [
           {
             "name": "id",
@@ -2578,9 +2516,7 @@
     },
     "/api/CampaignSegment/{id}": {
       "get": {
-        "tags": [
-          "CampaignSegment"
-        ],
+        "tags": ["CampaignSegment"],
         "parameters": [
           {
             "name": "id",
@@ -2656,9 +2592,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "CampaignSegment"
-        ],
+        "tags": ["CampaignSegment"],
         "parameters": [
           {
             "name": "id",
@@ -2753,9 +2687,7 @@
     },
     "/api/CampaignSegment": {
       "post": {
-        "tags": [
-          "CampaignSegment"
-        ],
+        "tags": ["CampaignSegment"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -2839,9 +2771,7 @@
         }
       },
       "put": {
-        "tags": [
-          "CampaignSegment"
-        ],
+        "tags": ["CampaignSegment"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -2937,9 +2867,7 @@
     },
     "/api/CampaignSegment/search": {
       "post": {
-        "tags": [
-          "CampaignSegment"
-        ],
+        "tags": ["CampaignSegment"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -3015,9 +2943,7 @@
     },
     "/api/CampaignSegment/dropdown": {
       "get": {
-        "tags": [
-          "CampaignSegment"
-        ],
+        "tags": ["CampaignSegment"],
         "parameters": [
           {
             "name": "maxResults",
@@ -3124,9 +3050,7 @@
     },
     "/api/CampaignSegment/detail/{id}": {
       "get": {
-        "tags": [
-          "CampaignSegment"
-        ],
+        "tags": ["CampaignSegment"],
         "parameters": [
           {
             "name": "id",
@@ -3204,9 +3128,7 @@
     },
     "/api/CampaignStatistic/{id}": {
       "get": {
-        "tags": [
-          "CampaignStatistic"
-        ],
+        "tags": ["CampaignStatistic"],
         "parameters": [
           {
             "name": "id",
@@ -3284,9 +3206,7 @@
     },
     "/api/CampaignStatistic/search": {
       "post": {
-        "tags": [
-          "CampaignStatistic"
-        ],
+        "tags": ["CampaignStatistic"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -3362,9 +3282,7 @@
     },
     "/api/CampaignStatistic/dropdown": {
       "get": {
-        "tags": [
-          "CampaignStatistic"
-        ],
+        "tags": ["CampaignStatistic"],
         "parameters": [
           {
             "name": "maxResults",
@@ -3463,9 +3381,7 @@
     },
     "/api/CampaignStatistic/detail/{id}": {
       "get": {
-        "tags": [
-          "CampaignStatistic"
-        ],
+        "tags": ["CampaignStatistic"],
         "parameters": [
           {
             "name": "id",
@@ -3543,9 +3459,7 @@
     },
     "/api/CampaignStep/{id}": {
       "get": {
-        "tags": [
-          "CampaignStep"
-        ],
+        "tags": ["CampaignStep"],
         "parameters": [
           {
             "name": "id",
@@ -3621,9 +3535,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "CampaignStep"
-        ],
+        "tags": ["CampaignStep"],
         "parameters": [
           {
             "name": "id",
@@ -3718,9 +3630,7 @@
     },
     "/api/CampaignStep": {
       "post": {
-        "tags": [
-          "CampaignStep"
-        ],
+        "tags": ["CampaignStep"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -3804,9 +3714,7 @@
         }
       },
       "put": {
-        "tags": [
-          "CampaignStep"
-        ],
+        "tags": ["CampaignStep"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -3902,9 +3810,7 @@
     },
     "/api/CampaignStep/search": {
       "post": {
-        "tags": [
-          "CampaignStep"
-        ],
+        "tags": ["CampaignStep"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -3980,9 +3886,7 @@
     },
     "/api/CampaignStep/dropdown": {
       "get": {
-        "tags": [
-          "CampaignStep"
-        ],
+        "tags": ["CampaignStep"],
         "parameters": [
           {
             "name": "maxResults",
@@ -4097,9 +4001,7 @@
     },
     "/api/CampaignStep/detail/{id}": {
       "get": {
-        "tags": [
-          "CampaignStep"
-        ],
+        "tags": ["CampaignStep"],
         "parameters": [
           {
             "name": "id",
@@ -4177,9 +4079,7 @@
     },
     "/api/Channel/{id}": {
       "get": {
-        "tags": [
-          "Channel"
-        ],
+        "tags": ["Channel"],
         "parameters": [
           {
             "name": "id",
@@ -4255,9 +4155,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "Channel"
-        ],
+        "tags": ["Channel"],
         "parameters": [
           {
             "name": "id",
@@ -4352,9 +4250,7 @@
     },
     "/api/Channel": {
       "post": {
-        "tags": [
-          "Channel"
-        ],
+        "tags": ["Channel"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -4438,9 +4334,7 @@
         }
       },
       "put": {
-        "tags": [
-          "Channel"
-        ],
+        "tags": ["Channel"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -4536,9 +4430,7 @@
     },
     "/api/Channel/search": {
       "post": {
-        "tags": [
-          "Channel"
-        ],
+        "tags": ["Channel"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -4614,9 +4506,7 @@
     },
     "/api/Channel/dropdown": {
       "get": {
-        "tags": [
-          "Channel"
-        ],
+        "tags": ["Channel"],
         "parameters": [
           {
             "name": "maxResults",
@@ -4707,9 +4597,7 @@
     },
     "/api/Client/{id}": {
       "get": {
-        "tags": [
-          "Client"
-        ],
+        "tags": ["Client"],
         "parameters": [
           {
             "name": "id",
@@ -4785,9 +4673,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "Client"
-        ],
+        "tags": ["Client"],
         "parameters": [
           {
             "name": "id",
@@ -4882,9 +4768,7 @@
     },
     "/api/Client": {
       "post": {
-        "tags": [
-          "Client"
-        ],
+        "tags": ["Client"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -4968,9 +4852,7 @@
         }
       },
       "put": {
-        "tags": [
-          "Client"
-        ],
+        "tags": ["Client"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -5066,27 +4948,25 @@
     },
     "/api/Client/flat": {
       "post": {
-        "tags": [
-          "Client"
-        ],
+        "tags": ["Client"],
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
                 "type": "object",
-                "additionalProperties": { }
+                "additionalProperties": {}
               }
             },
             "text/json": {
               "schema": {
                 "type": "object",
-                "additionalProperties": { }
+                "additionalProperties": {}
               }
             },
             "application/*+json": {
               "schema": {
                 "type": "object",
-                "additionalProperties": { }
+                "additionalProperties": {}
               }
             }
           }
@@ -5157,9 +5037,7 @@
     },
     "/api/Client/flat/{id}": {
       "put": {
-        "tags": [
-          "Client"
-        ],
+        "tags": ["Client"],
         "parameters": [
           {
             "name": "id",
@@ -5176,19 +5054,19 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "additionalProperties": { }
+                "additionalProperties": {}
               }
             },
             "text/json": {
               "schema": {
                 "type": "object",
-                "additionalProperties": { }
+                "additionalProperties": {}
               }
             },
             "application/*+json": {
               "schema": {
                 "type": "object",
-                "additionalProperties": { }
+                "additionalProperties": {}
               }
             }
           }
@@ -5267,9 +5145,7 @@
         }
       },
       "get": {
-        "tags": [
-          "Client"
-        ],
+        "tags": ["Client"],
         "parameters": [
           {
             "name": "id",
@@ -5347,9 +5223,7 @@
     },
     "/api/Client/validate/{productId}": {
       "post": {
-        "tags": [
-          "Client"
-        ],
+        "tags": ["Client"],
         "parameters": [
           {
             "name": "productId",
@@ -5374,19 +5248,19 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "additionalProperties": { }
+                "additionalProperties": {}
               }
             },
             "text/json": {
               "schema": {
                 "type": "object",
-                "additionalProperties": { }
+                "additionalProperties": {}
               }
             },
             "application/*+json": {
               "schema": {
                 "type": "object",
-                "additionalProperties": { }
+                "additionalProperties": {}
               }
             }
           }
@@ -5457,9 +5331,7 @@
     },
     "/api/Client/search": {
       "post": {
-        "tags": [
-          "Client"
-        ],
+        "tags": ["Client"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -5535,9 +5407,7 @@
     },
     "/api/Client/dropdown": {
       "get": {
-        "tags": [
-          "Client"
-        ],
+        "tags": ["Client"],
         "parameters": [
           {
             "name": "maxResults",
@@ -5636,9 +5506,7 @@
     },
     "/api/Client/detail/{id}": {
       "get": {
-        "tags": [
-          "Client"
-        ],
+        "tags": ["Client"],
         "parameters": [
           {
             "name": "id",
@@ -5716,9 +5584,7 @@
     },
     "/api/Client/flat/detailed/{id}": {
       "get": {
-        "tags": [
-          "Client"
-        ],
+        "tags": ["Client"],
         "parameters": [
           {
             "name": "id",
@@ -5796,9 +5662,7 @@
     },
     "/api/ClientChannelPreference/{id}": {
       "get": {
-        "tags": [
-          "ClientChannelPreference"
-        ],
+        "tags": ["ClientChannelPreference"],
         "parameters": [
           {
             "name": "id",
@@ -5874,9 +5738,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "ClientChannelPreference"
-        ],
+        "tags": ["ClientChannelPreference"],
         "parameters": [
           {
             "name": "id",
@@ -5971,9 +5833,7 @@
     },
     "/api/ClientChannelPreference": {
       "post": {
-        "tags": [
-          "ClientChannelPreference"
-        ],
+        "tags": ["ClientChannelPreference"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -6057,9 +5917,7 @@
         }
       },
       "put": {
-        "tags": [
-          "ClientChannelPreference"
-        ],
+        "tags": ["ClientChannelPreference"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -6155,9 +6013,7 @@
     },
     "/api/ClientChannelPreference/search": {
       "post": {
-        "tags": [
-          "ClientChannelPreference"
-        ],
+        "tags": ["ClientChannelPreference"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -6233,9 +6089,7 @@
     },
     "/api/ClientChannelPreference/dropdown": {
       "get": {
-        "tags": [
-          "ClientChannelPreference"
-        ],
+        "tags": ["ClientChannelPreference"],
         "parameters": [
           {
             "name": "maxResults",
@@ -6342,9 +6196,7 @@
     },
     "/api/ClientChannelPreference/detail/{id}": {
       "get": {
-        "tags": [
-          "ClientChannelPreference"
-        ],
+        "tags": ["ClientChannelPreference"],
         "parameters": [
           {
             "name": "id",
@@ -6422,9 +6274,7 @@
     },
     "/api/ClientImport/upload": {
       "post": {
-        "tags": [
-          "ClientImport"
-        ],
+        "tags": ["ClientImport"],
         "requestBody": {
           "content": {
             "multipart/form-data": {
@@ -6531,9 +6381,7 @@
     },
     "/api/ClientImport/messages": {
       "post": {
-        "tags": [
-          "ClientImport"
-        ],
+        "tags": ["ClientImport"],
         "requestBody": {
           "content": {
             "multipart/form-data": {
@@ -6639,9 +6487,7 @@
     },
     "/api/ClientImport/{id}": {
       "get": {
-        "tags": [
-          "ClientImport"
-        ],
+        "tags": ["ClientImport"],
         "parameters": [
           {
             "name": "id",
@@ -6717,9 +6563,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "ClientImport"
-        ],
+        "tags": ["ClientImport"],
         "parameters": [
           {
             "name": "id",
@@ -6814,9 +6658,7 @@
     },
     "/api/ClientImport": {
       "post": {
-        "tags": [
-          "ClientImport"
-        ],
+        "tags": ["ClientImport"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -6900,9 +6742,7 @@
         }
       },
       "put": {
-        "tags": [
-          "ClientImport"
-        ],
+        "tags": ["ClientImport"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -6998,9 +6838,7 @@
     },
     "/api/ClientImport/search": {
       "post": {
-        "tags": [
-          "ClientImport"
-        ],
+        "tags": ["ClientImport"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -7076,9 +6914,7 @@
     },
     "/api/ClientImport/dropdown": {
       "get": {
-        "tags": [
-          "ClientImport"
-        ],
+        "tags": ["ClientImport"],
         "parameters": [
           {
             "name": "maxResults",
@@ -7177,9 +7013,7 @@
     },
     "/api/ClientImport/detail/{id}": {
       "get": {
-        "tags": [
-          "ClientImport"
-        ],
+        "tags": ["ClientImport"],
         "parameters": [
           {
             "name": "id",
@@ -7257,9 +7091,7 @@
     },
     "/api/ClientSegment/{id}": {
       "get": {
-        "tags": [
-          "ClientSegment"
-        ],
+        "tags": ["ClientSegment"],
         "parameters": [
           {
             "name": "id",
@@ -7335,9 +7167,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "ClientSegment"
-        ],
+        "tags": ["ClientSegment"],
         "parameters": [
           {
             "name": "id",
@@ -7432,9 +7262,7 @@
     },
     "/api/ClientSegment": {
       "post": {
-        "tags": [
-          "ClientSegment"
-        ],
+        "tags": ["ClientSegment"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -7518,9 +7346,7 @@
         }
       },
       "put": {
-        "tags": [
-          "ClientSegment"
-        ],
+        "tags": ["ClientSegment"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -7616,9 +7442,7 @@
     },
     "/api/ClientSegment/search": {
       "post": {
-        "tags": [
-          "ClientSegment"
-        ],
+        "tags": ["ClientSegment"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -7694,9 +7518,7 @@
     },
     "/api/ClientSegment/dropdown": {
       "get": {
-        "tags": [
-          "ClientSegment"
-        ],
+        "tags": ["ClientSegment"],
         "parameters": [
           {
             "name": "maxResults",
@@ -7795,9 +7617,7 @@
     },
     "/api/ClientSegment/detail/{id}": {
       "get": {
-        "tags": [
-          "ClientSegment"
-        ],
+        "tags": ["ClientSegment"],
         "parameters": [
           {
             "name": "id",
@@ -7875,9 +7695,7 @@
     },
     "/api/ClientSegment/recalculate/{id}": {
       "post": {
-        "tags": [
-          "ClientSegment"
-        ],
+        "tags": ["ClientSegment"],
         "parameters": [
           {
             "name": "id",
@@ -7955,9 +7773,7 @@
     },
     "/api/ClientSegment/preview/{id}": {
       "get": {
-        "tags": [
-          "ClientSegment"
-        ],
+        "tags": ["ClientSegment"],
         "parameters": [
           {
             "name": "id",
@@ -8044,9 +7860,7 @@
     },
     "/api/ClientSegment/preview": {
       "post": {
-        "tags": [
-          "ClientSegment"
-        ],
+        "tags": ["ClientSegment"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -8132,9 +7946,7 @@
     },
     "/api/ClientSegment/clients/{id}": {
       "get": {
-        "tags": [
-          "ClientSegment"
-        ],
+        "tags": ["ClientSegment"],
         "parameters": [
           {
             "name": "id",
@@ -8230,9 +8042,7 @@
     },
     "/api/ClientSegment/clients/flat/{id}": {
       "get": {
-        "tags": [
-          "ClientSegment"
-        ],
+        "tags": ["ClientSegment"],
         "parameters": [
           {
             "name": "id",
@@ -8328,9 +8138,7 @@
     },
     "/api/ClientSegment/metadata": {
       "get": {
-        "tags": [
-          "ClientSegment"
-        ],
+        "tags": ["ClientSegment"],
         "responses": {
           "500": {
             "description": "Internal Server Error",
@@ -8377,9 +8185,7 @@
     },
     "/api/ClientSegment/messages/{id}": {
       "post": {
-        "tags": [
-          "ClientSegment"
-        ],
+        "tags": ["ClientSegment"],
         "parameters": [
           {
             "name": "id",
@@ -8494,9 +8300,7 @@
     },
     "/api/ClientSegmentMember/{id}": {
       "get": {
-        "tags": [
-          "ClientSegmentMember"
-        ],
+        "tags": ["ClientSegmentMember"],
         "parameters": [
           {
             "name": "id",
@@ -8572,9 +8376,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "ClientSegmentMember"
-        ],
+        "tags": ["ClientSegmentMember"],
         "parameters": [
           {
             "name": "id",
@@ -8669,9 +8471,7 @@
     },
     "/api/ClientSegmentMember": {
       "post": {
-        "tags": [
-          "ClientSegmentMember"
-        ],
+        "tags": ["ClientSegmentMember"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -8755,9 +8555,7 @@
         }
       },
       "put": {
-        "tags": [
-          "ClientSegmentMember"
-        ],
+        "tags": ["ClientSegmentMember"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -8853,9 +8651,7 @@
     },
     "/api/ClientSegmentMember/search": {
       "post": {
-        "tags": [
-          "ClientSegmentMember"
-        ],
+        "tags": ["ClientSegmentMember"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -8931,9 +8727,7 @@
     },
     "/api/ClientSegmentMember/dropdown": {
       "get": {
-        "tags": [
-          "ClientSegmentMember"
-        ],
+        "tags": ["ClientSegmentMember"],
         "parameters": [
           {
             "name": "maxResults",
@@ -9040,9 +8834,7 @@
     },
     "/api/ClientSegmentMember/detail/{id}": {
       "get": {
-        "tags": [
-          "ClientSegmentMember"
-        ],
+        "tags": ["ClientSegmentMember"],
         "parameters": [
           {
             "name": "id",
@@ -9120,9 +8912,7 @@
     },
     "/api/Company/{id}": {
       "get": {
-        "tags": [
-          "Company"
-        ],
+        "tags": ["Company"],
         "parameters": [
           {
             "name": "id",
@@ -9198,9 +8988,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "Company"
-        ],
+        "tags": ["Company"],
         "parameters": [
           {
             "name": "id",
@@ -9295,9 +9083,7 @@
     },
     "/api/Company": {
       "post": {
-        "tags": [
-          "Company"
-        ],
+        "tags": ["Company"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -9381,9 +9167,7 @@
         }
       },
       "put": {
-        "tags": [
-          "Company"
-        ],
+        "tags": ["Company"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -9479,9 +9263,7 @@
     },
     "/api/Company/search": {
       "post": {
-        "tags": [
-          "Company"
-        ],
+        "tags": ["Company"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -9557,9 +9339,7 @@
     },
     "/api/Company/dropdown": {
       "get": {
-        "tags": [
-          "Company"
-        ],
+        "tags": ["Company"],
         "parameters": [
           {
             "name": "maxResults",
@@ -9658,9 +9438,7 @@
     },
     "/api/Company/detail/{id}": {
       "get": {
-        "tags": [
-          "Company"
-        ],
+        "tags": ["Company"],
         "parameters": [
           {
             "name": "id",
@@ -9738,9 +9516,7 @@
     },
     "/api/Company/api-key/{id}": {
       "get": {
-        "tags": [
-          "Company"
-        ],
+        "tags": ["Company"],
         "parameters": [
           {
             "name": "id",
@@ -9818,9 +9594,7 @@
     },
     "/api/Company/api-key/renegere/{id}": {
       "patch": {
-        "tags": [
-          "Company"
-        ],
+        "tags": ["Company"],
         "parameters": [
           {
             "name": "id",
@@ -9898,9 +9672,7 @@
     },
     "/api/CompanyChannel/{id}": {
       "get": {
-        "tags": [
-          "CompanyChannel"
-        ],
+        "tags": ["CompanyChannel"],
         "parameters": [
           {
             "name": "id",
@@ -9976,9 +9748,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "CompanyChannel"
-        ],
+        "tags": ["CompanyChannel"],
         "parameters": [
           {
             "name": "id",
@@ -10073,9 +9843,7 @@
     },
     "/api/CompanyChannel": {
       "post": {
-        "tags": [
-          "CompanyChannel"
-        ],
+        "tags": ["CompanyChannel"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -10159,9 +9927,7 @@
         }
       },
       "put": {
-        "tags": [
-          "CompanyChannel"
-        ],
+        "tags": ["CompanyChannel"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -10257,9 +10023,7 @@
     },
     "/api/CompanyChannel/search": {
       "post": {
-        "tags": [
-          "CompanyChannel"
-        ],
+        "tags": ["CompanyChannel"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -10335,9 +10099,7 @@
     },
     "/api/CompanyChannel/dropdown": {
       "get": {
-        "tags": [
-          "CompanyChannel"
-        ],
+        "tags": ["CompanyChannel"],
         "parameters": [
           {
             "name": "maxResults",
@@ -10444,9 +10206,7 @@
     },
     "/api/CompanyChannel/detail/{id}": {
       "get": {
-        "tags": [
-          "CompanyChannel"
-        ],
+        "tags": ["CompanyChannel"],
         "parameters": [
           {
             "name": "id",
@@ -10524,9 +10284,7 @@
     },
     "/api/CompanySetting/{id}": {
       "get": {
-        "tags": [
-          "CompanySetting"
-        ],
+        "tags": ["CompanySetting"],
         "parameters": [
           {
             "name": "id",
@@ -10602,9 +10360,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "CompanySetting"
-        ],
+        "tags": ["CompanySetting"],
         "parameters": [
           {
             "name": "id",
@@ -10699,9 +10455,7 @@
     },
     "/api/CompanySetting": {
       "post": {
-        "tags": [
-          "CompanySetting"
-        ],
+        "tags": ["CompanySetting"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -10785,9 +10539,7 @@
         }
       },
       "put": {
-        "tags": [
-          "CompanySetting"
-        ],
+        "tags": ["CompanySetting"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -10883,9 +10635,7 @@
     },
     "/api/CompanySetting/search": {
       "post": {
-        "tags": [
-          "CompanySetting"
-        ],
+        "tags": ["CompanySetting"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -10961,9 +10711,7 @@
     },
     "/api/CompanySetting/dropdown": {
       "get": {
-        "tags": [
-          "CompanySetting"
-        ],
+        "tags": ["CompanySetting"],
         "parameters": [
           {
             "name": "maxResults",
@@ -11062,9 +10810,7 @@
     },
     "/api/CompanySetting/detail/{id}": {
       "get": {
-        "tags": [
-          "CompanySetting"
-        ],
+        "tags": ["CompanySetting"],
         "parameters": [
           {
             "name": "id",
@@ -11142,9 +10888,7 @@
     },
     "/api/CompanyVerification/{id}": {
       "get": {
-        "tags": [
-          "CompanyVerification"
-        ],
+        "tags": ["CompanyVerification"],
         "parameters": [
           {
             "name": "id",
@@ -11220,9 +10964,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "CompanyVerification"
-        ],
+        "tags": ["CompanyVerification"],
         "parameters": [
           {
             "name": "id",
@@ -11317,9 +11059,7 @@
     },
     "/api/CompanyVerification": {
       "post": {
-        "tags": [
-          "CompanyVerification"
-        ],
+        "tags": ["CompanyVerification"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -11403,9 +11143,7 @@
         }
       },
       "put": {
-        "tags": [
-          "CompanyVerification"
-        ],
+        "tags": ["CompanyVerification"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -11501,9 +11239,7 @@
     },
     "/api/CompanyVerification/search": {
       "post": {
-        "tags": [
-          "CompanyVerification"
-        ],
+        "tags": ["CompanyVerification"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -11579,9 +11315,7 @@
     },
     "/api/CompanyVerification/dropdown": {
       "get": {
-        "tags": [
-          "CompanyVerification"
-        ],
+        "tags": ["CompanyVerification"],
         "parameters": [
           {
             "name": "maxResults",
@@ -11680,9 +11414,7 @@
     },
     "/api/CompanyVerification/detail/{id}": {
       "get": {
-        "tags": [
-          "CompanyVerification"
-        ],
+        "tags": ["CompanyVerification"],
         "parameters": [
           {
             "name": "id",
@@ -11760,9 +11492,7 @@
     },
     "/api/Connector/{id}": {
       "get": {
-        "tags": [
-          "Connector"
-        ],
+        "tags": ["Connector"],
         "parameters": [
           {
             "name": "id",
@@ -11838,9 +11568,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "Connector"
-        ],
+        "tags": ["Connector"],
         "parameters": [
           {
             "name": "id",
@@ -11935,9 +11663,7 @@
     },
     "/api/Connector/config/{id}": {
       "get": {
-        "tags": [
-          "Connector"
-        ],
+        "tags": ["Connector"],
         "parameters": [
           {
             "name": "id",
@@ -12015,9 +11741,7 @@
     },
     "/api/Connector/configure": {
       "put": {
-        "tags": [
-          "Connector"
-        ],
+        "tags": ["Connector"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -12093,9 +11817,7 @@
     },
     "/api/Connector": {
       "post": {
-        "tags": [
-          "Connector"
-        ],
+        "tags": ["Connector"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -12179,9 +11901,7 @@
         }
       },
       "put": {
-        "tags": [
-          "Connector"
-        ],
+        "tags": ["Connector"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -12277,9 +11997,7 @@
     },
     "/api/Connector/search": {
       "post": {
-        "tags": [
-          "Connector"
-        ],
+        "tags": ["Connector"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -12355,9 +12073,7 @@
     },
     "/api/Connector/detail/{id}": {
       "get": {
-        "tags": [
-          "Connector"
-        ],
+        "tags": ["Connector"],
         "parameters": [
           {
             "name": "id",
@@ -12435,9 +12151,7 @@
     },
     "/api/Conversation/search": {
       "get": {
-        "tags": [
-          "Conversation"
-        ],
+        "tags": ["Conversation"],
         "parameters": [
           {
             "name": "status",
@@ -12559,9 +12273,7 @@
     },
     "/api/Conversation/detail/{id}": {
       "get": {
-        "tags": [
-          "Conversation"
-        ],
+        "tags": ["Conversation"],
         "parameters": [
           {
             "name": "id",
@@ -12639,9 +12351,7 @@
     },
     "/api/Conversation/message/search": {
       "get": {
-        "tags": [
-          "Conversation"
-        ],
+        "tags": ["Conversation"],
         "parameters": [
           {
             "name": "id",
@@ -12733,9 +12443,7 @@
     },
     "/api/Conversation/message/detail/{id}": {
       "get": {
-        "tags": [
-          "Conversation"
-        ],
+        "tags": ["Conversation"],
         "parameters": [
           {
             "name": "id",
@@ -12813,9 +12521,7 @@
     },
     "/api/Conversation/status": {
       "put": {
-        "tags": [
-          "Conversation"
-        ],
+        "tags": ["Conversation"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -12911,9 +12617,7 @@
     },
     "/api/Conversation/assign": {
       "put": {
-        "tags": [
-          "Conversation"
-        ],
+        "tags": ["Conversation"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -13009,9 +12713,7 @@
     },
     "/api/Conversation/stats": {
       "get": {
-        "tags": [
-          "Conversation"
-        ],
+        "tags": ["Conversation"],
         "parameters": [
           {
             "name": "companyId",
@@ -13076,9 +12778,7 @@
     },
     "/api/Country/{id}": {
       "get": {
-        "tags": [
-          "Country"
-        ],
+        "tags": ["Country"],
         "parameters": [
           {
             "name": "id",
@@ -13154,9 +12854,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "Country"
-        ],
+        "tags": ["Country"],
         "parameters": [
           {
             "name": "id",
@@ -13251,9 +12949,7 @@
     },
     "/api/Country": {
       "post": {
-        "tags": [
-          "Country"
-        ],
+        "tags": ["Country"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -13337,9 +13033,7 @@
         }
       },
       "put": {
-        "tags": [
-          "Country"
-        ],
+        "tags": ["Country"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -13435,9 +13129,7 @@
     },
     "/api/Country/search": {
       "post": {
-        "tags": [
-          "Country"
-        ],
+        "tags": ["Country"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -13513,9 +13205,7 @@
     },
     "/api/Country/dropdown": {
       "get": {
-        "tags": [
-          "Country"
-        ],
+        "tags": ["Country"],
         "parameters": [
           {
             "name": "maxResults",
@@ -13606,9 +13296,7 @@
     },
     "/api/Currency/{id}": {
       "get": {
-        "tags": [
-          "Currency"
-        ],
+        "tags": ["Currency"],
         "parameters": [
           {
             "name": "id",
@@ -13684,9 +13372,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "Currency"
-        ],
+        "tags": ["Currency"],
         "parameters": [
           {
             "name": "id",
@@ -13781,9 +13467,7 @@
     },
     "/api/Currency": {
       "post": {
-        "tags": [
-          "Currency"
-        ],
+        "tags": ["Currency"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -13867,9 +13551,7 @@
         }
       },
       "put": {
-        "tags": [
-          "Currency"
-        ],
+        "tags": ["Currency"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -13965,9 +13647,7 @@
     },
     "/api/Currency/search": {
       "post": {
-        "tags": [
-          "Currency"
-        ],
+        "tags": ["Currency"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -14043,9 +13723,7 @@
     },
     "/api/Currency/dropdown": {
       "get": {
-        "tags": [
-          "Currency"
-        ],
+        "tags": ["Currency"],
         "parameters": [
           {
             "name": "maxResults",
@@ -14136,9 +13814,7 @@
     },
     "/api/EntityTag/{id}": {
       "get": {
-        "tags": [
-          "EntityTag"
-        ],
+        "tags": ["EntityTag"],
         "parameters": [
           {
             "name": "id",
@@ -14214,9 +13890,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "EntityTag"
-        ],
+        "tags": ["EntityTag"],
         "parameters": [
           {
             "name": "id",
@@ -14311,9 +13985,7 @@
     },
     "/api/EntityTag": {
       "post": {
-        "tags": [
-          "EntityTag"
-        ],
+        "tags": ["EntityTag"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -14397,9 +14069,7 @@
         }
       },
       "put": {
-        "tags": [
-          "EntityTag"
-        ],
+        "tags": ["EntityTag"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -14495,9 +14165,7 @@
     },
     "/api/EntityTag/search": {
       "post": {
-        "tags": [
-          "EntityTag"
-        ],
+        "tags": ["EntityTag"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -14573,9 +14241,7 @@
     },
     "/api/EntityTag/dropdown": {
       "get": {
-        "tags": [
-          "EntityTag"
-        ],
+        "tags": ["EntityTag"],
         "parameters": [
           {
             "name": "maxResults",
@@ -14674,9 +14340,7 @@
     },
     "/api/EntityTag/detail/{id}": {
       "get": {
-        "tags": [
-          "EntityTag"
-        ],
+        "tags": ["EntityTag"],
         "parameters": [
           {
             "name": "id",
@@ -14754,9 +14418,7 @@
     },
     "/api/File/{id}": {
       "get": {
-        "tags": [
-          "File"
-        ],
+        "tags": ["File"],
         "parameters": [
           {
             "name": "id",
@@ -14832,9 +14494,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "File"
-        ],
+        "tags": ["File"],
         "parameters": [
           {
             "name": "id",
@@ -14929,9 +14589,7 @@
     },
     "/api/File": {
       "post": {
-        "tags": [
-          "File"
-        ],
+        "tags": ["File"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -15015,9 +14673,7 @@
         }
       },
       "put": {
-        "tags": [
-          "File"
-        ],
+        "tags": ["File"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -15113,9 +14769,7 @@
     },
     "/api/File/search": {
       "post": {
-        "tags": [
-          "File"
-        ],
+        "tags": ["File"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -15191,9 +14845,7 @@
     },
     "/api/File/dropdown": {
       "get": {
-        "tags": [
-          "File"
-        ],
+        "tags": ["File"],
         "parameters": [
           {
             "name": "maxResults",
@@ -15292,9 +14944,7 @@
     },
     "/api/File/detail/{id}": {
       "get": {
-        "tags": [
-          "File"
-        ],
+        "tags": ["File"],
         "parameters": [
           {
             "name": "id",
@@ -15372,9 +15022,7 @@
     },
     "/api/Integration/config/{id}": {
       "get": {
-        "tags": [
-          "Integration"
-        ],
+        "tags": ["Integration"],
         "parameters": [
           {
             "name": "id",
@@ -15452,9 +15100,7 @@
     },
     "/api/Integration/configure": {
       "put": {
-        "tags": [
-          "Integration"
-        ],
+        "tags": ["Integration"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -15540,9 +15186,7 @@
     },
     "/api/Integration/{id}": {
       "get": {
-        "tags": [
-          "Integration"
-        ],
+        "tags": ["Integration"],
         "parameters": [
           {
             "name": "id",
@@ -15618,9 +15262,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "Integration"
-        ],
+        "tags": ["Integration"],
         "parameters": [
           {
             "name": "id",
@@ -15715,9 +15357,7 @@
     },
     "/api/Integration": {
       "post": {
-        "tags": [
-          "Integration"
-        ],
+        "tags": ["Integration"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -15801,9 +15441,7 @@
         }
       },
       "put": {
-        "tags": [
-          "Integration"
-        ],
+        "tags": ["Integration"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -15899,9 +15537,7 @@
     },
     "/api/Integration/search": {
       "post": {
-        "tags": [
-          "Integration"
-        ],
+        "tags": ["Integration"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -15977,9 +15613,7 @@
     },
     "/api/Integration/dropdown": {
       "get": {
-        "tags": [
-          "Integration"
-        ],
+        "tags": ["Integration"],
         "parameters": [
           {
             "name": "maxResults",
@@ -16078,9 +15712,7 @@
     },
     "/api/Integration/detail/{id}": {
       "get": {
-        "tags": [
-          "Integration"
-        ],
+        "tags": ["Integration"],
         "parameters": [
           {
             "name": "id",
@@ -16158,9 +15790,7 @@
     },
     "/api/integration/sync/clients": {
       "post": {
-        "tags": [
-          "IntegrationSync"
-        ],
+        "tags": ["IntegrationSync"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -16168,7 +15798,7 @@
                 "type": "array",
                 "items": {
                   "type": "object",
-                  "additionalProperties": { }
+                  "additionalProperties": {}
                 }
               }
             },
@@ -16177,7 +15807,7 @@
                 "type": "array",
                 "items": {
                   "type": "object",
-                  "additionalProperties": { }
+                  "additionalProperties": {}
                 }
               }
             },
@@ -16186,7 +15816,7 @@
                 "type": "array",
                 "items": {
                   "type": "object",
-                  "additionalProperties": { }
+                  "additionalProperties": {}
                 }
               }
             }
@@ -16236,9 +15866,7 @@
         }
       },
       "put": {
-        "tags": [
-          "IntegrationSync"
-        ],
+        "tags": ["IntegrationSync"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -16246,7 +15874,7 @@
                 "type": "array",
                 "items": {
                   "type": "object",
-                  "additionalProperties": { }
+                  "additionalProperties": {}
                 }
               }
             },
@@ -16255,7 +15883,7 @@
                 "type": "array",
                 "items": {
                   "type": "object",
-                  "additionalProperties": { }
+                  "additionalProperties": {}
                 }
               }
             },
@@ -16264,7 +15892,7 @@
                 "type": "array",
                 "items": {
                   "type": "object",
-                  "additionalProperties": { }
+                  "additionalProperties": {}
                 }
               }
             }
@@ -16314,9 +15942,7 @@
         }
       },
       "get": {
-        "tags": [
-          "IntegrationSync"
-        ],
+        "tags": ["IntegrationSync"],
         "responses": {
           "500": {
             "description": "Internal Server Error",
@@ -16363,9 +15989,7 @@
     },
     "/api/integration/sync/pull": {
       "post": {
-        "tags": [
-          "IntegrationSync"
-        ],
+        "tags": ["IntegrationSync"],
         "parameters": [
           {
             "name": "companyId",
@@ -16430,9 +16054,7 @@
     },
     "/api/IntegrationSyncLog/{id}": {
       "get": {
-        "tags": [
-          "IntegrationSyncLog"
-        ],
+        "tags": ["IntegrationSyncLog"],
         "parameters": [
           {
             "name": "id",
@@ -16508,9 +16130,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "IntegrationSyncLog"
-        ],
+        "tags": ["IntegrationSyncLog"],
         "parameters": [
           {
             "name": "id",
@@ -16605,9 +16225,7 @@
     },
     "/api/IntegrationSyncLog": {
       "post": {
-        "tags": [
-          "IntegrationSyncLog"
-        ],
+        "tags": ["IntegrationSyncLog"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -16691,9 +16309,7 @@
         }
       },
       "put": {
-        "tags": [
-          "IntegrationSyncLog"
-        ],
+        "tags": ["IntegrationSyncLog"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -16789,9 +16405,7 @@
     },
     "/api/IntegrationSyncLog/search": {
       "post": {
-        "tags": [
-          "IntegrationSyncLog"
-        ],
+        "tags": ["IntegrationSyncLog"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -16867,9 +16481,7 @@
     },
     "/api/IntegrationSyncLog/dropdown": {
       "get": {
-        "tags": [
-          "IntegrationSyncLog"
-        ],
+        "tags": ["IntegrationSyncLog"],
         "parameters": [
           {
             "name": "maxResults",
@@ -16968,9 +16580,7 @@
     },
     "/api/IntegrationSyncLog/detail/{id}": {
       "get": {
-        "tags": [
-          "IntegrationSyncLog"
-        ],
+        "tags": ["IntegrationSyncLog"],
         "parameters": [
           {
             "name": "id",
@@ -17048,9 +16658,7 @@
     },
     "/api/Invoice/{id}": {
       "get": {
-        "tags": [
-          "Invoice"
-        ],
+        "tags": ["Invoice"],
         "parameters": [
           {
             "name": "id",
@@ -17126,9 +16734,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "Invoice"
-        ],
+        "tags": ["Invoice"],
         "parameters": [
           {
             "name": "id",
@@ -17223,9 +16829,7 @@
     },
     "/api/Invoice": {
       "post": {
-        "tags": [
-          "Invoice"
-        ],
+        "tags": ["Invoice"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -17309,9 +16913,7 @@
         }
       },
       "put": {
-        "tags": [
-          "Invoice"
-        ],
+        "tags": ["Invoice"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -17407,9 +17009,7 @@
     },
     "/api/Invoice/search": {
       "post": {
-        "tags": [
-          "Invoice"
-        ],
+        "tags": ["Invoice"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -17485,9 +17085,7 @@
     },
     "/api/Invoice/dropdown": {
       "get": {
-        "tags": [
-          "Invoice"
-        ],
+        "tags": ["Invoice"],
         "parameters": [
           {
             "name": "maxResults",
@@ -17586,9 +17184,7 @@
     },
     "/api/Invoice/detail/{id}": {
       "get": {
-        "tags": [
-          "Invoice"
-        ],
+        "tags": ["Invoice"],
         "parameters": [
           {
             "name": "id",
@@ -17666,9 +17262,7 @@
     },
     "/api/Job/{id}": {
       "get": {
-        "tags": [
-          "Job"
-        ],
+        "tags": ["Job"],
         "parameters": [
           {
             "name": "id",
@@ -17744,9 +17338,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "Job"
-        ],
+        "tags": ["Job"],
         "parameters": [
           {
             "name": "id",
@@ -17841,9 +17433,7 @@
     },
     "/api/Job": {
       "post": {
-        "tags": [
-          "Job"
-        ],
+        "tags": ["Job"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -17927,9 +17517,7 @@
         }
       },
       "put": {
-        "tags": [
-          "Job"
-        ],
+        "tags": ["Job"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -18025,9 +17613,7 @@
     },
     "/api/Job/search": {
       "post": {
-        "tags": [
-          "Job"
-        ],
+        "tags": ["Job"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -18103,9 +17689,7 @@
     },
     "/api/Job/dropdown": {
       "get": {
-        "tags": [
-          "Job"
-        ],
+        "tags": ["Job"],
         "parameters": [
           {
             "name": "maxResults",
@@ -18196,9 +17780,7 @@
     },
     "/api/Message/{id}": {
       "get": {
-        "tags": [
-          "Message"
-        ],
+        "tags": ["Message"],
         "parameters": [
           {
             "name": "id",
@@ -18276,9 +17858,7 @@
     },
     "/api/Message/search": {
       "post": {
-        "tags": [
-          "Message"
-        ],
+        "tags": ["Message"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -18354,9 +17934,7 @@
     },
     "/api/Message/detail/{id}": {
       "get": {
-        "tags": [
-          "Message"
-        ],
+        "tags": ["Message"],
         "parameters": [
           {
             "name": "id",
@@ -18434,9 +18012,7 @@
     },
     "/api/MessageEvent/{id}": {
       "get": {
-        "tags": [
-          "MessageEvent"
-        ],
+        "tags": ["MessageEvent"],
         "parameters": [
           {
             "name": "id",
@@ -18514,9 +18090,7 @@
     },
     "/api/MessageEvent/search": {
       "post": {
-        "tags": [
-          "MessageEvent"
-        ],
+        "tags": ["MessageEvent"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -18592,9 +18166,7 @@
     },
     "/api/MessageEvent/detail/{id}": {
       "get": {
-        "tags": [
-          "MessageEvent"
-        ],
+        "tags": ["MessageEvent"],
         "parameters": [
           {
             "name": "id",
@@ -18672,9 +18244,7 @@
     },
     "/api/Notification/{id}": {
       "get": {
-        "tags": [
-          "Notification"
-        ],
+        "tags": ["Notification"],
         "parameters": [
           {
             "name": "id",
@@ -18750,9 +18320,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "Notification"
-        ],
+        "tags": ["Notification"],
         "parameters": [
           {
             "name": "id",
@@ -18847,9 +18415,7 @@
     },
     "/api/Notification": {
       "post": {
-        "tags": [
-          "Notification"
-        ],
+        "tags": ["Notification"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -18933,9 +18499,7 @@
         }
       },
       "put": {
-        "tags": [
-          "Notification"
-        ],
+        "tags": ["Notification"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -19031,9 +18595,7 @@
     },
     "/api/Notification/search": {
       "post": {
-        "tags": [
-          "Notification"
-        ],
+        "tags": ["Notification"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -19109,9 +18671,7 @@
     },
     "/api/Notification/dropdown": {
       "get": {
-        "tags": [
-          "Notification"
-        ],
+        "tags": ["Notification"],
         "parameters": [
           {
             "name": "maxResults",
@@ -19210,9 +18770,7 @@
     },
     "/api/Notification/detail/{id}": {
       "get": {
-        "tags": [
-          "Notification"
-        ],
+        "tags": ["Notification"],
         "parameters": [
           {
             "name": "id",
@@ -19290,9 +18848,7 @@
     },
     "/whats": {
       "get": {
-        "tags": [
-          "OmniChannel.API"
-        ],
+        "tags": ["OmniChannel.API"],
         "responses": {
           "200": {
             "description": "OK"
@@ -19302,9 +18858,7 @@
     },
     "/api/Payment/{id}": {
       "get": {
-        "tags": [
-          "Payment"
-        ],
+        "tags": ["Payment"],
         "parameters": [
           {
             "name": "id",
@@ -19380,9 +18934,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "Payment"
-        ],
+        "tags": ["Payment"],
         "parameters": [
           {
             "name": "id",
@@ -19477,9 +19029,7 @@
     },
     "/api/Payment": {
       "post": {
-        "tags": [
-          "Payment"
-        ],
+        "tags": ["Payment"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -19563,9 +19113,7 @@
         }
       },
       "put": {
-        "tags": [
-          "Payment"
-        ],
+        "tags": ["Payment"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -19661,9 +19209,7 @@
     },
     "/api/Payment/search": {
       "post": {
-        "tags": [
-          "Payment"
-        ],
+        "tags": ["Payment"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -19739,9 +19285,7 @@
     },
     "/api/Payment/dropdown": {
       "get": {
-        "tags": [
-          "Payment"
-        ],
+        "tags": ["Payment"],
         "parameters": [
           {
             "name": "maxResults",
@@ -19856,9 +19400,7 @@
     },
     "/api/Payment/detail/{id}": {
       "get": {
-        "tags": [
-          "Payment"
-        ],
+        "tags": ["Payment"],
         "parameters": [
           {
             "name": "id",
@@ -19936,9 +19478,7 @@
     },
     "/api/PaymentMethod/{id}": {
       "get": {
-        "tags": [
-          "PaymentMethod"
-        ],
+        "tags": ["PaymentMethod"],
         "parameters": [
           {
             "name": "id",
@@ -20014,9 +19554,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "PaymentMethod"
-        ],
+        "tags": ["PaymentMethod"],
         "parameters": [
           {
             "name": "id",
@@ -20111,9 +19649,7 @@
     },
     "/api/PaymentMethod": {
       "post": {
-        "tags": [
-          "PaymentMethod"
-        ],
+        "tags": ["PaymentMethod"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -20197,9 +19733,7 @@
         }
       },
       "put": {
-        "tags": [
-          "PaymentMethod"
-        ],
+        "tags": ["PaymentMethod"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -20295,9 +19829,7 @@
     },
     "/api/PaymentMethod/search": {
       "post": {
-        "tags": [
-          "PaymentMethod"
-        ],
+        "tags": ["PaymentMethod"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -20373,9 +19905,7 @@
     },
     "/api/PaymentMethod/dropdown": {
       "get": {
-        "tags": [
-          "PaymentMethod"
-        ],
+        "tags": ["PaymentMethod"],
         "parameters": [
           {
             "name": "maxResults",
@@ -20466,9 +19996,7 @@
     },
     "/api/Pricing/{id}": {
       "get": {
-        "tags": [
-          "Pricing"
-        ],
+        "tags": ["Pricing"],
         "parameters": [
           {
             "name": "id",
@@ -20544,9 +20072,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "Pricing"
-        ],
+        "tags": ["Pricing"],
         "parameters": [
           {
             "name": "id",
@@ -20641,9 +20167,7 @@
     },
     "/api/Pricing": {
       "post": {
-        "tags": [
-          "Pricing"
-        ],
+        "tags": ["Pricing"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -20727,9 +20251,7 @@
         }
       },
       "put": {
-        "tags": [
-          "Pricing"
-        ],
+        "tags": ["Pricing"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -20825,9 +20347,7 @@
     },
     "/api/Pricing/search": {
       "post": {
-        "tags": [
-          "Pricing"
-        ],
+        "tags": ["Pricing"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -20903,9 +20423,7 @@
     },
     "/api/Pricing/dropdown": {
       "get": {
-        "tags": [
-          "Pricing"
-        ],
+        "tags": ["Pricing"],
         "parameters": [
           {
             "name": "maxResults",
@@ -21020,9 +20538,7 @@
     },
     "/api/Pricing/detail/{id}": {
       "get": {
-        "tags": [
-          "Pricing"
-        ],
+        "tags": ["Pricing"],
         "parameters": [
           {
             "name": "id",
@@ -21100,9 +20616,7 @@
     },
     "/api/Product/{id}": {
       "get": {
-        "tags": [
-          "Product"
-        ],
+        "tags": ["Product"],
         "parameters": [
           {
             "name": "id",
@@ -21178,9 +20692,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "Product"
-        ],
+        "tags": ["Product"],
         "parameters": [
           {
             "name": "id",
@@ -21275,9 +20787,7 @@
     },
     "/api/Product": {
       "post": {
-        "tags": [
-          "Product"
-        ],
+        "tags": ["Product"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -21361,9 +20871,7 @@
         }
       },
       "put": {
-        "tags": [
-          "Product"
-        ],
+        "tags": ["Product"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -21459,9 +20967,7 @@
     },
     "/api/Product/search": {
       "post": {
-        "tags": [
-          "Product"
-        ],
+        "tags": ["Product"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -21537,9 +21043,7 @@
     },
     "/api/Product/dropdown": {
       "get": {
-        "tags": [
-          "Product"
-        ],
+        "tags": ["Product"],
         "parameters": [
           {
             "name": "maxResults",
@@ -21638,9 +21142,7 @@
     },
     "/api/Product/detail/{id}": {
       "get": {
-        "tags": [
-          "Product"
-        ],
+        "tags": ["Product"],
         "parameters": [
           {
             "name": "id",
@@ -21718,9 +21220,7 @@
     },
     "/api/Product/attribute-schema/metadata": {
       "get": {
-        "tags": [
-          "Product"
-        ],
+        "tags": ["Product"],
         "responses": {
           "500": {
             "description": "Internal Server Error",
@@ -21767,9 +21267,7 @@
     },
     "/api/Product/attribute-schema/{id}": {
       "get": {
-        "tags": [
-          "Product"
-        ],
+        "tags": ["Product"],
         "parameters": [
           {
             "name": "id",
@@ -21847,9 +21345,7 @@
     },
     "/api/Product/attribute-schema": {
       "put": {
-        "tags": [
-          "Product"
-        ],
+        "tags": ["Product"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -21935,9 +21431,7 @@
     },
     "/api/Product/attribute-schema/validate": {
       "post": {
-        "tags": [
-          "Product"
-        ],
+        "tags": ["Product"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -22013,9 +21507,7 @@
     },
     "/api/Product/attribute-schema/impact/{id}": {
       "post": {
-        "tags": [
-          "Product"
-        ],
+        "tags": ["Product"],
         "parameters": [
           {
             "name": "id",
@@ -22121,9 +21613,7 @@
     },
     "/api/Product/client-mapping/{id}": {
       "get": {
-        "tags": [
-          "Product"
-        ],
+        "tags": ["Product"],
         "parameters": [
           {
             "name": "id",
@@ -22201,9 +21691,7 @@
     },
     "/api/Product/client-mapping": {
       "put": {
-        "tags": [
-          "Product"
-        ],
+        "tags": ["Product"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -22289,9 +21777,7 @@
     },
     "/api/ProductChannel/{id}": {
       "get": {
-        "tags": [
-          "ProductChannel"
-        ],
+        "tags": ["ProductChannel"],
         "parameters": [
           {
             "name": "id",
@@ -22367,9 +21853,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "ProductChannel"
-        ],
+        "tags": ["ProductChannel"],
         "parameters": [
           {
             "name": "id",
@@ -22464,9 +21948,7 @@
     },
     "/api/ProductChannel": {
       "post": {
-        "tags": [
-          "ProductChannel"
-        ],
+        "tags": ["ProductChannel"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -22550,9 +22032,7 @@
         }
       },
       "put": {
-        "tags": [
-          "ProductChannel"
-        ],
+        "tags": ["ProductChannel"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -22648,9 +22128,7 @@
     },
     "/api/ProductChannel/search": {
       "post": {
-        "tags": [
-          "ProductChannel"
-        ],
+        "tags": ["ProductChannel"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -22726,9 +22204,7 @@
     },
     "/api/ProductChannel/dropdown": {
       "get": {
-        "tags": [
-          "ProductChannel"
-        ],
+        "tags": ["ProductChannel"],
         "parameters": [
           {
             "name": "maxResults",
@@ -22835,9 +22311,7 @@
     },
     "/api/ProductChannel/detail/{id}": {
       "get": {
-        "tags": [
-          "ProductChannel"
-        ],
+        "tags": ["ProductChannel"],
         "parameters": [
           {
             "name": "id",
@@ -22915,9 +22389,7 @@
     },
     "/api/ProductChannelStatistic/{id}": {
       "get": {
-        "tags": [
-          "ProductChannelStatistic"
-        ],
+        "tags": ["ProductChannelStatistic"],
         "parameters": [
           {
             "name": "id",
@@ -22995,9 +22467,7 @@
     },
     "/api/ProductChannelStatistic/search": {
       "post": {
-        "tags": [
-          "ProductChannelStatistic"
-        ],
+        "tags": ["ProductChannelStatistic"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -23073,9 +22543,7 @@
     },
     "/api/ProductChannelStatistic/detail/{id}": {
       "get": {
-        "tags": [
-          "ProductChannelStatistic"
-        ],
+        "tags": ["ProductChannelStatistic"],
         "parameters": [
           {
             "name": "id",
@@ -23153,9 +22621,7 @@
     },
     "/api/Provider/{id}": {
       "get": {
-        "tags": [
-          "Provider"
-        ],
+        "tags": ["Provider"],
         "parameters": [
           {
             "name": "id",
@@ -23231,9 +22697,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "Provider"
-        ],
+        "tags": ["Provider"],
         "parameters": [
           {
             "name": "id",
@@ -23328,9 +22792,7 @@
     },
     "/api/Provider": {
       "post": {
-        "tags": [
-          "Provider"
-        ],
+        "tags": ["Provider"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -23414,9 +22876,7 @@
         }
       },
       "put": {
-        "tags": [
-          "Provider"
-        ],
+        "tags": ["Provider"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -23512,9 +22972,7 @@
     },
     "/api/Provider/search": {
       "post": {
-        "tags": [
-          "Provider"
-        ],
+        "tags": ["Provider"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -23590,9 +23048,7 @@
     },
     "/api/Provider/dropdown": {
       "get": {
-        "tags": [
-          "Provider"
-        ],
+        "tags": ["Provider"],
         "parameters": [
           {
             "name": "maxResults",
@@ -23683,9 +23139,7 @@
     },
     "/api/ProviderCallback/{id}": {
       "get": {
-        "tags": [
-          "ProviderCallback"
-        ],
+        "tags": ["ProviderCallback"],
         "parameters": [
           {
             "name": "id",
@@ -23761,9 +23215,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "ProviderCallback"
-        ],
+        "tags": ["ProviderCallback"],
         "parameters": [
           {
             "name": "id",
@@ -23858,9 +23310,7 @@
     },
     "/api/ProviderCallback": {
       "post": {
-        "tags": [
-          "ProviderCallback"
-        ],
+        "tags": ["ProviderCallback"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -23944,9 +23394,7 @@
         }
       },
       "put": {
-        "tags": [
-          "ProviderCallback"
-        ],
+        "tags": ["ProviderCallback"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -24042,9 +23490,7 @@
     },
     "/api/ProviderCallback/search": {
       "post": {
-        "tags": [
-          "ProviderCallback"
-        ],
+        "tags": ["ProviderCallback"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -24120,9 +23566,7 @@
     },
     "/api/ProviderCallback/dropdown": {
       "get": {
-        "tags": [
-          "ProviderCallback"
-        ],
+        "tags": ["ProviderCallback"],
         "parameters": [
           {
             "name": "maxResults",
@@ -24229,9 +23673,7 @@
     },
     "/api/ProviderCallback/detail/{id}": {
       "get": {
-        "tags": [
-          "ProviderCallback"
-        ],
+        "tags": ["ProviderCallback"],
         "parameters": [
           {
             "name": "id",
@@ -24309,9 +23751,7 @@
     },
     "/api/public/webhooks/whatsapp": {
       "get": {
-        "tags": [
-          "PublicWebhook"
-        ],
+        "tags": ["PublicWebhook"],
         "parameters": [
           {
             "name": "hub.mode",
@@ -24342,9 +23782,7 @@
         }
       },
       "post": {
-        "tags": [
-          "PublicWebhook"
-        ],
+        "tags": ["PublicWebhook"],
         "responses": {
           "200": {
             "description": "OK"
@@ -24352,9 +23790,7 @@
         }
       },
       "put": {
-        "tags": [
-          "PublicWebhook"
-        ],
+        "tags": ["PublicWebhook"],
         "responses": {
           "200": {
             "description": "OK"
@@ -24364,9 +23800,7 @@
     },
     "/api/public/webhooks/whatsapp-flux": {
       "post": {
-        "tags": [
-          "PublicWebhook"
-        ],
+        "tags": ["PublicWebhook"],
         "responses": {
           "200": {
             "description": "OK"
@@ -24374,9 +23808,7 @@
         }
       },
       "put": {
-        "tags": [
-          "PublicWebhook"
-        ],
+        "tags": ["PublicWebhook"],
         "responses": {
           "200": {
             "description": "OK"
@@ -24386,9 +23818,7 @@
     },
     "/api/SecureSetting/search": {
       "post": {
-        "tags": [
-          "SecureSetting"
-        ],
+        "tags": ["SecureSetting"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -24464,9 +23894,7 @@
     },
     "/api/SecureSetting/{id}": {
       "delete": {
-        "tags": [
-          "SecureSetting"
-        ],
+        "tags": ["SecureSetting"],
         "parameters": [
           {
             "name": "id",
@@ -24561,9 +23989,7 @@
     },
     "/api/Sender/{id}": {
       "get": {
-        "tags": [
-          "Sender"
-        ],
+        "tags": ["Sender"],
         "parameters": [
           {
             "name": "id",
@@ -24639,9 +24065,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "Sender"
-        ],
+        "tags": ["Sender"],
         "parameters": [
           {
             "name": "id",
@@ -24736,9 +24160,7 @@
     },
     "/api/Sender": {
       "post": {
-        "tags": [
-          "Sender"
-        ],
+        "tags": ["Sender"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -24822,9 +24244,7 @@
         }
       },
       "put": {
-        "tags": [
-          "Sender"
-        ],
+        "tags": ["Sender"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -24920,9 +24340,7 @@
     },
     "/api/Sender/search": {
       "post": {
-        "tags": [
-          "Sender"
-        ],
+        "tags": ["Sender"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -24998,9 +24416,7 @@
     },
     "/api/Sender/dropdown": {
       "get": {
-        "tags": [
-          "Sender"
-        ],
+        "tags": ["Sender"],
         "parameters": [
           {
             "name": "maxResults",
@@ -25107,9 +24523,7 @@
     },
     "/api/Sender/detail/{id}": {
       "get": {
-        "tags": [
-          "Sender"
-        ],
+        "tags": ["Sender"],
         "parameters": [
           {
             "name": "id",
@@ -25187,9 +24601,7 @@
     },
     "/api/Setting/{id}": {
       "get": {
-        "tags": [
-          "Setting"
-        ],
+        "tags": ["Setting"],
         "parameters": [
           {
             "name": "id",
@@ -25265,9 +24677,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "Setting"
-        ],
+        "tags": ["Setting"],
         "parameters": [
           {
             "name": "id",
@@ -25362,9 +24772,7 @@
     },
     "/api/Setting": {
       "post": {
-        "tags": [
-          "Setting"
-        ],
+        "tags": ["Setting"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -25448,9 +24856,7 @@
         }
       },
       "put": {
-        "tags": [
-          "Setting"
-        ],
+        "tags": ["Setting"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -25546,9 +24952,7 @@
     },
     "/api/Setting/search": {
       "post": {
-        "tags": [
-          "Setting"
-        ],
+        "tags": ["Setting"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -25624,9 +25028,7 @@
     },
     "/api/Setting/dropdown": {
       "get": {
-        "tags": [
-          "Setting"
-        ],
+        "tags": ["Setting"],
         "parameters": [
           {
             "name": "maxResults",
@@ -25717,9 +25119,7 @@
     },
     "/api/Subscription/{id}": {
       "get": {
-        "tags": [
-          "Subscription"
-        ],
+        "tags": ["Subscription"],
         "parameters": [
           {
             "name": "id",
@@ -25795,9 +25195,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "Subscription"
-        ],
+        "tags": ["Subscription"],
         "parameters": [
           {
             "name": "id",
@@ -25892,9 +25290,7 @@
     },
     "/api/Subscription": {
       "post": {
-        "tags": [
-          "Subscription"
-        ],
+        "tags": ["Subscription"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -25978,9 +25374,7 @@
         }
       },
       "put": {
-        "tags": [
-          "Subscription"
-        ],
+        "tags": ["Subscription"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -26076,9 +25470,7 @@
     },
     "/api/Subscription/search": {
       "post": {
-        "tags": [
-          "Subscription"
-        ],
+        "tags": ["Subscription"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -26154,9 +25546,7 @@
     },
     "/api/Subscription/dropdown": {
       "get": {
-        "tags": [
-          "Subscription"
-        ],
+        "tags": ["Subscription"],
         "parameters": [
           {
             "name": "maxResults",
@@ -26271,9 +25661,7 @@
     },
     "/api/Subscription/detail/{id}": {
       "get": {
-        "tags": [
-          "Subscription"
-        ],
+        "tags": ["Subscription"],
         "parameters": [
           {
             "name": "id",
@@ -26351,9 +25739,7 @@
     },
     "/api/SubscriptionPlan/{id}": {
       "get": {
-        "tags": [
-          "SubscriptionPlan"
-        ],
+        "tags": ["SubscriptionPlan"],
         "parameters": [
           {
             "name": "id",
@@ -26429,9 +25815,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "SubscriptionPlan"
-        ],
+        "tags": ["SubscriptionPlan"],
         "parameters": [
           {
             "name": "id",
@@ -26526,9 +25910,7 @@
     },
     "/api/SubscriptionPlan": {
       "post": {
-        "tags": [
-          "SubscriptionPlan"
-        ],
+        "tags": ["SubscriptionPlan"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -26612,9 +25994,7 @@
         }
       },
       "put": {
-        "tags": [
-          "SubscriptionPlan"
-        ],
+        "tags": ["SubscriptionPlan"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -26710,9 +26090,7 @@
     },
     "/api/SubscriptionPlan/search": {
       "post": {
-        "tags": [
-          "SubscriptionPlan"
-        ],
+        "tags": ["SubscriptionPlan"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -26788,9 +26166,7 @@
     },
     "/api/SubscriptionPlan/dropdown": {
       "get": {
-        "tags": [
-          "SubscriptionPlan"
-        ],
+        "tags": ["SubscriptionPlan"],
         "parameters": [
           {
             "name": "maxResults",
@@ -26881,9 +26257,7 @@
     },
     "/api/SysLog/{id}": {
       "get": {
-        "tags": [
-          "SysLog"
-        ],
+        "tags": ["SysLog"],
         "parameters": [
           {
             "name": "id",
@@ -26961,9 +26335,7 @@
     },
     "/api/SysLog/search": {
       "post": {
-        "tags": [
-          "SysLog"
-        ],
+        "tags": ["SysLog"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -27039,9 +26411,7 @@
     },
     "/api/SysLog/dropdown": {
       "get": {
-        "tags": [
-          "SysLog"
-        ],
+        "tags": ["SysLog"],
         "parameters": [
           {
             "name": "maxResults",
@@ -27132,9 +26502,7 @@
     },
     "/api/Tag/{id}": {
       "get": {
-        "tags": [
-          "Tag"
-        ],
+        "tags": ["Tag"],
         "parameters": [
           {
             "name": "id",
@@ -27210,9 +26578,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "Tag"
-        ],
+        "tags": ["Tag"],
         "parameters": [
           {
             "name": "id",
@@ -27307,9 +26673,7 @@
     },
     "/api/Tag": {
       "post": {
-        "tags": [
-          "Tag"
-        ],
+        "tags": ["Tag"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -27393,9 +26757,7 @@
         }
       },
       "put": {
-        "tags": [
-          "Tag"
-        ],
+        "tags": ["Tag"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -27491,9 +26853,7 @@
     },
     "/api/Tag/search": {
       "post": {
-        "tags": [
-          "Tag"
-        ],
+        "tags": ["Tag"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -27569,9 +26929,7 @@
     },
     "/api/Tag/dropdown": {
       "get": {
-        "tags": [
-          "Tag"
-        ],
+        "tags": ["Tag"],
         "parameters": [
           {
             "name": "maxResults",
@@ -27670,9 +27028,7 @@
     },
     "/api/Tag/detail/{id}": {
       "get": {
-        "tags": [
-          "Tag"
-        ],
+        "tags": ["Tag"],
         "parameters": [
           {
             "name": "id",
@@ -27750,9 +27106,7 @@
     },
     "/api/Template/import/whatsapp": {
       "post": {
-        "tags": [
-          "Template"
-        ],
+        "tags": ["Template"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -27838,9 +27192,7 @@
     },
     "/api/Template/{id}": {
       "get": {
-        "tags": [
-          "Template"
-        ],
+        "tags": ["Template"],
         "parameters": [
           {
             "name": "id",
@@ -27916,9 +27268,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "Template"
-        ],
+        "tags": ["Template"],
         "parameters": [
           {
             "name": "id",
@@ -28013,9 +27363,7 @@
     },
     "/api/Template": {
       "post": {
-        "tags": [
-          "Template"
-        ],
+        "tags": ["Template"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -28099,9 +27447,7 @@
         }
       },
       "put": {
-        "tags": [
-          "Template"
-        ],
+        "tags": ["Template"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -28197,9 +27543,7 @@
     },
     "/api/Template/search": {
       "post": {
-        "tags": [
-          "Template"
-        ],
+        "tags": ["Template"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -28275,9 +27619,7 @@
     },
     "/api/Template/dropdown": {
       "get": {
-        "tags": [
-          "Template"
-        ],
+        "tags": ["Template"],
         "parameters": [
           {
             "name": "maxResults",
@@ -28376,9 +27718,7 @@
     },
     "/api/Template/detail/{id}": {
       "get": {
-        "tags": [
-          "Template"
-        ],
+        "tags": ["Template"],
         "parameters": [
           {
             "name": "id",
@@ -28456,9 +27796,7 @@
     },
     "/api/TemplateChannel/{id}": {
       "get": {
-        "tags": [
-          "TemplateChannel"
-        ],
+        "tags": ["TemplateChannel"],
         "parameters": [
           {
             "name": "id",
@@ -28534,9 +27872,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "TemplateChannel"
-        ],
+        "tags": ["TemplateChannel"],
         "parameters": [
           {
             "name": "id",
@@ -28631,9 +27967,7 @@
     },
     "/api/TemplateChannel": {
       "post": {
-        "tags": [
-          "TemplateChannel"
-        ],
+        "tags": ["TemplateChannel"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -28717,9 +28051,7 @@
         }
       },
       "put": {
-        "tags": [
-          "TemplateChannel"
-        ],
+        "tags": ["TemplateChannel"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -28815,9 +28147,7 @@
     },
     "/api/TemplateChannel/search": {
       "post": {
-        "tags": [
-          "TemplateChannel"
-        ],
+        "tags": ["TemplateChannel"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -28893,9 +28223,7 @@
     },
     "/api/TemplateChannel/dropdown": {
       "get": {
-        "tags": [
-          "TemplateChannel"
-        ],
+        "tags": ["TemplateChannel"],
         "parameters": [
           {
             "name": "maxResults",
@@ -29002,9 +28330,7 @@
     },
     "/api/TemplateChannel/detail/{id}": {
       "get": {
-        "tags": [
-          "TemplateChannel"
-        ],
+        "tags": ["TemplateChannel"],
         "parameters": [
           {
             "name": "id",
@@ -29082,9 +28408,7 @@
     },
     "/api/TemplateChannel/variant/{id}": {
       "get": {
-        "tags": [
-          "TemplateChannel"
-        ],
+        "tags": ["TemplateChannel"],
         "parameters": [
           {
             "name": "id",
@@ -29152,9 +28476,7 @@
     },
     "/api/TemplateChannel/variant": {
       "put": {
-        "tags": [
-          "TemplateChannel"
-        ],
+        "tags": ["TemplateChannel"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -29240,9 +28562,7 @@
     },
     "/api/User/get-all-type": {
       "get": {
-        "tags": [
-          "User"
-        ],
+        "tags": ["User"],
         "responses": {
           "500": {
             "description": "Internal Server Error",
@@ -29289,9 +28609,7 @@
     },
     "/api/User/get-all-status": {
       "get": {
-        "tags": [
-          "User"
-        ],
+        "tags": ["User"],
         "responses": {
           "500": {
             "description": "Internal Server Error",
@@ -29338,9 +28656,7 @@
     },
     "/api/User/{id}": {
       "get": {
-        "tags": [
-          "User"
-        ],
+        "tags": ["User"],
         "parameters": [
           {
             "name": "id",
@@ -29418,9 +28734,7 @@
     },
     "/api/User/search": {
       "post": {
-        "tags": [
-          "User"
-        ],
+        "tags": ["User"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -29496,9 +28810,7 @@
     },
     "/api/User/dropdown": {
       "get": {
-        "tags": [
-          "User"
-        ],
+        "tags": ["User"],
         "parameters": [
           {
             "name": "maxResults",
@@ -29605,9 +28917,7 @@
     },
     "/api/User/detail/{id}": {
       "get": {
-        "tags": [
-          "User"
-        ],
+        "tags": ["User"],
         "parameters": [
           {
             "name": "id",
@@ -29685,9 +28995,7 @@
     },
     "/api/User/system-users": {
       "post": {
-        "tags": [
-          "User"
-        ],
+        "tags": ["User"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -29773,9 +29081,7 @@
     },
     "/api/User/company-users": {
       "post": {
-        "tags": [
-          "User"
-        ],
+        "tags": ["User"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -29861,9 +29167,7 @@
     },
     "/api/User/status/{id}": {
       "put": {
-        "tags": [
-          "User"
-        ],
+        "tags": ["User"],
         "parameters": [
           {
             "name": "id",
@@ -29970,9 +29274,7 @@
     },
     "/api/User/me": {
       "get": {
-        "tags": [
-          "User"
-        ],
+        "tags": ["User"],
         "responses": {
           "500": {
             "description": "Internal Server Error",
@@ -30029,9 +29331,7 @@
     },
     "/api/UserProfile/{id}": {
       "get": {
-        "tags": [
-          "UserProfile"
-        ],
+        "tags": ["UserProfile"],
         "parameters": [
           {
             "name": "id",
@@ -30107,9 +29407,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "UserProfile"
-        ],
+        "tags": ["UserProfile"],
         "parameters": [
           {
             "name": "id",
@@ -30204,9 +29502,7 @@
     },
     "/api/UserProfile": {
       "post": {
-        "tags": [
-          "UserProfile"
-        ],
+        "tags": ["UserProfile"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -30290,9 +29586,7 @@
         }
       },
       "put": {
-        "tags": [
-          "UserProfile"
-        ],
+        "tags": ["UserProfile"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -30388,9 +29682,7 @@
     },
     "/api/UserProfile/search": {
       "post": {
-        "tags": [
-          "UserProfile"
-        ],
+        "tags": ["UserProfile"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -30466,9 +29758,7 @@
     },
     "/api/UserProfile/dropdown": {
       "get": {
-        "tags": [
-          "UserProfile"
-        ],
+        "tags": ["UserProfile"],
         "parameters": [
           {
             "name": "maxResults",
@@ -30559,9 +29849,7 @@
     },
     "/api/UserProfile/permissions/all": {
       "get": {
-        "tags": [
-          "UserProfile"
-        ],
+        "tags": ["UserProfile"],
         "responses": {
           "500": {
             "description": "Internal Server Error",
@@ -30608,9 +29896,7 @@
     },
     "/api/UserProfile/permissions/all-string": {
       "get": {
-        "tags": [
-          "UserProfile"
-        ],
+        "tags": ["UserProfile"],
         "responses": {
           "500": {
             "description": "Internal Server Error",
@@ -30657,9 +29943,7 @@
     },
     "/api/UserProfile/permissions/{profileId}": {
       "get": {
-        "tags": [
-          "UserProfile"
-        ],
+        "tags": ["UserProfile"],
         "parameters": [
           {
             "name": "profileId",
@@ -30725,9 +30009,7 @@
         }
       },
       "put": {
-        "tags": [
-          "UserProfile"
-        ],
+        "tags": ["UserProfile"],
         "parameters": [
           {
             "name": "profileId",
@@ -30833,9 +30115,7 @@
     },
     "/api/Wallet/{id}": {
       "get": {
-        "tags": [
-          "Wallet"
-        ],
+        "tags": ["Wallet"],
         "parameters": [
           {
             "name": "id",
@@ -30911,9 +30191,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "Wallet"
-        ],
+        "tags": ["Wallet"],
         "parameters": [
           {
             "name": "id",
@@ -31008,9 +30286,7 @@
     },
     "/api/Wallet/search": {
       "post": {
-        "tags": [
-          "Wallet"
-        ],
+        "tags": ["Wallet"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -31086,9 +30362,7 @@
     },
     "/api/Wallet/dropdown": {
       "get": {
-        "tags": [
-          "Wallet"
-        ],
+        "tags": ["Wallet"],
         "parameters": [
           {
             "name": "maxResults",
@@ -31187,9 +30461,7 @@
     },
     "/api/Wallet/detail/{id}": {
       "get": {
-        "tags": [
-          "Wallet"
-        ],
+        "tags": ["Wallet"],
         "parameters": [
           {
             "name": "id",
@@ -31267,9 +30539,7 @@
     },
     "/api/WalletTransaction/{id}": {
       "get": {
-        "tags": [
-          "WalletTransaction"
-        ],
+        "tags": ["WalletTransaction"],
         "parameters": [
           {
             "name": "id",
@@ -31347,9 +30617,7 @@
     },
     "/api/WalletTransaction/search": {
       "post": {
-        "tags": [
-          "WalletTransaction"
-        ],
+        "tags": ["WalletTransaction"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -31425,9 +30693,7 @@
     },
     "/api/WalletTransaction/detail/{id}": {
       "get": {
-        "tags": [
-          "WalletTransaction"
-        ],
+        "tags": ["WalletTransaction"],
         "parameters": [
           {
             "name": "id",
@@ -31505,9 +30771,7 @@
     },
     "/api/WebhookDelivery/{id}": {
       "get": {
-        "tags": [
-          "WebhookDelivery"
-        ],
+        "tags": ["WebhookDelivery"],
         "parameters": [
           {
             "name": "id",
@@ -31585,9 +30849,7 @@
     },
     "/api/WebhookDelivery/search": {
       "post": {
-        "tags": [
-          "WebhookDelivery"
-        ],
+        "tags": ["WebhookDelivery"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -31663,9 +30925,7 @@
     },
     "/api/WebhookDelivery/detail/{id}": {
       "get": {
-        "tags": [
-          "WebhookDelivery"
-        ],
+        "tags": ["WebhookDelivery"],
         "parameters": [
           {
             "name": "id",
@@ -31743,9 +31003,7 @@
     },
     "/api/WebhookEndpoint/{id}": {
       "get": {
-        "tags": [
-          "WebhookEndpoint"
-        ],
+        "tags": ["WebhookEndpoint"],
         "parameters": [
           {
             "name": "id",
@@ -31821,9 +31079,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "WebhookEndpoint"
-        ],
+        "tags": ["WebhookEndpoint"],
         "parameters": [
           {
             "name": "id",
@@ -31918,9 +31174,7 @@
     },
     "/api/WebhookEndpoint": {
       "post": {
-        "tags": [
-          "WebhookEndpoint"
-        ],
+        "tags": ["WebhookEndpoint"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -32004,9 +31258,7 @@
         }
       },
       "put": {
-        "tags": [
-          "WebhookEndpoint"
-        ],
+        "tags": ["WebhookEndpoint"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -32102,9 +31354,7 @@
     },
     "/api/WebhookEndpoint/search": {
       "post": {
-        "tags": [
-          "WebhookEndpoint"
-        ],
+        "tags": ["WebhookEndpoint"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -32180,9 +31430,7 @@
     },
     "/api/WebhookEndpoint/dropdown": {
       "get": {
-        "tags": [
-          "WebhookEndpoint"
-        ],
+        "tags": ["WebhookEndpoint"],
         "parameters": [
           {
             "name": "maxResults",
@@ -32281,9 +31529,7 @@
     },
     "/api/WebhookEndpoint/detail/{id}": {
       "get": {
-        "tags": [
-          "WebhookEndpoint"
-        ],
+        "tags": ["WebhookEndpoint"],
         "parameters": [
           {
             "name": "id",
@@ -32361,9 +31607,7 @@
     },
     "/api/WhatsApp/send/text": {
       "post": {
-        "tags": [
-          "WhatsApp"
-        ],
+        "tags": ["WhatsApp"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -32439,9 +31683,7 @@
     },
     "/api/WhatsApp/send/reply": {
       "post": {
-        "tags": [
-          "WhatsApp"
-        ],
+        "tags": ["WhatsApp"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -32527,17 +31769,12 @@
     },
     "/api/WhatsApp/send/image": {
       "post": {
-        "tags": [
-          "WhatsApp"
-        ],
+        "tags": ["WhatsApp"],
         "requestBody": {
           "content": {
             "multipart/form-data": {
               "schema": {
-                "required": [
-                  "File",
-                  "To"
-                ],
+                "required": ["File", "To"],
                 "type": "object",
                 "properties": {
                   "To": {
@@ -32639,17 +31876,12 @@
     },
     "/api/WhatsApp/send/document": {
       "post": {
-        "tags": [
-          "WhatsApp"
-        ],
+        "tags": ["WhatsApp"],
         "requestBody": {
           "content": {
             "multipart/form-data": {
               "schema": {
-                "required": [
-                  "File",
-                  "To"
-                ],
+                "required": ["File", "To"],
                 "type": "object",
                 "properties": {
                   "To": {
@@ -32751,9 +31983,7 @@
     },
     "/api/WhatsApp/send/flow": {
       "post": {
-        "tags": [
-          "WhatsApp"
-        ],
+        "tags": ["WhatsApp"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -32839,9 +32069,7 @@
     },
     "/api/WhatsApp/send/template/segment": {
       "post": {
-        "tags": [
-          "WhatsApp"
-        ],
+        "tags": ["WhatsApp"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -32927,9 +32155,7 @@
     },
     "/api/WhatsApp/send/template/file": {
       "post": {
-        "tags": [
-          "WhatsApp"
-        ],
+        "tags": ["WhatsApp"],
         "requestBody": {
           "content": {
             "multipart/form-data": {
@@ -33043,9 +32269,7 @@
     },
     "/api/WhatsApp/send/bulk/j3": {
       "post": {
-        "tags": [
-          "WhatsApp"
-        ],
+        "tags": ["WhatsApp"],
         "parameters": [
           {
             "name": "SenderId",
@@ -33133,9 +32357,7 @@
     },
     "/api/WhatsApp/send/bulk/j0": {
       "post": {
-        "tags": [
-          "WhatsApp"
-        ],
+        "tags": ["WhatsApp"],
         "parameters": [
           {
             "name": "SenderId",
@@ -33225,10 +32447,7 @@
   "components": {
     "schemas": {
       "ApiKeyLocation": {
-        "enum": [
-          "Header",
-          "Query"
-        ],
+        "enum": ["Header", "Query"],
         "type": "string"
       },
       "ApplicationKeyResponse": {
@@ -33303,11 +32522,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "AssignConversationRequest": {
         "type": "object",
@@ -33405,11 +32624,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "AttributeDefinition": {
         "type": "object",
@@ -33687,11 +32906,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "BaseCreateResponse": {
         "type": "object",
@@ -33761,11 +32980,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "BaseDeleteResponse": {
         "type": "object",
@@ -33839,11 +33058,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "BaseUpdateResponse": {
         "type": "object",
@@ -33916,11 +33135,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "BlocklistDto": {
         "type": "object",
@@ -34027,11 +33246,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "BooleanOmniChannelApiResponse": {
         "type": "object",
@@ -34087,11 +33306,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "BuiltMessage": {
         "type": "object",
@@ -34169,11 +33388,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "BulkSendItemResult": {
         "type": "object",
@@ -34288,11 +33507,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "CampaignChannelDto": {
         "type": "object",
@@ -34393,11 +33612,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "CampaignDto": {
         "type": "object",
@@ -34554,11 +33773,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "CampaignSegmentDto": {
         "type": "object",
@@ -34651,11 +33870,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "CampaignStatisticDto": {
         "type": "object",
@@ -34786,11 +34005,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "CampaignStepDto": {
         "type": "object",
@@ -34909,11 +34128,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "ChangePasswordRequest": {
         "type": "object",
@@ -35004,11 +34223,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "ChangeUserStatusRequest": {
         "type": "object",
@@ -35140,11 +34359,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "ClientAttributeDetail": {
         "type": "object",
@@ -35270,11 +34489,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "ClientDto": {
         "type": "object",
@@ -35468,11 +34687,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "ClientFlatResponse": {
         "type": "object",
@@ -35685,11 +34904,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "ClientFullDetailedResponse": {
         "type": "object",
@@ -35833,11 +35052,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "ClientImportDto": {
         "type": "object",
@@ -35982,11 +35201,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "ClientImportResult": {
         "type": "object",
@@ -36079,11 +35298,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "ClientImportRowError": {
         "type": "object",
@@ -36231,11 +35450,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "ClientSegmentMemberDto": {
         "type": "object",
@@ -36317,11 +35536,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "ClientSyncResult": {
         "type": "object",
@@ -36410,11 +35629,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "CompanyChannelDto": {
         "type": "object",
@@ -36516,11 +35735,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "CompanyDto": {
         "type": "object",
@@ -36711,11 +35930,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "CompanySettingDto": {
         "type": "object",
@@ -36816,11 +36035,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "CompanyVerificationDto": {
         "type": "object",
@@ -36949,11 +36168,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "ConditionMetadataResponse": {
         "type": "object",
@@ -37036,11 +36255,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "ConditionOperatorInfo": {
         "type": "object",
@@ -37225,11 +36444,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "CountryDto": {
         "type": "object",
@@ -37329,11 +36548,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "CreateBlocklistRequest": {
         "type": "object",
@@ -38968,11 +38187,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "CurrentUserWithPermissionsResult": {
         "type": "object",
@@ -39096,28 +38315,14 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "CustomAttributeType": {
-        "enum": [
-          0,
-          1,
-          2,
-          3,
-          4,
-          5,
-          6,
-          7,
-          8,
-          9,
-          10,
-          11,
-          12
-        ],
+        "enum": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
         "type": "integer",
         "format": "int32"
       },
@@ -39235,11 +38440,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "FileDto": {
         "type": "object",
@@ -39373,11 +38578,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "GetAllBlocklistResponse": {
         "type": "object",
@@ -39447,11 +38652,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "GetAllCampaignChannelResponse": {
         "type": "object",
@@ -39521,11 +38726,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "GetAllCampaignResponse": {
         "type": "object",
@@ -39607,11 +38812,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "GetAllCampaignSegmentResponse": {
         "type": "object",
@@ -39681,11 +38886,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "GetAllCampaignStatisticResponse": {
         "type": "object",
@@ -39755,11 +38960,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "GetAllCampaignStepResponse": {
         "type": "object",
@@ -39833,11 +39038,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "GetAllChannelResponse": {
         "type": "object",
@@ -39915,11 +39120,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "GetAllClientChannelPreferenceResponse": {
         "type": "object",
@@ -39989,11 +39194,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "GetAllClientImportResponse": {
         "type": "object",
@@ -40067,11 +39272,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "GetAllClientResponse": {
         "type": "object",
@@ -40157,11 +39362,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "GetAllClientSegmentMemberResponse": {
         "type": "object",
@@ -40231,11 +39436,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "GetAllClientSegmentResponse": {
         "type": "object",
@@ -40309,11 +39514,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "GetAllCompanyChannelResponse": {
         "type": "object",
@@ -40383,11 +39588,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "GetAllCompanyResponse": {
         "type": "object",
@@ -40469,11 +39674,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "GetAllCompanySettingResponse": {
         "type": "object",
@@ -40543,11 +39748,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "GetAllCompanyVerificationResponse": {
         "type": "object",
@@ -40621,11 +39826,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "GetAllCountryResponse": {
         "type": "object",
@@ -40703,11 +39908,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "GetAllCurrencyResponse": {
         "type": "object",
@@ -40789,11 +39994,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "GetAllEntityTagResponse": {
         "type": "object",
@@ -40863,11 +40068,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "GetAllFileResponse": {
         "type": "object",
@@ -40937,11 +40142,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "GetAllIntegrationResponse": {
         "type": "object",
@@ -41019,11 +40224,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "GetAllIntegrationSyncLogResponse": {
         "type": "object",
@@ -41097,11 +40302,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "GetAllInvoiceResponse": {
         "type": "object",
@@ -41179,11 +40384,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "GetAllJobResponse": {
         "type": "object",
@@ -41257,11 +40462,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "GetAllNotificationResponse": {
         "type": "object",
@@ -41339,11 +40544,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "GetAllPaymentMethodResponse": {
         "type": "object",
@@ -41421,11 +40626,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "GetAllPaymentResponse": {
         "type": "object",
@@ -41503,11 +40708,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "GetAllPricingResponse": {
         "type": "object",
@@ -41581,11 +40786,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "GetAllProductChannelResponse": {
         "type": "object",
@@ -41655,11 +40860,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "GetAllProductResponse": {
         "type": "object",
@@ -41737,11 +40942,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "GetAllProviderCallbackResponse": {
         "type": "object",
@@ -41815,11 +41020,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "GetAllProviderResponse": {
         "type": "object",
@@ -41897,11 +41102,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "GetAllSenderResponse": {
         "type": "object",
@@ -41987,11 +41192,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "GetAllSettingResponse": {
         "type": "object",
@@ -42061,11 +41266,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "GetAllSubscriptionPlanResponse": {
         "type": "object",
@@ -42143,11 +41348,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "GetAllSubscriptionResponse": {
         "type": "object",
@@ -42221,11 +41426,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "GetAllSysLogResponse": {
         "type": "object",
@@ -42307,11 +41512,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "GetAllTagResponse": {
         "type": "object",
@@ -42385,11 +41590,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "GetAllTemplateChannelResponse": {
         "type": "object",
@@ -42459,11 +41664,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "GetAllTemplateResponse": {
         "type": "object",
@@ -42541,11 +41746,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "GetAllUserProfileResponse": {
         "type": "object",
@@ -42619,11 +41824,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "GetAllUserResponse": {
         "type": "object",
@@ -42713,11 +41918,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "GetAllWalletResponse": {
         "type": "object",
@@ -42791,11 +41996,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "GetAllWebhookEndpointResponse": {
         "type": "object",
@@ -42865,11 +42070,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "ImportWhatsAppTemplateRequest": {
         "type": "object",
@@ -42929,12 +42134,7 @@
         "additionalProperties": false
       },
       "IntegrationAuthType": {
-        "enum": [
-          "None",
-          "Bearer",
-          "Basic",
-          "ApiKey"
-        ],
+        "enum": ["None", "Bearer", "Basic", "ApiKey"],
         "type": "string"
       },
       "IntegrationConfigModel": {
@@ -43011,11 +42211,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "IntegrationDto": {
         "type": "object",
@@ -43148,11 +42348,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "IntegrationSyncLogDto": {
         "type": "object",
@@ -43265,11 +42465,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "InvoiceDto": {
         "type": "object",
@@ -43329,7 +42529,7 @@
             "nullable": true
           },
           "taxAmount": {
-            "maximum": 1.7976931348623157E+308,
+            "maximum": 1.7976931348623157e308,
             "minimum": 0,
             "type": "number",
             "format": "double"
@@ -43413,11 +42613,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "JobDto": {
         "type": "object",
@@ -43539,11 +42739,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "LogicalOperatorInfo": {
         "type": "object",
@@ -43674,11 +42874,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "LogoutResponse": {
         "type": "object",
@@ -43751,11 +42951,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "MessageDto": {
         "type": "object",
@@ -43977,11 +43177,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "MessageEventDto": {
         "type": "object",
@@ -44085,11 +43285,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "MobileRefreshRequest": {
         "type": "object",
@@ -44218,11 +43418,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "ObjectOmniChannelApiResponse": {
         "type": "object",
@@ -44278,11 +43478,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "PaymentDto": {
         "type": "object",
@@ -44350,7 +43550,7 @@
             "nullable": true
           },
           "amount": {
-            "maximum": 1.7976931348623157E+308,
+            "maximum": 1.7976931348623157e308,
             "minimum": 0,
             "type": "number",
             "format": "double"
@@ -44434,11 +43634,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "PaymentMethodDto": {
         "type": "object",
@@ -44492,13 +43692,13 @@
             "format": "int32"
           },
           "minimumAmount": {
-            "maximum": 1.7976931348623157E+308,
+            "maximum": 1.7976931348623157e308,
             "minimum": 0,
             "type": "number",
             "format": "double"
           },
           "maximumAmount": {
-            "maximum": 1.7976931348623157E+308,
+            "maximum": 1.7976931348623157e308,
             "minimum": 0,
             "type": "number",
             "format": "double",
@@ -44576,11 +43776,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "PreviewCriteriaRequest": {
         "type": "object",
@@ -44589,7 +43789,7 @@
             "type": "string",
             "format": "uuid"
           },
-          "criteria": { },
+          "criteria": {},
           "take": {
             "type": "integer",
             "format": "int32"
@@ -44724,11 +43924,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "ProductChannelDto": {
         "type": "object",
@@ -44828,17 +44028,14 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "ProductChannelStatisticDto": {
-        "required": [
-          "periodEnd",
-          "periodStart"
-        ],
+        "required": ["periodEnd", "periodStart"],
         "type": "object",
         "properties": {
           "id": {
@@ -44943,11 +44140,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "ProductClientMappingResponse": {
         "type": "object",
@@ -45020,11 +44217,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "ProductDto": {
         "type": "object",
@@ -45160,11 +44357,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "ProductSchemaResponse": {
         "type": "object",
@@ -45241,11 +44438,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "ProfilPermissionsResponse": {
         "type": "object",
@@ -45322,11 +44519,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "ProviderCallbackDto": {
         "type": "object",
@@ -45434,11 +44631,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "ProviderDto": {
         "type": "object",
@@ -45555,11 +44752,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "RefreshTokenResponse": {
         "type": "object",
@@ -45641,11 +44838,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "RegenereApiKeyResponse": {
         "type": "object",
@@ -45719,11 +44916,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "RevokeDeviceResponse": {
         "type": "object",
@@ -45796,11 +44993,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SchemaEditorMetadataResponse": {
         "type": "object",
@@ -45887,11 +45084,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SchemaImpactOffenderResponse": {
         "type": "object",
@@ -45994,11 +45191,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SearchAuditLogRequest": {
         "type": "object",
@@ -46312,11 +45509,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SearchAuditLogResponseOmniChannelApiResponse": {
         "type": "object",
@@ -46372,11 +45569,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SearchBlocklistRequest": {
         "type": "object",
@@ -46621,11 +45818,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SearchBlocklistResponseOmniChannelApiResponse": {
         "type": "object",
@@ -46681,11 +45878,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SearchCampaignChannelRequest": {
         "type": "object",
@@ -46953,11 +46150,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SearchCampaignChannelResponseOmniChannelApiResponse": {
         "type": "object",
@@ -47013,11 +46210,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SearchCampaignRequest": {
         "type": "object",
@@ -47322,11 +46519,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SearchCampaignResponseOmniChannelApiResponse": {
         "type": "object",
@@ -47382,11 +46579,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SearchCampaignSegmentRequest": {
         "type": "object",
@@ -47624,11 +46821,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SearchCampaignSegmentResponseOmniChannelApiResponse": {
         "type": "object",
@@ -47684,11 +46881,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SearchCampaignStatisticRequest": {
         "type": "object",
@@ -47955,11 +47152,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SearchCampaignStatisticResponseOmniChannelApiResponse": {
         "type": "object",
@@ -48015,11 +47212,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SearchCampaignStepRequest": {
         "type": "object",
@@ -48300,11 +47497,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SearchCampaignStepResponseOmniChannelApiResponse": {
         "type": "object",
@@ -48360,11 +47557,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SearchChannelRequest": {
         "type": "object",
@@ -48605,11 +47802,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SearchClientChannelPreferenceRequest": {
         "type": "object",
@@ -48862,11 +48059,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SearchClientChannelPreferenceResponseOmniChannelApiResponse": {
         "type": "object",
@@ -48922,11 +48119,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SearchClientImportRequest": {
         "type": "object",
@@ -49200,11 +48397,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SearchClientImportResponseOmniChannelApiResponse": {
         "type": "object",
@@ -49260,11 +48457,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SearchClientRequest": {
         "type": "object",
@@ -49580,11 +48777,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SearchClientResponseOmniChannelApiResponse": {
         "type": "object",
@@ -49640,11 +48837,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SearchClientSegmentMemberRequest": {
         "type": "object",
@@ -49875,11 +49072,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SearchClientSegmentMemberResponseOmniChannelApiResponse": {
         "type": "object",
@@ -49935,11 +49132,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SearchClientSegmentRequest": {
         "type": "object",
@@ -50201,11 +49398,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SearchClientSegmentResponseOmniChannelApiResponse": {
         "type": "object",
@@ -50261,11 +49458,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SearchCompanyChannelRequest": {
         "type": "object",
@@ -50514,11 +49711,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SearchCompanyChannelResponseOmniChannelApiResponse": {
         "type": "object",
@@ -50574,11 +49771,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SearchCompanyRequest": {
         "type": "object",
@@ -50895,11 +50092,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SearchCompanyResponseOmniChannelApiResponse": {
         "type": "object",
@@ -50955,11 +50152,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SearchCompanySettingRequest": {
         "type": "object",
@@ -51192,11 +50389,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SearchCompanySettingResponseOmniChannelApiResponse": {
         "type": "object",
@@ -51252,11 +50449,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SearchCompanyVerificationRequest": {
         "type": "object",
@@ -51520,11 +50717,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SearchCompanyVerificationResponseOmniChannelApiResponse": {
         "type": "object",
@@ -51580,11 +50777,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SearchConnectorRequest": {
         "type": "object",
@@ -51894,11 +51091,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SearchConnectorResponseOmniChannelApiResponse": {
         "type": "object",
@@ -51954,11 +51151,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SearchConversationResponse": {
         "type": "object",
@@ -52220,11 +51417,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SearchConversationResponseOmniChannelApiResponse": {
         "type": "object",
@@ -52280,11 +51477,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SearchCountryRequest": {
         "type": "object",
@@ -52507,11 +51704,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SearchCurrencyRequest": {
         "type": "object",
@@ -52757,11 +51954,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SearchEntityTagRequest": {
         "type": "object",
@@ -52980,11 +52177,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SearchEntityTagResponseOmniChannelApiResponse": {
         "type": "object",
@@ -53040,11 +52237,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SearchFileRequest": {
         "type": "object",
@@ -53334,11 +52531,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SearchFileResponseOmniChannelApiResponse": {
         "type": "object",
@@ -53394,11 +52591,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SearchIntegrationRequest": {
         "type": "object",
@@ -53669,11 +52866,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SearchIntegrationResponseOmniChannelApiResponse": {
         "type": "object",
@@ -53729,11 +52926,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SearchIntegrationSyncLogRequest": {
         "type": "object",
@@ -53980,11 +53177,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SearchIntegrationSyncLogResponseOmniChannelApiResponse": {
         "type": "object",
@@ -54040,11 +53237,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SearchInvoiceRequest": {
         "type": "object",
@@ -54335,11 +53532,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SearchInvoiceResponseOmniChannelApiResponse": {
         "type": "object",
@@ -54395,11 +53592,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SearchJobRequest": {
         "type": "object",
@@ -54642,11 +53839,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SearchMessageEventRequest": {
         "type": "object",
@@ -54876,11 +54073,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SearchMessageEventResponseOmniChannelApiResponse": {
         "type": "object",
@@ -54936,11 +54133,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SearchMessageMediaDto": {
         "type": "object",
@@ -55452,11 +54649,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SearchMessageResponseOmniChannelApiResponse": {
         "type": "object",
@@ -55512,11 +54709,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SearchNotificationRequest": {
         "type": "object",
@@ -55778,11 +54975,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SearchNotificationResponseOmniChannelApiResponse": {
         "type": "object",
@@ -55838,11 +55035,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SearchPaymentMethodRequest": {
         "type": "object",
@@ -56097,11 +55294,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SearchPaymentRequest": {
         "type": "object",
@@ -56418,11 +55615,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SearchPaymentResponseOmniChannelApiResponse": {
         "type": "object",
@@ -56478,11 +55675,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SearchPricingRequest": {
         "type": "object",
@@ -56788,11 +55985,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SearchPricingResponseOmniChannelApiResponse": {
         "type": "object",
@@ -56848,11 +56045,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SearchProductChannelRequest": {
         "type": "object",
@@ -57102,11 +56299,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SearchProductChannelResponseOmniChannelApiResponse": {
         "type": "object",
@@ -57162,11 +56359,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SearchProductChannelStatisticRequest": {
         "type": "object",
@@ -57433,11 +56630,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SearchProductChannelStatisticResponseOmniChannelApiResponse": {
         "type": "object",
@@ -57493,11 +56690,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SearchProductRequest": {
         "type": "object",
@@ -57767,11 +56964,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SearchProductResponseOmniChannelApiResponse": {
         "type": "object",
@@ -57827,11 +57024,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SearchProviderCallbackRequest": {
         "type": "object",
@@ -58084,11 +57281,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SearchProviderCallbackResponseOmniChannelApiResponse": {
         "type": "object",
@@ -58144,11 +57341,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SearchProviderRequest": {
         "type": "object",
@@ -58382,11 +57579,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SearchSecureSettingRequest": {
         "type": "object",
@@ -58617,11 +57814,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SearchSenderRequest": {
         "type": "object",
@@ -58877,11 +58074,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SearchSenderResponseOmniChannelApiResponse": {
         "type": "object",
@@ -58937,11 +58134,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SearchSettingRequest": {
         "type": "object",
@@ -59194,11 +58391,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SearchSubscriptionPlanRequest": {
         "type": "object",
@@ -59452,11 +58649,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SearchSubscriptionRequest": {
         "type": "object",
@@ -59748,11 +58945,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SearchSubscriptionResponseOmniChannelApiResponse": {
         "type": "object",
@@ -59808,11 +59005,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SearchSysLogRequest": {
         "type": "object",
@@ -60208,11 +59405,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SearchTagRequest": {
         "type": "object",
@@ -60449,11 +59646,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SearchTagResponseOmniChannelApiResponse": {
         "type": "object",
@@ -60509,11 +59706,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SearchTemplateChannelRequest": {
         "type": "object",
@@ -60751,11 +59948,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SearchTemplateChannelResponseOmniChannelApiResponse": {
         "type": "object",
@@ -60811,11 +60008,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SearchTemplateRequest": {
         "type": "object",
@@ -61095,11 +60292,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SearchTemplateResponseOmniChannelApiResponse": {
         "type": "object",
@@ -61155,11 +60352,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SearchUserProfileRequest": {
         "type": "object",
@@ -61385,11 +60582,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SearchUserRequest": {
         "type": "object",
@@ -61693,11 +60890,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SearchUserResponseOmniChannelApiResponse": {
         "type": "object",
@@ -61753,11 +60950,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SearchWalletRequest": {
         "type": "object",
@@ -62016,11 +61213,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SearchWalletResponseOmniChannelApiResponse": {
         "type": "object",
@@ -62076,11 +61273,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SearchWalletTransactionRequest": {
         "type": "object",
@@ -62329,11 +61526,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SearchWalletTransactionResponseOmniChannelApiResponse": {
         "type": "object",
@@ -62389,11 +61586,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SearchWebhookDeliveryRequest": {
         "type": "object",
@@ -62651,11 +61848,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SearchWebhookDeliveryResponseOmniChannelApiResponse": {
         "type": "object",
@@ -62711,11 +61908,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SearchWebhookEndpointRequest": {
         "type": "object",
@@ -62984,11 +62181,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SearchWebhookEndpointResponseOmniChannelApiResponse": {
         "type": "object",
@@ -63044,11 +62241,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SegmentMessageResponse": {
         "type": "object",
@@ -63191,11 +62388,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SegmentMessagesRequest": {
         "type": "object",
@@ -63279,11 +62476,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SegmentRecalcResponse": {
         "type": "object",
@@ -63361,11 +62558,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SelectOption": {
         "type": "object",
@@ -63566,11 +62763,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SettingDto": {
         "type": "object",
@@ -63704,11 +62901,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "StatsConversationResponse": {
         "type": "object",
@@ -63790,11 +62987,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "StringListOmniChannelApiResponse": {
         "type": "object",
@@ -63854,11 +63051,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "StringObjectDictionaryIReadOnlyListOmniChannelApiResponse": {
         "type": "object",
@@ -63888,7 +63085,7 @@
             "type": "array",
             "items": {
               "type": "object",
-              "additionalProperties": { }
+              "additionalProperties": {}
             },
             "nullable": true
           },
@@ -63919,11 +63116,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "StringObjectDictionaryOmniChannelApiResponse": {
         "type": "object",
@@ -63983,11 +63180,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SubscriptionDto": {
         "type": "object",
@@ -64117,11 +63314,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SubscriptionPlanDto": {
         "type": "object",
@@ -64254,11 +63451,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "SysLogDto": {
         "type": "object",
@@ -64449,7 +63646,7 @@
             "nullable": true
           },
           "amount": {
-            "maximum": 1.7976931348623157E+308,
+            "maximum": 1.7976931348623157e308,
             "minimum": 0,
             "type": "number",
             "format": "double",
@@ -64519,11 +63716,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "TagDto": {
         "type": "object",
@@ -64624,11 +63821,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "TemplateChannelDto": {
         "type": "object",
@@ -64721,11 +63918,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "TemplateDto": {
         "type": "object",
@@ -64871,11 +64068,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "TemplateVariableDto": {
         "type": "object",
@@ -65037,11 +64234,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "UpdateBlocklistRequest": {
         "type": "object",
@@ -66828,11 +66025,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "UserDto": {
         "type": "object",
@@ -66983,11 +66180,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "UserInfoDto": {
         "type": "object",
@@ -67111,11 +66308,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "UserProfileDto": {
         "type": "object",
@@ -67222,11 +66419,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "UserStatus": {
         "type": "object",
@@ -67311,11 +66508,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "UserType": {
         "type": "object",
@@ -67417,11 +66614,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "ValidateProductSchemaRequest": {
         "type": "object",
@@ -67528,11 +66725,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "WaBusinessConnectorConfig": {
         "type": "object",
@@ -67626,11 +66823,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "WaBusinessConnectorConfigRequest": {
         "type": "object",
@@ -67784,11 +66981,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "WalletTransactionDto": {
         "type": "object",
@@ -67837,7 +67034,7 @@
             "nullable": true
           },
           "amount": {
-            "maximum": 1.7976931348623157E+308,
+            "maximum": 1.7976931348623157e308,
             "minimum": 0,
             "type": "number",
             "format": "double"
@@ -67904,11 +67101,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "WebhookDeliveryDto": {
         "type": "object",
@@ -68031,11 +67228,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "WebhookEndpointDto": {
         "type": "object",
@@ -68178,11 +67375,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "WhatsAppTemplateImportResult": {
         "type": "object",
@@ -68267,11 +67464,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "WhatsAppTemplateSendItem": {
         "type": "object",
@@ -68386,11 +67583,11 @@
           },
           "metadata": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {},
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "WhatsAppTemplateVariantSummary": {
         "type": "object",
