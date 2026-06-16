@@ -29,6 +29,7 @@ export function useSidebarViewModel() {
     setStats,
     setUsers,
     setSenders,
+    setSelectedSenderId,
     selectedSenderId,
     activeConversationId,
     conversations,
@@ -57,11 +58,11 @@ export function useSidebarViewModel() {
   const { data: statsData } = useStats();
   const { data: usersData } = useUsers();
 
-  // Fetch real senders from API and populate the store
   const { data: sendersData } = useQuery({
     ...getApiSenderDropdownOptions(),
     staleTime: 5 * 60_000,
   });
+
   useEffect(() => {
     const items = (sendersData as any)?.data ?? [];
     setSenders(
@@ -70,9 +71,9 @@ export function useSidebarViewModel() {
         senderName: s.displayName || s.address || s.id,
       })),
     );
+    setSelectedSenderId(items.length > 0 ? items[0].id : null)
   }, [sendersData, setSenders]);
 
-  // Sync to store
   useEffect(() => { 
     if (convData) {
       const allConvs = convData.pages.flatMap(page => page.items);
