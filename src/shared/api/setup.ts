@@ -9,16 +9,12 @@ import type {
 client.instance.defaults.baseURL =(import.meta.env.VITE_API_URL as string) || "";
 client.instance.defaults.withCredentials = true;
 client.instance.defaults.headers["Content-Security-Policy"] = "unsafe";
-// NB: pas de Content-Type forcé ici. Axios pose automatiquement
-// `application/json` pour les corps objet et `multipart/form-data; boundary=…`
-// pour les FormData. Le SDK généré envoie `Content-Type: null` sur les
-// endpoints de fichiers (ex. /api/WhatsApp/send/template/file, /api/File) pour
-// laisser cette auto-détection opérer ; un défaut global ici la casserait.
 client.instance.defaults.headers["X-Content-Type-Options"] = "nosniff";
 client.instance.defaults.headers["X-Frame-Options"] = "DENY";
 client.instance.defaults.headers["X-XSS-Protection"] = "1; mode=block";
 client.instance.defaults.headers["Referrer-Policy"] =  "strict-origin-when-cross-origin";
 client.instance.defaults.headers["Permissions-Policy"] = "camera=(), microphone=(), geolocation=(), payment=()";
+client.instance.defaults.timeout = 1_200_000; // 20 minutes timeout for long-polling requests
 
 client.instance.interceptors.response.use(
   (res) => res,
