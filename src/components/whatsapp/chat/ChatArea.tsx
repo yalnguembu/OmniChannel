@@ -8,6 +8,7 @@ import { ChatPlaceholder } from "./ChatPlaceholder";
 import { LightboxModal } from "./LightboxModal";
 import { ConvDetailsModal, MsgDetailsModal, FlowModal } from "./Modals";
 import { useChatViewModel } from "@/hooks/chatViewModel";
+import type { MessageViewModel } from "@/hooks/chatViewModel";
 import { useWhatsAppStore } from "@/store/useWhatsappStore";
 import { useSendFlow } from "@/hooks/useWhatsapp";
 
@@ -22,7 +23,6 @@ export const ChatArea: React.FC = () => {
     setChatSearch,
     replyTo,
     setReplyTo,
-    messagesEndRef,
     inputRef,
     isSending,
     handleSendMessage,
@@ -34,26 +34,33 @@ export const ChatArea: React.FC = () => {
     getMessageDetails,
   } = useChatViewModel();
 
-  // Local UI state
   const [searchVisible, setSearchVisible] = useState(false);
   const [lightbox, setLightbox] = useState<{
     open: boolean;
     type: "image" | "video" | null;
     src: string;
     caption?: string;
-  }>({
-    open: false,
-    type: null,
-    src: "",
-  });
+  }>({ open: false, type: null, src: "" });
   const [convDetailsOpen, setConvDetailsOpen] = useState(false);
   const [msgDetailsId, setMsgDetailsId] = useState<string | null>(null);
   const [flowOpen, setFlowOpen] = useState(false);
 
   const sendFlow = useSendFlow();
 
+  // Stable callbacks — prevents breaking React.memo on MessageBubble
   const handleImageClick = useCallback((url: string, alt: string) => {
     setLightbox({ open: true, type: "image", src: url, caption: alt });
+  }, []);
+
+  const handleReplyMessage = useCallback(
+    (vm: MessageViewModel) => {
+      handleSetReply(vm.rawMessage);
+    },
+    [handleSetReply]
+  );
+
+  const handleInfoMessage = useCallback((id: string) => {
+    setMsgDetailsId(id);
   }, []);
 
   const handleToggleSearch = () => {
@@ -70,37 +77,27 @@ export const ChatArea: React.FC = () => {
   // Auto-focus input when activeConv changes
   useEffect(() => {
     if (activeConv && inputRef.current) {
-      setTimeout(() => {
-        inputRef.current?.focus();
-      }, 50);
+      setTimeout(() => inputRef.current?.focus(), 50);
     }
   }, [activeConv, inputRef]);
 
-  // Global Escape listener to go back
+  // Global Escape to go back
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        if (
-          !lightbox.open &&
-          !convDetailsOpen &&
-          !msgDetailsId &&
-          !flowOpen &&
-          !searchVisible
-        ) {
-          handleBack();
-        }
+      if (
+        e.key === "Escape" &&
+        !lightbox.open &&
+        !convDetailsOpen &&
+        !msgDetailsId &&
+        !flowOpen &&
+        !searchVisible
+      ) {
+        handleBack();
       }
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [
-    lightbox.open,
-    convDetailsOpen,
-    msgDetailsId,
-    flowOpen,
-    searchVisible,
-    handleBack,
-  ]);
+  }, [lightbox.open, convDetailsOpen, msgDetailsId, flowOpen, searchVisible, handleBack]);
 
   if (!activeConversationId) {
     return <ChatPlaceholder />;
@@ -122,9 +119,7 @@ export const ChatArea: React.FC = () => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.15 }}
-        style={{
-          backgroundColor: "rgba(234, 230, 223, 0.95)",
-        }}
+        style={{ backgroundColor: "rgba(234, 230, 223, 0.95)" }}
       >
         {chatHeaderVM && (
           <ChatHeader
@@ -154,9 +149,8 @@ export const ChatArea: React.FC = () => {
         <MessagesList
           vms={messageVMs}
           isLoading={msgsLoading}
-          messagesEndRef={messagesEndRef}
-          onReply={(vm) => handleSetReply(vm.rawMessage)}
-          onInfo={(id) => setMsgDetailsId(id)}
+          onReply={handleReplyMessage}
+          onInfo={handleInfoMessage}
           onImageClick={handleImageClick}
         />
 

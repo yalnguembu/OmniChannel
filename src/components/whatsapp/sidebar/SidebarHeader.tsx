@@ -3,11 +3,8 @@ import {
   RefreshCw,
   Upload,
   MessageSquarePlus,
-  MoreVertical,
 } from "lucide-react";
 import { IconButton } from "../shared/IconButton";
-import { Select } from "../../ui/Select";
-import { useWhatsAppStore } from "@/store/useWhatsappStore";
 
 interface SidebarHeaderProps {
   onRefresh: () => void;
@@ -20,12 +17,8 @@ export const SidebarHeader: React.FC<SidebarHeaderProps> = ({
   onBulkSend,
   onTemplateBroadcast,
 }) => {
-  const { selectedSenderId, setSelectedSenderId, senders } = useWhatsAppStore();
-  const senderOptions = senders.map((sender) => ({
-    value: sender.id,
-    label: sender.senderName,
-  }));
-
+  // The active sender is now selected from the portal sidebar and carried in
+  // the URL (`/wa/$senderId`) — no in-header sender picker.
   return (
     <div className="bg-wa-header px-3 pt-2.5 flex items-center gap-2 min-h-auto shrink-0">
       <div className="flex-1">
@@ -37,18 +30,6 @@ export const SidebarHeader: React.FC<SidebarHeaderProps> = ({
           </span>
         </div>
       </div>
-      {/* Sender Filter */}
-      {senderOptions.length > 0 && (
-        <div className="w-30  ">
-          <Select
-          className="px-1 py-1"
-            value={selectedSenderId || ""}
-            onChange={(e) => setSelectedSenderId(e.target.value || null)}
-            placeholder="Tous"
-            options={senderOptions}
-          />
-        </div>
-      )}
       {/* Actions */}
       <div className="flex items-center gap-0.5">
         <IconButton label="Diffusion de template" onClick={onTemplateBroadcast}>

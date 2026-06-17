@@ -11,6 +11,7 @@ export interface ReplyTo {
 interface WhatsAppState {
   // Conversations
   conversations: Conversation[];
+  conversationById: Record<string, Conversation>;
   activeConversationId: string | null;
   filter: Filter;
   search: string;
@@ -36,6 +37,7 @@ interface WhatsAppState {
   setSelectedSenderId: (senderId: string | null) => void;
   setSenders: (senders: Array<{ id: string; senderName: string }>) => void;
   upsertConversation: (conv: Conversation) => void;
+  batchUpsertConversations: (convs: Conversation[]) => void;
   clearUnreadBadge: (id: string) => void;
 
   // Actions — messages
@@ -58,6 +60,7 @@ export const useWhatsAppStore = create<WhatsAppState>()(
   devtools(
     (set, get) => ({
       conversations: [],
+      conversationById: {},
       activeConversationId: null,
       filter: 'ALL',
       search: '',
@@ -70,9 +73,13 @@ export const useWhatsAppStore = create<WhatsAppState>()(
       users: [],
       isMobileChatOpen: false,
 
-      // ── Conversations ──────────────────────────────────────────────────────
+      // ── Conversations ──────────────────────────────────────────────────────────
 
-      setConversations: (conversations) => set({ conversations }),
+      setConversations: (conversations) => {
+        const conversationById: Record<string, Conversation> = {};
+        for (const c of conversations) conversationById[c.id] = c;
+        set({ conversations, conversationById });
+      },
 
       setActiveConversationId: (id) =>
         set({ activeConversationId: id, replyTo: null, chatSearch: '' }),
@@ -89,35 +96,69 @@ export const useWhatsAppStore = create<WhatsAppState>()(
 
       upsertConversation: (conv) =>
         set((state) => {
-          const idx = state.conversations.findIndex((c) => c.id === conv.id);
-          let updated: Conversation[];
-          if (idx !== -1) {
-            updated = [...state.conversations];
-            updated[idx] = { ...updated[idx], ...conv };
-            // Move to top
-            const [c] = updated.splice(idx, 1);
-            updated.unshift(c);
+          const existing = state.conversationById[conv.id];
+          const merged = existing ? { ...existing, ...conv } : conv;
+          const conversationById = { ...state.conversationById, [conv.id]: merged };
+
+          let conversations: Conversation[];
+          if (existing) {
+            const idx = state.conversations.findIndex((c) => c.id === conv.id);
+            conversations = [...state.conversations];
+            conversations[idx] = merged;
+            const [c] = conversations.splice(idx, 1);
+            conversations.unshift(c);
           } else {
-            updated = [conv, ...state.conversations];
+            conversations = [merged, ...state.conversations];
           }
-          return { conversations: updated };
+
+          return { conversations, conversationById };
+        }),
+
+      // Batch multiple conversation upserts into a single state update — used by
+      // SignalR to coalesce rapid events into one React re-render.
+      batchUpsertConversations: (convs) =>
+        set((state) => {
+          if (convs.length === 0) return state;
+
+          const conversationById = { ...state.conversationById };
+
+          // Deduplicate: keep last update per id (Map preserves insertion order,
+          // later set() calls overwrite the value while keeping the key position).
+          const latestById = new Map<string, Conversation>();
+          for (const conv of convs) latestById.set(conv.id, conv);
+
+          const updatedIds = new Set(latestById.keys());
+          const mergedConvs: Conversation[] = [];
+
+          for (const [id, conv] of latestById) {
+            const existing = conversationById[id];
+            const merged = existing ? { ...existing, ...conv } : conv;
+            conversationById[id] = merged;
+            mergedConvs.push(merged);
+          }
+
+          const base = state.conversations.filter((c) => !updatedIds.has(c.id));
+          return { conversations: [...mergedConvs, ...base], conversationById };
         }),
 
       clearUnreadBadge: (id) =>
-        set((state) => ({
-          conversations: state.conversations.map((c) =>
-            c.id === id ? { ...c, unreadCount: 0 } : c
-          ),
-        })),
+        set((state) => {
+          const existing = state.conversationById[id];
+          if (!existing || existing.unreadCount === 0) return state;
+          const updated = { ...existing, unreadCount: 0 };
+          return {
+            conversations: state.conversations.map((c) => (c.id === id ? updated : c)),
+            conversationById: { ...state.conversationById, [id]: updated },
+          };
+        }),
 
-      // ── Messages ──────────────────────────────────────────────────────────
+      // ── Messages ──────────────────────────────────────────────────────────────
 
       setMessages: (messages) => set({ messages }),
 
       appendMessage: (msg) =>
         set((state) => {
-          const exists = state.messages.find((m) => m.id === msg.id);
-          if (exists) return state;
+          if (state.messages.some((m) => m.id === msg.id)) return state;
           return { messages: [...state.messages, msg] };
         }),
 
@@ -130,17 +171,17 @@ export const useWhatsAppStore = create<WhatsAppState>()(
 
       setReplyTo: (replyTo) => set({ replyTo }),
 
-      // ── UI ─────────────────────────────────────────────────────────────────
+      // ── UI ─────────────────────────────────────────────────────────────────────
 
       setUsers: (users) => set({ users }),
 
       setMobileChatOpen: (isMobileChatOpen) => set({ isMobileChatOpen }),
 
-      // ── Computed ───────────────────────────────────────────────────────────
+      // ── Computed ───────────────────────────────────────────────────────────────
 
       getActiveConversation: () => {
-        const { conversations, activeConversationId } = get();
-        return conversations.find((c) => c.id === activeConversationId) ?? null;
+        const { conversationById, activeConversationId } = get();
+        return activeConversationId ? (conversationById[activeConversationId] ?? null) : null;
       },
 
       getFilteredMessages: () => {

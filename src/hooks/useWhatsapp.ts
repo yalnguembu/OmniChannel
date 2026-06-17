@@ -140,7 +140,8 @@ export function useUpdateConversationStatus() {
     mutationFn: ({ id, status }: { id: string; status: ConversationStatus }) =>
       putApiConversationStatus({ body: { id, status } }),
     onSuccess: () => {
-      qc.invalidateQueries({ queryKey: whatsappKeys.all });
+      qc.invalidateQueries({ queryKey: ['whatsapp', 'conversations'] });
+      qc.invalidateQueries({ queryKey: whatsappKeys.stats() });
       toast.success("Statut mis à jour");
     },
     onError: () => toast.error("Erreur lors de la mise à jour du statut"),
@@ -153,7 +154,7 @@ export function useAssignConversation() {
     mutationFn: ({ id, userId }: { id: string; userId: string }) =>
       putApiConversationAssign({ body: { id, userId } }),
     onSuccess: () => {
-      qc.invalidateQueries({ queryKey: whatsappKeys.all });
+      qc.invalidateQueries({ queryKey: ['whatsapp', 'conversations'] });
       toast.success("Conversation assignée");
     },
     onError: () => toast.error("Erreur lors de l'assignation"),
@@ -172,7 +173,7 @@ export function useMessages(convId: string | null) {
         }),
       ),
     enabled: !!convId,
-    staleTime: 0,
+    staleTime: 60_000,
   });
 }
 

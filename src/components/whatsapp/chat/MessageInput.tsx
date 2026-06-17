@@ -120,7 +120,83 @@ export const MessageInput: React.FC<MessageInputProps> = ({
   const { ref: formRef, ...restRegister } = register("content");
 
   return (
-    <div className="shrink-0">
+    // Outer wrapper is the containing block for popups so they always stay
+    // within the chat column and never overflow the viewport horizontally.
+    <div className="shrink-0 relative">
+      {/* Attachment popup — relative to this full-width container */}
+      <AnimatePresence>
+        {showAttMenu && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95, y: 8 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95, y: 8 }}
+            transition={{ duration: 0.12 }}
+            className="absolute bottom-full mb-2 left-4 w-68 max-w-[calc(100%-2rem)] bg-white rounded-2xl shadow-xl border border-wa-border py-2 z-50 overflow-hidden"
+          >
+            <button
+              className="flex items-center gap-3 w-full px-4 py-2.5 text-sm text-wa-text hover:bg-wa-hover transition-colors"
+              onClick={() => pickFile("image/*,video/*", "image")}
+            >
+              <span className="size-9 rounded-full bg-[#bf59cf] flex items-center justify-center text-white shrink-0">
+                <Image size={16} />
+              </span>
+              Photos &amp; vidéos
+            </button>
+            <button
+              className="flex items-center gap-3 w-full px-4 py-2.5 text-sm text-wa-text hover:bg-wa-hover transition-colors"
+              onClick={() => pickFile("application/*,text/*", "document")}
+            >
+              <span className="size-9 rounded-full bg-[#0e6ede] flex items-center justify-center text-white shrink-0">
+                <FileText size={16} />
+              </span>
+              Document
+            </button>
+            <button
+              className="flex items-center gap-3 w-full px-4 py-2.5 text-sm text-wa-text hover:bg-wa-hover transition-colors"
+              onClick={() => pickFile("audio/*", "audio")}
+            >
+              <span className="size-9 rounded-full bg-[#e05c47] flex items-center justify-center text-white shrink-0">
+                <Music size={16} />
+              </span>
+              Audio
+            </button>
+            <button
+              className="flex items-center gap-3 w-full px-4 py-2.5 text-sm text-wa-text hover:bg-wa-hover transition-colors"
+              onClick={() => {
+                onOpenFlow();
+                setShowAttMenu(false);
+              }}
+            >
+              <span className="size-9 rounded-full bg-wa-green flex items-center justify-center text-white shrink-0">
+                <Zap size={16} />
+              </span>
+              Envoyer un Flow
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Emoji picker — right-anchored so it never overflows the right edge */}
+      <AnimatePresence>
+        {showEmojiMenu && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95, y: 8 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95, y: 8 }}
+            transition={{ duration: 0.12 }}
+            className="absolute bottom-full mb-2 left-4 z-50 max-w-[calc(100%-2rem)]"
+          >
+            <EmojiPicker
+              onEmojiClick={onEmojiClick}
+              theme={Theme.LIGHT}
+              searchPlaceHolder="Chercher..."
+              width={280}
+              height={340}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Reply bar */}
       <AnimatePresence>
         {replyTo && (
@@ -132,7 +208,7 @@ export const MessageInput: React.FC<MessageInputProps> = ({
             className="flex items-center gap-3 bg-wa-bubble-in border-t border-wa-border px-4 py-2 overflow-hidden"
           >
             <div className="flex-1 min-w-0 border-l-4 border-wa-teal pl-3">
-              <div className="text-xs font-bold text-wa-teal">
+              <div className="text-xs font-bold text-wa-teal truncate">
                 {replyTo.author}
               </div>
               <div className="text-xs text-wa-muted truncate">
@@ -141,7 +217,7 @@ export const MessageInput: React.FC<MessageInputProps> = ({
             </div>
             <button
               onClick={onCancelReply}
-              className="text-wa-icon hover:text-wa-text transition-colors p-1 rounded-full hover:bg-wa-active"
+              className="text-wa-icon hover:text-wa-text transition-colors p-1 rounded-full hover:bg-wa-active shrink-0"
             >
               <X size={18} />
             </button>
@@ -152,121 +228,43 @@ export const MessageInput: React.FC<MessageInputProps> = ({
       {/* Input row */}
       <div className="flex items-end rounded-full bg-white shadow-lg mx-4 mb-2 gap-2 px-4 py-2.5">
         {/* Attachment button */}
-        <div className="relative mb-px">
-          <button
-            type="button"
-            className="size-10 rounded-full flex items-center justify-center text-wa-icon hover:bg-black/5 transition-colors shrink-0"
-            onClick={() => setShowAttMenu((v) => !v)}
-          >
-            <Plus size={24} />
-          </button>
+        <button
+          type="button"
+          className="size-10 rounded-full flex items-center justify-center text-wa-icon hover:bg-black/5 transition-colors shrink-0 mb-px"
+          onClick={() => {
+            setShowEmojiMenu(false);
+            setShowAttMenu((v) => !v);
+          }}
+        >
+          <Plus size={24} />
+        </button>
 
-          <AnimatePresence>
-            {showAttMenu && (
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9, y: 8 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.9, y: 8 }}
-                transition={{ duration: 0.12 }}
-                className="absolute bottom-14 left-0 bg-white rounded-2xl shadow-xl border border-wa-border py-2 z-50 min-w-80 overflow-hidden"
-              >
-                <button
-                  className="flex items-center gap-3 w-full px-4 py-2.5 text-sm text-wa-text hover:bg-wa-hover transition-colors"
-                  onClick={() => pickFile("image/*,video/*", "image")}
-                >
-                  <span className="size-9 rounded-full bg-[#bf59cf] flex items-center justify-center text-white shrink-0">
-                    <Image size={16} />
-                  </span>
-                  Photos &amp; vidéos
-                </button>
-                <button
-                  className="flex items-center gap-3 w-full px-4 py-2.5 text-sm text-wa-text hover:bg-wa-hover transition-colors"
-                  onClick={() => pickFile("application/*,text/*", "document")}
-                >
-                  <span className="size-9 rounded-full bg-[#0e6ede] flex items-center justify-center text-white shrink-0">
-                    <FileText size={16} />
-                  </span>
-                  Document
-                </button>
-                <button
-                  className="flex items-center gap-3 w-full px-4 py-2.5 text-sm text-wa-text hover:bg-wa-hover transition-colors"
-                  onClick={() => pickFile("audio/*", "audio")}
-                >
-                  <span className="size-9 rounded-full bg-[#e05c47] flex items-center justify-center text-white shrink-0">
-                    <Music size={16} />
-                  </span>
-                  Audio
-                </button>
-                <button
-                  className="flex items-center gap-3 w-full px-4 py-2.5 text-sm text-wa-text hover:bg-wa-hover transition-colors"
-                  onClick={() => {
-                    onOpenFlow();
-                    setShowAttMenu(false);
-                  }}
-                >
-                  <span className="size-9 rounded-full bg-wa-green flex items-center justify-center text-white shrink-0">
-                    <Zap size={16} />
-                  </span>
-                  Envoyer un Flow
-                </button>
-              </motion.div>
-            )}
-          </AnimatePresence>
-
-          <input
-            ref={fileInputRef}
-            type="file"
-            className="hidden"
-            onChange={onFilePicked}
-          />
-        </div>
         {/* Emoji button */}
-        <div className="relative mb-px">
-          <button
-            type="button"
-            className="size-10 rounded-full flex items-center justify-center text-wa-icon hover:bg-black/5 transition-colors shrink-0"
-            onClick={() => setShowEmojiMenu((v) => !v)}
-          >
-            <Smile size={24} />
-          </button>
-
-          <AnimatePresence>
-            {showEmojiMenu && (
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9, y: 8 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.9, y: 8 }}
-                transition={{ duration: 0.12 }}
-                className="absolute bottom-14 left-0 z-50"
-              >
-                <EmojiPicker
-                  onEmojiClick={onEmojiClick}
-                  theme={Theme.LIGHT}
-                  searchPlaceHolder="Chercher..."
-                  width={450}
-                  height={380}
-                />
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
+        <button
+          type="button"
+          className="size-10 rounded-full flex items-center justify-center text-wa-icon hover:bg-black/5 transition-colors shrink-0 mb-px"
+          onClick={() => {
+            setShowAttMenu(false);
+            setShowEmojiMenu((v) => !v);
+          }}
+        >
+          <Smile size={24} />
+        </button>
 
         {/* Textarea */}
-        <div className="flex-1 bg-white rounded-lg px-3 py-2">
+        <div className="flex-1 min-w-0 bg-white rounded-lg px-3 py-2">
           <textarea
             {...restRegister}
             ref={(e) => {
               formRef(e);
               if (inputRef)
-                (
-                  inputRef as React.MutableRefObject<HTMLTextAreaElement | null>
-                ).current = e;
+                (inputRef as React.MutableRefObject<HTMLTextAreaElement | null>).current = e;
             }}
             rows={1}
             placeholder="Tapez un message"
             onKeyDown={onKeyDown}
             onInput={autoResize}
-            className="w-full border-none outline-none resize-none text-sm text-wa-text placeholder:text-wa-muted bg-transparent max-h-28 leading-snug"
+            className="w-full border-none outline-none resize-none lg:text-sm text-wa-text placeholder:text-wa-muted bg-transparent max-h-28 leading-snug"
           />
         </div>
 
@@ -285,6 +283,13 @@ export const MessageInput: React.FC<MessageInputProps> = ({
           {hasText ? <Send size={20} /> : <Mic size={22} />}
         </button>
       </div>
+
+      <input
+        ref={fileInputRef}
+        type="file"
+        className="hidden"
+        onChange={onFilePicked}
+      />
 
       {/* Click-outside overlay */}
       {(showAttMenu || showEmojiMenu) && (

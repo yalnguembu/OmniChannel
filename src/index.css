@@ -6,6 +6,12 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* Prevent any absolutely-positioned popup (emoji picker, attachment menu, etc.)
+   from creating horizontal document overflow on mobile devices. */
+html, body {
+  overflow-x: hidden;
+}
+
 @theme {
   --color-anchor: #0d2137;
   --color-primary: #1b5e82;

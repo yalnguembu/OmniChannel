@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Link, useRouterState } from "@tanstack/react-router";
 import {
   LayoutDashboard,
@@ -12,6 +13,8 @@ import { cn, getInitials, avatarColor } from "@/lib/utils";
 import { useAuthStore } from "@/store/authStore";
 import { OctoLogo } from "@/pages/landing/components/OctoLogo";
 import { PRODUCT_TABS } from "@/components/features/products/detail/ProductDetailTabs";
+import { WhatsAppMenu } from "@/components/layout/WhatsAppMenu";
+import { MyProfileModal } from "@/components/features/users/MyProfileModal";
 
 const PRODUCT_SECTIONS = new Set<string>(PRODUCT_TABS.map((t) => t.id));
 
@@ -54,6 +57,7 @@ export function Sidebar() {
   const user = useAuthStore((s) => s.user);
   const router = useRouterState();
   const currentPath = router.location.pathname;
+  const [profileOpen, setProfileOpen] = useState(false);
 
   const isActive = (to: string) => currentPath.startsWith(to);
 
@@ -171,10 +175,20 @@ export function Sidebar() {
             })}
           </div>
         ))}
+
+        <p className="px-4 pt-6 pb-1.5 text-[10px] font-semibold text-[#B8CDD8] uppercase tracking-widest">
+          Messagerie
+        </p>
+        <WhatsAppMenu active={currentPath.startsWith("/wa")} />
       </nav>
 
       <div className="p-3.5 border-t border-[#E5E7EB]/60 shrink-0">
-        <div className="flex items-center gap-2.5">
+        <button
+          type="button"
+          onClick={() => setProfileOpen(true)}
+          title="Mon profil"
+          className="w-full flex items-center gap-2.5 rounded-md p-1 -m-1 hover:bg-[#F0F2F4] transition-colors cursor-pointer text-left"
+        >
           <div className="relative shrink-0">
             <div
               className="w-8 h-8 rounded-full flex items-center justify-center text-[11px] font-semibold border border-[#2E8FAD]/25"
@@ -195,8 +209,13 @@ export function Sidebar() {
               {user?.profileName} · {user?.companyName}
             </p>
           </div>
-        </div>
+        </button>
       </div>
+
+      <MyProfileModal
+        isOpen={profileOpen}
+        onClose={() => setProfileOpen(false)}
+      />
     </aside>
   );
 }

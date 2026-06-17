@@ -1,5 +1,4 @@
 import React from 'react';
-import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { AvatarInitials } from '../shared/AvatarInitials';
 import { UnreadBadge, StatusDot } from '../shared/StatusBadges';
@@ -7,32 +6,29 @@ import type { ConversationViewModel } from '@/hooks/sidebarViewModel';
 
 interface ConversationItemProps {
   vm: ConversationViewModel;
-  onClick: () => void;
+  onSelect: (id: string) => void;
 }
 
-export const ConversationItem: React.FC<ConversationItemProps> = ({ vm, onClick }) => (
-  <motion.div
-    layout
+export const ConversationItem = React.memo<ConversationItemProps>(({ vm, onSelect }) => (
+  <div
     role="listitem"
     tabIndex={0}
-    initial={{ opacity: 0, x: -6 }}
-    animate={{ opacity: 1, x: 0 }}
-    transition={{ duration: 0.15, ease: 'easeOut' }}
     className={cn(
-      'flex items-center px-3 py-4 cursor-pointer gap-3 relative transition-colors outline-none rounded-lg',
+      'flex items-center px-3 py-4 cursor-pointer gap-3 relative outline-none rounded-lg',
+      'transition-colors duration-100',
       vm.isActive
         ? 'bg-wa-active/50'
         : 'hover:bg-wa-hover focus-visible:bg-wa-hover focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-wa-teal'
     )}
-    onClick={onClick}
+    onClick={() => onSelect(vm.id)}
     onKeyDown={(e) => {
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
-        onClick();
+        onSelect(vm.id);
       }
     }}
   >
-    {/* Avatar — 49px comme WA */}
+    {/* Avatar */}
     <AvatarInitials initials={vm.initials} background={vm.avatarBg} size="lg" />
 
     <div className="flex-1 min-w-0">
@@ -75,5 +71,7 @@ export const ConversationItem: React.FC<ConversationItemProps> = ({ vm, onClick 
         <UnreadBadge count={vm.unread} />
       </div>
     </div>
-  </motion.div>
-);
+  </div>
+));
+
+ConversationItem.displayName = 'ConversationItem';

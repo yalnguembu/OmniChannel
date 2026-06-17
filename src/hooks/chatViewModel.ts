@@ -11,7 +11,6 @@ import {
 } from './useWhatsapp';
 import {
   fmtTimeShort,
-  fmtTimeFull,
   getInitials,
   avatarColor,
   type ConversationStatus,
@@ -39,20 +38,20 @@ export function useChatViewModel() {
     activeConversationId,
     setActiveConversationId,
     setMessages,
-    messages,
     chatSearch,
     setChatSearch,
     replyTo,
     setReplyTo,
     getActiveConversation,
-    getFilteredMessages,
     clearUnreadBadge,
     setMobileChatOpen,
   } = useWhatsAppStore();
 
+  // Subscribe to messages directly for stable memoized filtering
+  const messages = useWhatsAppStore((s) => s.messages);
+
   const qc = useQueryClient();
   const activeConv = getActiveConversation();
-  const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
   const { data: msgsData, isLoading: msgsLoading } = useMessages(activeConversationId);
@@ -62,7 +61,7 @@ export function useChatViewModel() {
   const updateStatus = useUpdateConversationStatus();
   const assignConv = useAssignConversation();
 
-  // Sync messages to store
+  // Sync fetched messages to store
   useEffect(() => {
     if (msgsData) setMessages(msgsData);
   }, [msgsData, setMessages]);
@@ -72,12 +71,12 @@ export function useChatViewModel() {
     if (activeConversationId) clearUnreadBadge(activeConversationId);
   }, [activeConversationId, clearUnreadBadge]);
 
-  // Auto-scroll on new messages
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages.length]);
-
-  const filteredMessages = getFilteredMessages();
+  // Memoized filtering — avoids creating a new array on every render
+  const filteredMessages = useMemo(() => {
+    if (!chatSearch) return messages;
+    const lower = chatSearch.toLowerCase();
+    return messages.filter((m) => (m.content || '').toLowerCase().includes(lower));
+  }, [messages, chatSearch]);
 
   const messageVMs = useMemo((): MessageViewModel[] =>
     filteredMessages.map((m): MessageViewModel => {
@@ -131,7 +130,6 @@ export function useChatViewModel() {
 
       const to = activeConv.contactAddress ?? '';
       if (replyTo?.messageId) {
-        // Need the external message id
         const msg = messages.find((m) => m.id === replyTo.messageId);
         if (msg?.externalMessageId) {
           await sendReply.mutateAsync({ to, body: text, replyToExternalMessageId: msg.externalMessageId });
@@ -143,7 +141,7 @@ export function useChatViewModel() {
         await sendText.mutateAsync({ to, body: text });
       }
 
-      // Refetch messages as fallback (SignalR should handle it)
+      // Fallback refetch scoped to active conversation only (SignalR is primary)
       setTimeout(() => {
         qc.invalidateQueries({ queryKey: whatsappKeys.messages(activeConversationId ?? '') });
       }, 500);
@@ -207,7 +205,6 @@ export function useChatViewModel() {
     setChatSearch,
     replyTo,
     setReplyTo,
-    messagesEndRef,
     inputRef,
     isSending: sendText.isPending || sendReply.isPending,
     handleSendMessage,

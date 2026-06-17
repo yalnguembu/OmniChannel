@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ConversationList } from '@/components/whatsapp/sidebar/ConversationList';
 import { ChatArea } from '@/components/whatsapp//chat/ChatArea';
 import { BulkModal } from '@/components/whatsapp//chat/Modals';
@@ -7,11 +7,25 @@ import { useSignalR } from '@/hooks/useSignalR';
 import { useBulkSend } from '@/hooks/useWhatsapp';
 import { useWhatsAppStore } from '@/store/useWhatsappStore';
 
-export const WhatsAppPage: React.FC = () => {
-  const { activeConversationId, isMobileChatOpen } = useWhatsAppStore();
+interface WhatsAppPageProps {
+  /** Active sender, taken from the route (`/wa/$senderId`). The URL is the
+   *  single source of truth so several inboxes (one per sender) can be open
+   *  in parallel tabs, each scoped to its own sender. */
+  senderId?: string;
+}
+
+export const WhatsAppPage: React.FC<WhatsAppPageProps> = ({ senderId }) => {
+  const { activeConversationId, isMobileChatOpen, setSelectedSenderId } =
+    useWhatsAppStore();
   const [bulkOpen, setBulkOpen] = useState(false);
   const [tplOpen, setTplOpen] = useState(false);
   const bulkSend = useBulkSend();
+
+  // The route param drives the active sender — conversation search and every
+  // send mutation read `selectedSenderId` from the store.
+  useEffect(() => {
+    setSelectedSenderId(senderId ?? null);
+  }, [senderId, setSelectedSenderId]);
 
   // Init SignalR
   useSignalR();

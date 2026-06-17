@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { toast } from 'sonner';
 import type { Conversation, Message } from '@/models/whatsapp.models';
 import * as signalR from '@microsoft/signalr';
@@ -26,11 +26,32 @@ export function useSignalR() {
     activeConversationId,
     appendMessage,
     updateMessage,
-    upsertConversation,
+    batchUpsertConversations,
   } = useWhatsAppStore();
 
   const activeIdRef = useRef(activeConversationId);
   activeIdRef.current = activeConversationId;
+
+  // Batch all conversation events that arrive within the same animation frame
+  // into a single store update, preventing cascading re-renders on mass sends.
+  const pendingConvsRef = useRef<Conversation[]>([]);
+  const batchFrameRef = useRef<number | null>(null);
+
+  const flushBatch = useCallback(() => {
+    batchFrameRef.current = null;
+    const batch = pendingConvsRef.current.splice(0);
+    if (batch.length > 0) batchUpsertConversations(batch);
+  }, [batchUpsertConversations]);
+
+  const scheduleBatch = useCallback(
+    (conv: Conversation) => {
+      pendingConvsRef.current.push(conv);
+      if (batchFrameRef.current === null) {
+        batchFrameRef.current = requestAnimationFrame(flushBatch);
+      }
+    },
+    [flushBatch]
+  );
 
   useEffect(() => {
     const hub = new signalR.HubConnectionBuilder()
@@ -59,16 +80,15 @@ export function useSignalR() {
     });
 
     hub.on('message.updated', (payload) => {
-      const msg = payload as Message;
-      updateMessage(msg);
+      updateMessage(payload as Message);
     });
 
     hub.on('conversation.updated', (payload) => {
-      upsertConversation(payload as Conversation);
+      scheduleBatch(payload as Conversation);
     });
 
     hub.on('conversation.created', (payload) => {
-      upsertConversation(payload as Conversation);
+      scheduleBatch(payload as Conversation);
     });
 
     const start = async () => {
@@ -89,9 +109,14 @@ export function useSignalR() {
     start();
 
     return () => {
+      if (batchFrameRef.current !== null) {
+        cancelAnimationFrame(batchFrameRef.current);
+        batchFrameRef.current = null;
+      }
+      pendingConvsRef.current = [];
       hub.stop();
     };
-  }, [appendMessage, updateMessage, upsertConversation]);
+  }, [appendMessage, updateMessage, scheduleBatch]);
 
   // Join/leave conversation rooms on active change
   useEffect(() => {

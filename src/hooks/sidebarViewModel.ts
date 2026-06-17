@@ -29,7 +29,6 @@ export function useSidebarViewModel() {
     setStats,
     setUsers,
     setSenders,
-    setSelectedSenderId,
     selectedSenderId,
     activeConversationId,
     conversations,
@@ -65,13 +64,14 @@ export function useSidebarViewModel() {
 
   useEffect(() => {
     const items = (sendersData as any)?.data ?? [];
+    // Only hydrate the sender list for display; the active sender is owned by
+    // the URL (`/wa/$senderId`) and set by WhatsAppPage.
     setSenders(
       items.map((s: any) => ({
         id: s.id as string,
         senderName: s.displayName || s.address || s.id,
       })),
     );
-    setSelectedSenderId(items.length > 0 ? items[0].id : null)
   }, [sendersData, setSenders]);
 
   useEffect(() => { 

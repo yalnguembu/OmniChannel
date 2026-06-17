@@ -189,7 +189,7 @@ const BubbleContent: React.FC<BubbleContentProps> = ({ vm, onImageClick }) => {
       );
     }
     default:
-      return <p className="text leading-5 whitespace-pre-wrap">{vm.content || ''}</p>;
+      return <p className="text leading-5 whitespace-pre-wrap break-words">{vm.content || ''}</p>;
   }
 };
 
@@ -223,12 +223,12 @@ const TailOutbound = () => (
 
 interface MessageBubbleProps {
   vm: MessageViewModel;
-  onReply: () => void;
-  onInfo: () => void;
+  onReply: (vm: MessageViewModel) => void;
+  onInfo: (id: string) => void;
   onImageClick: (url: string, alt: string) => void;
 }
 
-export const MessageBubble: React.FC<MessageBubbleProps> = ({
+export const MessageBubble = React.memo<MessageBubbleProps>(({
   vm,
   onReply,
   onInfo,
@@ -253,12 +253,12 @@ export const MessageBubble: React.FC<MessageBubbleProps> = ({
   }, [isMenuOpen]);
 
   const handleReply = () => {
-    onReply();
+    onReply(vm);
     setIsMenuOpen(false);
   };
 
   const handleInfo = () => {
-    onInfo();
+    onInfo(vm.id);
     setIsMenuOpen(false);
   };
 
@@ -273,8 +273,8 @@ export const MessageBubble: React.FC<MessageBubbleProps> = ({
     >
       {/* Bubble */}
       <div
-        className={cn(  
-          'relative max-w-[65%] rounded-[7.5px] px-2 pt-1.5 pb-2 pr-4',
+        className={cn(
+          'relative max-w-[65%] rounded-[7.5px] px-2 pt-1.5 pb-2 pr-4 overflow-hidden',
           'shadow-[0_1px_0.5px_rgba(11,20,26,0.13)] wrap-break-word',
           vm.isOutbound
             ? 'bg-wa-bubble-out rounded-tr-none'
@@ -291,9 +291,9 @@ export const MessageBubble: React.FC<MessageBubbleProps> = ({
 
         {/* Reply quote */}
         {vm.replyToContent && (
-          <div className="bg-black/6 rounded border-l-4 border-wa-teal px-2 py-1 mb-1 max-h-16 overflow-hidden">
-            <div className="text-xs font-bold text-wa-teal mb-px">{vm.replyToAuthor}</div>
-            <div className="text-xs text-wa-muted truncate">{vm.replyToContent}</div>
+          <div className="bg-black/6 rounded border-l-4 border-wa-teal px-2 py-1 mb-1 max-h-16 overflow-hidden min-w-0">
+            <div className="text-xs font-bold text-wa-teal mb-px truncate">{vm.replyToAuthor}</div>
+            <div className="text-xs text-wa-muted truncate min-w-0">{vm.replyToContent}</div>
           </div>
         )}
 
@@ -345,4 +345,6 @@ export const MessageBubble: React.FC<MessageBubbleProps> = ({
       </div>
     </div>
   );
-};
+});
+
+MessageBubble.displayName = 'MessageBubble';

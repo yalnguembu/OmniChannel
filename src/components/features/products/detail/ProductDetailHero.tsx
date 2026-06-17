@@ -1,4 +1,4 @@
-import { ArrowLeft, Edit, Package, Megaphone } from "lucide-react";
+import { Edit, Package, Megaphone } from "lucide-react";
 import type { ProductModel } from "@/models/product.model";
 import { formatDate } from "@/lib/date";
 import { statusLabel } from "@/lib/utils";
@@ -20,13 +20,6 @@ export function ProductDetailHero({
   return (
     <div className="flex items-center justify-between py-5">
       <div className="flex items-center gap-4">
-        <button
-          className="flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-transparent text-[#4A7A94] border border-[#E5E7EB] text-[13px] hover:bg-[#F0F2F4] transition-colors"
-          onClick={onBack}
-        >
-          <ArrowLeft size={13} />
-          Retour
-        </button>
         <div className="w-[52px] h-[52px] rounded-[14px] bg-[#E8F4F8] border border-[#2E8FAD]/20 flex items-center justify-center shrink-0">
           <Package size={26} className="text-[#2E8FAD]" strokeWidth={1.5} />
         </div>
