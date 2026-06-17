@@ -12,9 +12,9 @@ import { ABACStrategy } from "./security/strategies/ABACStrategy";
 import { router } from "./router";
 import { UserSession } from "./security/types";
 import { rules } from "./security/rules";
+import { PwaUpdatePrompt, PwaInstallPrompt } from "@/components/PwaPrompt";
 import "@/i18n";
 import "./index.css";
-
 
 const strategy = new ABACStrategy(rules);
 
@@ -39,10 +39,13 @@ function Root() {
             },
           }}
         />
+        <PwaUpdatePrompt />
+        <PwaInstallPrompt />
       </SecurityProvider>
     </QueryClientProvider>
   );
 }
+
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <Root />
