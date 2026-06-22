@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { Loader2 } from 'lucide-react';
 import { MessageBubble } from './MessageBubble';
@@ -73,21 +73,38 @@ export const MessagesList: React.FC<MessagesListProps> = ({
     },
   });
 
-  // Auto-scroll to bottom when new messages arrive or conversation first loads.
-  // Uses vms.length so date-separator-only changes don't trigger a scroll.
+  // Auto-scroll to the bottom only when a genuinely new last message appears
+  // (send / receive / conversation switch). Keying on the last message id —
+  // instead of vms.length — avoids yanking the view on filter shrinks or
+  // date-separator-only changes, which is what made the scroll feel abrupt.
+  const lastMsgId = vms.length ? vms[vms.length - 1].id : null;
   useEffect(() => {
-    if (rows.length === 0) return;
+    if (rows.length === 0 || lastMsgId === null) return;
     // requestAnimationFrame ensures the virtualizer has computed item positions
     requestAnimationFrame(() => {
       virtualizer.scrollToIndex(rows.length - 1, { align: 'end', behavior: 'auto' });
     });
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [vms.length]);
+  }, [lastMsgId]);
+
+  // Media (images/videos) resolve their height after the initial scroll, which
+  // would otherwise leave the view slightly above the true bottom. Re-scroll on
+  // load, but only when the user is already near the bottom so we never yank
+  // someone who has scrolled up to read history.
+  const handleMediaLoad = useCallback(() => {
+    const el = parentRef.current;
+    if (!el || rows.length === 0) return;
+    const nearBottom = el.scrollHeight - el.scrollTop - el.clientHeight < 250;
+    if (nearBottom) {
+      virtualizer.scrollToIndex(rows.length - 1, { align: 'end', behavior: 'auto' });
+    }
+  }, [rows.length, virtualizer]);
 
   return (
     <div
       ref={parentRef}
-      className="flex-1 overflow-y-auto px-[5%] [scrollbar-width:thin] [scrollbar-color:rgba(0,0,0,0.15)_transparent]"
+      onLoadCapture={handleMediaLoad}
+      className="flex-1 min-h-0 overflow-y-auto px-[5%] [scrollbar-width:thin] [scrollbar-color:rgba(0,0,0,0.15)_transparent]"
     >
       {isLoading ? (
         <div className="flex items-center justify-center py-12">

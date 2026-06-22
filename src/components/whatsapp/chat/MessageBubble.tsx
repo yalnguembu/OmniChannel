@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Reply, Info, User, ChevronDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { MessageTicks } from '../shared/MessageTicks';
+import { AudioPlayer } from '../shared/AudioPlayer';
 import type { MessageViewModel } from '@/hooks/chatViewModel';
 import type { Media } from '@/models/whatsapp.models';
 import { BASE_URL } from '@/shared/api/whatsappBaseUrl';
@@ -53,14 +54,7 @@ const MediaContent: React.FC<MediaContentProps> = ({ media, onImageClick }) => {
   }
 
   if (mt === 'AUDIO' || mt === 'VOICE' || mime.startsWith('audio/')) {
-    return (
-      <audio
-        src={url}
-        controls
-        preload="metadata"
-        className="block w-full min-w-48 max-w-72"
-      />
-    );
+    return <AudioPlayer src={url} className="block w-full min-w-48 max-w-72" />;
   }
 
   // Document fallback
@@ -140,10 +134,8 @@ const BubbleContent: React.FC<BubbleContentProps> = ({ vm, onImageClick }) => {
     case 'AUDIO':
     case 'VOICE':
       return (
-        <audio
+        <AudioPlayer
           src={getFullUrl(vm.content)}
-          controls
-          preload="metadata"
           className="block w-full min-w-48 max-w-72"
         />
       );

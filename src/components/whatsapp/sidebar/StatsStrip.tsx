@@ -56,9 +56,12 @@ export const StatsStrip: React.FC<StatsStripProps> = ({ stats, filter, onFilterC
     <div className="flex flex-nowrap overflow-x-auto bg-wa-sidebar px-3 py-2.5 gap-2 shrink-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
       {chips.map((chip) => {
         const isActive = filter === chip.key;
+        // "Toutes" is the sum of the status buckets only — unread is orthogonal
+        // (an unread conversation already counts in its status), so adding it
+        // here double-counted.
         const total =
           chip.key === 'ALL'
-            ? stats.open + stats.pending + stats.resolved + stats.unread + stats.closed
+            ? stats.open + stats.pending + stats.resolved + stats.closed
             : chip.count;
 
         return (

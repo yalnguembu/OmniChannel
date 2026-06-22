@@ -56,14 +56,11 @@ export default defineConfig(({ mode }) => {
           ],
         },
         workbox: {
-          // Pre-cache all app shell assets (raise limit for the bundled SPA JS)
           globPatterns: ['**/*.{js,css,html,ico,png,svg,woff,woff2}'],
-          maximumFileSizeToCacheInBytes: 3 * 1024 * 1024, // 3 MiB
-          // Never cache API or SignalR traffic — real-time data must stay fresh
+          maximumFileSizeToCacheInBytes: 3 * 1024 * 1024,
           navigateFallback: null,
           runtimeCaching: [
             {
-              // Google Fonts stylesheet
               urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
               handler: 'StaleWhileRevalidate',
               options: {
@@ -72,7 +69,6 @@ export default defineConfig(({ mode }) => {
               },
             },
             {
-              // Google Fonts files
               urlPattern: /^https:\/\/fonts\.gstatic\.com\/.*/i,
               handler: 'CacheFirst',
               options: {
@@ -82,7 +78,6 @@ export default defineConfig(({ mode }) => {
               },
             },
             {
-              // Fontsource / CDN woff2 assets
               urlPattern: /\.woff2?(\?.*)?$/i,
               handler: 'CacheFirst',
               options: {
@@ -92,19 +87,17 @@ export default defineConfig(({ mode }) => {
               },
             },
             {
-              // REST API — always network, never cache live data
               urlPattern: /\/api\//i,
               handler: 'NetworkOnly',
             },
             {
-              // SignalR hubs — WebSocket, but cover any HTTP handshake too
               urlPattern: /\/hubs\//i,
               handler: 'NetworkOnly',
             },
           ],
         },
         devOptions: {
-          enabled: false,    // keep SW disabled in dev to avoid caching headaches
+          enabled: true,
         },
       }),
     ],

@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useConversations, useStats, useUsers } from './useWhatsapp';
 import { type Filter, convPreview, fmtTime, avatarColor, getInitials } from '@/models/whatsapp.models';
 import { useWhatsAppStore } from '@/store/useWhatsappStore';
+import { useDebounce } from '@/shared/hooks/useDebounce';
 import { getApiSenderDropdownOptions } from '@/shared/api/generated/@tanstack/react-query.gen';
 
 export interface ConversationViewModel {
@@ -17,6 +18,11 @@ export interface ConversationViewModel {
   assigneeName: string | null;
   isActive: boolean;
   senderAddress: string | null;
+  /** True when the conversation's last message was sent by us (outbound). */
+  lastOutbound: boolean;
+  /** Uppercased type of the last message (IMAGE / VIDEO / DOCUMENT…) — drives
+   *  the leading media icon in the list item. */
+  previewType: string;
 }
 
 export function useSidebarViewModel() {
@@ -36,15 +42,20 @@ export function useSidebarViewModel() {
     users,
   } = useWhatsAppStore();
 
-  // Build query params from filter, search, and selectedSenderId
+  // Debounce the term sent to the backend so typing doesn't fire a request per
+  // keystroke (the client-side filter below still narrows the loaded list
+  // instantly for responsive feedback).
+  const debouncedSearch = useDebounce(search, 400);
+
+  // Build query params from filter, debounced search, and selectedSenderId
   const queryParams = useMemo(() => {
     const p: Record<string, unknown> = {};
     if (filter && filter !== 'ALL' && filter !== 'UNREAD') p.status = filter;
     if (filter === 'UNREAD') p.unreadOnly = true;
-    if (search) p.searchTerm = search;
+    if (debouncedSearch) p.searchTerm = debouncedSearch;
     if (selectedSenderId) p.senderId = selectedSenderId;
     return p;
-  }, [filter, search, selectedSenderId]);
+  }, [filter, debouncedSearch, selectedSenderId]);
 
   const { 
     data: convData, 
@@ -83,8 +94,30 @@ export function useSidebarViewModel() {
   useEffect(() => { if (statsData) setStats(statsData); }, [statsData, setStats]);
   useEffect(() => { if (usersData) setUsers(usersData); }, [usersData, setUsers]);
 
+  // Conversations arrive from two sources: the (server-filtered) search query
+  // AND live SignalR upserts, which land in the store unfiltered. Re-apply the
+  // active filter/search client-side so a SignalR push that doesn't match the
+  // current view (e.g. a new inbound message while the UNREAD or a status
+  // filter is active) doesn't leak into the list.
+  const visibleConversations = useMemo(() => {
+    const q = search.trim().toLowerCase();
+    return conversations.filter((c) => {
+      if (filter === 'UNREAD') {
+        // Keep the currently-open conversation even after its badge clears.
+        if ((c.unreadCount ?? 0) <= 0 && c.id !== activeConversationId) return false;
+      } else if (filter && filter !== 'ALL') {
+        if ((c.status ?? 'OPEN') !== filter) return false;
+      }
+      if (q) {
+        const hay = `${c.contactName ?? ''} ${c.contactAddress ?? ''} ${c.lastMessageContent ?? ''}`.toLowerCase();
+        if (!hay.includes(q)) return false;
+      }
+      return true;
+    });
+  }, [conversations, filter, search, activeConversationId]);
+
   const conversationVMs = useMemo((): ConversationViewModel[] =>
-    conversations.map((c): ConversationViewModel => ({
+    visibleConversations.map((c): ConversationViewModel => ({
       id: c.id,
       initials: getInitials(c.contactAddress || '?'),
       avatarBg: avatarColor(c.id),
@@ -98,8 +131,10 @@ export function useSidebarViewModel() {
         : null,
       isActive: c.id === activeConversationId,
       senderAddress: c.senderAddress ?? null,
+      lastOutbound: (c.lastMessageDirection ?? '').toUpperCase() === 'OUTBOUND',
+      previewType: (c.lastMessageMessageType ?? '').toUpperCase(),
     })),
-  [conversations, activeConversationId]);
+  [visibleConversations, activeConversationId]);
 
   const statsVM = useMemo(() => ({
     all: conversations.length,

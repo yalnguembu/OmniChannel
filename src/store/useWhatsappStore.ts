@@ -8,6 +8,21 @@ export interface ReplyTo {
   author: string;
 }
 
+// There is no backend "mark as read" endpoint, so opening a conversation only
+// clears the badge locally. To stop the badge from reappearing on the next
+// refetch/poll, we remember when each conversation was read locally and zero
+// its unread count on server merges — unless a strictly newer message arrived.
+// Safe whether or not the backend also resets the count on message fetch.
+function applyLocalRead(
+  conv: Conversation,
+  readAt: Record<string, number>,
+): Conversation {
+  const ts = readAt[conv.id];
+  if (ts == null) return conv;
+  const lastMs = conv.lastMessageAt ? new Date(conv.lastMessageAt).getTime() : 0;
+  return lastMs <= ts ? { ...conv, unreadCount: 0 } : conv;
+}
+
 interface WhatsAppState {
   // Conversations
   conversations: Conversation[];
@@ -23,6 +38,9 @@ interface WhatsAppState {
   messages: Message[];
   chatSearch: string;
   replyTo: ReplyTo | null;
+
+  // Local read watermarks (convId → epoch ms when last read locally)
+  readAt: Record<string, number>;
 
   // UI
   users: User[];
@@ -53,7 +71,6 @@ interface WhatsAppState {
 
   // Computed helpers
   getActiveConversation: () => Conversation | null;
-  getFilteredMessages: () => Message[];
 }
 
 export const useWhatsAppStore = create<WhatsAppState>()(
@@ -70,16 +87,19 @@ export const useWhatsAppStore = create<WhatsAppState>()(
       messages: [],
       chatSearch: '',
       replyTo: null,
+      readAt: {},
       users: [],
       isMobileChatOpen: false,
 
       // ── Conversations ──────────────────────────────────────────────────────────
 
-      setConversations: (conversations) => {
-        const conversationById: Record<string, Conversation> = {};
-        for (const c of conversations) conversationById[c.id] = c;
-        set({ conversations, conversationById });
-      },
+      setConversations: (conversations) =>
+        set((state) => {
+          const applied = conversations.map((c) => applyLocalRead(c, state.readAt));
+          const conversationById: Record<string, Conversation> = {};
+          for (const c of applied) conversationById[c.id] = c;
+          return { conversations: applied, conversationById };
+        }),
 
       setActiveConversationId: (id) =>
         set({ activeConversationId: id, replyTo: null, chatSearch: '' }),
@@ -97,7 +117,10 @@ export const useWhatsAppStore = create<WhatsAppState>()(
       upsertConversation: (conv) =>
         set((state) => {
           const existing = state.conversationById[conv.id];
-          const merged = existing ? { ...existing, ...conv } : conv;
+          const merged = applyLocalRead(
+            existing ? { ...existing, ...conv } : conv,
+            state.readAt,
+          );
           const conversationById = { ...state.conversationById, [conv.id]: merged };
 
           let conversations: Conversation[];
@@ -132,7 +155,10 @@ export const useWhatsAppStore = create<WhatsAppState>()(
 
           for (const [id, conv] of latestById) {
             const existing = conversationById[id];
-            const merged = existing ? { ...existing, ...conv } : conv;
+            const merged = applyLocalRead(
+              existing ? { ...existing, ...conv } : conv,
+              state.readAt,
+            );
             conversationById[id] = merged;
             mergedConvs.push(merged);
           }
@@ -143,10 +169,14 @@ export const useWhatsAppStore = create<WhatsAppState>()(
 
       clearUnreadBadge: (id) =>
         set((state) => {
+          // Record the read time even if the badge is already 0, so later
+          // server merges for this conversation stay read (see applyLocalRead).
+          const readAt = { ...state.readAt, [id]: Date.now() };
           const existing = state.conversationById[id];
-          if (!existing || existing.unreadCount === 0) return state;
+          if (!existing || existing.unreadCount === 0) return { readAt };
           const updated = { ...existing, unreadCount: 0 };
           return {
+            readAt,
             conversations: state.conversations.map((c) => (c.id === id ? updated : c)),
             conversationById: { ...state.conversationById, [id]: updated },
           };
@@ -182,14 +212,6 @@ export const useWhatsAppStore = create<WhatsAppState>()(
       getActiveConversation: () => {
         const { conversationById, activeConversationId } = get();
         return activeConversationId ? (conversationById[activeConversationId] ?? null) : null;
-      },
-
-      getFilteredMessages: () => {
-        const { messages, chatSearch } = get();
-        if (!chatSearch) return messages;
-        return messages.filter((m) =>
-          (m.content || '').toLowerCase().includes(chatSearch.toLowerCase())
-        );
       },
     }),
     { name: 'whatsapp-store' }

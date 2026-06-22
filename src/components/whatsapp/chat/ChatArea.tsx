@@ -4,6 +4,7 @@ import { ChatHeader } from "./ChatHeader";
 import { ChatSearchBar } from "./ChatSearchBar";
 import { MessagesList } from "./MessagesList";
 import { MessageInput } from "./MessageInput";
+import { MediaPreview } from "./MediaPreview";
 import { ChatPlaceholder } from "./ChatPlaceholder";
 import { LightboxModal } from "./LightboxModal";
 import { ConvDetailsModal, MsgDetailsModal, FlowModal } from "./Modals";
@@ -25,6 +26,7 @@ export const ChatArea: React.FC = () => {
     setReplyTo,
     inputRef,
     isSending,
+    isSendingMedia,
     handleSendMessage,
     handleSendMedia,
     handleStatusChange,
@@ -44,6 +46,27 @@ export const ChatArea: React.FC = () => {
   const [convDetailsOpen, setConvDetailsOpen] = useState(false);
   const [msgDetailsId, setMsgDetailsId] = useState<string | null>(null);
   const [flowOpen, setFlowOpen] = useState(false);
+  const [pendingMedia, setPendingMedia] = useState<File | null>(null);
+
+  const handleConfirmMedia = useCallback(
+    async (caption: string) => {
+      if (!pendingMedia) return;
+      const mime = pendingMedia.type || "";
+      const type: "image" | "audio" | "document" = mime.startsWith("audio/")
+        ? "audio"
+        : mime.startsWith("image/") || mime.startsWith("video/")
+          ? "image"
+          : "document";
+      try {
+        await handleSendMedia(pendingMedia, type, caption);
+        setPendingMedia(null);
+      } catch {
+        // The mutation already surfaced a toast on error — keep the composer
+        // open so the user can retry or cancel.
+      }
+    },
+    [pendingMedia, handleSendMedia]
+  );
 
   const sendFlow = useSendFlow();
 
@@ -81,23 +104,23 @@ export const ChatArea: React.FC = () => {
     }
   }, [activeConv, inputRef]);
 
-  // Global Escape to go back
+  // Global Escape: close the media composer first if open, then fall through
+  // to leaving the conversation (but never while another overlay owns Escape).
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (
-        e.key === "Escape" &&
-        !lightbox.open &&
-        !convDetailsOpen &&
-        !msgDetailsId &&
-        !flowOpen &&
-        !searchVisible
-      ) {
-        handleBack();
+      if (e.key !== "Escape") return;
+      if (lightbox.open || convDetailsOpen || msgDetailsId || flowOpen || searchVisible) {
+        return;
       }
+      if (pendingMedia) {
+        setPendingMedia(null);
+        return;
+      }
+      handleBack();
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [lightbox.open, convDetailsOpen, msgDetailsId, flowOpen, searchVisible, handleBack]);
+  }, [lightbox.open, convDetailsOpen, msgDetailsId, flowOpen, searchVisible, pendingMedia, handleBack]);
 
   if (!activeConversationId) {
     return <ChatPlaceholder />;
@@ -115,7 +138,7 @@ export const ChatArea: React.FC = () => {
       }}
     >
       <motion.div
-        className="flex-1 flex flex-col overflow-hidden"
+        className="flex-1 flex flex-col overflow-hidden relative"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.15 }}
@@ -126,7 +149,6 @@ export const ChatArea: React.FC = () => {
             vm={chatHeaderVM}
             users={users}
             chatSearch={chatSearch}
-            // @ts-expect-error
             onStatusChange={handleStatusChange}
             onAssign={handleAssign}
             onToggleSearch={handleToggleSearch}
@@ -158,11 +180,21 @@ export const ChatArea: React.FC = () => {
           replyTo={replyTo}
           onCancelReply={() => setReplyTo(null)}
           onSend={handleSendMessage}
-          onSendMedia={handleSendMedia}
+          onPickMedia={setPendingMedia}
           onOpenFlow={() => setFlowOpen(true)}
           isSending={isSending}
           inputRef={inputRef}
         />
+
+        {/* Media composer — WhatsApp-style preview + caption before sending */}
+        {pendingMedia && (
+          <MediaPreview
+            file={pendingMedia}
+            onSend={handleConfirmMedia}
+            onCancel={() => setPendingMedia(null)}
+            isSending={isSendingMedia}
+          />
+        )}
 
         {/* Modals */}
         <LightboxModal

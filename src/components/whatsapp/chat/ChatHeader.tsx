@@ -15,7 +15,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { AvatarInitials } from '../shared/AvatarInitials';
 import { IconButton } from '../shared/IconButton';
 import { cn } from '@/lib/utils';
-import type { User } from '@/models/whatsapp.models';
+import type { ConversationStatus, User } from '@/models/whatsapp.models';
 
 interface ChatHeaderVM {
   initials: string;
@@ -31,7 +31,7 @@ interface ChatHeaderProps {
   vm: ChatHeaderVM;
   users: User[];
   chatSearch: string;
-  onStatusChange: (status: string) => void;
+  onStatusChange: (status: ConversationStatus) => void;
   onAssign: (userId: string) => void;
   onToggleSearch: () => void;
   onShowDetails: () => void;

@@ -1,8 +1,7 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { X } from "lucide-react";
-import { AnimatePresence, motion } from "framer-motion";
+import { toast } from "sonner";
 import {
   Dialog,
   DialogContent,
@@ -230,7 +229,7 @@ export const BulkModal: React.FC<BulkModalProps> = ({
     ) as HTMLInputElement;
     const file = fileInput?.files?.[0];
     if (!file) {
-      alert("Veuillez sélectionner un fichier");
+      toast.error("Veuillez sélectionner un fichier");
       return;
     }
     onSubmit(data.type, file);
@@ -247,7 +246,7 @@ export const BulkModal: React.FC<BulkModalProps> = ({
         }
       }}
     >
-      <DialogContent className="md:max-w-2xl m w-full">
+      <DialogContent className="md:max-w-2xl w-full">
         <DialogHeader className="px-4 pt-4">
           <DialogTitle className="text-xl py-2">
             Campagne — Envoi en masse

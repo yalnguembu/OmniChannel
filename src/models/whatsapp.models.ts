@@ -73,6 +73,7 @@ export const ConversationSchema = z.object({
   lastMessageContent: z.string().optional().nullable(),
   lastMessageSubject: z.string().optional().nullable(),
   lastMessageMessageType: z.string().optional().nullable(),
+  lastMessageDirection: z.string().optional().nullable(),
   unreadCount: z.number().optional().default(0),
   assignedToUserId: z.string().optional().nullable(),
   assignedToUserFirstName: z.string().optional().nullable(),
@@ -162,10 +163,13 @@ export function fmtTime(dt: string | null | undefined): string {
   if (!dt) return '';
   const d = new Date(dt);
   const now = new Date();
-  const diff = Math.floor((now.getTime() - d.getTime()) / 86400000);
-  if (diff === 0) return d.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
-  if (diff === 1) return 'Hier';
-  if (diff < 7) return d.toLocaleDateString('fr-FR', { weekday: 'short' });
+  // Compare on calendar day boundaries, not 24h windows — a message from
+  // 23:00 yesterday should read "Hier", not a time, even if <24h old.
+  const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const startOfMsgDay = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+  const dayDiff = Math.round((startOfToday.getTime() - startOfMsgDay.getTime()) / 86400000);
+  if (dayDiff <= 0) return d.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+  if (dayDiff === 1) return 'Hier';
   return d.toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: '2-digit' });
 }
 
@@ -181,10 +185,12 @@ export function fmtTimeShort(dt: string | null | undefined): string {
 
 export function convPreview(c: Conversation): string {
   const t = (c.lastMessageMessageType || '').toUpperCase();
-  if (t === 'IMAGE') return '📷 Photo';
-  if (t === 'VIDEO') return '🎥 Vidéo';
-  if (t === 'AUDIO') return '🎵 Audio';
-  if (t === 'DOCUMENT') return '📄 Document';
-  if (t === 'CONTACT') return '👤 Contact';
+  // Media types render a leading icon in the list item, so return a plain
+  // label here (no emoji).
+  if (t === 'IMAGE') return 'Photo';
+  if (t === 'VIDEO') return 'Vidéo';
+  if (t === 'AUDIO') return 'Audio';
+  if (t === 'DOCUMENT') return 'Document';
+  if (t === 'CONTACT') return 'Contact';
   return c.lastMessageContent || c.lastMessageSubject || '';
 }

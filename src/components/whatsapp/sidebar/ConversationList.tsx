@@ -98,7 +98,7 @@ export const ConversationList: React.FC<ConversationListProps> = ({
   }, []);
 
   return (
-    <div className="w-full min-w-100 max-w-120 lg:max-w-140 flex flex-col border-r border-wa-border p-2 lg:p-4 bg-white shrink-0 relative z-10 h-full">
+    <div className="w-full min-w-0 md:min-w-100 max-w-120 lg:max-w-140 flex flex-col border-r border-wa-border p-2 lg:p-4 bg-white shrink-0 relative z-10 h-full">
       <SidebarHeader
         onRefresh={refetchConvs}
         onBulkSend={onBulkSend}

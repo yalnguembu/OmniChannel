@@ -66,17 +66,30 @@ export function useChatViewModel() {
     if (msgsData) setMessages(msgsData);
   }, [msgsData, setMessages]);
 
-  // Clear unread when opening a conversation
+  // Clear unread when opening a conversation, and again whenever a new message
+  // lands while it's open (keeps it marked read locally — see store readAt).
   useEffect(() => {
     if (activeConversationId) clearUnreadBadge(activeConversationId);
-  }, [activeConversationId, clearUnreadBadge]);
+  }, [activeConversationId, messages.length, clearUnreadBadge]);
 
-  // Memoized filtering — avoids creating a new array on every render
+  // Memoized filtering — scope to the active conversation (the store can briefly
+  // hold the previous conversation's messages during a switch), optionally
+  // narrow by the in-chat search, then sort chronologically ascending so the
+  // order is correct regardless of what the API returns.
   const filteredMessages = useMemo(() => {
-    if (!chatSearch) return messages;
+    const byConv = activeConversationId
+      ? messages.filter((m) => !m.conversationId || m.conversationId === activeConversationId)
+      : messages;
     const lower = chatSearch.toLowerCase();
-    return messages.filter((m) => (m.content || '').toLowerCase().includes(lower));
-  }, [messages, chatSearch]);
+    const searched = chatSearch
+      ? byConv.filter((m) => (m.content || '').toLowerCase().includes(lower))
+      : byConv;
+    const tsOf = (m: Message) => {
+      const t = m.sentAt || m.receivedAt || m.createdAt;
+      return t ? new Date(t).getTime() : 0;
+    };
+    return [...searched].sort((a, b) => tsOf(a) - tsOf(b));
+  }, [messages, chatSearch, activeConversationId]);
 
   const messageVMs = useMemo((): MessageViewModel[] =>
     filteredMessages.map((m): MessageViewModel => {
@@ -150,9 +163,14 @@ export function useChatViewModel() {
   );
 
   const handleSendMedia = useCallback(
-    async (file: File, type: 'image' | 'audio' | 'document') => {
+    async (file: File, type: 'image' | 'audio' | 'document', caption?: string) => {
       if (!activeConv) return;
-      await sendMedia.mutateAsync({ to: activeConv.contactAddress ?? '', file, type });
+      await sendMedia.mutateAsync({
+        to: activeConv.contactAddress ?? '',
+        file,
+        type,
+        caption,
+      });
     },
     [activeConv, sendMedia]
   );
@@ -207,6 +225,7 @@ export function useChatViewModel() {
     setReplyTo,
     inputRef,
     isSending: sendText.isPending || sendReply.isPending,
+    isSendingMedia: sendMedia.isPending,
     handleSendMessage,
     handleSendMedia,
     handleStatusChange,

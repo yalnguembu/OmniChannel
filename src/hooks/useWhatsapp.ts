@@ -108,7 +108,11 @@ export function useConversations(params: ConversationSearchParams) {
     initialPageParam: 1,
     getNextPageParam: (lastPage, allPages) =>
       lastPage.items.length === PAGE_SIZE ? allPages.length + 1 : undefined,
-    staleTime: 30_000,
+    // No staleTime: each filter/search change keys a different query, and we
+    // want the list always refetched from the backend on a filter switch
+    // (including switching back to a previously-used filter) rather than served
+    // stale from cache.
+    staleTime: 0,
     refetchInterval: 60_000,
   });
 }
@@ -191,7 +195,10 @@ export function useSendText() {
           senderId: selectedSenderId ?? undefined,
         },
       }),
-    onSuccess: () => qc.invalidateQueries({ queryKey: whatsappKeys.all }),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: whatsappKeys.all });
+      toast.success("Message envoyé", { duration: 1500 });
+    },
     onError: () => toast.error("Erreur lors de l'envoi du message"),
   });
 }
@@ -209,27 +216,37 @@ export function useSendReply() {
           senderId: selectedSenderId ?? undefined,
         },
       }),
-    onSuccess: () => qc.invalidateQueries({ queryKey: whatsappKeys.all }),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: whatsappKeys.all });
+      toast.success("Réponse envoyée", { duration: 1500 });
+    },
     onError: () => toast.error("Erreur lors de l'envoi de la réponse"),
   });
 }
 
 export function useSendMedia() {
   const qc = useQueryClient();
+  const selectedSenderId = useWhatsAppStore((s) => s.selectedSenderId);
   return useMutation({
     mutationFn: (payload: SendMediaPayload) => {
+      // Backend routes by sender (multi-tenant), so SenderId is required —
+      // omitting it is what produced the 400 Bad Request on uploads.
       const body = {
         To: payload.to,
         File: payload.file,
-        Caption: payload.caption,
+        Caption: payload.caption || undefined,
+        SenderId: selectedSenderId ?? undefined,
       };
-      return payload.type === "image"
+      // Pick the endpoint from the real MIME type rather than the menu choice
+      // (the "Photos & vidéos" picker also yields videos / non-images).
+      const isImage = (payload.file.type || "").startsWith("image/");
+      return isImage
         ? postApiWhatsAppSendImage({ body })
         : postApiWhatsAppSendDocument({ body });
     },
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: whatsappKeys.all });
-      toast.success("Fichier envoyé");
+      toast.success("Fichier envoyé", { duration: 1500 });
     },
     onError: () => toast.error("Erreur lors de l'envoi du fichier"),
   });

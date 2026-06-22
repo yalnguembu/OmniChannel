@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import {
   Dialog,
@@ -71,11 +71,18 @@ export const TemplateBroadcastModal: React.FC<{
     enabled: open && mode === "file",
   });
 
-  const effectiveSender = senderId || selectedSenderId || "";
+  // Seed the sender from the active one when the modal opens, but keep it in
+  // local state so the user can still switch back to "Par défaut".
+  useEffect(() => {
+    if (open) setSenderId(selectedSenderId ?? "");
+  }, [open, selectedSenderId]);
 
   const close = () => {
+    setMode("segment");
     setTemplateId("");
     setSegmentId("");
+    setProductId("");
+    setSenderId("");
     setFile(null);
     setMappingOverride("");
     onClose();
@@ -88,14 +95,14 @@ export const TemplateBroadcastModal: React.FC<{
     if (!canSubmit) return;
     if (mode === "segment") {
       sendSegment.mutate(
-        { templateId, senderId: effectiveSender || undefined, segmentId },
+        { templateId, senderId: senderId || undefined, segmentId },
         { onSuccess: close },
       );
     } else {
       sendFile.mutate(
         {
           templateId,
-          senderId: effectiveSender || undefined,
+          senderId: senderId || undefined,
           productId: productId || undefined,
           file: file!,
           mappingOverride: mappingOverride || undefined,
@@ -158,7 +165,7 @@ export const TemplateBroadcastModal: React.FC<{
           <div className="space-y-1.5">
             <Label>Expéditeur</Label>
             <select
-              value={effectiveSender}
+              value={senderId}
               onChange={(e) => setSenderId(e.target.value)}
               className={selectCls}
             >

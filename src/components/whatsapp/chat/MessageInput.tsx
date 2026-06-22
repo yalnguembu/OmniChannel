@@ -25,10 +25,8 @@ interface MessageInputProps {
   replyTo: ReplyTo | null;
   onCancelReply: () => void;
   onSend: (text: string) => Promise<void>;
-  onSendMedia: (
-    file: File,
-    type: "image" | "audio" | "document",
-  ) => Promise<void>;
+  /** A file was picked — the parent opens the media preview composer. */
+  onPickMedia: (file: File) => void;
   onOpenFlow: () => void;
   isSending: boolean;
   inputRef: React.RefObject<HTMLTextAreaElement>;
@@ -38,7 +36,7 @@ export const MessageInput: React.FC<MessageInputProps> = ({
   replyTo,
   onCancelReply,
   onSend,
-  onSendMedia,
+  onPickMedia,
   onOpenFlow,
   isSending,
   inputRef,
@@ -46,7 +44,6 @@ export const MessageInput: React.FC<MessageInputProps> = ({
   const [showAttMenu, setShowAttMenu] = useState(false);
   const [showEmojiMenu, setShowEmojiMenu] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const fileTypeRef = useRef<"image" | "audio" | "document">("document");
 
   const { register, handleSubmit, reset, watch, setValue } =
     useForm<SendMessageForm>({
@@ -58,9 +55,16 @@ export const MessageInput: React.FC<MessageInputProps> = ({
   const hasText = !!content?.trim();
 
   const onSubmit = async (data: SendMessageForm) => {
-    reset();
-    autoResize();
-    await onSend(data.content);
+    const text = data.content;
+    reset({ content: "" });
+    // Clear the DOM value and collapse the textarea back to a single line.
+    // Doing it here (not relying on autoResize reading a stale scrollHeight)
+    // is what keeps the field from staying expanded after a send.
+    if (inputRef.current) {
+      inputRef.current.value = "";
+      inputRef.current.style.height = "auto";
+    }
+    await onSend(text);
   };
 
   const onKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -78,8 +82,7 @@ export const MessageInput: React.FC<MessageInputProps> = ({
     }
   };
 
-  const pickFile = (accept: string, type: "image" | "audio" | "document") => {
-    fileTypeRef.current = type;
+  const pickFile = (accept: string) => {
     if (fileInputRef.current) {
       fileInputRef.current.accept = accept;
       fileInputRef.current.click();
@@ -87,11 +90,13 @@ export const MessageInput: React.FC<MessageInputProps> = ({
     setShowAttMenu(false);
   };
 
-  const onFilePicked = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onFilePicked = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (!file) return;
-    await onSendMedia(file, fileTypeRef.current);
     e.target.value = "";
+    if (!file) return;
+    // Hand the file to the parent which shows the WhatsApp-style preview
+    // composer; the actual send happens once a caption is confirmed.
+    onPickMedia(file);
   };
 
   const onEmojiClick = (emojiData: { emoji: string }) => {
@@ -135,7 +140,7 @@ export const MessageInput: React.FC<MessageInputProps> = ({
           >
             <button
               className="flex items-center gap-3 w-full px-4 py-2.5 text-sm text-wa-text hover:bg-wa-hover transition-colors"
-              onClick={() => pickFile("image/*,video/*", "image")}
+              onClick={() => pickFile("image/*,video/*")}
             >
               <span className="size-9 rounded-full bg-[#bf59cf] flex items-center justify-center text-white shrink-0">
                 <Image size={16} />
@@ -144,7 +149,7 @@ export const MessageInput: React.FC<MessageInputProps> = ({
             </button>
             <button
               className="flex items-center gap-3 w-full px-4 py-2.5 text-sm text-wa-text hover:bg-wa-hover transition-colors"
-              onClick={() => pickFile("application/*,text/*", "document")}
+              onClick={() => pickFile("application/*,text/*")}
             >
               <span className="size-9 rounded-full bg-[#0e6ede] flex items-center justify-center text-white shrink-0">
                 <FileText size={16} />
@@ -153,7 +158,7 @@ export const MessageInput: React.FC<MessageInputProps> = ({
             </button>
             <button
               className="flex items-center gap-3 w-full px-4 py-2.5 text-sm text-wa-text hover:bg-wa-hover transition-colors"
-              onClick={() => pickFile("audio/*", "audio")}
+              onClick={() => pickFile("audio/*")}
             >
               <span className="size-9 rounded-full bg-[#e05c47] flex items-center justify-center text-white shrink-0">
                 <Music size={16} />
@@ -197,33 +202,26 @@ export const MessageInput: React.FC<MessageInputProps> = ({
         )}
       </AnimatePresence>
 
-      {/* Reply bar */}
-      <AnimatePresence>
-        {replyTo && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.15 }}
-            className="flex items-center gap-3 bg-wa-bubble-in border-t border-wa-border px-4 py-2 overflow-hidden"
-          >
-            <div className="flex-1 min-w-0 border-l-4 border-wa-teal pl-3">
-              <div className="text-xs font-bold text-wa-teal truncate">
-                {replyTo.author}
-              </div>
-              <div className="text-xs text-wa-muted truncate">
-                {replyTo.content}
-              </div>
+      {/* Reply bar — plain render (no height animation, which deformed the
+          input row as it expanded/collapsed). */}
+      {replyTo && (
+        <div className="flex items-center gap-3 bg-wa-bubble-in border-t border-wa-border px-4 py-2">
+          <div className="flex-1 min-w-0 border-l-4 border-wa-teal pl-3">
+            <div className="text-xs font-bold text-wa-teal truncate">
+              {replyTo.author}
             </div>
-            <button
-              onClick={onCancelReply}
-              className="text-wa-icon hover:text-wa-text transition-colors p-1 rounded-full hover:bg-wa-active shrink-0"
-            >
-              <X size={18} />
-            </button>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            <div className="text-xs text-wa-muted truncate">
+              {replyTo.content}
+            </div>
+          </div>
+          <button
+            onClick={onCancelReply}
+            className="text-wa-icon hover:text-wa-text transition-colors p-1 rounded-full hover:bg-wa-active shrink-0"
+          >
+            <X size={18} />
+          </button>
+        </div>
+      )}
 
       {/* Input row */}
       <div className="flex items-end rounded-full bg-white shadow-lg mx-4 mb-2 gap-2 px-4 py-2.5">
