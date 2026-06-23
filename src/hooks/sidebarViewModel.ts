@@ -94,27 +94,25 @@ export function useSidebarViewModel() {
   useEffect(() => { if (statsData) setStats(statsData); }, [statsData, setStats]);
   useEffect(() => { if (usersData) setUsers(usersData); }, [usersData, setUsers]);
 
-  // Conversations arrive from two sources: the (server-filtered) search query
-  // AND live SignalR upserts, which land in the store unfiltered. Re-apply the
-  // active filter/search client-side so a SignalR push that doesn't match the
-  // current view (e.g. a new inbound message while the UNREAD or a status
-  // filter is active) doesn't leak into the list.
+  // Conversations arrive from two sources: the (server-filtered) query AND live
+  // SignalR upserts, which land in the store unfiltered. Re-apply only the
+  // status/unread filter client-side so a SignalR push that doesn't match the
+  // current view (e.g. a new inbound message while a status/UNREAD filter is
+  // active) doesn't leak into the list.
+  //
+  // Search is intentionally NOT re-applied here: the backend owns `searchTerm`
+  // (it may match on fields/normalisations the client can't see), so filtering
+  // again client-side would drop valid server results and break search.
   const visibleConversations = useMemo(() => {
-    const q = search.trim().toLowerCase();
+    if (!filter || filter === 'ALL') return conversations;
     return conversations.filter((c) => {
       if (filter === 'UNREAD') {
         // Keep the currently-open conversation even after its badge clears.
-        if ((c.unreadCount ?? 0) <= 0 && c.id !== activeConversationId) return false;
-      } else if (filter && filter !== 'ALL') {
-        if ((c.status ?? 'OPEN') !== filter) return false;
+        return (c.unreadCount ?? 0) > 0 || c.id === activeConversationId;
       }
-      if (q) {
-        const hay = `${c.contactName ?? ''} ${c.contactAddress ?? ''} ${c.lastMessageContent ?? ''}`.toLowerCase();
-        if (!hay.includes(q)) return false;
-      }
-      return true;
+      return (c.status ?? 'OPEN').toUpperCase() === filter;
     });
-  }, [conversations, filter, search, activeConversationId]);
+  }, [conversations, filter, activeConversationId]);
 
   const conversationVMs = useMemo((): ConversationViewModel[] =>
     visibleConversations.map((c): ConversationViewModel => ({

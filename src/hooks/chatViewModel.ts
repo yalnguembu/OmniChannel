@@ -66,11 +66,12 @@ export function useChatViewModel() {
     if (msgsData) setMessages(msgsData);
   }, [msgsData, setMessages]);
 
-  // Clear unread when opening a conversation, and again whenever a new message
-  // lands while it's open (keeps it marked read locally — see store readAt).
+  // Clear the badge locally for instant feedback when opening a conversation.
+  // Read state is persisted server-side via SignalR's JoinConversation (invoked
+  // on active-conversation change), so the count stays 0 on later refetches.
   useEffect(() => {
     if (activeConversationId) clearUnreadBadge(activeConversationId);
-  }, [activeConversationId, messages.length, clearUnreadBadge]);
+  }, [activeConversationId, clearUnreadBadge]);
 
   // Memoized filtering — scope to the active conversation (the store can briefly
   // hold the previous conversation's messages during a switch), optionally

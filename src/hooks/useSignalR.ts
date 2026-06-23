@@ -118,11 +118,14 @@ export function useSignalR() {
     };
   }, [appendMessage, updateMessage, scheduleBatch]);
 
-  // Join/leave conversation rooms on active change
+  // Join the conversation room on active change. JoinConversation also marks the
+  // conversation as read server-side, so this is what persists the read state.
+  // Only invoke when connected — otherwise start()/onreconnected re-join
+  // activeIdRef.current once the connection is (re)established.
   useEffect(() => {
     const hub = connectionRef.current;
-    if (!hub) return;
-    if (activeConversationId) {
+    if (!hub || !activeConversationId) return;
+    if (hub.state === signalR.HubConnectionState.Connected) {
       hub.invoke('JoinConversation', activeConversationId).catch(console.error);
     }
   }, [activeConversationId]);
