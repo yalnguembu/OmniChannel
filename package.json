@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite --host",
+    "prebuild": "pnpm generate:api && pnpm generate:route",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "generate:route": "tsr generate",
