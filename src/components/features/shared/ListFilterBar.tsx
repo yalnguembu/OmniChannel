@@ -2,7 +2,10 @@ import React, { useEffect, useRef, useState } from "react";
 import { Filter, Plus, ChevronDown } from "lucide-react";
 import { Modal } from "@/components/ui/Modal";
 import { Button } from "@/components/ui/Button";
-import { DateRangePicker, type DateRange } from "@/components/ui/DateRangePicker";
+import {
+  DateRangePicker,
+  type DateRange,
+} from "@/components/ui/DateRangePicker";
 
 /** A single advanced-filter field rendered inside the "Filtres" modal. */
 export interface FilterFieldConfig {
@@ -28,19 +31,19 @@ interface ListFilterBarProps {
   onSearchChange: (v: string) => void;
   searchPlaceholder?: string;
   // Date range (createdFrom / createdTo)
-  dateRange: DateRange;
-  onDateRangeChange: (r: DateRange) => void;
+  dateRange?: DateRange;
+  onDateRangeChange?: (r: DateRange) => void;
   // Status pills (optional)
   statusOptions?: { value: string; label: string; count?: number }[];
   currentStatus?: string;
   onStatusChange?: (v: string) => void;
   // Advanced modal (config-driven, draft applied on "Appliquer")
-  advancedFields: FilterFieldConfig[];
-  advancedValues: Record<string, string>;
-  advancedDefaults: Record<string, string>;
-  onApplyAdvanced: (values: Record<string, string>) => void;
-  isFilterModalOpen: boolean;
-  setIsFilterModalOpen: (v: boolean) => void;
+  advancedFields?: FilterFieldConfig[];
+  advancedValues?: Record<string, string>;
+  advancedDefaults?: Record<string, string>;
+  onApplyAdvanced?: (values: Record<string, string>) => void;
+  isFilterModalOpen?: boolean;
+  setIsFilterModalOpen?: (v: boolean) => void;
   // Actions: 0 → none, 1 → single orange button, >1 → "Ajouter ▾" dropdown
   actions?: ListAction[];
   addLabel?: string;
@@ -84,27 +87,32 @@ export function ListFilterBar({
   }, [addOpen]);
 
   // ── Advanced filters draft ───────────────────────────────────────────────
-  const [draft, setDraft] = useState<Record<string, string>>(advancedValues);
+  const [draft, setDraft] = useState<Record<string, string>>(advancedValues ?? {});
+  const isModalOpen = isFilterModalOpen ?? false;
+  const setModalOpen = setIsFilterModalOpen ?? (() => undefined);
   useEffect(() => {
-    if (isFilterModalOpen) setDraft(advancedValues);
+    if (isModalOpen) setDraft(advancedValues ?? {});
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isFilterModalOpen]);
+  }, [isModalOpen]);
 
   const setDraftField = (k: string, v: string) =>
     setDraft((d) => ({ ...d, [k]: v }));
 
   const apply = () => {
-    onApplyAdvanced(draft);
-    setIsFilterModalOpen(false);
+    onApplyAdvanced?.(draft);
+    setModalOpen(false);
   };
   const reset = () => {
-    setDraft(advancedDefaults);
-    onApplyAdvanced(advancedDefaults);
+    const defaults = advancedDefaults ?? {};
+    setDraft(defaults);
+    onApplyAdvanced?.(defaults);
   };
 
-  const advancedActive = advancedFields.some((f) => {
-    const v = (advancedValues[f.key] ?? "").trim();
-    const def = (advancedDefaults[f.key] ?? "").trim();
+  const advancedActive = advancedFields?.some((f) => {
+    const values = advancedValues ?? {};
+    const defaults = advancedDefaults ?? {};
+    const v = (values[f.key] ?? "").trim();
+    const def = (defaults[f.key] ?? "").trim();
     return v !== "" && v !== def;
   });
 
@@ -112,7 +120,10 @@ export function ListFilterBar({
     <>
       <div className="flex items-center gap-2 p-3 px-5 border-b border-[#E5E7EB] bg-white shrink-0 flex-wrap">
         {/* Date range */}
-        <DateRangePicker value={dateRange} onChange={onDateRangeChange} />
+        <DateRangePicker
+          value={dateRange ?? { start: null, end: null }}
+          onChange={onDateRangeChange ?? (() => undefined)}
+        />
 
         {/* Search */}
         <div className="flex items-center gap-2 px-3 bg-white border border-[#E5E7EB] rounded-full h-[34px] w-[240px] focus-within:border-[#2E8FAD] focus-within:ring-2 focus-within:ring-[#2E8FAD]/10 transition-colors">
@@ -137,7 +148,7 @@ export function ListFilterBar({
         {statusOptions && statusOptions.length > 0 && (
           <>
             <div className="w-px h-[18px] bg-[#E5E7EB] shrink-0 mx-1" />
-            {statusOptions.map((opt) => (
+            {statusOptions?.map((opt) => (
               <button
                 key={opt.value}
                 className={`text-xs px-3 py-1.5 rounded-full border transition-colors whitespace-nowrap ${
@@ -164,7 +175,7 @@ export function ListFilterBar({
         {/* Right cluster */}
         <div className="ml-auto flex gap-2 items-center">
           <button
-            onClick={() => setIsFilterModalOpen(true)}
+            onClick={() => setModalOpen(true)}
             className="relative text-[12px] font-normal px-3 py-[5px] rounded-full bg-white text-[#0D2137] border border-[#E5E7EB] cursor-pointer transition-colors hover:bg-[#F0F2F4] whitespace-nowrap inline-flex items-center gap-1.5"
           >
             <Filter size={12} strokeWidth={1.5} />
@@ -196,7 +207,7 @@ export function ListFilterBar({
               </button>
               {addOpen && (
                 <div className="absolute right-0 top-[calc(100%+6px)] z-[200] w-[210px] rounded-[10px] border border-[#E5E7EB] bg-white shadow-[0_8px_30px_rgba(13,33,55,0.12)] overflow-hidden py-1">
-                  {actions.map((a) => (
+                  {actions?.map((a) => (
                     <button
                       key={a.label}
                       onClick={() => {
@@ -218,8 +229,8 @@ export function ListFilterBar({
 
       {/* Advanced filters modal */}
       <Modal
-        open={isFilterModalOpen}
-        onClose={() => setIsFilterModalOpen(false)}
+        open={isModalOpen}
+        onClose={() => setModalOpen(false)}
         title="Filtres avancés"
         subtitle="Affiner la liste"
         footer={
@@ -230,7 +241,7 @@ export function ListFilterBar({
             <div className="flex items-center gap-2">
               <Button
                 variant="secondary"
-                onClick={() => setIsFilterModalOpen(false)}
+                onClick={() => setModalOpen(false)}
               >
                 Annuler
               </Button>
@@ -242,7 +253,7 @@ export function ListFilterBar({
         }
       >
         <div className="grid grid-cols-2 gap-4">
-          {advancedFields.map((f) => (
+          {advancedFields?.map((f) => (
             <div key={f.key} className={f.fullWidth ? "col-span-2" : undefined}>
               <label className="block text-[12.5px] font-medium text-[#0D2137] mb-1.5">
                 {f.label}
@@ -253,7 +264,7 @@ export function ListFilterBar({
                   onChange={(e) => setDraftField(f.key, e.target.value)}
                   className={fieldClass}
                 >
-                  {(f.options ?? []).map((o) => (
+                  {(f.options ?? [])?.map((o) => (
                     <option key={o.value} value={o.value}>
                       {o.label}
                     </option>

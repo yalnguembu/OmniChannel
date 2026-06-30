@@ -1,58 +1,40 @@
-import React, { useEffect, useState } from 'react';
-import { ConversationList } from '@/components/whatsapp/sidebar/ConversationList';
-import { ChatArea } from '@/components/whatsapp//chat/ChatArea';
-import { BulkModal } from '@/components/whatsapp//chat/Modals';
-import { TemplateBroadcastModal } from '@/components/whatsapp/chat/TemplateBroadcastModal';
-import { useSignalR } from '@/hooks/useSignalR';
-import { useBulkSend } from '@/hooks/useWhatsapp';
-import { useWhatsAppStore } from '@/store/useWhatsappStore';
+import React, { useEffect, useState } from "react";
+import { ConversationList } from "@/components/whatsapp/sidebar/ConversationList";
+import { ChatArea } from "@/components/whatsapp/chat/ChatArea";
+import { TemplateBroadcastModal } from "@/components/whatsapp/chat/TemplateBroadcastModal";
+import { useSignalR } from "@/hooks/useSignalR";
+import { useWhatsAppStore } from "@/store/useWhatsappStore";
 
 interface WhatsAppPageProps {
-  /** Active sender, taken from the route (`/wa/$senderId`). The URL is the
-   *  single source of truth so several inboxes (one per sender) can be open
-   *  in parallel tabs, each scoped to its own sender. */
   senderId?: string;
 }
 
 export const WhatsAppPage: React.FC<WhatsAppPageProps> = ({ senderId }) => {
   const { activeConversationId, isMobileChatOpen, setSelectedSenderId } =
     useWhatsAppStore();
-  const [bulkOpen, setBulkOpen] = useState(false);
   const [tplOpen, setTplOpen] = useState(false);
-  const bulkSend = useBulkSend();
 
-  // The route param drives the active sender — conversation search and every
-  // send mutation read `selectedSenderId` from the store.
   useEffect(() => {
     setSelectedSenderId(senderId ?? null);
   }, [senderId, setSelectedSenderId]);
 
-  // Init SignalR
   useSignalR();
-
-  const handleBulkSubmit = (type: 'j0' | 'j3', file: File) => {
-    bulkSend.mutate({ type, file });
-    setBulkOpen(false);
-  };
 
   return (
     <>
       <div
         className="flex h-dvh max-w-450 mx-auto bg-white shadow-[0_0_20px_rgba(0,0,0,0.12)] relative overflow-hidden"
-        style={{ background: '#dfe5e7' }}
+        style={{ background: "#dfe5e7" }}
       >
         {/* Sidebar — hidden on mobile when chat is open */}
         <div
           className={`
             absolute inset-0 md:relative md:inset-auto md:translate-x-0
             transition-transform duration-300 ease-in-out
-            ${isMobileChatOpen && activeConversationId ? '-translate-x-full' : 'translate-x-0'}
+            ${isMobileChatOpen && activeConversationId ? "-translate-x-full" : "translate-x-0"}
           `}
         >
-          <ConversationList
-            onBulkSend={() => setBulkOpen(true)}
-            onTemplateBroadcast={() => setTplOpen(true)}
-          />
+          <ConversationList onTemplateBroadcast={() => setTplOpen(true)} />
         </div>
 
         {/* Chat area — slides in on mobile */}
@@ -60,22 +42,17 @@ export const WhatsAppPage: React.FC<WhatsAppPageProps> = ({ senderId }) => {
           className={`
             absolute inset-0 md:relative md:inset-auto md:translate-x-0 flex-1 bg-wa-chat-bg
             transition-transform duration-300 ease-in-out flex flex-col
-            ${isMobileChatOpen && activeConversationId ? 'translate-x-0' : 'translate-x-full md:translate-x-0'}
+            ${isMobileChatOpen && activeConversationId ? "translate-x-0" : "translate-x-full md:translate-x-0"}
           `}
         >
           <ChatArea />
         </div>
       </div>
 
-      {/* Bulk send modal */}
-      <BulkModal
-        open={bulkOpen}
-        onClose={() => setBulkOpen(false)}
-        onSubmit={handleBulkSubmit}
-        isSending={bulkSend.isPending}
+      <TemplateBroadcastModal
+        open={tplOpen}
+        onClose={() => setTplOpen(false)}
       />
-
-      <TemplateBroadcastModal open={tplOpen} onClose={() => setTplOpen(false)} />
     </>
   );
 };

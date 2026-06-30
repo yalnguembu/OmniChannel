@@ -7,6 +7,10 @@ import {
   Megaphone,
   FileText,
   Database,
+  Activity,
+  Workflow,
+  Filter,
+  Bot,
   type LucideIcon,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -19,7 +23,11 @@ export type ProductTabId =
   | "channels"
   | "connectors"
   | "schema"
-  | "stats";
+  | "stats"
+  | "events"
+  | "flows"
+  | "funnels"
+  | "auto-reply";
 
 interface TabDef {
   id: ProductTabId;
@@ -36,6 +44,10 @@ export const PRODUCT_TABS: TabDef[] = [
   { id: "connectors", label: "Connecteurs", icon: Plug },
   { id: "schema", label: "Attributs", icon: Database },
   { id: "stats", label: "Statistiques", icon: BarChart2 },
+  { id: "events", label: "Événements", icon: Activity },
+  { id: "flows", label: "Flux", icon: Workflow },
+  { id: "funnels", label: "Funnels", icon: Filter },
+  { id: "auto-reply", label: "Auto-réponses", icon: Bot },
 ];
 
 interface ProductDetailTabsProps {

@@ -24,8 +24,6 @@ import {
   postApiWhatsAppSendImage,
   postApiWhatsAppSendDocument,
   postApiWhatsAppSendFlow,
-  postApiWhatsAppSendBulkJ0,
-  postApiWhatsAppSendBulkJ3,
   postApiWhatsAppSendTemplateSegment,
   postApiWhatsAppSendTemplateFile,
   postApiUserSearch,
@@ -144,7 +142,7 @@ export function useUpdateConversationStatus() {
     mutationFn: ({ id, status }: { id: string; status: ConversationStatus }) =>
       putApiConversationStatus({ body: { id, status } }),
     onSuccess: () => {
-      qc.invalidateQueries({ queryKey: ['whatsapp', 'conversations'] });
+      qc.invalidateQueries({ queryKey: ["whatsapp", "conversations"] });
       qc.invalidateQueries({ queryKey: whatsappKeys.stats() });
       toast.success("Statut mis à jour");
     },
@@ -158,7 +156,7 @@ export function useAssignConversation() {
     mutationFn: ({ id, userId }: { id: string; userId: string }) =>
       putApiConversationAssign({ body: { id, userId } }),
     onSuccess: () => {
-      qc.invalidateQueries({ queryKey: ['whatsapp', 'conversations'] });
+      qc.invalidateQueries({ queryKey: ["whatsapp", "conversations"] });
       toast.success("Conversation assignée");
     },
     onError: () => toast.error("Erreur lors de l'assignation"),
@@ -265,23 +263,6 @@ export function useSendFlow() {
       }),
     onSuccess: () => toast.success("Flow envoyé ✓"),
     onError: () => toast.error("Erreur lors de l'envoi du flow"),
-  });
-}
-
-export function useBulkSend() {
-  return useMutation({
-    mutationFn: (payload: BulkSendPayload) =>
-      payload.type === "j0"
-        ? postApiWhatsAppSendBulkJ0({ body: { file: payload.file } })
-        : postApiWhatsAppSendBulkJ3({ body: { file: payload.file } }),
-    onSuccess: (res: any) => {
-      const data = res?.data?.data ?? {};
-      toast.success(
-        `Campagne envoyée ✓ (Succès: ${data.successCount || 0}, Échecs: ${data.failureCount || 0})`,
-      );
-    },
-    onError: (err: any) =>
-      toast.error(err?.message || "Erreur lors de l'envoi de la campagne"),
   });
 }
 
