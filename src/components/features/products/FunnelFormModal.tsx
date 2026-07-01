@@ -4,7 +4,6 @@ import { Modal } from "@/components/ui/Modal";
 import { Input } from "@/components/ui/Input";
 import { Toggle } from "@/components/ui/Toggle";
 import type { EventFunnelDto } from "@/shared/api/generated/types.gen";
-import { FunnelStepsSection } from "./FunnelStepsSection";
 import { toast } from "sonner";
 
 const emptyForm: Partial<EventFunnelDto> = {
@@ -65,8 +64,6 @@ export function FunnelFormModal({
     } else {
       await onSave(base);
     }
-    // We don't close here immediately if they want to edit steps, but modal handles its own close
-    // For now we close
     onClose();
   };
 
@@ -74,7 +71,7 @@ export function FunnelFormModal({
     <Modal
       open={open}
       onClose={onClose}
-      title={editing ? `Modifier ${editing.name}` : "Nouveau Tunnel (Funnel)"}
+      title={editing ? `Modifier ${editing.name}` : "Nouveau tunnel (Funnel)"}
       size="md"
       footer={
         <>
@@ -82,7 +79,7 @@ export function FunnelFormModal({
             Annuler
           </Button>
           <Button variant="primary" onClick={save} loading={isSaving}>
-            {editing ? "Enregistrer les infos" : "Créer le tunnel"}
+            {editing ? "Enregistrer" : "Créer le tunnel"}
           </Button>
         </>
       }
@@ -111,19 +108,10 @@ export function FunnelFormModal({
           />
         </div>
 
-        {/* On n'affiche les étapes que si le tunnel existe déjà (pour avoir un ID) */}
-        {editing?.id && lockedProductId && (
-          <div className="pt-2 border-t border-[#E5E7EB]">
-            <FunnelStepsSection
-              funnelId={editing.id}
-              productId={lockedProductId}
-            />
-          </div>
-        )}
-
         {!editing?.id && (
-          <p className="text-[12px] text-[#8BAFC0] italic pt-2 text-center">
-            Vous pourrez configurer les étapes du tunnel une fois celui-ci créé.
+          <p className="text-[12px] text-[#8BAFC0] italic pt-1">
+            Vous pourrez configurer les étapes du tunnel depuis sa page de
+            détail une fois celui-ci créé.
           </p>
         )}
       </div>

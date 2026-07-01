@@ -20,6 +20,8 @@ const PREVIEW_ICONS: Record<string, LucideIcon> = {
   AUDIO: Music,
   DOCUMENT: FileText,
   CONTACT: User,
+  // Meta's Cloud API (and this backend, which forwards it as-is) calls this type "contacts" (plural).
+  CONTACTS: User,
 };
 
 interface ConversationItemProps {

@@ -1,8 +1,11 @@
 import { useState } from "react";
 import { Save } from "lucide-react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Select } from "@/components/ui/Select";
+import { Toggle } from "@/components/ui/Toggle";
+import { ACTION_TYPES, defaultConfigFor } from "../actionTypes";
 import type { TriggerActionDto } from "@/shared/api/generated/types.gen";
 
 interface TriggerActionBuilderProps {
@@ -11,20 +14,70 @@ interface TriggerActionBuilderProps {
   onCancel: () => void;
 }
 
+const ACTION_TYPE_OPTIONS = Object.entries(ACTION_TYPES).map(([value, def]) => ({
+  value,
+  label: def.label,
+}));
+
+function parseConfig(configJson?: string | null): Record<string, unknown> {
+  if (!configJson) return {};
+  try {
+    return JSON.parse(configJson);
+  } catch {
+    return {};
+  }
+}
+
 export function TriggerActionBuilder({ action, onSave, onCancel }: TriggerActionBuilderProps) {
-  const [type, setType] = useState(action?.type || "UpdateClient");
-  const [configJson, setConfigJson] = useState(action?.configJson || "{}");
+  const [type, setType] = useState(action?.type || "SendText");
+  const [cfg, setCfg] = useState<Record<string, unknown>>(() =>
+    action ? parseConfig(action.configJson) : defaultConfigFor(type),
+  );
   const [orderIndex, setOrderIndex] = useState(action?.orderIndex ?? 10);
   const [delaySeconds, setDelaySeconds] = useState(action?.delaySeconds ?? 0);
   const [continueOnError, setContinueOnError] = useState(action?.continueOnError ?? false);
   const [isSaving, setIsSaving] = useState(false);
 
+  const def = ACTION_TYPES[type];
+
+  const handleTypeChange = (nextType: string) => {
+    setType(nextType);
+    setCfg(defaultConfigFor(nextType));
+  };
+
+  const setField = (key: string, value: unknown) => {
+    setCfg((c) => ({ ...c, [key]: value }));
+  };
+
   const handleSave = async () => {
+    const missing = def.fields.filter(
+      (f) => f.required && !String(cfg[f.key] ?? "").trim(),
+    );
+    if (missing.length) {
+      toast.error(`Champ requis manquant : ${missing.map((f) => f.label).join(", ")}`);
+      return;
+    }
+
+    const configJson: Record<string, unknown> = {};
+    def.fields.forEach((f) => {
+      const v = cfg[f.key];
+      if (f.type === "bool") {
+        configJson[f.key] = !!v;
+        return;
+      }
+      const trimmed = String(v ?? "").trim();
+      if (!trimmed) {
+        if (f.optional) configJson[f.key] = null;
+        return;
+      }
+      configJson[f.key] = trimmed;
+    });
+
     try {
       setIsSaving(true);
       await onSave({
         type,
-        configJson,
+        configJson: JSON.stringify(configJson),
         orderIndex,
         delaySeconds: delaySeconds || null,
         continueOnError,
@@ -40,14 +93,8 @@ export function TriggerActionBuilder({ action, onSave, onCancel }: TriggerAction
         <Select
           label="Type d'action"
           value={type}
-          onChange={(e) => setType(e.target.value)}
-          options={[
-            { value: "UpdateClient", label: "Mettre à jour le client" },
-            { value: "SendMessage", label: "Envoyer un message" },
-            { value: "TagClient", label: "Taguer le client" },
-            { value: "TransferToAgent", label: "Transférer à un agent" },
-            { value: "UpdateStatus", label: "Mettre à jour le statut" },
-          ]}
+          onChange={(e) => handleTypeChange(e.target.value)}
+          options={ACTION_TYPE_OPTIONS}
         />
         <div className="grid grid-cols-2 gap-4">
           <Input
@@ -65,27 +112,77 @@ export function TriggerActionBuilder({ action, onSave, onCancel }: TriggerAction
         </div>
       </div>
 
-      <div className="border border-[#E5E7EB] rounded-lg p-4 bg-white">
-        <h4 className="text-[13px] font-semibold text-[#0D2137] mb-3">
-          Configuration de l'action (JSON)
-        </h4>
-        <textarea
-          className="w-full h-32 p-3 text-[13px] font-mono border border-[#E5E7EB] rounded-md focus:outline-none focus:border-[#4A7A94]"
-          value={configJson}
-          onChange={(e) => setConfigJson(e.target.value)}
-          placeholder='{"key": "value"}'
-        />
-      </div>
+      {(def.help || def.fields.length > 0) && (
+        <div className="border border-[#E5E7EB] rounded-lg p-4 bg-white space-y-3">
+          <h4 className="text-[13px] font-semibold text-[#0D2137]">Configuration</h4>
+          {def.help && <p className="text-[12px] text-[#8BAFC0]">{def.help}</p>}
 
-      <label className="flex w-fit items-center gap-2 text-[12.5px] text-[#4A7A94] cursor-pointer">
-        <input
-          type="checkbox"
-          checked={continueOnError}
-          onChange={(e) => setContinueOnError(e.target.checked)}
-          className="rounded"
-        />
-        Continuer en cas d'erreur
-      </label>
+          {def.fields.length > 0 && (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {def.fields.map((f) => {
+                const value = cfg[f.key];
+                const label = `${f.label}${f.required ? " *" : ""}`;
+
+                if (f.type === "bool") {
+                  return (
+                    <div
+                      key={f.key}
+                      className="flex items-center justify-between rounded-md border border-[#E5E7EB] bg-[#F7F8F9] p-3 md:col-span-2"
+                    >
+                      <span className="text-[13px] text-[#0D2137]">{f.label}</span>
+                      <Toggle
+                        checked={!!value}
+                        onChange={(v) => setField(f.key, v)}
+                      />
+                    </div>
+                  );
+                }
+
+                if (f.type === "select") {
+                  return (
+                    <Select
+                      key={f.key}
+                      label={label}
+                      value={(value as string) ?? ""}
+                      onChange={(e) => setField(f.key, e.target.value)}
+                      options={(f.options ?? []).map((o) => ({ value: o, label: o }))}
+                    />
+                  );
+                }
+
+                if (f.type === "area") {
+                  return (
+                    <div key={f.key} className="md:col-span-2 flex flex-col gap-1.5">
+                      <label className="text-[12.5px] font-medium text-[#0D2137]">{label}</label>
+                      <textarea
+                        className="w-full h-24 p-3 text-[13px] border border-[#E5E7EB] rounded-md focus:outline-none focus:border-[#2E8FAD]"
+                        value={(value as string) ?? ""}
+                        onChange={(e) => setField(f.key, e.target.value)}
+                        placeholder={f.placeholder}
+                      />
+                    </div>
+                  );
+                }
+
+                return (
+                  <Input
+                    key={f.key}
+                    label={label}
+                    value={(value as string) ?? ""}
+                    onChange={(e) => setField(f.key, e.target.value)}
+                    placeholder={f.placeholder}
+                  />
+                );
+              })}
+            </div>
+          )}
+        </div>
+      )}
+
+      <div className="flex items-center justify-between rounded-md border border-[#E5E7EB] bg-[#F7F8F9] p-3 w-fit gap-6">
+        <span className="text-[13px] text-[#0D2137]">Continuer en cas d'erreur</span>
+        <Toggle checked={continueOnError} onChange={setContinueOnError} />
+      </div>
 
       <div className="flex justify-end gap-2 pt-2 border-t border-[#E5E7EB]">
         <Button variant="ghost" size="sm" onClick={onCancel} disabled={isSaving}>

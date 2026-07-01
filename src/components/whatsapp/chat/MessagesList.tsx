@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { Loader2 } from 'lucide-react';
 import { MessageBubble } from './MessageBubble';
+import { toUtcDate } from '@/models/whatsapp.models';
 import type { MessageViewModel } from '@/hooks/chatViewModel';
 
 interface MessagesListProps {
@@ -20,7 +21,7 @@ type Row = DateRow | MsgRow;
 
 function formatDateSep(ts: string | null | undefined): string {
   if (!ts) return '';
-  const d = new Date(ts);
+  const d = toUtcDate(ts);
   const now = new Date();
   const diff = Math.floor((now.getTime() - d.getTime()) / 86400000);
   if (diff === 0) return "Aujourd'hui";

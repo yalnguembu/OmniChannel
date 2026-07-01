@@ -63,6 +63,7 @@ export const MessageInput: React.FC<MessageInputProps> = ({
     if (inputRef.current) {
       inputRef.current.value = "";
       inputRef.current.style.height = "auto";
+      inputRef.current.blur();
     }
     await onSend(text);
   };
@@ -207,11 +208,9 @@ export const MessageInput: React.FC<MessageInputProps> = ({
       {replyTo && (
         <div className="flex items-center gap-3 bg-wa-bubble-in border-t border-wa-border px-4 py-2">
           <div className="flex-1 min-w-0 border-l-4 border-wa-teal pl-3">
-            <div className="text-xs font-bold text-wa-teal truncate">
-              {replyTo.author}
-            </div>
-            <div className="text-xs text-wa-muted truncate">
-              {replyTo.content}
+            <div className="text-xs whitespace-normal break-words line-clamp-2 min-w-0">
+              <span className="font-bold text-wa-teal">{replyTo.author}</span>{" "}
+              <span className="text-wa-muted">{replyTo.content}</span>
             </div>
           </div>
           <button

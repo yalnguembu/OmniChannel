@@ -3,7 +3,7 @@ import { Save } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { ConditionNodeEditor } from "@/components/features/contacts/ConditionNodeEditor";
-import { TriggerActionSection } from "../TriggerActionSection";
+import { Toggle } from "@/components/ui/Toggle";
 import { useTriggerCriteria } from "@/hooks/useTriggerCriteria";
 import type { TriggerDto, EventDefinitionDto, EventEngineMetadataResponse } from "@/shared/api/generated/types.gen";
 import type { CriteriaAttribute } from "@/hooks/useSegmentCriteria";
@@ -38,7 +38,7 @@ export function TriggerBuilder({ event, trigger, metadata, onValidateCondition, 
             list.push({
               key: `capture.${c.name}`,
               label: `Capture: ${c.name}`,
-              type: c.resultType || "String",
+              type: c.resultType || "Text",
               isNative: false,
             });
           }
@@ -117,15 +117,10 @@ export function TriggerBuilder({ event, trigger, metadata, onValidateCondition, 
         </div>
       </div>
 
-      <label className="flex w-fit items-center gap-2 text-[12.5px] text-[#4A7A94] cursor-pointer">
-        <input
-          type="checkbox"
-          checked={isActive}
-          onChange={(e) => setIsActive(e.target.checked)}
-          className="rounded"
-        />
-        Trigger actif
-      </label>
+      <div className="flex items-center justify-between rounded-md border border-[#E5E7EB] bg-[#F7F8F9] p-3 w-fit gap-6">
+        <span className="text-[13px] text-[#0D2137]">Trigger actif</span>
+        <Toggle checked={isActive} onChange={setIsActive} />
+      </div>
 
       <div className="border border-[#E5E7EB] rounded-lg bg-[#F9FAFB] p-4">
         <h4 className="text-[13px] font-semibold text-[#0D2137] mb-3">
@@ -143,12 +138,6 @@ export function TriggerBuilder({ event, trigger, metadata, onValidateCondition, 
           {trigger ? "Mettre à jour le trigger" : "Créer le trigger"}
         </Button>
       </div>
-
-      {trigger?.id && (
-        <div className="pt-2">
-          <TriggerActionSection trigger={trigger} />
-        </div>
-      )}
     </div>
   );
 }

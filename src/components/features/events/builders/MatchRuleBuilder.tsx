@@ -2,6 +2,7 @@ import { useState, KeyboardEvent } from "react";
 import { Select } from "@/components/ui/Select";
 import { Input } from "@/components/ui/Input";
 import { Badge } from "@/components/ui/Badge";
+import { Toggle } from "@/components/ui/Toggle";
 import { X, Info } from "lucide-react";
 import type { EventEngineMetadataResponse } from "@/shared/api/generated/types.gen";
 
@@ -17,6 +18,24 @@ interface MatchRuleBuilderProps {
   value: MatchRuleData;
   onChange: (value: MatchRuleData) => void;
   metadata?: EventEngineMetadataResponse;
+}
+
+/** Shapes a MatchRuleData for the API: omits fields irrelevant to the chosen type, null if no values. */
+export function buildMatchRule(
+  value: MatchRuleData,
+  metadata?: EventEngineMetadataResponse,
+): MatchRuleData | null {
+  const values = value.values.map((v) => v.trim()).filter((v) => v !== "");
+  if (!values.length) return null;
+
+  const typeInfo = metadata?.matchRuleTypes?.find((t) => t.value === value.type);
+  const usesFuzzyTolerance = typeInfo?.usesFuzzyTolerance ?? value.type === "Fuzzy";
+
+  const o: MatchRuleData = { type: value.type, values };
+  if (value.caseSensitive) o.caseSensitive = true;
+  if (usesFuzzyTolerance) o.fuzzyTolerance = value.fuzzyTolerance || 1;
+  if (value.direction) o.direction = value.direction;
+  return o;
 }
 
 export function MatchRuleBuilder({
@@ -39,10 +58,14 @@ export function MatchRuleBuilder({
   ];
 
   const directionTypes = [
-    { value: "", label: "Toutes" },
+    { value: "", label: "Toutes (défaut : Entrant)" },
     { value: "INBOUND", label: "Entrant" },
     { value: "OUTBOUND", label: "Sortant" },
   ];
+
+  const activeTypeInfo = metadata?.matchRuleTypes?.find((t) => t.value === value.type);
+  const usesFuzzyTolerance = activeTypeInfo?.usesFuzzyTolerance ?? value.type === "Fuzzy";
+  const usesValues = activeTypeInfo?.usesValues ?? true;
 
   const handleAddValue = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && inputValue.trim()) {
@@ -63,9 +86,6 @@ export function MatchRuleBuilder({
       values: value.values.filter((v) => v !== valToRemove),
     });
   };
-
-  const isFuzzy = value.type === "Fuzzy";
-  const isRegex = value.type === "Regex";
 
   return (
     <div className="space-y-4">
@@ -88,55 +108,56 @@ export function MatchRuleBuilder({
           />
         </div>
 
-        <div className="flex flex-col gap-1">
-          <label className="text-[12.5px] font-medium text-[#0D2137]">
-            Valeurs de déclenchement
-          </label>
-          <div className="flex items-center gap-2 border border-[#E5E7EB] rounded-md px-2 py-1.5 bg-white min-h-[38px] flex-wrap">
-            {value.values.map((val, idx) => (
-              <Badge
-                key={idx}
-                variant="info"
-                className="flex items-center gap-1 h-6"
-              >
-                {val}
-                <button
-                  type="button"
-                  onClick={() => handleRemoveValue(val)}
-                  className="hover:text-red-500 rounded-full focus:outline-none"
+        {usesValues && (
+          <div className="flex flex-col gap-1">
+            <label className="text-[12.5px] font-medium text-[#0D2137]">
+              Valeurs de déclenchement
+            </label>
+            <div className="flex items-center gap-2 border border-[#E5E7EB] rounded-md px-2 py-1.5 bg-white min-h-[38px] flex-wrap">
+              {value.values.map((val, idx) => (
+                <Badge
+                  key={idx}
+                  variant="info"
+                  className="flex items-center gap-1 h-6"
                 >
-                  <X size={10} />
-                </button>
-              </Badge>
-            ))}
-            <input
-              type="text"
-              value={inputValue}
-              onChange={(e) => setInputValue(e.target.value)}
-              onKeyDown={handleAddValue}
-              placeholder="Ajouter une valeur (Entrée)"
-              className="flex-1 outline-none text-[13px] min-w-[150px] bg-transparent"
-            />
+                  {val}
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveValue(val)}
+                    className="hover:text-red-500 rounded-full focus:outline-none"
+                  >
+                    <X size={10} />
+                  </button>
+                </Badge>
+              ))}
+              <input
+                type="text"
+                value={inputValue}
+                onChange={(e) => setInputValue(e.target.value)}
+                onKeyDown={handleAddValue}
+                placeholder={activeTypeInfo?.example || "Ajouter une valeur (Entrée)"}
+                className="flex-1 outline-none text-[13px] min-w-[150px] bg-transparent"
+              />
+            </div>
+            {activeTypeInfo?.example && (
+              <p className="text-[11px] text-[#8BAFC0]">
+                Exemple : <span className="font-mono">{activeTypeInfo.example}</span>
+              </p>
+            )}
           </div>
-        </div>
+        )}
       </div>
 
       <div className="flex items-center gap-6 pt-2">
-        {!isRegex && (
-          <label className="flex items-center gap-2 text-[12.5px] text-[#4A7A94] cursor-pointer">
-            <input
-              type="checkbox"
-              checked={value.caseSensitive || false}
-              onChange={(e) =>
-                onChange({ ...value, caseSensitive: e.target.checked })
-              }
-              className="rounded"
-            />
-            Sensible à la casse
-          </label>
-        )}
+        <div className="flex items-center gap-2">
+          <Toggle
+            checked={value.caseSensitive || false}
+            onChange={(v) => onChange({ ...value, caseSensitive: v })}
+          />
+          <span className="text-[12.5px] text-[#4A7A94]">Sensible à la casse</span>
+        </div>
 
-        {isFuzzy && (
+        {usesFuzzyTolerance && (
           <div className="flex items-center gap-2">
             <label className="text-[12.5px] text-[#4A7A94]">
               Tolérance Fuzzy :

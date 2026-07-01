@@ -108,6 +108,9 @@ const BubbleContent: React.FC<BubbleContentProps> = ({ vm, onImageClick }) => {
     else if (lower.match(/\.(mp4|webm|mov|avi)$/i)) t = 'VIDEO';
     else if (lower.match(/\.(mp3|wav|ogg|m4a|aac)$/i)) t = 'AUDIO';
     else if (lower.match(/\.(pdf|doc|docx|xls|xlsx|ppt|pptx|txt|csv)$/i)) t = 'DOCUMENT';
+    // Fallback sniff: a WhatsApp contact-card payload serialized as JSON
+    // (in case the backend's messageType string doesn't match our enum).
+    else if (/^\s*\[?\s*\{\s*"name"\s*:/.test(vm.content)) t = 'CONTACT';
   }
 
   switch (t) {
@@ -161,22 +164,36 @@ const BubbleContent: React.FC<BubbleContentProps> = ({ vm, onImageClick }) => {
         </a>
       );
     }
-    case 'CONTACT': {
-      let name = 'Contact', phone = '';
+    case 'CONTACT':
+    case 'CONTACTS': {
+      // WhatsApp (Meta Cloud API) calls this type "contacts" (plural); the
+      // backend forwards that raw string, so match both spellings here.
+      // WhatsApp sends an array of contact cards, e.g.:
+      // [{"name":{"first_name":"Raissa","formatted_name":"Raissa"},"phones":[{"phone":"+237...","wa_id":"...","type":"MOBILE"}]}]
+      let contacts: { name: string; phone: string }[] = [];
       try {
-        const o = JSON.parse(vm.content || '{}');
-        name = o.name || name;
-        phone = o.phone || o.phoneNumber || '';
-      } catch {}
+        const parsed = JSON.parse(vm.content || '[]');
+        const list = Array.isArray(parsed) ? parsed : [parsed];
+        contacts = list.map((o) => ({
+          name: o?.name?.formatted_name || o?.name?.first_name || o?.name || 'Contact',
+          phone: o?.phones?.[0]?.phone || o?.phone || o?.phoneNumber || '',
+        }));
+      } catch {
+        contacts = [{ name: 'Contact', phone: '' }];
+      }
       return (
-        <div className="flex items-center gap-2.5 bg-black/5 rounded-lg px-3 py-2 min-w-48">
-          <div className="size-10 rounded-full bg-wa-icon flex items-center justify-center text-white shrink-0">
-            <User size={20} />
-          </div>
-          <div>
-            <div className="text-sm font-medium">{name}</div>
-            {phone && <div className="text-xs text-wa-muted">{phone}</div>}
-          </div>
+        <div className="flex flex-col gap-1">
+          {contacts.map((c, i) => (
+            <div key={i} className="flex items-center gap-2.5 bg-black/5 rounded-lg px-3 py-2 min-w-48">
+              <div className="size-10 rounded-full bg-wa-icon flex items-center justify-center text-white shrink-0">
+                <User size={20} />
+              </div>
+              <div>
+                <div className="text-sm font-medium">{c.name}</div>
+                {c.phone && <div className="text-xs text-wa-muted">{c.phone}</div>}
+              </div>
+            </div>
+          ))}
         </div>
       );
     }
@@ -263,42 +280,51 @@ export const MessageBubble = React.memo<MessageBubbleProps>(({
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}
     >
-      {/* Bubble */}
-      <div
-        className={cn(
-          'relative max-w-[65%] rounded-[7.5px] px-2 pt-1.5 pb-2 pr-4 overflow-hidden',
-          'shadow-[0_1px_0.5px_rgba(11,20,26,0.13)] wrap-break-word',
-          vm.isOutbound
-            ? 'bg-wa-bubble-out rounded-tr-none'
-            : 'bg-wa-bubble-in rounded-tl-none'
-        )}
-      >
-        {/* Tail */}
-        {vm.isOutbound ? <TailOutbound /> : <TailInbound />}
+      {/* Outer wrapper — sizes the bubble but stays unclipped so the hover
+          menu (a sibling of the bubble, not a descendant) is never cut off. */}
+      <div className="relative max-w-[65%] min-w-0">
+        {/* Bubble */}
+        <div
+          className={cn(
+            'relative rounded-[7.5px] px-2 pt-1.5 pb-2 pr-4 overflow-hidden',
+            'shadow-[0_1px_0.5px_rgba(11,20,26,0.13)] wrap-break-word',
+            vm.isOutbound
+              ? 'bg-wa-bubble-out rounded-tr-none'
+              : 'bg-wa-bubble-in rounded-tl-none'
+          )}
+        >
+          {/* Tail */}
+          {vm.isOutbound ? <TailOutbound /> : <TailInbound />}
 
-        {/* Sender name (inbound group) */}
-        {vm.senderName && (
-          <div className="text-xs font-bold text-wa-teal mb-0.5">{vm.senderName}</div>
-        )}
+          {/* Sender name (inbound group) */}
+          {vm.senderName && (
+            <div className="text-xs font-bold text-wa-teal mb-0.5">{vm.senderName}</div>
+          )}
 
-        {/* Reply quote */}
-        {vm.replyToContent && (
-          <div className="bg-black/6 rounded border-l-4 border-wa-teal px-2 py-1 mb-1 max-h-16 overflow-hidden min-w-0">
-            <div className="text-xs font-bold text-wa-teal mb-px truncate">{vm.replyToAuthor}</div>
-            <div className="text-xs text-wa-muted truncate min-w-0">{vm.replyToContent}</div>
+          {/* Reply quote — author + content flow inline as one paragraph,
+              wrapping onto multiple lines instead of forcing a single
+              nowrap line (nowrap here would force the flex chain above to
+              grow past max-w-[65%], since min-width wins over max-width). */}
+          {vm.replyToContent && (
+            <div className="bg-black/6 rounded border-l-4 border-wa-teal px-2 py-1 mb-1 min-w-0 max-h-16 overflow-hidden">
+              <div className="text-xs whitespace-normal break-words min-w-0">
+                <span className="font-bold text-wa-teal">{vm.replyToAuthor}</span>{' '}
+                <span className="text-wa-muted">{vm.replyToContent}</span>
+              </div>
+            </div>
+          )}
+
+          <BubbleContent vm={vm} onImageClick={onImageClick} />
+
+          {/* Meta: time + ticks */}
+          <div className="flex items-center gap-0.5 justify-end mt-px float-right ml-1.5">
+            {vm.isOutbound && <MessageTicks status={vm.status} />}
+            <span className="text-[11px] text-wa-muted">{vm.timeStr}</span>
           </div>
-        )}
-
-        <BubbleContent vm={vm} onImageClick={onImageClick} />
-
-        {/* Meta: time + ticks */}
-        <div className="flex items-center gap-0.5 justify-end mt-px float-right ml-1.5">
-          {vm.isOutbound && <MessageTicks status={vm.status} />}
-          <span className="text-[11px] text-wa-muted">{vm.timeStr}</span>
+          <div className="clear-both" />
         </div>
-        <div className="clear-both" />
 
-        {/* Hover dropdown chevron inside bubble */}
+        {/* Hover dropdown chevron — sibling of the (overflow-hidden) bubble so it's never clipped */}
         <div
           className={cn(
             'absolute top-1 right-1 transition-opacity duration-100',

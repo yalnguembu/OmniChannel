@@ -4,7 +4,9 @@ import { Button } from "@/components/ui/Button";
 import { PageLoader } from "@/components/feedback/PageLoader";
 import { ListFilterBar } from "@/components/features/shared/ListFilterBar";
 import { useProductEvents } from "@/hooks/useProductEvents";
-import { EventDefinitionCard } from "@/components/features/events/EventDefinitionCard";
+import { EventCard } from "@/components/features/events/EventCard";
+import { EventInfoModal } from "@/components/features/events/EventInfoModal";
+import type { EventDefinitionDto } from "@/shared/api/generated/types.gen";
 
 interface EventsTabProps {
   productId: string;
@@ -14,10 +16,31 @@ export function EventsTab({ productId }: EventsTabProps) {
   const vm = useProductEvents(productId);
   const f = vm.filters;
 
-  const [creating, setCreating] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingEvent, setEditingEvent] = useState<EventDefinitionDto | null>(null);
 
   const handleCreate = () => {
-    setCreating(true);
+    setEditingEvent(null);
+    setIsModalOpen(true);
+  };
+
+  const handleEdit = (event: EventDefinitionDto) => {
+    setEditingEvent(event);
+    setIsModalOpen(true);
+  };
+
+  const handleSave = async (data: any) => {
+    if (editingEvent) {
+      await vm.updateEvent(data);
+    } else {
+      await vm.createEvent(data);
+    }
+  };
+
+  const handleDelete = (id: string) => {
+    if (confirm("Êtes-vous sûr de vouloir supprimer cet événement ?")) {
+      vm.deleteEvent({ path: { id } });
+    }
   };
 
   return (
@@ -49,59 +72,46 @@ export function EventsTab({ productId }: EventsTabProps) {
         <div className="py-20">
           <PageLoader />
         </div>
+      ) : vm.events.length === 0 ? (
+        <div className="bg-white border border-[#E5E7EB] rounded-xl overflow-hidden p-5">
+          <div className="py-20 flex flex-col items-center text-center">
+            <div className="w-16 h-16 rounded-2xl bg-[#F7F8F9] flex items-center justify-center mb-6">
+              <Activity size={32} className="text-[#B8CDD8] opacity-50" />
+            </div>
+            <h3 className="text-[17px] font-bold text-[#0D2137]">
+              Aucun événement
+            </h3>
+            <p className="text-[13.5px] text-[#8BAFC0] mt-2 mb-8 max-w-85">
+              Créez une définition d'événement pour déclencher des actions
+              automatisées.
+            </p>
+            <Button variant="primary" size="sm" onClick={handleCreate}>
+              <Plus size={14} className="mr-2" /> Créer maintenant
+            </Button>
+          </div>
+        </div>
       ) : (
-        <div className="bg-white border border-[#E5E7EB] rounded-xl overflow-hidden p-5 space-y-4">
-          {vm.events.length === 0 && !creating ? (
-            <div className="py-20 flex flex-col items-center text-center">
-              <div className="w-16 h-16 rounded-2xl bg-[#F7F8F9] flex items-center justify-center mb-6">
-                <Activity size={32} className="text-[#B8CDD8] opacity-50" />
-              </div>
-              <h3 className="text-[17px] font-bold text-[#0D2137]">
-                Aucun événement
-              </h3>
-              <p className="text-[13.5px] text-[#8BAFC0] mt-2 mb-8 max-w-85">
-                Créez une définition d'événement pour déclencher des actions
-                automatisées.
-              </p>
-              <Button variant="primary" size="sm" onClick={handleCreate}>
-                <Plus size={14} className="mr-2" /> Créer maintenant
-              </Button>
-            </div>
-          ) : (
-            <div className="space-y-3">
-              {creating && (
-                <EventDefinitionCard
-                  productId={productId}
-                  isNew={true}
-                  metadata={vm.metadata}
-                  onCancel={() => setCreating(false)}
-                  onSaveEvent={vm.createEvent}
-                  onValidateMatchRule={vm.validateMatchRule}
-                  onValidateCondition={vm.validateCondition}
-                  onSaved={() => {
-                    setCreating(false);
-                    vm.refetch();
-                  }}
-                />
-              )}
-              {vm.events.map((event) => (
-                <EventDefinitionCard
-                  key={event.id}
-                  productId={productId}
-                  event={event}
-                  metadata={vm.metadata}
-                  onSaveEvent={vm.updateEvent}
-                  onDeleteEvent={() => vm.deleteEvent({ path: { id: event.id! } })}
-                  onValidateMatchRule={vm.validateMatchRule}
-                  onValidateCondition={vm.validateCondition}
-                  onSaved={() => vm.refetch()}
-                  onDeleted={() => vm.refetch()}
-                />
-              ))}
-            </div>
-          )}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[14px]">
+          {vm.events.map((event) => (
+            <EventCard
+              key={event.id}
+              productId={productId}
+              event={event}
+              onEdit={() => handleEdit(event)}
+              onDelete={() => handleDelete(event.id!)}
+            />
+          ))}
         </div>
       )}
+
+      <EventInfoModal
+        open={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        productId={productId}
+        editing={editingEvent}
+        onSave={handleSave}
+        isSaving={vm.isMutating}
+      />
     </div>
   );
 }

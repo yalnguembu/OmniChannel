@@ -55,6 +55,13 @@ export function statusBadgeClass(status: string): string {
   return map[status] ?? "bg-gray-100 text-gray-500 border border-gray-200";
 }
 
+/** Maps a 0-100 percentage to a semantic color (used by gauges/timelines). */
+export function levelColor(pct: number): string {
+  if (pct >= 75) return "#16A34A";
+  if (pct >= 40) return "#D97706";
+  return "#DC2626";
+}
+
 export function statusLabel(status: string): string {
   const map: Record<string, string> = {
     active: "Actif",

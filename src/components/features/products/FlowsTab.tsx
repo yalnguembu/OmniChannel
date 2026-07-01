@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { Plus, Trash2, Edit, ChevronLeft, ChevronRight } from "lucide-react";
+import { Plus, Workflow, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { ListFilterBar } from "@/components/features/shared/ListFilterBar";
 import { useProductFlows } from "@/hooks/useProductFlows";
 import { FlowFormModal } from "./FlowFormModal";
+import { FlowCard } from "./flows/FlowCard";
 import type { FlowDto } from "@/shared/api/generated/types.gen";
 import { useQuery } from "@tanstack/react-query";
 import { getApiSenderDropdownOptions } from "@/shared/api/generated/@tanstack/react-query.gen";
@@ -52,89 +53,71 @@ export function FlowsTab({ productId }: FlowsTabProps) {
   };
 
   return (
-    <div className="space-y-6">
-      <ListFilterBar
-        search={vm.search.query}
-        onSearchChange={vm.search.setQuery}
-        searchPlaceholder="Rechercher par nom ou code..."
-        actions={[
-          {
-            label: "Nouveau Flux",
-            icon: <Plus size={13} strokeWidth={2.5} />,
-            onClick: handleCreate,
-          },
-        ]}
-      />
+    <div className="space-y-4">
+      <div className="rounded-[14px] border border-[#E5E7EB] overflow-hidden">
+        <ListFilterBar
+          search={vm.search.query}
+          onSearchChange={vm.search.setQuery}
+          searchPlaceholder="Rechercher par nom ou code…"
+          actions={[
+            {
+              label: "Nouveau flux",
+              icon: <Plus size={13} strokeWidth={2.5} />,
+              onClick: handleCreate,
+            },
+          ]}
+        />
+      </div>
 
-      <div className="space-y-3">
-        {vm.isLoading && (
-          <div className="flex justify-center p-8 text-[#8BAFC0] text-[13px]">
-            Chargement...
-          </div>
-        )}
-
-        {!vm.isLoading && vm.data?.items?.length === 0 && (
-          <div className="flex flex-col items-center justify-center p-12 text-center border border-dashed border-[#E5E7EB] rounded-lg">
-            <p className="text-[13px] text-[#4A7A94] mb-4">
-              Aucun flux n'a été trouvé.
+      {vm.isLoading ? (
+        <div className="flex justify-center p-8 text-[#8BAFC0] text-[13px]">Chargement...</div>
+      ) : vm.data?.items?.length === 0 ? (
+        <div className="bg-white border border-[#E5E7EB] rounded-xl overflow-hidden p-5">
+          <div className="py-20 flex flex-col items-center text-center">
+            <div className="w-16 h-16 rounded-2xl bg-[#F7F8F9] flex items-center justify-center mb-6">
+              <Workflow size={32} className="text-[#B8CDD8] opacity-50" />
+            </div>
+            <h3 className="text-[17px] font-bold text-[#0D2137]">Aucun flux</h3>
+            <p className="text-[13.5px] text-[#8BAFC0] mt-2 mb-8 max-w-85">
+              Créez un flux pour orchestrer l'envoi de messages interactifs
+              (WhatsApp Flow).
             </p>
-            <Button variant="secondary" size="sm" onClick={handleCreate}>
-              Créer votre premier flux
+            <Button variant="primary" size="sm" onClick={handleCreate}>
+              <Plus size={14} className="mr-2" /> Créer maintenant
             </Button>
           </div>
-        )}
-
-        {vm.data?.items?.map((flow) => (
-          <div
-            key={flow.id}
-            className="flex items-center justify-between rounded-lg border border-[#E5E7EB] bg-white p-4 hover:border-[#CBD5E1] transition-colors"
-          >
-            <div>
-              <div className="flex items-center gap-3">
-                <h3 className="text-[14px] font-semibold text-[#0D2137]">
-                  {flow.name || "Sans nom"}
-                </h3>
-                <span className="rounded-full bg-[#F3F4F6] px-2 py-0.5 text-[11px] font-medium text-[#4A7A94]">
-                  {flow.code}
-                </span>
-                {flow.status === "Published" && (
-                  <span className="rounded-full bg-[#ECFDF5] px-2 py-0.5 text-[11px] font-medium text-[#059669]">
-                    Publié
-                  </span>
-                )}
-                {flow.status === "Draft" && (
-                  <span className="rounded-full bg-[#FFFBEB] px-2 py-0.5 text-[11px] font-medium text-[#D97706]">
-                    Brouillon
-                  </span>
-                )}
-              </div>
-              <div className="mt-1 flex items-center gap-4 text-[12px] text-[#8BAFC0]">
-                <span>Sender: {getSenderName(flow.senderId)}</span>
-                {flow.provider && <span>Provider: {flow.provider}</span>}
-                {flow.flowAction && <span>Action: {flow.flowAction}</span>}
-              </div>
-            </div>
-
-            <div className="flex items-center gap-2">
-              <Button variant="ghost" size="sm" onClick={() => handleEdit(flow)}>
-                <Edit size={14} className="mr-2" />
-                Modifier
-              </Button>
-              <Button variant="ghost" size="sm" onClick={() => handleDelete(flow.id!)}>
-                <Trash2 size={14} className="text-red-500" />
-              </Button>
-            </div>
-          </div>
-        ))}
-      </div>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[14px]">
+          {vm.data?.items?.map((flow) => (
+            <FlowCard
+              key={flow.id}
+              flow={flow}
+              senderName={getSenderName(flow.senderId)}
+              onEdit={() => handleEdit(flow)}
+              onDelete={() => handleDelete(flow.id!)}
+            />
+          ))}
+        </div>
+      )}
 
       {vm.data?.totalCount && vm.data.totalCount > vm.pagination.pageSize ? (
         <div className="flex items-center justify-end gap-2 pt-2">
-          <Button variant="secondary" size="sm" onClick={() => vm.pagination.setPageIndex(vm.pagination.pageIndex - 1)} disabled={vm.pagination.pageIndex === 0}>
+          <Button
+            variant="secondary"
+            size="sm"
+            onClick={() => vm.pagination.setPageIndex(vm.pagination.pageIndex - 1)}
+            disabled={vm.pagination.pageIndex === 0}
+          >
             <ChevronLeft size={14} />
           </Button>
           <span className="text-[13px] text-[#4A7A94]">Page {vm.pagination.pageIndex + 1}</span>
-          <Button variant="secondary" size="sm" onClick={() => vm.pagination.setPageIndex(vm.pagination.pageIndex + 1)} disabled={(vm.pagination.pageIndex + 1) * vm.pagination.pageSize >= (vm.data?.totalCount ?? 0)}>
+          <Button
+            variant="secondary"
+            size="sm"
+            onClick={() => vm.pagination.setPageIndex(vm.pagination.pageIndex + 1)}
+            disabled={(vm.pagination.pageIndex + 1) * vm.pagination.pageSize >= (vm.data?.totalCount ?? 0)}
+          >
             <ChevronRight size={14} />
           </Button>
         </div>

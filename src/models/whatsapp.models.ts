@@ -159,9 +159,22 @@ export function getInitials(s: string): string {
   return (s[0] || '?').toUpperCase();
 }
 
+/**
+ * The API serializes timestamps as naive datetimes (no trailing 'Z' or
+ * offset) even though the underlying instant is UTC. Without a timezone
+ * designator, `new Date(...)` parses date-time strings as browser-local per
+ * the ES spec, silently shifting every timestamp by the local UTC offset.
+ * Append 'Z' when no designator is present so the instant is read as UTC —
+ * `toLocaleTimeString`/`toLocaleDateString` then render it in local time.
+ */
+export function toUtcDate(dt: string): Date {
+  const hasDesignator = /Z$|[+-]\d{2}:?\d{2}$/.test(dt);
+  return new Date(hasDesignator ? dt : `${dt}Z`);
+}
+
 export function fmtTime(dt: string | null | undefined): string {
   if (!dt) return '';
-  const d = new Date(dt);
+  const d = toUtcDate(dt);
   const now = new Date();
   // Compare on calendar day boundaries, not 24h windows — a message from
   // 23:00 yesterday should read "Hier", not a time, even if <24h old.
@@ -175,12 +188,12 @@ export function fmtTime(dt: string | null | undefined): string {
 
 export function fmtTimeFull(dt: string | null | undefined): string {
   if (!dt) return 'N/A';
-  return new Date(dt).toLocaleString('fr-FR');
+  return toUtcDate(dt).toLocaleString('fr-FR');
 }
 
 export function fmtTimeShort(dt: string | null | undefined): string {
   if (!dt) return '';
-  return new Date(dt).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+  return toUtcDate(dt).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
 }
 
 export function convPreview(c: Conversation): string {
@@ -191,6 +204,10 @@ export function convPreview(c: Conversation): string {
   if (t === 'VIDEO') return 'Vidéo';
   if (t === 'AUDIO') return 'Audio';
   if (t === 'DOCUMENT') return 'Document';
-  if (t === 'CONTACT') return 'Contact';
-  return c.lastMessageContent || c.lastMessageSubject || '';
+  if (t === 'CONTACT' || t === 'CONTACTS') return 'Contact';
+  const content = c.lastMessageContent || c.lastMessageSubject || '';
+  // Fallback sniff: same JSON contact-card payload shape as messages, in case
+  // lastMessageMessageType doesn't match our known variants.
+  if (/^\s*\[?\s*\{\s*"name"\s*:/.test(content)) return 'Contact';
+  return content;
 }

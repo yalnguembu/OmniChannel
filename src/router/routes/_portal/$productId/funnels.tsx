@@ -1,14 +1,9 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Outlet } from "@tanstack/react-router";
 import { ACTION } from "@/security/enums";
 import { requirePermission } from "@/security/guards";
-import { FunnelsTab } from "@/components/features/products/FunnelsTab";
 
 export const Route = createFileRoute("/_portal/$productId/funnels")({
-  component: () => (
-    <div className="p-7">
-      <FunnelsTab productId={Route.useParams().productId} />
-    </div>
-  ),
+  component: () => <Outlet />,
   beforeLoad: ({ context }) => {
     requirePermission(context.user, context.strategy, {
       action: ACTION.PRODUCT_READ,
