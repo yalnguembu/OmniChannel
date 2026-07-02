@@ -37,15 +37,11 @@ export function EventCaptureSpecModal({
   }, [open, event.captureSpec]);
 
   const handleSave = async () => {
+    // Spread the full event so other fields (senderId, payloadSchema…) survive
+    // a full-replace PUT — only override captureSpec.
     await onSave({
       body: {
-        id: event.id,
-        productId: event.productId,
-        code: event.code,
-        label: event.label,
-        origin: event.origin,
-        isActive: event.isActive,
-        matchRule: event.matchRule,
+        ...event,
         captureSpec: JSON.stringify(buildCaptureSpec(captureSpec) ?? { captures: [] }),
       },
     });

@@ -54,17 +54,10 @@ export function EventMatchRuleModal({
     if (onValidate) {
       await onValidate({ body: { matchRule: JSON.stringify(shaped) } });
     }
+    // Spread the full event so senderId / payloadSchema / correlationSourceKey
+    // aren't wiped on a full-replace PUT — only override the field we edit.
     await onSave({
-      body: {
-        id: event.id,
-        productId: event.productId,
-        code: event.code,
-        label: event.label,
-        origin: event.origin,
-        isActive: event.isActive,
-        matchRule: JSON.stringify(shaped),
-        captureSpec: event.captureSpec,
-      },
+      body: { ...event, matchRule: JSON.stringify(shaped) },
     });
     onClose();
   };

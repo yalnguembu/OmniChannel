@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { Trash2, Plus } from "lucide-react";
 import { Select } from "@/components/ui/Select";
 import { Input } from "@/components/ui/Input";
@@ -237,21 +238,7 @@ function OperandInput({
   }
 
   if (operandKind === "array") {
-    const values = Array.isArray(operand) ? (operand as string[]) : [];
-    return (
-      <Input
-        placeholder="Valeurs séparées par des virgules"
-        value={values.join(", ")}
-        onChange={(e) =>
-          onChange(
-            e.target.value
-              .split(",")
-              .map((s) => s.trim())
-              .filter((s) => s !== ""),
-          )
-        }
-      />
-    );
+    return <ArrayOperandInput operand={operand} onChange={onChange} />;
   }
 
   // range → [min, max]
@@ -272,5 +259,45 @@ function OperandInput({
         onChange={(e) => onChange([range[0] ?? "", e.target.value])}
       />
     </div>
+  );
+}
+
+/* Comma-separated list input. Holds the raw typed text locally so separators
+ * (", ") survive keystrokes — parsing straight to an array on every change
+ * stripped the just-typed comma (["a",""] → filtered → ["a"] → "a"). The array
+ * is still pushed up on every change for the wire builder; we only resync the
+ * text from the external operand when the field isn't focused (initial load /
+ * operator reset). */
+function ArrayOperandInput({
+  operand,
+  onChange,
+}: {
+  operand: unknown;
+  onChange: (v: unknown) => void;
+}) {
+  const external = (Array.isArray(operand) ? (operand as string[]) : []).join(", ");
+  const [text, setText] = useState(external);
+  const [focused, setFocused] = useState(false);
+
+  useEffect(() => {
+    if (!focused) setText(external);
+  }, [external, focused]);
+
+  return (
+    <Input
+      placeholder="Valeurs séparées par des virgules"
+      value={text}
+      onFocus={() => setFocused(true)}
+      onBlur={() => setFocused(false)}
+      onChange={(e) => {
+        setText(e.target.value);
+        onChange(
+          e.target.value
+            .split(",")
+            .map((s) => s.trim())
+            .filter((s) => s !== ""),
+        );
+      }}
+    />
   );
 }

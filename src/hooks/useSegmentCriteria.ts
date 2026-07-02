@@ -170,7 +170,7 @@ function updateNodeAt(
 
 /* ── Native client fields, typed per guide §5 ───────────────────────────────── */
 
-const NATIVE_FIELDS: { key: string; label: string; type: string }[] = [
+export const NATIVE_FIELDS: { key: string; label: string; type: string }[] = [
   { key: "externalId", label: "ID externe", type: "Text" },
   { key: "email", label: "Email", type: "Email" },
   { key: "phone", label: "Téléphone", type: "Phone" },

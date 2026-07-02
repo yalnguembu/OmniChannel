@@ -196,6 +196,7 @@ export function EventDetailPage({ productId, eventId }: EventDetailPageProps) {
             <EventTriggerCard
               key={trigger.id}
               trigger={trigger}
+              productId={productId}
               onEdit={() => openEditTrigger(trigger)}
               onDelete={() => deleteTrigger({ path: { id: trigger.id! } })}
             />

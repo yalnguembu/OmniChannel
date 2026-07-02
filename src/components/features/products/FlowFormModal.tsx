@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import {
   getApiProductDropdownOptions,
   getApiSenderDropdownOptions,
+  getApiProviderDropdownOptions,
 } from "@/shared/api/generated/@tanstack/react-query.gen";
 import { Button } from "@/components/ui/Button";
 import { Modal } from "@/components/ui/Modal";
@@ -52,7 +53,7 @@ export function FlowFormModal({
       ((res?.data ?? []) as { id?: string; name?: string | null }[]).filter(
         (p) => p.id,
       ),
-    enabled: open && !lockedProductId,
+    enabled: open,
   });
 
   const { data: senders = [] } = useQuery({
@@ -60,6 +61,15 @@ export function FlowFormModal({
     select: (res) =>
       ((res?.data ?? []) as { id?: string; name?: string | null }[]).filter(
         (p) => p.id,
+      ),
+    enabled: open,
+  });
+
+  const { data: providers = [] } = useQuery({
+    ...getApiProviderDropdownOptions(),
+    select: (res) =>
+      ((res?.data ?? []) as { id?: string; name?: string | null; code?: string | null }[]).filter(
+        (p) => p.code,
       ),
     enabled: open,
   });
@@ -91,14 +101,13 @@ export function FlowFormModal({
       toast.error("Le nom et le code sont requis");
       return;
     }
-    const productId = lockedProductId ?? form.productId ?? "";
     const base = {
       code: form.code.trim(),
       name: form.name.trim(),
       provider: form.provider,
       providerFlowId: form.providerFlowId,
       status: form.status,
-      productId: productId || null,
+      productId: form.productId || null,
       senderId: form.senderId || null,
       bodyText: form.bodyText,
       ctaText: form.ctaText,
@@ -149,13 +158,19 @@ export function FlowFormModal({
         </div>
 
         <div className="grid grid-cols-2 gap-4">
-          <Input
+          <Select
             label="Provider"
-            placeholder="ex: whatsapp"
             value={form.provider || ""}
             onChange={(e) =>
               setForm((f) => ({ ...f, provider: e.target.value }))
             }
+            options={[
+              { value: "", label: "Aucun provider" },
+              ...providers.map((p) => ({
+                value: p.code as string,
+                label: p.name ?? p.code ?? "",
+              })),
+            ]}
           />
           <Input
             label="Provider Flow ID"
@@ -168,22 +183,20 @@ export function FlowFormModal({
         </div>
 
         <div className="grid grid-cols-2 gap-4">
-          {!lockedProductId && (
-            <Select
-              label="Produit"
-              value={form.productId || ""}
-              onChange={(e) =>
-                setForm((f) => ({ ...f, productId: e.target.value }))
-              }
-              options={[
-                { value: "", label: "Aucun produit" },
-                ...products.map((p) => ({
-                  value: p.id as string,
-                  label: p.name ?? "Sans nom",
-                })),
-              ]}
-            />
-          )}
+          <Select
+            label="Produit"
+            value={form.productId || ""}
+            onChange={(e) =>
+              setForm((f) => ({ ...f, productId: e.target.value }))
+            }
+            options={[
+              { value: "", label: "Aucun produit" },
+              ...products.map((p) => ({
+                value: p.id as string,
+                label: p.name ?? "Sans nom",
+              })),
+            ]}
+          />
 
           <Select
             label="Sender (Expéditeur)"

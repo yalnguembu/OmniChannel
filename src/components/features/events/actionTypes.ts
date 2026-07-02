@@ -1,4 +1,6 @@
-export type ActionFieldType = "text" | "area" | "bool" | "select";
+import type { EntitySource } from "./EntitySelect";
+
+export type ActionFieldType = "text" | "area" | "bool" | "select" | "entity";
 
 export interface ActionFieldDef {
   key: string;
@@ -9,6 +11,8 @@ export interface ActionFieldDef {
   optional?: boolean;
   default?: unknown;
   options?: string[];
+  /** For type "entity": which dropdown endpoint feeds the Select. */
+  source?: EntitySource;
 }
 
 export interface ActionTypeDef {
@@ -42,14 +46,14 @@ export const ACTION_TYPES: Record<string, ActionTypeDef> = {
   SendTemplate: {
     label: "Envoyer un template",
     fields: [
-      { key: "templateName", label: "Nom du template", type: "text", placeholder: "reabo_reminder", required: true },
-      { key: "senderId", label: "SenderId (optionnel)", type: "text", optional: true },
+      { key: "templateName", label: "Template", type: "entity", source: "template", required: true },
+      { key: "senderId", label: "Sender (optionnel)", type: "entity", source: "sender", optional: true },
     ],
   },
   SendFlow: {
     label: "Envoyer un flow",
     fields: [
-      { key: "flowId", label: "FlowId (registre)", type: "text", placeholder: "GUID du flow", required: true },
+      { key: "flowId", label: "Flow (registre)", type: "entity", source: "flow", required: true },
       { key: "flowTokenFrom", label: "Token depuis", type: "text", placeholder: "capture.numdec", optional: true },
     ],
   },
@@ -57,7 +61,7 @@ export const ACTION_TYPES: Record<string, ActionTypeDef> = {
     label: "Transférer à un humain",
     fields: [
       { key: "assignStrategy", label: "Stratégie", type: "select", options: ["first_active", "specific"] },
-      { key: "userId", label: "UserId (si specific)", type: "text", optional: true },
+      { key: "userId", label: "Utilisateur (si specific)", type: "entity", source: "user", optional: true },
       { key: "reason", label: "Raison", type: "text", optional: true },
     ],
   },
@@ -71,11 +75,11 @@ export const ACTION_TYPES: Record<string, ActionTypeDef> = {
   },
   AddToSegment: {
     label: "Ajouter à un segment",
-    fields: [{ key: "segmentId", label: "SegmentId", type: "text", placeholder: "GUID", required: true }],
+    fields: [{ key: "segmentId", label: "Segment", type: "entity", source: "segment", required: true }],
   },
   RemoveFromSegment: {
     label: "Retirer d'un segment",
-    fields: [{ key: "segmentId", label: "SegmentId", type: "text", required: true }],
+    fields: [{ key: "segmentId", label: "Segment", type: "entity", source: "segment", required: true }],
   },
   AskAi: {
     label: "Réponse IA (dernier recours)",
@@ -98,6 +102,10 @@ export function defaultConfigFor(type: string): Record<string, unknown> {
   const cfg: Record<string, unknown> = {};
   ACTION_TYPES[type]?.fields.forEach((f) => {
     if (f.default !== undefined) cfg[f.key] = f.default;
+    // Seed select fields with their first option so the value actually saved
+    // matches what the <select> displays by default (a native select shows
+    // its first option even when the bound value is empty).
+    else if (f.type === "select" && f.options?.length) cfg[f.key] = f.options[0];
   });
   return cfg;
 }

@@ -8,11 +8,14 @@ import { Card, CardHeader, CardBody } from "@/components/ui/Card";
 import { PageLoader } from "@/components/feedback/PageLoader";
 import { useProductFunnels } from "@/hooks/useProductFunnels";
 import { useFunnelSteps } from "@/hooks/useFunnelSteps";
-import { postApiEventDefinitionSearchOptions } from "@/shared/api/generated/@tanstack/react-query.gen";
+import {
+  postApiEventDefinitionSearchOptions,
+  getApiEventFunnelByIdOptions,
+} from "@/shared/api/generated/@tanstack/react-query.gen";
 import { FunnelFormModal } from "@/components/features/products/FunnelFormModal";
 import { FunnelStepModal } from "@/components/features/products/funnels/FunnelStepModal";
 import { FunnelTimeline } from "@/components/features/products/funnels/FunnelTimeline";
-import type { EventFunnelStepDto } from "@/shared/api/generated/types.gen";
+import type { EventFunnelDto, EventFunnelStepDto } from "@/shared/api/generated/types.gen";
 
 interface FunnelDetailPageProps {
   productId: string;
@@ -24,7 +27,15 @@ export function FunnelDetailPage({ productId, funnelId }: FunnelDetailPageProps)
   const vm = useProductFunnels(productId);
   const { steps, isLoading: stepsLoading, createStep, updateStep, deleteStep } = useFunnelSteps(funnelId);
 
-  const funnel = vm.data?.items?.find((f) => f.id === funnelId);
+  // Load the funnel by its id — the search list is paginated, so scanning
+  // vm.data.items would miss any funnel not on the first page (and break a
+  // direct URL / refresh entirely).
+  const funnelQuery = useQuery({
+    ...getApiEventFunnelByIdOptions({ path: { id: funnelId } }),
+    select: (res) => res?.data as EventFunnelDto | undefined,
+    enabled: !!funnelId,
+  });
+  const funnel = funnelQuery.data;
 
   const { data: events = [] } = useQuery({
     ...postApiEventDefinitionSearchOptions({
@@ -60,9 +71,10 @@ export function FunnelDetailPage({ productId, funnelId }: FunnelDetailPageProps)
 
   const handleSaveInfo = async (data: any) => {
     await vm.updateFunnel({ body: { ...data, id: funnelId } });
+    funnelQuery.refetch();
   };
 
-  if (vm.isLoading) {
+  if (funnelQuery.isLoading) {
     return (
       <div className="py-20">
         <PageLoader />

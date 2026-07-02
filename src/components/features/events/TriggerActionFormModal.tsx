@@ -6,6 +6,7 @@ interface TriggerActionFormModalProps {
   open: boolean;
   onClose: () => void;
   action?: TriggerActionDto;
+  productId?: string;
   onSave: (data: Partial<TriggerActionDto>) => Promise<void>;
 }
 
@@ -13,6 +14,7 @@ export function TriggerActionFormModal({
   open,
   onClose,
   action,
+  productId,
   onSave,
 }: TriggerActionFormModalProps) {
   return (
@@ -24,6 +26,7 @@ export function TriggerActionFormModal({
     >
       <TriggerActionBuilder
         action={action}
+        productId={productId}
         onSave={async (data) => {
           await onSave(data);
           onClose();

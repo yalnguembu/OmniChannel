@@ -6,10 +6,13 @@ import { Input } from "@/components/ui/Input";
 import { Select } from "@/components/ui/Select";
 import { Toggle } from "@/components/ui/Toggle";
 import { ACTION_TYPES, defaultConfigFor } from "../actionTypes";
+import { EntitySelect } from "../EntitySelect";
 import type { TriggerActionDto } from "@/shared/api/generated/types.gen";
 
 interface TriggerActionBuilderProps {
   action?: TriggerActionDto;
+  /** Scopes product-filtered entity dropdowns (template, segment). */
+  productId?: string;
   onSave: (data: Partial<TriggerActionDto>) => Promise<void>;
   onCancel: () => void;
 }
@@ -28,7 +31,7 @@ function parseConfig(configJson?: string | null): Record<string, unknown> {
   }
 }
 
-export function TriggerActionBuilder({ action, onSave, onCancel }: TriggerActionBuilderProps) {
+export function TriggerActionBuilder({ action, productId, onSave, onCancel }: TriggerActionBuilderProps) {
   const [type, setType] = useState(action?.type || "SendText");
   const [cfg, setCfg] = useState<Record<string, unknown>>(() =>
     action ? parseConfig(action.configJson) : defaultConfigFor(type),
@@ -135,6 +138,20 @@ export function TriggerActionBuilder({ action, onSave, onCancel }: TriggerAction
                         onChange={(v) => setField(f.key, v)}
                       />
                     </div>
+                  );
+                }
+
+                if (f.type === "entity" && f.source) {
+                  return (
+                    <EntitySelect
+                      key={f.key}
+                      source={f.source}
+                      label={label}
+                      value={(value as string) ?? ""}
+                      onChange={(v) => setField(f.key, v)}
+                      productId={productId}
+                      emptyLabel={f.required ? "Sélectionner…" : "Aucun"}
+                    />
                   );
                 }
 

@@ -8,11 +8,12 @@ import type { TriggerActionDto, TriggerDto } from "@/shared/api/generated/types.
 
 interface EventTriggerCardProps {
   trigger: TriggerDto;
+  productId?: string;
   onEdit: () => void;
   onDelete: () => void;
 }
 
-export function EventTriggerCard({ trigger, onEdit, onDelete }: EventTriggerCardProps) {
+export function EventTriggerCard({ trigger, productId, onEdit, onDelete }: EventTriggerCardProps) {
   const { actions, isLoading, createAction, updateAction, deleteAction } = useTriggerActions(trigger.id);
   const [actionModalOpen, setActionModalOpen] = useState(false);
   const [editingAction, setEditingAction] = useState<TriggerActionDto | null>(null);
@@ -113,6 +114,7 @@ export function EventTriggerCard({ trigger, onEdit, onDelete }: EventTriggerCard
         open={actionModalOpen}
         onClose={() => setActionModalOpen(false)}
         action={editingAction ?? undefined}
+        productId={productId}
         onSave={handleSaveAction}
       />
     </div>

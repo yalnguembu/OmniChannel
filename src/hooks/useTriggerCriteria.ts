@@ -1,12 +1,23 @@
-import { useState, useCallback, useMemo } from "react";
+import { useState, useCallback, useEffect, useMemo } from "react";
+import { useQuery } from "@tanstack/react-query";
+import {
+  getApiClientSegmentMetadataOptions,
+  getApiProductAttributeSchemaByIdOptions,
+  getApiProductAttributeSchemaMetadataOptions,
+} from "@/shared/api/generated/@tanstack/react-query.gen";
 import type {
   ConditionOperatorInfo,
   LogicalOperatorInfo,
-  EventEngineMetadataResponse,
+  ConditionMetadataResponse,
+  ProductSchemaResponse,
+  SchemaEditorMetadataResponse,
+  SelectOption,
 } from "@/shared/api/generated/types.gen";
+import { useErrorHandling } from "@/shared/hooks/useErrorHandling";
 import {
   emptyGroup,
   emptyLeaf,
+  NATIVE_FIELDS,
   type CriteriaNode,
   type CriteriaAttribute,
   type CriteriaGroup,
@@ -34,46 +45,160 @@ export function updateNodeAt(
   };
 }
 
+/* ── Parse: API wire tree (one operator per group) → editor model (flat list +
+ * per-gap connectors). Mirrors useSegmentCriteria's parse so an existing
+ * trigger's conditionJson round-trips into the ConditionNodeEditor correctly
+ * (the previous naive JSON.parse dropped group operators and connectors). ── */
+
+function uiLeafFromWire(w: any): CriteriaNode {
+  return {
+    kind: "leaf",
+    attribute: typeof w?.attribute === "string" ? w.attribute : "",
+    operator: typeof w?.operator === "string" ? w.operator : "",
+    operand: w && "operand" in w ? w.operand : "",
+  };
+}
+
+/** Items `w` contributes to an enclosing AND-run (nested ANDs inlined; an OR → one sub-group). */
+function expandAndRun(w: any): CriteriaNode[] {
+  if (!w || typeof w !== "object") return [];
+  if (w.kind === "leaf") return [uiLeafFromWire(w)];
+  if (w.kind === "group") {
+    const children: any[] = Array.isArray(w.children) ? w.children : [];
+    if (w.operator === "or") return [wireGroupToUi(w)];
+    return children.flatMap(expandAndRun);
+  }
+  return [];
+}
+
+/** Flatten any wire node into one editor group (children + per-gap connectors). */
+function wireGroupToUi(w: any): CriteriaGroup {
+  if (!w || typeof w !== "object") return emptyGroup();
+  if (w.kind === "leaf")
+    return { kind: "group", children: [uiLeafFromWire(w)], connectors: [] };
+  const wchildren: any[] = Array.isArray(w.children) ? w.children : [];
+  if (w.operator === "or") {
+    const children: CriteriaNode[] = [];
+    const connectors: LogicalConnector[] = [];
+    wchildren.forEach((child) => {
+      expandAndRun(child).forEach((item, ii) => {
+        if (children.length > 0) connectors.push(ii === 0 ? "or" : "and");
+        children.push(item);
+      });
+    });
+    return { kind: "group", children, connectors };
+  }
+  const items = wchildren.flatMap(expandAndRun);
+  return {
+    kind: "group",
+    children: items,
+    connectors: items.slice(1).map((): LogicalConnector => "and"),
+  };
+}
+
+function parseConditionJson(raw: string | null | undefined): CriteriaGroup {
+  if (!raw || !raw.trim()) return emptyGroup();
+  try {
+    const parsed = JSON.parse(raw);
+    if (parsed?.kind === "leaf")
+      return { kind: "group", children: [uiLeafFromWire(parsed)], connectors: [] };
+    if (parsed?.kind === "group") return wireGroupToUi(parsed);
+  } catch {
+    /* malformed — start fresh */
+  }
+  return emptyGroup();
+}
+
 export function useTriggerCriteria(
-  metadata?: EventEngineMetadataResponse,
+  productId?: string | null,
   initialJson?: string | null,
 ) {
-  const [criteria, setCriteria] = useState<CriteriaNode>(() => {
-    if (initialJson) {
-      try {
-        const parsed = JSON.parse(initialJson);
-        // Basic tolerant parse
-        return parsed.kind === "group"
-          ? parsed
-          : { kind: "group", children: [parsed], connectors: [] };
-      } catch {
-        return emptyGroup();
-      }
-    }
-    return emptyGroup();
+  const { handleRequestError } = useErrorHandling();
+  const [criteria, setCriteria] = useState<CriteriaNode>(() =>
+    parseConditionJson(initialJson),
+  );
+
+  // Operators / attributeTypes / logicalOperators live on the shared condition
+  // metadata (ClientSegment/metadata), NOT on the event-engine metadata — the
+  // latter only carries matchRuleTypes/captures/actionTypes. Sourcing them from
+  // the event metadata is what left the operator list empty.
+  const condMetaQuery = useQuery({
+    ...getApiClientSegmentMetadataOptions(),
+    select: (res) => res?.data as ConditionMetadataResponse | undefined,
+    staleTime: 5 * 60 * 1000,
+  });
+  // Product attribute schema → client attributes (custom + derived) selectable
+  // in conditions, alongside capture.* / payload.* built by the caller.
+  const schemaQuery = useQuery({
+    ...getApiProductAttributeSchemaByIdOptions({ path: { id: productId ?? "" } }),
+    select: (res) => res?.data as ProductSchemaResponse | undefined,
+    enabled: !!productId,
+  });
+  const schemaMetaQuery = useQuery({
+    ...getApiProductAttributeSchemaMetadataOptions(),
+    select: (res) => res?.data as SchemaEditorMetadataResponse | undefined,
+    staleTime: 5 * 60 * 1000,
   });
 
+  useEffect(() => {
+    const q = [condMetaQuery, schemaQuery, schemaMetaQuery].find(
+      (x) => x.isError && x.error,
+    );
+    if (q?.error) handleRequestError(q.error);
+  }, [
+    condMetaQuery.isError,
+    condMetaQuery.error,
+    schemaQuery.isError,
+    schemaQuery.error,
+    schemaMetaQuery.isError,
+    schemaMetaQuery.error,
+    handleRequestError,
+  ]);
+
   const operators = useMemo<ConditionOperatorInfo[]>(
-    () => (metadata as any)?.operators ?? [],
-    [metadata],
+    () => condMetaQuery.data?.operators ?? [],
+    [condMetaQuery.data],
   );
   const logicalOperators = useMemo<LogicalOperatorInfo[]>(
-    () => (metadata as any)?.logicalOperators ?? [],
-    [metadata],
+    () => condMetaQuery.data?.logicalOperators ?? [],
+    [condMetaQuery.data],
   );
   const attributeTypes = useMemo(
-    () => (metadata as any)?.attributeTypes ?? [],
-    [metadata],
+    () => condMetaQuery.data?.attributeTypes ?? [],
+    [condMetaQuery.data],
   );
 
-  const valueKindForType = useCallback((type: string): string => {
-    // Basic mapping since we don't have schemaMetaQuery here
-    if (type === "Integer" || type === "Decimal") return "number";
-    if (type === "Date") return "date";
-    if (type === "DateTime") return "dateTime";
-    if (type === "Boolean") return "boolean";
-    return "string";
-  }, []);
+  // Client attributes (custom + derived from the product schema + native fields).
+  const clientAttributes = useMemo<CriteriaAttribute[]>(() => {
+    const custom: CriteriaAttribute[] = (schemaQuery.data?.attributes ?? [])
+      .filter((a) => (a.key ?? "").trim() !== "")
+      .map((a) => ({
+        key: a.key as string,
+        label: a.label || (a.key as string),
+        type: a.type != null ? String(a.type) : "Text",
+        isNative: false,
+        options: (a.options ?? undefined) as SelectOption[] | undefined,
+      }));
+    const native: CriteriaAttribute[] = NATIVE_FIELDS.map((f) => ({
+      ...f,
+      isNative: true,
+    }));
+    return [...custom, ...native];
+  }, [schemaQuery.data]);
+
+  const valueKindForType = useCallback(
+    (type: string): string => {
+      const t = (schemaMetaQuery.data?.types ?? []).find((x) => x.type === type);
+      if (t?.valueKind) return t.valueKind;
+      // Fallback mapping when the schema metadata hasn't loaded / lacks the type.
+      if (type === "Integer" || type === "Decimal") return "number";
+      if (type === "Date") return "date";
+      if (type === "DateTime") return "dateTime";
+      if (type === "Boolean") return "boolean";
+      return "string";
+    },
+    [schemaMetaQuery.data],
+  );
 
   const operatorsFor = useCallback(
     (type: string): ConditionOperatorInfo[] => {
@@ -184,6 +309,8 @@ export function useTriggerCriteria(
 
   return {
     criteria,
+    clientAttributes,
+    isLoading: condMetaQuery.isLoading,
     logicalOperators,
     operatorsFor,
     operandKindFor,
