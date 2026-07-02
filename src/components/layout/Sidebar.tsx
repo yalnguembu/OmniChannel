@@ -46,7 +46,7 @@ const nav = [
     section: "Gestion",
     items: [
       { to: "/billing/wallet", label: "Facturation", icon: CreditCard },
-      { to: "/integrations/connectors", label: "Intégrations", icon: Plug },
+      { to: "/integrations", label: "Intégrations", icon: Plug },
       { to: "/files", label: "Fichiers", icon: FolderOpen },
       { to: "/settings/company", label: "Paramètres", icon: Settings },
     ],

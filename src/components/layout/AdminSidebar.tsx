@@ -8,7 +8,6 @@ import {
   FileText,
   MessageSquare,
   Radio,
-  Network,
   ScrollText,
   Settings,
   ChevronRight,
@@ -45,7 +44,6 @@ const nav = [
     items: [
       { to: "/admin/messages", label: "Messages", icon: MessageSquare },
       { to: "/admin/channels", label: "Canaux", icon: Radio },
-      { to: "/admin/integrations", label: "Intégrations", icon: Network },
     ],
   },
   {

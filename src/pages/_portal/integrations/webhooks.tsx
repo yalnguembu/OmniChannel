@@ -1,4 +1,3 @@
-import { Link } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Plus, Trash2, Activity, ListChecks } from "lucide-react";
@@ -25,12 +24,7 @@ import { formatRelative } from "@/lib/date";
 import { cn } from "@/lib/utils";
 import type { WebhookEndpointDto } from "@/shared/api/types";
 
-const integTabs = [
-  { to: "/integrations/connectors", label: "Connecteurs" },
-  { to: "/integrations/webhooks", label: "Webhooks" },
-  { to: "/integrations/api-keys", label: "API Keys" },
-  { to: "/integrations/sync-logs", label: "Logs de sync" },
-];
+import { IntegrationsTabs } from "./IntegrationsTabs";
 
 const ALL_EVENTS = [
   "message.delivered",
@@ -101,20 +95,7 @@ export function WebhooksPage() {
           Connecteurs, webhooks, API Keys & logs
         </p>
       </div>
-      <div className="flex border-b border-[#E5E7EB] mb-6">
-        {integTabs.map((t) => (
-          <Link
-            key={t.to}
-            to={t.to}
-            className="px-4 py-2.5 text-[13px] border-b-2 border-transparent text-[#4A7A94] hover:text-[#0D2137] transition-all whitespace-nowrap"
-            activeProps={{
-              className: "text-[#1B5E82] font-medium !border-[#2E8FAD]",
-            }}
-          >
-            {t.label}
-          </Link>
-        ))}
-      </div>
+      <IntegrationsTabs />
 
       <div className="flex items-center justify-between mb-5">
         <p className="text-[13px] text-[#4A7A94]">

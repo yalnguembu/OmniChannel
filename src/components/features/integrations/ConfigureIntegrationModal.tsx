@@ -2,14 +2,17 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { useQuery } from "@tanstack/react-query";
 import { Trash2, Plus } from "lucide-react";
 import { Input } from "@/components/ui/Input";
 import { Select } from "@/components/ui/Select";
 import { Modal } from "@/components/ui/Modal";
 import { Button } from "@/components/ui/Button";
+import { getApiIntegrationConfigByIdOptions } from "@/shared/api/generated/@tanstack/react-query.gen";
 import type {
   ConfigureIntegrationRequest,
   IntegrationAuthConfig,
+  IntegrationConfigModel,
   SearchIntegrationResponse,
 } from "@/shared/api/generated/types.gen";
 import { IntegrationAuthType, ApiKeyLocation } from "@/shared/api/generated/types.gen";
@@ -139,23 +142,34 @@ export function ConfigureIntegrationModal({
   const [headers, setHeaders] = useState<Pair[]>([]);
   const [settings, setSettings] = useState<Pair[]>([]);
 
+  // Load the current config so the form opens pre-filled with the existing
+  // baseUrl / auth / headers / settings instead of blank.
+  const { data: config } = useQuery({
+    ...getApiIntegrationConfigByIdOptions({ path: { id: editing?.id ?? "" } }),
+    select: (res) => res?.data as IntegrationConfigModel | undefined,
+    enabled: isOpen && !!editing?.id,
+  });
+
+  const recordToPairs = (rec?: { [key: string]: string } | null): Pair[] =>
+    Object.entries(rec ?? {}).map(([key, value]) => ({ key, value: value ?? "" }));
+
   useEffect(() => {
-    if (isOpen) {
-      reset({
-        baseUrl: "",
-        authType: IntegrationAuthType.NONE,
-        token: "",
-        username: "",
-        password: "",
-        apiKey: "",
-        apiKeyName: "",
-        apiKeyLocation: ApiKeyLocation.HEADER,
-        apiKeyPrefix: "",
-      });
-      setHeaders([]);
-      setSettings([]);
-    }
-  }, [isOpen, reset]);
+    if (!isOpen) return;
+    const auth = config?.auth;
+    reset({
+      baseUrl: config?.baseUrl ?? "",
+      authType: auth?.type ?? IntegrationAuthType.NONE,
+      token: auth?.token ?? "",
+      username: auth?.username ?? "",
+      password: auth?.password ?? "",
+      apiKey: auth?.apiKey ?? "",
+      apiKeyName: auth?.apiKeyName ?? "",
+      apiKeyLocation: auth?.apiKeyLocation ?? ApiKeyLocation.HEADER,
+      apiKeyPrefix: auth?.apiKeyPrefix ?? "",
+    });
+    setHeaders(recordToPairs(auth?.defaultHeaders));
+    setSettings(recordToPairs(config?.settings));
+  }, [isOpen, config, reset]);
 
   const toRecord = (pairs: Pair[]): { [key: string]: string } =>
     pairs.reduce<{ [key: string]: string }>((acc, { key, value }) => {

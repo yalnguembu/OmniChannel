@@ -1,4 +1,3 @@
-import { Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { motion } from "framer-motion";
@@ -20,12 +19,7 @@ import { formatRelative } from "@/lib/date";
 import { cn } from "@/lib/utils";
 import { staggerContainer, cardItem } from "@/lib/animations";
 
-const integTabs = [
-  { to: "/integrations/connectors", label: "Connecteurs" },
-  { to: "/integrations/webhooks", label: "Webhooks" },
-  { to: "/integrations/api-keys", label: "API Keys" },
-  { to: "/integrations/sync-logs", label: "Logs de sync" },
-];
+import { IntegrationsTabs } from "../IntegrationsTabs";
 
 const stripeColors: Record<number, string> = {
   0: "linear-gradient(90deg,#F22F46,#FF7B85)",
@@ -77,20 +71,7 @@ export function IntegrationConnectorsPage() {
         </p>
       </div>
 
-      <div className="flex border-b border-[#E5E7EB] mb-6">
-        {integTabs.map((t) => (
-          <Link
-            key={t.to}
-            to={t.to}
-            className="px-4 py-2.5 text-[13px] border-b-2 border-transparent text-[#4A7A94] hover:text-[#0D2137] transition-all whitespace-nowrap"
-            activeProps={{
-              className: "text-[#1B5E82] font-medium !border-[#2E8FAD]",
-            }}
-          >
-            {t.label}
-          </Link>
-        ))}
-      </div>
+      <IntegrationsTabs />
 
       <div className="flex items-center justify-end mb-5">
         <Button variant="primary" onClick={openCreate}>

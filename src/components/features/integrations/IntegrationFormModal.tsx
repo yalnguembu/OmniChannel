@@ -17,22 +17,13 @@ const schema = z.object({
   type: z.string().min(1, "Type requis").max(1000),
   syncDirection: z.string().max(1000).optional(),
   isActive: z.boolean().default(true),
-  lastSyncAt: z.string().optional(),
-  nextSyncAt: z.string().optional(),
 });
 type FormValues = z.infer<typeof schema>;
-
-/** ISO string -> value accepted by <input type="datetime-local"> (YYYY-MM-DDTHH:mm). */
-const toLocalInput = (iso?: string | null) => (iso ? iso.slice(0, 16) : "");
-/** datetime-local value -> ISO string (or null when empty). */
-const toIso = (local?: string) =>
-  local ? new Date(local).toISOString() : null;
 
 interface IntegrationFormModalProps {
   isOpen: boolean;
   onClose: () => void;
   editing: SearchIntegrationResponse | null;
-  companies: { id: string; name: string }[];
   onSubmit: (data: CreateIntegrationRequest) => void;
   isPending: boolean;
 }
@@ -41,7 +32,6 @@ export function IntegrationFormModal({
   isOpen,
   onClose,
   editing,
-  companies,
   onSubmit,
   isPending,
 }: IntegrationFormModalProps) {
@@ -59,8 +49,6 @@ export function IntegrationFormModal({
       type: "",
       syncDirection: "",
       isActive: true,
-      lastSyncAt: "",
-      nextSyncAt: "",
     },
   });
 
@@ -71,8 +59,6 @@ export function IntegrationFormModal({
         type: editing?.type ?? "",
         syncDirection: editing?.syncDirection ?? "",
         isActive: editing?.isActive ?? true,
-        lastSyncAt: toLocalInput(editing?.lastSyncAt),
-        nextSyncAt: toLocalInput(editing?.nextSyncAt),
       });
     }
   }, [isOpen, editing, reset]);
@@ -103,8 +89,6 @@ export function IntegrationFormModal({
                 type: d.type,
                 syncDirection: d.syncDirection || null,
                 isActive: d.isActive,
-                lastSyncAt: toIso(d.lastSyncAt),
-                nextSyncAt: toIso(d.nextSyncAt),
               } satisfies CreateIntegrationRequest),
             )}
             loading={isPending}
@@ -134,9 +118,9 @@ export function IntegrationFormModal({
             </label>
             <Select {...register("syncDirection")}>
               <option value="">—</option>
-              <option value="Inbound">Entrante</option>
-              <option value="Outbound">Sortante</option>
-              <option value="Bidirectional">Bidirectionnelle</option>
+              <option value="Pull">Entrante</option>
+              <option value="Push">Sortante</option>
+              <option value="Sync">Synchrone</option>
             </Select>
           </div>
         </div>
@@ -150,20 +134,6 @@ export function IntegrationFormModal({
           <Toggle
             checked={isActive}
             onChange={(v) => setValue("isActive", v)}
-          />
-        </div>
-        <div className="grid grid-cols-2 gap-3">
-          <Input
-            label="Dernière synchronisation"
-            type="datetime-local"
-            error={errors.lastSyncAt?.message}
-            {...register("lastSyncAt")}
-          />
-          <Input
-            label="Prochaine synchronisation"
-            type="datetime-local"
-            error={errors.nextSyncAt?.message}
-            {...register("nextSyncAt")}
           />
         </div>
       </div>

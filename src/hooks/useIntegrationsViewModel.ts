@@ -8,7 +8,6 @@ import {
   putApiIntegrationMutation,
   putApiIntegrationConfigureMutation,
   deleteApiIntegrationByIdMutation,
-  getApiCompanyDropdownOptions,
 } from "@/shared/api/generated/@tanstack/react-query.gen";
 import type {
   CreateIntegrationRequest,
@@ -22,13 +21,14 @@ import { useDebounce } from "@/shared/hooks/useDebounce";
 const PAGE_SIZE = 25;
 
 /**
- * ViewModel for the admin Integrations page.
+ * ViewModel for the company Integrations page (portal). Integrations are scoped
+ * to the caller's company server-side, so no company selector is needed here.
  *
  * - List: paginated search returning `SearchIntegrationResponse` (brut).
  * - Create / Edit: `CreateIntegrationRequest` / `UpdateIntegrationRequest`.
  * - Configure: `ConfigureIntegrationRequest` (baseUrl + auth + settings).
  */
-export function useAdminIntegrationsViewModel() {
+export function useIntegrationsViewModel() {
   const queryClient = useQueryClient();
   const { handleRequestError, createMutationErrorHandler } = useErrorHandling();
 
@@ -63,18 +63,6 @@ export function useAdminIntegrationsViewModel() {
   useEffect(() => {
     if (query.isError && query.error) handleRequestError(query.error);
   }, [query.isError, query.error, handleRequestError]);
-
-  // Companies dropdown — needed to set `companyId` on creation.
-  const companiesQuery = useQuery({
-    ...getApiCompanyDropdownOptions(),
-    select: (res) =>
-      (res?.data ?? []).map((c) => ({
-        id: c.id ?? "",
-        name: c.name ?? "",
-      })),
-  });
-
-  const companies = companiesQuery.data ?? [];
 
   const integrations = query.data?.items ?? [];
   const total = query.data?.total ?? 0;
@@ -198,7 +186,6 @@ export function useAdminIntegrationsViewModel() {
     page,
     setPage,
     pageSize: PAGE_SIZE,
-    companies,
 
     // form modal
     isFormOpen,

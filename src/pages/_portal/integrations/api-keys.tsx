@@ -1,4 +1,3 @@
-import { Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { Eye, EyeOff, Copy, RefreshCw, Key } from "lucide-react";
@@ -15,12 +14,7 @@ import { PageLoader } from "@/components/feedback/PageLoader";
 import { formatDate } from "@/lib/date";
 import { Modal } from "@/components/ui/Modal";
 
-const integTabs = [
-  { to: "/integrations/connectors", label: "Connecteurs" },
-  { to: "/integrations/webhooks", label: "Webhooks" },
-  { to: "/integrations/api-keys", label: "API Keys" },
-  { to: "/integrations/sync-logs", label: "Logs de sync" },
-];
+import { IntegrationsTabs } from "./IntegrationsTabs";
 
 export function ApiKeysPage() {
   const companyId = useAuthStore((s) => s.user?.companyId);
@@ -74,20 +68,7 @@ export function ApiKeysPage() {
         </p>
       </div>
 
-      <div className="flex border-b border-[#E5E7EB] mb-6">
-        {integTabs.map((t) => (
-          <Link
-            key={t.to}
-            to={t.to}
-            className="px-4 py-2.5 text-[13px] border-b-2 border-transparent text-[#4A7A94] hover:text-[#0D2137] transition-all whitespace-nowrap"
-            activeProps={{
-              className: "text-[#1B5E82] font-medium !border-[#2E8FAD]",
-            }}
-          >
-            {t.label}
-          </Link>
-        ))}
-      </div>
+      <IntegrationsTabs />
 
       {!apiKey ? (
         <EmptyState
