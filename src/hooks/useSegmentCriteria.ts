@@ -51,7 +51,24 @@ export type CriteriaGroup = {
   /** connectors[i] joins children[i] and children[i + 1]; length === max(0, children.length - 1). */
   connectors: LogicalConnector[];
 };
-export type CriteriaNode = CriteriaLeaf | CriteriaGroup;
+/** "a reçu / n'a pas reçu l'événement X (dans N jours)". */
+export type CriteriaEvent = {
+  kind: "event";
+  code: string;
+  occurred: boolean;
+  withinDays?: number;
+};
+/** "a / n'a pas le tag X". */
+export type CriteriaTag = {
+  kind: "tag";
+  name: string;
+  has: boolean;
+};
+export type CriteriaNode =
+  | CriteriaLeaf
+  | CriteriaGroup
+  | CriteriaEvent
+  | CriteriaTag;
 
 export type OperandKind = "none" | "single" | "array" | "range";
 
@@ -67,7 +84,7 @@ type WireGroup = {
   operator: LogicalConnector;
   children: WireNode[];
 };
-type WireNode = WireLeaf | WireGroup;
+type WireNode = WireLeaf | WireGroup | CriteriaEvent | CriteriaTag;
 
 export const emptyGroup = (): CriteriaGroup => ({
   kind: "group",
@@ -79,6 +96,16 @@ export const emptyLeaf = (): CriteriaLeaf => ({
   attribute: "",
   operator: "",
   operand: "",
+});
+export const emptyEvent = (code = ""): CriteriaEvent => ({
+  kind: "event",
+  code,
+  occurred: true,
+});
+export const emptyTag = (name = ""): CriteriaTag => ({
+  kind: "tag",
+  name,
+  has: true,
 });
 const emptyWireGroup = (): WireGroup => ({
   kind: "group",
@@ -100,10 +127,25 @@ function uiLeafFromWire(w: any): CriteriaLeaf {
   };
 }
 
+/** A single non-group wire node (leaf / event / tag) → its editor node. */
+function uiNodeFromWire(w: any): CriteriaNode {
+  if (w?.kind === "event")
+    return {
+      kind: "event",
+      code: typeof w.code === "string" ? w.code : "",
+      occurred: w.occurred !== false,
+      ...(w.withinDays != null ? { withinDays: Number(w.withinDays) } : {}),
+    };
+  if (w?.kind === "tag")
+    return { kind: "tag", name: typeof w.name === "string" ? w.name : "", has: w.has !== false };
+  return uiLeafFromWire(w);
+}
+
 /** Items `w` contributes to an enclosing AND-run (nested ANDs inlined; an OR → one sub-group item). */
 function expandAndRun(w: any): CriteriaNode[] {
   if (!w || typeof w !== "object") return [];
-  if (w.kind === "leaf") return [uiLeafFromWire(w)];
+  if (w.kind === "leaf" || w.kind === "event" || w.kind === "tag")
+    return [uiNodeFromWire(w)];
   if (w.kind === "group") {
     const children: any[] = Array.isArray(w.children) ? w.children : [];
     if (w.operator === "or") return [wireGroupToUi(w)];
@@ -115,8 +157,8 @@ function expandAndRun(w: any): CriteriaNode[] {
 /** Flatten any wire node into one editor group (children + per-gap connectors). */
 function wireGroupToUi(w: any): CriteriaGroup {
   if (!w || typeof w !== "object") return emptyGroup();
-  if (w.kind === "leaf")
-    return { kind: "group", children: [uiLeafFromWire(w)], connectors: [] };
+  if (w.kind === "leaf" || w.kind === "event" || w.kind === "tag")
+    return { kind: "group", children: [uiNodeFromWire(w)], connectors: [] };
   const wchildren: any[] = Array.isArray(w.children) ? w.children : [];
   if (w.operator === "or") {
     const children: CriteriaNode[] = [];
@@ -142,8 +184,8 @@ function parseCriteria(raw: string | null | undefined): CriteriaGroup {
   if (!raw || !raw.trim()) return emptyGroup();
   try {
     const parsed = JSON.parse(raw);
-    if (parsed?.kind === "leaf")
-      return { kind: "group", children: [uiLeafFromWire(parsed)], connectors: [] };
+    if (parsed?.kind === "leaf" || parsed?.kind === "event" || parsed?.kind === "tag")
+      return { kind: "group", children: [uiNodeFromWire(parsed)], connectors: [] };
     if (parsed?.kind === "group") return wireGroupToUi(parsed);
   } catch {
     /* malformed — start fresh */
@@ -260,6 +302,9 @@ export function useSegmentCriteria(
     () => condMeta?.attributeTypes ?? [],
     [condMeta],
   );
+  // Event / tag catalogs for the event- and tag-condition nodes (new contract).
+  const events = useMemo(() => condMeta?.events ?? [], [condMeta]);
+  const tags = useMemo(() => condMeta?.tags ?? [], [condMeta]);
 
   const valueKindForType = useCallback(
     (type: string): string => {
@@ -384,6 +429,33 @@ export function useSegmentCriteria(
     setPreview(null);
   }, []);
 
+  const addChild = useCallback((path: number[], child: CriteriaNode) => {
+    setCriteria((prev) =>
+      updateNodeAt(prev, path, (n) =>
+        n.kind === "group"
+          ? {
+              ...n,
+              children: [...n.children, child],
+              connectors:
+                n.children.length >= 1
+                  ? [...n.connectors, "and" as LogicalConnector]
+                  : n.connectors,
+            }
+          : n,
+      ),
+    );
+    setPreview(null);
+  }, []);
+
+  const addEvent = useCallback(
+    (path: number[]) => addChild(path, emptyEvent()),
+    [addChild],
+  );
+  const addTag = useCallback(
+    (path: number[]) => addChild(path, emptyTag()),
+    [addChild],
+  );
+
   const removeNode = useCallback((path: number[]) => {
     if (path.length === 0) return; // never remove the root
     const parentPath = path.slice(0, -1);
@@ -451,6 +523,21 @@ export function useSegmentCriteria(
           operator: node.operator,
           ...(operand !== undefined ? { operand } : {}),
         };
+      }
+
+      // Event / tag nodes are already wire-shaped — prune only if unset.
+      if (node.kind === "event") {
+        if (!node.code) return null;
+        return {
+          kind: "event",
+          code: node.code,
+          occurred: node.occurred,
+          ...(node.withinDays != null ? { withinDays: node.withinDays } : {}),
+        };
+      }
+      if (node.kind === "tag") {
+        if (!node.name) return null;
+        return { kind: "tag", name: node.name, has: node.has };
       }
 
       // Group → keep built children with the connector joining each to the
@@ -598,12 +685,16 @@ export function useSegmentCriteria(
     operandKindFor,
     defaultOperandFor,
     valueKindForType,
+    events,
+    tags,
 
     // Tree
     criteria,
     updateNode,
     addLeaf,
     addGroup,
+    addEvent,
+    addTag,
     removeNode,
     setConnector,
 

@@ -15,7 +15,7 @@ export function CampaignsPage({ productId }: { productId?: string } = {}) {
 
   const statusOptions = [
     { value: 'all', label: 'Toutes', count: vm.counts?.all ?? 0 },
-    { value: 'active', label: 'Actives', count: vm.counts?.active ?? 0 },
+    { value: 'running', label: 'En cours', count: vm.counts?.running ?? 0 },
     { value: 'scheduled', label: 'Planifiées', count: vm.counts?.scheduled ?? 0 },
     { value: 'completed', label: 'Terminées', count: vm.counts?.completed ?? 0 },
     { value: 'draft', label: 'Brouillons', count: vm.counts?.draft ?? 0 },

@@ -14,8 +14,10 @@ import type {
 } from "@/shared/api/generated/types.gen";
 
 /**
- * Hook for managing campaign's specific steps (automation sequence).
- * Pass `options.enabled = false` to skip fetching until the steps tab is active.
+ * Manages a campaign's typed workflow steps (stepType + configJson + startMode).
+ * The channel/template/segment associations now live inside each step's
+ * configJson — the CampaignChannel/CampaignSegment resources were removed.
+ * Pass `options.enabled = false` to defer fetching until the tab is active.
  */
 export function useCampaignSteps(
   campaignId: string,
@@ -28,51 +30,55 @@ export function useCampaignSteps(
     ...postApiCampaignStepSearchOptions({
       body: { campaignId, pageSize: 100 },
     }),
-    select: (res) =>
-      (res?.data?.items as SearchCampaignStepResponse[]) || [],
+    select: (res) => {
+      const items = (res?.data?.items as SearchCampaignStepResponse[]) || [];
+      return [...items].sort(
+        (a, b) => (a.stepOrder ?? 0) - (b.stepOrder ?? 0),
+      );
+    },
     enabled: !!campaignId && isEnabled,
   });
+
+  const invalidate = () =>
+    queryClient.invalidateQueries({
+      queryKey: postApiCampaignStepSearchQueryKey(),
+    });
 
   const addMutation = useMutation({
     ...postApiCampaignStepMutation(),
     onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: postApiCampaignStepSearchQueryKey(),
-      });
+      invalidate();
       toast.success("Étape ajoutée");
     },
-    onError: () => toast.error("Erreur lors de l’ajout"),
+    onError: () => toast.error("Erreur lors de l'ajout de l'étape"),
   });
 
   const updateMutation = useMutation({
     ...putApiCampaignStepMutation(),
     onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: postApiCampaignStepSearchQueryKey(),
-      });
+      invalidate();
       toast.success("Étape mise à jour");
     },
+    onError: () => toast.error("Erreur lors de la mise à jour de l'étape"),
   });
 
   const deleteMutation = useMutation({
     ...deleteApiCampaignStepByIdMutation(),
     onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: postApiCampaignStepSearchQueryKey(),
-      });
+      invalidate();
       toast.success("Étape supprimée");
     },
+    onError: () => toast.error("Erreur lors de la suppression"),
   });
 
   return {
     campaignSteps: stepsQuery.data || [],
     isLoading: stepsQuery.isLoading,
 
-    // Actions
     handleAdd: (body: Omit<CreateCampaignStepRequest, "campaignId">) =>
-      addMutation.mutate({ body: { campaignId, ...body } }),
+      addMutation.mutateAsync({ body: { campaignId, ...body } }),
     handleUpdate: (body: Omit<UpdateCampaignStepRequest, "campaignId">) =>
-      updateMutation.mutate({ body: { ...body, campaignId } }),
+      updateMutation.mutateAsync({ body: { ...body, campaignId } }),
     handleDelete: (id: string) => deleteMutation.mutate({ path: { id } }),
     isActionPending:
       addMutation.isPending ||

@@ -4,11 +4,8 @@ import { cn } from "@/lib/utils";
 
 const wizardSteps = [
   { label: "Infos générales", sub: "Nom & type" },
-  { label: "Canaux", sub: "Sélection & templates" },
-  { label: "Ciblage", sub: "Segments & audience" },
-  { label: "Séquence", sub: "Étapes d'envoi" },
-  { label: "Planification", sub: "Date & fréquence" },
-  { label: "Confirmation", sub: "Lancement" },
+  { label: "Planification", sub: "Ponctuelle ou cron" },
+  { label: "Confirmation", sub: "Enregistrement" },
 ];
 
 export function WizardHeader({

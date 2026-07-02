@@ -5,22 +5,24 @@ import type {
   SearchCampaignResponse,
 } from "@/shared/api/generated/types.gen";
 
+// Backend statuses: Draft / Scheduled / Running / Completed / Failed / WaitingToken
+// (+ legacy active/paused). Normalized to lowercase.
 export const CampaignStatusSchema = z
-  .enum(["active", "draft", "paused", "completed", "scheduled"])
+  .enum([
+    "active",
+    "draft",
+    "paused",
+    "completed",
+    "scheduled",
+    "running",
+    "failed",
+    "waitingtoken",
+  ])
   .default("draft");
+// New contract: campaigns are OneTime or Recurring (cron-driven).
 export const CampaignTypeSchema = z
-  .enum(["standard", "ai", "trigger", "recurring"])
-  .default("standard");
-
-// Zod schema for the nested content of a campaign
-export const CampaignContentSchema = z
-  .object({
-    title: z.string().optional().default(""),
-    body: z.string().optional().default(""),
-    templateId: z.string().optional().nullable().default(null),
-    variables: z.record(z.any()).default({}),
-  })
-  .default({});
+  .enum(["onetime", "recurring"])
+  .default("onetime");
 
 export const CampaignSchema = BaseModelSchema.extend({
   name: z.string().min(1, "Le nom est obligatoire"),
@@ -29,12 +31,13 @@ export const CampaignSchema = BaseModelSchema.extend({
   type: CampaignTypeSchema,
   productId: z.string().min(1, "L'espace produit est obligatoire"),
   productName: z.string().optional().nullable().default(null),
-  clientId: z.string().optional().nullable().default(null),
   scheduledAt: z.string().optional().nullable().default(null),
   startedAt: z.string().optional().nullable().default(null),
   completedAt: z.string().optional().nullable().default(null),
-  recurrencePattern: z.string().optional().nullable().default(null),
-  content: CampaignContentSchema,
+  // Cron scheduling model.
+  isRecurring: z.boolean().default(false),
+  cronExpression: z.string().optional().nullable().default(null),
+  nextRunAt: z.string().optional().nullable().default(null),
   // Delivery stats
   totalRecipients: z.number().default(0),
   successfulSends: z.number().default(0),
@@ -58,15 +61,13 @@ export function mapToCampaignModel(
       name: "Nouvelle Campagne",
       productId: "",
       status: "draft",
-      type: "standard",
-      content: {}, // Campaign content is managed via steps/templates, not a direct payload on Dto
+      type: "onetime",
     });
 
   return CampaignSchema.parse({
     ...dto,
     status: dto.status?.toLowerCase() || "draft",
-    type: dto.type?.toLowerCase() || "standard",
-    content: {}, // Campaign content is managed via steps/templates, not a direct payload on Dto
+    type: dto.type?.toLowerCase() || "onetime",
   });
 }
 

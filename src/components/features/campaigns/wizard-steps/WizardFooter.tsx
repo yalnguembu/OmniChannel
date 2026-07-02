@@ -55,7 +55,7 @@ export function WizardFooter({
             loading={isFinalizeLoading}
             className="w-full lg:w-auto px-8 font-medium"
           >
-            Lancer la campagne
+            Enregistrer
           </Button>
         ) : (
           <Button

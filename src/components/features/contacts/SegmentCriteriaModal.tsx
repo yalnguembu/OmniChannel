@@ -103,7 +103,7 @@ export function SegmentCriteriaModal({
                 Les « ET » sont évalués avant les « OU »
               </p>
             </div>
-            <ConditionNodeEditor node={vm.criteria} path={[]} vm={vm} />
+            <ConditionNodeEditor node={vm.criteria} path={[]} vm={vm} allowEventTag />
           </div>
 
           <div className="flex flex-wrap items-center gap-3 border-t border-[#E5E7EB] pt-4">

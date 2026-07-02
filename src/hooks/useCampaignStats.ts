@@ -21,7 +21,9 @@ export function useCampaignStats(campaignId: string) {
     refetchInterval: (query) => {
       const status = (query.state.data as SearchCampaignStatisticResponse | null)
         ?.campaignStatus;
-      return status === "active" || status === "broadcasting" ? 5000 : false;
+      const s = (status || "").toLowerCase();
+      // Poll while the campaign is actively dispatching (new contract: "running").
+      return s === "running" || s === "active" || s === "broadcasting" ? 5000 : false;
     },
   });
 

@@ -138,6 +138,9 @@ export function TriggerBuilder({ event, trigger, onValidateCondition, onSave, on
       };
     }
 
+    // Trigger conditions only use leaf/group (event/tag nodes are segment-only).
+    if (node.kind !== "group") return null;
+
     const kept: { wire: WireNode; conn: "and" | "or" }[] = [];
     node.children.forEach((child, i) => {
       const w = buildWire(child);

@@ -1,5 +1,4 @@
-import React from "react";
-import { Send, Sparkles, Zap, Repeat } from "lucide-react";
+import { Send, Repeat } from "lucide-react";
 import { Input } from "@/components/ui/Input";
 import { Select } from "@/components/ui/Select";
 import { Textarea } from "@/components/ui/Textarea";
@@ -21,24 +20,25 @@ export function StepGeneral({
       <div className="bg-white p-6 rounded-lg border border-[#E5E7EB] space-y-6">
         <Input
           label="Nom de la campagne *"
-          placeholder="ex: Promo Printemps - SMS"
+          placeholder="ex: Relance réabonnement"
           value={draft.name || ""}
           onChange={(e) => updateDraft({ name: e.target.value })}
           className="h-12 text-[15px]"
         />
-        <Select
-          label="Espace produit lié *"
-          value={draft.productId || ""}
-          onChange={(e: any) => updateDraft({ productId: e.target.value })}
-          disabled={!!productId}
-          options={[
-            { value: "", label: "Sélectionner un espace..." },
-            ...dropdownProducts.map((p: any) => ({
-              value: p.id,
-              label: p.name,
-            })),
-          ]}
-        />
+        {!productId && (
+          <Select
+            label="Espace produit lié *"
+            value={draft.productId || ""}
+            onChange={(e: any) => updateDraft({ productId: e.target.value })}
+            options={[
+              { value: "", label: "Sélectionner un espace..." },
+              ...dropdownProducts.map((p: any) => ({
+                value: p.id,
+                label: p.name,
+              })),
+            ]}
+          />
+        )}
         <Textarea
           label="Description & Objectifs"
           placeholder="Détaillez le but de cette campagne..."
@@ -50,41 +50,29 @@ export function StepGeneral({
 
       <div className="bg-white p-6 rounded-lg border border-[#E5E7EB]">
         <p className="text-[13px] font-medium text-[#0D2137] mb-5">
-          Type de diffusion
+          Type de campagne
         </p>
         <div className="grid grid-cols-2 gap-4">
           {[
             {
-              id: "standard",
-              label: "Standard",
-              desc: "Envoi massif instantané",
+              recurring: false,
+              label: "Ponctuelle",
+              desc: "Exécution unique (à la demande)",
               icon: Send,
             },
             {
-              id: "ai",
-              label: "IA · Auto",
-              desc: "Optimisation par l'IA",
-              icon: Sparkles,
-            },
-            {
-              id: "trigger",
-              label: "Déclenché",
-              desc: "Basé sur un événement",
-              icon: Zap,
-            },
-            {
-              id: "recurring",
-              label: "Récurrent",
-              desc: "Série planifiée",
+              recurring: true,
+              label: "Récurrente",
+              desc: "Planifiée par expression cron",
               icon: Repeat,
             },
           ].map((t) => {
-            const sel = draft.type === t.id;
+            const sel = !!draft.isRecurring === t.recurring;
             const Icon = t.icon;
             return (
               <div
-                key={t.id}
-                onClick={() => updateDraft({ type: t.id as any })}
+                key={t.label}
+                onClick={() => updateDraft({ isRecurring: t.recurring })}
                 className={cn(
                   "p-4 border rounded-lg cursor-pointer transition-all hover:bg-[#F7F8F9] relative",
                   sel
@@ -95,9 +83,7 @@ export function StepGeneral({
                 <div
                   className={cn(
                     "w-10 h-10 rounded-[9px] flex items-center justify-center mb-3",
-                    sel
-                      ? "bg-[#2E8FAD] text-white"
-                      : "bg-[#F3F4F6] text-[#8BAFC0]",
+                    sel ? "bg-[#2E8FAD] text-white" : "bg-[#F3F4F6] text-[#8BAFC0]",
                   )}
                 >
                   <Icon size={18} />

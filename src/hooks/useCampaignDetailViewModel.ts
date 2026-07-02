@@ -1,20 +1,19 @@
 import { useState, useCallback, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
 import {
   getApiCampaignDetailByIdOptions,
-  putApiCampaignMutation,
   getApiCampaignDetailByIdQueryKey,
+  postApiCampaignScheduleByCampaignIdMutation,
+  postApiCampaignUnschedulebyCampaignIdMutation,
 } from "@/shared/api/generated/@tanstack/react-query.gen";
-import {
-  mapToCampaignModel,
-  type CampaignModel,
-} from "@/models/campaign.model";
-import type { UpdateCampaignRequest } from "@/shared/api/generated/types.gen";
+import { mapToCampaignModel } from "@/models/campaign.model";
 import { useErrorHandling } from "@/shared/hooks/useErrorHandling";
 
 /**
- * Master ViewModel for the Campaign Detail page.
- * Orchestrates core campaign data and active tab state.
+ * Master ViewModel for the Campaign Detail page. Scheduling now goes through
+ * the cron endpoints (schedule/unschedule); execution through the run engine
+ * (see useCampaignRuns). The legacy status-mutation "launch/pause" is gone.
  */
 export function useCampaignDetailViewModel(campaignId: string) {
   const queryClient = useQueryClient();
@@ -35,15 +34,34 @@ export function useCampaignDetailViewModel(campaignId: string) {
 
   const campaign = campaignQuery.data;
 
-  // Global Actions
-  const updateStatusMutation = useMutation({
-    ...putApiCampaignMutation(),
+  const invalidate = () =>
+    queryClient.invalidateQueries({
+      queryKey: getApiCampaignDetailByIdQueryKey({ path: { id: campaignId } }),
+    });
+
+  const scheduleMutation = useMutation({
+    ...postApiCampaignScheduleByCampaignIdMutation(),
     onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: getApiCampaignDetailByIdQueryKey({ path: { id: campaignId } }),
-      });
+      invalidate();
+      toast.success("Campagne planifiée");
     },
-    onError: createMutationErrorHandler(),
+    onError: createMutationErrorHandler({
+      toastMessage: "Erreur lors de la planification",
+    }),
+  });
+
+  // NOTE: the contract path is malformed (`/api/campaign/unschedule{campaignId}`
+  // — missing slash), so the generated helper's URL is broken until the backend
+  // fixes it. Wired anyway so it works once corrected.
+  const unscheduleMutation = useMutation({
+    ...postApiCampaignUnschedulebyCampaignIdMutation(),
+    onSuccess: () => {
+      invalidate();
+      toast.success("Campagne déplanifiée");
+    },
+    onError: createMutationErrorHandler({
+      toastMessage: "Erreur lors de la déplanification",
+    }),
   });
 
   return {
@@ -52,31 +70,22 @@ export function useCampaignDetailViewModel(campaignId: string) {
     activeTab,
     setActiveTab,
     statusVariant: (s: string): "success" | "warning" | "neutral" | "error" => {
-      if (s === "active") return "success";
-      if (s === "scheduled") return "warning";
-      if (s === "completed") return "success";
-      if (s === "paused") return "warning";
+      if (s === "running" || s === "active" || s === "completed") return "success";
+      if (s === "scheduled" || s === "paused" || s === "waitingtoken") return "warning";
+      if (s === "failed") return "error";
       return "neutral";
     },
 
-    // Actions
-    handleUpdateStatus: (status: CampaignModel["status"]) => {
-      const body: UpdateCampaignRequest = { id: campaignId, status };
-      updateStatusMutation.mutate({ body });
-    },
-    // Launch mirrors the wizard finalize: scheduled if a date is set, else active.
-    handleLaunch: () => {
-      const status: CampaignModel["status"] = campaign?.scheduledAt
-        ? "scheduled"
-        : "active";
-      const body: UpdateCampaignRequest = {
-        id: campaignId,
-        status,
-        scheduledAt: campaign?.scheduledAt ?? undefined,
-      };
-      updateStatusMutation.mutate({ body });
-    },
-    isStatusPending: updateStatusMutation.isPending,
+    // Scheduling
+    handleSchedule: useCallback(
+      () => scheduleMutation.mutateAsync({ path: { campaignId } }),
+      [scheduleMutation, campaignId],
+    ),
+    handleUnschedule: useCallback(
+      () => unscheduleMutation.mutateAsync({ path: { campaignId } }),
+      [unscheduleMutation, campaignId],
+    ),
+    isScheduling: scheduleMutation.isPending || unscheduleMutation.isPending,
     refetch: campaignQuery.refetch,
   };
 }

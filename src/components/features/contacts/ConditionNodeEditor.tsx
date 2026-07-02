@@ -22,10 +22,13 @@ export function ConditionNodeEditor({
   node,
   path,
   vm,
+  allowEventTag = false,
 }: {
   node: CriteriaNode;
   path: number[];
   vm: SegmentCriteriaVM;
+  /** Enables the "événement" / "tag" condition nodes (segments only). */
+  allowEventTag?: boolean;
 }) {
   const isRoot = path.length === 0;
 
@@ -84,18 +87,122 @@ export function ConditionNodeEditor({
                   <div className="h-px flex-1 bg-[#E5E7EB]" />
                 </div>
               )}
-              <ConditionNodeEditor node={child} path={[...path, idx]} vm={vm} />
+              <ConditionNodeEditor
+                node={child}
+                path={[...path, idx]}
+                vm={vm}
+                allowEventTag={allowEventTag}
+              />
             </div>
           ))}
         </div>
 
-        <div className="mt-2 flex items-center gap-2">
+        <div className="mt-2 flex items-center gap-2 flex-wrap">
           <Button variant="secondary" size="sm" onClick={() => vm.addLeaf(path)}>
             <Plus size={12} /> Condition
           </Button>
+          {allowEventTag && vm.addEvent && (
+            <Button variant="ghost" size="sm" onClick={() => vm.addEvent(path)}>
+              <Plus size={12} /> Événement
+            </Button>
+          )}
+          {allowEventTag && vm.addTag && (
+            <Button variant="ghost" size="sm" onClick={() => vm.addTag(path)}>
+              <Plus size={12} /> Tag
+            </Button>
+          )}
           <Button variant="ghost" size="sm" onClick={() => vm.addGroup(path)}>
             <Plus size={12} /> Groupe
           </Button>
+        </div>
+      </div>
+    );
+  }
+
+  // ── Event condition ───────────────────────────────────────────────────────
+  if (node.kind === "event") {
+    return (
+      <div className="rounded-md border border-[#E5E7EB] bg-white p-3">
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="text-[11px] font-medium uppercase tracking-[0.06em] text-[#8BAFC0]">
+            Événement
+          </span>
+          <Select
+            value={String(node.occurred)}
+            onChange={(e) => vm.updateNode(path, { occurred: e.target.value === "true" })}
+            options={[
+              { value: "true", label: "a reçu" },
+              { value: "false", label: "n'a pas reçu" },
+            ]}
+          />
+          <Select
+            value={node.code}
+            onChange={(e) => vm.updateNode(path, { code: e.target.value })}
+            options={[
+              { value: "", label: "Choisir un événement…" },
+              ...(vm.events ?? []).map((ev: any) => ({
+                value: ev.code ?? "",
+                label: ev.label ? `${ev.label} (${ev.code})` : ev.code ?? "",
+              })),
+            ]}
+          />
+          <input
+            type="number"
+            placeholder="dans N jours (option.)"
+            value={node.withinDays ?? ""}
+            onChange={(e) =>
+              vm.updateNode(path, {
+                withinDays: e.target.value ? Number(e.target.value) : undefined,
+              })
+            }
+            className="w-40 px-3 py-2 border border-[#E5E7EB] rounded-md text-[13px] outline-none focus:border-[#2E8FAD]"
+          />
+          <button
+            onClick={() => vm.removeNode(path)}
+            className="ml-auto shrink-0 p-2 text-[#8BAFC0] transition-colors hover:text-[#DC2626]"
+            title="Supprimer la condition"
+          >
+            <Trash2 size={14} />
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // ── Tag condition ─────────────────────────────────────────────────────────
+  if (node.kind === "tag") {
+    return (
+      <div className="rounded-md border border-[#E5E7EB] bg-white p-3">
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="text-[11px] font-medium uppercase tracking-[0.06em] text-[#8BAFC0]">
+            Tag
+          </span>
+          <Select
+            value={String(node.has)}
+            onChange={(e) => vm.updateNode(path, { has: e.target.value === "true" })}
+            options={[
+              { value: "true", label: "a le tag" },
+              { value: "false", label: "n'a pas le tag" },
+            ]}
+          />
+          <Select
+            value={node.name}
+            onChange={(e) => vm.updateNode(path, { name: e.target.value })}
+            options={[
+              { value: "", label: "Choisir un tag…" },
+              ...(vm.tags ?? []).map((t: any) => ({
+                value: t.name ?? "",
+                label: t.name ?? "",
+              })),
+            ]}
+          />
+          <button
+            onClick={() => vm.removeNode(path)}
+            className="ml-auto shrink-0 p-2 text-[#8BAFC0] transition-colors hover:text-[#DC2626]"
+            title="Supprimer la condition"
+          >
+            <Trash2 size={14} />
+          </button>
         </div>
       </div>
     );

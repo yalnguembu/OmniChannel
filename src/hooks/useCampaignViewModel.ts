@@ -127,7 +127,7 @@ export function useCampaignViewModel(productId?: string) {
   const counts = useMemo(
     () => ({
       all: totalCount,
-      active: campaigns.filter((c) => c.status === "active").length,
+      running: campaigns.filter((c) => c.status === "running" || c.status === "active").length,
       scheduled: campaigns.filter((c) => c.status === "scheduled").length,
       completed: campaigns.filter((c) => c.status === "completed").length,
       draft: campaigns.filter((c) => c.status === "draft").length,
@@ -195,8 +195,10 @@ export function useCampaignViewModel(productId?: string) {
     handleDuplicate: (c: CampaignModel) => {
       const body: CreateCampaignRequest = {
         name: `${c.name} (copie)`,
-        status: "draft",
-        type: c.type,
+        status: "Draft",
+        type: c.type === "recurring" ? "Recurring" : "OneTime",
+        isRecurring: c.type === "recurring",
+        cronExpression: c.cronExpression || undefined,
         productId: c.productId,
         description: c.description || undefined,
       };
