@@ -1,4 +1,11 @@
-import { BarChart2, Copy, MoreHorizontal, AlignLeft, Repeat, Send } from "lucide-react";
+import {
+  BarChart2,
+  Copy,
+  MoreHorizontal,
+  AlignLeft,
+  Repeat,
+  Send,
+} from "lucide-react";
 import { motion } from "framer-motion";
 import { useNavigate } from "@tanstack/react-router";
 import { Badge } from "@/components/ui/Badge";
@@ -27,13 +34,21 @@ interface CampaignCardProps {
   onDelete?: (id: string) => void;
 }
 
-export function CampaignCard({ campaign, onEdit, onDuplicate }: CampaignCardProps) {
+export function CampaignCard({
+  campaign,
+  onEdit,
+  onDuplicate,
+}: CampaignCardProps) {
   const navigate = useNavigate();
   const type = campaign.type || "onetime";
 
-  const statusVariant = (s: string): "success" | "warning" | "neutral" | "error" => {
-    if (s === "running" || s === "active" || s === "completed") return "success";
-    if (s === "scheduled" || s === "paused" || s === "waitingtoken") return "warning";
+  const statusVariant = (
+    s: string,
+  ): "success" | "warning" | "neutral" | "error" => {
+    if (s === "running" || s === "active" || s === "completed")
+      return "success";
+    if (s === "scheduled" || s === "paused" || s === "waitingtoken")
+      return "warning";
     if (s === "failed") return "error";
     return "neutral";
   };
@@ -41,7 +56,8 @@ export function CampaignCard({ campaign, onEdit, onDuplicate }: CampaignCardProp
   const isDraft = campaign.status === "draft";
   const sent = campaign.successfulSends + campaign.failedSends;
   const delivered = campaign.successfulSends;
-  const deliveryRate = sent > 0 ? Math.round((delivered / sent) * 1000) / 10 : 0;
+  const deliveryRate =
+    sent > 0 ? Math.round((delivered / sent) * 1000) / 10 : 0;
   const progression =
     campaign.totalRecipients > 0
       ? Math.min(Math.round((sent / campaign.totalRecipients) * 100), 100)
@@ -56,8 +72,8 @@ export function CampaignCard({ campaign, onEdit, onDuplicate }: CampaignCardProp
       className="bg-white border border-[#E5E7EB]/80 rounded-[20px] overflow-hidden cursor-pointer hover:-translate-y-1 hover:shadow-[0_12px_36px_rgba(13,33,55,0.1)] hover:border-[#6AB8D4]/50 transition-all duration-220 group"
       onClick={() =>
         navigate({
-          to: "/campaigns/$campaignId",
-          params: { campaignId: campaign.id },
+          to: "/$productId/campaigns/$campaignId",
+          params: { productId: campaign.productId, campaignId: campaign.id },
         })
       }
     >
@@ -106,7 +122,10 @@ export function CampaignCard({ campaign, onEdit, onDuplicate }: CampaignCardProp
           <div className="h-[6px] w-full rounded-full bg-[#F0F2F4] overflow-hidden">
             <div
               className="h-full rounded-full transition-all duration-500"
-              style={{ width: `${progression}%`, background: stripeGradient[type] }}
+              style={{
+                width: `${progression}%`,
+                background: stripeGradient[type],
+              }}
             />
           </div>
         </div>
@@ -145,7 +164,10 @@ export function CampaignCard({ campaign, onEdit, onDuplicate }: CampaignCardProp
             {isDraft ? "Créée " : "Mise à jour "}
             {formatRelative(campaign.updatedAt ?? campaign.createdAt)}
           </span>
-          <div className="flex items-center gap-1.5" onClick={(e) => e.stopPropagation()}>
+          <div
+            className="flex items-center gap-1.5"
+            onClick={(e) => e.stopPropagation()}
+          >
             {isDraft && onEdit && (
               <button
                 onClick={() => onEdit(campaign.id)}

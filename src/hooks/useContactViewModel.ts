@@ -27,14 +27,17 @@ import type { DateRange } from "@/components/ui/DateRangePicker";
 /**
  * ViewModel for the global Contacts/Clients list.
  */
-export function useContactViewModel(forcedProductId?: string) {
+export function useContactViewModel(
+  forcedProductId?: string,
+  forcedSegmentId?: string,
+) {
   const queryClient = useQueryClient();
   const { handleRequestError, createMutationErrorHandler } = useErrorHandling();
 
   // --- State ---
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
-  const [segmentId, setSegmentId] = useState("all");
+  const [segmentId, setSegmentId] = useState(forcedSegmentId ?? "all");
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(15);
   // When scoped to a product (product page), the filter is locked to it.
@@ -47,6 +50,13 @@ export function useContactViewModel(forcedProductId?: string) {
       setPage(1);
     }
   }, [forcedProductId]);
+
+  useEffect(() => {
+    if (forcedSegmentId) {
+      setSegmentId(forcedSegmentId);
+      setPage(1);
+    }
+  }, [forcedSegmentId]);
 
   // UI state
   const [isModalOpen, setIsModalOpen] = useState(false);

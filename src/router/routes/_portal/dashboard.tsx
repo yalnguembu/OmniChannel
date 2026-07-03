@@ -39,7 +39,7 @@ function DashboardPage() {
       {/* Header section */}
       <DashboardHeader
         notificationsCount={vm.notifications.length}
-        onNewCampaign={() => navigate({ to: "/campaigns/new" })}
+        onNewCampaign={() => navigate({ to: "/products" })}
       />
 
       {/* Critical Alerts Area */}
@@ -67,7 +67,13 @@ function DashboardPage() {
         <RecentCampaignsCard
           campaigns={vm.campaigns}
           onNavigateAll={() => navigate({ to: "/products" })}
-          onNavigateDetail={(id) => navigate({ to: "/campaigns/$campaignId", params: { campaignId: id } })}
+          onNavigateDetail={(c) =>
+            c.productId &&
+            navigate({
+              to: "/$productId/campaigns/$campaignId",
+              params: { productId: c.productId, campaignId: c.id },
+            })
+          }
         />
 
         {/* Mes Produits */}

@@ -1,6 +1,7 @@
 import { useState } from "react";
+import { useNavigate } from "@tanstack/react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Plus, Trash2, Users, SlidersHorizontal } from "lucide-react";
+import { Plus, Trash2, Users, SlidersHorizontal, Eye, ArrowUpRight } from "lucide-react";
 import { toast } from "sonner";
 import {
   postApiClientSegmentSearchOptions,
@@ -33,9 +34,23 @@ export function SegmentManagerModal({
   productId,
 }: SegmentManagerModalProps) {
   const qc = useQueryClient();
+  const navigate = useNavigate();
   const [newName, setNewName] = useState("");
   const [editorOpen, setEditorOpen] = useState(false);
   const [editing, setEditing] = useState<SegmentModel | null>(null);
+
+  const goToList = () => {
+    onClose();
+    navigate({ to: "/$productId/contacts/segments", params: { productId } });
+  };
+
+  const goToDetail = (segmentId: string) => {
+    onClose();
+    navigate({
+      to: "/$productId/contacts/segments/$segmentId",
+      params: { productId, segmentId },
+    });
+  };
 
   const { data, isLoading } = useQuery({
     ...postApiClientSegmentSearchOptions({
@@ -69,6 +84,11 @@ export function SegmentManagerModal({
         title="Gérer les segments"
         subtitle="Organisez vos contacts par critères pour ce produit"
         size="md"
+        footer={
+          <Button variant="secondary" size="sm" onClick={goToList}>
+            Voir tous les segments <ArrowUpRight size={13} />
+          </Button>
+        }
       >
         <div className="space-y-5 py-1">
           <div className="flex gap-2">
@@ -128,6 +148,13 @@ export function SegmentManagerModal({
                       </div>
                     </div>
                     <div className="flex shrink-0 items-center gap-1">
+                      <button
+                        onClick={() => goToDetail(s.id)}
+                        className="rounded-lg p-2 text-[#8BAFC0] transition-all hover:bg-[#E8F4F8] hover:text-[#2E8FAD]"
+                        title="Voir le détail"
+                      >
+                        <Eye size={14} />
+                      </button>
                       <Button
                         variant="secondary"
                         size="sm"

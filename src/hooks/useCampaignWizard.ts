@@ -1,10 +1,9 @@
 import { useState, useEffect } from "react";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { toast } from "sonner";
 import {
   getApiCampaignByIdOptions,
-  getApiProductDropdownOptions,
   postApiCampaignMutation,
   putApiCampaignMutation,
   postApiCampaignSearchQueryKey,
@@ -20,32 +19,45 @@ import { useErrorHandling } from "@/shared/hooks/useErrorHandling";
 /**
  * Campaign create/edit flow. The new contract dropped channels/segments as
  * resources (targeting lives in step configJson, managed on the detail page),
- * so this collapses to a simple 2-step form: general info + cron scheduling.
- * Steps and runs are managed afterwards on the campaign detail page.
+ * so this collapsed to a single form: general info + cron scheduling. It is now
+ * surfaced in a modal (see CampaignFormModal); steps and runs are managed
+ * afterwards on the campaign detail page.
  */
 export function useCampaignWizard({
   productId,
+  campaignId,
+  open,
   onClose,
 }: {
   productId?: string;
+  campaignId?: string;
+  open: boolean;
   onClose: () => void;
 }) {
-  const { draft, step, setStep, updateDraft, resetDraft } =
-    useCampaignDraftStore();
+  const { draft, updateDraft, resetDraft } = useCampaignDraftStore();
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const { createMutationErrorHandler } = useErrorHandling();
 
   const [loadingInitial, setLoadingInitial] = useState(false);
-  const activeProductId = productId || draft.productId;
 
-  // Seed the draft when editing an existing campaign.
+  // Seed the draft each time the modal opens: an id → edit (fetch), otherwise
+  // a fresh create draft scoped to the product (if any).
+  useEffect(() => {
+    if (!open) return;
+    if (campaignId) {
+      updateDraft({ id: campaignId });
+    } else {
+      resetDraft();
+      if (productId) updateDraft({ productId });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open, campaignId, productId]);
+
+  // Load the existing campaign into the draft when editing.
   useEffect(() => {
     async function loadDraft() {
-      if (!draft.id) {
-        if (productId && !draft.productId) updateDraft({ productId });
-        return;
-      }
+      if (!open || !draft.id) return;
       setLoadingInitial(true);
       try {
         const campRes = await queryClient.fetchQuery(
@@ -68,12 +80,7 @@ export function useCampaignWizard({
     }
     loadDraft();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [draft.id]);
-
-  const { data: dropdownProducts } = useQuery({
-    ...getApiProductDropdownOptions(),
-    enabled: !productId,
-  });
+  }, [open, draft.id]);
 
   const createMutation = useMutation({
     ...postApiCampaignMutation(),
@@ -97,22 +104,14 @@ export function useCampaignWizard({
     };
   };
 
-  const handleNext = () => {
-    if (step === 0) {
-      if (!draft.name?.trim()) return toast.error("Le nom est requis");
-      if (!draft.productId && !productId)
-        return toast.error("Veuillez sélectionner un produit");
-    }
-    setStep(step + 1);
-  };
-
-  const handleFinish = async () => {
+  const handleSubmit = async () => {
     if (!draft.name?.trim()) return toast.error("Le nom est requis");
     const finalProductId = draft.productId || productId;
-    if (!finalProductId) return toast.error("Produit requis");
+    if (!finalProductId) return toast.error("Veuillez sélectionner un produit");
     if (draft.isRecurring && !draft.cronExpression?.trim())
       return toast.error("Une campagne récurrente requiert une expression cron");
 
+    const isCreate = !draft.id;
     try {
       const body = buildBody();
       let campaignId = draft.id;
@@ -127,10 +126,12 @@ export function useCampaignWizard({
       toast.success("Campagne enregistrée");
       resetDraft();
       onClose();
-      if (campaignId) {
+      // Only jump to the detail page on creation — after an edit the user stays
+      // wherever they were (list or detail).
+      if (isCreate && campaignId && finalProductId) {
         navigate({
-          to: "/campaigns/$campaignId",
-          params: { campaignId },
+          to: "/$productId/campaigns/$campaignId",
+          params: { productId: finalProductId, campaignId },
         });
       }
     } catch {
@@ -140,14 +141,10 @@ export function useCampaignWizard({
 
   return {
     draft,
-    step,
-    setStep,
     updateDraft,
     loadingInitial,
-    activeProductId,
-    dropdownProducts: dropdownProducts?.data || [],
-    handleNext,
-    handleFinish,
+    isEditing: !!draft.id,
+    handleSubmit,
     isSaving: createMutation.isPending || updateMutation.isPending,
   };
 }

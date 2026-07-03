@@ -1,5 +1,5 @@
 import { useState, type ReactNode } from "react";
-import { useNavigate } from "@tanstack/react-router";
+import { useNavigate, useRouter } from "@tanstack/react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { ArrowLeft, Upload, FileText, Eye, Trash2 } from "lucide-react";
 import { toast } from "sonner";
@@ -28,6 +28,7 @@ function importStatusVariant(s?: string | null) {
 
 export function ImportHistoryPage() {
   const navigate = useNavigate();
+  const router = useRouter();
   const qc = useQueryClient();
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
@@ -135,11 +136,11 @@ export function ImportHistoryPage() {
   return (
     <div className="p-7">
       <button
-        onClick={() => navigate({ to: "/dashboard" })}
+        onClick={() => router.history.back()}
         className="mb-5 flex cursor-pointer items-center gap-2 text-[12.5px] text-[#8BAFC0] transition-colors hover:text-[#0D2137]"
       >
         <ArrowLeft size={13} />
-        Contacts
+        Retour
       </button>
 
       <div className="mb-5 flex items-end justify-between">

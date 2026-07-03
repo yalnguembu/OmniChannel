@@ -1,6 +1,5 @@
-import { useCallback, useMemo, useEffect } from "react";
+import { useCallback, useMemo, useEffect, useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { useNavigate } from "@tanstack/react-router";
 import { toast } from "sonner";
 import {
   postApiCampaignSearchOptions,
@@ -87,9 +86,12 @@ export function useCampaignViewModel(productId?: string) {
   const queryClient = useQueryClient();
   const { handleRequestError, createMutationErrorHandler } = useErrorHandling();
   const { resetDraft } = useCampaignDraftStore();
-  const navigate = useNavigate();
 
   const filters = useListFilters(ADVANCED_DEFAULTS);
+
+  // Create/edit modal state (replaces the old full-page wizard routes).
+  const [formOpen, setFormOpen] = useState(false);
+  const [editingId, setEditingId] = useState<string | undefined>(undefined);
 
   // --- Queries ---
   const campaignsQuery = useQuery({
@@ -157,23 +159,20 @@ export function useCampaignViewModel(productId?: string) {
   // --- Handlers ---
   const handleOpenWizard = useCallback(() => {
     resetDraft();
-    navigate({ to: "/campaigns/new" });
-  }, [resetDraft, navigate]);
+    setEditingId(undefined);
+    setFormOpen(true);
+  }, [resetDraft]);
 
-  const handleEditCampaign = useCallback(
-    (id: string) => {
-      navigate({
-        to: "/campaigns/$campaignId/edit",
-        params: { campaignId: id },
-      });
-    },
-    [navigate],
-  );
+  const handleEditCampaign = useCallback((id: string) => {
+    setEditingId(id);
+    setFormOpen(true);
+  }, []);
 
   const handleCloseWizard = useCallback(() => {
+    setFormOpen(false);
+    setEditingId(undefined);
     resetDraft();
-    navigate({ to: "/dashboard" });
-  }, [resetDraft, navigate]);
+  }, [resetDraft]);
 
   return {
     // State
@@ -186,6 +185,10 @@ export function useCampaignViewModel(productId?: string) {
     // Filters (shared bar)
     filters,
     filterFields: CAMPAIGN_FILTER_FIELDS,
+
+    // Create/edit modal
+    formOpen,
+    editingId,
 
     // Handlers
     handleOpenWizard,

@@ -9,18 +9,16 @@ import { staggerContainer } from "@/lib/animations";
 import { useContactViewModel } from "@/hooks/useContactViewModel";
 import { ArrowUpRight, ArrowDownRight, Minus } from "lucide-react";
 import { Button } from "@/components/ui/Button";
-import { useNavigate } from "@tanstack/react-router";
 import { toast } from "sonner";
 import { SegmentManagerModal } from "@/components/features/contacts/SegmentManagerModal";
 import { ClientImportModal } from "@/components/features/contacts/ClientImportModal";
 
 export function ContactsPage({ productId }: { productId?: string } = {}) {
   const vm = useContactViewModel(productId);
-  const navigate = useNavigate();
 
   const handleManageSegments = () => {
     if (vm.productId !== "all") vm.setIsSegmentsOpen(true);
-    else navigate({ to: "/contacts/segments" });
+    else toast.error("Sélectionnez d'abord un produit pour gérer les segments.");
   };
 
   // Ouvre la modale en mode création (comme l'onglet Contacts du produit).

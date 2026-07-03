@@ -1,4 +1,6 @@
+import { useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { useNavigate, useSearch } from '@tanstack/react-router'
 import { Plus } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
 import { ListFilterBar } from '@/components/features/shared/ListFilterBar'
@@ -6,12 +8,30 @@ import { PageLoader } from '@/components/feedback/PageLoader'
 import { EmptyState } from '@/components/feedback/EmptyState'
 import { Pagination } from '@/components/data-table/DataTable'
 import { CampaignCard } from '@/components/features/campaigns/CampaignCard'
+import { CampaignFormModal } from '@/components/features/campaigns/CampaignFormModal'
 import { staggerContainer, cardItem } from '@/lib/animations'
 import { useCampaignViewModel } from '@/hooks/useCampaignViewModel'
 
 export function CampaignsPage({ productId }: { productId?: string } = {}) {
   const vm = useCampaignViewModel(productId)
   const f = vm.filters
+  const navigate = useNavigate()
+  const search = useSearch({ strict: false }) as { create?: boolean }
+
+  // Auto-open the creation modal when arrived here with ?create=1 (from a
+  // product overview / segment), then strip the flag so a refresh won't reopen.
+  useEffect(() => {
+    if (search?.create && productId) {
+      vm.handleOpenWizard()
+      navigate({
+        to: '/$productId/campaigns',
+        params: { productId },
+        search: {},
+        replace: true,
+      })
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [search?.create])
 
   const statusOptions = [
     { value: 'all', label: 'Toutes', count: vm.counts?.all ?? 0 },
@@ -103,6 +123,13 @@ export function CampaignsPage({ productId }: { productId?: string } = {}) {
           )}
         </AnimatePresence>
       </div>
+
+      <CampaignFormModal
+        open={vm.formOpen}
+        onClose={vm.handleCloseWizard}
+        campaignId={vm.editingId}
+        productId={productId}
+      />
     </div>
   )
 }

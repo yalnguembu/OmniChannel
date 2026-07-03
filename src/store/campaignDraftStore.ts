@@ -17,8 +17,6 @@ interface CampaignDraft {
 
 interface CampaignDraftState {
   draft: CampaignDraft
-  step: number
-  setStep: (step: number) => void
   updateDraft: (data: Partial<CampaignDraft>) => void
   resetDraft: () => void
 }
@@ -27,8 +25,6 @@ const initial: CampaignDraft = {}
 
 export const useCampaignDraftStore = create<CampaignDraftState>((set) => ({
   draft: initial,
-  step: 0,
-  setStep: (step) => set({ step }),
   updateDraft: (data) => set((s) => ({ draft: { ...s.draft, ...data } })),
-  resetDraft: () => set({ draft: initial, step: 0 }),
+  resetDraft: () => set({ draft: initial }),
 }))

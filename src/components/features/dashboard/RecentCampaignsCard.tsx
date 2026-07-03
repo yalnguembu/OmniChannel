@@ -11,7 +11,7 @@ export function RecentCampaignsCard({
 }: {
   campaigns: any[];
   onNavigateAll: () => void;
-  onNavigateDetail: (id: string) => void;
+  onNavigateDetail: (campaign: any) => void;
 }) {
   return (
     <Card>
@@ -38,7 +38,7 @@ export function RecentCampaignsCard({
           campaigns.map((c) => (
             <div
               key={c.id}
-              onClick={() => onNavigateDetail(c.id)}
+              onClick={() => onNavigateDetail(c)}
               className="flex items-center justify-between px-5 py-3 border-b border-[#E5E7EB] last:border-b-0 hover:bg-[#F7F8F9] cursor-pointer transition-colors"
             >
               <div className="flex items-center gap-3 min-w-0 flex-1">

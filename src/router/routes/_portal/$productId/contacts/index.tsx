@@ -1,15 +1,13 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { ACTION } from "@/security/enums";
 import { requirePermission } from "@/security/guards";
-import { CampaignDetailPage } from "@/pages/_portal/campaigns/CampaignDetailPage";
+import { ContactsPage } from "@/pages/_portal/contacts/ContactsPage";
 
-export const Route = createFileRoute("/_portal/campaigns/$campaignId/")({
-  component: () => (
-    <CampaignDetailPage campaignId={Route.useParams().campaignId} />
-  ),
+export const Route = createFileRoute("/_portal/$productId/contacts/")({
+  component: () => <ContactsPage productId={Route.useParams().productId} />,
   beforeLoad: ({ context }) => {
     requirePermission(context.user, context.strategy, {
-      action: ACTION.CAMPAIGN_READ,
+      action: ACTION.CLIENT_READ,
       redirectTo: "/forbidden",
     });
   },

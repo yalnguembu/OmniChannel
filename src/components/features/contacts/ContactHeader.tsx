@@ -1,8 +1,18 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Filter, Download, UserPlus, Users, Plus, ChevronDown } from "lucide-react";
+import {
+  Filter,
+  Download,
+  UserPlus,
+  Users,
+  Plus,
+  ChevronDown,
+} from "lucide-react";
 import { Modal } from "@/components/ui/Modal";
 import { Button } from "@/components/ui/Button";
-import { DateRangePicker, type DateRange } from "@/components/ui/DateRangePicker";
+import {
+  DateRangePicker,
+  type DateRange,
+} from "@/components/ui/DateRangePicker";
 
 interface ContactHeaderProps {
   // Search
@@ -228,20 +238,21 @@ export function ContactHeader({
         <div className="w-px h-[18px] bg-[#E5E7EB] shrink-0 mx-1" />
 
         {/* Segment filter */}
-        <select
-          value={segmentId}
-          onChange={(e) => setSegmentId(e.target.value)}
-          title="Filtrer par segment"
-          className={compactSelect}
-        >
-          <option value="all">Tous les segments</option>
-          {segments.map((s) => (
-            <option key={s.id} value={s.id}>
-              {s.name}
-            </option>
-          ))}
-        </select>
-
+        <div className="w-8">
+          <select
+            value={segmentId}
+            onChange={(e) => setSegmentId(e.target.value)}
+            title="Filtrer par segment"
+            className={compactSelect}
+          >
+            <option value="all">Tous les segments</option>
+            {segments.map((s) => (
+              <option key={s.id} value={s.id}>
+                {s.name}
+              </option>
+            ))}
+          </select>
+        </div>
         {/* Right cluster: actions */}
         <div className="ml-auto flex gap-2 items-center">
           <button
@@ -257,7 +268,7 @@ export function ContactHeader({
             className="relative text-[12px] font-normal px-3 py-[5px] rounded-full bg-white text-[#0D2137] border border-[#E5E7EB] cursor-pointer transition-colors hover:bg-[#F0F2F4] whitespace-nowrap inline-flex items-center gap-1.5"
           >
             <Filter size={12} strokeWidth={1.5} />
-            Filtres
+            {/* Filtres */}
             {advancedActive && (
               <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-[#E8541A] border border-white" />
             )}
@@ -282,7 +293,8 @@ export function ContactHeader({
                   }}
                   className="w-full flex items-center gap-2 px-3 py-2 text-left text-[12.5px] text-[#0D2137] hover:bg-[#F7F8F9] transition-colors"
                 >
-                  <UserPlus size={13} className="text-[#2E8FAD]" /> Nouveau contact
+                  <UserPlus size={13} className="text-[#2E8FAD]" /> Nouveau
+                  contact
                 </button>
                 <button
                   onClick={() => {
@@ -307,14 +319,25 @@ export function ContactHeader({
         subtitle="Affiner la liste des contacts"
         footer={
           <div className="flex items-center justify-between w-full">
-            <Button variant="ghost" onClick={resetAdvanced} className="text-[#8BAFC0]">
+            <Button
+              variant="ghost"
+              onClick={resetAdvanced}
+              className="text-[#8BAFC0]"
+            >
               Réinitialiser
             </Button>
             <div className="flex items-center gap-2">
-              <Button variant="secondary" onClick={() => setIsFilterModalOpen?.(false)}>
+              <Button
+                variant="secondary"
+                onClick={() => setIsFilterModalOpen?.(false)}
+              >
                 Annuler
               </Button>
-              <Button variant="primary" onClick={applyAdvanced} className="px-6">
+              <Button
+                variant="primary"
+                onClick={applyAdvanced}
+                className="px-6"
+              >
                 Appliquer
               </Button>
             </div>

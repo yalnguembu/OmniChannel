@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate } from "@tanstack/react-router";
+import { useNavigate, useRouter } from "@tanstack/react-router";
 import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ArrowLeft, Upload, FileText, Check, AlertCircle, History } from "lucide-react";
@@ -63,6 +63,7 @@ const PREVIEW_DATA = [
 
 export function ContactImportPage() {
   const navigate = useNavigate();
+  const router = useRouter();
   const qc = useQueryClient();
   const [step, setStep] = useState(1);
   const [file, setFile] = useState<File | null>(null);
@@ -149,11 +150,11 @@ export function ContactImportPage() {
   return (
     <div className="p-7">
       <button
-        onClick={() => navigate({ to: "/dashboard" })}
+        onClick={() => router.history.back()}
         className="flex items-center gap-2 text-[12.5px] text-[#8BAFC0] hover:text-[#0D2137] mb-5 transition-colors cursor-pointer"
       >
         <ArrowLeft size={13} />
-        Contacts
+        Retour
       </button>
 
       <div className="mb-6 flex items-end justify-between">

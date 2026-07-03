@@ -9,6 +9,7 @@ import { useProductStats } from "@/hooks/useProductStats";
 import { ProductNotFound } from "@/components/features/products/detail/ProductNotFound";
 import { ProductDetailHero } from "@/components/features/products/detail/ProductDetailHero";
 import { ProductKpiBar } from "@/components/features/products/detail/ProductKpiBar";
+import { ProductStatsSection } from "@/components/features/products/detail/ProductStatsSection";
 import { OverviewTab } from "@/components/features/products/detail/OverviewTab";
 import { ProductEditModal } from "@/components/features/products/detail/ProductEditModal";
 import type { ProductTabId } from "@/components/features/products/detail/ProductDetailTabs";
@@ -53,8 +54,14 @@ export default function ProductOverviewPage({
           product={product}
           onBack={() => navigate({ to: "/products" })}
           onEdit={vm.openEdit}
+          onChangeStatus={vm.handleChangeStatus}
+          isUpdatePending={vm.isUpdatePending}
           onNewCampaign={() =>
-            navigate({ to: "/campaigns/new", search: { productId } })
+            navigate({
+              to: "/$productId/campaigns",
+              params: { productId },
+              search: { create: true },
+            })
           }
         />
         <ProductKpiBar
@@ -65,15 +72,17 @@ export default function ProductOverviewPage({
         />
       </div>
 
+      {/* STATISTICS */}
+      <div className="p-7 pb-0">
+        <ProductStatsSection stats={statsVm} />
+      </div>
+
       {/* OVERVIEW + SETTINGS */}
       <div className="p-7">
         <OverviewTab
           product={product}
           channels={channelsVm.channels}
           onNavigateTab={goToSection}
-          onEdit={vm.openEdit}
-          onChangeStatus={vm.handleChangeStatus}
-          isUpdatePending={vm.isUpdatePending}
         />
       </div>
 

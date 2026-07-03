@@ -2,10 +2,9 @@ import { useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { motion } from "framer-motion";
-import { Plus, Users, Trash2, Edit } from "lucide-react";
+import { Plus, Users, Trash2, Edit, Eye, ArrowLeft } from "lucide-react";
 import { toast } from "sonner";
 import {
-  getApiProductDropdownOptions,
   postApiClientSegmentSearchOptions,
   postApiClientSegmentSearchQueryKey,
   postApiClientSegmentMutation,
@@ -21,13 +20,13 @@ import { Toggle } from "@/components/ui/Toggle";
 import { PageLoader } from "@/components/feedback/PageLoader";
 import { EmptyState } from "@/components/feedback/EmptyState";
 import { Pagination } from "@/components/data-table/DataTable";
-import { fmt, cn } from "@/lib/utils";
+import { fmt } from "@/lib/utils";
 import { SegmentCriteriaModal } from "@/components/features/contacts/SegmentCriteriaModal";
 import { mapToSegmentModels, type SegmentModel } from "@/models/client.model";
 import type { ClientSegmentDto } from "@/shared/api/generated/types.gen";
 import { staggerContainer, cardItem } from "@/lib/animations";
 
-export function SegmentsPage() {
+export function SegmentsPage({ productId }: { productId: string }) {
   const navigate = useNavigate();
   const qc = useQueryClient();
   const [search, setSearch] = useState("");
@@ -35,22 +34,16 @@ export function SegmentsPage() {
   const [modalOpen, setModalOpen] = useState(false);
   const [segName, setSegName] = useState("");
   const [segDesc, setSegDesc] = useState("");
-  const [segProductId, setSegProductId] = useState("");
   const [isDynamic, setIsDynamic] = useState(false);
   const [editorOpen, setEditorOpen] = useState(false);
   const [editorSegment, setEditorSegment] = useState<SegmentModel | null>(null);
 
-  const { data: productsData } = useQuery({
-    ...getApiProductDropdownOptions(),
-    select: (res: any) =>
-      (res?.data ?? []) as { id: string; name: string }[],
-  });
-  const products = productsData ?? [];
   const pageSize = 12;
 
   const { data, isLoading } = useQuery({
     ...postApiClientSegmentSearchOptions({
       body: {
+        productId,
         pageNumber: page,
         pageSize,
         searchTerm: search || undefined,
@@ -64,6 +57,13 @@ export function SegmentsPage() {
 
   const segments: SegmentModel[] = data?.items ?? [];
   const total: number = data?.total ?? 0;
+
+  const openCreate = () => {
+    setSegName("");
+    setSegDesc("");
+    setIsDynamic(false);
+    setModalOpen(true);
+  };
 
   const createMutation = useMutation({
     ...postApiClientSegmentMutation(),
@@ -84,8 +84,21 @@ export function SegmentsPage() {
     onError: () => toast.error("Erreur lors de la suppression"),
   });
 
+  const goToDetail = (id: string) =>
+    navigate({
+      to: "/$productId/contacts/segments/$segmentId",
+      params: { productId, segmentId: id },
+    });
+
   return (
     <div className="p-7">
+      <button
+        onClick={() => navigate({ to: "/$productId/contacts", params: { productId } })}
+        className="flex items-center gap-2 text-[12.5px] text-[#8BAFC0] hover:text-[#0D2137] mb-4 transition-colors cursor-pointer"
+      >
+        <ArrowLeft size={13} /> Contacts
+      </button>
+
       <div className="flex items-end justify-between mb-5">
         <div>
           <h1 className="text-[20px] font-semibold text-[#0D2137] tracking-tight">
@@ -105,16 +118,7 @@ export function SegmentsPage() {
             }}
             containerClassName="w-52"
           />
-          <Button
-            variant="primary"
-            onClick={() => {
-              setModalOpen(true);
-              setSegName("");
-              setSegDesc("");
-              setSegProductId(products[0]?.id ?? "");
-              setIsDynamic(false);
-            }}
-          >
+          <Button variant="primary" onClick={openCreate}>
             <Plus size={13} />
             Nouveau segment
           </Button>
@@ -129,7 +133,7 @@ export function SegmentsPage() {
           title="Aucun segment"
           description="Créez des segments pour regrouper vos contacts"
           action={
-            <Button variant="primary" onClick={() => setModalOpen(true)}>
+            <Button variant="primary" onClick={openCreate}>
               <Plus size={13} />
               Nouveau segment
             </Button>
@@ -148,12 +152,7 @@ export function SegmentsPage() {
                 key={seg.id}
                 variants={cardItem}
                 className="bg-white border border-[#E5E7EB] rounded-[20px] p-5 cursor-pointer hover:-translate-y-1 hover:shadow-[0_12px_36px_rgba(13,33,55,0.1)] hover:border-[#6AB8D4]/50 transition-all duration-[220ms]"
-                onClick={() =>
-                  navigate({
-                    to: "/contacts/segments/$segmentId",
-                    params: { segmentId: seg.id },
-                  })
-                }
+                onClick={() => goToDetail(seg.id)}
               >
                 <div className="flex items-start justify-between mb-3">
                   <div className="w-10 h-10 rounded-md bg-[#E8F4F8] flex items-center justify-center shrink-0">
@@ -177,14 +176,16 @@ export function SegmentsPage() {
                     <span className="text-[12.5px] font-semibold text-[#0D2137]">
                       {fmt(seg.clientCount)}
                     </span>
-                    <span className="text-[11.5px] text-[#8BAFC0]">
-                      contacts
-                    </span>
+                    <span className="text-[11.5px] text-[#8BAFC0]">contacts</span>
                   </div>
-                  <div
-                    className="flex gap-1"
-                    onClick={(e) => e.stopPropagation()}
-                  >
+                  <div className="flex gap-1" onClick={(e) => e.stopPropagation()}>
+                    <button
+                      onClick={() => goToDetail(seg.id)}
+                      title="Voir le détail"
+                      className="w-7 h-7 rounded-[6px] flex items-center justify-center text-[#8BAFC0] hover:bg-[#E8F4F8] hover:text-[#2E8FAD] transition-all cursor-pointer"
+                    >
+                      <Eye size={13} />
+                    </button>
                     <button
                       onClick={() => {
                         setEditorSegment(seg);
@@ -208,7 +209,7 @@ export function SegmentsPage() {
 
             <motion.div
               variants={cardItem}
-              onClick={() => setModalOpen(true)}
+              onClick={openCreate}
               className="bg-transparent border border-dashed border-[#E5E7EB] rounded-[20px] flex flex-col items-center justify-center gap-3 p-8 cursor-pointer hover:bg-white hover:border-[#2E8FAD]/40 hover:border-solid hover:shadow-[0_4px_20px_rgba(13,33,55,0.06)] transition-all min-h-[180px]"
             >
               <div className="w-11 h-11 rounded-[12px] bg-[#F0F2F4] border border-[#E5E7EB] flex items-center justify-center">
@@ -244,7 +245,7 @@ export function SegmentsPage() {
               onClick={() =>
                 createMutation.mutate({
                   body: {
-                    productId: segProductId || undefined,
+                    productId,
                     name: segName,
                     description: segDesc || undefined,
                     isDynamic,
@@ -252,6 +253,7 @@ export function SegmentsPage() {
                 })
               }
               loading={createMutation.isPending}
+              disabled={!segName.trim()}
             >
               Créer le segment
             </Button>
@@ -259,25 +261,6 @@ export function SegmentsPage() {
         }
       >
         <div className="flex flex-col gap-4">
-          {products.length > 0 && (
-            <div>
-              <label className="block text-[12.5px] font-medium text-[#0D2137] mb-1.5">
-                Produit *
-              </label>
-              <select
-                value={segProductId}
-                onChange={(e) => setSegProductId(e.target.value)}
-                className="w-full text-[13px] px-3 py-2 border border-[#E5E7EB] rounded-lg bg-white text-[#0D2137] outline-none focus:border-[#2E8FAD] transition-colors"
-              >
-                <option value="">Sélectionner un produit</option>
-                {products.map((p) => (
-                  <option key={p.id} value={p.id}>
-                    {p.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-          )}
           <Input
             label="Nom du segment *"
             placeholder="ex : Clients VIP"
@@ -307,7 +290,7 @@ export function SegmentsPage() {
       <SegmentCriteriaModal
         open={editorOpen}
         onClose={() => setEditorOpen(false)}
-        productId={editorSegment?.productId ?? ""}
+        productId={editorSegment?.productId ?? productId}
         segment={editorSegment as unknown as ClientSegmentDto}
       />
     </div>

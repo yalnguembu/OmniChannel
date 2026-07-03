@@ -1,4 +1,4 @@
-import { useNavigate } from "@tanstack/react-router";
+import { useRouter } from "@tanstack/react-router";
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { ArrowLeft, Edit, MessageSquare, Tag, Radio } from "lucide-react";
@@ -52,7 +52,7 @@ const tabs = [
 ];
 
 export function ContactDetailPage({ contactId }: { contactId: string }) {
-  const navigate = useNavigate();
+  const router = useRouter();
   const qc = useQueryClient();
   const [tab, setTab] = useState("profile");
   const [editOpen, setEditOpen] = useState(false);
@@ -205,11 +205,11 @@ export function ContactDetailPage({ contactId }: { contactId: string }) {
   return (
     <div className="p-7">
       <button
-        onClick={() => navigate({ to: "/dashboard" })}
+        onClick={() => router.history.back()}
         className="flex items-center gap-2 text-[12.5px] text-[#8BAFC0] hover:text-[#0D2137] mb-5 transition-colors cursor-pointer"
       >
         <ArrowLeft size={13} />
-        Contacts
+        Retour
       </button>
 
       <motion.div {...fadeInUp}>

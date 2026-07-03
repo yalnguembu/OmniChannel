@@ -1,33 +1,42 @@
 import { useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { motion, AnimatePresence } from "framer-motion";
 import { ArrowLeft, Users, RefreshCw, MessageSquare } from "lucide-react";
 import { toast } from "sonner";
 import {
   getApiClientSegmentByIdOptions,
   getApiClientSegmentByIdQueryKey,
-  postApiClientSegmentMemberSearchOptions,
   postApiClientSegmentMemberSearchQueryKey,
   postApiClientSegmentRecalculateByIdMutation,
 } from "@/shared/api/generated/@tanstack/react-query.gen";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
-import { Card, CardHeader, CardBody } from "@/components/ui/Card";
-import { DataTable, type Column } from "@/components/data-table/DataTable";
 import { PageLoader } from "@/components/feedback/PageLoader";
+import { EmptyState } from "@/components/feedback/EmptyState";
+import { ContactTable } from "@/components/features/contacts/ContactTable";
+import { ContactDetailPanel } from "@/components/features/contacts/ContactDetailPanel";
+import { ContactModal } from "@/components/features/contacts/ContactModal";
 import { formatDate, formatRelative } from "@/lib/date";
-import { fmt, getInitials, avatarColor, statusLabel } from "@/lib/utils";
-import {
-  mapToSegmentModel,
-  mapSegmentMembersToClients,
-  type ClientModel,
-} from "@/models/client.model";
+import { fmt } from "@/lib/utils";
+import { staggerContainer } from "@/lib/animations";
+import { mapToSegmentModel } from "@/models/client.model";
+import { useContactViewModel } from "@/hooks/useContactViewModel";
 import { SegmentMessagesPreviewModal } from "@/components/features/contacts/SegmentMessagesPreviewModal";
 
-export function SegmentDetailPage({ segmentId }: { segmentId: string }) {
+export function SegmentDetailPage({
+  segmentId,
+  productId,
+}: {
+  segmentId: string;
+  productId: string;
+}) {
   const navigate = useNavigate();
   const qc = useQueryClient();
   const [previewOpen, setPreviewOpen] = useState(false);
+
+  // Same clients list as the main contacts page, scoped to this segment.
+  const vm = useContactViewModel(productId, segmentId);
 
   const recalculateMutation = useMutation({
     ...postApiClientSegmentRecalculateByIdMutation(),
@@ -48,13 +57,6 @@ export function SegmentDetailPage({ segmentId }: { segmentId: string }) {
     select: (res) => (res?.data ? mapToSegmentModel(res.data) : null),
   });
 
-  const { data: members = [] } = useQuery({
-    ...postApiClientSegmentMemberSearchOptions({
-      body: { segmentId, pageNumber: 1, pageSize: 50 },
-    }),
-    select: (res) => mapSegmentMembersToClients([...(res?.data?.items ?? [])]),
-  });
-
   if (isLoading) return <PageLoader />;
   if (!segment)
     return (
@@ -63,50 +65,15 @@ export function SegmentDetailPage({ segmentId }: { segmentId: string }) {
       </div>
     );
 
-  const columns: Column<ClientModel>[] = [
-    {
-      key: "name",
-      label: "Contact",
-      render: (c) => (
-        <div className="flex items-center gap-2.5">
-          <div
-            className="w-7 h-7 rounded-full flex items-center justify-center text-[10px] font-semibold text-white shrink-0"
-            style={{ background: avatarColor(c.firstName ?? "U") }}
-          >
-            {getInitials(c.firstName, c.lastName)}
-          </div>
-          <span className="font-medium">
-            {c.firstName} {c.lastName}
-          </span>
-        </div>
-      ),
-    },
-    {
-      key: "email",
-      label: "Email",
-      render: (c) => <span className="text-[#4A7A94]">{c.email ?? "—"}</span>,
-    },
-    {
-      key: "phone",
-      label: "Téléphone",
-      render: (c) => <span className="text-[#4A7A94]">{c.phone || "—"}</span>,
-    },
-    {
-      key: "status",
-      label: "Statut",
-      width: "110px",
-      render: (c) => (
-        <Badge variant={c.status === "active" ? "success" : "neutral"} dot>
-          {statusLabel(c.status ?? "")}
-        </Badge>
-      ),
-    },
-  ];
-
   return (
     <div className="p-7">
       <button
-        onClick={() => navigate({ to: "/contacts/segments" })}
+        onClick={() =>
+          navigate({
+            to: "/$productId/contacts/segments",
+            params: { productId },
+          })
+        }
         className="flex items-center gap-2 text-[12.5px] text-[#8BAFC0] hover:text-[#0D2137] mb-5 transition-colors cursor-pointer"
       >
         <ArrowLeft size={13} />
@@ -147,13 +114,21 @@ export function SegmentDetailPage({ segmentId }: { segmentId: string }) {
             <MessageSquare size={13} />
             Aperçu messages
           </Button>
-          <Button
-            variant="primary"
-            size="sm"
-            onClick={() => navigate({ to: "/campaigns/new", search: { segmentId } as any })}
-          >
-            Créer une campagne
-          </Button>
+          {segment.productId && (
+            <Button
+              variant="primary"
+              size="sm"
+              onClick={() =>
+                navigate({
+                  to: "/$productId/campaigns",
+                  params: { productId: segment.productId as string },
+                  search: { create: true },
+                })
+              }
+            >
+              Créer une campagne
+            </Button>
+          )}
         </div>
       </div>
 
@@ -180,18 +155,77 @@ export function SegmentDetailPage({ segmentId }: { segmentId: string }) {
         ))}
       </div>
 
-      <Card>
-        <CardHeader title={`Membres (${members.length})`} />
-        <CardBody className="p-0">
-          <DataTable
-            columns={columns}
-            data={members}
-            getRowId={(c) => c.id ?? ""}
-            emptyTitle="Aucun membre"
-            emptyDescription="Ce segment ne contient pas encore de contacts"
-          />
-        </CardBody>
-      </Card>
+      {/* Members — same clients list as the main contacts page */}
+      <div className="bg-white border border-[#E5E7EB] rounded-[14px] overflow-hidden">
+        <AnimatePresence mode="wait">
+          {vm.isLoading ? (
+            <motion.div
+              key="loader"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="py-24"
+            >
+              <PageLoader />
+            </motion.div>
+          ) : vm.contacts.length === 0 ? (
+            <motion.div
+              key="empty"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="p-16"
+            >
+              <EmptyState
+                icon={<Users size={32} />}
+                title="Aucun membre"
+                description="Ce segment ne contient pas encore de contacts"
+              />
+            </motion.div>
+          ) : (
+            <motion.div
+              key="table"
+              variants={staggerContainer}
+              initial="initial"
+              animate="animate"
+            >
+              <ContactTable
+                contacts={vm.contacts}
+                loading={vm.isLoading}
+                onView={(c) => vm.setActiveContact(c)}
+                onEdit={(c) => vm.handleEdit(c)}
+                onDelete={vm.handleDelete}
+                activeRowId={vm.activeContact?.id}
+                pagination={{
+                  page: vm.page,
+                  pageSize: vm.pageSize,
+                  total: vm.totalCount,
+                  onPageChange: vm.setPage,
+                }}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+
+      <ContactDetailPanel
+        contact={vm.activeContact}
+        activeTab={vm.detailTab}
+        onTabChange={vm.setDetailTab}
+        onClose={() => vm.setActiveContact(null)}
+        onEdit={(c) => vm.handleEdit(c)}
+        onDelete={vm.handleDelete}
+      />
+
+      <ContactModal
+        open={vm.isModalOpen}
+        onClose={() => {
+          vm.setIsModalOpen(false);
+          vm.setEditingContact(null);
+        }}
+        editing={vm.editingContact}
+        onSubmit={vm.handleSubmit}
+        loading={vm.isActionPending}
+        productId={productId}
+      />
 
       <SegmentMessagesPreviewModal
         open={previewOpen}

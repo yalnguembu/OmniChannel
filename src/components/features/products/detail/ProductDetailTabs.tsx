@@ -1,6 +1,5 @@
 import {
   Package,
-  BarChart2,
   Radio,
   Plug,
   Users,
@@ -23,7 +22,6 @@ export type ProductTabId =
   | "channels"
   | "connectors"
   | "schema"
-  | "stats"
   | "events"
   | "flows"
   | "funnels"
@@ -43,7 +41,6 @@ export const PRODUCT_TABS: TabDef[] = [
   { id: "channels", label: "Canaux", icon: Radio },
   { id: "connectors", label: "Connecteurs", icon: Plug },
   { id: "schema", label: "Attributs", icon: Database },
-  { id: "stats", label: "Statistiques", icon: BarChart2 },
   { id: "events", label: "Événements", icon: Activity },
   { id: "flows", label: "Flux", icon: Workflow },
   { id: "funnels", label: "Funnels", icon: Filter },
