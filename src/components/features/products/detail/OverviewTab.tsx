@@ -14,7 +14,10 @@ interface OverviewTabProps {
 
 function CardLink({ label, onClick }: { label: string; onClick: () => void }) {
   return (
-    <span className="text-[12px] text-[#2E8FAD] cursor-pointer" onClick={onClick}>
+    <span
+      className="text-[12px] text-[#2E8FAD] cursor-pointer"
+      onClick={onClick}
+    >
       {label}
     </span>
   );
@@ -37,7 +40,7 @@ export function OverviewTab({
     <div className="flex flex-col gap-3.5">
       {/* Accès rapides */}
       <DetailCard title="Accès rapides" bodyClassName="p-4">
-        <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-2.5">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-8 gap-2.5">
           {QUICK_LINKS.map((t) => {
             const Icon = t.icon;
             return (

@@ -35,15 +35,15 @@ interface TabDef {
 
 export const PRODUCT_TABS: TabDef[] = [
   { id: "overview", label: "Vue d'ensemble", icon: Package },
-  { id: "contacts", label: "Contacts", icon: Users },
   { id: "campaigns", label: "Campagnes", icon: Megaphone },
-  { id: "templates", label: "Templates", icon: FileText },
-  { id: "channels", label: "Canaux", icon: Radio },
-  { id: "connectors", label: "Connecteurs", icon: Plug },
+  { id: "contacts", label: "Contacts", icon: Users },
   { id: "schema", label: "Attributs", icon: Database },
+  { id: "templates", label: "Templates", icon: FileText },
+  { id: "funnels", label: "Funnels", icon: Filter },
   { id: "events", label: "Événements", icon: Activity },
   { id: "flows", label: "Flux", icon: Workflow },
-  { id: "funnels", label: "Funnels", icon: Filter },
+  { id: "channels", label: "Canaux", icon: Radio },
+  { id: "connectors", label: "Connecteurs", icon: Plug },
   { id: "auto-reply", label: "Auto-réponses", icon: Bot },
 ];
 

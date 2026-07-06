@@ -8,6 +8,7 @@ import {
   Settings,
   ChevronDown,
   FolderOpen,
+  X,
 } from "lucide-react";
 import { cn, getInitials, avatarColor } from "@/lib/utils";
 import { useAuthStore } from "@/store/authStore";
@@ -53,7 +54,11 @@ const nav = [
   },
 ];
 
-export function Sidebar() {
+interface SidebarProps {
+  onClose?: () => void
+}
+
+export function Sidebar({ onClose }: SidebarProps) {
   const user = useAuthStore((s) => s.user);
   const router = useRouterState();
   const currentPath = router.location.pathname;
@@ -69,16 +74,29 @@ export function Sidebar() {
   const productTo = (tabId: string) => `/${activeProductId}/${tabId}`;
 
   return (
-    <aside className="bg-white border-r border-[#E5E7EB]/60 flex flex-col h-screen overflow-hidden">
-      <Link
-        to="/"
-        className="flex items-center gap-2.5 px-4 py-2 border-b border-[#E5E7EB]/60 shrink-0"
-      >
-        <OctoLogo size={40} />
-        <span className="text-[14px] font-semibold text-[#0D2137] tracking-tight">
-          Omni Channel
-        </span>
-      </Link>
+    <aside className="bg-white border-r border-[#E5E7EB]/60 flex flex-col h-full overflow-hidden">
+      {/* ── Logo + Close btn (mobile) ── */}
+      <div className="flex items-center border-b border-[#E5E7EB]/60 shrink-0">
+        <Link
+          to="/"
+          onClick={onClose}
+          className="flex items-center gap-2.5 px-4 py-2 flex-1 min-w-0"
+        >
+          <OctoLogo size={40} />
+          <span className="text-[14px] font-semibold text-[#0D2137] tracking-tight">
+            Omni Channel
+          </span>
+        </Link>
+        {/* Close button — mobile only */}
+        <button
+          type="button"
+          onClick={onClose}
+          aria-label="Fermer le menu"
+          className="md:hidden mr-3 flex items-center justify-center w-7 h-7 rounded-md text-[#8BAFC0] hover:bg-[#F0F2F4] transition-colors shrink-0"
+        >
+          <X size={16} strokeWidth={1.8} />
+        </button>
+      </div>
 
       <button className="mx-2.5 mt-3 mb-0.5 px-3 py-2.5 bg-[#E8F4F8] border border-[#2E8FAD]/20 rounded-md flex items-center justify-between cursor-pointer hover:bg-[#DFF0F8] transition-colors">
         <span className="text-[11.5px] font-medium text-[#1B5E82] truncate">
