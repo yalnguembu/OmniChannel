@@ -35,7 +35,9 @@ interface CampaignStepModalProps {
   productId: string;
   editing: SearchCampaignStepResponse | null;
   nextOrder: number;
-  onSave: (body: Omit<CreateCampaignStepRequest, "campaignId"> & { id?: string }) => Promise<unknown>;
+  onSave: (
+    body: Omit<CreateCampaignStepRequest, "campaignId"> & { id?: string },
+  ) => Promise<unknown>;
   isSaving?: boolean;
 }
 
@@ -59,17 +61,25 @@ export function CampaignStepModal({
 
   const { data: segments = [] } = useQuery({
     ...getApiClientSegmentDropdownOptions({ query: { productid: productId } }),
-    select: (res) => (res?.data ?? []) as { id?: string; name?: string | null }[],
+    select: (res) =>
+      (res?.data ?? []) as { id?: string; displayName?: string | null }[],
     enabled: open,
   });
   const { data: senders = [] } = useQuery({
     ...getApiSenderDropdownOptions(),
-    select: (res) => (res?.data ?? []) as { id?: string; name?: string | null }[],
+    select: (res) =>
+      (res?.data ?? []) as { id?: string; displayName?: string | null }[],
     enabled: open,
   });
   const { data: templates = [] } = useQuery({
-    ...postApiTemplateSearchOptions({ body: { productId, pageSize: 100 } as any }),
-    select: (res) => (res?.data?.items ?? []) as { id?: string; name?: string | null }[],
+    ...postApiTemplateSearchOptions({
+      body: { productId, pageSize: 100 } as any,
+    }),
+    select: (res) =>
+      (res?.data?.items ?? []) as {
+        id?: string;
+        displayName?: string | null;
+      }[],
     enabled: open,
   });
 
@@ -99,18 +109,28 @@ export function CampaignStepModal({
 
   const buildConfig = (): Record<string, unknown> => {
     if (stepType === "RefreshClients") {
-      const o: Record<string, unknown> = { mode: cfg.mode || "fetchByCode", sync: cfg.sync !== false };
+      const o: Record<string, unknown> = {
+        mode: cfg.mode || "fetchByCode",
+        sync: cfg.sync !== false,
+      };
       if (cfg.mode === "fetchByCode" && cfg.code) o.code = cfg.code;
-      if (cfg.mode === "fetchByExternalIds" && cfg.sourceSegmentId) o.sourceSegmentId = cfg.sourceSegmentId;
-      if (cfg.mode === "refreshSegment" && cfg.segmentId) o.segmentId = cfg.segmentId;
+      if (cfg.mode === "fetchByExternalIds" && cfg.sourceSegmentId)
+        o.sourceSegmentId = cfg.sourceSegmentId;
+      if (cfg.mode === "refreshSegment" && cfg.segmentId)
+        o.segmentId = cfg.segmentId;
       if (cfg.targetSegmentName) o.targetSegmentName = cfg.targetSegmentName;
       return o;
     }
     if (stepType === "SendMessage") {
       const mode = cfg.targeting?.mode || "stepSegment";
       const targeting: Record<string, unknown> = { mode };
-      if (mode === "segment" && cfg.targeting?.segmentId) targeting.segmentId = cfg.targeting.segmentId;
-      return { templateId: cfg.templateId || "", senderId: cfg.senderId || undefined, targeting };
+      if (mode === "segment" && cfg.targeting?.segmentId)
+        targeting.segmentId = cfg.targeting.segmentId;
+      return {
+        templateId: cfg.templateId || "",
+        senderId: cfg.senderId || undefined,
+        targeting,
+      };
     }
     return {};
   };
@@ -135,7 +155,9 @@ export function CampaignStepModal({
 
   const segmentOptions = [
     { value: "", label: "Sélectionner un segment…" },
-    ...segments.filter((s) => s.id).map((s) => ({ value: s.id as string, label: s.name ?? "—" })),
+    ...segments
+      .filter((s) => s.id)
+      .map((s) => ({ value: s.id as string, label: s.displayName ?? "—" })),
   ];
 
   return (
@@ -157,9 +179,19 @@ export function CampaignStepModal({
     >
       <div className="flex flex-col gap-4">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-          <Input label="Ordre" type="number" value={stepOrder.toString()} onChange={(e) => setStepOrder(parseInt(e.target.value) || 0)} />
+          <Input
+            label="Ordre"
+            type="number"
+            value={stepOrder.toString()}
+            onChange={(e) => setStepOrder(parseInt(e.target.value) || 0)}
+          />
           <div className="md:col-span-2">
-            <Input label="Nom de l'étape *" value={name} onChange={(e) => setName(e.target.value)} placeholder="ex: Rafraîchir j0" />
+            <Input
+              label="Nom de l'étape *"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="ex: Rafraîchir j0"
+            />
           </div>
         </div>
 
@@ -167,7 +199,10 @@ export function CampaignStepModal({
           label="Type d'étape"
           value={stepType}
           onChange={(e) => changeType(e.target.value as StepType)}
-          options={STEP_TYPES.map((t) => ({ value: t, label: STEP_TYPE_LABELS[t] }))}
+          options={STEP_TYPES.map((t) => ({
+            value: t,
+            label: STEP_TYPE_LABELS[t],
+          }))}
         />
 
         {/* Start mode */}
@@ -176,22 +211,42 @@ export function CampaignStepModal({
             label="Démarrage"
             value={startMode}
             onChange={(e) => setStartMode(e.target.value)}
-            options={START_MODES.map((m) => ({ value: m, label: START_MODE_LABELS[m] }))}
+            options={START_MODES.map((m) => ({
+              value: m,
+              label: START_MODE_LABELS[m],
+            }))}
           />
           {startMode === "afterPrevious" && (
-            <Input label="Délai (min)" type="number" value={delayMinutes.toString()} onChange={(e) => setDelayMinutes(parseInt(e.target.value) || 0)} />
+            <Input
+              label="Délai (min)"
+              type="number"
+              value={delayMinutes.toString()}
+              onChange={(e) => setDelayMinutes(parseInt(e.target.value) || 0)}
+            />
           )}
           {startMode === "atTime" && (
-            <Input label="Heure (HH:mm)" value={scheduledTime} onChange={(e) => setScheduledTime(e.target.value)} placeholder="09:00" />
+            <Input
+              label="Heure (HH:mm)"
+              value={scheduledTime}
+              onChange={(e) => setScheduledTime(e.target.value)}
+              placeholder="09:00"
+            />
           )}
           {startMode === "afterEvent" && (
-            <Input label="Code événement" value={eventCode} onChange={(e) => setEventCode(e.target.value)} placeholder="reabo_request" />
+            <Input
+              label="Code événement"
+              value={eventCode}
+              onChange={(e) => setEventCode(e.target.value)}
+              placeholder="reabo_request"
+            />
           )}
         </div>
 
         {/* Per-type config */}
         <div className="border border-[#E5E7EB] rounded-lg p-4 bg-[#F9FAFB] space-y-3">
-          <h4 className="text-[13px] font-semibold text-[#0D2137]">Configuration</h4>
+          <h4 className="text-[13px] font-semibold text-[#0D2137]">
+            Configuration
+          </h4>
 
           {stepType === "RefreshClients" && (
             <>
@@ -200,23 +255,50 @@ export function CampaignStepModal({
                   label="Mode"
                   value={cfg.mode || "fetchByCode"}
                   onChange={(e) => setField("mode", e.target.value)}
-                  options={REFRESH_MODES.map((m) => ({ value: m, label: REFRESH_MODE_LABELS[m] }))}
+                  options={REFRESH_MODES.map((m) => ({
+                    value: m,
+                    label: REFRESH_MODE_LABELS[m],
+                  }))}
                 />
                 <div className="flex items-center gap-2 pt-6">
-                  <Toggle checked={cfg.sync !== false} onChange={(v) => setField("sync", v)} />
-                  <span className="text-[12.5px] text-[#4A7A94]">Synchrone</span>
+                  <Toggle
+                    checked={cfg.sync !== false}
+                    onChange={(v) => setField("sync", v)}
+                  />
+                  <span className="text-[12.5px] text-[#4A7A94]">
+                    Synchrone
+                  </span>
                 </div>
               </div>
               {cfg.mode === "fetchByCode" && (
-                <Input label="Code" value={cfg.code || ""} onChange={(e) => setField("code", e.target.value)} placeholder="j0 / j3" />
+                <Input
+                  label="Code"
+                  value={cfg.code || ""}
+                  onChange={(e) => setField("code", e.target.value)}
+                  placeholder="j0 / j3"
+                />
               )}
               {cfg.mode === "fetchByExternalIds" && (
-                <Select label="Segment source" value={cfg.sourceSegmentId || ""} onChange={(e) => setField("sourceSegmentId", e.target.value)} options={segmentOptions} />
+                <Select
+                  label="Segment source"
+                  value={cfg.sourceSegmentId || ""}
+                  onChange={(e) => setField("sourceSegmentId", e.target.value)}
+                  options={segmentOptions}
+                />
               )}
               {cfg.mode === "refreshSegment" && (
-                <Select label="Segment à recalculer" value={cfg.segmentId || ""} onChange={(e) => setField("segmentId", e.target.value)} options={segmentOptions} />
+                <Select
+                  label="Segment à recalculer"
+                  value={cfg.segmentId || ""}
+                  onChange={(e) => setField("segmentId", e.target.value)}
+                  options={segmentOptions}
+                />
               )}
-              <Input label="Nom du segment produit (optionnel)" value={cfg.targetSegmentName || ""} onChange={(e) => setField("targetSegmentName", e.target.value)} />
+              <Input
+                label="Nom du segment produit (optionnel)"
+                value={cfg.targetSegmentName || ""}
+                onChange={(e) => setField("targetSegmentName", e.target.value)}
+              />
             </>
           )}
 
@@ -229,7 +311,12 @@ export function CampaignStepModal({
                   onChange={(e) => setField("templateId", e.target.value)}
                   options={[
                     { value: "", label: "Sélectionner un template…" },
-                    ...templates.filter((t) => t.id).map((t) => ({ value: t.id as string, label: t.name ?? "—" })),
+                    ...templates
+                      .filter((t) => t.id)
+                      .map((t) => ({
+                        value: t.id as string,
+                        label: t.displayName ?? "—",
+                      })),
                   ]}
                 />
                 <Select
@@ -238,7 +325,12 @@ export function CampaignStepModal({
                   onChange={(e) => setField("senderId", e.target.value)}
                   options={[
                     { value: "", label: "Aucun" },
-                    ...senders.filter((s) => s.id).map((s) => ({ value: s.id as string, label: s.name ?? "—" })),
+                    ...senders
+                      .filter((s) => s.id)
+                      .map((s) => ({
+                        value: s.id as string,
+                        label: s.displayName ?? "—",
+                      })),
                   ]}
                 />
               </div>
@@ -246,14 +338,27 @@ export function CampaignStepModal({
                 <Select
                   label="Ciblage"
                   value={cfg.targeting?.mode || "stepSegment"}
-                  onChange={(e) => setField("targeting", { ...cfg.targeting, mode: e.target.value })}
-                  options={TARGETING_MODES.map((m) => ({ value: m, label: TARGETING_MODE_LABELS[m] }))}
+                  onChange={(e) =>
+                    setField("targeting", {
+                      ...cfg.targeting,
+                      mode: e.target.value,
+                    })
+                  }
+                  options={TARGETING_MODES.map((m) => ({
+                    value: m,
+                    label: TARGETING_MODE_LABELS[m],
+                  }))}
                 />
                 {cfg.targeting?.mode === "segment" && (
                   <Select
                     label="Segment"
                     value={cfg.targeting?.segmentId || ""}
-                    onChange={(e) => setField("targeting", { ...cfg.targeting, segmentId: e.target.value })}
+                    onChange={(e) =>
+                      setField("targeting", {
+                        ...cfg.targeting,
+                        segmentId: e.target.value,
+                      })
+                    }
                     options={segmentOptions}
                   />
                 )}
@@ -263,7 +368,8 @@ export function CampaignStepModal({
 
           {stepType === "Wait" && (
             <p className="text-[12px] text-[#8BAFC0]">
-              L'étape d'attente est pilotée par le mode de démarrage / le délai ci-dessus.
+              L'étape d'attente est pilotée par le mode de démarrage / le délai
+              ci-dessus.
             </p>
           )}
         </div>
