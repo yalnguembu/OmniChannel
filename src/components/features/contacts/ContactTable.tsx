@@ -55,13 +55,8 @@ export function ContactTable({
       label: "Nom",
       sortable: true,
       render: (c) => (
-        <div>
-          <div className="font-medium text-[#0D2137] truncate">
-            {c.firstName || "Sans"} {c.lastName || "Nom"}
-          </div>
-          <div className="text-[11.5px] text-[#8BAFC0] mt-px">
-            Segment (mock)
-          </div>
+        <div className="font-medium text-[#0D2137] truncate">
+          {c.firstName || "Sans"} {c.lastName || "Nom"}
         </div>
       ),
     },
@@ -78,7 +73,9 @@ export function ContactTable({
       label: "Téléphone",
       width: "150px",
       render: (c) => (
-        <span className="text-[#4A7A94] truncate font-mono">{c.phone || "—"}</span>
+        <span className="text-[#4A7A94] truncate font-mono">
+          {c.phone || "—"}
+        </span>
       ),
     },
     {
@@ -99,19 +96,6 @@ export function ContactTable({
         </Badge>
       ),
     },
-    // {
-    //   key: "channels",
-    //   label: "Canaux",
-    //   width: "100px",
-    //   render: (c) => (
-    //     <div className="flex items-center gap-1">
-    //       {/* Mock channels */}
-    //       <div className="w-1.75 h-1.75 rounded-full bg-[#2E8FAD]" title="SMS"></div>
-    //       <div className="w-1.75 h-1.75 rounded-full bg-[#1B5E82]" title="Email"></div>
-    //       <div className="w-1.75 h-1.75 rounded-full bg-[#25D366]" title="WhatsApp"></div>
-    //     </div>
-    //   ),
-    // },
     {
       key: "updatedAt",
       label: "Dernière act.",

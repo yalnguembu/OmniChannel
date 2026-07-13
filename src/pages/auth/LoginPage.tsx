@@ -9,14 +9,14 @@ export function LoginPage() {
   const vm = useLoginViewModel();
 
   return (
-    <div className="min-h-screen bg-[#F4F5F6] flex items-center justify-center p-6">
+    <div className="min-h-screen bg-[#F4F5F6] flex justify-center items-end p-0 sm:items-center sm:p-6">
       <motion.div
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.35, ease: [0.25, 0.46, 0.45, 0.94] }}
-        className="w-full max-w-140"
+        className="w-full sm:max-w-140"
       >
-        <div className="bg-white rounded-xl shadow-[0_4px_24px_rgba(13,33,55,0.08)] border border-[#E5E7EB]/60 p-8">
+        <div className="bg-white p-6 sm:p-8 rounded-none max-sm:rounded-t-2xl sm:rounded-xl border-t sm:border border-[#E5E7EB]/60 shadow-none sm:shadow-[0_4px_24px_rgba(13,33,55,0.08)]">
           <div className="w-full flex justify-center">
             <OctoLogo size={100} />
           </div>

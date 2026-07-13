@@ -8,10 +8,21 @@ import type { SelectOption } from "@/shared/api/generated/types.gen";
 import type {
   useSegmentCriteria,
   CriteriaNode,
+  CriteriaEvent,
+  CriteriaMessage,
   OperandKind,
 } from "@/hooks/useSegmentCriteria";
 
 type SegmentCriteriaVM = ReturnType<typeof useSegmentCriteria>;
+
+const DEFAULT_COUNT_OPS = ["eq", "neq", "gt", "gte", "lt", "lte"];
+const DEFAULT_RECENCY_OPS = ["gt", "gte", "lt", "lte"];
+const DEFAULT_BOUNDARIES = [
+  { code: "last", label: "Dernière occurrence" },
+  { code: "first", label: "Première occurrence" },
+];
+const miniInputCls =
+  "w-full px-3 py-2 border border-[#E5E7EB] rounded-md text-[13px] text-[#0D2137] bg-white outline-none transition-colors focus:border-[#2E8FAD]";
 
 /**
  * Recursive editor for one criteria node (group → AND/OR + children ; leaf →
@@ -111,6 +122,11 @@ export function ConditionNodeEditor({
               <Plus size={12} /> Tag
             </Button>
           )}
+          {allowEventTag && vm.addMessage && (
+            <Button variant="ghost" size="sm" onClick={() => vm.addMessage(path)}>
+              <Plus size={12} /> Message
+            </Button>
+          )}
           <Button variant="ghost" size="sm" onClick={() => vm.addGroup(path)}>
             <Plus size={12} /> Groupe
           </Button>
@@ -121,42 +137,36 @@ export function ConditionNodeEditor({
 
   // ── Event condition ───────────────────────────────────────────────────────
   if (node.kind === "event") {
+    const eo = vm.eventOptions;
     return (
-      <div className="rounded-md border border-[#E5E7EB] bg-white p-3">
+      <div className="space-y-3 rounded-md border border-[#E5E7EB] bg-white p-3">
         <div className="flex flex-wrap items-center gap-2">
           <span className="text-[11px] font-medium uppercase tracking-[0.06em] text-[#8BAFC0]">
             Événement
           </span>
-          <Select
-            value={String(node.occurred)}
-            onChange={(e) => vm.updateNode(path, { occurred: e.target.value === "true" })}
-            options={[
-              { value: "true", label: "a reçu" },
-              { value: "false", label: "n'a pas reçu" },
-            ]}
-          />
-          <Select
-            value={node.code}
-            onChange={(e) => vm.updateNode(path, { code: e.target.value })}
-            options={[
-              { value: "", label: "Choisir un événement…" },
-              ...(vm.events ?? []).map((ev: any) => ({
-                value: ev.code ?? "",
-                label: ev.label ? `${ev.label} (${ev.code})` : ev.code ?? "",
-              })),
-            ]}
-          />
-          <input
-            type="number"
-            placeholder="dans N jours (option.)"
-            value={node.withinDays ?? ""}
-            onChange={(e) =>
-              vm.updateNode(path, {
-                withinDays: e.target.value ? Number(e.target.value) : undefined,
-              })
-            }
-            className="w-40 px-3 py-2 border border-[#E5E7EB] rounded-md text-[13px] outline-none focus:border-[#2E8FAD]"
-          />
+          <div className="w-36">
+            <Select
+              value={String(node.occurred)}
+              onChange={(e) => vm.updateNode(path, { occurred: e.target.value === "true" })}
+              options={[
+                { value: "true", label: "a reçu" },
+                { value: "false", label: "n'a pas reçu" },
+              ]}
+            />
+          </div>
+          <div className="min-w-[200px] flex-1">
+            <Select
+              value={node.code}
+              onChange={(e) => vm.updateNode(path, { code: e.target.value })}
+              options={[
+                { value: "", label: "Choisir un événement…" },
+                ...(vm.events ?? []).map((ev: any) => ({
+                  value: ev.code ?? "",
+                  label: ev.label ? `${ev.label} (${ev.code})` : ev.code ?? "",
+                })),
+              ]}
+            />
+          </div>
           <button
             onClick={() => vm.removeNode(path)}
             className="ml-auto shrink-0 p-2 text-[#8BAFC0] transition-colors hover:text-[#DC2626]"
@@ -165,6 +175,16 @@ export function ConditionNodeEditor({
             <Trash2 size={14} />
           </button>
         </div>
+        <TemporalControls
+          node={node}
+          path={path}
+          vm={vm}
+          countLabel="Fréquence (nombre de fois)"
+          countOps={eo?.countOperators ?? DEFAULT_COUNT_OPS}
+          recencyOps={eo?.recencyOperators ?? DEFAULT_RECENCY_OPS}
+          boundaries={eo?.boundaries ?? DEFAULT_BOUNDARIES}
+          statuses={eo?.statuses ?? undefined}
+        />
       </div>
     );
   }
@@ -204,6 +224,127 @@ export function ConditionNodeEditor({
             <Trash2 size={14} />
           </button>
         </div>
+      </div>
+    );
+  }
+
+  // ── Message condition ─────────────────────────────────────────────────────
+  if (node.kind === "message") {
+    const mo = vm.messageOptions;
+    const opt = (v?: string | null, l?: string | null) => ({
+      value: v ?? "",
+      label: l ?? v ?? "",
+    });
+    return (
+      <div className="space-y-2 rounded-md border border-[#E5E7EB] bg-white p-3">
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="text-[11px] font-medium uppercase tracking-[0.06em] text-[#8BAFC0]">
+            Message
+          </span>
+          <div className="w-44">
+            <Select
+              value={String(node.occurred)}
+              onChange={(e) => vm.updateNode(path, { occurred: e.target.value === "true" })}
+              options={[
+                { value: "true", label: "Respecte le critère" },
+                { value: "false", label: "Négation (aucun)" },
+              ]}
+            />
+          </div>
+          <div className="min-w-[200px] flex-1">
+            <Select
+              value={node.direction ?? ""}
+              onChange={(e) =>
+                vm.updateNode(path, { direction: e.target.value || undefined })
+              }
+              options={[
+                opt("", "Reçu ou envoyé (les deux)"),
+                ...(mo?.directions ?? [
+                  { code: "OUTBOUND", label: "A reçu (message sortant)" },
+                  { code: "INBOUND", label: "A envoyé / répondu (message entrant)" },
+                ]).map((d) => opt(d.code, d.label)),
+              ]}
+            />
+          </div>
+          <button
+            onClick={() => vm.removeNode(path)}
+            className="ml-auto shrink-0 p-2 text-[#8BAFC0] transition-colors hover:text-[#DC2626]"
+            title="Supprimer la condition"
+          >
+            <Trash2 size={14} />
+          </button>
+        </div>
+
+        <div className="grid gap-2 sm:grid-cols-3">
+          <Select
+            value={node.channelCode ?? ""}
+            onChange={(e) =>
+              vm.updateNode(path, { channelCode: e.target.value || undefined })
+            }
+            options={[
+              opt("", "Tous les canaux"),
+              ...(vm.channels ?? []).map((c) => opt(c.code, c.name ?? c.code)),
+            ]}
+          />
+          <Select
+            value={node.senderId ?? ""}
+            onChange={(e) =>
+              vm.updateNode(path, { senderId: e.target.value || undefined })
+            }
+            options={[
+              opt("", "Tous les senders"),
+              ...(vm.senders ?? []).map((s) =>
+                opt(
+                  s.id,
+                  (s.displayName || s.address || s.id || "") +
+                    (s.channelCode ? ` [${s.channelCode}]` : ""),
+                ),
+              ),
+            ]}
+          />
+          <Select
+            value={node.status ?? ""}
+            onChange={(e) =>
+              vm.updateNode(path, { status: e.target.value || undefined })
+            }
+            options={[
+              opt("", "Tous les statuts"),
+              ...(mo?.statuses ?? []).map((s) => opt(s.code, s.label)),
+            ]}
+          />
+          <Select
+            value={node.messageType ?? ""}
+            onChange={(e) =>
+              vm.updateNode(path, { messageType: e.target.value || undefined })
+            }
+            options={[
+              opt("", "Tous les types"),
+              ...(mo?.messageTypes ?? []).map((t) => opt(t.code, t.label)),
+            ]}
+          />
+          <Select
+            value={node.templateId ?? ""}
+            onChange={(e) =>
+              vm.updateNode(path, { templateId: e.target.value || undefined })
+            }
+            options={[
+              opt("", "Tous les templates"),
+              ...(vm.templates ?? []).map((t) =>
+                opt(t.id, (t.name ?? "") + (t.code ? ` (${t.code})` : "")),
+              ),
+            ]}
+          />
+        </div>
+
+        <TemporalControls
+          node={node}
+          path={path}
+          vm={vm}
+          countLabel="Fréquence (nombre de messages)"
+          countOps={mo?.countOperators ?? DEFAULT_COUNT_OPS}
+          recencyOps={mo?.recencyOperators ?? DEFAULT_RECENCY_OPS}
+          boundaries={DEFAULT_BOUNDARIES}
+        />
       </div>
     );
   }
@@ -280,6 +421,257 @@ export function ConditionNodeEditor({
         </button>
       </div>
     </div>
+  );
+}
+
+/* ── Frequency / recency / temporal-window controls (event + message) ───────── */
+
+function CheckRow({
+  label,
+  checked,
+  onChange,
+}: {
+  label: string;
+  checked: boolean;
+  onChange: (v: boolean) => void;
+}) {
+  return (
+    <label className="flex w-fit cursor-pointer items-center gap-2 text-[12.5px] font-medium text-[#4A7A94]">
+      <input
+        type="checkbox"
+        checked={checked}
+        onChange={(e) => onChange(e.target.checked)}
+        className="rounded"
+      />
+      {label}
+    </label>
+  );
+}
+
+function TemporalControls({
+  node,
+  path,
+  vm,
+  countLabel,
+  countOps,
+  recencyOps,
+  boundaries,
+  statuses,
+}: {
+  node: CriteriaEvent | CriteriaMessage;
+  path: number[];
+  vm: SegmentCriteriaVM;
+  countLabel: string;
+  countOps: string[];
+  recencyOps: string[];
+  boundaries: { code?: string | null; label?: string | null }[];
+  /** Event only: an optional occurrence-status filter. */
+  statuses?: { code?: string | null; label?: string | null }[];
+}) {
+  const winMode: "none" | "within" | "range" =
+    node.withinDays != null
+      ? "within"
+      : node.occurredAfter || node.occurredBefore
+        ? "range"
+        : "none";
+
+  const setWindow = (mode: string) =>
+    vm.updateNode(path, {
+      withinDays: mode === "within" ? (node.withinDays ?? 30) : undefined,
+      occurredAfter: undefined,
+      occurredBefore: undefined,
+    });
+
+  const opsOptions = (codes: string[]) =>
+    codes.map((c) => ({ value: c, label: vm.operatorLabel(c) }));
+
+  const open =
+    !!node.count ||
+    !!node.recency ||
+    winMode !== "none" ||
+    // Status lives in the advanced panel for events only (messages show it above).
+    (!!statuses && !!node.status);
+
+  return (
+    <details className="rounded-md border border-dashed border-[#E5E7EB] bg-[#F9FAFB] px-3 py-2" open={open}>
+      <summary className="cursor-pointer text-[12px] font-semibold text-[#2E8FAD]">
+        Options avancées (fréquence, récence, fenêtre{statuses ? ", statut" : ""})
+      </summary>
+
+      <div className="grid gap-3 pt-3 sm:grid-cols-2">
+        {/* Fréquence */}
+        <div className="space-y-2">
+          <CheckRow
+            label={countLabel}
+            checked={!!node.count}
+            onChange={(v) =>
+              vm.updateNode(path, {
+                count: v ? { operator: countOps[0] ?? "gte", value: 1 } : undefined,
+              })
+            }
+          />
+          {node.count && (
+            <div className="flex items-center gap-2">
+              <div className="flex-1">
+                <Select
+                  value={node.count.operator}
+                  onChange={(e) =>
+                    vm.updateNode(path, {
+                      count: { ...node.count!, operator: e.target.value },
+                    })
+                  }
+                  options={opsOptions(countOps)}
+                />
+              </div>
+              <input
+                type="number"
+                className={`${miniInputCls} w-24`}
+                value={node.count.value}
+                onChange={(e) =>
+                  vm.updateNode(path, {
+                    count: { ...node.count!, value: Number(e.target.value) || 0 },
+                  })
+                }
+              />
+            </div>
+          )}
+        </div>
+
+        {/* Récence / ancienneté */}
+        <div className="space-y-2">
+          <CheckRow
+            label="Récence / ancienneté"
+            checked={!!node.recency}
+            onChange={(v) =>
+              vm.updateNode(path, {
+                recency: v
+                  ? { boundary: boundaries[0]?.code ?? "last", operator: "gt", days: 30 }
+                  : undefined,
+              })
+            }
+          />
+          {node.recency && (
+            <>
+              <div className="flex items-center gap-2">
+                <div className="flex-1">
+                  <Select
+                    value={node.recency.boundary}
+                    onChange={(e) =>
+                      vm.updateNode(path, {
+                        recency: { ...node.recency!, boundary: e.target.value },
+                      })
+                    }
+                    options={boundaries.map((b) => ({
+                      value: b.code ?? "",
+                      label: b.label ?? b.code ?? "",
+                    }))}
+                  />
+                </div>
+                <div className="flex-1">
+                  <Select
+                    value={node.recency.operator}
+                    onChange={(e) =>
+                      vm.updateNode(path, {
+                        recency: { ...node.recency!, operator: e.target.value },
+                      })
+                    }
+                    options={opsOptions(recencyOps)}
+                  />
+                </div>
+                <input
+                  type="number"
+                  className={`${miniInputCls} w-20`}
+                  value={node.recency.days}
+                  onChange={(e) =>
+                    vm.updateNode(path, {
+                      recency: { ...node.recency!, days: Number(e.target.value) || 0 },
+                    })
+                  }
+                />
+              </div>
+              <p className="text-[11px] leading-relaxed text-[#8BAFC0]">
+                L'opérateur porte sur l'âge en jours (ex. « dernière » + « &gt; » + 60
+                = inactif depuis plus de 60 j).
+              </p>
+            </>
+          )}
+        </div>
+
+        {/* Fenêtre temporelle */}
+        <div className="space-y-2">
+          <p className="text-[12.5px] font-medium text-[#4A7A94]">Fenêtre temporelle</p>
+          <div className="flex flex-wrap items-center gap-2">
+            <div className="w-52">
+              <Select
+                value={winMode}
+                onChange={(e) => setWindow(e.target.value)}
+                options={[
+                  { value: "none", label: "Aucune limite" },
+                  { value: "within", label: "Fenêtre glissante (jours)" },
+                  { value: "range", label: "Plage de dates absolue" },
+                ]}
+              />
+            </div>
+            {winMode === "within" && (
+              <input
+                type="number"
+                placeholder="depuis N jours"
+                className={`${miniInputCls} w-36`}
+                value={node.withinDays ?? ""}
+                onChange={(e) =>
+                  vm.updateNode(path, {
+                    withinDays: e.target.value ? Number(e.target.value) : undefined,
+                  })
+                }
+              />
+            )}
+            {winMode === "range" && (
+              <>
+                <input
+                  type="date"
+                  className={`${miniInputCls} w-40`}
+                  value={node.occurredAfter ?? ""}
+                  onChange={(e) =>
+                    vm.updateNode(path, { occurredAfter: e.target.value || undefined })
+                  }
+                />
+                <span className="text-[12px] text-[#8BAFC0]">→</span>
+                <input
+                  type="date"
+                  className={`${miniInputCls} w-40`}
+                  value={node.occurredBefore ?? ""}
+                  onChange={(e) =>
+                    vm.updateNode(path, { occurredBefore: e.target.value || undefined })
+                  }
+                />
+              </>
+            )}
+          </div>
+        </div>
+
+        {/* Statut d'occurrence (événement uniquement) */}
+        {statuses && (
+          <div className="space-y-2">
+            <p className="text-[12.5px] font-medium text-[#4A7A94]">
+              Statut de l'occurrence
+            </p>
+            <Select
+              value={node.status ?? ""}
+              onChange={(e) =>
+                vm.updateNode(path, { status: e.target.value || undefined })
+              }
+              options={[
+                { value: "", label: "(tous sauf Ignoré)" },
+                ...statuses.map((s) => ({
+                  value: s.code ?? "",
+                  label: s.label ?? s.code ?? "",
+                })),
+              ]}
+            />
+          </div>
+        )}
+      </div>
+    </details>
   );
 }
 

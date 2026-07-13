@@ -13,7 +13,10 @@ export const clientSchema = z.object({
   city: z.string().optional(),
   country: z.string().optional(),
   gender: z.string().optional(),
-  status: z.enum(['active', 'inactive', 'blocked']).optional(),
+  // Not constrained to a fixed list — the backend owns the status vocabulary
+  // (e.g. opted_out), so an existing contact's status must load without being
+  // rejected. The edit form's <select> still offers the common values.
+  status: z.string().optional(),
 })
 
 export const campaignSchema = z.object({

@@ -3,6 +3,8 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import {
   getApiProductDropdownOptions,
+  getApiClientSegmentClientsByIdOptions,
+  getApiClientSegmentClientsByIdQueryKey,
   postApiClientSearchOptions,
   postApiClientSegmentSearchOptions,
   postApiClientMutation,
@@ -43,6 +45,10 @@ export function useContactViewModel(
   // When scoped to a product (product page), the filter is locked to it.
   const [productId, setProductId] = useState(forcedProductId ?? "all");
   const isProductLocked = !!forcedProductId;
+  // When scoped to a specific segment (segment detail page), the members list
+  // must come from the dedicated segment-clients endpoint — SearchClientRequest
+  // has no segment filter, so the plain client search can't scope by segment.
+  const isSegmentLocked = !!forcedSegmentId;
 
   useEffect(() => {
     if (forcedProductId) {
@@ -121,16 +127,57 @@ export function useContactViewModel(
 
       return { items, totalCount };
     },
+    // Skipped when segment-locked — the segment-clients query owns the list then.
+    enabled: !isSegmentLocked,
   });
 
-  useEffect(() => {
-    if (contactsQuery.isError && contactsQuery.error) {
-      handleRequestError(contactsQuery.error);
-    }
-  }, [contactsQuery.isError, contactsQuery.error, handleRequestError]);
+  // Segment members (dynamic → evaluated live; static → persisted members).
+  // The full filter set is sent as query params — the backend applies whatever
+  // it supports (the generated type only declares page params; the rest are
+  // forwarded verbatim, per "send everything, let the backend decide").
+  const segmentClientsQuery = useQuery({
+    ...getApiClientSegmentClientsByIdOptions({
+      path: { id: forcedSegmentId ?? "" },
+      query: {
+        pageNumber: page,
+        pageSize,
+        searchTerm: search || undefined,
+        status: statusFilter !== "all" ? statusFilter : undefined,
+        sortBy: sort || undefined,
+        sortDirection: sortOrder || undefined,
+        createdFrom: dateRange.start ? dateRange.start.toISOString() : undefined,
+        createdTo: dateRange.end ? dateRange.end.toISOString() : undefined,
+        email: email.trim() || undefined,
+        firstName: firstName.trim() || undefined,
+        lastName: lastName.trim() || undefined,
+        postalCode: postalCode.trim() || undefined,
+        ids: ids.trim()
+          ? ids.split(",").map((s) => s.trim()).filter(Boolean)
+          : undefined,
+      } as any,
+    }),
+    select: (res) => {
+      const items = mapToClientModels(
+        (res?.data?.items ?? []) as SearchClientResponse[],
+      );
+      const totalCount =
+        (res?.metadata?.totalCount as number | undefined) ||
+        (res?.data?.totalCount ?? items.length);
+      return { items, totalCount };
+    },
+    enabled: isSegmentLocked,
+  });
 
-  const contacts = contactsQuery.data?.items || [];
-  const totalCount = contactsQuery.data?.totalCount || 0;
+  const listQuery = isSegmentLocked ? segmentClientsQuery : contactsQuery;
+
+  useEffect(() => {
+    if (listQuery.isError && listQuery.error) {
+      handleRequestError(listQuery.error);
+    }
+  }, [listQuery.isError, listQuery.error, handleRequestError]);
+
+  const contacts = listQuery.data?.items || [];
+  const totalCount = listQuery.data?.totalCount || 0;
 
   // --- Derived State (Counting by status for the whole list) ---
   const counts = useMemo(
@@ -172,12 +219,23 @@ export function useContactViewModel(
   });
 
   // --- Mutations ---
+  // Refresh whichever list is on screen: the global client search and, when
+  // segment-scoped, the segment-clients query too.
+  const invalidateContactLists = useCallback(() => {
+    queryClient.invalidateQueries({ queryKey: postApiClientSearchQueryKey() });
+    if (forcedSegmentId) {
+      queryClient.invalidateQueries({
+        queryKey: getApiClientSegmentClientsByIdQueryKey({
+          path: { id: forcedSegmentId },
+        }),
+      });
+    }
+  }, [queryClient, forcedSegmentId]);
+
   const createMutation = useMutation({
     ...postApiClientMutation(),
     onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: postApiClientSearchQueryKey(),
-      });
+      invalidateContactLists();
       setIsModalOpen(false);
       toast.success("Contact créé");
     },
@@ -187,9 +245,7 @@ export function useContactViewModel(
   const updateMutation = useMutation({
     ...putApiClientMutation(),
     onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: postApiClientSearchQueryKey(),
-      });
+      invalidateContactLists();
       setIsModalOpen(false);
       setEditingContact(null);
       toast.success("Contact mis à jour");
@@ -200,9 +256,7 @@ export function useContactViewModel(
   const deleteMutation = useMutation({
     ...deleteApiClientByIdMutation(),
     onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: postApiClientSearchQueryKey(),
-      });
+      invalidateContactLists();
       toast.success("Contact supprimé");
     },
     onError: createMutationErrorHandler(),
@@ -247,11 +301,11 @@ export function useContactViewModel(
   );
 
   return {
-    contacts: contactsQuery.data?.items || [],
-    totalCount: contactsQuery.data?.totalCount || 0,
+    contacts: listQuery.data?.items || [],
+    totalCount: listQuery.data?.totalCount || 0,
     segments: segmentsQuery.data || [],
     products,
-    isLoading: contactsQuery.isLoading,
+    isLoading: listQuery.isLoading,
     isActionPending:
       createMutation.isPending ||
       updateMutation.isPending ||
@@ -363,7 +417,7 @@ export function useContactViewModel(
     },
     handleDelete: (id: string) => deleteMutation.mutate({ path: { id } }),
     handleImportSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: postApiClientSearchQueryKey() });
+      invalidateContactLists();
       setIsImportOpen(false);
     },
   };

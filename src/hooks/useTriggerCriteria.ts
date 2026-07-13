@@ -123,7 +123,9 @@ export function useTriggerCriteria(
   // latter only carries matchRuleTypes/captures/actionTypes. Sourcing them from
   // the event metadata is what left the operator list empty.
   const condMetaQuery = useQuery({
-    ...getApiClientSegmentMetadataOptions(),
+    ...getApiClientSegmentMetadataOptions({
+      query: { productId: productId ?? undefined },
+    }),
     select: (res) => res?.data as ConditionMetadataResponse | undefined,
     staleTime: 5 * 60 * 1000,
   });

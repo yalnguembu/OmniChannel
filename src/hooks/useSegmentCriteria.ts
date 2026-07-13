@@ -51,24 +51,55 @@ export type CriteriaGroup = {
   /** connectors[i] joins children[i] and children[i + 1]; length === max(0, children.length - 1). */
   connectors: LogicalConnector[];
 };
-/** "a reçu / n'a pas reçu l'événement X (dans N jours)". */
+/** Frequency spec: `{ operator, value }` — number of occurrences / messages. */
+export type CountSpec = { operator: string; value: number };
+/** Recency spec: the operator bears on the age (in days) of the first/last hit. */
+export type RecencySpec = { boundary: string; operator: string; days: number };
+
+/** "a reçu / n'a pas reçu l'événement X", plus optional frequency / recency /
+ * temporal window / status filters (guide §2.3). Wire-shaped: unused fields are
+ * simply absent. Segments only. */
 export type CriteriaEvent = {
   kind: "event";
   code: string;
   occurred: boolean;
+  /** Sliding window in days — exclusive with occurredAfter/Before. */
   withinDays?: number;
+  occurredAfter?: string;
+  occurredBefore?: string;
+  status?: string;
+  count?: CountSpec;
+  recency?: RecencySpec;
 };
-/** "a / n'a pas le tag X". */
+/** "a / n'a pas le tag X". Segments only. */
 export type CriteriaTag = {
   kind: "tag";
   name: string;
   has: boolean;
 };
+/** "a reçu (OUTBOUND) / a répondu (INBOUND) un message" matching the filters,
+ * plus optional frequency / recency / window (guide §2.5). Segments only. */
+export type CriteriaMessage = {
+  kind: "message";
+  occurred: boolean;
+  direction?: string;
+  channelCode?: string;
+  senderId?: string;
+  status?: string;
+  messageType?: string;
+  templateId?: string;
+  withinDays?: number;
+  occurredAfter?: string;
+  occurredBefore?: string;
+  count?: CountSpec;
+  recency?: RecencySpec;
+};
 export type CriteriaNode =
   | CriteriaLeaf
   | CriteriaGroup
   | CriteriaEvent
-  | CriteriaTag;
+  | CriteriaTag
+  | CriteriaMessage;
 
 export type OperandKind = "none" | "single" | "array" | "range";
 
@@ -84,7 +115,12 @@ type WireGroup = {
   operator: LogicalConnector;
   children: WireNode[];
 };
-type WireNode = WireLeaf | WireGroup | CriteriaEvent | CriteriaTag;
+type WireNode =
+  | WireLeaf
+  | WireGroup
+  | CriteriaEvent
+  | CriteriaTag
+  | CriteriaMessage;
 
 export const emptyGroup = (): CriteriaGroup => ({
   kind: "group",
@@ -107,6 +143,10 @@ export const emptyTag = (name = ""): CriteriaTag => ({
   name,
   has: true,
 });
+export const emptyMessage = (): CriteriaMessage => ({
+  kind: "message",
+  occurred: true,
+});
 const emptyWireGroup = (): WireGroup => ({
   kind: "group",
   operator: "and",
@@ -127,24 +167,77 @@ function uiLeafFromWire(w: any): CriteriaLeaf {
   };
 }
 
-/** A single non-group wire node (leaf / event / tag) → its editor node. */
+function parseCount(c: any): CountSpec | undefined {
+  if (!c || typeof c !== "object") return undefined;
+  return {
+    operator: typeof c.operator === "string" ? c.operator : "gte",
+    value: Number(c.value ?? 0),
+  };
+}
+function parseRecency(r: any): RecencySpec | undefined {
+  if (!r || typeof r !== "object") return undefined;
+  return {
+    boundary: r.boundary === "first" ? "first" : "last",
+    operator: typeof r.operator === "string" ? r.operator : "gt",
+    days: Number(r.days ?? 0),
+  };
+}
+/** Keep only the date part of an ISO string for a `<input type="date">`. */
+const dateOnly = (s: any): string => (typeof s === "string" ? s.slice(0, 10) : "");
+
+/** A single non-group wire node (leaf / event / tag / message) → its editor node. */
 function uiNodeFromWire(w: any): CriteriaNode {
-  if (w?.kind === "event")
-    return {
+  if (w?.kind === "event") {
+    const n: CriteriaEvent = {
       kind: "event",
       code: typeof w.code === "string" ? w.code : "",
       occurred: w.occurred !== false,
-      ...(w.withinDays != null ? { withinDays: Number(w.withinDays) } : {}),
     };
+    if (w.withinDays != null) n.withinDays = Number(w.withinDays);
+    else {
+      if (w.occurredAfter) n.occurredAfter = dateOnly(w.occurredAfter);
+      if (w.occurredBefore) n.occurredBefore = dateOnly(w.occurredBefore);
+    }
+    if (w.status) n.status = String(w.status);
+    const c = parseCount(w.count);
+    if (c) n.count = c;
+    const r = parseRecency(w.recency);
+    if (r) n.recency = r;
+    return n;
+  }
   if (w?.kind === "tag")
     return { kind: "tag", name: typeof w.name === "string" ? w.name : "", has: w.has !== false };
+  if (w?.kind === "message") {
+    const n: CriteriaMessage = { kind: "message", occurred: w.occurred !== false };
+    if (w.direction) n.direction = String(w.direction).toUpperCase();
+    if (w.channelCode) n.channelCode = String(w.channelCode);
+    if (w.senderId) n.senderId = String(w.senderId);
+    if (w.status) n.status = String(w.status);
+    if (w.messageType) n.messageType = String(w.messageType);
+    if (w.templateId) n.templateId = String(w.templateId);
+    if (w.withinDays != null) n.withinDays = Number(w.withinDays);
+    else {
+      if (w.occurredAfter) n.occurredAfter = dateOnly(w.occurredAfter);
+      if (w.occurredBefore) n.occurredBefore = dateOnly(w.occurredBefore);
+    }
+    const c = parseCount(w.count);
+    if (c) n.count = c;
+    const r = parseRecency(w.recency);
+    if (r) n.recency = r;
+    return n;
+  }
   return uiLeafFromWire(w);
 }
 
 /** Items `w` contributes to an enclosing AND-run (nested ANDs inlined; an OR → one sub-group item). */
 function expandAndRun(w: any): CriteriaNode[] {
   if (!w || typeof w !== "object") return [];
-  if (w.kind === "leaf" || w.kind === "event" || w.kind === "tag")
+  if (
+    w.kind === "leaf" ||
+    w.kind === "event" ||
+    w.kind === "tag" ||
+    w.kind === "message"
+  )
     return [uiNodeFromWire(w)];
   if (w.kind === "group") {
     const children: any[] = Array.isArray(w.children) ? w.children : [];
@@ -157,7 +250,12 @@ function expandAndRun(w: any): CriteriaNode[] {
 /** Flatten any wire node into one editor group (children + per-gap connectors). */
 function wireGroupToUi(w: any): CriteriaGroup {
   if (!w || typeof w !== "object") return emptyGroup();
-  if (w.kind === "leaf" || w.kind === "event" || w.kind === "tag")
+  if (
+    w.kind === "leaf" ||
+    w.kind === "event" ||
+    w.kind === "tag" ||
+    w.kind === "message"
+  )
     return { kind: "group", children: [uiNodeFromWire(w)], connectors: [] };
   const wchildren: any[] = Array.isArray(w.children) ? w.children : [];
   if (w.operator === "or") {
@@ -184,7 +282,12 @@ function parseCriteria(raw: string | null | undefined): CriteriaGroup {
   if (!raw || !raw.trim()) return emptyGroup();
   try {
     const parsed = JSON.parse(raw);
-    if (parsed?.kind === "leaf" || parsed?.kind === "event" || parsed?.kind === "tag")
+    if (
+      parsed?.kind === "leaf" ||
+      parsed?.kind === "event" ||
+      parsed?.kind === "tag" ||
+      parsed?.kind === "message"
+    )
       return { kind: "group", children: [uiNodeFromWire(parsed)], connectors: [] };
     if (parsed?.kind === "group") return wireGroupToUi(parsed);
   } catch {
@@ -238,6 +341,7 @@ export type CriteriaAttribute = {
   options?: SelectOption[];
 };
 
+
 /**
  * ViewModel for the segment criteria builder (§3).
  *   - GET  /api/ClientSegment/metadata               (operators / attributeTypes / and-or)
@@ -256,11 +360,13 @@ export function useSegmentCriteria(
   const { handleRequestError, createMutationErrorHandler } = useErrorHandling();
 
   // ── Metadata + schema ────────────────────────────────────────────────────────
+  // Scoped by product so events / tags / channels / senders / templates are
+  // the ones defined for THIS product (guide §7.3).
   const condMetaQuery = useQuery({
-    ...getApiClientSegmentMetadataOptions(),
+    ...getApiClientSegmentMetadataOptions({ query: { productId } }),
     select: (res) => res?.data as ConditionMetadataResponse | undefined,
     staleTime: 5 * 60 * 1000,
-    enabled,
+    enabled: !!productId && enabled,
   });
   const schemaQuery = useQuery({
     ...getApiProductAttributeSchemaByIdOptions({ path: { id: productId } }),
@@ -305,6 +411,23 @@ export function useSegmentCriteria(
   // Event / tag catalogs for the event- and tag-condition nodes (new contract).
   const events = useMemo(() => condMeta?.events ?? [], [condMeta]);
   const tags = useMemo(() => condMeta?.tags ?? [], [condMeta]);
+
+  // Option catalogs + referentials for the event / message condition nodes.
+  const eventOptions = useMemo(() => condMeta?.eventOptions ?? null, [condMeta]);
+  const messageOptions = useMemo(
+    () => condMeta?.messageOptions ?? null,
+    [condMeta],
+  );
+  const channels = useMemo(() => condMeta?.channels ?? [], [condMeta]);
+  const senders = useMemo(() => condMeta?.senders ?? [], [condMeta]);
+  const templates = useMemo(() => condMeta?.templates ?? [], [condMeta]);
+
+  // Human label for an operator code (eq → « Égal à »), used by the count /
+  // recency selects which reuse the shared operator catalog.
+  const operatorLabel = useCallback(
+    (code: string) => operators.find((o) => o.code === code)?.label ?? code,
+    [operators],
+  );
 
   const valueKindForType = useCallback(
     (type: string): string => {
@@ -455,6 +578,10 @@ export function useSegmentCriteria(
     (path: number[]) => addChild(path, emptyTag()),
     [addChild],
   );
+  const addMessage = useCallback(
+    (path: number[]) => addChild(path, emptyMessage()),
+    [addChild],
+  );
 
   const removeNode = useCallback((path: number[]) => {
     if (path.length === 0) return; // never remove the root
@@ -525,19 +652,62 @@ export function useSegmentCriteria(
         };
       }
 
-      // Event / tag nodes are already wire-shaped — prune only if unset.
+      // Event / tag / message nodes are already wire-shaped — prune only if unset.
       if (node.kind === "event") {
         if (!node.code) return null;
-        return {
+        const o: CriteriaEvent = {
           kind: "event",
           code: node.code,
           occurred: node.occurred,
-          ...(node.withinDays != null ? { withinDays: node.withinDays } : {}),
         };
+        if (node.withinDays != null) o.withinDays = node.withinDays;
+        else {
+          if (node.occurredAfter) o.occurredAfter = node.occurredAfter;
+          if (node.occurredBefore) o.occurredBefore = node.occurredBefore;
+        }
+        if (node.status) o.status = node.status;
+        if (node.count)
+          o.count = {
+            operator: node.count.operator,
+            value: Number(node.count.value) || 0,
+          };
+        if (node.recency)
+          o.recency = {
+            boundary: node.recency.boundary,
+            operator: node.recency.operator,
+            days: Number(node.recency.days) || 0,
+          };
+        return o;
       }
       if (node.kind === "tag") {
         if (!node.name) return null;
         return { kind: "tag", name: node.name, has: node.has };
+      }
+      if (node.kind === "message") {
+        const o: CriteriaMessage = { kind: "message", occurred: node.occurred };
+        if (node.direction) o.direction = node.direction.toUpperCase();
+        if (node.channelCode) o.channelCode = node.channelCode;
+        if (node.senderId) o.senderId = node.senderId;
+        if (node.status) o.status = node.status;
+        if (node.messageType) o.messageType = node.messageType;
+        if (node.templateId) o.templateId = node.templateId;
+        if (node.withinDays != null) o.withinDays = node.withinDays;
+        else {
+          if (node.occurredAfter) o.occurredAfter = node.occurredAfter;
+          if (node.occurredBefore) o.occurredBefore = node.occurredBefore;
+        }
+        if (node.count)
+          o.count = {
+            operator: node.count.operator,
+            value: Number(node.count.value) || 0,
+          };
+        if (node.recency)
+          o.recency = {
+            boundary: node.recency.boundary,
+            operator: node.recency.operator,
+            days: Number(node.recency.days) || 0,
+          };
+        return o;
       }
 
       // Group → keep built children with the connector joining each to the
@@ -687,6 +857,12 @@ export function useSegmentCriteria(
     valueKindForType,
     events,
     tags,
+    eventOptions,
+    messageOptions,
+    channels,
+    senders,
+    templates,
+    operatorLabel,
 
     // Tree
     criteria,
@@ -695,6 +871,7 @@ export function useSegmentCriteria(
     addGroup,
     addEvent,
     addTag,
+    addMessage,
     removeNode,
     setConnector,
 

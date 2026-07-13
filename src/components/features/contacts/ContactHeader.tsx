@@ -29,6 +29,8 @@ interface ContactHeaderProps {
   segments: { id: string; name: string }[];
   segmentId: string;
   setSegmentId: (v: string) => void;
+  /** Hides the segment dropdown (e.g. when already scoped to one segment). */
+  hideSegmentFilter?: boolean;
   // Advanced modal — committed values (seed the draft) + setters
   isFilterModalOpen?: boolean;
   setIsFilterModalOpen?: (v: boolean) => void;
@@ -54,10 +56,10 @@ interface ContactHeaderProps {
   productId?: string;
   setProductId?: (v: string) => void;
   hideProductFilter?: boolean;
-  // Actions
-  onNewContact: () => void;
+  // Actions — omit any to hide it (e.g. on a segment-scoped list).
+  onNewContact?: () => void;
   onImport?: () => void;
-  onManageSegments: () => void;
+  onManageSegments?: () => void;
 }
 
 const compactSelect =
@@ -76,6 +78,7 @@ export function ContactHeader({
   segments,
   segmentId,
   setSegmentId,
+  hideSegmentFilter = false,
   isFilterModalOpen,
   setIsFilterModalOpen,
   sort,
@@ -238,30 +241,34 @@ export function ContactHeader({
         <div className="w-px h-[18px] bg-[#E5E7EB] shrink-0 mx-1" />
 
         {/* Segment filter */}
-        <div className="w-8">
-          <select
-            value={segmentId}
-            onChange={(e) => setSegmentId(e.target.value)}
-            title="Filtrer par segment"
-            className={compactSelect}
-          >
-            <option value="all">Tous les segments</option>
-            {segments.map((s) => (
-              <option key={s.id} value={s.id}>
-                {s.name}
-              </option>
-            ))}
-          </select>
-        </div>
+        {!hideSegmentFilter && (
+          <div className="w-8">
+            <select
+              value={segmentId}
+              onChange={(e) => setSegmentId(e.target.value)}
+              title="Filtrer par segment"
+              className={compactSelect}
+            >
+              <option value="all">Tous les segments</option>
+              {segments.map((s) => (
+                <option key={s.id} value={s.id}>
+                  {s.name}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
         {/* Right cluster: actions */}
         <div className="ml-auto flex gap-2 items-center">
-          <button
-            onClick={onManageSegments}
-            className="text-[12px] font-normal px-3 py-[5px] rounded-full bg-white text-[#0D2137] border border-[#E5E7EB] cursor-pointer transition-colors hover:bg-[#F0F2F4] whitespace-nowrap inline-flex items-center gap-1.5"
-          >
-            <Users size={12} strokeWidth={1.5} />
-            Segments
-          </button>
+          {onManageSegments && (
+            <button
+              onClick={onManageSegments}
+              className="text-[12px] font-normal px-3 py-[5px] rounded-full bg-white text-[#0D2137] border border-[#E5E7EB] cursor-pointer transition-colors hover:bg-[#F0F2F4] whitespace-nowrap inline-flex items-center gap-1.5"
+            >
+              <Users size={12} strokeWidth={1.5} />
+              Segments
+            </button>
+          )}
 
           <button
             onClick={() => setIsFilterModalOpen?.(true)}
@@ -275,6 +282,7 @@ export function ContactHeader({
           </button>
 
           {/* Add dropdown — Nouveau contact / Importer CSV */}
+          {onNewContact && (
           <div ref={addRef} className="relative">
             <button
               onClick={() => setAddOpen((v) => !v)}
@@ -308,6 +316,7 @@ export function ContactHeader({
               </div>
             )}
           </div>
+          )}
         </div>
       </div>
 

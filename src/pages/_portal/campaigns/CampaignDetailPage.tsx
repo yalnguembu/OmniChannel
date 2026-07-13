@@ -23,11 +23,12 @@ import { PageLoader } from "@/components/feedback/PageLoader";
 import { EmptyState } from "@/components/feedback/EmptyState";
 import { formatDateTime, formatRelative } from "@/lib/date";
 import { fmt, statusLabel, cn } from "@/lib/utils";
+import { describeCron } from "@/lib/cron";
 import type {
   SearchMessageResponse,
   SearchCampaignStepResponse,
 } from "@/shared/api/generated/types.gen";
-import { DeliveryFunnel } from "@/components/charts/DeliveryRateChart";
+import { FunnelChart } from "@/components/charts/FunnelChart";
 
 import { useCampaignDetailViewModel } from "@/hooks/useCampaignDetailViewModel";
 import { useCampaignSteps } from "@/hooks/useCampaignSteps";
@@ -69,6 +70,12 @@ function msgStatusVariant(
   if (["queued", "pending", "scheduled", "sending"].includes(v))
     return "warning";
   return "neutral";
+}
+/** Funnel-stage caption: a stage's share of the targeted total (matches the
+ * count-proportional bar heights, so nothing contradicts the KPI strip). */
+function pctOf(part: number, whole: number): string {
+  const p = whole > 0 ? Math.round((part / whole) * 100) : 0;
+  return `${p}% des ciblés`;
 }
 export function CampaignDetailPage({ campaignId }: { campaignId: string }) {
   const navigate = useNavigate();
@@ -185,7 +192,7 @@ export function CampaignDetailPage({ campaignId }: { campaignId: string }) {
   ];
 
   return (
-    <div className="p-7 space-y-5">
+    <div className="p-4 sm:p-7 space-y-5">
       <button
         onClick={() =>
           navigate({
@@ -201,7 +208,7 @@ export function CampaignDetailPage({ campaignId }: { campaignId: string }) {
       {/* Header */}
       <div className="flex items-start justify-between gap-4 flex-wrap">
         <div>
-          <div className="flex items-center gap-2.5">
+          <div className="flex items-center gap-2.5 flex-wrap">
             <h1 className="text-[20px] font-semibold text-[#0D2137] tracking-tight">
               {c.name}
             </h1>
@@ -233,8 +240,7 @@ export function CampaignDetailPage({ campaignId }: { campaignId: string }) {
           <p className="text-[12.5px] text-[#8BAFC0] mt-1">
             {isRecurring ? (
               <>
-                cron{" "}
-                <span className="font-mono">{c.cronExpression || "—"}</span>
+                {describeCron(c.cronExpression)}
                 {c.nextRunAt
                   ? ` · prochaine ${formatDateTime(c.nextRunAt)}`
                   : ""}
@@ -244,7 +250,7 @@ export function CampaignDetailPage({ campaignId }: { campaignId: string }) {
             )}
           </p>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2 sm:justify-end">
           <Button variant="ghost" size="sm" onClick={() => setEditOpen(true)}>
             <Edit size={13} /> Éditer
           </Button>
@@ -338,7 +344,7 @@ export function CampaignDetailPage({ campaignId }: { campaignId: string }) {
       </div>
 
       {/* Tabs */}
-      <div className="flex border-b border-[#E5E7EB]">
+      <div className="flex border-b border-[#E5E7EB] overflow-x-auto [&::-webkit-scrollbar]:hidden">
         {tabs.map((t) => (
           <button
             key={t.id}
@@ -361,45 +367,29 @@ export function CampaignDetailPage({ campaignId }: { campaignId: string }) {
           <CardHeader title="Entonnoir de diffusion" />
           <CardBody>
             {stats.hasActivity ? (
-              <DeliveryFunnel
-                rows={[
-                  {
-                    label: "Ciblés",
-                    count: stats.totalRecipients,
-                    pct: 100,
-                    color: "#8BAFC0",
-                  },
+              <FunnelChart
+                stages={[
+                  { label: "Ciblés", count: stats.totalRecipients, hint: "Point de départ" },
                   {
                     label: "Envoyés",
                     count: stats.totalSent,
-                    pct: stats.totalRecipients
-                      ? Math.round(
-                          (stats.totalSent / stats.totalRecipients) * 100,
-                        )
-                      : 0,
-                    color: "#2E8FAD",
+                    hint: pctOf(stats.totalSent, stats.totalRecipients),
                   },
                   {
                     label: "Livrés",
                     count: stats.totalDelivered,
-                    pct: stats.totalSent
-                      ? Math.round(
-                          (stats.totalDelivered / stats.totalSent) * 100,
-                        )
-                      : 0,
-                    color: "#16A34A",
+                    hint: pctOf(stats.totalDelivered, stats.totalRecipients),
                   },
                   {
                     label: "Ouverts",
                     count: stats.totalOpened,
-                    pct: stats.totalDelivered
-                      ? Math.round(
-                          (stats.totalOpened / stats.totalDelivered) * 100,
-                        )
-                      : 0,
-                    color: "#6AB8D4",
+                    hint: pctOf(stats.totalOpened, stats.totalRecipients),
                   },
                 ]}
+                conversion={{
+                  value: stats.deliveryRate,
+                  label: "Taux de livraison",
+                }}
               />
             ) : (
               <p className="text-[13px] text-[#8BAFC0] text-center py-8">

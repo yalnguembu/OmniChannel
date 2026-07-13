@@ -203,7 +203,7 @@ export function ContactDetailPage({ contactId }: { contactId: string }) {
   ];
 
   return (
-    <div className="p-7">
+    <div className="p-4 sm:p-7">
       <button
         onClick={() => router.history.back()}
         className="flex items-center gap-2 text-[12.5px] text-[#8BAFC0] hover:text-[#0D2137] mb-5 transition-colors cursor-pointer"
@@ -215,7 +215,7 @@ export function ContactDetailPage({ contactId }: { contactId: string }) {
       <motion.div {...fadeInUp}>
         {/* Header */}
         <div className="bg-white border border-[#E5E7EB] rounded-[20px] p-6 mb-4">
-          <div className="flex items-start justify-between">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
             <div className="flex items-center gap-4">
               <div
                 className="w-[52px] h-[52px] rounded-full flex items-center justify-center text-[16px] font-semibold text-white shrink-0"
@@ -246,7 +246,7 @@ export function ContactDetailPage({ contactId }: { contactId: string }) {
                 </p>
               </div>
             </div>
-            <div className="flex gap-2">
+            <div className="flex flex-wrap gap-2">
               <Button variant="secondary" size="sm">
                 <MessageSquare size={13} />
                 Envoyer un message
@@ -260,7 +260,7 @@ export function ContactDetailPage({ contactId }: { contactId: string }) {
         </div>
 
         {/* Tabs */}
-        <div className="flex bg-white border border-[#E5E7EB] rounded-[14px] overflow-hidden mb-4">
+        <div className="flex bg-white border border-[#E5E7EB] rounded-[14px] overflow-x-auto [&::-webkit-scrollbar]:hidden mb-4">
           {tabs.map((t) => (
             <button
               key={t.id}
@@ -284,7 +284,7 @@ export function ContactDetailPage({ contactId }: { contactId: string }) {
           transition={{ duration: 0.2 }}
         >
           {tab === "profile" && (
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <Card>
                 <CardHeader
                   title="Informations personnelles"
@@ -455,7 +455,7 @@ export function ContactDetailPage({ contactId }: { contactId: string }) {
           </>
         }
       >
-        <form className="grid grid-cols-2 gap-4">
+        <form className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <Input
             label="Prénom *"
             error={errors.firstName?.message}

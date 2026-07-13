@@ -31,13 +31,13 @@ export function ProductDetailHero({
   const pill = STATUS_PILL[product.status] ?? STATUS_PILL.draft;
 
   return (
-    <div className="flex items-center justify-between py-5">
+    <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between py-5">
       <div className="flex items-center gap-4">
         <div className="w-[52px] h-[52px] rounded-[14px] bg-[#E8F4F8] border border-[#2E8FAD]/20 flex items-center justify-center shrink-0">
           <Package size={26} className="text-[#2E8FAD]" strokeWidth={1.5} />
         </div>
         <div>
-          <div className="flex items-center gap-2.5">
+          <div className="flex items-center gap-2.5 flex-wrap">
             <h1 className="text-[20px] font-semibold text-[#0D2137] tracking-tight leading-tight">
               {product.name}
             </h1>
@@ -60,7 +60,7 @@ export function ProductDetailHero({
           </div>
         </div>
       </div>
-      <div className="flex items-center gap-2">
+      <div className="flex flex-wrap items-center gap-2">
         <button
           disabled={isUpdatePending}
           onClick={() => onChangeStatus(isActive ? "paused" : "active")}

@@ -2,12 +2,12 @@ import { useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowLeft, Users, RefreshCw, MessageSquare } from "lucide-react";
+import { ArrowLeft, Users, RefreshCw, MessageSquare, Edit } from "lucide-react";
 import { toast } from "sonner";
 import {
   getApiClientSegmentByIdOptions,
   getApiClientSegmentByIdQueryKey,
-  postApiClientSegmentMemberSearchQueryKey,
+  getApiClientSegmentClientsByIdQueryKey,
   postApiClientSegmentRecalculateByIdMutation,
 } from "@/shared/api/generated/@tanstack/react-query.gen";
 import { Button } from "@/components/ui/Button";
@@ -15,6 +15,7 @@ import { Badge } from "@/components/ui/Badge";
 import { PageLoader } from "@/components/feedback/PageLoader";
 import { EmptyState } from "@/components/feedback/EmptyState";
 import { ContactTable } from "@/components/features/contacts/ContactTable";
+import { ContactHeader } from "@/components/features/contacts/ContactHeader";
 import { ContactDetailPanel } from "@/components/features/contacts/ContactDetailPanel";
 import { ContactModal } from "@/components/features/contacts/ContactModal";
 import { formatDate, formatRelative } from "@/lib/date";
@@ -23,6 +24,8 @@ import { staggerContainer } from "@/lib/animations";
 import { mapToSegmentModel } from "@/models/client.model";
 import { useContactViewModel } from "@/hooks/useContactViewModel";
 import { SegmentMessagesPreviewModal } from "@/components/features/contacts/SegmentMessagesPreviewModal";
+import { SegmentCriteriaModal } from "@/components/features/contacts/SegmentCriteriaModal";
+import type { ClientSegmentDto } from "@/shared/api/generated/types.gen";
 
 export function SegmentDetailPage({
   segmentId,
@@ -34,9 +37,16 @@ export function SegmentDetailPage({
   const navigate = useNavigate();
   const qc = useQueryClient();
   const [previewOpen, setPreviewOpen] = useState(false);
+  const [editOpen, setEditOpen] = useState(false);
 
-  // Same clients list as the main contacts page, scoped to this segment.
   const vm = useContactViewModel(productId, segmentId);
+
+  const filterOptions = [
+    { value: "all", label: "Tous", count: vm.counts.all },
+    { value: "active", label: "Actifs", count: vm.counts.active },
+    { value: "inactive", label: "Inactifs", count: vm.counts.inactive },
+    { value: "blocked", label: "Bloqués", count: vm.counts.blocked },
+  ];
 
   const recalculateMutation = useMutation({
     ...postApiClientSegmentRecalculateByIdMutation(),
@@ -46,7 +56,9 @@ export function SegmentDetailPage({
         queryKey: getApiClientSegmentByIdQueryKey({ path: { id: segmentId } }),
       });
       qc.invalidateQueries({
-        queryKey: postApiClientSegmentMemberSearchQueryKey(),
+        queryKey: getApiClientSegmentClientsByIdQueryKey({
+          path: { id: segmentId },
+        }),
       });
     },
     onError: () => toast.error("Erreur lors du recalcul du segment"),
@@ -66,7 +78,7 @@ export function SegmentDetailPage({
     );
 
   return (
-    <div className="p-7">
+    <div className="p-4 sm:p-7">
       <button
         onClick={() =>
           navigate({
@@ -80,7 +92,7 @@ export function SegmentDetailPage({
         Segments
       </button>
 
-      <div className="flex items-start justify-between mb-5">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between mb-5">
         <div className="flex items-center gap-4">
           <div className="w-12 h-12 rounded-[12px] bg-[#E8F4F8] flex items-center justify-center">
             <Users size={22} className="text-[#2E8FAD]" />
@@ -100,17 +112,27 @@ export function SegmentDetailPage({
             </p>
           </div>
         </div>
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
+          <Button variant="ghost" size="sm" onClick={() => setEditOpen(true)}>
+            <Edit size={13} />
+            Éditer
+          </Button>
           <Button
             variant="ghost"
             size="sm"
             loading={recalculateMutation.isPending}
-            onClick={() => recalculateMutation.mutate({ path: { id: segmentId } })}
+            onClick={() =>
+              recalculateMutation.mutate({ path: { id: segmentId } })
+            }
           >
             <RefreshCw size={13} />
             Recalculer
           </Button>
-          <Button variant="ghost" size="sm" onClick={() => setPreviewOpen(true)}>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => setPreviewOpen(true)}
+          >
             <MessageSquare size={13} />
             Aperçu messages
           </Button>
@@ -132,7 +154,7 @@ export function SegmentDetailPage({
         </div>
       </div>
 
-      <div className="grid grid-cols-3 gap-4 mb-5">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-5">
         {[
           { label: "Contacts", value: fmt(segment.clientCount) },
           {
@@ -155,8 +177,43 @@ export function SegmentDetailPage({
         ))}
       </div>
 
-      {/* Members — same clients list as the main contacts page */}
       <div className="bg-white border border-[#E5E7EB] rounded-[14px] overflow-hidden">
+        <ContactHeader
+          search={vm.search}
+          onSearchChange={vm.setSearch}
+          dateRange={vm.dateRange}
+          onDateRangeChange={vm.setDateRange}
+          filterOptions={filterOptions}
+          currentFilter={vm.statusFilter}
+          onFilterChange={vm.setStatusFilter}
+          isFilterModalOpen={vm.isFilterModalOpen}
+          setIsFilterModalOpen={vm.setIsFilterModalOpen}
+          sort={vm.sort}
+          setSort={vm.setSort}
+          sortOrder={vm.sortOrder}
+          setSortOrder={vm.setSortOrder}
+          pageSize={vm.pageSize}
+          setPageSize={vm.setPageSize}
+          email={vm.email}
+          setEmail={vm.setEmail}
+          firstName={vm.firstName}
+          setFirstName={vm.setFirstName}
+          lastName={vm.lastName}
+          setLastName={vm.setLastName}
+          postalCode={vm.postalCode}
+          setPostalCode={vm.setPostalCode}
+          ids={vm.ids}
+          setIds={vm.setIds}
+          onResetAdvanced={vm.resetAdvanced}
+          segments={vm.segments}
+          segmentId={vm.segmentId}
+          setSegmentId={vm.setSegmentId}
+          hideSegmentFilter
+          products={vm.products}
+          productId={vm.productId}
+          setProductId={vm.setProductId}
+          hideProductFilter
+        />
         <AnimatePresence mode="wait">
           {vm.isLoading ? (
             <motion.div
@@ -232,6 +289,24 @@ export function SegmentDetailPage({
         onClose={() => setPreviewOpen(false)}
         segmentId={segmentId}
         segmentName={segment.name}
+      />
+
+      <SegmentCriteriaModal
+        open={editOpen}
+        onClose={() => {
+          setEditOpen(false);
+          // Reflect any edits (name / criteria / dynamic) + refreshed members.
+          qc.invalidateQueries({
+            queryKey: getApiClientSegmentByIdQueryKey({ path: { id: segmentId } }),
+          });
+          qc.invalidateQueries({
+            queryKey: getApiClientSegmentClientsByIdQueryKey({
+              path: { id: segmentId },
+            }),
+          });
+        }}
+        productId={productId}
+        segment={segment as unknown as ClientSegmentDto}
       />
     </div>
   );

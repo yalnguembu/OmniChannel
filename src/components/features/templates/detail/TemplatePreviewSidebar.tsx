@@ -1,7 +1,5 @@
-import { useState } from "react";
 import { Toggle } from "@/components/ui/Toggle";
 import { FileText, Sparkles, Pencil } from "lucide-react";
-import { cn } from "@/lib/utils";
 import { statusLabel } from "@/lib/utils";
 import { formatDate, formatRelative } from "@/lib/date";
 import type { TemplateModel } from "@/models/template.model";

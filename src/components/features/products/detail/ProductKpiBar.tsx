@@ -32,9 +32,9 @@ function ProductKpiItem({
   return (
     <div
       className={cn(
-        "flex-1 py-3.5 flex flex-col gap-1",
+        "flex-1 min-w-[130px] py-3.5 flex flex-col gap-1",
         withDivider && "border-r border-[#E5E7EB]",
-        withPadding && "pl-6",
+        withPadding && "pl-4 sm:pl-6",
       )}
     >
       <div className="text-[11px] font-medium text-[#8BAFC0] uppercase tracking-[0.06em]">
@@ -102,7 +102,7 @@ export function ProductKpiBar({
   ];
 
   return (
-    <div className="flex items-stretch gap-0 border-t border-[#E5E7EB] -mx-7 px-7">
+    <div className="flex items-stretch gap-0 border-t border-[#E5E7EB] -mx-4 px-4 sm:-mx-7 sm:px-7 overflow-x-auto [&::-webkit-scrollbar]:hidden">
       {kpis.map((kpi, i) => (
         <ProductKpiItem
           key={kpi.label}

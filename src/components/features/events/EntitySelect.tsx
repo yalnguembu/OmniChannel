@@ -30,6 +30,9 @@ interface Item {
   firstName?: string | null;
   lastName?: string | null;
   email?: string | null;
+  // Sender dropdown carries no name/code — it identifies itself by these.
+  displayName?: string | null;
+  address?: string | null;
 }
 
 export function EntitySelect({
@@ -71,6 +74,9 @@ export function EntitySelect({
       if (source === "user") {
         optLabel =
           `${it.firstName ?? ""} ${it.lastName ?? ""}`.trim() || it.email || val;
+      } else if (source === "sender") {
+        // Senders have no name/code — show a human-readable identity.
+        optLabel = it.displayName || it.address || val;
       }
       return { value: val, label: optLabel };
     });

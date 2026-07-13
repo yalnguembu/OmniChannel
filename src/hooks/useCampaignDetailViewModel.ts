@@ -5,7 +5,7 @@ import {
   getApiCampaignDetailByIdOptions,
   getApiCampaignDetailByIdQueryKey,
   postApiCampaignScheduleByCampaignIdMutation,
-  postApiCampaignUnschedulebyCampaignIdMutation,
+  postApiCampaignUnscheduleByCampaignIdMutation,
 } from "@/shared/api/generated/@tanstack/react-query.gen";
 import { mapToCampaignModel } from "@/models/campaign.model";
 import { useErrorHandling } from "@/shared/hooks/useErrorHandling";
@@ -50,11 +50,8 @@ export function useCampaignDetailViewModel(campaignId: string) {
     }),
   });
 
-  // NOTE: the contract path is malformed (`/api/campaign/unschedule{campaignId}`
-  // — missing slash), so the generated helper's URL is broken until the backend
-  // fixes it. Wired anyway so it works once corrected.
   const unscheduleMutation = useMutation({
-    ...postApiCampaignUnschedulebyCampaignIdMutation(),
+    ...postApiCampaignUnscheduleByCampaignIdMutation(),
     onSuccess: () => {
       invalidate();
       toast.success("Campagne déplanifiée");

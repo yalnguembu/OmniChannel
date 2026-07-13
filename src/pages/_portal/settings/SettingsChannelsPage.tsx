@@ -62,62 +62,64 @@ export function SettingsChannelsPage() {
           </div>
 
           <div className="bg-white border border-[#E5E7EB] rounded-lg overflow-hidden max-w-6xl">
-        <div className="px-5 py-3.5 border-b border-[#E5E7EB] bg-[#F7F8F9]">
-          <p className="text-[13px] font-medium text-[#0D2137]">
-            Canaux de communication
-          </p>
-          <p className="text-[12px] text-[#8BAFC0] mt-0.5">
-            Activez ou désactivez les canaux disponibles pour cette company
-          </p>
-        </div>
-        <div className="divide-y divide-[#E5E7EB]">
-          {channelRows.length === 0 ? (
-            <div className="flex items-center justify-center py-10 text-[13px] text-[#8BAFC0]">
-              <Radio size={24} className="mr-3 opacity-30" />
-              Aucun canal disponible
+            <div className="px-5 py-3.5 border-b border-[#E5E7EB] bg-[#F7F8F9]">
+              <p className="text-[13px] font-medium text-[#0D2137]">
+                Canaux de communication
+              </p>
+              <p className="text-[12px] text-[#8BAFC0] mt-0.5">
+                Activez ou désactivez les canaux disponibles pour cette company
+              </p>
             </div>
-          ) : (
-            channelRows.map(({ channel, companyChannel }) => {
-              const isActive = companyChannel?.isActive ?? false;
-              return (
-                <div
-                  key={channel.id}
-                  className="flex items-center gap-4 px-5 py-4"
-                >
-                  <div className="w-9 h-9 rounded-[9px] bg-[#E8F4F8] border border-black/5 flex items-center justify-center shrink-0">
-                    <Radio size={16} className="text-[#2E8FAD]" />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-[13px] font-medium text-[#0D2137]">
-                      {channel.name}
-                    </p>
-                    <p className="text-[11.5px] text-[#8BAFC0] mt-0.5">
-                      {channel.maxContentLength
-                        ? `Max ${channel.maxContentLength} chars · `
-                        : ""}
-                      {channel.supportsRichContent ? "Rich content · " : ""}
-                      {channel.requiresOptIn ? "Opt-in requis" : "Pas d'opt-in"}
-                    </p>
-                  </div>
-                  <Button variant="ghost" size="sm">
-                    <Settings size={12} />
-                    Configurer
-                  </Button>
-                  <Toggle
-                    checked={isActive}
-                    onChange={(val) => {
-                      if (companyChannel) {
-                        updateMutation.mutate({
-                          body: { ...companyChannel, isActive: val } as any,
-                        });
-                      }
-                    }}
-                  />
+            <div className="divide-y divide-[#E5E7EB]">
+              {channelRows.length === 0 ? (
+                <div className="flex items-center justify-center py-10 text-[13px] text-[#8BAFC0]">
+                  <Radio size={24} className="mr-3 opacity-30" />
+                  Aucun canal disponible
                 </div>
-              );
-            })
-          )}
-        </div>
+              ) : (
+                channelRows.map(({ channel, companyChannel }) => {
+                  const isActive = companyChannel?.isActive ?? false;
+                  return (
+                    <div
+                      key={channel.id}
+                      className="flex items-center gap-4 px-5 py-4"
+                    >
+                      <div className="w-9 h-9 rounded-[9px] bg-[#E8F4F8] border border-black/5 flex items-center justify-center shrink-0">
+                        <Radio size={16} className="text-[#2E8FAD]" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-[13px] font-medium text-[#0D2137]">
+                          {channel.name}
+                        </p>
+                        <p className="text-[11.5px] text-[#8BAFC0] mt-0.5">
+                          {channel.maxContentLength
+                            ? `Max ${channel.maxContentLength} chars · `
+                            : ""}
+                          {channel.supportsRichContent ? "Rich content · " : ""}
+                          {channel.requiresOptIn
+                            ? "Opt-in requis"
+                            : "Pas d'opt-in"}
+                        </p>
+                      </div>
+                      <Button variant="ghost" size="sm">
+                        <Settings size={12} />
+                        Configurer
+                      </Button>
+                      <Toggle
+                        checked={isActive}
+                        onChange={(val) => {
+                          if (companyChannel) {
+                            updateMutation.mutate({
+                              body: { ...companyChannel, isActive: val } as any,
+                            });
+                          }
+                        }}
+                      />
+                    </div>
+                  );
+                })
+              )}
+            </div>
           </div>
         </div>
       </div>

@@ -8,6 +8,7 @@ import {
   Settings,
   ChevronDown,
   FolderOpen,
+  Layers,
   X,
 } from "lucide-react";
 import { cn, getInitials, avatarColor } from "@/lib/utils";
@@ -121,9 +122,8 @@ export function Sidebar({ onClose }: SidebarProps) {
                       ({ id, label: tabLabel, icon: TabIcon }) => {
                         const tabTo = productTo(id);
                         const tabActive = currentPath === tabTo;
-                        return (
+                        const tabLink = (
                           <Link
-                            key={id}
                             to={tabTo}
                             className={cn(
                               "flex items-center gap-2.5 px-3 py-2 mx-1.5 rounded-[6px] cursor-pointer transition-all duration-150 relative group",
@@ -152,6 +152,47 @@ export function Sidebar({ onClose }: SidebarProps) {
                               {tabLabel}
                             </span>
                           </Link>
+                        );
+
+                        if (id !== "contacts") return <div key={id}>{tabLink}</div>;
+
+                        // Surface Segments as its own product-menu item, right
+                        // after Contacts (nested route /{productId}/contacts/segments).
+                        const segTo = `/${activeProductId}/contacts/segments`;
+                        const segActive = currentPath.startsWith(segTo);
+                        return (
+                          <div key={id}>
+                            {tabLink}
+                            <Link
+                              to={segTo}
+                              className={cn(
+                                "flex items-center gap-2.5 px-3 py-2 mx-1.5 rounded-[6px] cursor-pointer transition-all duration-150 relative group",
+                                segActive ? "bg-[#E8F4F8]" : "hover:bg-[#F0F2F4]",
+                              )}
+                            >
+                              {segActive && (
+                                <span className="absolute -left-1.5 top-1/2 -translate-y-1/2 w-[3px] h-4 bg-[#2E8FAD] rounded-r-[2px]" />
+                              )}
+                              <Layers
+                                size={15}
+                                className={cn(
+                                  "shrink-0",
+                                  segActive ? "text-[#2E8FAD]" : "text-[#8BAFC0]",
+                                )}
+                                strokeWidth={1.2}
+                              />
+                              <span
+                                className={cn(
+                                  "text-[13px] flex-1",
+                                  segActive
+                                    ? "text-[#1B5E82] font-medium"
+                                    : "text-[#4A7A94]",
+                                )}
+                              >
+                                Segments
+                              </span>
+                            </Link>
+                          </div>
                         );
                       },
                     )}

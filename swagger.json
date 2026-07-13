@@ -2018,7 +2018,7 @@
         ]
       }
     },
-    "/api/campaign/unschedule{campaignId}": {
+    "/api/campaign/unschedule/{campaignId}": {
       "post": {
         "tags": ["CampaignRun"],
         "parameters": [
@@ -22066,6 +22066,16 @@
         }
       }
     },
+    "/segment-editor": {
+      "get": {
+        "tags": ["OmniChannel.API"],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Payment/{id}": {
       "get": {
         "tags": ["Payment"],
@@ -40566,6 +40576,24 @@
         },
         "additionalProperties": {}
       },
+      "ChannelOptionInfo": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "code": {
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "ClientAttributeDetail": {
         "type": "object",
         "properties": {
@@ -41834,6 +41862,20 @@
         },
         "additionalProperties": {}
       },
+      "CodeLabelInfo": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "nullable": true
+          },
+          "label": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "CompanyChannelDto": {
         "type": "object",
         "properties": {
@@ -42479,6 +42521,33 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/TagOptionInfo"
+            },
+            "nullable": true
+          },
+          "eventOptions": {
+            "$ref": "#/components/schemas/EventConditionMetadata"
+          },
+          "messageOptions": {
+            "$ref": "#/components/schemas/MessageConditionMetadata"
+          },
+          "channels": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ChannelOptionInfo"
+            },
+            "nullable": true
+          },
+          "senders": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SenderOptionInfo"
+            },
+            "nullable": true
+          },
+          "templates": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TemplateOptionInfo"
             },
             "nullable": true
           }
@@ -45012,6 +45081,40 @@
           }
         },
         "additionalProperties": {}
+      },
+      "EventConditionMetadata": {
+        "type": "object",
+        "properties": {
+          "statuses": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CodeLabelInfo"
+            },
+            "nullable": true
+          },
+          "boundaries": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CodeLabelInfo"
+            },
+            "nullable": true
+          },
+          "countOperators": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "recencyOperators": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
       },
       "EventDefinitionDto": {
         "type": "object",
@@ -50875,6 +50978,47 @@
           },
           "example": {
             "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "MessageConditionMetadata": {
+        "type": "object",
+        "properties": {
+          "directions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CodeLabelInfo"
+            },
+            "nullable": true
+          },
+          "statuses": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CodeLabelInfo"
+            },
+            "nullable": true
+          },
+          "messageTypes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CodeLabelInfo"
+            },
+            "nullable": true
+          },
+          "countOperators": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "recencyOperators": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
             "nullable": true
           }
         },
@@ -72520,6 +72664,28 @@
         },
         "additionalProperties": {}
       },
+      "SenderOptionInfo": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "address": {
+            "type": "string",
+            "nullable": true
+          },
+          "displayName": {
+            "type": "string",
+            "nullable": true
+          },
+          "channelCode": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "SenderReplyConfigDto": {
         "type": "object",
         "properties": {
@@ -74092,6 +74258,24 @@
           }
         },
         "additionalProperties": {}
+      },
+      "TemplateOptionInfo": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "code": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
       },
       "TemplateVariableDto": {
         "type": "object",

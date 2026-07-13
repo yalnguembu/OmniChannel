@@ -49,7 +49,7 @@ export default function ProductOverviewPage({
   return (
     <div className="flex flex-col">
       {/* HERO + KPIs */}
-      <div className="bg-white border-b border-[#E5E7EB] px-7">
+      <div className="bg-white border-b border-[#E5E7EB] px-4 sm:px-7">
         <ProductDetailHero
           product={product}
           onBack={() => navigate({ to: "/products" })}
@@ -73,12 +73,12 @@ export default function ProductOverviewPage({
       </div>
 
       {/* STATISTICS */}
-      <div className="p-7 pb-0">
+      <div className="p-4 sm:p-7 pb-0">
         <ProductStatsSection stats={statsVm} />
       </div>
 
       {/* OVERVIEW + SETTINGS */}
-      <div className="p-7">
+      <div className="p-4 sm:p-7">
         <OverviewTab
           product={product}
           channels={channelsVm.channels}

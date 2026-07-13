@@ -7,9 +7,11 @@ import type {
   ClientSegmentDto,
 } from "@/shared/api/generated/types.gen";
 
-export const ClientStatusSchema = z
-  .enum(["active", "inactive", "blocked"])
-  .default("active");
+// The backend owns the status vocabulary (active / inactive / blocked /
+// opted_out / …). We don't validate it against a fixed list — an unknown value
+// must pass through, not throw. Case is normalized in the mapper; empty →
+// "active" purely for display.
+export const ClientStatusSchema = z.string().default("active");
 
 export const ClientSchema = BaseModelSchema.extend({
   firstName: z.string().default(""),
@@ -90,8 +92,8 @@ export function mapToSegmentModels(
 // members list can reuse the same client columns/components.
 
 function normalizeStatus(status?: string | null): ClientModel["status"] {
-  const v = (status ?? "").toLowerCase();
-  return v === "inactive" || v === "blocked" ? v : "active";
+  // Pass the backend value through (lowercased); only fall back when absent.
+  return (status ?? "").toLowerCase() || "active";
 }
 
 export function mapSegmentMemberToClient(

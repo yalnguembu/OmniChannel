@@ -104,9 +104,9 @@ export function FunnelDetailPage({ productId, funnelId }: FunnelDetailPageProps)
         <ArrowLeft size={13} /> Tunnels
       </button>
 
-      <div className="flex items-start justify-between">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
         <div>
-          <div className="flex items-center gap-2.5">
+          <div className="flex items-center gap-2.5 flex-wrap">
             <h1 className="text-[20px] font-semibold text-[#0D2137] tracking-tight">
               {funnel.name || "Sans nom"}
             </h1>

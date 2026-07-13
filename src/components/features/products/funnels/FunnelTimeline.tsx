@@ -2,8 +2,7 @@ import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getApiFunnelReportsByFunnelIdOptions } from "@/shared/api/generated/@tanstack/react-query.gen";
 import type { FunnelReport } from "@/shared/api/generated/types.gen";
-import { CircularGauge } from "@/components/charts/CircularGauge";
-import { fmt } from "@/lib/utils";
+import { FunnelChart, type FunnelStage } from "@/components/charts/FunnelChart";
 
 interface FunnelTimelineProps {
   funnelId?: string;
@@ -26,6 +25,25 @@ export function FunnelTimeline({ funnelId }: FunnelTimelineProps) {
   });
 
   const steps = data?.steps ?? [];
+
+  const stages: FunnelStage[] = steps.map((step, index) => ({
+    label: step.label ?? step.eventCode ?? `Étape ${index + 1}`,
+    count: step.count ?? 0,
+    hint:
+      index === 0
+        ? "Point de départ"
+        : `${Math.round(step.conversionFromPreviousPct ?? 0)}% depuis l'étape préc.`,
+  }));
+
+  const lastStep = steps[steps.length - 1];
+  const conversion =
+    steps.length > 1
+      ? {
+          value: lastStep?.conversionFromStartPct ?? 0,
+          label: "Taux de conversion",
+          sublabel: "du début à la fin",
+        }
+      : undefined;
 
   if (!funnelId) return null;
 
@@ -66,35 +84,7 @@ export function FunnelTimeline({ funnelId }: FunnelTimelineProps) {
           Aucun rapport disponible pour ce tunnel.
         </div>
       ) : (
-        <div className="overflow-x-auto pb-2">
-          <div className="flex items-start min-w-fit px-2">
-            {steps.map((step, index) => {
-              const count = step.count ?? 0;
-              const conversion = index === 0 ? 100 : (step.conversionFromPreviousPct ?? 0);
-
-              return (
-                <div key={`${step.eventDefinitionId ?? "step"}-${index}`} className="flex items-start">
-                  <div className="flex flex-col items-center w-[130px] shrink-0">
-                    <span className="text-[10.5px] font-semibold uppercase tracking-[0.06em] text-[#8BAFC0] mb-2">
-                      Étape {index + 1}
-                    </span>
-                    <CircularGauge value={conversion} size={72} strokeWidth={7} />
-                    <p className="mt-2 text-[12.5px] font-medium text-[#0D2137] text-center truncate max-w-[120px]">
-                      {step.label ?? step.eventCode ?? "Étape"}
-                    </p>
-                    <p className="text-[11px] text-[#8BAFC0] tabular-nums">{fmt(count)} contacts</p>
-                  </div>
-
-                  {index < steps.length - 1 && (
-                    <div className="h-[72px] w-[36px] flex items-center shrink-0">
-                      <div className="h-0.5 w-full bg-[#E5E7EB]" />
-                    </div>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-        </div>
+        <FunnelChart stages={stages} conversion={conversion} />
       )}
     </div>
   );
