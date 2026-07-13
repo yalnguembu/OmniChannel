@@ -144,7 +144,7 @@ export function ConditionNodeEditor({
           <span className="text-[11px] font-medium uppercase tracking-[0.06em] text-[#8BAFC0]">
             Événement
           </span>
-          <div className="w-36">
+          <div className="w-44">
             <Select
               value={String(node.occurred)}
               onChange={(e) => vm.updateNode(path, { occurred: e.target.value === "true" })}
@@ -154,7 +154,7 @@ export function ConditionNodeEditor({
               ]}
             />
           </div>
-          <div className="min-w-[200px] flex-1">
+          <div className="min-w-[220px] flex-1">
             <Select
               value={node.code}
               onChange={(e) => vm.updateNode(path, { code: e.target.value })}
@@ -251,7 +251,7 @@ export function ConditionNodeEditor({
               ]}
             />
           </div>
-          <div className="min-w-[200px] flex-1">
+          <div className="min-w-[220px] flex-1">
             <Select
               value={node.direction ?? ""}
               onChange={(e) =>
@@ -275,7 +275,7 @@ export function ConditionNodeEditor({
           </button>
         </div>
 
-        <div className="grid gap-2 sm:grid-cols-3">
+        <div className="grid gap-2 sm:grid-cols-2">
           <Select
             value={node.channelCode ?? ""}
             onChange={(e) =>
@@ -359,7 +359,7 @@ export function ConditionNodeEditor({
   return (
     <div className="rounded-md border border-[#E5E7EB] bg-white p-3">
       <div className="flex flex-wrap items-start gap-2">
-        <div className="min-w-[180px] flex-1">
+        <div className="min-w-[220px] flex-1">
           <Select
             value={node.attribute}
             onChange={(e) =>
@@ -380,7 +380,7 @@ export function ConditionNodeEditor({
         </div>
 
         {attr && (
-          <div className="min-w-[150px] flex-1">
+          <div className="min-w-[190px] flex-1">
             <Select
               value={node.operator}
               onChange={(e) =>
@@ -401,7 +401,7 @@ export function ConditionNodeEditor({
         )}
 
         {attr && node.operator && operandKind !== "none" && (
-          <div className="min-w-[180px] flex-[2]">
+          <div className="min-w-[220px] flex-[2]">
             <OperandInput
               operandKind={operandKind}
               valueKind={vm.valueKindForType(attr.type)}
@@ -468,19 +468,25 @@ function TemporalControls({
   /** Event only: an optional occurrence-status filter. */
   statuses?: { code?: string | null; label?: string | null }[];
 }) {
-  const winMode: "none" | "within" | "range" =
+  // The window mode needs its own state: choosing "range" clears both dates,
+  // so it can't be re-derived from the data (empty dates ≡ "none"). Seed it
+  // from whatever the node already carries (loaded segment), then own it.
+  const derivedWin: "none" | "within" | "range" =
     node.withinDays != null
       ? "within"
       : node.occurredAfter || node.occurredBefore
         ? "range"
         : "none";
+  const [winMode, setWinMode] = useState<"none" | "within" | "range">(derivedWin);
 
-  const setWindow = (mode: string) =>
+  const setWindow = (mode: "none" | "within" | "range") => {
+    setWinMode(mode);
     vm.updateNode(path, {
       withinDays: mode === "within" ? (node.withinDays ?? 30) : undefined,
       occurredAfter: undefined,
       occurredBefore: undefined,
     });
+  };
 
   const opsOptions = (codes: string[]) =>
     codes.map((c) => ({ value: c, label: vm.operatorLabel(c) }));
@@ -511,8 +517,8 @@ function TemporalControls({
             }
           />
           {node.count && (
-            <div className="flex items-center gap-2">
-              <div className="flex-1">
+            <div className="flex flex-wrap items-center gap-2">
+              <div className="flex-1 min-w-[150px]">
                 <Select
                   value={node.count.operator}
                   onChange={(e) =>
@@ -552,8 +558,8 @@ function TemporalControls({
           />
           {node.recency && (
             <>
-              <div className="flex items-center gap-2">
-                <div className="flex-1">
+              <div className="flex flex-wrap items-center gap-2">
+                <div className="flex-1 min-w-[150px]">
                   <Select
                     value={node.recency.boundary}
                     onChange={(e) =>
@@ -567,7 +573,7 @@ function TemporalControls({
                     }))}
                   />
                 </div>
-                <div className="flex-1">
+                <div className="flex-1 min-w-[150px]">
                   <Select
                     value={node.recency.operator}
                     onChange={(e) =>
@@ -604,7 +610,9 @@ function TemporalControls({
             <div className="w-52">
               <Select
                 value={winMode}
-                onChange={(e) => setWindow(e.target.value)}
+                onChange={(e) =>
+                  setWindow(e.target.value as "none" | "within" | "range")
+                }
                 options={[
                   { value: "none", label: "Aucune limite" },
                   { value: "within", label: "Fenêtre glissante (jours)" },

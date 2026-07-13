@@ -12,6 +12,8 @@ import { useChatViewModel } from "@/hooks/chatViewModel";
 import type { MessageViewModel } from "@/hooks/chatViewModel";
 import { useWhatsAppStore } from "@/store/useWhatsappStore";
 import { useSendFlow } from "@/hooks/useWhatsapp";
+import { useWhatsappContactViewModel } from "@/hooks/useWhatsappContactViewModel";
+import { ContactModal } from "@/components/features/contacts/ContactModal";
 
 export const ChatArea: React.FC = () => {
   const { activeConversationId, users } = useWhatsAppStore();
@@ -46,7 +48,11 @@ export const ChatArea: React.FC = () => {
   const [convDetailsOpen, setConvDetailsOpen] = useState(false);
   const [msgDetailsId, setMsgDetailsId] = useState<string | null>(null);
   const [flowOpen, setFlowOpen] = useState(false);
+  const [contactOpen, setContactOpen] = useState(false);
   const [pendingMedia, setPendingMedia] = useState<File | null>(null);
+
+  // CRM contact tied to this conversation's phone (add / edit directly here).
+  const contactVm = useWhatsappContactViewModel(activeConv?.contactAddress);
 
   const handleConfirmMedia = useCallback(
     async (caption: string) => {
@@ -109,7 +115,7 @@ export const ChatArea: React.FC = () => {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key !== "Escape") return;
-      if (lightbox.open || convDetailsOpen || msgDetailsId || flowOpen || searchVisible) {
+      if (lightbox.open || convDetailsOpen || msgDetailsId || flowOpen || contactOpen || searchVisible) {
         return;
       }
       if (pendingMedia) {
@@ -120,7 +126,7 @@ export const ChatArea: React.FC = () => {
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [lightbox.open, convDetailsOpen, msgDetailsId, flowOpen, searchVisible, pendingMedia, handleBack]);
+  }, [lightbox.open, convDetailsOpen, msgDetailsId, flowOpen, contactOpen, searchVisible, pendingMedia, handleBack]);
 
   if (!activeConversationId) {
     return <ChatPlaceholder />;
@@ -209,6 +215,37 @@ export const ChatArea: React.FC = () => {
           open={convDetailsOpen}
           conv={activeConv}
           onClose={() => setConvDetailsOpen(false)}
+          hasContact={contactVm.hasContact}
+          contactLoading={contactVm.isLoading}
+          onManageContact={() => {
+            setConvDetailsOpen(false);
+            setContactOpen(true);
+          }}
+        />
+
+        <ContactModal
+          open={contactOpen}
+          onClose={() => setContactOpen(false)}
+          editing={contactVm.existing}
+          productId={contactVm.existing ? contactVm.existingProductId : undefined}
+          products={contactVm.existing ? undefined : contactVm.products}
+          prefill={
+            contactVm.existing
+              ? undefined
+              : {
+                  phone: activeConv?.contactAddress ?? "",
+                  firstName:
+                    activeConv?.contactName &&
+                    activeConv.contactName !== activeConv.contactAddress
+                      ? activeConv.contactName
+                      : "",
+                }
+          }
+          loading={contactVm.isSaving}
+          onSubmit={async (body) => {
+            const ok = await contactVm.save(body);
+            if (ok) setContactOpen(false);
+          }}
         />
 
         <MsgDetailsModal

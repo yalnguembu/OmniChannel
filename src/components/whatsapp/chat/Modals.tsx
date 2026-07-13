@@ -27,12 +27,19 @@ interface ConvDetailsModalProps {
   open: boolean;
   conv: Conversation | null;
   onClose: () => void;
+  /** Whether a CRM contact already exists for this conversation's number. */
+  hasContact?: boolean;
+  contactLoading?: boolean;
+  onManageContact?: () => void;
 }
 
 export const ConvDetailsModal: React.FC<ConvDetailsModalProps> = ({
   open,
   conv,
   onClose,
+  hasContact,
+  contactLoading,
+  onManageContact,
 }) => (
   <Dialog open={open} onOpenChange={(v) => !v && onClose()}>
     <DialogContent className="max-w-md">
@@ -65,6 +72,21 @@ export const ConvDetailsModal: React.FC<ConvDetailsModalProps> = ({
               <span className="text-[#667781] break-all">{value || "N/A"}</span>
             </div>
           ))}
+        </div>
+      )}
+      {onManageContact && (
+        <div className="pt-2">
+          <Button
+            disabled={contactLoading}
+            onClick={onManageContact}
+            className="w-full bg-[#25D366] hover:bg-[#20BD5B] text-white"
+          >
+            {contactLoading
+              ? "Chargement…"
+              : hasContact
+                ? "Éditer le contact"
+                : "Ajouter aux contacts"}
+          </Button>
         </div>
       )}
     </DialogContent>

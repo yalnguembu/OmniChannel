@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { Loader2 } from 'lucide-react';
 import { MessageBubble } from './MessageBubble';
-import { toUtcDate } from '@/models/whatsapp.models';
+import { toUtcDate, localDayDiff } from '@/models/whatsapp.models';
 import type { MessageViewModel } from '@/hooks/chatViewModel';
 
 interface MessagesListProps {
@@ -22,9 +22,10 @@ type Row = DateRow | MsgRow;
 function formatDateSep(ts: string | null | undefined): string {
   if (!ts) return '';
   const d = toUtcDate(ts);
-  const now = new Date();
-  const diff = Math.floor((now.getTime() - d.getTime()) / 86400000);
-  if (diff === 0) return "Aujourd'hui";
+  // Local calendar-day diff — same basis as the bubble times (fmtTime), so the
+  // separator never disagrees with the local time shown on the messages.
+  const diff = localDayDiff(ts);
+  if (diff <= 0) return "Aujourd'hui";
   if (diff === 1) return 'Hier';
   if (diff < 7) return d.toLocaleDateString('fr-FR', { weekday: 'long' });
   return d.toLocaleDateString('fr-FR', { day: '2-digit', month: 'long', year: 'numeric' });

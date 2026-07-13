@@ -172,15 +172,25 @@ export function toUtcDate(dt: string): Date {
   return new Date(hasDesignator ? dt : `${dt}Z`);
 }
 
+/**
+ * Whole-day difference on **local** calendar-day boundaries (0 = today,
+ * 1 = yesterday, …). Everything time-related in the chat (bubble times AND the
+ * day separators) must use this so they agree — a message shown at 23:00 in
+ * local time belongs to the same local day as its separator, never a rolling
+ * 24h window computed on the raw UTC instant.
+ */
+export function localDayDiff(dt: string): number {
+  const d = toUtcDate(dt);
+  const now = new Date();
+  const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const startOfMsgDay = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+  return Math.round((startOfToday.getTime() - startOfMsgDay.getTime()) / 86400000);
+}
+
 export function fmtTime(dt: string | null | undefined): string {
   if (!dt) return '';
   const d = toUtcDate(dt);
-  const now = new Date();
-  // Compare on calendar day boundaries, not 24h windows — a message from
-  // 23:00 yesterday should read "Hier", not a time, even if <24h old.
-  const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-  const startOfMsgDay = new Date(d.getFullYear(), d.getMonth(), d.getDate());
-  const dayDiff = Math.round((startOfToday.getTime() - startOfMsgDay.getTime()) / 86400000);
+  const dayDiff = localDayDiff(dt);
   if (dayDiff <= 0) return d.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
   if (dayDiff === 1) return 'Hier';
   return d.toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: '2-digit' });

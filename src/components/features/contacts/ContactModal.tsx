@@ -1,7 +1,8 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { User, Mail, Phone, MapPin, ShieldCheck, Globe, Sparkles } from 'lucide-react'
+import { toast } from 'sonner'
+import { User, Mail, Phone, MapPin, ShieldCheck, Globe, Sparkles, Package } from 'lucide-react'
 import { Modal } from '@/components/ui/Modal'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
@@ -22,6 +23,13 @@ interface ContactModalProps {
   loading: boolean;
   /** Product the contact belongs to — drives the custom-attributes section. */
   productId?: string;
+  /**
+   * When provided (create mode with no scoped product, e.g. from WhatsApp),
+   * shows a product picker whose choice scopes the schema + the saved contact.
+   */
+  products?: { id: string; name: string }[];
+  /** Seed values for create mode (e.g. phone/name from a WhatsApp conversation). */
+  prefill?: Partial<ClientForm>;
 }
 
 /** Tolerantly parse a client's customData (JSON string or object) into a flat map. */
@@ -43,14 +51,19 @@ function parseCustomData(src: unknown): Record<string, string> {
   return {};
 }
 
-export function ContactModal({ open, onClose, editing, onSubmit, loading, productId }: ContactModalProps) {
+export function ContactModal({ open, onClose, editing, onSubmit, loading, productId, products, prefill }: ContactModalProps) {
   const { register, handleSubmit, reset, formState: { errors } } = useForm<ClientForm>({
     resolver: zodResolver(clientSchema),
   });
 
+  // In create mode with a product picker, the chosen product scopes everything.
+  const [selectedProduct, setSelectedProduct] = useState(productId ?? '');
+  const effectiveProductId = productId || selectedProduct || undefined;
+  const showProductPicker = !editing && !!products && products.length > 0;
+
   // Custom attributes for the product (excludes derived — computed server-side).
-  const schema = useProductAttributeSchema(productId ?? '', {
-    enabled: open && !!productId,
+  const schema = useProductAttributeSchema(effectiveProductId ?? '', {
+    enabled: open && !!effectiveProductId,
   });
   const customAttributes = useMemo(
     () => schema.attributes.filter((a) => a.key.trim() !== '' && !a.derived),
@@ -73,18 +86,27 @@ export function ContactModal({ open, onClose, editing, onSubmit, loading, produc
       });
       setCustomValues(parseCustomData((editing as { customData?: unknown }).customData));
     } else {
-      reset({ firstName: '', lastName: '', email: '', phone: '', city: '', country: '', status: 'active' });
+      reset({
+        firstName: '', lastName: '', email: '', phone: '', city: '', country: '', status: 'active',
+        ...prefill,
+      });
       setCustomValues({});
+      setSelectedProduct(productId ?? '');
     }
-  }, [editing, reset, open]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [editing, reset, open, productId]);
 
   const submit = handleSubmit((data) => {
+    if (showProductPicker && !selectedProduct) {
+      toast.error('Sélectionnez un produit');
+      return;
+    }
     const entries = Object.entries(customValues).filter(
       ([, v]) => (v ?? '').trim() !== '',
     );
     const body: CreateClientRequest = {
       ...(data as CreateClientRequest),
-      ...(productId ? { productId } : {}),
+      ...(effectiveProductId ? { productId: effectiveProductId } : {}),
       ...(entries.length > 0
         ? { customData: JSON.stringify(Object.fromEntries(entries)) }
         : {}),
@@ -114,6 +136,27 @@ export function ContactModal({ open, onClose, editing, onSubmit, loading, produc
       }
     >
       <form className="space-y-6 py-2">
+        {/* Produit — création hors contexte produit (ex: WhatsApp) */}
+        {showProductPicker && (
+          <div className="space-y-4">
+            <div className="flex items-center gap-2 mb-2 px-1 text-[#2E8FAD]">
+              <Package size={14} />
+              <span className="text-[11px] font-bold text-[#8BAFC0] uppercase tracking-[0.1em]">
+                Produit
+              </span>
+            </div>
+            <Select
+              label="Produit *"
+              value={selectedProduct}
+              onChange={(e) => setSelectedProduct(e.target.value)}
+              placeholder="Choisir un produit…"
+              options={products!.map((p) => ({ value: p.id, label: p.name }))}
+              className="h-11 bg-[#FBFBFC]"
+              prefixIcon={<Package size={14} className="text-[#8BAFC0]" />}
+            />
+          </div>
+        )}
+
         {/* Identité Section */}
         <div className="space-y-4">
           <div className="flex items-center gap-2 mb-2 px-1">
@@ -201,7 +244,7 @@ export function ContactModal({ open, onClose, editing, onSubmit, loading, produc
         </div>
 
         {/* Attributs personnalisés (schéma du produit) */}
-        {productId && customAttributes.length > 0 && (
+        {effectiveProductId && customAttributes.length > 0 && (
           <div className="space-y-4">
             <div className="flex items-center gap-2 mb-2 px-1 text-[#2E8FAD]">
               <Sparkles size={14} />
