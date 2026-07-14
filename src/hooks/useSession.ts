@@ -1,12 +1,13 @@
 import { useEffect } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
-import { useNavigate } from "@tanstack/react-router";
+import { useNavigate, useLocation } from "@tanstack/react-router";
 import {
   getApiUserMeOptions,
   postApiAuthLogoutMutation,
   postApiAuthLogoutAllMutation,
 } from "@/shared/api/generated/@tanstack/react-query.gen";
 import { useAuthStore } from "@/store/authStore";
+import { sanitizeReturnUrl } from "@/lib/auth";
 
 /**
  * Session hook: bootstraps the authenticated user (with permissions) via
@@ -14,6 +15,7 @@ import { useAuthStore } from "@/store/authStore";
  */
 export function useSession() {
   const navigate = useNavigate();
+  const location = useLocation();
   const token = useAuthStore((s) => s.token);
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
   const user = useAuthStore((s) => s.user);
@@ -50,8 +52,10 @@ export function useSession() {
   }, [meQuery.data, setUser]);
 
   const endSession = () => {
+    // Remember where the user was so login can bring them back.
+    const returnUrl = sanitizeReturnUrl(location.href);
     logout();
-    navigate({ to: "/login" });
+    navigate({ to: "/login", search: returnUrl ? { returnUrl } : {} });
   };
 
   const logoutMutation = useMutation({

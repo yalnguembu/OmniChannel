@@ -1,5 +1,6 @@
 import { Menu } from 'lucide-react'
 import { Breadcrumbs } from './Breadcrumbs'
+import { InstallPwaButton } from './InstallPwaButton'
 import { useSession } from '@/hooks/useSession'
 
 interface HeaderProps {
@@ -22,6 +23,10 @@ export function Header({ onMenuClick }: HeaderProps) {
       </button>
 
       <Breadcrumbs />
+
+      <div className="ml-auto flex items-center gap-2">
+        <InstallPwaButton />
+      </div>
     </header>
   )
 }

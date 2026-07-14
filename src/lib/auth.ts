@@ -46,3 +46,23 @@ export function dashboardPathFor(
 ): "/admin" | "/dashboard" {
   return isSystemUser(userType) ? "/admin" : "/dashboard";
 }
+
+/**
+ * Validate a post-login `returnUrl`: only same-origin, absolute in-app paths
+ * are accepted. Rejects external / protocol-relative URLs and the auth pages
+ * themselves (which would cause a redirect loop). Returns undefined if unsafe.
+ */
+export function sanitizeReturnUrl(value?: string | null): string | undefined {
+  if (!value || !value.startsWith("/") || value.startsWith("//")) return undefined;
+  const path = value.split("?")[0].split("#")[0];
+  const blocked = [
+    "/login",
+    "/forgot-password",
+    "/reset-password",
+    "/change-password",
+  ];
+  if (blocked.some((p) => path === p || path.startsWith(p + "/"))) {
+    return undefined;
+  }
+  return value;
+}

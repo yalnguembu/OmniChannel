@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useNavigate } from "@tanstack/react-router";
+import { useNavigate, useSearch } from "@tanstack/react-router";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { loginSchema } from "@/lib/validators";
@@ -9,7 +9,7 @@ import { useAuthStore } from "@/store/authStore";
 import { useErrorHandling } from "@/shared/hooks/useErrorHandling";
 import { postApiAuthLoginMutation } from "@/shared/api/generated/@tanstack/react-query.gen";
 import type { LoginRequest } from "@/shared/api/generated/types.gen";
-import { dashboardPathFor } from "@/lib/auth";
+import { dashboardPathFor, sanitizeReturnUrl } from "@/lib/auth";
 import { getDeviceInfo } from "@/lib/device";
 import type { z } from "zod";
 
@@ -22,6 +22,9 @@ export function useLoginViewModel() {
   const navigate = useNavigate();
   const setSession = useAuthStore((s) => s.setSession);
   const { createFormMutationErrorHandler } = useErrorHandling();
+  // Where to land after login: the page the user was on before being logged
+  // out (returnUrl), falling back to their dashboard.
+  const search = useSearch({ strict: false }) as { returnUrl?: string };
 
   // --- Form State ---
   const {
@@ -66,7 +69,13 @@ export function useLoginViewModel() {
         // navigate({ to: "/change-password" });
         // return;
       }
-      // Send each user to their own dashboard (system → admin backoffice).
+      // Resume where the user left off if a safe returnUrl was carried over;
+      // otherwise send each user to their own dashboard (system → backoffice).
+      const target = sanitizeReturnUrl(search.returnUrl);
+      if (target) {
+        navigate({ href: target });
+        return;
+      }
       navigate({ to: dashboardPathFor(user?.userType) });
     },
     onError: createFormMutationErrorHandler(setError, {

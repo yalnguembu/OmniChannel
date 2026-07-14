@@ -1,5 +1,6 @@
 import { client } from "@/shared/api/generated/client.gen";
 import { useAuthStore } from "@/store/authStore";
+import { sanitizeReturnUrl } from "@/lib/auth";
 import type {
   ApiRequest,
   ApiResponse,
@@ -21,8 +22,17 @@ client.instance.interceptors.response.use(
   (error) => {
     if (error?.response?.status === 401) {
       useAuthStore.getState().logout();
-      if (typeof window !== "undefined") {
-        window.location.href = "/login";
+      if (typeof window !== "undefined" && window.location.pathname !== "/login") {
+        // Session expired mid-navigation — remember where they were so login
+        // can bring them back (same returnUrl contract as a manual logout).
+        const current =
+          window.location.pathname +
+          window.location.search +
+          window.location.hash;
+        const returnUrl = sanitizeReturnUrl(current);
+        window.location.href = returnUrl
+          ? `/login?returnUrl=${encodeURIComponent(returnUrl)}`
+          : "/login";
       }
     }
     return Promise.reject(error);

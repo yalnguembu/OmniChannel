@@ -62,7 +62,7 @@ export function CampaignStepModal({
   const { data: segments = [] } = useQuery({
     ...getApiClientSegmentDropdownOptions({ query: { productid: productId } }),
     select: (res) =>
-      (res?.data ?? []) as { id?: string; displayName?: string | null }[],
+      (res?.data ?? []) as { id?: string; name?: string | null }[],
     enabled: open,
   });
   const { data: senders = [] } = useQuery({
@@ -78,7 +78,7 @@ export function CampaignStepModal({
     select: (res) =>
       (res?.data?.items ?? []) as {
         id?: string;
-        displayName?: string | null;
+        name?: string | null;
       }[],
     enabled: open,
   });
@@ -157,7 +157,7 @@ export function CampaignStepModal({
     { value: "", label: "Sélectionner un segment…" },
     ...segments
       .filter((s) => s.id)
-      .map((s) => ({ value: s.id as string, label: s.displayName ?? "—" })),
+      .map((s) => ({ value: s.id as string, label: s.name ?? "—" })),
   ];
 
   return (
@@ -315,7 +315,7 @@ export function CampaignStepModal({
                       .filter((t) => t.id)
                       .map((t) => ({
                         value: t.id as string,
-                        label: t.displayName ?? "—",
+                        label: t.name ?? "—",
                       })),
                   ]}
                 />
