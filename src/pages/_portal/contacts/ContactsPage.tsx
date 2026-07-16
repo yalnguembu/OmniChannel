@@ -9,6 +9,7 @@ import { staggerContainer } from "@/lib/animations";
 import { useContactViewModel } from "@/hooks/useContactViewModel";
 import { ArrowUpRight, ArrowDownRight, Minus } from "lucide-react";
 import { Button } from "@/components/ui/Button";
+import { statusLabel } from "@/lib/utils";
 import { toast } from "sonner";
 import { SegmentManagerModal } from "@/components/features/contacts/SegmentManagerModal";
 import { ClientImportModal } from "@/components/features/contacts/ClientImportModal";
@@ -36,11 +37,29 @@ export function ContactsPage({ productId }: { productId?: string } = {}) {
     vm.setIsImportOpen(true);
   };
 
+  // Per-status counts for the current page (approximate — the list is paginated).
+  const statusCounts = vm.contacts.reduce<Record<string, number>>((acc, c) => {
+    acc[c.status] = (acc[c.status] ?? 0) + 1;
+    return acc;
+  }, {});
+
+  // Status pills are driven by the backend status vocabulary
+  // (GET /api/Client/statuses); fall back to the legacy trio while it loads.
+  const statuses =
+    vm.statusOptions.length > 0
+      ? vm.statusOptions
+      : ["active", "inactive", "blocked"];
+
   const filterOptions = [
     { value: "all", label: "Tous", count: vm.counts.all },
-    { value: "active", label: "Actifs", count: vm.counts.active },
-    { value: "inactive", label: "Inactifs", count: vm.counts.inactive },
-    { value: "blocked", label: "Bloqués", count: vm.counts.blocked },
+    ...statuses.map((s) => {
+      const key = s.toLowerCase();
+      return {
+        value: key,
+        label: statusLabel(key),
+        count: statusCounts[key],
+      };
+    }),
   ];
 
   const optInPct = vm.counts.all > 0 ? 94.6 : 0;
@@ -160,6 +179,8 @@ export function ContactsPage({ productId }: { productId?: string } = {}) {
           onClose={() => vm.setActiveContact(null)}
           onEdit={(c) => vm.handleEdit(c)}
           onDelete={vm.handleDelete}
+          statusOptions={vm.statusOptions}
+          onChangeStatus={vm.handleChangeStatus}
         />
       </div>
 

@@ -117,6 +117,32 @@ export function useChatViewModel() {
     }),
   [filteredMessages, activeConv]);
 
+  // WhatsApp 24-hour customer-care window: free-form messages are only allowed
+  // within 24h of the contact's last INBOUND message. Past that (or with no
+  // inbound at all) the window is closed and only templates may be sent.
+  // Computed from the conversation's messages, independent of the in-chat search.
+  const lastInboundTs = useMemo(() => {
+    let max = 0;
+    for (const m of messages) {
+      if (
+        activeConversationId &&
+        m.conversationId &&
+        m.conversationId !== activeConversationId
+      )
+        continue;
+      if ((m.direction || '').toUpperCase() !== 'INBOUND') continue;
+      const t = m.receivedAt || m.sentAt || m.createdAt;
+      const ms = t ? new Date(t).getTime() : 0;
+      if (ms > max) max = ms;
+    }
+    return max;
+  }, [messages, activeConversationId]);
+
+  const WINDOW_MS = 24 * 60 * 60 * 1000;
+  const sessionWindowClosed =
+    !msgsLoading &&
+    (lastInboundTs === 0 || Date.now() - lastInboundTs >= WINDOW_MS);
+
   const chatHeaderVM = useMemo(() => {
     if (!activeConv) return null;
     const sub = [activeConv.senderName, activeConv.channelName]
@@ -225,6 +251,7 @@ export function useChatViewModel() {
     replyTo,
     setReplyTo,
     inputRef,
+    sessionWindowClosed,
     isSending: sendText.isPending || sendReply.isPending,
     isSendingMedia: sendMedia.isPending,
     handleSendMessage,

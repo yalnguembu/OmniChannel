@@ -20,8 +20,12 @@ import {
 } from "@/shared/api/generated/@tanstack/react-query.gen";
 import type { ClientAttributeDetail } from "@/shared/api/generated/types.gen";
 import { formatRelative } from "@/lib/date";
-import { Plus, Check, MessageSquare, Mail, Smartphone, Bell, Users } from "lucide-react";
+import { MessageSquare, Mail, Smartphone, Bell, Users } from "lucide-react";
 import { toast } from "sonner";
+import {
+  useContactChannelStatuses,
+  useChangeContactChannelStatus,
+} from "@/hooks/useContactChannel";
 
 interface ContactDetailPanelProps {
   contact: ClientModel | null;
@@ -30,6 +34,10 @@ interface ContactDetailPanelProps {
   onClose: () => void;
   onEdit: (contact: ClientModel) => void;
   onDelete: (id: string) => void;
+  /** Backend client-status vocabulary (GET /api/Client/statuses). */
+  statusOptions?: string[];
+  /** Change a client's status (PATCH /api/Client/status/{id}). */
+  onChangeStatus?: (id: string, status: string) => void;
 }
 
 export function ContactDetailPanel({
@@ -39,8 +47,16 @@ export function ContactDetailPanel({
   onClose,
   onEdit,
   onDelete,
+  statusOptions = [],
+  onChangeStatus,
 }: ContactDetailPanelProps) {
-  const queryClient = React.useRef(null);
+  // Client-status inline editor (PATCH /api/Client/status/{id}).
+  const [editingStatus, setEditingStatus] = React.useState(false);
+
+  // Contact-channel deliverability status (keyed by phone number).
+  const { statuses: channelStatuses } = useContactChannelStatuses();
+  const { changeStatus: changeChannelStatus, isPending: isChannelStatusPending } =
+    useChangeContactChannelStatus();
 
   // Fetch Channels
   const channelsQuery = useQuery({
@@ -270,18 +286,73 @@ export function ContactDetailPanel({
               <DetailRow
                 label="Statut"
                 value={
-                  <Badge
-                    variant={
-                      contact.status === "active"
-                        ? "success"
-                        : contact.status === "inactive"
-                          ? "neutral"
-                          : "error"
-                    }
-                    className="scale-90 origin-right"
-                  >
-                    {statusLabel(contact.status)}
-                  </Badge>
+                  onChangeStatus && (editingStatus || statusOptions.length > 0) ? (
+                    editingStatus ? (
+                      <select
+                        autoFocus
+                        defaultValue={
+                          statusOptions.find(
+                            (s) =>
+                              s.toLowerCase() === contact.status.toLowerCase(),
+                          ) ?? contact.status
+                        }
+                        onBlur={() => setEditingStatus(false)}
+                        onChange={(e) => {
+                          const next = e.target.value;
+                          setEditingStatus(false);
+                          if (
+                            next &&
+                            next.toLowerCase() !== contact.status.toLowerCase()
+                          ) {
+                            onChangeStatus(contact.id, next);
+                          }
+                        }}
+                        className="text-[13px] px-2 py-1 border border-[#E5E7EB] rounded-lg bg-white text-[#0D2137] outline-none focus:border-[#2E8FAD]"
+                      >
+                        {(statusOptions.length > 0
+                          ? statusOptions
+                          : [contact.status]
+                        ).map((s) => (
+                          <option key={s} value={s}>
+                            {statusLabel(s.toLowerCase())}
+                          </option>
+                        ))}
+                      </select>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={() => setEditingStatus(true)}
+                        title="Modifier le statut"
+                        className="cursor-pointer"
+                      >
+                        <Badge
+                          variant={
+                            contact.status === "active"
+                              ? "success"
+                              : contact.status === "inactive"
+                                ? "neutral"
+                                : "error"
+                          }
+                          className="scale-90 origin-right hover:opacity-80 transition-opacity"
+                        >
+                          {statusLabel(contact.status)}
+                        </Badge>
+                      </button>
+                    )
+                  ) : (
+                    <Badge
+                      variant={
+                        contact.status === "active"
+                          ? "success"
+                          : contact.status === "inactive"
+                            ? "neutral"
+                            : "error"
+                      }
+                      className="scale-90 origin-right"
+                    >
+                      {statusLabel(contact.status)}
+                    </Badge>
+                  )
                 }
               />
 
@@ -311,6 +382,44 @@ export function ContactDetailPanel({
 
           {activeTab === "channels" && (
             <div className="space-y-0">
+              {/* Contact-channel deliverability status (keyed by phone number).
+                  PATCH /api/ContactChannel/status — sets consent/deliverability
+                  for this contact's phone across messaging channels. */}
+              {contact.phone && channelStatuses.length > 0 && (
+                <div className="mb-4 rounded-xl border border-[#E5E7EB] bg-[#F7F8F9] p-3.5">
+                  <div className="flex items-center justify-between gap-3">
+                    <div className="min-w-0">
+                      <div className="text-[12.5px] font-semibold text-[#0D2137]">
+                        Statut du numéro
+                      </div>
+                      <div className="text-[11.5px] text-[#8BAFC0] truncate">
+                        {contact.phone}
+                      </div>
+                    </div>
+                    <select
+                      defaultValue=""
+                      disabled={isChannelStatusPending}
+                      onChange={(e) => {
+                        const next = e.target.value;
+                        if (next && contact.phone) {
+                          changeChannelStatus(contact.phone, next);
+                          e.target.value = "";
+                        }
+                      }}
+                      className="text-[12.5px] px-2.5 py-1.5 border border-[#E5E7EB] rounded-lg bg-white text-[#0D2137] outline-none focus:border-[#2E8FAD] disabled:opacity-50 shrink-0"
+                    >
+                      <option value="" disabled>
+                        {isChannelStatusPending ? "Mise à jour…" : "Changer…"}
+                      </option>
+                      {channelStatuses.map((s) => (
+                        <option key={s} value={s}>
+                          {statusLabel(s.toLowerCase())}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+              )}
               {channelsQuery.isLoading || allChannelsQuery.isLoading ? (
                 <div className="text-[13px] text-[#8BAFC0] text-center py-10">
                   Chargement...

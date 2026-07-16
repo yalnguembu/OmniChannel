@@ -5,10 +5,12 @@ import {
   getApiProductDropdownOptions,
   getApiClientSegmentClientsByIdOptions,
   getApiClientSegmentClientsByIdQueryKey,
+  getApiClientStatusesOptions,
   postApiClientSearchOptions,
   postApiClientSegmentSearchOptions,
   postApiClientMutation,
   putApiClientMutation,
+  patchApiClientStatusByIdMutation,
   deleteApiClientByIdMutation,
   postApiClientSearchQueryKey,
 } from "@/shared/api/generated/@tanstack/react-query.gen";
@@ -198,6 +200,14 @@ export function useContactViewModel(
   });
   const products = productsQuery.data ?? [];
 
+  // Available client statuses (drives the toolbar filter pills + the detail
+  // panel status picker). The backend owns the vocabulary — GET /api/Client/statuses.
+  const statusesQuery = useQuery({
+    ...getApiClientStatusesOptions(),
+    select: (res: any) => (res?.data ?? []) as string[],
+  });
+  const statusOptions = statusesQuery.data ?? [];
+
   const segmentsQuery = useQuery({
     ...postApiClientSegmentSearchOptions({
       body: {
@@ -262,6 +272,16 @@ export function useContactViewModel(
     onError: createMutationErrorHandler(),
   });
 
+  // Change a single client's status — PATCH /api/Client/status/{id}.
+  const changeStatusMutation = useMutation({
+    ...patchApiClientStatusByIdMutation(),
+    onSuccess: () => {
+      invalidateContactLists();
+      toast.success("Statut mis à jour");
+    },
+    onError: createMutationErrorHandler(),
+  });
+
   // --- Handlers ---
   const handleSearch = useCallback((val: string) => {
     setSearch(val);
@@ -305,11 +325,13 @@ export function useContactViewModel(
     totalCount: listQuery.data?.totalCount || 0,
     segments: segmentsQuery.data || [],
     products,
+    statusOptions,
     isLoading: listQuery.isLoading,
     isActionPending:
       createMutation.isPending ||
       updateMutation.isPending ||
-      deleteMutation.isPending,
+      deleteMutation.isPending ||
+      changeStatusMutation.isPending,
 
     // UI state
     search,
@@ -416,6 +438,8 @@ export function useContactViewModel(
       setIsModalOpen(true);
     },
     handleDelete: (id: string) => deleteMutation.mutate({ path: { id } }),
+    handleChangeStatus: (id: string, status: string) =>
+      changeStatusMutation.mutate({ path: { id }, body: { status } }),
     handleImportSuccess: () => {
       invalidateContactLists();
       setIsImportOpen(false);

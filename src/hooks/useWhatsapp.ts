@@ -26,6 +26,7 @@ import {
   postApiWhatsAppSendFlow,
   postApiWhatsAppSendTemplateSegment,
   postApiWhatsAppSendTemplateFile,
+  postApiWhatsAppSendTemplateClient,
   postApiUserSearch,
 } from "@/shared/api/generated/sdk.gen";
 
@@ -280,6 +281,12 @@ export interface SendTemplateFilePayload {
   file: File;
   mappingOverride?: string;
 }
+export interface SendTemplateClientPayload {
+  templateId: string;
+  senderId?: string;
+  /** Recipient client id. */
+  clientId: string;
+}
 
 function broadcastToast(res: any) {
   const data = res?.data?.data ?? {};
@@ -321,5 +328,32 @@ export function useSendTemplateFile() {
     onSuccess: broadcastToast,
     onError: (err: any) =>
       toast.error(err?.message || "Erreur lors de la diffusion du template"),
+  });
+}
+
+// Send an approved template to a single client, addressed by external id
+// — POST /api/WhatsApp/send/template/client.
+export function useSendTemplateToClient() {
+  const selectedSenderId = useWhatsAppStore((s) => s.selectedSenderId);
+  return useMutation({
+    mutationFn: (p: SendTemplateClientPayload) =>
+      postApiWhatsAppSendTemplateClient({
+        body: {
+          templateId: p.templateId,
+          senderId: p.senderId ?? selectedSenderId ?? undefined,
+          clientId: p.clientId,
+        },
+      }),
+    onSuccess: (res: any) => {
+      const item = res?.data?.data ?? {};
+      const status = item.status ?? "envoyé";
+      if (item.error) {
+        toast.error(`Échec de l'envoi : ${item.error}`);
+      } else {
+        toast.success(`Template ${status} ✓`);
+      }
+    },
+    onError: (err: any) =>
+      toast.error(err?.message || "Erreur lors de l'envoi du template"),
   });
 }

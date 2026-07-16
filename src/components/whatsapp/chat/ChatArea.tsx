@@ -8,6 +8,7 @@ import { MediaPreview } from "./MediaPreview";
 import { ChatPlaceholder } from "./ChatPlaceholder";
 import { LightboxModal } from "./LightboxModal";
 import { ConvDetailsModal, MsgDetailsModal, FlowModal } from "./Modals";
+import { TemplateBroadcastModal } from "./TemplateBroadcastModal";
 import { useChatViewModel } from "@/hooks/chatViewModel";
 import type { MessageViewModel } from "@/hooks/chatViewModel";
 import { useWhatsAppStore } from "@/store/useWhatsappStore";
@@ -36,6 +37,7 @@ export const ChatArea: React.FC = () => {
     handleSetReply,
     handleBack,
     getMessageDetails,
+    sessionWindowClosed,
   } = useChatViewModel();
 
   const [searchVisible, setSearchVisible] = useState(false);
@@ -48,11 +50,35 @@ export const ChatArea: React.FC = () => {
   const [convDetailsOpen, setConvDetailsOpen] = useState(false);
   const [msgDetailsId, setMsgDetailsId] = useState<string | null>(null);
   const [flowOpen, setFlowOpen] = useState(false);
+  const [templateOpen, setTemplateOpen] = useState(false);
   const [contactOpen, setContactOpen] = useState(false);
   const [pendingMedia, setPendingMedia] = useState<File | null>(null);
 
   // CRM contact tied to this conversation's phone (add / edit directly here).
   const contactVm = useWhatsappContactViewModel(activeConv?.contactAddress);
+
+  // Pre-select this conversation's client in the template modal when the phone
+  // resolves to a CRM contact (the send-template-to-client endpoint needs an id).
+  // Memoized so its identity stays stable — otherwise the modal would keep
+  // re-applying it and clobber a manually picked client.
+  const existingId = contactVm.existing?.id;
+  const existingFirst = contactVm.existing?.firstName;
+  const existingLast = contactVm.existing?.lastName;
+  const contactAddress = activeConv?.contactAddress;
+  const templateDefaultClient = React.useMemo(
+    () =>
+      existingId
+        ? {
+            id: existingId,
+            name:
+              `${existingFirst ?? ""} ${existingLast ?? ""}`.trim() ||
+              contactAddress ||
+              "Client",
+            phone: contactAddress ?? "",
+          }
+        : undefined,
+    [existingId, existingFirst, existingLast, contactAddress],
+  );
 
   const handleConfirmMedia = useCallback(
     async (caption: string) => {
@@ -115,7 +141,7 @@ export const ChatArea: React.FC = () => {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key !== "Escape") return;
-      if (lightbox.open || convDetailsOpen || msgDetailsId || flowOpen || contactOpen || searchVisible) {
+      if (lightbox.open || convDetailsOpen || msgDetailsId || flowOpen || templateOpen || contactOpen || searchVisible) {
         return;
       }
       if (pendingMedia) {
@@ -126,7 +152,7 @@ export const ChatArea: React.FC = () => {
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [lightbox.open, convDetailsOpen, msgDetailsId, flowOpen, contactOpen, searchVisible, pendingMedia, handleBack]);
+  }, [lightbox.open, convDetailsOpen, msgDetailsId, flowOpen, templateOpen, contactOpen, searchVisible, pendingMedia, handleBack]);
 
   if (!activeConversationId) {
     return <ChatPlaceholder />;
@@ -188,6 +214,8 @@ export const ChatArea: React.FC = () => {
           onSend={handleSendMessage}
           onPickMedia={setPendingMedia}
           onOpenFlow={() => setFlowOpen(true)}
+          onOpenTemplate={() => setTemplateOpen(true)}
+          disabled={sessionWindowClosed}
           isSending={isSending}
           inputRef={inputRef}
         />
@@ -260,6 +288,13 @@ export const ChatArea: React.FC = () => {
           onClose={() => setFlowOpen(false)}
           onSubmit={handleFlowSubmit}
           isSending={sendFlow.isPending}
+        />
+
+        <TemplateBroadcastModal
+          open={templateOpen}
+          onClose={() => setTemplateOpen(false)}
+          defaultMode="client"
+          defaultClient={templateDefaultClient}
         />
       </motion.div>
     </div>

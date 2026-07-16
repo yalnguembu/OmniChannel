@@ -11,6 +11,8 @@ import {
   X,
   Zap,
   Plus,
+  LayoutTemplate,
+  Clock,
 } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import EmojiPicker, { Theme } from "emoji-picker-react";
@@ -28,6 +30,9 @@ interface MessageInputProps {
   /** A file was picked — the parent opens the media preview composer. */
   onPickMedia: (file: File) => void;
   onOpenFlow: () => void;
+  onOpenTemplate: () => void;
+  /** True when the WhatsApp 24h window is closed — only templates may be sent. */
+  disabled?: boolean;
   isSending: boolean;
   inputRef: React.RefObject<HTMLTextAreaElement>;
 }
@@ -38,6 +43,8 @@ export const MessageInput: React.FC<MessageInputProps> = ({
   onSend,
   onPickMedia,
   onOpenFlow,
+  onOpenTemplate,
+  disabled = false,
   isSending,
   inputRef,
 }) => {
@@ -57,9 +64,6 @@ export const MessageInput: React.FC<MessageInputProps> = ({
   const onSubmit = async (data: SendMessageForm) => {
     const text = data.content;
     reset({ content: "" });
-    // Clear the DOM value and collapse the textarea back to a single line.
-    // Doing it here (not relying on autoResize reading a stale scrollHeight)
-    // is what keeps the field from staying expanded after a send.
     if (inputRef.current) {
       inputRef.current.value = "";
       inputRef.current.style.height = "auto";
@@ -95,8 +99,6 @@ export const MessageInput: React.FC<MessageInputProps> = ({
     const file = e.target.files?.[0];
     e.target.value = "";
     if (!file) return;
-    // Hand the file to the parent which shows the WhatsApp-style preview
-    // composer; the actual send happens once a caption is confirmed.
     onPickMedia(file);
   };
 
@@ -126,10 +128,7 @@ export const MessageInput: React.FC<MessageInputProps> = ({
   const { ref: formRef, ...restRegister } = register("content");
 
   return (
-    // Outer wrapper is the containing block for popups so they always stay
-    // within the chat column and never overflow the viewport horizontally.
     <div className="shrink-0 relative">
-      {/* Attachment popup — relative to this full-width container */}
       <AnimatePresence>
         {showAttMenu && (
           <motion.div
@@ -178,6 +177,18 @@ export const MessageInput: React.FC<MessageInputProps> = ({
               </span>
               Envoyer un Flow
             </button>
+            <button
+              className="flex items-center gap-3 w-full px-4 py-2.5 text-sm text-wa-text hover:bg-wa-hover transition-colors"
+              onClick={() => {
+                onOpenTemplate();
+                setShowAttMenu(false);
+              }}
+            >
+              <span className="size-9 rounded-full bg-wa-teal flex items-center justify-center text-white shrink-0">
+                <LayoutTemplate size={16} />
+              </span>
+              Envoyer un template
+            </button>
           </motion.div>
         )}
       </AnimatePresence>
@@ -222,12 +233,32 @@ export const MessageInput: React.FC<MessageInputProps> = ({
         </div>
       )}
 
+      {/* 24h window closed — free-form messaging blocked, template required */}
+      {disabled && (
+        <div className="flex items-center gap-2 mx-4 mb-2 px-4 py-2.5 rounded-2xl bg-wa-bubble-in border border-wa-border text-xs text-wa-muted">
+          <Clock size={15} className="shrink-0 text-wa-icon" />
+          <span className="flex-1">
+            La fenêtre de 24h est expirée. Envoyez un template pour reprendre la
+            conversation.
+          </span>
+          <button
+            type="button"
+            onClick={onOpenTemplate}
+            className="shrink-0 inline-flex items-center gap-1.5 rounded-full bg-wa-teal px-3 py-1 text-white font-medium hover:brightness-105 transition-all"
+          >
+            <LayoutTemplate size={13} />
+            Template
+          </button>
+        </div>
+      )}
+
       {/* Input row */}
       <div className="flex items-end rounded-full bg-white shadow-lg mx-4 mb-2 gap-2 px-4 py-2.5">
         {/* Attachment button */}
         <button
           type="button"
-          className="size-10 rounded-full flex items-center justify-center text-wa-icon hover:bg-black/5 transition-colors shrink-0 mb-px"
+          disabled={disabled}
+          className="size-10 rounded-full flex items-center justify-center text-wa-icon hover:bg-black/5 transition-colors shrink-0 mb-px disabled:opacity-40 disabled:hover:bg-transparent disabled:cursor-not-allowed"
           onClick={() => {
             setShowEmojiMenu(false);
             setShowAttMenu((v) => !v);
@@ -239,7 +270,8 @@ export const MessageInput: React.FC<MessageInputProps> = ({
         {/* Emoji button */}
         <button
           type="button"
-          className="size-10 rounded-full flex items-center justify-center text-wa-icon hover:bg-black/5 transition-colors shrink-0 mb-px"
+          disabled={disabled}
+          className="size-10 rounded-full flex items-center justify-center text-wa-icon hover:bg-black/5 transition-colors shrink-0 mb-px disabled:opacity-40 disabled:hover:bg-transparent disabled:cursor-not-allowed"
           onClick={() => {
             setShowAttMenu(false);
             setShowEmojiMenu((v) => !v);
@@ -255,26 +287,35 @@ export const MessageInput: React.FC<MessageInputProps> = ({
             ref={(e) => {
               formRef(e);
               if (inputRef)
-                (inputRef as React.MutableRefObject<HTMLTextAreaElement | null>).current = e;
+                (
+                  inputRef as React.MutableRefObject<HTMLTextAreaElement | null>
+                ).current = e;
             }}
             rows={1}
-            placeholder="Tapez un message"
+            disabled={disabled}
+            placeholder={
+              disabled
+                ? "Fenêtre de 24h expirée — envoyez un template"
+                : "Tapez un message"
+            }
             onKeyDown={onKeyDown}
             onInput={autoResize}
-            className="w-full border-none outline-none resize-none lg:text-sm text-wa-text placeholder:text-wa-muted bg-transparent max-h-28 leading-snug"
+            className="w-full border-none outline-none resize-none lg:text-sm text-wa-text placeholder:text-wa-muted bg-transparent max-h-28 leading-snug disabled:cursor-not-allowed"
           />
         </div>
 
         {/* Send / Mic button */}
         <button
           type="button"
-          disabled={isSending}
-          onClick={hasText ? handleSubmit(onSubmit) : undefined}
+          disabled={isSending || disabled}
+          onClick={hasText && !disabled ? handleSubmit(onSubmit) : undefined}
           className={cn(
-            "size-10 rounded-full cursor-pointer flex items-center justify-center transition-all shrink-0 mr-1",
-            hasText
-              ? "bg-wa-green-send text-white hover:brightness-105 shadow-md"
-              : "text-wa-icon hover:bg-black/5",
+            "size-10 rounded-full flex items-center justify-center transition-all shrink-0 mr-1",
+            disabled
+              ? "text-wa-icon opacity-40 cursor-not-allowed"
+              : hasText
+                ? "bg-wa-green-send text-white hover:brightness-105 shadow-md cursor-pointer"
+                : "text-wa-icon hover:bg-black/5 cursor-pointer",
           )}
         >
           {hasText ? <Send size={20} /> : <Mic size={22} />}

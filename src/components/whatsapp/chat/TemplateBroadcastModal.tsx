@@ -16,7 +16,15 @@ import {
   postApiClientSegmentSearchOptions,
 } from "@/shared/api/generated/@tanstack/react-query.gen";
 import { useWhatsAppStore } from "@/store/useWhatsappStore";
-import { useSendTemplateToSegment, useSendTemplateFile } from "@/hooks/useWhatsapp";
+import {
+  ClientSelect,
+  type SelectedClient,
+} from "@/components/features/contacts/ClientSelect";
+import {
+  useSendTemplateToSegment,
+  useSendTemplateFile,
+  useSendTemplateToClient,
+} from "@/hooks/useWhatsapp";
 
 const selectCls =
   "flex w-full rounded-md border h-11 border-input bg-transparent px-3 py-1 text-base transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50";
@@ -28,27 +36,38 @@ interface Option {
 
 /**
  * Broadcast an approved WhatsApp template to a whole segment
- * (POST /api/WhatsApp/send/template/segment) or via an uploaded recipient file
- * (POST /api/WhatsApp/send/template/file).
+ * (POST /api/WhatsApp/send/template/segment), via an uploaded recipient file
+ * (POST /api/WhatsApp/send/template/file), or to a single client
+ * (POST /api/WhatsApp/send/template/client).
+ *
+ * `defaultMode` / `defaultClient` let a caller (e.g. a conversation) open the
+ * modal pre-scoped to one client.
  */
 export const TemplateBroadcastModal: React.FC<{
   open: boolean;
   onClose: () => void;
-}> = ({ open, onClose }) => {
+  defaultMode?: "segment" | "file" | "client";
+  defaultClient?: SelectedClient;
+}> = ({ open, onClose, defaultMode, defaultClient }) => {
   const senders = useWhatsAppStore((s) => s.senders);
   const selectedSenderId = useWhatsAppStore((s) => s.selectedSenderId);
 
-  const [mode, setMode] = useState<"segment" | "file">("segment");
+  const [mode, setMode] = useState<"segment" | "file" | "client">(
+    defaultMode ?? "segment",
+  );
   const [templateId, setTemplateId] = useState("");
   const [senderId, setSenderId] = useState("");
   const [segmentId, setSegmentId] = useState("");
   const [productId, setProductId] = useState("");
   const [mappingOverride, setMappingOverride] = useState("");
   const [file, setFile] = useState<File | null>(null);
+  const [clientId, setClientId] = useState("");
 
   const sendSegment = useSendTemplateToSegment();
   const sendFile = useSendTemplateFile();
-  const isSending = sendSegment.isPending || sendFile.isPending;
+  const sendClient = useSendTemplateToClient();
+  const isSending =
+    sendSegment.isPending || sendFile.isPending || sendClient.isPending;
 
   const templatesQ = useQuery({
     ...getApiTemplateDropdownOptions(),
@@ -77,19 +96,32 @@ export const TemplateBroadcastModal: React.FC<{
     if (open) setSenderId(selectedSenderId ?? "");
   }, [open, selectedSenderId]);
 
+  // Apply the caller-provided defaults (mode + pre-selected client) on open.
+  useEffect(() => {
+    if (!open) return;
+    if (defaultMode) setMode(defaultMode);
+    if (defaultClient) setClientId(defaultClient.id);
+  }, [open, defaultMode, defaultClient]);
+
   const close = () => {
-    setMode("segment");
+    setMode(defaultMode ?? "segment");
     setTemplateId("");
     setSegmentId("");
     setProductId("");
     setSenderId("");
     setFile(null);
     setMappingOverride("");
+    setClientId("");
     onClose();
   };
 
   const canSubmit =
-    !!templateId && (mode === "segment" ? !!segmentId : !!file);
+    !!templateId &&
+    (mode === "segment"
+      ? !!segmentId
+      : mode === "file"
+        ? !!file
+        : !!clientId);
 
   const submit = () => {
     if (!canSubmit) return;
@@ -98,7 +130,7 @@ export const TemplateBroadcastModal: React.FC<{
         { templateId, senderId: senderId || undefined, segmentId },
         { onSuccess: close },
       );
-    } else {
+    } else if (mode === "file") {
       sendFile.mutate(
         {
           templateId,
@@ -107,6 +139,12 @@ export const TemplateBroadcastModal: React.FC<{
           file: file!,
           mappingOverride: mappingOverride || undefined,
         },
+        { onSuccess: close },
+      );
+    } else {
+      // Client mode: addresses a single client by id.
+      sendClient.mutate(
+        { templateId, senderId: senderId || undefined, clientId },
         { onSuccess: close },
       );
     }
@@ -120,15 +158,15 @@ export const TemplateBroadcastModal: React.FC<{
             Diffusion d'un template
           </DialogTitle>
           <DialogDescription>
-            Envoyez un template WhatsApp approuvé à un segment entier ou à partir
-            d'un fichier de destinataires.
+            Envoyez un template WhatsApp approuvé à un segment entier, à partir
+            d'un fichier de destinataires ou à un client précis.
           </DialogDescription>
         </DialogHeader>
 
         <div className="space-y-4 w-full mt-2 px-4">
           {/* Mode */}
           <div className="flex gap-2">
-            {(["segment", "file"] as const).map((m) => (
+            {(["segment", "file", "client"] as const).map((m) => (
               <button
                 key={m}
                 type="button"
@@ -139,7 +177,11 @@ export const TemplateBroadcastModal: React.FC<{
                     : "border-input text-[#667781] hover:bg-muted"
                 }`}
               >
-                {m === "segment" ? "Vers un segment" : "Depuis un fichier"}
+                {m === "segment"
+                  ? "Vers un segment"
+                  : m === "file"
+                    ? "Depuis un fichier"
+                    : "Vers un client"}
               </button>
             ))}
           </div>
@@ -193,6 +235,18 @@ export const TemplateBroadcastModal: React.FC<{
                   </option>
                 ))}
               </select>
+            </div>
+          ) : mode === "client" ? (
+            <div className="space-y-1.5">
+              <Label>Client</Label>
+              <ClientSelect
+                value={clientId}
+                onChange={(id) => setClientId(id)}
+                initialClient={defaultClient}
+              />
+              <p className="text-xs text-[#667781]">
+                Recherchez le client par nom, téléphone ou email.
+              </p>
             </div>
           ) : (
             <>

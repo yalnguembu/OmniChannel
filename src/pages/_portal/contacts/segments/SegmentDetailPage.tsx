@@ -270,6 +270,8 @@ export function SegmentDetailPage({
         onClose={() => vm.setActiveContact(null)}
         onEdit={(c) => vm.handleEdit(c)}
         onDelete={vm.handleDelete}
+        statusOptions={vm.statusOptions}
+        onChangeStatus={vm.handleChangeStatus}
       />
 
       <ContactModal
