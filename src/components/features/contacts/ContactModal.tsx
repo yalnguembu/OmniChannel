@@ -30,6 +30,8 @@ interface ContactModalProps {
   products?: { id: string; name: string }[];
   /** Seed values for create mode (e.g. phone/name from a WhatsApp conversation). */
   prefill?: Partial<ClientForm>;
+  /** Hides (and skips saving) the product custom-attributes section. */
+  hideCustomAttributes?: boolean;
 }
 
 /** Tolerantly parse a client's customData (JSON string or object) into a flat map. */
@@ -51,7 +53,7 @@ function parseCustomData(src: unknown): Record<string, string> {
   return {};
 }
 
-export function ContactModal({ open, onClose, editing, onSubmit, loading, productId, products, prefill }: ContactModalProps) {
+export function ContactModal({ open, onClose, editing, onSubmit, loading, productId, products, prefill, hideCustomAttributes }: ContactModalProps) {
   const { register, handleSubmit, reset, formState: { errors } } = useForm<ClientForm>({
     resolver: zodResolver(clientSchema),
   });
@@ -63,7 +65,7 @@ export function ContactModal({ open, onClose, editing, onSubmit, loading, produc
 
   // Custom attributes for the product (excludes derived — computed server-side).
   const schema = useProductAttributeSchema(effectiveProductId ?? '', {
-    enabled: open && !!effectiveProductId,
+    enabled: open && !!effectiveProductId && !hideCustomAttributes,
   });
   const customAttributes = useMemo(
     () => schema.attributes.filter((a) => a.key.trim() !== '' && !a.derived),
@@ -101,9 +103,9 @@ export function ContactModal({ open, onClose, editing, onSubmit, loading, produc
       toast.error('Sélectionnez un produit');
       return;
     }
-    const entries = Object.entries(customValues).filter(
-      ([, v]) => (v ?? '').trim() !== '',
-    );
+    const entries = hideCustomAttributes
+      ? []
+      : Object.entries(customValues).filter(([, v]) => (v ?? '').trim() !== '');
     const body: CreateClientRequest = {
       ...(data as CreateClientRequest),
       ...(effectiveProductId ? { productId: effectiveProductId } : {}),
@@ -244,7 +246,7 @@ export function ContactModal({ open, onClose, editing, onSubmit, loading, produc
         </div>
 
         {/* Attributs personnalisés (schéma du produit) */}
-        {effectiveProductId && customAttributes.length > 0 && (
+        {!hideCustomAttributes && effectiveProductId && customAttributes.length > 0 && (
           <div className="space-y-4">
             <div className="flex items-center gap-2 mb-2 px-1 text-[#2E8FAD]">
               <Sparkles size={14} />

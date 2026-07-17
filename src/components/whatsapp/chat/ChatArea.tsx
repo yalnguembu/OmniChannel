@@ -1,5 +1,7 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { motion } from "framer-motion";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
 import { ChatHeader } from "./ChatHeader";
 import { ChatSearchBar } from "./ChatSearchBar";
 import { MessagesList } from "./MessagesList";
@@ -13,8 +15,18 @@ import { useChatViewModel } from "@/hooks/chatViewModel";
 import type { MessageViewModel } from "@/hooks/chatViewModel";
 import { useWhatsAppStore } from "@/store/useWhatsappStore";
 import { useSendFlow } from "@/hooks/useWhatsapp";
+import {
+  useContactChannelStatuses,
+  useChangeContactChannelStatus,
+} from "@/hooks/useContactChannel";
+import {
+  getApiClientStatusesOptions,
+  patchApiClientStatusByIdMutation,
+  postApiClientSearchQueryKey,
+} from "@/shared/api/generated/@tanstack/react-query.gen";
 import { useWhatsappContactViewModel } from "@/hooks/useWhatsappContactViewModel";
 import { ContactModal } from "@/components/features/contacts/ContactModal";
+import type { ClientModel } from "@/models/client.model";
 
 export const ChatArea: React.FC = () => {
   const { activeConversationId, users } = useWhatsAppStore();
@@ -52,6 +64,12 @@ export const ChatArea: React.FC = () => {
   const [flowOpen, setFlowOpen] = useState(false);
   const [templateOpen, setTemplateOpen] = useState(false);
   const [contactOpen, setContactOpen] = useState(false);
+  // Contact being edited, snapshotted at open time so a background refetch of
+  // the phone→client resolution can't mutate the form under the user.
+  const [editingContact, setEditingContact] = useState<{
+    client: ClientModel | null;
+    productId?: string;
+  }>({ client: null });
   const [pendingMedia, setPendingMedia] = useState<File | null>(null);
 
   // CRM contact tied to this conversation's phone (add / edit directly here).
@@ -78,6 +96,37 @@ export const ChatArea: React.FC = () => {
           }
         : undefined,
     [existingId, existingFirst, existingLast, contactAddress],
+  );
+
+  // ── Client / contact-channel status changes (applicable to a discussion) ──
+  const qc = useQueryClient();
+  const clientStatusesQ = useQuery({
+    ...getApiClientStatusesOptions(),
+    select: (r: any) => (r?.data ?? []) as string[],
+  });
+  const changeClientStatusMut = useMutation({
+    ...patchApiClientStatusByIdMutation(),
+    onSuccess: () => {
+      toast.success("Statut du client mis à jour");
+      qc.invalidateQueries({ queryKey: postApiClientSearchQueryKey() });
+    },
+    onError: () => toast.error("Erreur lors de la mise à jour du statut"),
+  });
+  const { statuses: channelStatuses } = useContactChannelStatuses();
+  const { changeStatus: changeChannelStatus } = useChangeContactChannelStatus();
+
+  const handleChangeClientStatus = useCallback(
+    (status: string) => {
+      if (existingId)
+        changeClientStatusMut.mutate({ path: { id: existingId }, body: { status } });
+    },
+    [existingId, changeClientStatusMut],
+  );
+  const handleChangeChannelStatus = useCallback(
+    (status: string) => {
+      if (contactAddress) changeChannelStatus(contactAddress, status);
+    },
+    [contactAddress, changeChannelStatus],
   );
 
   const handleConfirmMedia = useCallback(
@@ -187,6 +236,13 @@ export const ChatArea: React.FC = () => {
             onShowDetails={() => setConvDetailsOpen(true)}
             onBack={handleBack}
             onSendFlow={() => setFlowOpen(true)}
+            onSendTemplate={() => setTemplateOpen(true)}
+            hasClient={contactVm.hasContact}
+            clientStatuses={clientStatusesQ.data ?? []}
+            currentClientStatus={contactVm.existing?.status}
+            onChangeClientStatus={handleChangeClientStatus}
+            channelStatuses={channelStatuses}
+            onChangeChannelStatus={handleChangeChannelStatus}
           />
         )}
 
@@ -246,19 +302,26 @@ export const ChatArea: React.FC = () => {
           hasContact={contactVm.hasContact}
           contactLoading={contactVm.isLoading}
           onManageContact={() => {
+            // Freeze the resolved contact (and its product) at open time.
+            setEditingContact({
+              client: contactVm.existing,
+              productId: contactVm.existingProductId,
+            });
             setConvDetailsOpen(false);
             setContactOpen(true);
           }}
         />
 
+        {contactOpen && (
         <ContactModal
           open={contactOpen}
           onClose={() => setContactOpen(false)}
-          editing={contactVm.existing}
-          productId={contactVm.existing ? contactVm.existingProductId : undefined}
-          products={contactVm.existing ? undefined : contactVm.products}
+          editing={editingContact.client}
+          productId={editingContact.client ? editingContact.productId : undefined}
+          products={editingContact.client ? undefined : contactVm.products}
+          hideCustomAttributes={!!editingContact.client}
           prefill={
-            contactVm.existing
+            editingContact.client
               ? undefined
               : {
                   phone: activeConv?.contactAddress ?? "",
@@ -275,6 +338,7 @@ export const ChatArea: React.FC = () => {
             if (ok) setContactOpen(false);
           }}
         />
+        )}
 
         <MsgDetailsModal
           open={!!msgDetailsId}
@@ -290,12 +354,14 @@ export const ChatArea: React.FC = () => {
           isSending={sendFlow.isPending}
         />
 
-        <TemplateBroadcastModal
-          open={templateOpen}
-          onClose={() => setTemplateOpen(false)}
-          defaultMode="client"
-          defaultClient={templateDefaultClient}
-        />
+        {templateOpen && (
+          <TemplateBroadcastModal
+            open={templateOpen}
+            onClose={() => setTemplateOpen(false)}
+            defaultMode="client"
+            defaultClient={templateDefaultClient}
+          />
+        )}
       </motion.div>
     </div>
   );

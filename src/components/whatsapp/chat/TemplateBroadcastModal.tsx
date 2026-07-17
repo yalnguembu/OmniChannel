@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import {
   Dialog,
@@ -52,16 +52,18 @@ export const TemplateBroadcastModal: React.FC<{
   const senders = useWhatsAppStore((s) => s.senders);
   const selectedSenderId = useWhatsAppStore((s) => s.selectedSenderId);
 
+  // This modal is mounted fresh on each open (the parent conditionally renders
+  // it), so state is seeded once from the caller's defaults — no reset effects.
   const [mode, setMode] = useState<"segment" | "file" | "client">(
     defaultMode ?? "segment",
   );
   const [templateId, setTemplateId] = useState("");
-  const [senderId, setSenderId] = useState("");
+  const [senderId, setSenderId] = useState(selectedSenderId ?? "");
   const [segmentId, setSegmentId] = useState("");
   const [productId, setProductId] = useState("");
   const [mappingOverride, setMappingOverride] = useState("");
   const [file, setFile] = useState<File | null>(null);
-  const [clientId, setClientId] = useState("");
+  const [clientId, setClientId] = useState(defaultClient?.id ?? "");
 
   const sendSegment = useSendTemplateToSegment();
   const sendFile = useSendTemplateFile();
@@ -90,30 +92,8 @@ export const TemplateBroadcastModal: React.FC<{
     enabled: open && mode === "file",
   });
 
-  // Seed the sender from the active one when the modal opens, but keep it in
-  // local state so the user can still switch back to "Par défaut".
-  useEffect(() => {
-    if (open) setSenderId(selectedSenderId ?? "");
-  }, [open, selectedSenderId]);
-
-  // Apply the caller-provided defaults (mode + pre-selected client) on open.
-  useEffect(() => {
-    if (!open) return;
-    if (defaultMode) setMode(defaultMode);
-    if (defaultClient) setClientId(defaultClient.id);
-  }, [open, defaultMode, defaultClient]);
-
-  const close = () => {
-    setMode(defaultMode ?? "segment");
-    setTemplateId("");
-    setSegmentId("");
-    setProductId("");
-    setSenderId("");
-    setFile(null);
-    setMappingOverride("");
-    setClientId("");
-    onClose();
-  };
+  // Closing unmounts the modal (parent guards render), which clears all state.
+  const close = () => onClose();
 
   const canSubmit =
     !!templateId &&

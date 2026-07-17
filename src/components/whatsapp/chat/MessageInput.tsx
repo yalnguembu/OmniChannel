@@ -253,7 +253,7 @@ export const MessageInput: React.FC<MessageInputProps> = ({
       )}
 
       {/* Input row */}
-      <div className="flex items-end rounded-full bg-white shadow-lg mx-4 mb-2 gap-2 px-4 py-2.5">
+      <div className="flex ite  ms-end rounded-full bg-white shadow-lg mx-4 mb-2 gap-2 px-4 py-2.5">
         {/* Attachment button */}
         <button
           type="button"

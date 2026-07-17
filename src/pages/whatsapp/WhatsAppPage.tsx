@@ -49,10 +49,9 @@ export const WhatsAppPage: React.FC<WhatsAppPageProps> = ({ senderId }) => {
         </div>
       </div>
 
-      <TemplateBroadcastModal
-        open={tplOpen}
-        onClose={() => setTplOpen(false)}
-      />
+      {tplOpen && (
+        <TemplateBroadcastModal open={tplOpen} onClose={() => setTplOpen(false)} />
+      )}
     </>
   );
 };

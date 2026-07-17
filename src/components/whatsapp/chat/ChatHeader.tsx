@@ -5,16 +5,19 @@ import {
   ArrowLeft,
   Info,
   Zap,
+  LayoutTemplate,
   CheckCircle2,
   Clock,
   CheckCheck,
   XCircle,
   UserCheck,
+  UserCog,
+  Phone,
 } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { AvatarInitials } from '../shared/AvatarInitials';
 import { IconButton } from '../shared/IconButton';
-import { cn } from '@/lib/utils';
+import { cn, statusLabel } from '@/lib/utils';
 import type { ConversationStatus, User } from '@/models/whatsapp.models';
 
 interface ChatHeaderVM {
@@ -37,6 +40,16 @@ interface ChatHeaderProps {
   onShowDetails: () => void;
   onBack: () => void;
   onSendFlow: () => void;
+  onSendTemplate: () => void;
+  /** Whether a CRM client is linked to this conversation's number. */
+  hasClient?: boolean;
+  /** Client status vocabulary + current value (PATCH /api/Client/status/{id}). */
+  clientStatuses?: string[];
+  currentClientStatus?: string;
+  onChangeClientStatus?: (status: string) => void;
+  /** Contact-channel status vocabulary (PATCH /api/ContactChannel/status). */
+  channelStatuses?: string[];
+  onChangeChannelStatus?: (status: string) => void;
 }
 
 const statusConfig: Record<string, { label: string; icon: React.ReactNode; activeClass: string }> = {
@@ -58,9 +71,22 @@ export const ChatHeader: React.FC<ChatHeaderProps> = ({
   onShowDetails,
   onBack,
   onSendFlow,
+  onSendTemplate,
+  hasClient = false,
+  clientStatuses = [],
+  currentClientStatus,
+  onChangeClientStatus,
+  channelStatuses = [],
+  onChangeChannelStatus,
 }) => {
   const [showMenu, setShowMenu] = useState(false);
   const current = statusConfig[vm.status] ?? statusConfig['OPEN'];
+
+  // Match the (lowercased) client status to a backend status value for the <select>.
+  const clientStatusValue =
+    clientStatuses.find(
+      (s) => s.toLowerCase() === (currentClientStatus ?? '').toLowerCase(),
+    ) ?? '';
 
   return (
     <div className="bg-wa-header px-3 py-3 flex items-center gap-2.5 min-h-20 border-b border-wa-border shrink-0 relative">
@@ -162,6 +188,72 @@ export const ChatHeader: React.FC<ChatHeaderProps> = ({
                   </>
                 )}
 
+                {/* ── Client / number status ── */}
+                {(hasClient && clientStatuses.length > 0) ||
+                channelStatuses.length > 0 ? (
+                  <>
+                    <div className="px-4 pt-1 pb-1 space-y-1.5">
+                      {hasClient && clientStatuses.length > 0 && (
+                        <div>
+                          <p className="text-[10px] font-semibold uppercase tracking-widest text-wa-muted mb-1">
+                            Statut du client
+                          </p>
+                          <div className="flex items-center gap-2 px-2 py-1.5">
+                            <UserCog size={15} className="text-wa-icon shrink-0" />
+                            <select
+                              value={clientStatusValue}
+                              onChange={(e) => {
+                                if (e.target.value)
+                                  onChangeClientStatus?.(e.target.value);
+                                setShowMenu(false);
+                              }}
+                              className="flex-1 text-sm text-wa-text bg-transparent outline-none cursor-pointer"
+                            >
+                              <option value="" disabled>
+                                Choisir un statut…
+                              </option>
+                              {clientStatuses.map((s) => (
+                                <option key={s} value={s}>
+                                  {statusLabel(s.toLowerCase())}
+                                </option>
+                              ))}
+                            </select>
+                          </div>
+                        </div>
+                      )}
+                      {channelStatuses.length > 0 && (
+                        <div>
+                          <p className="text-[10px] font-semibold uppercase tracking-widest text-wa-muted mb-1">
+                            Statut du numéro
+                          </p>
+                          <div className="flex items-center gap-2 px-2 py-1.5">
+                            <Phone size={15} className="text-wa-icon shrink-0" />
+                            <select
+                              value=""
+                              onChange={(e) => {
+                                if (e.target.value)
+                                  onChangeChannelStatus?.(e.target.value);
+                                setShowMenu(false);
+                              }}
+                              className="flex-1 text-sm text-wa-text bg-transparent outline-none cursor-pointer"
+                            >
+                              <option value="" disabled>
+                                Changer le statut…
+                              </option>
+                              {channelStatuses.map((s) => (
+                                <option key={s} value={s}>
+                                  {statusLabel(s.toLowerCase())}
+                                </option>
+                              ))}
+                            </select>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                    <div className="h-px bg-wa-border mx-3 my-1" />
+                  </>
+                ) : null}
+
                 {/* ── Other actions ── */}
                 <button
                   className="flex items-center gap-2.5 w-full px-4 py-2.5 text-sm text-wa-text hover:bg-wa-hover transition-colors"
@@ -169,6 +261,13 @@ export const ChatHeader: React.FC<ChatHeaderProps> = ({
                 >
                   <Zap size={15} className="text-wa-icon" />
                   Envoyer un Flow
+                </button>
+                <button
+                  className="flex items-center gap-2.5 w-full px-4 py-2.5 text-sm text-wa-text hover:bg-wa-hover transition-colors"
+                  onClick={() => { onSendTemplate(); setShowMenu(false); }}
+                >
+                  <LayoutTemplate size={15} className="text-wa-icon" />
+                  Envoyer un template
                 </button>
                 <button
                   className="flex items-center gap-2.5 w-full px-4 py-2.5 text-sm text-wa-text hover:bg-wa-hover transition-colors"
