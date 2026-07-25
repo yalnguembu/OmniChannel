@@ -18,7 +18,9 @@ import { useErrorHandling } from "@/shared/hooks/useErrorHandling";
 export function useCampaignDetailViewModel(campaignId: string) {
   const queryClient = useQueryClient();
   const { handleRequestError, createMutationErrorHandler } = useErrorHandling();
-  const [activeTab, setActiveTab] = useState("overview");
+  // Executions is the landing tab: the funnel / KPI overview now lives in the
+  // page header (it duplicated the hero), so the tabs are all "work" views.
+  const [activeTab, setActiveTab] = useState("runs");
 
   const campaignQuery = useQuery({
     ...getApiCampaignDetailByIdOptions({ path: { id: campaignId } }),

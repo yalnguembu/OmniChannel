@@ -127,6 +127,11 @@ export function ConditionNodeEditor({
               <Plus size={12} /> Message
             </Button>
           )}
+          {allowEventTag && vm.addSegment && (
+            <Button variant="ghost" size="sm" onClick={() => vm.addSegment(path)}>
+              <Plus size={12} /> Segment
+            </Button>
+          )}
           <Button variant="ghost" size="sm" onClick={() => vm.addGroup(path)}>
             <Plus size={12} /> Groupe
           </Button>
@@ -224,6 +229,55 @@ export function ConditionNodeEditor({
             <Trash2 size={14} />
           </button>
         </div>
+      </div>
+    );
+  }
+
+  // ── Segment-membership condition ──────────────────────────────────────────
+  if (node.kind === "segment") {
+    return (
+      <div className="rounded-md border border-[#E5E7EB] bg-white p-3">
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="text-[11px] font-medium uppercase tracking-[0.06em] text-[#8BAFC0]">
+            Segment
+          </span>
+          <div className="w-44">
+            <Select
+              value={String(node.isMember)}
+              onChange={(e) =>
+                vm.updateNode(path, { isMember: e.target.value === "true" })
+              }
+              options={[
+                { value: "true", label: "est membre de" },
+                { value: "false", label: "n'est pas membre de" },
+              ]}
+            />
+          </div>
+          <div className="min-w-[220px] flex-1">
+            <Select
+              value={node.segmentId}
+              onChange={(e) => vm.updateNode(path, { segmentId: e.target.value })}
+              options={[
+                { value: "", label: "Choisir un segment…" },
+                ...(vm.segments ?? []).map((s) => ({
+                  value: s.id ?? "",
+                  label: `${s.name ?? "—"}${s.isDynamic ? " · dynamique" : " · statique"}`,
+                })),
+              ]}
+            />
+          </div>
+          <button
+            onClick={() => vm.removeNode(path)}
+            className="ml-auto shrink-0 p-2 text-[#8BAFC0] transition-colors hover:text-[#DC2626]"
+            title="Supprimer la condition"
+          >
+            <Trash2 size={14} />
+          </button>
+        </div>
+        <p className="mt-2 text-[11px] leading-relaxed text-[#8BAFC0]">
+          L'appartenance est lue sur le dernier instantané calculé du segment —
+          pensez à le recalculer s'il est dynamique.
+        </p>
       </div>
     );
   }

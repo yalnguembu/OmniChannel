@@ -35,6 +35,12 @@ const STATIC_TOP = new Set<string>([
   "whatsapp",
 ]);
 
+/**
+ * `to` is where the item navigates; `match` is the subtree it highlights for,
+ * when the two differ. Facturation and Paramètres link to a *default sub-page*
+ * (wallet / company) while owning every sibling under `/billing` / `/settings`,
+ * so matching on `to` alone left them unhighlighted on any other sub-page.
+ */
 const nav = [
   {
     section: "",
@@ -47,13 +53,21 @@ const nav = [
   {
     section: "Gestion",
     items: [
-      { to: "/billing/wallet", label: "Facturation", icon: CreditCard },
+      { to: "/billing/wallet", match: "/billing", label: "Facturation", icon: CreditCard },
       { to: "/integrations", label: "Intégrations", icon: Plug },
       { to: "/files", label: "Fichiers", icon: FolderOpen },
-      { to: "/settings/company", label: "Paramètres", icon: Settings },
+      { to: "/settings/company", match: "/settings", label: "Paramètres", icon: Settings },
     ],
   },
 ];
+
+/**
+ * Whether `path` is `base` or nested under it. The trailing-slash check keeps the
+ * match on segment boundaries — a plain `startsWith` would light up "Contacts"
+ * for a hypothetical `/contacts-import`.
+ */
+const isUnder = (path: string, base: string) =>
+  path === base || path.startsWith(`${base}/`);
 
 interface SidebarProps {
   onClose?: () => void
@@ -65,7 +79,7 @@ export function Sidebar({ onClose }: SidebarProps) {
   const currentPath = router.location.pathname;
   const [profileOpen, setProfileOpen] = useState(false);
 
-  const isActive = (to: string) => currentPath.startsWith(to);
+  const isActive = (to: string) => isUnder(currentPath, to);
 
   const seg = currentPath.split("/").filter(Boolean);
   const activeProductId =
@@ -73,6 +87,13 @@ export function Sidebar({ onClose }: SidebarProps) {
       ? seg[0]
       : undefined;
   const productTo = (tabId: string) => `/${activeProductId}/${tabId}`;
+
+  // Segments gets its own menu item even though its route nests under Contacts,
+  // so the Contacts tab must not claim that subtree as its own.
+  const segmentsTo = activeProductId
+    ? `/${activeProductId}/contacts/segments`
+    : "";
+  const onSegments = !!segmentsTo && isUnder(currentPath, segmentsTo);
 
   return (
     <aside className="bg-white border-r border-[#E5E7EB]/60 flex flex-col h-full overflow-hidden">
@@ -114,14 +135,20 @@ export function Sidebar({ onClose }: SidebarProps) {
                 {section}
               </p>
             )}
-            {items.map(({ to, label, icon: Icon }) => {
+            {items.map(({ to, match, label, icon: Icon }) => {
               if (to === "/products" && activeProductId) {
                 return (
                   <div key={to}>
                     {PRODUCT_TABS.map(
                       ({ id, label: tabLabel, icon: TabIcon }) => {
                         const tabTo = productTo(id);
-                        const tabActive = currentPath === tabTo;
+                        // A tab owns its route *and* everything nested under it
+                        // (campaign / funnel / event detail pages), so this is a
+                        // prefix match — strict equality left the menu with no
+                        // highlight at all as soon as you opened a detail page.
+                        const tabActive =
+                          isUnder(currentPath, tabTo) &&
+                          !(id === "contacts" && onSegments);
                         const tabLink = (
                           <Link
                             to={tabTo}
@@ -158,8 +185,8 @@ export function Sidebar({ onClose }: SidebarProps) {
 
                         // Surface Segments as its own product-menu item, right
                         // after Contacts (nested route /{productId}/contacts/segments).
-                        const segTo = `/${activeProductId}/contacts/segments`;
-                        const segActive = currentPath.startsWith(segTo);
+                        const segTo = segmentsTo;
+                        const segActive = onSegments;
                         return (
                           <div key={id}>
                             {tabLink}
@@ -200,7 +227,7 @@ export function Sidebar({ onClose }: SidebarProps) {
                 );
               }
 
-              const active = isActive(to);
+              const active = isActive(match ?? to);
               return (
                 <Link
                   key={to}
@@ -238,7 +265,7 @@ export function Sidebar({ onClose }: SidebarProps) {
         <p className="px-4 pt-6 pb-1.5 text-[10px] font-semibold text-[#B8CDD8] uppercase tracking-widest">
           Messagerie
         </p>
-        <WhatsAppMenu active={currentPath.startsWith("/wa")} />
+        <WhatsAppMenu active={isUnder(currentPath, "/wa")} />
       </nav>
 
       <div className="p-3.5 border-t border-[#E5E7EB]/60 shrink-0">

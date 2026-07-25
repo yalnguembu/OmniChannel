@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useNavigate, useRouter } from "@tanstack/react-router";
 import {
   ArrowLeft,
-  BarChart2,
   Layers,
   PlayCircle,
   MessageSquare,
@@ -22,7 +21,7 @@ import { Card, CardHeader, CardBody } from "@/components/ui/Card";
 import { PageLoader } from "@/components/feedback/PageLoader";
 import { EmptyState } from "@/components/feedback/EmptyState";
 import { formatDateTime, formatRelative } from "@/lib/date";
-import { fmt, statusLabel, cn } from "@/lib/utils";
+import { statusLabel, cn } from "@/lib/utils";
 import { describeCron } from "@/lib/cron";
 import type {
   SearchMessageResponse,
@@ -42,10 +41,11 @@ import {
   CampaignRunsTimeline,
 } from "@/components/features/campaigns/CampaignPipeline";
 
+// No "Tableau de bord" tab: its funnel restated the header's KPI strip, so the
+// funnel *is* the header summary now and the tabs are the working views only.
 const tabs = [
-  { id: "overview", label: "Tableau de bord", icon: BarChart2 },
-  { id: "steps", label: "Étapes", icon: Layers },
   { id: "runs", label: "Exécutions", icon: PlayCircle },
+  { id: "steps", label: "Étapes", icon: Layers },
   { id: "messages", label: "Journal d'envois", icon: MessageSquare },
 ];
 
@@ -318,30 +318,51 @@ export function CampaignDetailPage({ campaignId }: { campaignId: string }) {
         </div>
       </div>
 
-      {/* KPI strip */}
-      <div className="grid grid-cols-2 lg:grid-cols-5 gap-3">
-        {[
-          { label: "Ciblés", value: fmt(stats.totalRecipients) },
-          { label: "Envoyés", value: fmt(stats.totalSent) },
-          { label: "Livrés", value: fmt(stats.totalDelivered) },
-          {
-            label: "Échecs",
-            value: fmt(stats.totalFailed + stats.totalBounced),
-          },
-          { label: "Taux livraison", value: `${stats.deliveryRate}%` },
-        ].map((k) => (
-          <Card key={k.label}>
-            <CardBody className="py-3.5 text-center">
-              <p className="text-[18px] font-semibold text-[#0D2137] tabular-nums">
-                {k.value}
-              </p>
-              <p className="text-[10.5px] text-[#8BAFC0] uppercase tracking-[0.05em] mt-1">
-                {k.label}
-              </p>
-            </CardBody>
-          </Card>
-        ))}
-      </div>
+      {/* Diffusion summary — the former "Tableau de bord" tab, now the header's
+          own KPI block. Hidden entirely while there is nothing to show, so a
+          fresh campaign doesn't push the tabs down behind an empty chart. */}
+      {stats.hasActivity && (
+        <Card>
+          <CardHeader title="Entonnoir de diffusion" />
+          <CardBody>
+            <FunnelChart
+              stages={[
+                {
+                  label: "Ciblés",
+                  count: stats.totalRecipients,
+                  hint: "Point de départ",
+                },
+                {
+                  label: "Envoyés",
+                  count: stats.totalSent,
+                  hint: pctOf(stats.totalSent, stats.totalRecipients),
+                },
+                {
+                  label: "Livrés",
+                  count: stats.totalDelivered,
+                  hint: pctOf(stats.totalDelivered, stats.totalRecipients),
+                },
+                {
+                  label: "Ouverts",
+                  count: stats.totalOpened,
+                  hint: pctOf(stats.totalOpened, stats.totalRecipients),
+                },
+              ]}
+              conversion={{
+                value: stats.deliveryRate,
+                label: "Taux de livraison",
+              }}
+              // Failures leave the funnel instead of narrowing it — shown as a
+              // red arrow peeling off after "Envoyés", where the loss occurs.
+              leak={{
+                count: stats.totalFailed + stats.totalBounced,
+                label: "échecs",
+                afterIndex: 1,
+              }}
+            />
+          </CardBody>
+        </Card>
+      )}
 
       {/* Tabs */}
       <div className="flex border-b border-[#E5E7EB] overflow-x-auto [&::-webkit-scrollbar]:hidden">
@@ -360,45 +381,6 @@ export function CampaignDetailPage({ campaignId }: { campaignId: string }) {
           </button>
         ))}
       </div>
-
-      {/* Overview */}
-      {vm.activeTab === "overview" && (
-        <Card>
-          <CardHeader title="Entonnoir de diffusion" />
-          <CardBody>
-            {stats.hasActivity ? (
-              <FunnelChart
-                stages={[
-                  { label: "Ciblés", count: stats.totalRecipients, hint: "Point de départ" },
-                  {
-                    label: "Envoyés",
-                    count: stats.totalSent,
-                    hint: pctOf(stats.totalSent, stats.totalRecipients),
-                  },
-                  {
-                    label: "Livrés",
-                    count: stats.totalDelivered,
-                    hint: pctOf(stats.totalDelivered, stats.totalRecipients),
-                  },
-                  {
-                    label: "Ouverts",
-                    count: stats.totalOpened,
-                    hint: pctOf(stats.totalOpened, stats.totalRecipients),
-                  },
-                ]}
-                conversion={{
-                  value: stats.deliveryRate,
-                  label: "Taux de livraison",
-                }}
-              />
-            ) : (
-              <p className="text-[13px] text-[#8BAFC0] text-center py-8">
-                Aucune activité de diffusion pour l'instant.
-              </p>
-            )}
-          </CardBody>
-        </Card>
-      )}
 
       {/* Steps — workflow pipeline */}
       {vm.activeTab === "steps" && (
@@ -426,6 +408,7 @@ export function CampaignDetailPage({ campaignId }: { campaignId: string }) {
                 stepsVm.handleDelete(s.id);
             }}
             onAdd={openCreateStep}
+            onReorder={stepsVm.handleReorder}
           />
         </div>
       )}
@@ -462,6 +445,10 @@ export function CampaignDetailPage({ campaignId }: { campaignId: string }) {
               runs={runsVm.runs}
               onPause={(id) => runsVm.pauseRun(id)}
               onResume={(id) => runsVm.resumeRun(id)}
+              onCancel={(id) => {
+                if (confirm("Annuler cette exécution ?")) runsVm.cancelRun(id);
+              }}
+              onResendFailed={(id) => runsVm.resendFailed(id)}
               isMutating={runsVm.isMutating}
             />
           )}
@@ -500,6 +487,7 @@ export function CampaignDetailPage({ campaignId }: { campaignId: string }) {
         productId={c.productId}
         editing={editingStep}
         nextOrder={nextOrder}
+        steps={stepsVm.campaignSteps}
         onSave={saveStep}
         isSaving={stepsVm.isActionPending}
       />

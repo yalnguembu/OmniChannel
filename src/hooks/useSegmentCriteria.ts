@@ -94,12 +94,22 @@ export type CriteriaMessage = {
   count?: CountSpec;
   recency?: RecencySpec;
 };
+/** "est / n'est pas membre du segment X" (guide §2.6). The referenced segment
+ * must belong to the same product; membership is read from the members table
+ * (no recursion into its criteria), so `isMember:false` is a plain exclusion.
+ * Segments only. */
+export type CriteriaSegment = {
+  kind: "segment";
+  segmentId: string;
+  isMember: boolean;
+};
 export type CriteriaNode =
   | CriteriaLeaf
   | CriteriaGroup
   | CriteriaEvent
   | CriteriaTag
-  | CriteriaMessage;
+  | CriteriaMessage
+  | CriteriaSegment;
 
 export type OperandKind = "none" | "single" | "array" | "range";
 
@@ -120,7 +130,13 @@ type WireNode =
   | WireGroup
   | CriteriaEvent
   | CriteriaTag
-  | CriteriaMessage;
+  | CriteriaMessage
+  | CriteriaSegment;
+
+/** Non-group node kinds — resolved set-wise by the engine, already wire-shaped. */
+const SET_KINDS = ["leaf", "event", "tag", "message", "segment"] as const;
+const isSetKind = (kind: unknown): boolean =>
+  typeof kind === "string" && (SET_KINDS as readonly string[]).includes(kind);
 
 export const emptyGroup = (): CriteriaGroup => ({
   kind: "group",
@@ -146,6 +162,11 @@ export const emptyTag = (name = ""): CriteriaTag => ({
 export const emptyMessage = (): CriteriaMessage => ({
   kind: "message",
   occurred: true,
+});
+export const emptySegment = (segmentId = ""): CriteriaSegment => ({
+  kind: "segment",
+  segmentId,
+  isMember: true,
 });
 const emptyWireGroup = (): WireGroup => ({
   kind: "group",
@@ -207,6 +228,12 @@ function uiNodeFromWire(w: any): CriteriaNode {
   }
   if (w?.kind === "tag")
     return { kind: "tag", name: typeof w.name === "string" ? w.name : "", has: w.has !== false };
+  if (w?.kind === "segment")
+    return {
+      kind: "segment",
+      segmentId: typeof w.segmentId === "string" ? w.segmentId : "",
+      isMember: w.isMember !== false,
+    };
   if (w?.kind === "message") {
     const n: CriteriaMessage = { kind: "message", occurred: w.occurred !== false };
     if (w.direction) n.direction = String(w.direction).toUpperCase();
@@ -232,13 +259,7 @@ function uiNodeFromWire(w: any): CriteriaNode {
 /** Items `w` contributes to an enclosing AND-run (nested ANDs inlined; an OR → one sub-group item). */
 function expandAndRun(w: any): CriteriaNode[] {
   if (!w || typeof w !== "object") return [];
-  if (
-    w.kind === "leaf" ||
-    w.kind === "event" ||
-    w.kind === "tag" ||
-    w.kind === "message"
-  )
-    return [uiNodeFromWire(w)];
+  if (isSetKind(w.kind)) return [uiNodeFromWire(w)];
   if (w.kind === "group") {
     const children: any[] = Array.isArray(w.children) ? w.children : [];
     if (w.operator === "or") return [wireGroupToUi(w)];
@@ -250,12 +271,7 @@ function expandAndRun(w: any): CriteriaNode[] {
 /** Flatten any wire node into one editor group (children + per-gap connectors). */
 function wireGroupToUi(w: any): CriteriaGroup {
   if (!w || typeof w !== "object") return emptyGroup();
-  if (
-    w.kind === "leaf" ||
-    w.kind === "event" ||
-    w.kind === "tag" ||
-    w.kind === "message"
-  )
+  if (isSetKind(w.kind))
     return { kind: "group", children: [uiNodeFromWire(w)], connectors: [] };
   const wchildren: any[] = Array.isArray(w.children) ? w.children : [];
   if (w.operator === "or") {
@@ -277,23 +293,23 @@ function wireGroupToUi(w: any): CriteriaGroup {
   };
 }
 
-/** Tolerant parse of a stored `criteria` string → editor tree (root is always a group). */
-function parseCriteria(raw: string | null | undefined): CriteriaGroup {
+/** Already-parsed wire criteria → editor tree (root is always a group). */
+export function criteriaFromWire(parsed: unknown): CriteriaGroup {
+  const w = parsed as any;
+  if (isSetKind(w?.kind))
+    return { kind: "group", children: [uiNodeFromWire(w)], connectors: [] };
+  if (w?.kind === "group") return wireGroupToUi(w);
+  return emptyGroup();
+}
+
+/** Tolerant parse of a stored `criteria` string → editor tree. */
+export function parseCriteria(raw: string | null | undefined): CriteriaGroup {
   if (!raw || !raw.trim()) return emptyGroup();
   try {
-    const parsed = JSON.parse(raw);
-    if (
-      parsed?.kind === "leaf" ||
-      parsed?.kind === "event" ||
-      parsed?.kind === "tag" ||
-      parsed?.kind === "message"
-    )
-      return { kind: "group", children: [uiNodeFromWire(parsed)], connectors: [] };
-    if (parsed?.kind === "group") return wireGroupToUi(parsed);
+    return criteriaFromWire(JSON.parse(raw));
   } catch {
-    /* malformed — start fresh */
+    return emptyGroup(); // malformed — start fresh
   }
-  return emptyGroup();
 }
 
 /** Immutable update at `path` (list of child indices from the root). */
@@ -421,6 +437,14 @@ export function useSegmentCriteria(
   const channels = useMemo(() => condMeta?.channels ?? [], [condMeta]);
   const senders = useMemo(() => condMeta?.senders ?? [], [condMeta]);
   const templates = useMemo(() => condMeta?.templates ?? [], [condMeta]);
+  // Referenceable segments for the segment-membership condition. Already
+  // filtered server-side to this product's user segments (step-produced system
+  // segments excluded); we additionally drop the segment being edited so it
+  // cannot reference itself (refused at validation).
+  const segments = useMemo(
+    () => (condMeta?.segments ?? []).filter((s) => s.id !== segment?.id),
+    [condMeta, segment?.id],
+  );
 
   // Human label for an operator code (eq → « Égal à »), used by the count /
   // recency selects which reuse the shared operator catalog.
@@ -582,6 +606,10 @@ export function useSegmentCriteria(
     (path: number[]) => addChild(path, emptyMessage()),
     [addChild],
   );
+  const addSegment = useCallback(
+    (path: number[]) => addChild(path, emptySegment()),
+    [addChild],
+  );
 
   const removeNode = useCallback((path: number[]) => {
     if (path.length === 0) return; // never remove the root
@@ -683,6 +711,14 @@ export function useSegmentCriteria(
         if (!node.name) return null;
         return { kind: "tag", name: node.name, has: node.has };
       }
+      if (node.kind === "segment") {
+        if (!node.segmentId) return null;
+        return {
+          kind: "segment",
+          segmentId: node.segmentId,
+          isMember: node.isMember,
+        };
+      }
       if (node.kind === "message") {
         const o: CriteriaMessage = { kind: "message", occurred: node.occurred };
         if (node.direction) o.direction = node.direction.toUpperCase();
@@ -738,6 +774,21 @@ export function useSegmentCriteria(
     },
     [operandKindFor, valueKindForType, attributeByKey],
   );
+
+  /** Current tree as wire criteria — for consumers that persist it themselves
+   * (e.g. a campaign FilterSegment step embeds it in its own configJson). */
+  const getWireCriteria = useCallback(
+    () => buildWire(criteria) ?? emptyWireGroup(),
+    [buildWire, criteria],
+  );
+
+  /** Seed the tree from a wire object / JSON string (same consumers as above). */
+  const loadWireCriteria = useCallback((raw: unknown) => {
+    setCriteria(
+      typeof raw === "string" ? parseCriteria(raw) : criteriaFromWire(raw),
+    );
+    setPreview(null);
+  }, []);
 
   // ── Preview / save / recalculate ──────────────────────────────────────────────
   const previewMutation = useMutation({
@@ -862,6 +913,7 @@ export function useSegmentCriteria(
     channels,
     senders,
     templates,
+    segments,
     operatorLabel,
 
     // Tree
@@ -872,8 +924,11 @@ export function useSegmentCriteria(
     addEvent,
     addTag,
     addMessage,
+    addSegment,
     removeNode,
     setConnector,
+    getWireCriteria,
+    loadWireCriteria,
 
     // Segment fields
     name,
