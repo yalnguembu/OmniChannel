@@ -1,5 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Search, X, ChevronUp, ChevronDown, Loader2 } from 'lucide-react';
+import {
+  Search,
+  X,
+  ChevronUp,
+  ChevronDown,
+  ChevronsDown,
+  Loader2,
+} from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { toast } from 'sonner';
 import { DatePicker } from '../shared/DatePicker';
@@ -18,11 +25,22 @@ interface ChatSearchBarProps {
   canGoNewer: boolean;
   onPrevMatch: () => void;
   onNextMatch: () => void;
-  /** Older pages are being pulled in looking for a match. */
-  isSearchingOlder?: boolean;
+  /** A wider base is being pulled in because nothing matched. */
+  isSearching?: boolean;
+  /** How many messages the search actually looked at. */
+  searchBaseCount: number;
+  /** How many the conversation holds, when the API reports it. */
+  searchTotalCount: number;
+  /** More history is available to search. */
+  canWidenSearchBase: boolean;
+  onWidenSearchBase: () => void;
+  /** How many messages one widening adds — shown on the button. */
+  searchExtendSize: number;
   /** Scroll to the first message of `yyyy-mm-dd`; false when there is none. */
   onJumpToDate: (day: string) => Promise<boolean>;
   isJumpingToDate?: boolean;
+  /** Local days holding a loaded message — offered in the picker. */
+  availableDays?: string[];
 }
 
 export const ChatSearchBar: React.FC<ChatSearchBarProps> = ({
@@ -36,9 +54,15 @@ export const ChatSearchBar: React.FC<ChatSearchBarProps> = ({
   canGoNewer,
   onPrevMatch,
   onNextMatch,
-  isSearchingOlder = false,
+  isSearching = false,
+  searchBaseCount,
+  searchTotalCount,
+  canWidenSearchBase,
+  onWidenSearchBase,
+  searchExtendSize,
   onJumpToDate,
   isJumpingToDate = false,
+  availableDays = [],
 }) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [day, setDay] = useState('');
@@ -101,7 +125,7 @@ export const ChatSearchBar: React.FC<ChatSearchBarProps> = ({
             {hasTerm && (
               <div className="flex items-center gap-1 shrink-0">
                 <span className="text-xs text-wa-muted tabular-nums min-w-14 text-right">
-                  {isSearchingOlder ? (
+                  {isSearching ? (
                     <span className="inline-flex items-center gap-1">
                       <Loader2 size={12} className="animate-spin" />
                       …
@@ -138,7 +162,7 @@ export const ChatSearchBar: React.FC<ChatSearchBarProps> = ({
               value={day}
               onChange={handleDay}
               placeholder="Aller à une date"
-              align="right"
+              availableDays={availableDays}
               disabled={isJumpingToDate}
               busy={isJumpingToDate}
               className="shrink-0"
@@ -152,6 +176,37 @@ export const ChatSearchBar: React.FC<ChatSearchBarProps> = ({
               <X size={18} />
             </button>
           </div>
+
+          {/* What the search actually covered. Without this, "aucun résultat"
+              reads as "this word was never said", when it only means "not in
+              the slice loaded so far". */}
+          {hasTerm && (
+            <div className="flex flex-wrap items-center gap-x-2 gap-y-1 px-4 pb-2 text-[11px] text-wa-muted">
+              {isSearching ? (
+                <span className="inline-flex items-center gap-1.5">
+                  <Loader2 size={11} className="animate-spin" />
+                  Chargement de {searchExtendSize} messages supplémentaires…
+                </span>
+              ) : (
+                <span>
+                  Recherche sur les {searchBaseCount} message
+                  {searchBaseCount > 1 ? 's' : ''} chargé
+                  {searchBaseCount > 1 ? 's' : ''}
+                  {searchTotalCount > searchBaseCount && <> sur {searchTotalCount}</>}.
+                </span>
+              )}
+              {canWidenSearchBase && !isSearching && (
+                <button
+                  type="button"
+                  onClick={onWidenSearchBase}
+                  className="inline-flex items-center gap-1 font-medium text-wa-teal underline underline-offset-2"
+                >
+                  <ChevronsDown size={11} />
+                  Élargir de {searchExtendSize}
+                </button>
+              )}
+            </div>
+          )}
         </motion.div>
       )}
     </AnimatePresence>

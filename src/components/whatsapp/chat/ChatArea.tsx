@@ -54,11 +54,17 @@ export const ChatArea: React.FC = () => {
     canGoNewer,
     goToPrevMatch,
     goToNextMatch,
-    isSearchingOlder,
+    isSearching,
+    searchBaseCount,
+    searchTotalCount,
+    canWidenSearchBase,
+    widenSearchBase,
+    searchExtendSize,
     scrollTargetId,
     clearScrollTarget,
     jumpToDate,
     isJumpingToDate,
+    availableDays,
     galleryItems,
     replyTo,
     setReplyTo,
@@ -319,9 +325,15 @@ export const ChatArea: React.FC = () => {
             canGoNewer={canGoNewer}
             onPrevMatch={goToPrevMatch}
             onNextMatch={goToNextMatch}
-            isSearchingOlder={isSearchingOlder}
+            isSearching={isSearching}
+            searchBaseCount={searchBaseCount}
+            searchTotalCount={searchTotalCount}
+            canWidenSearchBase={canWidenSearchBase}
+            onWidenSearchBase={widenSearchBase}
+            searchExtendSize={searchExtendSize}
             onJumpToDate={jumpToDate}
             isJumpingToDate={isJumpingToDate}
+            availableDays={availableDays}
           />
 
           <MessagesList

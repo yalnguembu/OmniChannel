@@ -1,4 +1,5 @@
 import {
+  keepPreviousData,
   useMutation,
   useQuery,
   useQueryClient,
@@ -79,6 +80,12 @@ const PAGE_SIZE = 60;
 /** Messages load in small pages and grow upwards as the user scrolls back. */
 export const MESSAGE_PAGE_SIZE = 30;
 
+/**
+ * How much more history a single "load more" pulls in when the in-chat
+ * search finds nothing in what is already loaded.
+ */
+export const SEARCH_EXTEND_SIZE = 250;
+
 // ─── Response helpers (hey-api result → envelope.data payload) ────────────────
 
 function listOf<T>(res: any): T[] {
@@ -124,8 +131,11 @@ export const whatsappKeys = {
   conversations: (params: ConversationSearchParams) =>
     [...whatsappKeys.all, "conversations", params] as const,
   conversation: (id: string) => [...whatsappKeys.all, "conversation", id] as const,
-  messages: (convId: string) =>
-    [...whatsappKeys.all, "messages", convId] as const,
+  /** Without `limit`, a prefix key that invalidates every window size. */
+  messages: (convId: string, limit?: number) =>
+    (limit === undefined
+      ? [...whatsappKeys.all, "messages", convId]
+      : [...whatsappKeys.all, "messages", convId, limit]) as readonly unknown[],
   stats: () => [...whatsappKeys.all, "stats"] as const,
   users: () => [...whatsappKeys.all, "users"] as const,
 };
@@ -232,34 +242,36 @@ export function useAssignConversation() {
 
 // ─── Messages ────────────────────────────────────────────────────────────────
 
+/** The newest `limit` messages of a conversation, in one request. */
+export async function fetchMessageWindow(
+  convId: string,
+  limit: number,
+): Promise<PagedResult<Message>> {
+  return pagedOf<Message>(
+    await getApiConversationMessageSearch({
+      query: { id: convId, pageNumber: 1, pageSize: limit },
+    }),
+    limit,
+  );
+}
+
 /**
- * Messages of one conversation, paged backwards in time.
+ * Messages of one conversation, as a **growing window** rather than stitched
+ * pages: always page 1, with `limit` raised as the user scrolls back.
  *
- * Page 1 is the most recent {@link MESSAGE_PAGE_SIZE} messages and each extra
- * page reaches further into the past — that is the ordering the endpoint has
- * always been used with (the previous single-shot call took page 1 with a
- * large page size and showed it as "the conversation", which only holds if
- * page 1 is the newest slice). Consumers sort ascending for display.
+ * Page-based infinite loading drifts on a live thread — every message that
+ * arrives shifts the boundaries, so page 2 starts returning rows page 1
+ * already had. Re-reading the newest N cannot drift, and the store merges by
+ * id so nothing is duplicated.
  */
-export function useMessages(convId: string | null) {
-  return useInfiniteQuery({
-    queryKey: whatsappKeys.messages(convId ?? ""),
-    queryFn: async ({ pageParam }) =>
-      pagedOf<Message>(
-        await getApiConversationMessageSearch({
-          query: {
-            id: convId!,
-            pageNumber: pageParam as number,
-            pageSize: MESSAGE_PAGE_SIZE,
-          },
-        }),
-        MESSAGE_PAGE_SIZE,
-      ),
-    initialPageParam: 1,
-    getNextPageParam: (lastPage, allPages) =>
-      lastPage.hasNextPage ? allPages.length + 1 : undefined,
+export function useMessages(convId: string | null, limit: number) {
+  return useQuery({
+    queryKey: whatsappKeys.messages(convId ?? "", limit),
+    queryFn: () => fetchMessageWindow(convId!, limit),
     enabled: !!convId,
     staleTime: 60_000,
+    // Keeps the thread on screen while a larger window is being fetched.
+    placeholderData: keepPreviousData,
   });
 }
 

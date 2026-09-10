@@ -3,6 +3,9 @@ import { useQueryClient } from '@tanstack/react-query';
 import {
   useMessages,
   useConversationDetail,
+  fetchMessageWindow,
+  MESSAGE_PAGE_SIZE,
+  SEARCH_EXTEND_SIZE,
   useSendText,
   useSendReply,
   useSendMedia,
@@ -21,6 +24,7 @@ import {
   type Message,
 } from '@/models/whatsapp.models';
 import { useWhatsAppStore, type ReplyTo } from '@/store/useWhatsappStore';
+import { useDebounce } from '@/shared/hooks/useDebounce';
 
 export interface MessageViewModel {
   id: string;
@@ -50,11 +54,11 @@ export interface GalleryItem {
 }
 
 /**
- * Safety rail for the two features that page backwards on their own (deep
- * search and jump-to-date): stop after this many extra pages rather than
- * walking a multi-year conversation to its first message.
+ * Safety rail for jump-to-date, the one feature that still walks backwards:
+ * stop after this many widenings rather than pulling a multi-year
+ * conversation down to its first message.
  */
-const MAX_AUTO_PAGES = 20;
+const MAX_WIDEN_STEPS = 8;
 
 function tsOf(m: Message) {
   return m.sentAt || m.receivedAt || m.createdAt || null;
@@ -87,13 +91,6 @@ function oldestTs(items: Message[]): string | null {
     if (t && (!oldest || t < oldest)) oldest = t;
   }
   return oldest;
-}
-
-function matchesTerm(m: Message, lowerTerm: string): boolean {
-  return (
-    (m.content ?? '').toLowerCase().includes(lowerTerm) ||
-    (m.medias ?? []).some((md) => (md.caption ?? '').toLowerCase().includes(lowerTerm))
-  );
 }
 
 /** messageType → gallery kind, for payloads that put the URL in `content`. */
@@ -151,15 +148,27 @@ export function useChatViewModel() {
     if (convDetail) cacheConversation(convDetail);
   }, [convDetail, cacheConversation]);
 
+  /**
+   * How many of the newest messages are requested. Grows as the user scrolls
+   * back, and in one jump when a search needs a wider base.
+   */
+  const [limit, setLimit] = useState(MESSAGE_PAGE_SIZE);
+  useEffect(() => {
+    setLimit(MESSAGE_PAGE_SIZE);
+  }, [activeConversationId]);
+
   const {
     data: msgsData,
     isLoading: msgsLoading,
     isFetching: msgsFetching,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
     refetch: refetchMessages,
-  } = useMessages(activeConversationId);
+  } = useMessages(activeConversationId, limit);
+
+  const loadedCount = msgsData?.items.length ?? 0;
+  const totalCount = msgsData?.totalCount ?? loadedCount;
+  const hasOlder = !!msgsData?.hasNextPage || totalCount > loadedCount;
+  /** A wider window is in flight — the thread below is the previous one. */
+  const isLoadingOlder = msgsFetching && loadedCount < limit;
 
   const sendText = useSendText();
   const sendReply = useSendReply();
@@ -167,10 +176,9 @@ export function useChatViewModel() {
   const updateStatus = useUpdateConversationStatus();
   const assignConv = useAssignConversation();
 
-  // Sync fetched pages to the store (merge, so live arrivals survive)
+  // Sync the fetched window to the store (merge, so live arrivals survive)
   useEffect(() => {
-    if (!msgsData) return;
-    mergeMessages(msgsData.pages.flatMap((p) => p.items));
+    if (msgsData?.items?.length) mergeMessages(msgsData.items);
   }, [msgsData, mergeMessages]);
 
   // Clear the badge locally for instant feedback when opening a conversation.
@@ -229,30 +237,27 @@ export function useChatViewModel() {
   // ── Paging backwards ────────────────────────────────────────────────────────
 
   const loadOlder = useCallback(() => {
-    if (hasNextPage && !isFetchingNextPage) fetchNextPage();
-  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
+    if (hasOlder && !msgsFetching) setLimit((l) => l + MESSAGE_PAGE_SIZE);
+  }, [hasOlder, msgsFetching]);
 
   /**
-   * Pull older pages until `matches` reports a hit (or there is nothing left).
-   * Used by the in-chat search and the jump-to-date picker, both of which look
-   * for something that may not have been paged in yet.
-   *
-   * The predicate is handed the freshly fetched pages rather than reading the
-   * store: the store is only refreshed by the sync effect on the next commit,
-   * so testing it here would always look one page behind and keep paging past
-   * a match it already had.
+   * Widens the loaded window and resolves once the larger set is in the
+   * store. Imperative on purpose: callers (search, jump-to-date) need to act
+   * on the result, which a declarative query cannot give them inline.
    */
-  const loadOlderUntil = useCallback(
-    async (matches: (items: Message[]) => boolean): Promise<boolean> => {
-      for (let page = 0; page < MAX_AUTO_PAGES; page += 1) {
-        const res = await fetchNextPage();
-        const pages = res.data?.pages ?? [];
-        if (matches(pages.flatMap((p) => p.items))) return true;
-        if (!pages[pages.length - 1]?.hasNextPage) return false;
-      }
-      return false;
+  const extendTo = useCallback(
+    async (target: number) => {
+      if (!activeConversationId) return null;
+      const result = await qc.fetchQuery({
+        queryKey: whatsappKeys.messages(activeConversationId, target),
+        queryFn: () => fetchMessageWindow(activeConversationId, target),
+        staleTime: 60_000,
+      });
+      mergeMessages(result.items);
+      setLimit((l) => Math.max(l, target));
+      return result;
     },
-    [fetchNextPage],
+    [activeConversationId, qc, mergeMessages],
   );
 
   // ── In-chat search: highlight + navigate, WhatsApp-style ────────────────────
@@ -301,7 +306,7 @@ export function useChatViewModel() {
 
   /** 1 = most recent hit, counting backwards in time as the user walks up. */
   const activeMatchPosition = activeMatchIndex >= 0 ? matchCount - activeMatchIndex : 0;
-  const canGoOlder = activeMatchIndex > 0 || (matchCount > 0 && !!hasNextPage);
+  const canGoOlder = activeMatchIndex > 0;
   const canGoNewer = activeMatchIndex >= 0 && activeMatchIndex < matchCount - 1;
 
   /** Older in time — the up chevron. */
@@ -311,11 +316,7 @@ export function useChatViewModel() {
       setActiveMatchId(searchMatchIds[index - 1]);
       return;
     }
-    // Standing on the oldest loaded hit: reach further back instead of
-    // dead-ending. The next page brings more matches and the focused one is
-    // preserved, so pressing again simply continues.
-    if (hasNextPage && !isFetchingNextPage) fetchNextPage();
-  }, [activeMatchId, searchMatchIds, hasNextPage, isFetchingNextPage, fetchNextPage]);
+  }, [activeMatchId, searchMatchIds]);
 
   /** Newer in time — the down chevron. */
   const goToNextMatch = useCallback(() => {
@@ -325,29 +326,41 @@ export function useChatViewModel() {
     }
   }, [activeMatchId, searchMatchIds]);
 
-  // Nothing matched in what's loaded — reach further back before giving up.
-  const [isSearchingOlder, setIsSearchingOlder] = useState(false);
-  const deepSearchedTerm = useRef<string | null>(null);
+  // Search stays local — it runs over the messages already in the thread, so
+  // hits highlight in place. When the loaded base holds nothing, the base is
+  // widened once in the background rather than reporting "no result" on a
+  // window the user never chose.
+  const debouncedSearch = useDebounce(chatSearch, 350);
+  const [isExtendingForSearch, setIsExtendingForSearch] = useState(false);
+  /** Terms already auto-widened, so a fruitless term is not retried forever. */
+  const widenedFor = useRef<string | null>(null);
+
   useEffect(() => {
-    const term = chatSearch.trim();
-    if (!term) {
-      deepSearchedTerm.current = null;
+    const term = debouncedSearch.trim();
+    if (term.length < 2) {
+      widenedFor.current = null;
       return;
     }
-    if (matchCount > 0 || !hasNextPage || isFetchingNextPage) return;
-    if (deepSearchedTerm.current === term) return;
-    deepSearchedTerm.current = term;
+    if (matchCount > 0 || !hasOlder || msgsFetching) return;
+    if (widenedFor.current === term) return;
+    widenedFor.current = term;
 
     let cancelled = false;
-    setIsSearchingOlder(true);
-    const lower = term.toLowerCase();
-    loadOlderUntil((items) => items.some((m) => matchesTerm(m, lower))).finally(() => {
-      if (!cancelled) setIsSearchingOlder(false);
+    setIsExtendingForSearch(true);
+    extendTo(limit + SEARCH_EXTEND_SIZE).finally(() => {
+      if (!cancelled) setIsExtendingForSearch(false);
     });
     return () => {
       cancelled = true;
     };
-  }, [chatSearch, matchCount, hasNextPage, isFetchingNextPage, loadOlderUntil]);
+  }, [debouncedSearch, matchCount, hasOlder, msgsFetching, limit, extendTo]);
+
+  /** User-driven "search deeper" from the search bar. */
+  const widenSearchBase = useCallback(() => {
+    if (!hasOlder || msgsFetching) return;
+    setIsExtendingForSearch(true);
+    extendTo(limit + SEARCH_EXTEND_SIZE).finally(() => setIsExtendingForSearch(false));
+  }, [hasOlder, msgsFetching, limit, extendTo]);
 
   // ── Jump to a date ──────────────────────────────────────────────────────────
 
@@ -377,33 +390,49 @@ export function useChatViewModel() {
       let hit = findFirstOfDay(conversationMessages, day);
 
       if (!hit) {
-        // Not in what's loaded — page backwards, stopping either on the day
-        // itself or once we've reached past it (meaning it has no message).
-        const holder: { found: Message | null } = { found: null };
+        // Not in what is loaded — widen the window until the day shows up, or
+        // until we have paged past it (meaning it holds no message).
         setIsJumpingToDate(true);
         try {
-          await loadOlderUntil((items) => {
-            const mine = scoped(items);
-            const match = findFirstOfDay(mine, day);
-            if (match) {
-              holder.found = match;
-              return true;
-            }
+          let target = limit;
+          for (let step = 0; step < MAX_WIDEN_STEPS; step += 1) {
+            target += SEARCH_EXTEND_SIZE;
+            const result = await extendTo(target);
+            if (!result) break;
+            const mine = scoped(result.items);
+            hit = findFirstOfDay(mine, day);
+            if (hit) break;
             const oldest = oldestTs(mine);
-            return !!oldest && localDayKey(oldest) < day;
-          });
+            if (!result.hasNextPage) break;
+            if (oldest && localDayKey(oldest) < day) break;
+          }
         } finally {
           setIsJumpingToDate(false);
         }
-        hit = holder.found;
       }
 
       if (!hit) return false;
       setScrollTargetId(hit.id);
       return true;
     },
-    [activeConversationId, conversationMessages, loadOlderUntil],
+    [activeConversationId, conversationMessages, extendTo, limit],
   );
+
+  /**
+   * Local days that hold at least one loaded message, oldest first.
+   *
+   * Only covers what has been paged in — the API exposes no "days with
+   * activity" endpoint — so the picker offers these and still lets any other
+   * date through, which then pages backwards looking for it.
+   */
+  const availableDays = useMemo(() => {
+    const days = new Set<string>();
+    for (const m of conversationMessages) {
+      const key = localDayKey(tsOf(m));
+      if (key) days.add(key);
+    }
+    return [...days].sort();
+  }, [conversationMessages]);
 
   // ── Media gallery ───────────────────────────────────────────────────────────
 
@@ -580,11 +609,11 @@ export function useChatViewModel() {
     messageVMs,
     msgsLoading,
     // Paging
-    hasOlder: !!hasNextPage,
-    isLoadingOlder: isFetchingNextPage,
+    hasOlder,
+    isLoadingOlder,
     loadOlder,
     refetchMessages,
-    isRefetchingMessages: msgsFetching && !isFetchingNextPage && !msgsLoading,
+    isRefetchingMessages: msgsFetching && !isLoadingOlder && !msgsLoading,
     // Search / navigation
     chatSearch,
     setChatSearch,
@@ -597,11 +626,20 @@ export function useChatViewModel() {
     canGoNewer,
     goToPrevMatch,
     goToNextMatch,
-    isSearchingOlder,
+    /** Widening the base in the background because nothing matched. */
+    isSearching: isExtendingForSearch,
+    /** How many messages the search actually looked at. */
+    searchBaseCount: loadedCount,
+    /** How many the conversation holds in total, when the API reports it. */
+    searchTotalCount: totalCount,
+    canWidenSearchBase: hasOlder,
+    widenSearchBase,
+    searchExtendSize: SEARCH_EXTEND_SIZE,
     scrollTargetId,
     clearScrollTarget,
     jumpToDate,
     isJumpingToDate,
+    availableDays,
     // Gallery
     galleryItems,
     // Composer

@@ -207,6 +207,12 @@ interface MonthCalendarProps {
   allowNext?: boolean;
   onPrev?: () => void;
   onNext?: () => void;
+  /**
+   * `YYYY-MM-DD` keys to flag with a dot — used by the chat's jump-to-date
+   * picker to show which days actually hold messages. Optional: the range
+   * picker passes nothing and renders exactly as before.
+   */
+  markedDays?: Set<string>;
 }
 
 /** Exported so single-date pickers reuse the exact same calendar grid. */
@@ -221,6 +227,7 @@ export function MonthCalendar({
   allowNext,
   onPrev,
   onNext,
+  markedDays,
 }: MonthCalendarProps) {
   const today = dayjs().startOf("day");
 
@@ -330,6 +337,15 @@ export function MonthCalendar({
               >
                 {day.date()}
               </button>
+              {markedDays?.has(day.format("YYYY-MM-DD")) && inMonth && (
+                <span
+                  aria-hidden
+                  className={cn(
+                    "pointer-events-none absolute bottom-[3px] left-1/2 size-1 -translate-x-1/2 rounded-full",
+                    isStart || isEnd ? "bg-white" : "bg-blue-500",
+                  )}
+                />
+              )}
             </div>
           );
         })}
