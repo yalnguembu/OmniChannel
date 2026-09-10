@@ -74,6 +74,13 @@ export function useWhatsappContactViewModel(phone?: string | null) {
 
   return {
     existing,
+    /**
+     * Untouched search row. `ClientSchema` is a plain `z.object`, so mapping
+     * drops everything it does not declare — `customData`, `productName`,
+     * `address`, `language`… The details panel needs those, so it reads the
+     * DTO rather than the model.
+     */
+    existingRaw: existingDto,
     existingProductId,
     hasContact: !!existingDto,
     isLoading: searchQuery.isLoading,

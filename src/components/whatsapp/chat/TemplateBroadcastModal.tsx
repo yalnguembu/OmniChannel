@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
+import { ChevronDown } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import {
   Dialog,
@@ -25,6 +26,10 @@ import {
   useSendTemplateFile,
   useSendTemplateToClient,
 } from "@/hooks/useWhatsapp";
+import {
+  Dropdown,
+  type DropdownOption,
+} from "@/components/whatsapp/shared/Dropdown";
 
 const selectCls =
   "flex w-full rounded-md border h-11 border-input bg-transparent px-3 py-1 text-base transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50";
@@ -33,6 +38,43 @@ interface Option {
   id: string;
   name: string;
 }
+
+/**
+ * Form-field shaped listbox: same box as the inputs around it, but a custom
+ * menu rather than a native <select>, which can't be styled consistently
+ * across browsers. The visible <Label> is supplied by the caller.
+ */
+const FieldDropdown: React.FC<{
+  label: string;
+  value: string;
+  placeholder: string;
+  options: DropdownOption[];
+  onChange: (v: string) => void;
+}> = ({ label, value, placeholder, options, onChange }) => {
+  const selected = options.find((o) => o.value === value);
+  return (
+    <Dropdown
+      label={label}
+      value={value}
+      options={options}
+      onChange={onChange}
+      menuClassName="w-full"
+      trigger={
+        <span className={selectCls + " items-center gap-2"}>
+          <span
+            className={
+              "min-w-0 flex-1 truncate text-left " +
+              (selected ? "text-[#0D2137]" : "text-[#667781]")
+            }
+          >
+            {selected?.label ?? placeholder}
+          </span>
+          <ChevronDown size={16} className="shrink-0 text-[#667781]" />
+        </span>
+      }
+    />
+  );
+};
 
 /**
  * Broadcast an approved WhatsApp template to a whole segment
@@ -91,6 +133,38 @@ export const TemplateBroadcastModal: React.FC<{
       ((r as { data?: Option[] })?.data ?? []) as Option[],
     enabled: open && mode === "file",
   });
+
+  const templateOptions = useMemo<DropdownOption[]>(
+    () => [
+      { value: "", label: "Choisir un template…" },
+      ...(templatesQ.data ?? []).map((t) => ({ value: t.id, label: t.name })),
+    ],
+    [templatesQ.data],
+  );
+  const senderOptions = useMemo<DropdownOption[]>(
+    () => [
+      { value: "", label: "Par défaut" },
+      ...senders.map((s: { id: string; senderName: string }) => ({
+        value: s.id,
+        label: s.senderName,
+      })),
+    ],
+    [senders],
+  );
+  const segmentOptions = useMemo<DropdownOption[]>(
+    () => [
+      { value: "", label: "Choisir un segment…" },
+      ...(segmentsQ.data ?? []).map((x) => ({ value: x.id, label: x.name })),
+    ],
+    [segmentsQ.data],
+  );
+  const productOptions = useMemo<DropdownOption[]>(
+    () => [
+      { value: "", label: "Aucun" },
+      ...(productsQ.data ?? []).map((x) => ({ value: x.id, label: x.name })),
+    ],
+    [productsQ.data],
+  );
 
   // Closing unmounts the modal (parent guards render), which clears all state.
   const close = () => onClose();
@@ -169,52 +243,37 @@ export const TemplateBroadcastModal: React.FC<{
           {/* Template */}
           <div className="space-y-1.5">
             <Label>Template</Label>
-            <select
+            <FieldDropdown
+              label="Template"
               value={templateId}
-              onChange={(e) => setTemplateId(e.target.value)}
-              className={selectCls}
-            >
-              <option value="">Choisir un template…</option>
-              {templatesQ.data?.map((t) => (
-                <option key={t.id} value={t.id}>
-                  {t.name}
-                </option>
-              ))}
-            </select>
+              placeholder="Choisir un template…"
+              options={templateOptions}
+              onChange={setTemplateId}
+            />
           </div>
 
           {/* Sender */}
           <div className="space-y-1.5">
             <Label>Expéditeur</Label>
-            <select
+            <FieldDropdown
+              label="Expéditeur"
               value={senderId}
-              onChange={(e) => setSenderId(e.target.value)}
-              className={selectCls}
-            >
-              <option value="">Par défaut</option>
-              {senders.map((s: { id: string; senderName: string }) => (
-                <option key={s.id} value={s.id}>
-                  {s.senderName}
-                </option>
-              ))}
-            </select>
+              placeholder="Par défaut"
+              options={senderOptions}
+              onChange={setSenderId}
+            />
           </div>
 
           {mode === "segment" ? (
             <div className="space-y-1.5">
               <Label>Segment</Label>
-              <select
+              <FieldDropdown
+                label="Segment"
                 value={segmentId}
-                onChange={(e) => setSegmentId(e.target.value)}
-                className={selectCls}
-              >
-                <option value="">Choisir un segment…</option>
-                {segmentsQ.data?.map((s) => (
-                  <option key={s.id} value={s.id}>
-                    {s.name}
-                  </option>
-                ))}
-              </select>
+                placeholder="Choisir un segment…"
+                options={segmentOptions}
+                onChange={setSegmentId}
+              />
             </div>
           ) : mode === "client" ? (
             <div className="space-y-1.5">
@@ -232,18 +291,13 @@ export const TemplateBroadcastModal: React.FC<{
             <>
               <div className="space-y-1.5">
                 <Label>Produit</Label>
-                <select
+                <FieldDropdown
+                  label="Produit"
                   value={productId}
-                  onChange={(e) => setProductId(e.target.value)}
-                  className={selectCls}
-                >
-                  <option value="">Aucun</option>
-                  {productsQ.data?.map((p) => (
-                    <option key={p.id} value={p.id}>
-                      {p.name}
-                    </option>
-                  ))}
-                </select>
+                  placeholder="Aucun"
+                  options={productOptions}
+                  onChange={setProductId}
+                />
               </div>
               <div className="space-y-1.5">
                 <Label>Fichier de destinataires (.xlsx, .csv)</Label>

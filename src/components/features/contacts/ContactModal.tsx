@@ -1,19 +1,12 @@
-import React, { useEffect, useMemo, useState } from 'react'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { toast } from 'sonner'
+import React from 'react'
 import { User, Mail, Phone, MapPin, ShieldCheck, Globe, Sparkles, Package } from 'lucide-react'
 import { Modal } from '@/components/ui/Modal'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
 import { Select } from '@/components/ui/Select'
-import { clientSchema } from '@/lib/validators'
-import { useProductAttributeSchema } from '@/hooks/useProductAttributeSchema'
+import { useContactForm, type ClientForm } from './useContactForm'
 import type { ClientModel } from '@/models/client.model'
 import type { CreateClientRequest } from '@/shared/api/generated/types.gen'
-import type { z } from 'zod'
-
-type ClientForm = z.infer<typeof clientSchema>;
 
 interface ContactModalProps {
   open: boolean;
@@ -34,86 +27,27 @@ interface ContactModalProps {
   hideCustomAttributes?: boolean;
 }
 
-/** Tolerantly parse a client's customData (JSON string or object) into a flat map. */
-function parseCustomData(src: unknown): Record<string, string> {
-  if (!src) return {};
-  try {
-    const obj = typeof src === 'string' ? JSON.parse(src) : src;
-    if (obj && typeof obj === 'object') {
-      return Object.fromEntries(
-        Object.entries(obj as Record<string, unknown>).map(([k, v]) => [
-          k,
-          v == null ? '' : String(v),
-        ]),
-      );
-    }
-  } catch {
-    /* malformed customData — start empty */
-  }
-  return {};
-}
-
 export function ContactModal({ open, onClose, editing, onSubmit, loading, productId, products, prefill, hideCustomAttributes }: ContactModalProps) {
-  const { register, handleSubmit, reset, formState: { errors } } = useForm<ClientForm>({
-    resolver: zodResolver(clientSchema),
-  });
-
-  // In create mode with a product picker, the chosen product scopes everything.
-  const [selectedProduct, setSelectedProduct] = useState(productId ?? '');
-  const effectiveProductId = productId || selectedProduct || undefined;
-  const showProductPicker = !editing && !!products && products.length > 0;
-
-  // Custom attributes for the product (excludes derived — computed server-side).
-  const schema = useProductAttributeSchema(effectiveProductId ?? '', {
-    enabled: open && !!effectiveProductId && !hideCustomAttributes,
-  });
-  const customAttributes = useMemo(
-    () => schema.attributes.filter((a) => a.key.trim() !== '' && !a.derived),
-    [schema.attributes],
-  );
-
-  // Custom attribute values, kept outside RHF since the field set is dynamic.
-  const [customValues, setCustomValues] = useState<Record<string, string>>({});
-
-  useEffect(() => {
-    if (editing) {
-      reset({
-        firstName: editing.firstName || '',
-        lastName: editing.lastName || '',
-        email: editing.email || '',
-        phone: editing.phone || '',
-        city: editing.city || '',
-        country: editing.country || '',
-        status: editing.status,
-      });
-      setCustomValues(parseCustomData((editing as { customData?: unknown }).customData));
-    } else {
-      reset({
-        firstName: '', lastName: '', email: '', phone: '', city: '', country: '', status: 'active',
-        ...prefill,
-      });
-      setCustomValues({});
-      setSelectedProduct(productId ?? '');
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [editing, reset, open, productId]);
-
-  const submit = handleSubmit((data) => {
-    if (showProductPicker && !selectedProduct) {
-      toast.error('Sélectionnez un produit');
-      return;
-    }
-    const entries = hideCustomAttributes
-      ? []
-      : Object.entries(customValues).filter(([, v]) => (v ?? '').trim() !== '');
-    const body: CreateClientRequest = {
-      ...(data as CreateClientRequest),
-      ...(effectiveProductId ? { productId: effectiveProductId } : {}),
-      ...(entries.length > 0
-        ? { customData: JSON.stringify(Object.fromEntries(entries)) }
-        : {}),
-    };
-    onSubmit(body);
+  const {
+    register,
+    errors,
+    submit,
+    selectedProduct,
+    setSelectedProduct,
+    showProductPicker,
+    effectiveProductId,
+    schema,
+    customAttributes,
+    customValues,
+    setCustomValue,
+  } = useContactForm({
+    open,
+    editing,
+    onSubmit,
+    productId,
+    products,
+    prefill,
+    hideCustomAttributes,
   });
 
   return (
@@ -258,8 +192,7 @@ export function ContactModal({ open, onClose, editing, onSubmit, loading, produc
               {customAttributes.map((attr) => {
                 const valueKind = schema.typeInfoFor(attr.type)?.valueKind;
                 const value = customValues[attr.key] ?? '';
-                const setValue = (v: string) =>
-                  setCustomValues((prev) => ({ ...prev, [attr.key]: v }));
+                const setValue = (v: string) => setCustomValue(attr.key, v);
                 const label = `${attr.label || attr.key}${attr.required ? ' *' : ''}`;
 
                 // Select / MultiSelect — driven by the attribute's options.

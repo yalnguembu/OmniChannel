@@ -114,6 +114,19 @@ export default defineConfig(({ mode }) => {
           secure: false,
           cookieDomainRewrite: '',
         },
+        // Message media (pictures, videos, voice notes) is served outside
+        // /api — see `/download_media` in spec.yaml — so it was never covered
+        // by the rules above and hit the dev server instead, which answers
+        // with index.html. `MEDIA_PREFIX` in whatsappBaseUrl.ts tags those
+        // requests with this alias; it is stripped before forwarding, so any
+        // backend media path works without the frontend knowing it.
+        '/__media': {
+          target,
+          changeOrigin: true,
+          secure: false,
+          cookieDomainRewrite: '',
+          rewrite: (p: string) => p.replace(/^\/__media/, ''),
+        },
         '/hubs': {
           target,
           changeOrigin: true,

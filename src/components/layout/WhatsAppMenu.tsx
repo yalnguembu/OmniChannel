@@ -16,8 +16,10 @@ import { cn } from "@/lib/utils";
  */
 export function WhatsAppMenu({ active }: { active: boolean }) {
   const navigate = useNavigate();
-  const { senders, selectedSenderId, setSenders, setSelectedSenderId } =
-    useWhatsAppStore();
+  const senders = useWhatsAppStore((s) => s.senders);
+  const selectedSenderId = useWhatsAppStore((s) => s.selectedSenderId);
+  const setSenders = useWhatsAppStore((s) => s.setSenders);
+  const setSelectedSenderId = useWhatsAppStore((s) => s.setSelectedSenderId);
   const [open, setOpen] = useState(active);
 
   // Load the sender dropdown and hydrate the WhatsApp store so the inbox is

@@ -209,7 +209,8 @@ interface MonthCalendarProps {
   onNext?: () => void;
 }
 
-function MonthCalendar({
+/** Exported so single-date pickers reuse the exact same calendar grid. */
+export function MonthCalendar({
   month,
   selectStart,
   selectEnd,

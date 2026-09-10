@@ -1,8 +1,15 @@
 import { useCallback, useEffect, useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useConversations, useStats, useUsers } from './useWhatsapp';
-import { type Filter, convPreview, fmtTime, avatarColor, getInitials } from '@/models/whatsapp.models';
-import { useWhatsAppStore } from '@/store/useWhatsappStore';
+import {
+  type Filter,
+  convPreview,
+  fmtTime,
+  avatarColor,
+  getInitials,
+  toUtcDate,
+} from '@/models/whatsapp.models';
+import { useWhatsAppStore, type ConversationFilters } from '@/store/useWhatsappStore';
 import { useDebounce } from '@/shared/hooks/useDebounce';
 import { getApiSenderDropdownOptions } from '@/shared/api/generated/@tanstack/react-query.gen';
 
@@ -26,36 +33,51 @@ export interface ConversationViewModel {
 }
 
 export function useSidebarViewModel() {
-  const {
-    filter,
-    search,
-    setFilter,
-    setSearch,
-    setConversations,
-    setStats,
-    setUsers,
-    setSenders,
-    selectedSenderId,
-    activeConversationId,
-    conversations,
-    stats,
-    users,
-  } = useWhatsAppStore();
+  // Per-slice selectors rather than `useWhatsAppStore()`: the store also holds
+  // the open conversation's messages, which change on every send, receive and
+  // page fetch — a whole-store subscription re-rendered the sidebar (and
+  // re-derived every row view-model) each time.
+  const filter = useWhatsAppStore((s) => s.filter);
+  const search = useWhatsAppStore((s) => s.search);
+  const setFilter = useWhatsAppStore((s) => s.setFilter);
+  const setSearch = useWhatsAppStore((s) => s.setSearch);
+  const filters = useWhatsAppStore((s) => s.filters);
+  const setFilters = useWhatsAppStore((s) => s.setFilters);
+  const resetFilters = useWhatsAppStore((s) => s.resetFilters);
+  const setConversations = useWhatsAppStore((s) => s.setConversations);
+  const setStats = useWhatsAppStore((s) => s.setStats);
+  const setUsers = useWhatsAppStore((s) => s.setUsers);
+  const setSenders = useWhatsAppStore((s) => s.setSenders);
+  const selectedSenderId = useWhatsAppStore((s) => s.selectedSenderId);
+  const activeConversationId = useWhatsAppStore((s) => s.activeConversationId);
+  const conversations = useWhatsAppStore((s) => s.conversations);
+  const users = useWhatsAppStore((s) => s.users);
 
   // Debounce the term sent to the backend so typing doesn't fire a request per
   // keystroke (the client-side filter below still narrows the loaded list
   // instantly for responsive feedback).
   const debouncedSearch = useDebounce(search, 400);
 
-  // Build query params from filter, debounced search, and selectedSenderId
+  // Build query params from filter, debounced search, selectedSenderId and the
+  // filter popover. The date range is absent on purpose — the search endpoint
+  // takes no date parameter, so it is applied client-side further down.
   const queryParams = useMemo(() => {
     const p: Record<string, unknown> = {};
     if (filter && filter !== 'ALL' && filter !== 'UNREAD') p.status = filter;
     if (filter === 'UNREAD') p.unreadOnly = true;
     if (debouncedSearch) p.searchTerm = debouncedSearch;
     if (selectedSenderId) p.senderId = selectedSenderId;
+    if (filters.assignedToUser) p.assignedToUser = filters.assignedToUser;
+    if (filters.lastMessageDirection)
+      p.lastMessageDirection = filters.lastMessageDirection;
     return p;
-  }, [filter, debouncedSearch, selectedSenderId]);
+  }, [
+    filter,
+    debouncedSearch,
+    selectedSenderId,
+    filters.assignedToUser,
+    filters.lastMessageDirection,
+  ]);
 
   const { 
     data: convData, 
@@ -104,15 +126,37 @@ export function useSidebarViewModel() {
   // (it may match on fields/normalisations the client can't see), so filtering
   // again client-side would drop valid server results and break search.
   const visibleConversations = useMemo(() => {
-    if (!filter || filter === 'ALL') return conversations;
-    return conversations.filter((c) => {
+    const { dateFrom, dateTo } = filters;
+    // Local calendar-day bounds, inclusive on both ends.
+    const fromMs = dateFrom ? new Date(`${dateFrom}T00:00:00`).getTime() : null;
+    const toMs = dateTo ? new Date(`${dateTo}T23:59:59.999`).getTime() : null;
+
+    const matchesStatus = (c: (typeof conversations)[number]) => {
+      if (!filter || filter === 'ALL') return true;
       if (filter === 'UNREAD') {
         // Keep the currently-open conversation even after its badge clears.
         return (c.unreadCount ?? 0) > 0 || c.id === activeConversationId;
       }
       return (c.status ?? 'OPEN').toUpperCase() === filter;
-    });
-  }, [conversations, filter, activeConversationId]);
+    };
+
+    const matchesDate = (c: (typeof conversations)[number]) => {
+      if (fromMs === null && toMs === null) return true;
+      if (!c.lastMessageAt) return false;
+      const at = toUtcDate(c.lastMessageAt).getTime();
+      if (fromMs !== null && at < fromMs) return false;
+      if (toMs !== null && at > toMs) return false;
+      return true;
+    };
+
+    return conversations.filter((c) => matchesStatus(c) && matchesDate(c));
+  }, [
+    conversations,
+    filter,
+    activeConversationId,
+    filters.dateFrom,
+    filters.dateTo,
+  ]);
 
   const conversationVMs = useMemo((): ConversationViewModel[] =>
     visibleConversations.map((c): ConversationViewModel => ({
@@ -151,14 +195,22 @@ export function useSidebarViewModel() {
     setSearch(s);
   }, [setSearch]);
 
+  const handleFiltersChange = useCallback(
+    (patch: Partial<ConversationFilters>) => setFilters(patch),
+    [setFilters],
+  );
+
   return {
     conversationVMs,
     statsVM,
     filter,
     search,
+    filters,
     isLoading: convsLoading,
     handleFilterChange,
     handleSearchChange,
+    handleFiltersChange,
+    resetFilters,
     refetchConvs,
     fetchNextPage,
     hasNextPage,

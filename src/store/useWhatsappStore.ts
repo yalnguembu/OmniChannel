@@ -8,6 +8,24 @@ export interface ReplyTo {
   author: string;
 }
 
+/** Sidebar filters that live alongside the status filter and the search term. */
+export interface ConversationFilters {
+  /** Assigned agent id; '' = any. */
+  assignedToUser: string;
+  /** 'INBOUND' | 'OUTBOUND' | '' (any) — direction of the last message. */
+  lastMessageDirection: string;
+  /** Inclusive local-day bounds on lastMessageAt, as `yyyy-mm-dd`; '' = open. */
+  dateFrom: string;
+  dateTo: string;
+}
+
+export const EMPTY_CONVERSATION_FILTERS: ConversationFilters = {
+  assignedToUser: '',
+  lastMessageDirection: '',
+  dateFrom: '',
+  dateTo: '',
+};
+
 interface WhatsAppState {
   // Conversations
   conversations: Conversation[];
@@ -15,6 +33,7 @@ interface WhatsAppState {
   activeConversationId: string | null;
   filter: Filter;
   search: string;
+  filters: ConversationFilters;
   stats: Stats | null;
   selectedSenderId: string | null;
   senders: Array<{ id: string; senderName: string }>;
@@ -33,15 +52,21 @@ interface WhatsAppState {
   setActiveConversationId: (id: string | null) => void;
   setFilter: (filter: Filter) => void;
   setSearch: (search: string) => void;
+  setFilters: (patch: Partial<ConversationFilters>) => void;
+  resetFilters: () => void;
   setStats: (stats: Stats) => void;
   setSelectedSenderId: (senderId: string | null) => void;
   setSenders: (senders: Array<{ id: string; senderName: string }>) => void;
   upsertConversation: (conv: Conversation) => void;
+  /** Index a conversation for lookup without inserting it in the visible list. */
+  cacheConversation: (conv: Conversation) => void;
   batchUpsertConversations: (convs: Conversation[]) => void;
   clearUnreadBadge: (id: string) => void;
 
   // Actions — messages
   setMessages: (msgs: Message[]) => void;
+  /** Union by id — keeps live SignalR arrivals that no fetched page holds yet. */
+  mergeMessages: (msgs: Message[]) => void;
   appendMessage: (msg: Message) => void;
   updateMessage: (msg: Message) => void;
   setChatSearch: (term: string) => void;
@@ -63,6 +88,7 @@ export const useWhatsAppStore = create<WhatsAppState>()(
       activeConversationId: null,
       filter: 'ALL',
       search: '',
+      filters: EMPTY_CONVERSATION_FILTERS,
       stats: null,
       selectedSenderId: null,
       senders: [],
@@ -89,18 +115,43 @@ export const useWhatsAppStore = create<WhatsAppState>()(
           return { conversations, conversationById };
         }),
 
+      // Messages are cleared on switch: they are paged now, so leaving the
+      // previous conversation's pages in place would let them show through
+      // while the new conversation's first page is still in flight.
       setActiveConversationId: (id) =>
-        set({ activeConversationId: id, replyTo: null, chatSearch: '' }),
+        set((state) =>
+          state.activeConversationId === id
+            ? state
+            : { activeConversationId: id, replyTo: null, chatSearch: '', messages: [] },
+        ),
 
       setFilter: (filter) => set({ filter }),
 
       setSearch: (search) => set({ search }),
+
+      setFilters: (patch) =>
+        set((state) => ({ filters: { ...state.filters, ...patch } })),
+
+      resetFilters: () => set({ filters: EMPTY_CONVERSATION_FILTERS }),
 
       setStats: (stats) => set({ stats }),
 
       setSelectedSenderId: (senderId) => set({ selectedSenderId: senderId }),
 
       setSenders: (senders) => set({ senders }),
+
+      // Used when a conversation is opened by id (deep link / reload) while the
+      // sidebar holds a filtered, paginated slice that does not contain it.
+      // Deliberately not added to `conversations`: it would show up in the list
+      // as a row that does not match the active filters.
+      cacheConversation: (conv) =>
+        set((state) =>
+          state.conversationById[conv.id]
+            ? state
+            : {
+                conversationById: { ...state.conversationById, [conv.id]: conv },
+              },
+        ),
 
       upsertConversation: (conv) =>
         set((state) => {
@@ -163,6 +214,35 @@ export const useWhatsAppStore = create<WhatsAppState>()(
       // ── Messages ──────────────────────────────────────────────────────────────
 
       setMessages: (messages) => set({ messages }),
+
+      // Fetched pages are merged, never substituted: a SignalR arrival that
+      // landed between two fetches isn't in any page yet, and replacing the
+      // list wholesale would make it disappear until the next refetch.
+      mergeMessages: (incoming) =>
+        set((state) => {
+          if (incoming.length === 0) return state;
+          const byId = new Map(state.messages.map((m) => [m.id, m]));
+          let changed = false;
+          for (const msg of incoming) {
+            const existing = byId.get(msg.id);
+            if (!existing) {
+              byId.set(msg.id, msg);
+              changed = true;
+            } else {
+              const merged = { ...existing, ...msg };
+              // Cheap identity check — avoids a re-render when a refetch
+              // returns byte-identical rows, which is the common case.
+              for (const k of Object.keys(merged) as (keyof Message)[]) {
+                if (merged[k] !== existing[k]) {
+                  byId.set(msg.id, merged);
+                  changed = true;
+                  break;
+                }
+              }
+            }
+          }
+          return changed ? { messages: [...byId.values()] } : state;
+        }),
 
       appendMessage: (msg) =>
         set((state) => {

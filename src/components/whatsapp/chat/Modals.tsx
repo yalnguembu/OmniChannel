@@ -5,7 +5,6 @@ import { toast } from "sonner";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/shadcn/dialog";
@@ -19,79 +18,7 @@ import {
   type SendFlowForm,
   type BulkSendForm,
 } from "@/models/whatsapp.models";
-import type { Conversation, Message } from "@/models/whatsapp.models";
-
-// ─── Conversation Details Modal ───────────────────────────────────────────────
-
-interface ConvDetailsModalProps {
-  open: boolean;
-  conv: Conversation | null;
-  onClose: () => void;
-  /** Whether a CRM contact already exists for this conversation's number. */
-  hasContact?: boolean;
-  contactLoading?: boolean;
-  onManageContact?: () => void;
-}
-
-export const ConvDetailsModal: React.FC<ConvDetailsModalProps> = ({
-  open,
-  conv,
-  onClose,
-  hasContact,
-  contactLoading,
-  onManageContact,
-}) => (
-  <Dialog open={open} onOpenChange={(v) => !v && onClose()}>
-    <DialogContent className="max-w-md">
-      <DialogHeader>
-        <DialogTitle>Détails de la conversation</DialogTitle>
-      </DialogHeader>
-      {conv && (
-        <div className="space-y-3 text-sm">
-          {[
-            ["ID", conv.id],
-            ["Contact", conv.contactAddress],
-            ["Statut Conversation", conv.status],
-            ["Canal", `${conv.channelName || ""} (${conv.channelCode || ""})`],
-            [
-              "Expéditeur",
-              `${conv.senderName || ""} (${conv.senderAddress || ""})`,
-            ],
-            ["Créée le", fmtTimeFull(conv.createdAt || conv.lastMessageAt)],
-            [
-              "Assigné à",
-              conv.assignedToUserFirstName
-                ? `${conv.assignedToUserFirstName} ${conv.assignedToUserLastName || ""}`.trim()
-                : "Non assigné",
-            ],
-          ].map(([label, value]) => (
-            <div key={label} className="flex gap-2">
-              <span className="font-semibold text-[#111B21] min-w-[120px]">
-                {label}
-              </span>
-              <span className="text-[#667781] break-all">{value || "N/A"}</span>
-            </div>
-          ))}
-        </div>
-      )}
-      {onManageContact && (
-        <div className="pt-2">
-          <Button
-            disabled={contactLoading}
-            onClick={onManageContact}
-            className="w-full bg-[#25D366] hover:bg-[#20BD5B] text-white"
-          >
-            {contactLoading
-              ? "Chargement…"
-              : hasContact
-                ? "Éditer le contact"
-                : "Ajouter aux contacts"}
-          </Button>
-        </div>
-      )}
-    </DialogContent>
-  </Dialog>
-);
+import type { Message } from "@/models/whatsapp.models";
 
 // ─── Message Details Modal ────────────────────────────────────────────────────
 

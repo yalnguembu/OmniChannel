@@ -15,6 +15,7 @@ import type {
 import { useWhatsAppStore } from "@/store/useWhatsappStore";
 import {
   getApiConversationSearch,
+  getApiConversationDetailById,
   getApiConversationStats,
   getApiConversationMessageSearch,
   putApiConversationStatus,
@@ -38,6 +39,12 @@ export interface ConversationSearchParams {
   status?: ConversationStatus;
   unreadOnly?: boolean;
   searchTerm?: string;
+  /** Restrict to one WhatsApp sender (the `/wa/$senderId` route). */
+  senderId?: string;
+  /** Assigned agent id — `assignedToUser` (a uuid) on the backend. */
+  assignedToUser?: string;
+  /** INBOUND — waiting on us; OUTBOUND — we spoke last. */
+  lastMessageDirection?: string;
 }
 export interface SendTextPayload {
   to: string;
@@ -48,11 +55,15 @@ export interface SendReplyPayload {
   body: string;
   replyToExternalMessageId: string;
 }
-export interface SendMediaPayload {
-  to: string;
-  type: "image" | "audio" | "document";
+/** One attachment queued in the media composer, with its own caption. */
+export interface PendingMedia {
   file: File;
   caption?: string;
+}
+export interface SendMediaPayload {
+  to: string;
+  /** Sent one after another so WhatsApp keeps the composer's order. */
+  items: PendingMedia[];
 }
 export interface SendFlowPayload {
   to: string;
@@ -65,6 +76,9 @@ export interface BulkSendPayload {
 
 const PAGE_SIZE = 60;
 
+/** Messages load in small pages and grow upwards as the user scrolls back. */
+export const MESSAGE_PAGE_SIZE = 30;
+
 // ─── Response helpers (hey-api result → envelope.data payload) ────────────────
 
 function listOf<T>(res: any): T[] {
@@ -75,12 +89,41 @@ function singleOf<T>(res: any): T | null {
   return (res?.data?.data ?? null) as T | null;
 }
 
+export interface PagedResult<T> {
+  items: T[];
+  hasNextPage: boolean;
+  totalCount: number;
+}
+
+/**
+ * Same envelope as `listOf`, but keeps the paging metadata the infinite
+ * queries need. Falls back to a page-size comparison when the backend omits
+ * `hasNextPage` (a bare array payload is by definition the whole result).
+ */
+function pagedOf<T>(res: any, pageSize: number): PagedResult<T> {
+  const payload = res?.data?.data;
+  if (Array.isArray(payload)) {
+    return { items: payload as T[], hasNextPage: false, totalCount: payload.length };
+  }
+  const items = (payload?.items ?? []) as T[];
+  const hasNextPage =
+    typeof payload?.hasNextPage === "boolean"
+      ? payload.hasNextPage
+      : items.length === pageSize;
+  return {
+    items,
+    hasNextPage,
+    totalCount: payload?.totalCount ?? items.length,
+  };
+}
+
 // ─── Query Keys ──────────────────────────────────────────────────────────────
 
 export const whatsappKeys = {
   all: ["whatsapp"] as const,
   conversations: (params: ConversationSearchParams) =>
     [...whatsappKeys.all, "conversations", params] as const,
+  conversation: (id: string) => [...whatsappKeys.all, "conversation", id] as const,
   messages: (convId: string) =>
     [...whatsappKeys.all, "messages", convId] as const,
   stats: () => [...whatsappKeys.all, "stats"] as const,
@@ -100,6 +143,9 @@ export function useConversations(params: ConversationSearchParams) {
           status: params.status,
           unreadOnly: params.unreadOnly,
           searchTerm: params.searchTerm,
+          senderId: params.senderId,
+          assignedToUser: params.assignedToUser,
+          lastMessageDirection: params.lastMessageDirection,
         },
       });
       return { items: listOf<Conversation>(res) };
@@ -113,6 +159,26 @@ export function useConversations(params: ConversationSearchParams) {
     // stale from cache.
     staleTime: 0,
     refetchInterval: 60_000,
+  });
+}
+
+/**
+ * A single conversation, fetched by id.
+ *
+ * Needed when the inbox is opened straight on a conversation (a reload, or a
+ * shared `?c=` link): the sidebar only holds the first pages of a list that
+ * can run to tens of thousands of rows, so the open conversation is usually
+ * absent from it and the header would have nothing to render.
+ */
+export function useConversationDetail(convId: string | null, enabled: boolean) {
+  return useQuery({
+    queryKey: whatsappKeys.conversation(convId ?? ""),
+    queryFn: async () =>
+      singleOf<Conversation>(
+        await getApiConversationDetailById({ path: { id: convId! } }),
+      ),
+    enabled: !!convId && enabled,
+    staleTime: 60_000,
   });
 }
 
@@ -166,15 +232,32 @@ export function useAssignConversation() {
 
 // ─── Messages ────────────────────────────────────────────────────────────────
 
+/**
+ * Messages of one conversation, paged backwards in time.
+ *
+ * Page 1 is the most recent {@link MESSAGE_PAGE_SIZE} messages and each extra
+ * page reaches further into the past — that is the ordering the endpoint has
+ * always been used with (the previous single-shot call took page 1 with a
+ * large page size and showed it as "the conversation", which only holds if
+ * page 1 is the newest slice). Consumers sort ascending for display.
+ */
 export function useMessages(convId: string | null) {
-  return useQuery({
+  return useInfiniteQuery({
     queryKey: whatsappKeys.messages(convId ?? ""),
-    queryFn: async () =>
-      listOf<Message>(
+    queryFn: async ({ pageParam }) =>
+      pagedOf<Message>(
         await getApiConversationMessageSearch({
-          query: { id: convId!, pageNumber: 1, pageSize: 250 },
+          query: {
+            id: convId!,
+            pageNumber: pageParam as number,
+            pageSize: MESSAGE_PAGE_SIZE,
+          },
         }),
+        MESSAGE_PAGE_SIZE,
       ),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage, allPages) =>
+      lastPage.hasNextPage ? allPages.length + 1 : undefined,
     enabled: !!convId,
     staleTime: 60_000,
   });
@@ -223,29 +306,53 @@ export function useSendReply() {
   });
 }
 
+/**
+ * Sends every attachment in the composer, each as its own WhatsApp message
+ * carrying its own caption — the native behaviour when several pictures are
+ * picked at once. Uploads run one after another so the recipient sees them in
+ * the composer's order, and a single failure doesn't abort the rest.
+ */
 export function useSendMedia() {
   const qc = useQueryClient();
   const selectedSenderId = useWhatsAppStore((s) => s.selectedSenderId);
   return useMutation({
-    mutationFn: (payload: SendMediaPayload) => {
-      // Backend routes by sender (multi-tenant), so SenderId is required —
-      // omitting it is what produced the 400 Bad Request on uploads.
-      const body = {
-        To: payload.to,
-        File: payload.file,
-        Caption: payload.caption || undefined,
-        SenderId: selectedSenderId ?? undefined,
-      };
-      // Pick the endpoint from the real MIME type rather than the menu choice
-      // (the "Photos & vidéos" picker also yields videos / non-images).
-      const isImage = (payload.file.type || "").startsWith("image/");
-      return isImage
-        ? postApiWhatsAppSendImage({ body })
-        : postApiWhatsAppSendDocument({ body });
+    mutationFn: async (payload: SendMediaPayload) => {
+      let sent = 0;
+      const failed: string[] = [];
+      for (const item of payload.items) {
+        // Backend routes by sender (multi-tenant), so SenderId is required —
+        // omitting it is what produced the 400 Bad Request on uploads.
+        const body = {
+          To: payload.to,
+          File: item.file,
+          Caption: item.caption?.trim() || undefined,
+          SenderId: selectedSenderId ?? undefined,
+        };
+        // Pick the endpoint from the real MIME type rather than the menu
+        // choice (the "Photos & vidéos" picker also yields videos).
+        const isImage = (item.file.type || "").startsWith("image/");
+        try {
+          await (isImage
+            ? postApiWhatsAppSendImage({ body })
+            : postApiWhatsAppSendDocument({ body }));
+          sent += 1;
+        } catch {
+          failed.push(item.file.name);
+        }
+      }
+      return { sent, failed };
     },
-    onSuccess: () => {
+    onSuccess: ({ sent, failed }) => {
       qc.invalidateQueries({ queryKey: whatsappKeys.all });
-      toast.success("Fichier envoyé", { duration: 1500 });
+      if (failed.length === 0) {
+        toast.success(sent > 1 ? `${sent} fichiers envoyés` : "Fichier envoyé", {
+          duration: 1500,
+        });
+      } else if (sent > 0) {
+        toast.warning(`${sent} envoyé(s), échec : ${failed.join(", ")}`);
+      } else {
+        toast.error("Erreur lors de l'envoi du fichier");
+      }
     },
     onError: () => toast.error("Erreur lors de l'envoi du fichier"),
   });

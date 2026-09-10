@@ -1,0 +1,225 @@
+import React, { useMemo } from 'react';
+import { cn } from '@/lib/utils';
+
+/**
+ * Entity detection for message bodies: links, emails and phone numbers.
+ *
+ * Phone matching follows ITU-T **E.164**: an international number is `+`,
+ * a country code whose first digit is 1-9, and at most 15 digits in total.
+ * A regex alone cannot prove a number is dialable — Google's libphonenumber
+ * is the reference for that — so the pattern only proposes candidates and
+ * {@link isPhoneCandidate} applies the E.164 rules afterwards.
+ *
+ * The governing rule, and the one that matters in this inbox: **a bare run of
+ * digits is never a phone number.** It must carry a `+`, or be visibly
+ * grouped. Decoder ids, order references and FCFA amounts are long digit runs
+ * and must stay plain text.
+ */
+
+/** Digits only — separators are cosmetic in every notation below. */
+function digitsOf(raw: string): string {
+  return raw.replace(/\D/g, '');
+}
+
+/** `12-05-2024` and friends are dates, not numbers to dial. */
+const DATE_LIKE = /^\d{1,2}[ -]\d{1,2}[ -]\d{2,4}$|^\d{4}[ -]\d{1,2}[ -]\d{1,2}$/;
+
+type PhoneKind = 'intl' | 'intl00' | 'local';
+
+/**
+ * Applies the E.164 constraints a regex cannot express on its own.
+ *
+ * `00` is the national prefix for international dialling (E.123), not part of
+ * E.164, and `00` followed by a bare digit run is indistinguishable from a
+ * reference number — so that form is only accepted when visibly grouped.
+ */
+function isPhoneCandidate(raw: string, kind: PhoneKind): boolean {
+  const digits = digitsOf(raw);
+  const grouped = /[\s().-]/.test(raw);
+
+  if (kind === 'intl') {
+    // E.164: 15 digits max, country code never starts with 0.
+    return digits.length >= 8 && digits.length <= 15 && digits[0] !== '0';
+  }
+  if (kind === 'intl00') {
+    const body = digits.slice(2);
+    return grouped && body.length >= 8 && body.length <= 15 && body[0] !== '0';
+  }
+  // Grouped national notation, e.g. `6 52 56 56 06` or `695-457-335`.
+  return grouped && digits.length >= 8 && digits.length <= 13 && !DATE_LIKE.test(raw);
+}
+
+const PHONE_ALTERNATIVES = [
+  // E.164 with optional cosmetic separators.
+  String.raw`\+[\d\s().-]{7,22}\d`,
+  // International written with the 00 prefix.
+  String.raw`00[\d\s().-]{7,22}\d`,
+  // National, grouped: three or more groups of 2-4 digits. Dots are excluded
+  // on purpose — `10.500.000` is money.
+  String.raw`\d{2,4}(?:[ -]\d{2,4}){2,5}`,
+].join('|');
+
+const ENTITY_RE = new RegExp(
+  [
+    '(?<url>\\b(?:https?|ftp):\\/\\/[^\\s<>"\']+)',
+    '(?<www>\\bwww\\.[^\\s<>"\']+)',
+    '(?<email>\\b[\\w.!#$%&*+/=?^`{|}~-]+@[\\w-]+(?:\\.[\\w-]+)+\\b)',
+    // The leading char keeps the candidate from starting mid-run without
+    // needing a lookbehind (unsupported on older Safari); it is trimmed off
+    // the match below.
+    `(?<lead>^|[^\\\\d+])(?<phone>${PHONE_ALTERNATIVES})`,
+  ].join('|'),
+  'gi',
+);
+
+/**
+ * Punctuation that ends a sentence rather than belonging to the URL.
+ * `)` is handled separately: it is legitimate inside a URL
+ * (`…/Test_(page)`), so only an unbalanced one gets stripped.
+ */
+const TRAILING = /[.,;:!?»"'\]]+$/;
+
+interface Token {
+  kind: 'text' | 'url' | 'email' | 'phone';
+  text: string;
+  href?: string;
+}
+
+/** Drops sentence punctuation and unbalanced closing brackets from a URL. */
+function trimUrl(raw: string): string {
+  let url = raw.replace(TRAILING, '');
+  // A closing paren is part of the URL only if an opening one precedes it.
+  while (
+    url.endsWith(')') &&
+    (url.match(/\(/g)?.length ?? 0) < (url.match(/\)/g)?.length ?? 0)
+  ) {
+    url = url.slice(0, -1);
+  }
+  return url;
+}
+
+export function tokenizeRichText(text: string): Token[] {
+  const tokens: Token[] = [];
+  let cursor = 0;
+
+  for (const match of text.matchAll(ENTITY_RE)) {
+    const groups = match.groups ?? {};
+    // The phone alternative consumes one leading character for anchoring.
+    let start = (match.index ?? 0) + (groups.lead?.length ?? 0);
+    let raw = groups.phone ?? match[0];
+
+    let token: Token;
+    if (groups.url || groups.www) {
+      raw = trimUrl(raw);
+      if (!raw) continue;
+      token = {
+        kind: 'url',
+        text: raw,
+        href: groups.www ? `https://${raw}` : raw,
+      };
+    } else if (groups.email) {
+      token = { kind: 'email', text: raw, href: `mailto:${raw}` };
+    } else {
+      const kind: PhoneKind = raw.startsWith('+')
+        ? 'intl'
+        : raw.startsWith('00')
+          ? 'intl00'
+          : 'local';
+      if (!isPhoneCandidate(raw, kind)) continue;
+      token = { kind: 'phone', text: raw, href: `tel:${raw.replace(/[^\d+]/g, '')}` };
+    }
+
+    if (start > cursor) {
+      tokens.push({ kind: 'text', text: text.slice(cursor, start) });
+    }
+    tokens.push(token);
+    cursor = start + raw.length;
+  }
+
+  if (cursor < text.length) {
+    tokens.push({ kind: 'text', text: text.slice(cursor) });
+  }
+  return tokens;
+}
+
+/** First http(s) URL in `text`, normalised — used by the composer preview. */
+export function extractFirstUrl(text: string): string | null {
+  for (const token of tokenizeRichText(text)) {
+    if (token.kind === 'url' && token.href) return token.href;
+  }
+  return null;
+}
+
+// ─── Rendering ───────────────────────────────────────────────────────────────
+
+/** Wraps every occurrence of `term` in a <mark>, case-insensitively. */
+const Highlighted: React.FC<{ text: string; term?: string }> = ({ text, term }) => {
+  const needle = term?.trim() ?? '';
+  if (!needle) return <>{text}</>;
+
+  const parts: React.ReactNode[] = [];
+  const haystack = text.toLowerCase();
+  const lower = needle.toLowerCase();
+  let cursor = 0;
+  let key = 0;
+
+  for (;;) {
+    const at = haystack.indexOf(lower, cursor);
+    if (at === -1) {
+      parts.push(text.slice(cursor));
+      break;
+    }
+    if (at > cursor) parts.push(text.slice(cursor, at));
+    parts.push(
+      <mark key={key++} className="bg-[#fbe9a1] text-inherit rounded-[2px]">
+        {text.slice(at, at + needle.length)}
+      </mark>,
+    );
+    cursor = at + needle.length;
+  }
+  return <>{parts}</>;
+};
+
+interface RichTextProps {
+  text: string;
+  /** In-chat search term, highlighted inside plain text *and* link labels. */
+  highlight?: string;
+  className?: string;
+}
+
+/**
+ * Message body with links, emails and phone numbers turned into anchors, and
+ * the search term highlighted inside all of them.
+ */
+export const RichText: React.FC<RichTextProps> = ({ text, highlight, className }) => {
+  const tokens = useMemo(() => tokenizeRichText(text), [text]);
+
+  return (
+    <>
+      {tokens.map((token, i) => {
+        if (token.kind === 'text') {
+          return <Highlighted key={i} text={token.text} term={highlight} />;
+        }
+        return (
+          <a
+            key={i}
+            href={token.href}
+            target={token.kind === 'url' ? '_blank' : undefined}
+            rel={token.kind === 'url' ? 'noopener noreferrer' : undefined}
+            // The bubble has its own click handlers (lightbox, menus); a link
+            // press must not reach them.
+            onClick={(e) => e.stopPropagation()}
+            className={cn(
+              'text-[#027eb5] underline underline-offset-2 hover:brightness-110',
+              // Long URLs must break rather than widen the bubble.
+              token.kind === 'url' && 'break-all',
+              className,
+            )}
+          >
+            <Highlighted text={token.text} term={highlight} />
+          </a>
+        );
+      })}
+    </>
+  );
+};

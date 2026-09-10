@@ -5,6 +5,7 @@ import { ConversationItem } from "./ConversationItem";
 import { SidebarHeader } from "./SidebarHeader";
 import { StatsStrip } from "./StatsStrip";
 import { SearchBar } from "./SearchBar";
+import { ConversationFilters } from "./ConversationFilters";
 import { useSidebarViewModel } from "@/hooks/sidebarViewModel";
 import { useWhatsAppStore } from "@/store/useWhatsappStore";
 import type { Filter } from "@/models/whatsapp.models";
@@ -16,15 +17,20 @@ interface ConversationListProps {
 export const ConversationList: React.FC<ConversationListProps> = ({
   onTemplateBroadcast,
 }) => {
-  const { setActiveConversationId, setMobileChatOpen } = useWhatsAppStore();
+  const setActiveConversationId = useWhatsAppStore((s) => s.setActiveConversationId);
+  const setMobileChatOpen = useWhatsAppStore((s) => s.setMobileChatOpen);
   const {
     conversationVMs,
     statsVM,
     filter,
     search,
+    filters,
+    users,
     isLoading,
     handleFilterChange,
     handleSearchChange,
+    handleFiltersChange,
+    resetFilters,
     refetchConvs,
     fetchNextPage,
     hasNextPage,
@@ -116,7 +122,17 @@ export const ConversationList: React.FC<ConversationListProps> = ({
         onRefresh={refetchConvs}
         onTemplateBroadcast={onTemplateBroadcast}
       />
-      <SearchBar value={search} onChange={handleSearchChange} />
+      <div className="flex items-center gap-1 pr-3">
+        <div className="flex-1 min-w-0">
+          <SearchBar value={search} onChange={handleSearchChange} />
+        </div>
+        <ConversationFilters
+          filters={filters}
+          users={users}
+          onChange={handleFiltersChange}
+          onReset={resetFilters}
+        />
+      </div>
       <StatsStrip
         stats={statsVM}
         filter={filter as Filter}

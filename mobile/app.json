@@ -1,0 +1,44 @@
+{
+  "expo": {
+    "name": "OmniChannel WhatsApp",
+    "slug": "omnichannel-whatsapp",
+    "scheme": "omnichannel",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.graphicssystem.omnichannel.whatsapp"
+    },
+    "android": {
+      "package": "com.graphicssystem.omnichannel.whatsapp",
+      "adaptiveIcon": {
+        "backgroundColor": "#075E54",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "backgroundImage": "./assets/android-icon-background.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png"
+      },
+      "predictiveBackGestureEnabled": false
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "OmniChannel a besoin d'accéder à vos photos pour les envoyer dans une discussion WhatsApp.",
+          "cameraPermission": "OmniChannel a besoin de l'appareil photo pour envoyer une photo dans une discussion WhatsApp."
+        }
+      ],
+      "expo-video",
+      "expo-audio",
+      "expo-web-browser",
+      "expo-image",
+      "expo-font",
+      "expo-asset"
+    ]
+  }
+}

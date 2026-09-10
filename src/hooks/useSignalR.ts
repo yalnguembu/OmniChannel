@@ -22,12 +22,13 @@ interface HubConnection {
 
 export function useSignalR() {
   const connectionRef = useRef<HubConnection | null>(null);
-  const {
-    activeConversationId,
-    appendMessage,
-    updateMessage,
-    batchUpsertConversations,
-  } = useWhatsAppStore();
+  // Selectors, not the whole store: this hook runs inside WhatsAppPage, so a
+  // whole-store subscription re-rendered the page (and both panes under it) on
+  // every message that arrived.
+  const activeConversationId = useWhatsAppStore((s) => s.activeConversationId);
+  const appendMessage = useWhatsAppStore((s) => s.appendMessage);
+  const updateMessage = useWhatsAppStore((s) => s.updateMessage);
+  const batchUpsertConversations = useWhatsAppStore((s) => s.batchUpsertConversations);
 
   const activeIdRef = useRef(activeConversationId);
   activeIdRef.current = activeConversationId;

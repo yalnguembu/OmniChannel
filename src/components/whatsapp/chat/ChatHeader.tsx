@@ -13,18 +13,26 @@ import {
   UserCheck,
   UserCog,
   Phone,
+  Images,
+  RefreshCw,
+  MessageSquare,
+  ChevronDown,
 } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { AvatarInitials } from '../shared/AvatarInitials';
 import { IconButton } from '../shared/IconButton';
 import { cn, statusLabel } from '@/lib/utils';
+import { Dropdown, type DropdownOption } from '../shared/Dropdown';
+import { statusTone } from '../shared/statusTone';
 import type { ConversationStatus, User } from '@/models/whatsapp.models';
 
-interface ChatHeaderVM {
+export interface ChatHeaderVM {
   initials: string;
   avatarBg: string;
-  name: string;
-  sub: string;
+  /** Name carried by the conversation itself, when it isn't just the number. */
+  contactName: string | null;
+  phone: string;
+  assignedName: string | null;
   status: string;
   assignedToUserId: string;
   contactAddress: string;
@@ -32,12 +40,23 @@ interface ChatHeaderVM {
 
 interface ChatHeaderProps {
   vm: ChatHeaderVM;
+  /** CRM client resolved from the phone number — takes precedence for the title. */
+  clientName?: string | null;
+  /**
+   * Show the status/assignee chips inline (desktop). Turned off while the
+   * details drawer is open: the chat column is 400px narrower then, and the
+   * chips are what made the header overflow. They stay reachable in the ⋮ menu.
+   */
+  showInlineControls?: boolean;
   users: User[];
   chatSearch: string;
   onStatusChange: (status: ConversationStatus) => void;
   onAssign: (userId: string) => void;
   onToggleSearch: () => void;
   onShowDetails: () => void;
+  onOpenGallery: () => void;
+  onReload: () => void;
+  isReloading?: boolean;
   onBack: () => void;
   onSendFlow: () => void;
   onSendTemplate: () => void;
@@ -61,14 +80,95 @@ const statusConfig: Record<string, { label: string; icon: React.ReactNode; activ
 
 const STATUS_ORDER = ['OPEN', 'PENDING', 'RESOLVED', 'CLOSED'] as const;
 
+/**
+ * Icon-only header control: a round button opening a custom listbox.
+ *
+ * The header stays as narrow as a row of icon buttons; the current value lives
+ * in the tooltip and in the icon's tint. Uses {@link Dropdown} rather than a
+ * native <select>, which can't show icons or status colours in its options.
+ */
+const HeaderSelect: React.FC<{
+  label: string;
+  icon: React.ReactNode;
+  value: string;
+  /** Human-readable current value, shown in the tooltip. */
+  valueLabel?: string;
+  onChange: (v: string) => void;
+  options: DropdownOption[];
+  /** Tints the icon — used to surface the conversation status at a glance. */
+  tone?: string;
+  /** Background class for the corner dot; omitted when no status is known. */
+  dot?: string;
+}> = ({ label, icon, value, valueLabel, onChange, options, tone, dot }) => (
+  <Dropdown
+    label={label}
+    title={valueLabel ? `${label} : ${valueLabel}` : label}
+    value={value}
+    options={options}
+    onChange={onChange}
+    align="right"
+    className="shrink-0"
+    trigger={
+      <span
+        className={cn(
+          'relative flex size-9 items-center justify-center rounded-full',
+          'bg-wa-input-bg text-wa-icon transition-colors hover:bg-wa-hover',
+          tone,
+        )}
+      >
+        {icon}
+        {dot && (
+          <span
+            aria-hidden
+            className={cn(
+              'absolute -bottom-0.5 -right-0.5 size-2.5 rounded-full ring-2 ring-wa-header',
+              dot,
+            )}
+          />
+        )}
+      </span>
+    }
+  />
+);
+
+/** Full-width row variant of the same listbox, for the overflow menu. */
+const MenuDropdown: React.FC<{
+  label: string;
+  icon: React.ReactNode;
+  value: string;
+  display: string;
+  options: DropdownOption[];
+  onChange: (v: string) => void;
+}> = ({ label, icon, value, display, options, onChange }) => (
+  <Dropdown
+    label={label}
+    value={value}
+    options={options}
+    onChange={onChange}
+    menuClassName="w-full"
+    trigger={
+      <span className="flex w-full items-center gap-2 rounded-lg px-2 py-1.5 text-sm text-wa-text transition-colors hover:bg-wa-hover">
+        <span className="shrink-0 text-wa-icon">{icon}</span>
+        <span className="min-w-0 flex-1 truncate text-left">{display}</span>
+        <ChevronDown size={14} className="shrink-0 text-wa-icon" />
+      </span>
+    }
+  />
+);
+
 export const ChatHeader: React.FC<ChatHeaderProps> = ({
   vm,
+  clientName,
+  showInlineControls = true,
   users,
   chatSearch,
   onStatusChange,
   onAssign,
   onToggleSearch,
   onShowDetails,
+  onOpenGallery,
+  onReload,
+  isReloading = false,
   onBack,
   onSendFlow,
   onSendTemplate,
@@ -82,14 +182,52 @@ export const ChatHeader: React.FC<ChatHeaderProps> = ({
   const [showMenu, setShowMenu] = useState(false);
   const current = statusConfig[vm.status] ?? statusConfig['OPEN'];
 
-  // Match the (lowercased) client status to a backend status value for the <select>.
+  // Option lists, memoised so the menus do not rebuild on every header render
+  // (the assignee list can hold a hundred agents).
+  const statusOptions = React.useMemo<DropdownOption[]>(
+    () =>
+      STATUS_ORDER.map((s) => ({
+        value: s,
+        label: statusConfig[s].label,
+        icon: <span className={statusConfig[s].activeClass}>{statusConfig[s].icon}</span>,
+      })),
+    [],
+  );
+  const assigneeOptions = React.useMemo<DropdownOption[]>(
+    () => [
+      { value: '', label: 'Non assigné' },
+      ...users.map((u) => ({
+        value: u.id,
+        label: `${u.firstName ?? ''} ${u.lastName ?? ''}`.trim() || u.email || u.id,
+      })),
+    ],
+    [users],
+  );
+  const clientStatusOptions = React.useMemo<DropdownOption[]>(
+    () => clientStatuses.map((s) => ({ value: s, label: statusLabel(s.toLowerCase()) })),
+    [clientStatuses],
+  );
+  const channelStatusOptions = React.useMemo<DropdownOption[]>(
+    () => channelStatuses.map((s) => ({ value: s, label: statusLabel(s.toLowerCase()) })),
+    [channelStatuses],
+  );
+
+  // Match the (lowercased) client status to one of the backend's status values.
   const clientStatusValue =
     clientStatuses.find(
       (s) => s.toLowerCase() === (currentClientStatus ?? '').toLowerCase(),
     ) ?? '';
 
+  const conversationTone = statusTone(vm.status === 'OPEN' ? 'active' : vm.status);
+  const clientTone = statusTone(currentClientStatus);
+
+  // The CRM client name wins, then any name the conversation carries, then the
+  // number. The number always stays visible on the second line.
+  const title = clientName?.trim() || vm.contactName || vm.phone || '—';
+  const showPhoneLine = !!vm.phone && vm.phone !== title;
+
   return (
-    <div className="bg-wa-header px-3 py-3 flex items-center gap-2.5 min-h-20 border-b border-wa-border shrink-0 relative">
+    <div className="bg-wa-header px-3 py-2.5 flex items-center gap-2.5 min-h-20 border-b border-wa-border shrink-0 relative">
       {/* Mobile back */}
       <IconButton label="Retour" className="md:hidden" onClick={onBack}>
         <ArrowLeft size={20} />
@@ -103,16 +241,100 @@ export const ChatHeader: React.FC<ChatHeaderProps> = ({
         onClick={onShowDetails}
       />
 
-      {/* Name + sub */}
+      {/* Name + number + assignee */}
       <div className="flex-1 min-w-0 cursor-pointer" onClick={onShowDetails}>
         <div className="lg:text-lg font-semibold text-wa-text truncate leading-snug">
-          {vm.name}
+          {title}
         </div>
-        <div className="text-xs text-wa-muted truncate leading-snug">{vm.sub}</div>
+        <div className="flex items-center gap-1.5 text-xs text-wa-muted leading-snug">
+          {showPhoneLine && <span className="truncate">{vm.phone}</span>}
+          {vm.assignedName && (
+            <>
+              {showPhoneLine && <span aria-hidden>·</span>}
+              <span className="inline-flex min-w-0 items-center gap-1 text-wa-teal">
+                <UserCheck size={12} className="shrink-0" />
+                <span className="truncate">{vm.assignedName}</span>
+              </span>
+            </>
+          )}
+        </div>
+      </div>
+
+      {/* ── Inline controls (desktop) ──
+          Everything the 3-dots menu offers, exposed directly on wide screens.
+          Below xl the menu remains the single entry point. */}
+      <div
+        className={cn(
+          'hidden items-center gap-1.5 min-w-0 shrink',
+          showInlineControls && 'md:flex',
+        )}
+      >
+        <HeaderSelect
+          label="Statut de la conversation"
+          icon={current.icon}
+          value={vm.status}
+          valueLabel={current.label}
+          onChange={(v) => onStatusChange(v as ConversationStatus)}
+          options={statusOptions}
+          tone={current.activeClass}
+          dot={conversationTone?.dot}
+        />
+
+        {users.length > 0 && (
+          <HeaderSelect
+            label="Assigné à"
+            icon={<UserCheck size={16} />}
+            value={vm.assignedToUserId}
+            valueLabel={vm.assignedName ?? 'Non assigné'}
+            onChange={onAssign}
+            options={assigneeOptions}
+            dot={vm.assignedToUserId ? 'bg-wa-teal' : undefined}
+          />
+        )}
+
+        {hasClient && clientStatusOptions.length > 0 && (
+          <HeaderSelect
+            label="Statut du client"
+            icon={<UserCog size={16} />}
+            value={clientStatusValue}
+            valueLabel={
+              clientStatusValue ? statusLabel(clientStatusValue.toLowerCase()) : 'Aucun'
+            }
+            onChange={(v) => v && onChangeClientStatus?.(v)}
+            options={clientStatusOptions}
+            tone={clientTone?.text}
+            dot={clientTone?.dot}
+          />
+        )}
+
+        {channelStatusOptions.length > 0 && (
+          // Write-only: the API exposes no read for a contact-channel status,
+          // so the control applies a new one rather than reflecting the current.
+          <HeaderSelect
+            label="Statut du numéro"
+            icon={<Phone size={16} />}
+            value=""
+            valueLabel="non lisible via l'API — cliquer pour en appliquer un"
+            onChange={(v) => v && onChangeChannelStatus?.(v)}
+            options={channelStatusOptions}
+          />
+        )}
       </div>
 
       {/* Right actions */}
-      <div className="flex items-center gap-0.5">
+      <div className="flex items-center gap-0.5 shrink-0">
+        <IconButton label="Médias et documents" onClick={onOpenGallery}>
+          <Images size={20} />
+        </IconButton>
+
+        <IconButton
+          label="Recharger les messages"
+          onClick={onReload}
+          disabled={isReloading}
+        >
+          <RefreshCw size={20} className={cn(isReloading && 'animate-spin')} />
+        </IconButton>
+
         <IconButton label="Rechercher" onClick={onToggleSearch} active={!!chatSearch}>
           <Search size={20} />
         </IconButton>
@@ -130,10 +352,10 @@ export const ChatHeader: React.FC<ChatHeaderProps> = ({
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.94, y: -4 }}
                 transition={{ duration: 0.1 }}
-                className="absolute right-0 top-11 bg-white rounded-xl shadow-xl border border-wa-border py-1.5 z-50 min-w-[220px] overflow-hidden"
+                className="absolute right-0 top-11 bg-white rounded-xl shadow-xl border border-wa-border py-1.5 z-50 min-w-[220px] max-h-[70vh] overflow-y-auto"
               >
-                {/* ── Status section ── */}
-                <div className="px-4 pt-1 pb-1">
+                {/* ── Status section (mirrors the inline chips below xl) ── */}
+                <div className={cn('px-4 pt-1 pb-1', showInlineControls && 'md:hidden')}>
                   <p className="text-[10px] font-semibold uppercase tracking-widest text-wa-muted mb-1">
                     Statut de la conversation
                   </p>
@@ -157,104 +379,95 @@ export const ChatHeader: React.FC<ChatHeaderProps> = ({
                       </button>
                     );
                   })}
+                  <div className="h-px bg-wa-border -mx-1 my-1" />
                 </div>
-
-                <div className="h-px bg-wa-border mx-3 my-1" />
 
                 {/* ── Assign section ── */}
                 {users.length > 0 && (
-                  <>
-                    <div className="px-4 pt-1 pb-1">
-                      <p className="text-[10px] font-semibold uppercase tracking-widest text-wa-muted mb-1">
-                        Assigné à
-                      </p>
-                      <div className="flex items-center gap-2 px-2 py-1.5">
-                        <UserCheck size={15} className="text-wa-icon shrink-0" />
-                        <select
-                          value={vm.assignedToUserId}
-                          onChange={(e) => { onAssign(e.target.value); setShowMenu(false); }}
-                          className="flex-1 text-sm text-wa-text bg-transparent outline-none cursor-pointer"
-                        >
-                          <option value="">Non assigné</option>
-                          {users.map((u) => (
-                            <option key={u.id} value={u.id}>
-                              {u.firstName} {u.lastName}
-                            </option>
-                          ))}
-                        </select>
-                      </div>
-                    </div>
-                    <div className="h-px bg-wa-border mx-3 my-1" />
-                  </>
+                  <div className={cn('px-4 pt-1 pb-1', showInlineControls && 'md:hidden')}>
+                    <p className="text-[10px] font-semibold uppercase tracking-widest text-wa-muted mb-1">
+                      Assigné à
+                    </p>
+                    <MenuDropdown
+                      label="Assigné à"
+                      icon={<UserCheck size={15} />}
+                      value={vm.assignedToUserId}
+                      display={vm.assignedName ?? 'Non assigné'}
+                      options={assigneeOptions}
+                      onChange={(v) => { onAssign(v); setShowMenu(false); }}
+                    />
+                    <div className="h-px bg-wa-border -mx-1 my-1" />
+                  </div>
                 )}
 
                 {/* ── Client / number status ── */}
-                {(hasClient && clientStatuses.length > 0) ||
-                channelStatuses.length > 0 ? (
-                  <>
-                    <div className="px-4 pt-1 pb-1 space-y-1.5">
-                      {hasClient && clientStatuses.length > 0 && (
-                        <div>
-                          <p className="text-[10px] font-semibold uppercase tracking-widest text-wa-muted mb-1">
-                            Statut du client
-                          </p>
-                          <div className="flex items-center gap-2 px-2 py-1.5">
-                            <UserCog size={15} className="text-wa-icon shrink-0" />
-                            <select
-                              value={clientStatusValue}
-                              onChange={(e) => {
-                                if (e.target.value)
-                                  onChangeClientStatus?.(e.target.value);
-                                setShowMenu(false);
-                              }}
-                              className="flex-1 text-sm text-wa-text bg-transparent outline-none cursor-pointer"
-                            >
-                              <option value="" disabled>
-                                Choisir un statut…
-                              </option>
-                              {clientStatuses.map((s) => (
-                                <option key={s} value={s}>
-                                  {statusLabel(s.toLowerCase())}
-                                </option>
-                              ))}
-                            </select>
-                          </div>
-                        </div>
-                      )}
-                      {channelStatuses.length > 0 && (
-                        <div>
-                          <p className="text-[10px] font-semibold uppercase tracking-widest text-wa-muted mb-1">
-                            Statut du numéro
-                          </p>
-                          <div className="flex items-center gap-2 px-2 py-1.5">
-                            <Phone size={15} className="text-wa-icon shrink-0" />
-                            <select
-                              value=""
-                              onChange={(e) => {
-                                if (e.target.value)
-                                  onChangeChannelStatus?.(e.target.value);
-                                setShowMenu(false);
-                              }}
-                              className="flex-1 text-sm text-wa-text bg-transparent outline-none cursor-pointer"
-                            >
-                              <option value="" disabled>
-                                Changer le statut…
-                              </option>
-                              {channelStatuses.map((s) => (
-                                <option key={s} value={s}>
-                                  {statusLabel(s.toLowerCase())}
-                                </option>
-                              ))}
-                            </select>
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                    <div className="h-px bg-wa-border mx-3 my-1" />
-                  </>
-                ) : null}
+                {((hasClient && clientStatuses.length > 0) ||
+                  channelStatuses.length > 0) && (
+                  <div
+                    className={cn(
+                      'px-4 pt-1 pb-1 space-y-1.5',
+                      showInlineControls && 'md:hidden',
+                    )}
+                  >
+                    {hasClient && clientStatuses.length > 0 && (
+                      <div>
+                        <p className="text-[10px] font-semibold uppercase tracking-widest text-wa-muted mb-1">
+                          Statut du client
+                        </p>
+                        <MenuDropdown
+                          label="Statut du client"
+                          icon={<UserCog size={15} />}
+                          value={clientStatusValue}
+                          display={
+                            clientStatusValue
+                              ? statusLabel(clientStatusValue.toLowerCase())
+                              : 'Choisir un statut…'
+                          }
+                          options={clientStatusOptions}
+                          onChange={(v) => {
+                            if (v) onChangeClientStatus?.(v);
+                            setShowMenu(false);
+                          }}
+                        />
+                      </div>
+                    )}
+                    {channelStatuses.length > 0 && (
+                      <div>
+                        <p className="text-[10px] font-semibold uppercase tracking-widest text-wa-muted mb-1">
+                          Statut du numéro
+                        </p>
+                        <MenuDropdown
+                          label="Statut du numéro"
+                          icon={<Phone size={15} />}
+                          value=""
+                          display="Changer le statut…"
+                          options={channelStatusOptions}
+                          onChange={(v) => {
+                            if (v) onChangeChannelStatus?.(v);
+                            setShowMenu(false);
+                          }}
+                        />
+                      </div>
+                    )}
+                    <div className="h-px bg-wa-border -mx-1 my-1" />
+                  </div>
+                )}
 
                 {/* ── Other actions ── */}
+                <button
+                  className="flex items-center gap-2.5 w-full px-4 py-2.5 text-sm text-wa-text hover:bg-wa-hover transition-colors"
+                  onClick={() => { onOpenGallery(); setShowMenu(false); }}
+                >
+                  <Images size={15} className="text-wa-icon" />
+                  Médias et documents
+                </button>
+                <button
+                  className="flex items-center gap-2.5 w-full px-4 py-2.5 text-sm text-wa-text hover:bg-wa-hover transition-colors"
+                  onClick={() => { onReload(); setShowMenu(false); }}
+                >
+                  <RefreshCw size={15} className="text-wa-icon" />
+                  Recharger les messages
+                </button>
                 <button
                   className="flex items-center gap-2.5 w-full px-4 py-2.5 text-sm text-wa-text hover:bg-wa-hover transition-colors"
                   onClick={() => { onSendFlow(); setShowMenu(false); }}
@@ -276,6 +489,12 @@ export const ChatHeader: React.FC<ChatHeaderProps> = ({
                   <Info size={15} className="text-wa-icon" />
                   Détails de la conversation
                 </button>
+                {vm.assignedName && (
+                  <p className="flex items-center gap-2.5 px-4 py-2 text-xs text-wa-muted">
+                    <MessageSquare size={13} className="text-wa-icon" />
+                    Assignée à {vm.assignedName}
+                  </p>
+                )}
               </motion.div>
             )}
           </AnimatePresence>

@@ -1,5 +1,7 @@
 import React from 'react';
+import { ChevronDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { Dropdown } from './Dropdown';
 
 // ─── Unread Badge ─────────────────────────────────────────────────────────────
 
@@ -58,23 +60,29 @@ const pillClasses: Record<string, string> = {
   CLOSED:   'bg-wa-status-closed-bg   text-wa-status-closed',
 };
 
+const STATUS_OPTIONS = [
+  { value: 'OPEN', label: 'Ouverte' },
+  { value: 'PENDING', label: 'En attente' },
+  { value: 'RESOLVED', label: 'Résolue' },
+  { value: 'CLOSED', label: 'Fermée' },
+];
+
 export const StatusPill: React.FC<StatusPillProps> = ({ status, onChange }) => (
-  <select
+  <Dropdown
+    label="Statut de la conversation"
     value={status}
-    onChange={(e) => onChange(e.target.value)}
-    className={cn(
-      'px-3 py-1 rounded-2xl text-xs font-semibold border-none outline-none cursor-pointer appearance-none pr-5 transition-all',
-      pillClasses[status] ?? 'bg-wa-status-closed-bg text-wa-status-closed'
-    )}
-    style={{
-      backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='3'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E")`,
-      backgroundRepeat: 'no-repeat',
-      backgroundPosition: 'right 4px center',
-    }}
-  >
-    <option value="OPEN">Ouverte</option>
-    <option value="PENDING">En attente</option>
-    <option value="RESOLVED">Résolue</option>
-    <option value="CLOSED">Fermée</option>
-  </select>
+    options={STATUS_OPTIONS}
+    onChange={onChange}
+    trigger={
+      <span
+        className={cn(
+          'flex items-center gap-1 rounded-2xl px-3 py-1 text-xs font-semibold transition-all',
+          pillClasses[status] ?? 'bg-wa-status-closed-bg text-wa-status-closed',
+        )}
+      >
+        {STATUS_OPTIONS.find((o) => o.value === status)?.label ?? 'Fermée'}
+        <ChevronDown size={12} />
+      </span>
+    }
+  />
 );

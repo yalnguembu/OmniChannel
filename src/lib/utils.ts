@@ -73,6 +73,7 @@ export function statusLabel(status: string): string {
     scheduled: "Planifié",
     failed: "Échoué",
     pending: "En attente",
+    opted_out: "Désinscrit",
     delivered: "Livré",
     opened: "Ouvert",
     paid: "Payée",

@@ -9,12 +9,14 @@ import { MessageInput } from "./MessageInput";
 import { MediaPreview } from "./MediaPreview";
 import { ChatPlaceholder } from "./ChatPlaceholder";
 import { LightboxModal } from "./LightboxModal";
-import { ConvDetailsModal, MsgDetailsModal, FlowModal } from "./Modals";
+import { MsgDetailsModal, FlowModal } from "./Modals";
+import { ConversationDetailsPanel } from "./ConversationDetailsPanel";
+import type { DetailsView } from "./ConversationDetailsPanel";
 import { TemplateBroadcastModal } from "./TemplateBroadcastModal";
 import { useChatViewModel } from "@/hooks/chatViewModel";
 import type { MessageViewModel } from "@/hooks/chatViewModel";
 import { useWhatsAppStore } from "@/store/useWhatsappStore";
-import { useSendFlow } from "@/hooks/useWhatsapp";
+import { useSendFlow, type PendingMedia } from "@/hooks/useWhatsapp";
 import {
   useContactChannelStatuses,
   useChangeContactChannelStatus,
@@ -25,18 +27,39 @@ import {
   postApiClientSearchQueryKey,
 } from "@/shared/api/generated/@tanstack/react-query.gen";
 import { useWhatsappContactViewModel } from "@/hooks/useWhatsappContactViewModel";
-import { ContactModal } from "@/components/features/contacts/ContactModal";
 import type { ClientModel } from "@/models/client.model";
 
 export const ChatArea: React.FC = () => {
-  const { activeConversationId, users } = useWhatsAppStore();
+  // Narrow selectors — a whole-store subscription here re-rendered the chat on
+  // every SignalR conversation push.
+  const activeConversationId = useWhatsAppStore((s) => s.activeConversationId);
+  const users = useWhatsAppStore((s) => s.users);
   const {
     activeConv,
     chatHeaderVM,
+    convLoading,
     messageVMs,
     msgsLoading,
+    hasOlder,
+    isLoadingOlder,
+    loadOlder,
+    refetchMessages,
+    isRefetchingMessages,
     chatSearch,
     setChatSearch,
+    matchCount,
+    activeMatchPosition,
+    activeMatchId,
+    canGoOlder,
+    canGoNewer,
+    goToPrevMatch,
+    goToNextMatch,
+    isSearchingOlder,
+    scrollTargetId,
+    clearScrollTarget,
+    jumpToDate,
+    isJumpingToDate,
+    galleryItems,
     replyTo,
     setReplyTo,
     inputRef,
@@ -59,18 +82,20 @@ export const ChatArea: React.FC = () => {
     src: string;
     caption?: string;
   }>({ open: false, type: null, src: "" });
-  const [convDetailsOpen, setConvDetailsOpen] = useState(false);
+  // The contact-info drawer and the media gallery are one surface with two
+  // screens, like WhatsApp — null means closed.
+  const [detailsView, setDetailsView] = useState<DetailsView | null>(null);
   const [msgDetailsId, setMsgDetailsId] = useState<string | null>(null);
   const [flowOpen, setFlowOpen] = useState(false);
   const [templateOpen, setTemplateOpen] = useState(false);
-  const [contactOpen, setContactOpen] = useState(false);
   // Contact being edited, snapshotted at open time so a background refetch of
   // the phone→client resolution can't mutate the form under the user.
   const [editingContact, setEditingContact] = useState<{
     client: ClientModel | null;
     productId?: string;
   }>({ client: null });
-  const [pendingMedia, setPendingMedia] = useState<File | null>(null);
+  // The whole picked selection — the composer sends one message per file.
+  const [pendingFiles, setPendingFiles] = useState<File[] | null>(null);
 
   // CRM contact tied to this conversation's phone (add / edit directly here).
   const contactVm = useWhatsappContactViewModel(activeConv?.contactAddress);
@@ -130,23 +155,31 @@ export const ChatArea: React.FC = () => {
   );
 
   const handleConfirmMedia = useCallback(
-    async (caption: string) => {
-      if (!pendingMedia) return;
-      const mime = pendingMedia.type || "";
-      const type: "image" | "audio" | "document" = mime.startsWith("audio/")
-        ? "audio"
-        : mime.startsWith("image/") || mime.startsWith("video/")
-          ? "image"
-          : "document";
+    async (items: PendingMedia[]) => {
+      if (items.length === 0) return;
       try {
-        await handleSendMedia(pendingMedia, type, caption);
-        setPendingMedia(null);
+        await handleSendMedia(items);
+        setPendingFiles(null);
       } catch {
         // The mutation already surfaced a toast on error — keep the composer
         // open so the user can retry or cancel.
       }
     },
-    [pendingMedia, handleSendMedia]
+    [handleSendMedia]
+  );
+
+  // The CRM client's name is what the header shows first; the number stays
+  // on the second line.
+  const clientName = React.useMemo(() => {
+    const name = `${existingFirst ?? ""} ${existingLast ?? ""}`.trim();
+    return name || null;
+  }, [existingFirst, existingLast]);
+
+  const handleOpenMedia = useCallback(
+    (type: "image" | "video", src: string, caption?: string) => {
+      setLightbox({ open: true, type, src, caption });
+    },
+    [],
   );
 
   const sendFlow = useSendFlow();
@@ -190,179 +223,251 @@ export const ChatArea: React.FC = () => {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key !== "Escape") return;
-      if (lightbox.open || convDetailsOpen || msgDetailsId || flowOpen || templateOpen || contactOpen || searchVisible) {
+      if (
+        lightbox.open || detailsView || msgDetailsId || flowOpen ||
+        templateOpen || searchVisible
+      ) {
         return;
       }
-      if (pendingMedia) {
-        setPendingMedia(null);
+      if (pendingFiles) {
+        setPendingFiles(null);
         return;
       }
       handleBack();
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [lightbox.open, convDetailsOpen, msgDetailsId, flowOpen, templateOpen, contactOpen, searchVisible, pendingMedia, handleBack]);
+  }, [lightbox.open, detailsView, msgDetailsId, flowOpen, templateOpen, searchVisible, pendingFiles, handleBack]);
 
   if (!activeConversationId) {
     return <ChatPlaceholder />;
   }
 
   return (
-    <div
-      className="flex-1 flex flex-col overflow-hidden"
-      style={{
-        backgroundColor: "rgba(234, 230, 223, 0.3)",
-        backgroundImage:
-          'url("https://static.whatsapp.net/rsrc.php/yx/r/voSdkk88H7C.svg")',
-        backgroundBlendMode: "overlay",
-        backgroundSize: "70%",
-      }}
-    >
-      <motion.div
-        className="flex-1 flex flex-col overflow-hidden relative"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.15 }}
-        style={{ backgroundColor: "rgba(234, 230, 223, 0.95)" }}
-      >
-        {chatHeaderVM && (
-          <ChatHeader
-            vm={chatHeaderVM}
-            users={users}
-            chatSearch={chatSearch}
-            onStatusChange={handleStatusChange}
-            onAssign={handleAssign}
-            onToggleSearch={handleToggleSearch}
-            onShowDetails={() => setConvDetailsOpen(true)}
-            onBack={handleBack}
-            onSendFlow={() => setFlowOpen(true)}
-            onSendTemplate={() => setTemplateOpen(true)}
-            hasClient={contactVm.hasContact}
-            clientStatuses={clientStatusesQ.data ?? []}
-            currentClientStatus={contactVm.existing?.status}
-            onChangeClientStatus={handleChangeClientStatus}
-            channelStatuses={channelStatuses}
-            onChangeChannelStatus={handleChangeChannelStatus}
-          />
-        )}
-
-        <ChatSearchBar
-          visible={searchVisible}
-          value={chatSearch}
-          onChange={setChatSearch}
-          onClose={() => {
-            setSearchVisible(false);
-            setChatSearch("");
+    <div className="flex-1 flex min-w-0 overflow-hidden">
+      {/* Conversation column — shrinks when the details drawer opens */}
+      <div className="flex-1 min-w-0 flex flex-col overflow-hidden relative bg-[#efeae2]">
+        {/* WhatsApp doodle wallpaper — its own faded layer instead of a blend
+            mode, which the (previously opaque) content layer painted over. If
+            the remote tile fails to load, the #efeae2 base is exactly what
+            WhatsApp falls back to. */}
+        <div
+          aria-hidden
+          className="absolute inset-0 pointer-events-none opacity-[0.06]"
+          style={{
+            backgroundImage:
+              'url("https://static.whatsapp.net/rsrc.php/yx/r/voSdkk88H7C.svg")',
+            backgroundRepeat: "repeat",
+            backgroundSize: "412.5px 749.25px",
           }}
         />
+        <motion.div
+          className="flex-1 flex flex-col overflow-hidden relative z-[1]"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.15 }}
+        >
+          {/* On a reload the conversation is fetched by id, so the header would
+              otherwise blink out entirely until it lands. */}
+          {!chatHeaderVM && (convLoading || !activeConv) && (
+            <div className="flex min-h-20 shrink-0 items-center gap-2.5 border-b border-wa-border bg-wa-header px-3 py-2.5">
+              <div className="size-12 animate-pulse rounded-full bg-wa-input-bg" />
+              <div className="flex-1 space-y-2">
+                <div className="h-3.5 w-40 animate-pulse rounded bg-wa-input-bg" />
+                <div className="h-2.5 w-28 animate-pulse rounded bg-wa-input-bg" />
+              </div>
+            </div>
+          )}
 
-        <MessagesList
-          vms={messageVMs}
-          isLoading={msgsLoading}
-          onReply={handleReplyMessage}
-          onInfo={handleInfoMessage}
-          onImageClick={handleImageClick}
-        />
+          {chatHeaderVM && (
+            <ChatHeader
+              vm={chatHeaderVM}
+              clientName={clientName}
+              showInlineControls={detailsView === null}
+              users={users}
+              chatSearch={chatSearch}
+              onStatusChange={handleStatusChange}
+              onAssign={handleAssign}
+              onToggleSearch={handleToggleSearch}
+              onShowDetails={() => setDetailsView("info")}
+              onOpenGallery={() => setDetailsView("gallery")}
+              onReload={() => refetchMessages()}
+              isReloading={isRefetchingMessages}
+              onBack={handleBack}
+              onSendFlow={() => setFlowOpen(true)}
+              onSendTemplate={() => setTemplateOpen(true)}
+              hasClient={contactVm.hasContact}
+              clientStatuses={clientStatusesQ.data ?? []}
+              currentClientStatus={contactVm.existing?.status}
+              onChangeClientStatus={handleChangeClientStatus}
+              channelStatuses={channelStatuses}
+              onChangeChannelStatus={handleChangeChannelStatus}
+            />
+          )}
 
-        <MessageInput
-          replyTo={replyTo}
-          onCancelReply={() => setReplyTo(null)}
-          onSend={handleSendMessage}
-          onPickMedia={setPendingMedia}
-          onOpenFlow={() => setFlowOpen(true)}
-          onOpenTemplate={() => setTemplateOpen(true)}
-          disabled={sessionWindowClosed}
-          isSending={isSending}
-          inputRef={inputRef}
-        />
-
-        {/* Media composer — WhatsApp-style preview + caption before sending */}
-        {pendingMedia && (
-          <MediaPreview
-            file={pendingMedia}
-            onSend={handleConfirmMedia}
-            onCancel={() => setPendingMedia(null)}
-            isSending={isSendingMedia}
+          <ChatSearchBar
+            visible={searchVisible}
+            value={chatSearch}
+            onChange={setChatSearch}
+            onClose={() => {
+              setSearchVisible(false);
+              setChatSearch("");
+            }}
+            matchCount={matchCount}
+            activePosition={activeMatchPosition}
+            canGoOlder={canGoOlder}
+            canGoNewer={canGoNewer}
+            onPrevMatch={goToPrevMatch}
+            onNextMatch={goToNextMatch}
+            isSearchingOlder={isSearchingOlder}
+            onJumpToDate={jumpToDate}
+            isJumpingToDate={isJumpingToDate}
           />
-        )}
 
-        {/* Modals */}
-        <LightboxModal
-          open={lightbox.open}
-          type={lightbox.type}
-          src={lightbox.src}
-          caption={lightbox.caption}
-          onClose={() => setLightbox({ open: false, type: null, src: "" })}
-        />
-
-        <ConvDetailsModal
-          open={convDetailsOpen}
-          conv={activeConv}
-          onClose={() => setConvDetailsOpen(false)}
-          hasContact={contactVm.hasContact}
-          contactLoading={contactVm.isLoading}
-          onManageContact={() => {
-            // Freeze the resolved contact (and its product) at open time.
-            setEditingContact({
-              client: contactVm.existing,
-              productId: contactVm.existingProductId,
-            });
-            setConvDetailsOpen(false);
-            setContactOpen(true);
-          }}
-        />
-
-        {contactOpen && (
-        <ContactModal
-          open={contactOpen}
-          onClose={() => setContactOpen(false)}
-          editing={editingContact.client}
-          productId={editingContact.client ? editingContact.productId : undefined}
-          products={editingContact.client ? undefined : contactVm.products}
-          hideCustomAttributes={!!editingContact.client}
-          prefill={
-            editingContact.client
-              ? undefined
-              : {
-                  phone: activeConv?.contactAddress ?? "",
-                  firstName:
-                    activeConv?.contactName &&
-                    activeConv.contactName !== activeConv.contactAddress
-                      ? activeConv.contactName
-                      : "",
-                }
-          }
-          loading={contactVm.isSaving}
-          onSubmit={async (body) => {
-            const ok = await contactVm.save(body);
-            if (ok) setContactOpen(false);
-          }}
-        />
-        )}
-
-        <MsgDetailsModal
-          open={!!msgDetailsId}
-          msg={msgDetailsId ? (getMessageDetails(msgDetailsId) ?? null) : null}
-          onClose={() => setMsgDetailsId(null)}
-        />
-
-        <FlowModal
-          open={flowOpen}
-          contactAddress={activeConv?.contactAddress ?? ""}
-          onClose={() => setFlowOpen(false)}
-          onSubmit={handleFlowSubmit}
-          isSending={sendFlow.isPending}
-        />
-
-        {templateOpen && (
-          <TemplateBroadcastModal
-            open={templateOpen}
-            onClose={() => setTemplateOpen(false)}
-            defaultMode="client"
-            defaultClient={templateDefaultClient}
+          <MessagesList
+            conversationId={activeConversationId}
+            vms={messageVMs}
+            isLoading={msgsLoading}
+            hasOlder={hasOlder}
+            isLoadingOlder={isLoadingOlder}
+            onLoadOlder={loadOlder}
+            highlightTerm={chatSearch}
+            activeMatchId={activeMatchId}
+            scrollTargetId={scrollTargetId}
+            onScrollTargetConsumed={clearScrollTarget}
+            onReply={handleReplyMessage}
+            onInfo={handleInfoMessage}
+            onImageClick={handleImageClick}
           />
-        )}
-      </motion.div>
+
+          <MessageInput
+            replyTo={replyTo}
+            onCancelReply={() => setReplyTo(null)}
+            onSend={handleSendMessage}
+            onPickMedia={setPendingFiles}
+            onOpenFlow={() => setFlowOpen(true)}
+            onOpenTemplate={() => setTemplateOpen(true)}
+            disabled={sessionWindowClosed}
+            isSending={isSending}
+            inputRef={inputRef}
+          />
+
+          {/* Media composer — WhatsApp-style preview, one caption per file */}
+          {pendingFiles && pendingFiles.length > 0 && (
+            <MediaPreview
+              files={pendingFiles}
+              onSend={handleConfirmMedia}
+              onCancel={() => setPendingFiles(null)}
+              isSending={isSendingMedia}
+            />
+          )}
+
+          {/* Modals */}
+          <LightboxModal
+            open={lightbox.open}
+            type={lightbox.type}
+            src={lightbox.src}
+            caption={lightbox.caption}
+            onClose={() => setLightbox({ open: false, type: null, src: "" })}
+          />
+
+
+          <MsgDetailsModal
+            open={!!msgDetailsId}
+            msg={msgDetailsId ? (getMessageDetails(msgDetailsId) ?? null) : null}
+            onClose={() => setMsgDetailsId(null)}
+          />
+
+          <FlowModal
+            open={flowOpen}
+            contactAddress={activeConv?.contactAddress ?? ""}
+            onClose={() => setFlowOpen(false)}
+            onSubmit={handleFlowSubmit}
+            isSending={sendFlow.isPending}
+          />
+
+          {templateOpen && (
+            <TemplateBroadcastModal
+              open={templateOpen}
+              onClose={() => setTemplateOpen(false)}
+              defaultMode="client"
+              defaultClient={templateDefaultClient}
+            />
+          )}
+        </motion.div>
+      </div>
+
+      {/* Contact info — docked drawer on desktop, bottom sheet on mobile.
+          A sibling of the conversation column, so opening it narrows the chat
+          the way WhatsApp Web and Telegram do instead of covering it. */}
+      <ConversationDetailsPanel
+        view={detailsView}
+        onViewChange={setDetailsView}
+        onClose={() => setDetailsView(null)}
+        conv={activeConv}
+        clientName={clientName}
+        client={contactVm.existingRaw}
+        hasContact={contactVm.hasContact}
+        contactLoading={contactVm.isLoading}
+        onSearch={() => {
+          // Those are dialogs (z-50) and the mobile sheet sits above them, so
+          // the panel hands over instead of stacking.
+          setDetailsView(null);
+          setSearchVisible(true);
+        }}
+        onSendTemplate={() => {
+          setDetailsView(null);
+          setTemplateOpen(true);
+        }}
+        onSendFlow={() => {
+          setDetailsView(null);
+          setFlowOpen(true);
+        }}
+        users={users}
+        onStatusChange={handleStatusChange}
+        onAssign={handleAssign}
+        clientStatuses={clientStatusesQ.data ?? []}
+        currentClientStatus={contactVm.existing?.status}
+        onChangeClientStatus={handleChangeClientStatus}
+        channelStatuses={channelStatuses}
+        onChangeChannelStatus={handleChangeChannelStatus}
+        galleryItems={galleryItems}
+        hasOlder={hasOlder}
+        isLoadingOlder={isLoadingOlder}
+        onLoadOlder={loadOlder}
+        onOpenMedia={handleOpenMedia}
+        onManageContact={() => {
+          // Freeze the resolved contact (and its product) at open time, so a
+          // background refetch can't swap the form's subject mid-edit.
+          setEditingContact({
+            client: contactVm.existing,
+            productId: contactVm.existingProductId,
+          });
+          setDetailsView("contact");
+        }}
+        editingContact={editingContact.client}
+        editingProductId={
+          editingContact.client ? editingContact.productId : undefined
+        }
+        contactProducts={editingContact.client ? undefined : contactVm.products}
+        contactPrefill={
+          editingContact.client
+            ? undefined
+            : {
+                phone: activeConv?.contactAddress ?? "",
+                firstName:
+                  activeConv?.contactName &&
+                  activeConv.contactName !== activeConv.contactAddress
+                    ? activeConv.contactName
+                    : "",
+              }
+        }
+        isSavingContact={contactVm.isSaving}
+        onSaveContact={async (body) => {
+          const ok = await contactVm.save(body);
+          if (ok) setDetailsView("info");
+        }}
+      />
     </div>
   );
 };
