@@ -23,6 +23,7 @@ import {
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { SidePanel } from '../shared/SidePanel';
+import { ReaboSubscriptionSection } from '@/components/reabo/ReaboSubscriptionSection';
 import { Dropdown, type DropdownOption } from '../shared/Dropdown';
 import { MediaGalleryView } from './MediaGalleryView';
 import { ContactEditView } from './ContactEditView';
@@ -467,6 +468,12 @@ export const ConversationDetailsPanel: React.FC<ConversationDetailsPanelProps> =
               />
             )}
           </div>
+
+          <Band />
+
+          {/* Reabo — mounted with the panel, so nothing is fetched while the
+              agent is only reading the conversation. */}
+          <ReaboSubscriptionSection phone={conv?.contactAddress} />
 
           <Band />
 

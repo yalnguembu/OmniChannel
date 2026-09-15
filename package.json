@@ -5,17 +5,19 @@
   "type": "module",
   "scripts": {
     "dev": "vite --host",
-    "prebuild": "pnpm generate:api && pnpm generate:route",
+    "prebuild": "pnpm generate:api && pnpm generate:reabo && pnpm generate:route",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "generate:route": "tsr generate",
     "preview": "vite preview",
-    "generate:api": "npx @hey-api/openapi-ts"
+    "generate:api": "npx @hey-api/openapi-ts",
+    "generate:reabo": "npx @hey-api/openapi-ts -f openapi-ts.reabo.config.ts"
   },
   "dependencies": {
     "@fontsource-variable/geist": "^5.2.9",
     "@hookform/resolvers": "^3.9.0",
     "@microsoft/signalr": "^10.0.0",
+    "@react-pdf/renderer": "^4.9.0",
     "@tanstack/react-query": "^5.56.2",
     "@tanstack/react-router": "^1.58.2",
     "@tanstack/react-virtual": "^3.14.3",

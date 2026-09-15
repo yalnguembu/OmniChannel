@@ -23,7 +23,7 @@ import {
   SendMessageFormSchema,
   type SendMessageForm,
 } from "@/models/whatsapp.models";
-import type { ReplyTo } from "@/store/useWhatsappStore";
+import { useWhatsAppStore, type ReplyTo } from "@/store/useWhatsappStore";
 import { toast } from "sonner";
 import { useSpeechToText } from "@/hooks/useSpeechToText";
 import { extractFirstUrl } from "../shared/RichText";
@@ -238,6 +238,27 @@ export const MessageInput: React.FC<MessageInputProps> = ({
         Math.min(inputRef.current.scrollHeight, 120) + "px";
     }
   };
+
+  // ── Suggested messages ──
+  // A Reabo operation proposes the text to send back to the customer. It lands
+  // in the composer rather than being sent: the agent reads it, edits it if the
+  // conversation calls for it, and presses send. Consumed once, then cleared —
+  // a draft that stayed in the store would reappear on the next render.
+  const composerDraft = useWhatsAppStore((s) => s.composerDraft);
+  const setComposerDraft = useWhatsAppStore((s) => s.setComposerDraft);
+
+  useEffect(() => {
+    if (!composerDraft) return;
+    setValue("content", composerDraft, { shouldDirty: true });
+    setComposerDraft(null);
+    requestAnimationFrame(() => {
+      const el = inputRef.current;
+      if (!el) return;
+      el.focus();
+      el.setSelectionRange(el.value.length, el.value.length);
+      autoResize();
+    });
+  }, [composerDraft, setComposerDraft, setValue, inputRef]);
 
   const pickFile = (accept: string) => {
     if (fileInputRef.current) {

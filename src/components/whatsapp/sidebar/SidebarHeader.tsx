@@ -1,6 +1,7 @@
 import React from "react";
 import { RefreshCw, Upload, MessageSquarePlus } from "lucide-react";
 import { IconButton } from "../shared/IconButton";
+import { ReaboStatusPill } from "@/components/reabo/ReaboStatusPill";
 
 interface SidebarHeaderProps {
   onRefresh: () => void;
@@ -22,6 +23,7 @@ export const SidebarHeader: React.FC<SidebarHeaderProps> = ({
         </div>
       </div>
       <div className="flex items-center gap-0.5">
+        <ReaboStatusPill />
         <IconButton label="Diffusion de template" onClick={onTemplateBroadcast}>
           <MessageSquarePlus size={20} />
         </IconButton>
