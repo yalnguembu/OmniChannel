@@ -4,12 +4,19 @@ import { useQuery } from "@tanstack/react-query";
 import { getApiSenderDropdownOptions } from "@/shared/api/generated/@tanstack/react-query.gen";
 import { PageLoader } from "@/components/feedback/PageLoader";
 
+/** The two inboxes share this resolver; each names its own sender route. */
+type SenderRoute = "/wa/$senderId" | "/wareabo/$senderId";
+
 /**
- * Bare `/wa` resolver: WhatsApp is always scoped to a sender via the URL
- * (`/wa/$senderId`). When no sender is in the URL we redirect to the first
- * available one, or show an empty state if none is configured.
+ * Bare `/wa` (and `/wareabo`) resolver: the inbox is always scoped to a sender
+ * via the URL. When no sender is in the URL we redirect to the first available
+ * one, or show an empty state if none is configured.
  */
-export function WhatsAppSenderRedirect() {
+export function WhatsAppSenderRedirect({
+  to = "/wa/$senderId",
+}: {
+  to?: SenderRoute;
+} = {}) {
   const navigate = useNavigate();
 
   const { data: senders = [], isLoading } = useQuery({
@@ -20,12 +27,12 @@ export function WhatsAppSenderRedirect() {
   useEffect(() => {
     if (senders.length > 0) {
       navigate({
-        to: "/wa/$senderId",
+        to,
         params: { senderId: senders[0].id },
         replace: true,
       });
     }
-  }, [senders, navigate]);
+  }, [senders, navigate, to]);
 
   if (!isLoading && senders.length === 0) {
     return (

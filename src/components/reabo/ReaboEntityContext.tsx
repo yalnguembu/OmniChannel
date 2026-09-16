@@ -35,6 +35,19 @@ export function useReaboEntity(): ReaboEntityValue | null {
   return useContext(ReaboEntityContext);
 }
 
+/**
+ * Whether the Reabo layer is mounted at all.
+ *
+ * The provider is the feature switch: it wraps the `/wareabo` inbox and nothing
+ * else, so the plain `/wa` route renders the very same WhatsApp components with
+ * every Reabo addition inert — no pill in the header, no subscription section
+ * in the details panel, decoder numbers staying the plain text they always
+ * were. One route, one provider, no flag to thread through the tree.
+ */
+export function useReaboEnabled(): boolean {
+  return useContext(ReaboEntityContext) !== null;
+}
+
 const POPOVER_WIDTH = 300;
 const VIEWPORT_MARGIN = 12;
 

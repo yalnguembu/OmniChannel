@@ -6,6 +6,7 @@ import { useDecoderScan } from "@/hooks/useDecoderScan";
 import { useWhatsAppStore } from "@/store/useWhatsappStore";
 import { SubscriberCard } from "./SubscriberCard";
 import { ReaboConnectionSheet } from "./ReaboConnectionSheet";
+import { useReaboEnabled } from "./ReaboEntityContext";
 import type { Subscriber } from "@/models/reabo.models";
 import { TONE_ERROR_TEXT } from "./tone";
 
@@ -13,6 +14,15 @@ interface ReaboSubscriptionSectionProps {
   /** The conversation's WhatsApp number, in whatever form the API returned it. */
   phone?: string | null;
 }
+
+/**
+ * The panel's own section separator, reproduced here.
+ *
+ * The section carries its own trailing band rather than being framed by two in
+ * the panel: outside `/wareabo` it renders nothing, and a pair of separators
+ * left behind would show as one double-height grey strip in the plain inbox.
+ */
+const Band = () => <div className="h-2 bg-wa-hover" />;
 
 /** Same subscriber found twice (by phone and by scan) must appear once. */
 function mergeSubscribers(...lists: Subscriber[][]): Subscriber[] {
@@ -44,6 +54,7 @@ function mergeSubscribers(...lists: Subscriber[][]): Subscriber[] {
 export const ReaboSubscriptionSection: React.FC<ReaboSubscriptionSectionProps> = ({
   phone,
 }) => {
+  const enabled = useReaboEnabled();
   const { status } = useReaboAuth();
   const activeConversationId = useWhatsAppStore((s) => s.activeConversationId);
   const [connectOpen, setConnectOpen] = useState(false);
@@ -60,7 +71,10 @@ export const ReaboSubscriptionSection: React.FC<ReaboSubscriptionSectionProps> =
     [submittedTerm, phone],
   );
 
-  const query = useReaboSubscribers(term, status === "connected");
+  // `enabled` gates the query, not just the markup: an agent with a live Reabo
+  // session browsing the plain `/wa` inbox must not fire a lookup for a section
+  // that will not be rendered.
+  const query = useReaboSubscribers(term, enabled && status === "connected");
   const { scan, progress, subscribers: scanned, isScanning } =
     useDecoderScan(activeConversationId);
 
@@ -68,6 +82,10 @@ export const ReaboSubscriptionSection: React.FC<ReaboSubscriptionSectionProps> =
     () => mergeSubscribers(query.data ?? [], scanned),
     [query.data, scanned],
   );
+
+  // The details panel is shared with the plain `/wa` inbox, where this section
+  // simply does not exist.
+  if (!enabled) return null;
 
   if (status !== "connected") {
     return (
@@ -89,6 +107,7 @@ export const ReaboSubscriptionSection: React.FC<ReaboSubscriptionSectionProps> =
             </span>
           </button>
         </div>
+        <Band />
         <ReaboConnectionSheet
           open={connectOpen}
           onClose={() => setConnectOpen(false)}
@@ -191,6 +210,8 @@ export const ReaboSubscriptionSection: React.FC<ReaboSubscriptionSectionProps> =
           />
         </div>
       </form>
+
+      <Band />
     </div>
   );
 };

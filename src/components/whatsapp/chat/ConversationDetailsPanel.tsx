@@ -471,11 +471,11 @@ export const ConversationDetailsPanel: React.FC<ConversationDetailsPanelProps> =
 
           <Band />
 
-          {/* Reabo — mounted with the panel, so nothing is fetched while the
-              agent is only reading the conversation. */}
+          {/* Reabo — renders nothing at all outside the `/wareabo` inbox, and
+              brings its own separator so the plain panel keeps its spacing.
+              Mounted with the panel, so nothing is fetched while the agent is
+              only reading the conversation. */}
           <ReaboSubscriptionSection phone={conv?.contactAddress} />
-
-          <Band />
 
           {/* Media shortcut — WhatsApp puts the gallery right under the identity */}
           <button
