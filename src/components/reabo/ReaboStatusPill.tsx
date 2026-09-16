@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { cn } from "@/lib/utils";
 import { useReaboAuth } from "@/hooks/useReaboAuth";
+import { useReaboEnabled } from "./ReaboEntityContext";
 import { ReaboConnectionSheet } from "./ReaboConnectionSheet";
 import { TONE_DOT } from "./tone";
 
@@ -32,8 +33,13 @@ const TONE = {
  */
 export const ReaboStatusPill: React.FC = () => {
   const [open, setOpen] = useState(false);
+  const enabled = useReaboEnabled();
   const { status, account } = useReaboAuth();
   const tone = TONE[status];
+
+  // Outside the Reabo inbox there is no session to show: the plain `/wa` route
+  // renders this component as nothing at all.
+  if (!enabled) return null;
 
   return (
     <>
