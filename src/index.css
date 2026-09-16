@@ -12,6 +12,15 @@ html, body {
   overflow-x: hidden;
 }
 
+/* Full-height screens that must never exceed what is actually on screen — the
+   inbox, chiefly. `--app-height` is published by `useViewportLock` from
+   `visualViewport.height`, which is the only figure that shrinks when the
+   on-screen keyboard opens; `100dvh` is the fallback before the first
+   measurement and on browsers without the API. */
+.app-viewport {
+  height: var(--app-height, 100dvh);
+}
+
 @theme {
   --color-anchor: #0d2137;
   --color-primary: #1b5e82;
