@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -32,6 +32,16 @@ import { QuickReplyMenu } from "./QuickReplyMenu";
 import { QuickRepliesModal } from "./QuickRepliesModal";
 import { matchQuickReplies, useQuickReplyStore } from "@/store/useQuickReplyStore";
 import type { QuickReply } from "@/shared/db/quickReplies";
+
+/**
+ * Tallest the composer grows before it scrolls its own content.
+ *
+ * Declared once and applied both when measuring and as the element's
+ * `max-height`: the Tailwind `max-h-28` that used to cap it resolved against a
+ * 14px root, so the CSS clipped at 98px while the inline height claimed 120 and
+ * the two disagreed on screen.
+ */
+const MAX_COMPOSER_HEIGHT = 120;
 
 interface SlashToken {
   /** Text typed after the slash. */
@@ -231,13 +241,48 @@ export const MessageInput: React.FC<MessageInputProps> = ({
     }
   };
 
-  const autoResize = () => {
-    if (inputRef.current) {
-      inputRef.current.style.height = "auto";
-      inputRef.current.style.height =
-        Math.min(inputRef.current.scrollHeight, 120) + "px";
+  /**
+   * Grows the composer with its content, up to {@link MAX_COMPOSER_HEIGHT}.
+   *
+   * Measuring needs the field collapsed first, and that measurement is only
+   * meaningful once the element is laid out: during a keyboard transition the
+   * browser can report a `scrollHeight` of zero, and writing it back froze the
+   * composer at one pixel until the next keystroke. A nonsensical reading now
+   * leaves the current height alone.
+   */
+  const autoResize = useCallback(() => {
+    const el = inputRef.current;
+    if (!el) return;
+
+    const previous = el.style.height;
+    el.style.height = "auto";
+    const measured = el.scrollHeight;
+
+    if (measured <= 0) {
+      el.style.height = previous;
+      return;
     }
-  };
+    el.style.height = `${Math.min(measured, MAX_COMPOSER_HEIGHT)}px`;
+  }, [inputRef]);
+
+  /**
+   * The on-screen keyboard changes the layout under the composer, and an
+   * inline height in pixels does not follow on its own — it stayed at the value
+   * computed for the previous viewport, leaving the field too tall or too short
+   * once the keyboard had finished moving. Re-measuring on every visual
+   * viewport change is what keeps it honest.
+   */
+  useEffect(() => {
+    const viewport = window.visualViewport;
+    const remeasure = () => requestAnimationFrame(autoResize);
+
+    viewport?.addEventListener("resize", remeasure);
+    window.addEventListener("orientationchange", remeasure);
+    return () => {
+      viewport?.removeEventListener("resize", remeasure);
+      window.removeEventListener("orientationchange", remeasure);
+    };
+  }, [autoResize]);
 
   // ── Suggested messages ──
   // A Reabo operation proposes the text to send back to the customer. It lands
@@ -534,7 +579,8 @@ export const MessageInput: React.FC<MessageInputProps> = ({
             onKeyUp={syncSlashToken}
             onClick={syncSlashToken}
             onBlur={closeMenu}
-            className="w-full border-none outline-none resize-none text-[15px] text-wa-text placeholder:text-wa-muted bg-transparent max-h-28 leading-snug disabled:cursor-not-allowed"
+            style={{ maxHeight: MAX_COMPOSER_HEIGHT }}
+            className="w-full border-none outline-none resize-none text-[15px] text-wa-text placeholder:text-wa-muted bg-transparent leading-snug disabled:cursor-not-allowed"
           />
         </div>
 
