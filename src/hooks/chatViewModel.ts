@@ -36,6 +36,8 @@ export interface MessageViewModel {
   medias: Message['medias'];
   replyToContent: string | null;
   replyToAuthor: string | null;
+  /** Id of the quoted message — the preview scrolls to it when clicked. */
+  replyToMessageId: string | null;
   senderName: string | null;
   externalMessageId: string | null;
   rawMessage: Message;
@@ -222,6 +224,7 @@ export function useChatViewModel() {
         status: (m.status || '').toUpperCase(),
         medias: m.medias ?? [],
         replyToContent: m.replyToMessageContent ?? null,
+        replyToMessageId: m.replyToMessageId ?? null,
         replyToAuthor: m.replyToMessageId
           ? isOut
             ? 'Vous'
@@ -367,6 +370,7 @@ export function useChatViewModel() {
   /** Id the list should scroll to and flash — set by search or by date jump. */
   const [scrollTargetId, setScrollTargetId] = useState<string | null>(null);
   const [isJumpingToDate, setIsJumpingToDate] = useState(false);
+  const [isJumpingToMessage, setIsJumpingToMessage] = useState(false);
 
   useEffect(() => {
     if (activeMatchId) setScrollTargetId(activeMatchId);
@@ -433,6 +437,46 @@ export function useChatViewModel() {
     }
     return [...days].sort();
   }, [conversationMessages]);
+
+  /**
+   * Scrolls to a specific message, widening the loaded window if it sits
+   * further back than what is on screen — what tapping a reply preview does
+   * in WhatsApp.
+   */
+  const goToMessage = useCallback(
+    async (messageId: string): Promise<boolean> => {
+      if (!messageId) return false;
+      const convId = activeConversationId;
+      const known = (items: Message[]) =>
+        items.some(
+          (m) => m.id === messageId && (!m.conversationId || m.conversationId === convId),
+        );
+
+      if (known(conversationMessages)) {
+        setScrollTargetId(messageId);
+        return true;
+      }
+
+      setIsJumpingToMessage(true);
+      try {
+        let target = limit;
+        for (let step = 0; step < MAX_WIDEN_STEPS; step += 1) {
+          target += SEARCH_EXTEND_SIZE;
+          const result = await extendTo(target);
+          if (!result) break;
+          if (known(result.items)) {
+            setScrollTargetId(messageId);
+            return true;
+          }
+          if (!result.hasNextPage) break;
+        }
+      } finally {
+        setIsJumpingToMessage(false);
+      }
+      return false;
+    },
+    [activeConversationId, conversationMessages, extendTo, limit],
+  );
 
   // ── Media gallery ───────────────────────────────────────────────────────────
 
@@ -639,6 +683,8 @@ export function useChatViewModel() {
     clearScrollTarget,
     jumpToDate,
     isJumpingToDate,
+    goToMessage,
+    isJumpingToMessage,
     availableDays,
     // Gallery
     galleryItems,
