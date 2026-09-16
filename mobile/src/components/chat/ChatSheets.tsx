@@ -1,4 +1,19 @@
-import { Ionicons } from "@expo/vector-icons";
+import {
+  AlertCircle,
+  CheckCircle2,
+  Copy,
+  Info,
+  LayoutTemplate,
+  MessageSquare,
+  Pencil,
+  RefreshCw,
+  Reply,
+  Search,
+  ShieldCheck,
+  UserCheck,
+  UserPlus,
+  Zap,
+} from "lucide-react-native";
 import * as Clipboard from "expo-clipboard";
 import { useState } from "react";
 import {
@@ -16,11 +31,11 @@ import { useSendTemplateToClient, useTemplates } from "@/hooks/useWhatsapp";
 import { toast } from "@/lib/toast";
 import {
   fmtTimeFull,
-  type Conversation,
   type ConversationStatus,
   type Message,
   type User,
 } from "@/models/whatsapp.models";
+import { statusLabel } from "@/lib/labels";
 import { colors, radius, STATUS_LABELS } from "@/theme";
 
 // ─── Actions de la conversation ───────────────────────────────────────────────
@@ -36,9 +51,12 @@ interface ChatMenuSheetProps {
   onFlow: () => void;
   onContact: () => void;
   onChannelStatus: () => void;
+  onReload: () => void;
   /** Un contact CRM existe déjà pour ce numéro → « éditer » plutôt qu'« ajouter ». */
   hasContact: boolean;
   contactLoading: boolean;
+  /** Agent en charge, rappelé en pied de menu comme sur le web. */
+  assignedName: string | null;
 }
 
 export function ChatMenuSheet({
@@ -52,8 +70,10 @@ export function ChatMenuSheet({
   onFlow,
   onContact,
   onChannelStatus,
+  onReload,
   hasContact,
   contactLoading,
+  assignedName,
 }: ChatMenuSheetProps) {
   const run = (fn: () => void) => () => {
     onClose();
@@ -61,27 +81,34 @@ export function ChatMenuSheet({
   };
   return (
     <Sheet open={open} onClose={onClose} title="Discussion">
-      <SheetOption icon="search-outline" label="Rechercher un message" onPress={run(onSearch)} />
-      <SheetOption icon="flag-outline" label="Changer le statut" onPress={run(onStatus)} />
-      <SheetOption icon="person-add-outline" label="Assigner à un agent" onPress={run(onAssign)} />
+      <SheetOption icon={Search} label="Rechercher un message" onPress={run(onSearch)} />
+      <SheetOption icon={RefreshCw} label="Recharger les messages" onPress={run(onReload)} />
+      <SheetOption icon={CheckCircle2} label="Changer le statut" onPress={run(onStatus)} />
+      <SheetOption icon={UserPlus} label="Assigner à un agent" onPress={run(onAssign)} />
       <SheetOption
-        icon={hasContact ? "create-outline" : "person-circle-outline"}
+        icon={hasContact ? Pencil : UserCheck}
         label={hasContact ? "Éditer le contact" : "Ajouter aux contacts"}
         hint={contactLoading ? "Résolution du contact…" : undefined}
         disabled={contactLoading}
         onPress={run(onContact)}
       />
       <SheetOption
-        icon="shield-checkmark-outline"
+        icon={ShieldCheck}
         label="Statut du canal"
         hint="Délivrabilité de ce numéro"
         onPress={run(onChannelStatus)}
       />
       <SheetSeparator />
-      <SheetOption icon="document-text-outline" label="Envoyer un template" onPress={run(onTemplate)} />
-      <SheetOption icon="flash-outline" label="Envoyer un flow" onPress={run(onFlow)} />
+      <SheetOption icon={LayoutTemplate} label="Envoyer un template" onPress={run(onTemplate)} />
+      <SheetOption icon={Zap} label="Envoyer un flow" onPress={run(onFlow)} />
       <SheetSeparator />
-      <SheetOption icon="information-circle-outline" label="Détails de la conversation" onPress={run(onDetails)} />
+      <SheetOption icon={Info} label="Détails de la conversation" onPress={run(onDetails)} />
+      {assignedName ? (
+        <View style={styles.assignedRow}>
+          <MessageSquare size={13} color={colors.icon} />
+          <Text style={styles.assignedText}>Assignée à {assignedName}</Text>
+        </View>
+      ) : null}
     </Sheet>
   );
 }
@@ -118,7 +145,7 @@ export function StatusSheet({
 
 /**
  * Statut de délivrabilité du canal — vocabulaire fourni par le backend
- * (`/api/ContactChannel/statuses`), donc affiché tel quel.
+ * (`/api/ContactChannel/statuses`), libellé comme sur le web.
  */
 export function ChannelStatusSheet({
   open,
@@ -139,7 +166,7 @@ export function ChannelStatusSheet({
         statuses.map((s) => (
           <SheetOption
             key={s}
-            label={s}
+            label={statusLabel(s.toLowerCase())}
             onPress={() => {
               onClose();
               onSelect(s);
@@ -172,7 +199,7 @@ export function AssignSheet({
         users.map((u) => (
           <SheetOption
             key={u.id}
-            icon="person-circle-outline"
+            icon={UserCheck}
             label={`${u.firstName ?? ""} ${u.lastName ?? ""}`.trim() || u.email || u.id}
             hint={u.email ?? undefined}
             selected={currentUserId === u.id}
@@ -202,39 +229,6 @@ function DetailRows({ rows }: { rows: [string, string | null | undefined][] }) {
   );
 }
 
-export function ConversationDetailsSheet({
-  open,
-  conv,
-  onClose,
-}: {
-  open: boolean;
-  conv: Conversation | null;
-  onClose: () => void;
-}) {
-  return (
-    <Sheet open={open} onClose={onClose} title="Détails de la conversation" scroll>
-      {conv ? (
-        <DetailRows
-          rows={[
-            ["ID", conv.id],
-            ["Contact", conv.contactAddress],
-            ["Statut", conv.status],
-            ["Canal", `${conv.channelName || ""} (${conv.channelCode || ""})`],
-            ["Expéditeur", `${conv.senderName || ""} (${conv.senderAddress || ""})`],
-            ["Créée le", fmtTimeFull(conv.createdAt || conv.lastMessageAt)],
-            [
-              "Assignée à",
-              conv.assignedToUserFirstName
-                ? `${conv.assignedToUserFirstName} ${conv.assignedToUserLastName || ""}`.trim()
-                : "Non assignée",
-            ],
-          ]}
-        />
-      ) : null}
-    </Sheet>
-  );
-}
-
 export function MessageDetailsSheet({
   open,
   msg,
@@ -249,14 +243,14 @@ export function MessageDetailsSheet({
       {msg ? (
         <DetailRows
           rows={[
-            ["ID externe", msg.externalMessageId],
+            ["ID Externe", msg.externalMessageId],
             ["Statut", msg.status],
             ["Direction", msg.direction],
             ["Type", msg.messageType],
-            ["Création", fmtTimeFull(msg.createdAt)],
-            ["Envoi", fmtTimeFull(msg.sentAt)],
-            ["Distribution", fmtTimeFull(msg.deliveredAt)],
-            ["Lecture", fmtTimeFull(msg.readAt)],
+            ["Date Création", fmtTimeFull(msg.createdAt)],
+            ["Date Envoi", fmtTimeFull(msg.sentAt)],
+            ["Date Distribution", fmtTimeFull(msg.deliveredAt)],
+            ["Date Lecture", fmtTimeFull(msg.readAt)],
             ["Envoyé par", msg.sentByName || "Système"],
           ]}
         />
@@ -281,7 +275,7 @@ export function MessageActionsSheet({
   return (
     <Sheet open={!!vm} onClose={onClose} title="Message">
       <SheetOption
-        icon="arrow-undo-outline"
+        icon={Reply}
         label="Répondre"
         onPress={() => {
           if (!vm) return;
@@ -290,7 +284,7 @@ export function MessageActionsSheet({
         }}
       />
       <SheetOption
-        icon="copy-outline"
+        icon={Copy}
         label="Copier le texte"
         disabled={!vm?.content}
         onPress={async () => {
@@ -301,7 +295,7 @@ export function MessageActionsSheet({
         }}
       />
       <SheetOption
-        icon="information-circle-outline"
+        icon={Info}
         label="Détails"
         onPress={() => {
           if (!vm) return;
@@ -368,7 +362,7 @@ export function TemplateSheet({
           <ActivityIndicator color={colors.teal} style={styles.loader} />
         ) : !clientId ? (
           <View style={styles.warning}>
-            <Ionicons name="alert-circle-outline" size={18} color="#d97706" />
+            <AlertCircle size={18} color="#d97706" />
             <View style={styles.warningBody}>
               <Text style={styles.warningText}>
                 Aucun contact CRM lié à ce numéro. L'envoi de template adresse un client :
@@ -472,6 +466,14 @@ export function FlowSheet({
 }
 
 const styles = StyleSheet.create({
+  assignedRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 10,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+  },
+  assignedText: { fontSize: 12, color: colors.muted },
   details: { paddingHorizontal: 18, paddingBottom: 8, gap: 10 },
   detailRow: { flexDirection: "row", gap: 10 },
   detailLabel: { width: 118, fontSize: 13, fontWeight: "600", color: colors.text },

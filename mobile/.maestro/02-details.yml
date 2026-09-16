@@ -1,0 +1,52 @@
+# ⚠️ CES FLOWS TOURNENT CONTRE LA PRODUCTION.
+# Interdits absolus : taper sur un bouton d'envoi (message, média, template,
+# flow), sélectionner une option de statut, assigner une conversation, ou
+# enregistrer un contact. Tout cela écrit chez de vrais clients.
+# Les flows n'ouvrent des écrans et ne vérifient que des libellés.
+#
+# Ouvre le panneau d'infos de la discussion et ses sous-vues.
+#
+# Le panneau est la surface « Infos du contact » de WhatsApp : identité,
+# raccourcis, réglages modifiables sur place, fiche CRM, puis la galerie et
+# l'édition de contact en sous-vues.
+appId: host.exp.exponent
+---
+- runFlow: 00b-ouvrir-discussion-test.yml
+
+# L'en-tête est le point d'entrée du panneau, comme sur le web.
+- tapOn: "Détails de la conversation"
+- extendedWaitUntil:
+    visible: "Médias et documents"
+    timeout: 15000
+- assertVisible: "Rechercher"
+- assertVisible: "Template"
+- assertVisible: "Flow"
+- assertVisible: "Statut de la conversation"
+- assertVisible: "Assignée à"
+- takeScreenshot: .maestro/screens/03-details
+
+# Un réglage se déplie sous sa propre ligne — pas de modale par-dessus. Les
+# options apparaissent sous la ligne, donc sous la ligne de flottaison quand
+# celle-ci est basse : on fait défiler la feuille jusqu'à elles.
+- tapOn: "Changer : Statut de la conversation"
+- scrollUntilVisible:
+    element: "En attente"
+    direction: DOWN
+    timeout: 8000
+# On vérifie que les options s'affichent, sans jamais en choisir une : cela
+# changerait le statut d'une conversation réelle.
+- assertVisible: "Résolue"
+- takeScreenshot: .maestro/screens/04-details-statut
+- tapOn: "Changer : Statut de la conversation"
+
+# Sous-vue galerie, puis retour par la flèche de la barre de titre.
+- tapOn: "Médias et documents"
+- extendedWaitUntil:
+    visible: "Documents.*"
+    timeout: 15000
+- takeScreenshot: .maestro/screens/05-galerie
+- tapOn: "Retour"
+- assertVisible: "Statut de la conversation"
+
+- tapOn: "Fermer"
+- assertVisible: "Tapez un message"

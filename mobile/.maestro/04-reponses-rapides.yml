@@ -1,0 +1,71 @@
+# ⚠️ CES FLOWS TOURNENT CONTRE LA PRODUCTION.
+# Interdits absolus : taper sur un bouton d'envoi (message, média, template,
+# flow), sélectionner une option de statut, assigner une conversation, ou
+# enregistrer un contact. Tout cela écrit chez de vrais clients.
+# Les flows n'ouvrent des écrans et ne vérifient que des libellés.
+#
+# Réponses rapides : gestion, puis insertion par `/raccourci`.
+#
+# Elles vivent sur l'appareil (AsyncStorage côté mobile, IndexedDB côté web) :
+# le flow crée son propre raccourci et le supprime à la fin, il ne touche donc
+# à aucune donnée serveur.
+appId: host.exp.exponent
+---
+- runFlow: 00b-ouvrir-discussion-test.yml
+
+# La gestion est atteignable sans taper « / », par le menu de pièces jointes.
+- tapOn: "Joindre un fichier"
+- tapOn: "Réponses rapides"
+- extendedWaitUntil:
+    visible: "Tapez « / » suivi du raccourci.*"
+    timeout: 15000
+- takeScreenshot: .maestro/screens/09-reponses-rapides
+
+# Création d'un raccourci.
+- tapOn:
+    below: "Raccourci"
+    index: 0
+- inputText: "maestro"
+- tapOn:
+    below: "Texte inséré"
+    index: 0
+- inputText: "Bonjour, ceci est un test Maestro."
+# Pas de `hideKeyboard` ici : sous Android il appuie sur « retour », ce qui
+# ferme la feuille au lieu de replier le clavier. On fait défiler jusqu'au
+# bouton, qui peut être masqué par le clavier.
+- scrollUntilVisible:
+    element: "Ajouter"
+    direction: DOWN
+    timeout: 8000
+- tapOn: "Ajouter"
+- assertVisible: "/maestro"
+- takeScreenshot: .maestro/screens/10-reponse-creee
+- tapOn: "Fermer"
+
+# Insertion : « / » ouvre la palette, qui filtre sur ce qui suit.
+- tapOn: "Message"
+- inputText: "/maes"
+- extendedWaitUntil:
+    visible: "Insérer /maestro"
+    timeout: 10000
+- takeScreenshot: .maestro/screens/11-palette-raccourci
+- tapOn: "Insérer /maestro"
+- assertVisible: "Bonjour, ceci est un test Maestro."
+- takeScreenshot: .maestro/screens/12-raccourci-insere
+
+# On efface le texte inséré : le composeur d'une conversation de production ne
+# doit pas garder un brouillon de test. (Et on ne tape JAMAIS sur Envoyer.)
+- tapOn:
+    text: "Bonjour, ceci est un test Maestro."
+- eraseText: 60
+- assertNotVisible: "Bonjour, ceci est un test Maestro."
+
+# Ménage : on supprime le raccourci créé par le flow.
+- tapOn: "Joindre un fichier"
+- tapOn: "Réponses rapides"
+- extendedWaitUntil:
+    visible: "Supprimer /maestro"
+    timeout: 15000
+- tapOn: "Supprimer /maestro"
+- assertNotVisible: "Supprimer /maestro"
+- tapOn: "Fermer"

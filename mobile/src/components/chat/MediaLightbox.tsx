@@ -1,4 +1,4 @@
-import { Ionicons } from "@expo/vector-icons";
+import { X } from "lucide-react-native";
 import { Image } from "expo-image";
 import { useVideoPlayer, VideoView } from "expo-video";
 import { Modal, Pressable, StyleSheet, Text, View } from "react-native";
@@ -40,7 +40,7 @@ export function MediaLightbox({ state, onClose }: MediaLightboxProps) {
           hitSlop={12}
           accessibilityLabel="Fermer"
         >
-          <Ionicons name="close" size={26} color={colors.white} />
+          <X size={26} color={colors.white} />
         </Pressable>
 
         {state.type === "image" ? (

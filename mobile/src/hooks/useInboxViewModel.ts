@@ -5,9 +5,10 @@ import {
   convPreview,
   fmtTime,
   getInitials,
+  toUtcDate,
   type Filter,
 } from "@/models/whatsapp.models";
-import { useWhatsAppStore } from "@/store/whatsappStore";
+import { useWhatsAppStore, type ConversationFilters } from "@/store/whatsappStore";
 import { useDebounce } from "./useDebounce";
 import { useConversations, useSenders, useStats, useUsers } from "./useWhatsapp";
 
@@ -35,6 +36,9 @@ export function useInboxViewModel() {
   const search = useWhatsAppStore((s) => s.search);
   const setFilter = useWhatsAppStore((s) => s.setFilter);
   const setSearch = useWhatsAppStore((s) => s.setSearch);
+  const filters = useWhatsAppStore((s) => s.filters);
+  const setFilters = useWhatsAppStore((s) => s.setFilters);
+  const resetFilters = useWhatsAppStore((s) => s.resetFilters);
   const setConversations = useWhatsAppStore((s) => s.setConversations);
   const setStats = useWhatsAppStore((s) => s.setStats);
   const setUsers = useWhatsAppStore((s) => s.setUsers);
@@ -55,8 +59,16 @@ export function useInboxViewModel() {
     if (filter === "UNREAD") p.unreadOnly = true;
     if (debouncedSearch) p.searchTerm = debouncedSearch;
     if (selectedSenderId) p.senderId = selectedSenderId;
+    if (filters.assignedToUser) p.assignedToUser = filters.assignedToUser;
+    if (filters.lastMessageDirection) p.lastMessageDirection = filters.lastMessageDirection;
     return p;
-  }, [filter, debouncedSearch, selectedSenderId]);
+  }, [
+    filter,
+    debouncedSearch,
+    selectedSenderId,
+    filters.assignedToUser,
+    filters.lastMessageDirection,
+  ]);
 
   const {
     data: convData,
@@ -106,15 +118,31 @@ export function useInboxViewModel() {
   // au backend (il peut matcher des champs ou des normalisations invisibles
   // côté client), refiltrer ici casserait la recherche.
   const visibleConversations = useMemo(() => {
-    if (!filter || filter === "ALL") return conversations;
-    return conversations.filter((c) => {
+    const { dateFrom, dateTo } = filters;
+    // Bornes de jours locaux, incluses aux deux extrémités.
+    const fromMs = dateFrom ? new Date(`${dateFrom}T00:00:00`).getTime() : null;
+    const toMs = dateTo ? new Date(`${dateTo}T23:59:59.999`).getTime() : null;
+
+    const matchesStatus = (c: (typeof conversations)[number]) => {
+      if (!filter || filter === "ALL") return true;
       if (filter === "UNREAD") {
         // On garde la conversation ouverte même après l'effacement du badge.
         return (c.unreadCount ?? 0) > 0 || c.id === activeConversationId;
       }
       return (c.status ?? "OPEN").toUpperCase() === filter;
-    });
-  }, [conversations, filter, activeConversationId]);
+    };
+
+    const matchesDate = (c: (typeof conversations)[number]) => {
+      if (fromMs === null && toMs === null) return true;
+      if (!c.lastMessageAt) return false;
+      const at = toUtcDate(c.lastMessageAt).getTime();
+      if (fromMs !== null && at < fromMs) return false;
+      if (toMs !== null && at > toMs) return false;
+      return true;
+    };
+
+    return conversations.filter((c) => matchesStatus(c) && matchesDate(c));
+  }, [conversations, filter, activeConversationId, filters.dateFrom, filters.dateTo]);
 
   const conversationVMs = useMemo<ConversationViewModel[]>(
     () =>
@@ -150,6 +178,10 @@ export function useInboxViewModel() {
   );
 
   const handleFilterChange = useCallback((f: Filter) => setFilter(f), [setFilter]);
+  const handleFiltersChange = useCallback(
+    (patch: Partial<ConversationFilters>) => setFilters(patch),
+    [setFilters],
+  );
   const handleSearchChange = useCallback((s: string) => setSearch(s), [setSearch]);
   const handleEndReached = useCallback(() => {
     if (hasNextPage && !isFetchingNextPage) fetchNextPage();
@@ -160,13 +192,21 @@ export function useInboxViewModel() {
     statsVM,
     filter,
     search,
+    filters,
+    activeFilterCount:
+      (filters.assignedToUser ? 1 : 0) +
+      (filters.lastMessageDirection ? 1 : 0) +
+      (filters.dateFrom || filters.dateTo ? 1 : 0),
     senders: sendersData ?? [],
+    users: usersData ?? [],
     selectedSenderId,
     setSelectedSenderId,
     isLoading: convsLoading,
     isRefetching,
     isFetchingNextPage,
     handleFilterChange,
+    handleFiltersChange,
+    resetFilters,
     handleSearchChange,
     handleEndReached,
     refetchConvs,

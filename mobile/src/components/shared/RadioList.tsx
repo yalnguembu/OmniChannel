@@ -1,4 +1,4 @@
-import { Ionicons } from "@expo/vector-icons";
+import { Circle, CircleDot } from "lucide-react-native";
 import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { colors, radius } from "@/theme";
 
@@ -42,11 +42,11 @@ export function RadioList({
             onPress={() => onSelect(item.id)}
             style={[styles.row, active && styles.rowActive]}
           >
-            <Ionicons
-              name={active ? "radio-button-on" : "radio-button-off"}
-              size={19}
-              color={active ? colors.greenSend : colors.muted}
-            />
+            {active ? (
+              <CircleDot size={19} color={colors.greenSend} />
+            ) : (
+              <Circle size={19} color={colors.muted} />
+            )}
             <View style={styles.labels}>
               <Text style={styles.label}>{item.label}</Text>
               {item.hint ? <Text style={styles.hint}>{item.hint}</Text> : null}

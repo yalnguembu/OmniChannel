@@ -1,9 +1,10 @@
-import { Ionicons } from "@expo/vector-icons";
+import { AlertCircle, Eye, EyeOff } from "lucide-react-native";
 import { useMutation } from "@tanstack/react-query";
 import { Redirect, useRouter } from "expo-router";
 import { useState } from "react";
 import {
   ActivityIndicator,
+  Image,
   KeyboardAvoidingView,
   Platform,
   Pressable,
@@ -106,15 +107,17 @@ export default function LoginScreen() {
         ]}
         keyboardShouldPersistTaps="handled"
       >
-        <View style={styles.logo}>
-          <Ionicons name="logo-whatsapp" size={38} color={colors.white} />
-        </View>
+        <Image
+          source={require("../assets/logo-whatsapp.png")}
+          style={styles.logo}
+          accessibilityLabel="WhatsApp"
+        />
         <Text style={styles.title}>OmniChannel</Text>
         <Text style={styles.subtitle}>Messagerie WhatsApp</Text>
 
         {!API_URL ? (
           <View style={styles.warning}>
-            <Ionicons name="alert-circle-outline" size={18} color="#92400e" />
+            <AlertCircle size={18} color="#92400e" />
             <Text style={styles.warningText}>
               EXPO_PUBLIC_API_URL n'est pas défini : renseignez l'URL de l'API dans le fichier
               .env puis relancez le serveur Expo.
@@ -153,11 +156,11 @@ export default function LoginScreen() {
               returnKeyType="go"
             />
             <Pressable onPress={() => setShowPassword((v) => !v)} hitSlop={8} style={styles.eye}>
-              <Ionicons
-                name={showPassword ? "eye-off-outline" : "eye-outline"}
-                size={20}
-                color={colors.muted}
-              />
+              {showPassword ? (
+                <EyeOff size={20} color={colors.muted} />
+              ) : (
+                <Eye size={20} color={colors.muted} />
+              )}
             </Pressable>
           </View>
         </View>
@@ -183,15 +186,7 @@ export default function LoginScreen() {
 const styles = StyleSheet.create({
   flex: { flex: 1, backgroundColor: colors.white },
   content: { paddingHorizontal: 24, gap: 14 },
-  logo: {
-    alignSelf: "center",
-    width: 70,
-    height: 70,
-    borderRadius: 20,
-    backgroundColor: colors.tealDark,
-    alignItems: "center",
-    justifyContent: "center",
-  },
+  logo: { alignSelf: "center", width: 70, height: 70 },
   title: { textAlign: "center", fontSize: 24, fontWeight: "700", color: colors.text },
   subtitle: { textAlign: "center", fontSize: 13.5, color: colors.muted, marginBottom: 14 },
   warning: {

@@ -1,4 +1,4 @@
-import { Ionicons } from "@expo/vector-icons";
+import { Search, XCircle } from "lucide-react-native";
 import { Pressable, StyleSheet, TextInput, View } from "react-native";
 import { colors, radius } from "@/theme";
 
@@ -8,40 +8,51 @@ interface SearchFieldProps {
   placeholder?: string;
 }
 
-export function SearchField({ value, onChange, placeholder = "Rechercher" }: SearchFieldProps) {
+/**
+ * Champ de recherche de la liste — portage de `SearchBar` du web : même
+ * conteneur `px-3 py-3`, même pilule `bg-wa-input-bg` en `px-4 py-3`.
+ */
+export function SearchField({
+  value,
+  onChange,
+  placeholder = "Rechercher ou démarrer une discussion",
+}: SearchFieldProps) {
   return (
     <View style={styles.wrap}>
-      <Ionicons name="search" size={17} color={colors.muted} />
-      <TextInput
-        value={value}
-        onChangeText={onChange}
-        placeholder={placeholder}
-        placeholderTextColor={colors.muted}
-        style={styles.input}
-        autoCapitalize="none"
-        autoCorrect={false}
-        returnKeyType="search"
-      />
-      {value.length > 0 ? (
-        <Pressable onPress={() => onChange("")} hitSlop={8}>
-          <Ionicons name="close-circle" size={17} color={colors.muted} />
-        </Pressable>
-      ) : null}
+      <View style={styles.field}>
+        <Search size={18} color={colors.muted} />
+        <TextInput
+          testID="search-conversations"
+          accessibilityLabel="Rechercher une discussion"
+          value={value}
+          onChangeText={onChange}
+          placeholder={placeholder}
+          placeholderTextColor={colors.muted}
+          style={styles.input}
+          autoCapitalize="none"
+          autoCorrect={false}
+          returnKeyType="search"
+        />
+        {value.length > 0 ? (
+          <Pressable onPress={() => onChange("")} hitSlop={8}>
+            <XCircle size={18} color={colors.muted} />
+          </Pressable>
+        ) : null}
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  wrap: {
+  wrap: { paddingHorizontal: 12, paddingVertical: 12, backgroundColor: colors.sidebar },
+  field: {
     flexDirection: "row",
     alignItems: "center",
     gap: 8,
-    marginHorizontal: 12,
-    marginBottom: 10,
-    paddingHorizontal: 12,
-    height: 40,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
     borderRadius: radius.pill,
     backgroundColor: colors.inputBg,
   },
-  input: { flex: 1, fontSize: 14.5, color: colors.text, padding: 0 },
+  input: { flex: 1, fontSize: 15, color: colors.text, padding: 0 },
 });

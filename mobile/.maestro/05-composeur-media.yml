@@ -1,0 +1,67 @@
+# ⚠️ CES FLOWS TOURNENT CONTRE LA PRODUCTION.
+# Interdits absolus : taper sur un bouton d'envoi (message, média, template,
+# flow), sélectionner une option de statut, assigner une conversation, ou
+# enregistrer un contact. Tout cela écrit chez de vrais clients.
+# Les flows n'ouvrent des écrans et ne vérifient que des libellés.
+#
+# Compositeur de média multi-fichiers : file d'attente, une légende par pièce,
+# bande de vignettes.
+#
+# Ce flow ouvre le sélecteur système, choisit des images de test poussées sur
+# l'émulateur, vérifie le compositeur… puis **annule**. Il ne tape jamais sur
+# le bouton d'envoi : ces conversations sont réelles.
+appId: host.exp.exponent
+---
+- runFlow: 00b-ouvrir-discussion-test.yml
+
+- tapOn: "Joindre un fichier"
+- tapOn: "Photos et vidéos"
+
+# Sélecteur système : la permission peut être demandée au premier passage.
+- runFlow:
+    when:
+      visible: ".*Autoriser.*|.*Allow.*"
+    commands:
+      - tapOn: ".*Autoriser.*|.*Allow.*"
+
+- extendedWaitUntil:
+    visible: ".*test-vert.*|.*test-bleu.*|.*Photos.*"
+    timeout: 30000
+- takeScreenshot: .maestro/screens/13-selecteur-systeme
+
+# Sélection des deux images de test (par position : la grille du sélecteur
+# système ne porte ni libellé ni identifiant exploitable).
+- tapOn:
+    point: "17%,61%"
+- tapOn:
+    point: "50%,61%"
+- takeScreenshot: .maestro/screens/14-selection-multiple
+- tapOn: "Done"
+
+# Le compositeur : une file de deux pièces, chacune avec sa légende.
+- extendedWaitUntil:
+    visible: "2 fichiers — un message par fichier"
+    timeout: 20000
+- assertVisible: "Légende de ce fichier…"
+- assertVisible: "Ajouter des fichiers"
+- takeScreenshot: .maestro/screens/15-composeur-file
+
+# Légende de la première pièce, puis bascule sur la seconde.
+- tapOn: "Légende de ce fichier…"
+- inputText: "Première pièce"
+- tapOn:
+    text: "Sélectionner .*"
+    index: 1
+# Taper la vignette retire le focus du champ : il faut le reprendre avant de
+# saisir, sinon le texte part dans le vide.
+- assertVisible: "Légende de ce fichier…"
+- tapOn: "Légende de ce fichier…"
+- inputText: "Seconde pièce"
+- takeScreenshot: .maestro/screens/16-legendes-par-piece
+# Le compteur annonce combien de pièces portent une légende.
+- assertVisible: "2 fichiers — un message par fichier, 2 avec légende"
+
+# On ANNULE : ces conversations sont réelles, rien ne doit partir.
+- tapOn: "Annuler"
+- assertVisible: "Tapez un message"
+- assertNotVisible: "2 fichiers — un message par fichier"

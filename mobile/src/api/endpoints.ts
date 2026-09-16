@@ -7,7 +7,7 @@
  * garde la même exception avec ce module fin : pas de générateur à faire tourner
  * dans le pipeline Expo, et la surface consommée reste volontairement petite.
  */
-import { api, unwrapList, unwrapOne } from "./client";
+import { api, unwrapList, unwrapOne, unwrapPaged, type PagedResult } from "./client";
 import type {
   Conversation,
   ConversationStatus,
@@ -118,6 +118,10 @@ export interface ConversationSearchParams {
   unreadOnly?: boolean;
   searchTerm?: string;
   senderId?: string;
+  /** Id de l'agent assigné. */
+  assignedToUser?: string;
+  /** 'INBOUND' | 'OUTBOUND' — direction du dernier message. */
+  lastMessageDirection?: string;
 }
 
 /** GET /api/Conversation/search */
@@ -137,12 +141,24 @@ export async function getStats() {
   return unwrapOne<Stats>(await api.get("/api/Conversation/stats"));
 }
 
-/** GET /api/Conversation/message/search */
-export async function searchMessages(conversationId: string, pageSize = 250) {
-  return unwrapList<Message>(
+/**
+ * GET /api/Conversation/message/search — les `limit` messages les plus récents,
+ * en une requête.
+ *
+ * Toujours la page 1 : sur un fil vivant, une pagination par pages dérive (les
+ * messages qui arrivent décalent les bornes, et la page 2 renvoie des lignes
+ * que la page 1 avait déjà). Relire les N plus récents ne peut pas dériver, et
+ * le store fusionne par id.
+ */
+export async function fetchMessageWindow(
+  conversationId: string,
+  limit: number,
+): Promise<PagedResult<Message>> {
+  return unwrapPaged<Message>(
     await api.get("/api/Conversation/message/search", {
-      params: { id: conversationId, pageNumber: 1, pageSize },
+      params: { id: conversationId, pageNumber: 1, pageSize: limit },
     }),
+    limit,
   );
 }
 
@@ -334,6 +350,8 @@ export interface ClientBody {
   lastName?: string | null;
   email?: string | null;
   phone?: string | null;
+  city?: string | null;
+  country?: string | null;
   status?: string | null;
 }
 
@@ -345,9 +363,7 @@ const PRESERVED_CLIENT_FIELDS = [
   "language",
   "timezone",
   "address",
-  "city",
   "postalCode",
-  "country",
   "customData",
 ] as const;
 
@@ -384,8 +400,18 @@ export async function updateClient(current: ClientSearchResult, body: ClientBody
     lastName: pick(body.lastName, current.lastName),
     email: pick(body.email, current.email),
     phone: pick(body.phone, current.phone),
+    city: pick(body.city, current.city),
+    country: pick(body.country, current.country),
     status: pick(body.status, current.status),
   });
+}
+
+/**
+ * PATCH /api/Client/status/{id} — change le seul statut, sans rejouer la fiche.
+ * C'est ce que le web utilise pour un changement de statut isolé.
+ */
+export async function changeClientStatus(id: string, status: string) {
+  await api.patch(`/api/Client/status/${id}`, { status });
 }
 
 /** GET /api/Client/statuses */

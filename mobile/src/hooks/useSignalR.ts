@@ -7,12 +7,32 @@ import { useAuthStore } from "@/store/authStore";
 import { useWhatsAppStore } from "@/store/whatsappStore";
 
 /**
- * Temps réel de l'inbox — portage de `src/hooks/useSignalR.ts` du web, avec deux
+ * Temps réel de l'inbox — portage de `src/hooks/useSignalR.ts` du web, avec trois
  * adaptations mobiles :
  *  - le hub est authentifié par `accessTokenFactory` (pas de cookie de session) ;
  *  - la connexion est relancée au retour au premier plan, l'OS coupant les
- *    sockets d'une app en arrière-plan.
+ *    sockets d'une app en arrière-plan ;
+ *  - les traces du hub passent par `console.warn` (voir `hubLogger`).
  */
+
+/**
+ * Même verbosité que le web (`LogLevel.Warning`), mais tout est journalisé en
+ * `warn`.
+ *
+ * `console.error` déclenche la LogBox plein écran de React Native : au
+ * démarrage, un jeton périmé dans le store fait échouer la première
+ * négociation (401) le temps qu'une requête REST le rafraîchisse, et cet échec
+ * transitoire — que le `start()` suivant rattrape — masquait toute l'app
+ * derrière un écran rouge. Dans une console de navigateur, le même message ne
+ * coûte rien : c'est bien le rendu qui diffère, pas le diagnostic.
+ */
+const hubLogger: signalR.ILogger = {
+  log(logLevel, message) {
+    if (logLevel >= signalR.LogLevel.Warning) {
+      console.warn(`[SignalR] ${message}`);
+    }
+  },
+};
 export function useSignalR() {
   const connectionRef = useRef<signalR.HubConnection | null>(null);
 
@@ -56,7 +76,7 @@ export function useSignalR() {
         accessTokenFactory: () => useAuthStore.getState().token ?? "",
       })
       .withAutomaticReconnect([0, 2000, 5000, 10000, 30000])
-      .configureLogging(signalR.LogLevel.Warning)
+      .configureLogging(hubLogger)
       .build();
 
     connectionRef.current = hub;

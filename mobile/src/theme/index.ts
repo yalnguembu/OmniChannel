@@ -8,6 +8,8 @@ export const colors = {
   inputBg: '#f0f0ec',
   hover: '#ebe9e3',
   active: '#e7e4dc',
+  /** `bg-wa-active/50` du web, aplati sur le blanc (ligne active de la liste). */
+  activeSoft: '#f3f1ee',
   chatBg: '#efeae2',
   bubbleIn: '#ffffff',
   bubbleOut: '#d9fdd3',

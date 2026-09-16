@@ -1,0 +1,70 @@
+# ⚠️ CES FLOWS TOURNENT CONTRE LA PRODUCTION.
+# Interdits absolus : taper sur un bouton d'envoi (message, média, template,
+# flow), sélectionner une option de statut, assigner une conversation, ou
+# enregistrer un contact. Tout cela écrit chez de vrais clients.
+# Les flows n'ouvrent des écrans et ne vérifient que des libellés.
+#
+# Ouvre l'app sur la liste des discussions et vérifie l'ossature de l'écran.
+# Réutilisé par les autres flows via `runFlow`, pour qu'un changement d'écran
+# d'entrée ne soit à corriger qu'ici.
+#
+# Pas de `clearState` : la session est persistée (`oc-auth`) et il n'existe pas
+# de compte de test — l'effacer déconnecterait sans moyen de se reconnecter.
+appId: host.exp.exponent
+---
+# Expo Go garde en mémoire le bundle JS déjà chargé : sans arrêt préalable,
+# `openLink` ne fait que ramener l'app au premier plan et le flow teste du code
+# périmé. `stopApp` ne touche pas AsyncStorage, la session est donc conservée.
+# Un sélecteur système laissé ouvert par un flow précédent (galerie, documents)
+# masquerait l'app : on le referme avant de repartir.
+- runFlow:
+    when:
+      visible: "Collections|Recent files|Recent"
+    commands:
+      - back
+      - back
+- stopApp
+# Juste après un `stopApp`, `openLink` retombe parfois sur l'écran d'accueil
+# sans relancer Expo Go. On réessaie donc au plus trois fois, en laissant à
+# chaque tentative le temps du premier bundle (qui peut prendre une minute).
+- repeat:
+    times: 3
+    while:
+      notVisible: "Omni WhatsApp"
+    commands:
+      - openLink: ${EXPO_URL}
+      - extendedWaitUntil:
+          visible: "Omni WhatsApp"
+          timeout: 90000
+          optional: true
+- assertVisible: "Omni WhatsApp"
+
+# Un `console.error` (réseau coupé, hub indisponible…) ouvre la LogBox de
+# développement, qui recouvre l'app et avale les appuis suivants : on la
+# referme si elle est là.
+- runFlow:
+    when:
+      visible: "Dismiss"
+    commands:
+      - tapOn: "Dismiss"
+
+# Les filtres avancés sont persistés (`oc-whatsapp`) : un flow interrompu peut
+# en laisser un actif, et la liste filtrée ferait échouer le flow suivant sur
+# une recherche qui ne remonte rien. On repart donc d'une liste propre.
+- runFlow:
+    when:
+      visible: "[0-9]+ filtres? actifs?"
+    commands:
+      - tapOn: "Filtres"
+      - scrollUntilVisible:
+          element: "Réinitialiser les filtres"
+          direction: DOWN
+      - tapOn: "Réinitialiser les filtres"
+      - tapOn: "Fermer"
+
+- assertVisible: "Rechercher ou démarrer une discussion"
+- assertVisible: "Filtre Toutes"
+- assertVisible: "Filtre Non lues"
+- assertVisible: "Diffusion de template"
+
+- takeScreenshot: .maestro/screens/00-inbox

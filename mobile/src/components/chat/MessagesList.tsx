@@ -1,4 +1,4 @@
-import { Ionicons } from "@expo/vector-icons";
+import { ChevronDown } from "lucide-react-native";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   ActivityIndicator,
@@ -15,6 +15,12 @@ import { localDayDiff, toUtcDate } from "@/models/whatsapp.models";
 import { colors, radius } from "@/theme";
 import { MessageBubble } from "./MessageBubble";
 
+/**
+ * Fil de messages — portage de `MessagesList` du web : mêmes séparateurs de
+ * jour, même pilule « charger les messages plus anciens », même bouton de
+ * retour au dernier message.
+ */
+
 /** Une série de messages est coupée après une pause de ce délai, comme WhatsApp. */
 const GROUP_GAP_MS = 15 * 60 * 1000;
 /** Distance au bas de la liste au-delà de laquelle le bouton « descendre » apparaît. */
@@ -22,6 +28,7 @@ const JUMP_THRESHOLD_PX = 260;
 
 type Row =
   | { type: "day"; key: string; label: string }
+  | { type: "older"; key: string }
   | { type: "msg"; key: string; vm: MessageViewModel; isFirstOfGroup: boolean };
 
 function tsOf(vm: MessageViewModel) {
@@ -40,10 +47,26 @@ function formatDateSep(ts: string | null | undefined): string {
   return d.toLocaleDateString("fr-FR", { day: "2-digit", month: "long", year: "numeric" });
 }
 
+/** Majuscule sur la première lettre — le `first-letter:uppercase` du web. */
+function capitalize(s: string): string {
+  return s.length > 0 ? s[0].toUpperCase() + s.slice(1) : s;
+}
+
 interface MessagesListProps {
   conversationId: string | null;
   vms: MessageViewModel[];
   isLoading: boolean;
+  /** De l'historique reste à charger. */
+  hasOlder: boolean;
+  isLoadingOlder: boolean;
+  onLoadOlder: () => void;
+  /** Message à mettre en évidence et vers lequel défiler (résultat de recherche). */
+  /** Résultat actuellement visé par la navigation de recherche. */
+  activeMatchId?: string | null;
+  /** Terme cherché, surligné dans le texte des bulles. */
+  highlightTerm?: string;
+  scrollTargetId?: string | null;
+  onScrollTargetReached?: () => void;
   onLongPressMessage: (vm: MessageViewModel) => void;
   onOpenImage: (url: string, caption?: string) => void;
   onOpenVideo: (url: string) => void;
@@ -53,6 +76,13 @@ export function MessagesList({
   conversationId,
   vms,
   isLoading,
+  hasOlder,
+  isLoadingOlder,
+  onLoadOlder,
+  activeMatchId,
+  highlightTerm,
+  scrollTargetId,
+  onScrollTargetReached,
   onLongPressMessage,
   onOpenImage,
   onOpenVideo,
@@ -86,23 +116,19 @@ export function MessagesList({
         (prev.senderName ?? "") === (vm.senderName ?? "");
       const prevTs = prev ? tsOf(prev) : null;
       const closeInTime =
-        !!prevTs &&
-        !!ts &&
-        new Date(ts).getTime() - new Date(prevTs).getTime() < GROUP_GAP_MS;
+        !!prevTs && !!ts && new Date(ts).getTime() - new Date(prevTs).getTime() < GROUP_GAP_MS;
 
-      out.push({
-        type: "msg",
-        key: vm.id,
-        vm,
-        isFirstOfGroup: !(sameAuthor && closeInTime),
-      });
+      out.push({ type: "msg", key: vm.id, vm, isFirstOfGroup: !(sameAuthor && closeInTime) });
       prev = vm;
     }
+
+    // Indicateur d'historique, épinglé au-dessus de la première bulle.
+    if (hasOlder || isLoadingOlder) out.unshift({ type: "older", key: "older" });
 
     // La liste est inversée (le bas est l'offset 0) : on démarre donc au dernier
     // message sans calcul de scroll, et le clavier ne décale pas la vue.
     return out.reverse();
-  }, [vms]);
+  }, [vms, hasOlder, isLoadingOlder]);
 
   const lastId = vms.length ? vms[vms.length - 1].id : null;
   const prevLastIdRef = useRef<string | null>(null);
@@ -130,6 +156,15 @@ export function MessagesList({
     }
   }, [lastId]);
 
+  // Défilement vers un résultat de recherche.
+  useEffect(() => {
+    if (!scrollTargetId) return;
+    const index = rows.findIndex((r) => r.type === "msg" && r.vm.id === scrollTargetId);
+    if (index < 0) return;
+    listRef.current?.scrollToIndex({ index, animated: true, viewPosition: 0.5 });
+    onScrollTargetReached?.();
+  }, [scrollTargetId, rows, onScrollTargetReached]);
+
   const handleScroll = useCallback((e: NativeSyntheticEvent<NativeScrollEvent>) => {
     // Liste inversée : l'offset 0 est le bas (message le plus récent).
     const y = e.nativeEvent.contentOffset.y;
@@ -149,7 +184,23 @@ export function MessagesList({
       if (item.type === "day") {
         return (
           <View style={styles.daySepWrap}>
-            <Text style={styles.daySep}>{item.label}</Text>
+            <Text style={styles.daySep}>{capitalize(item.label)}</Text>
+          </View>
+        );
+      }
+      if (item.type === "older") {
+        return (
+          <View style={styles.olderWrap}>
+            {isLoadingOlder ? (
+              <View style={styles.olderPill}>
+                <ActivityIndicator size="small" color={colors.green} />
+                <Text style={styles.olderText}>Chargement des messages…</Text>
+              </View>
+            ) : (
+              <Pressable style={styles.olderPill} onPress={onLoadOlder}>
+                <Text style={styles.olderText}>Charger les messages plus anciens</Text>
+              </Pressable>
+            )}
           </View>
         );
       }
@@ -157,13 +208,23 @@ export function MessagesList({
         <MessageBubble
           vm={item.vm}
           isFirstOfGroup={item.isFirstOfGroup}
+          highlightTerm={highlightTerm}
+          isActiveMatch={!!activeMatchId && activeMatchId === item.vm.id}
           onLongPress={onLongPressMessage}
           onOpenImage={onOpenImage}
           onOpenVideo={onOpenVideo}
         />
       );
     },
-    [onLongPressMessage, onOpenImage, onOpenVideo],
+    [
+      isLoadingOlder,
+      onLoadOlder,
+      activeMatchId,
+      highlightTerm,
+      onLongPressMessage,
+      onOpenImage,
+      onOpenVideo,
+    ],
   );
 
   if (isLoading) {
@@ -193,16 +254,31 @@ export function MessagesList({
         onScroll={handleScroll}
         scrollEventThrottle={64}
         keyboardDismissMode="interactive"
+        // Même raison que dans la liste des discussions : après une saisie dans
+        // la recherche du chat, un appui long sur une bulle ne doit pas être
+        // consommé par la fermeture du clavier.
+        keyboardShouldPersistTaps="handled"
         contentContainerStyle={styles.content}
+        // La liste étant inversée, « la fin » est le haut du fil : c'est là que
+        // l'historique se charge, comme le `requestOlder` du web au scroll.
+        onEndReached={hasOlder && !isLoadingOlder ? onLoadOlder : undefined}
+        onEndReachedThreshold={0.5}
         initialNumToRender={20}
         maxToRenderPerBatch={12}
         windowSize={9}
         removeClippedSubviews
+        onScrollToIndexFailed={() => {
+          /* la cible n'est pas encore montée : le prochain rendu réessaiera */
+        }}
       />
 
       {showJump ? (
-        <Pressable style={styles.jump} onPress={handleJump} accessibilityLabel="Aller au dernier message">
-          <Ionicons name="chevron-down" size={22} color={colors.icon} />
+        <Pressable
+          style={styles.jump}
+          onPress={handleJump}
+          accessibilityLabel="Aller au dernier message"
+        >
+          <ChevronDown size={22} color={colors.icon} />
           {newCount > 0 ? (
             <View style={styles.jumpBadge}>
               <Text style={styles.jumpBadgeText}>{newCount > 99 ? "99+" : newCount}</Text>
@@ -214,12 +290,22 @@ export function MessagesList({
   );
 }
 
+/** Ombre des pilules blanches du fil — `shadow-[0_1px_0.5px_rgba(11,20,26,0.13)]`. */
+const pillShadow = {
+  shadowColor: "#0b141a",
+  shadowOpacity: 0.13,
+  shadowRadius: 0.5,
+  shadowOffset: { width: 0, height: 1 },
+  elevation: 1,
+} as const;
+
 const styles = StyleSheet.create({
   container: { flex: 1 },
-  content: { paddingVertical: 10 },
+  // `px-[5%]` du web.
+  content: { paddingHorizontal: "5%", paddingTop: 12, paddingBottom: 8 },
   center: { flex: 1, alignItems: "center", justifyContent: "center" },
-  empty: { color: colors.muted, fontSize: 13 },
-  daySepWrap: { alignItems: "center", marginVertical: 10 },
+  empty: { color: colors.muted, fontSize: 14 },
+  daySepWrap: { alignItems: "center", paddingVertical: 6 },
   daySep: {
     backgroundColor: colors.white,
     color: colors.icon,
@@ -228,35 +314,47 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     borderRadius: radius.md,
     overflow: "hidden",
-    textTransform: "capitalize",
+    ...pillShadow,
   },
+  olderWrap: { alignItems: "center", paddingVertical: 12 },
+  olderPill: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+    backgroundColor: "rgba(255,255,255,0.9)",
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: radius.pill,
+    ...pillShadow,
+  },
+  olderText: { fontSize: 12, color: colors.icon },
   jump: {
     position: "absolute",
-    right: 14,
-    bottom: 14,
-    width: 42,
-    height: 42,
-    borderRadius: 21,
+    right: 20,
+    bottom: 16,
+    width: 40,
+    height: 40,
+    borderRadius: 20,
     backgroundColor: colors.white,
     alignItems: "center",
     justifyContent: "center",
-    shadowColor: "#000",
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    shadowOffset: { width: 0, height: 2 },
+    shadowColor: "#0b141a",
+    shadowOpacity: 0.25,
+    shadowRadius: 3,
+    shadowOffset: { width: 0, height: 1 },
     elevation: 4,
   },
   jumpBadge: {
     position: "absolute",
-    top: -3,
-    right: -3,
+    top: -4,
+    right: -4,
     minWidth: 20,
     height: 20,
-    paddingHorizontal: 5,
+    paddingHorizontal: 4,
     borderRadius: 10,
     backgroundColor: colors.green,
     alignItems: "center",
     justifyContent: "center",
   },
-  jumpBadgeText: { color: colors.white, fontSize: 11, fontWeight: "600" },
+  jumpBadgeText: { color: colors.white, fontSize: 11, fontWeight: "500" },
 });

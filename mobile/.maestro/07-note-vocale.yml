@@ -1,0 +1,44 @@
+# ⚠️ CES FLOWS TOURNENT CONTRE LA PRODUCTION.
+# Interdits absolus : taper sur un bouton d'envoi (message, média, template,
+# flow), sélectionner une option de statut, assigner une conversation, ou
+# enregistrer un contact. Tout cela écrit chez de vrais clients.
+#
+# Lecteur de note vocale : la conversation de test en porte une. Lire un média
+# ne modifie rien côté serveur, c'est le seul geste « actif » autorisé ici.
+appId: host.exp.exponent
+---
+- runFlow: 00b-ouvrir-discussion-test.yml
+
+# Le fil est rendu quand la pastille de jour apparaît (elle suit les bulles).
+- extendedWaitUntil:
+    visible: "Aujourd'hui|Hier|[0-9]{1,2} (janv|févr|mars|avr|mai|juin|juil|août|sept|oct|nov|déc)"
+    timeout: 60000
+
+# Les trois commandes du lecteur, comme l'`AudioPlayer` du web.
+- assertVisible: "Lire"
+- assertVisible: "Position de lecture"
+- assertVisible: "Vitesse de lecture"
+- takeScreenshot: .maestro/screens/23-note-vocale
+
+# La durée est résolue : `expo-audio` a bien chargé le fichier (sinon la bulle
+# basculerait sur « Fichier audio introuvable » au bout de 8 s).
+- assertNotVisible: "Fichier audio introuvable"
+
+# Lecture : on vérifie que la position avance, pas que « Pause » soit à
+# l'écran. La note de test ne dure que quatre secondes — elle peut se terminer
+# entre deux sondages de Maestro, et le bouton est alors déjà revenu à « Lire ».
+- tapOn: "Lire"
+- extendedWaitUntil:
+    notVisible: "0:00"
+    timeout: 20000
+- takeScreenshot: .maestro/screens/24-note-vocale-lecture
+# L'un ou l'autre : en cours de lecture, ou déjà fini.
+- assertVisible: "Lire|Pause"
+
+# Le cycle des vitesses : 1x → 1,5x → 2x → 1x, comme le web.
+- tapOn: "Vitesse de lecture"
+- assertVisible: "1.5x"
+- tapOn: "Vitesse de lecture"
+- assertVisible: "2x"
+- tapOn: "Vitesse de lecture"
+- assertVisible: "1x"
