@@ -1,10 +1,22 @@
 /**
  * Quick replies — canned messages an agent inserts by typing `/shortcut`.
  *
- * Stored in IndexedDB rather than on the server: they are per-agent shortcuts,
- * the API has no endpoint for them, and they must stay available instantly
- * while typing. Sharing between agents goes through the JSON import/export
- * below.
+ * Stored on the device rather than on the server: they are per-agent
+ * shortcuts, the API has no endpoint for them, and they must stay available
+ * instantly while typing. Sharing between agents goes through the JSON
+ * import/export below.
+ *
+ * **They live in `localStorage`, not IndexedDB.** IndexedDB is best-effort
+ * storage: an installed PWA can have it evicted by the browser without
+ * warning, which is how agents lost replies they had typed by hand — and there
+ * is no server copy to restore them from. `localStorage` is the same kind of
+ * quota in the letter of the spec, but browsers treat it far more
+ * conservatively in practice, and the whole set is a few kilobytes read in one
+ * go by every screen that shows it, so a key-by-key store bought nothing.
+ *
+ * The API stays asynchronous even though `localStorage` is not: callers were
+ * written against the database and have no reason to change, and it leaves the
+ * door open to a server-side store later.
  */
 
 export interface QuickReply {
@@ -26,9 +38,10 @@ export interface QuickReplyFile {
   quickReplies: Array<Pick<QuickReply, 'shortcut' | 'content'> & { label?: string }>;
 }
 
-const DB_NAME = 'omnichannel';
-const DB_VERSION = 1;
-const STORE = 'quickReplies';
+const STORAGE_KEY = 'oc-quick-replies';
+/** Read once to migrate anything left in the previous IndexedDB store. */
+const LEGACY_DB_NAME = 'omnichannel';
+const LEGACY_STORE = 'quickReplies';
 
 /** Normalises what the user typed into a usable shortcut token. */
 export function normaliseShortcut(raw: string): string {
@@ -39,77 +52,84 @@ export function normaliseShortcut(raw: string): string {
     .toLowerCase();
 }
 
-function openDb(): Promise<IDBDatabase> {
-  return new Promise((resolve, reject) => {
-    if (typeof indexedDB === 'undefined') {
-      reject(new Error('IndexedDB indisponible'));
-      return;
-    }
-    const request = indexedDB.open(DB_NAME, DB_VERSION);
-    request.onupgradeneeded = () => {
-      const db = request.result;
-      if (!db.objectStoreNames.contains(STORE)) {
-        const store = db.createObjectStore(STORE, { keyPath: 'id' });
-        store.createIndex('shortcut', 'shortcut', { unique: false });
-      }
-    };
-    request.onsuccess = () => resolve(request.result);
-    request.onerror = () => reject(request.error ?? new Error('Ouverture IndexedDB refusée'));
-  });
+/** Anything unreadable is treated as an empty set rather than thrown. */
+function readAll(): QuickReply[] {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return [];
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? (parsed as QuickReply[]) : [];
+  } catch {
+    return [];
+  }
 }
 
-/** Runs `work` in a transaction and resolves once it has actually committed. */
-async function withStore<T>(
-  mode: IDBTransactionMode,
-  work: (store: IDBObjectStore) => IDBRequest<T> | void,
-): Promise<T | undefined> {
-  const db = await openDb();
+function writeAll(replies: QuickReply[]): void {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(replies));
+}
+
+/**
+ * Moves whatever the old IndexedDB store still holds into `localStorage`.
+ *
+ * Runs once per page load, and only when `localStorage` is empty: switching
+ * store must not be the thing that finally loses the replies an agent still
+ * had. Entries already present win, so a migration can never overwrite newer
+ * work. Failures are silent — the old store may well be the one the browser
+ * evicted in the first place.
+ */
+let migrated = false;
+async function migrateLegacyStore(): Promise<QuickReply[]> {
+  if (migrated) return [];
+  migrated = true;
+
+  if (typeof indexedDB === 'undefined') return [];
   try {
-    return await new Promise<T | undefined>((resolve, reject) => {
-      const tx = db.transaction(STORE, mode);
-      const request = work(tx.objectStore(STORE));
-      let result: T | undefined;
-      if (request) request.onsuccess = () => (result = request.result);
-      // Resolve on `complete`, not on the request: a write is only durable
-      // once the transaction commits.
-      tx.oncomplete = () => resolve(result);
-      tx.onabort = () => reject(tx.error ?? new Error('Transaction annulée'));
-      tx.onerror = () => reject(tx.error ?? new Error('Transaction échouée'));
+    const legacy = await new Promise<QuickReply[]>((resolve) => {
+      const request = indexedDB.open(LEGACY_DB_NAME);
+      request.onerror = () => resolve([]);
+      request.onsuccess = () => {
+        const db = request.result;
+        if (!db.objectStoreNames.contains(LEGACY_STORE)) {
+          db.close();
+          resolve([]);
+          return;
+        }
+        const tx = db.transaction(LEGACY_STORE, 'readonly');
+        const all = tx.objectStore(LEGACY_STORE).getAll();
+        all.onsuccess = () => resolve((all.result ?? []) as QuickReply[]);
+        all.onerror = () => resolve([]);
+        tx.oncomplete = () => db.close();
+      };
     });
-  } finally {
-    db.close();
+
+    if (legacy.length === 0) return [];
+    writeAll(legacy);
+    return legacy;
+  } catch {
+    return [];
   }
 }
 
 export async function listQuickReplies(): Promise<QuickReply[]> {
-  const all = await withStore<QuickReply[]>('readonly', (store) => store.getAll());
-  return (all ?? []).sort((a, b) => a.shortcut.localeCompare(b.shortcut, 'fr'));
+  let all = readAll();
+  if (all.length === 0) all = await migrateLegacyStore();
+  return all.sort((a, b) => a.shortcut.localeCompare(b.shortcut, 'fr'));
 }
 
 export async function putQuickReply(reply: QuickReply): Promise<void> {
-  await withStore('readwrite', (store) => store.put(reply));
+  const all = readAll().filter((r) => r.id !== reply.id);
+  writeAll([...all, reply]);
 }
 
 export async function deleteQuickReply(id: string): Promise<void> {
-  await withStore('readwrite', (store) => store.delete(id));
+  writeAll(readAll().filter((r) => r.id !== id));
 }
 
 export async function putManyQuickReplies(replies: QuickReply[]): Promise<void> {
   if (replies.length === 0) return;
-  // One transaction for the whole batch: an import either lands or it doesn't.
-  const db = await openDb();
-  try {
-    await new Promise<void>((resolve, reject) => {
-      const tx = db.transaction(STORE, 'readwrite');
-      const store = tx.objectStore(STORE);
-      for (const reply of replies) store.put(reply);
-      tx.oncomplete = () => resolve();
-      tx.onabort = () => reject(tx.error ?? new Error('Import annulé'));
-      tx.onerror = () => reject(tx.error ?? new Error('Import échoué'));
-    });
-  } finally {
-    db.close();
-  }
+  const incoming = new Map(replies.map((r) => [r.id, r]));
+  const kept = readAll().filter((r) => !incoming.has(r.id));
+  writeAll([...kept, ...replies]);
 }
 
 function newId(): string {
