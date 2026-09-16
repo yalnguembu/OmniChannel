@@ -21,14 +21,21 @@ export const ReaboSessionSchema = z
     refreshTokenExpiresUtc: z.string().optional().nullable(),
     permissions: z.array(z.string()).optional().nullable(),
 
-    // Spellings seen on sibling endpoints of the same API. The login response
-    // is typed `unknown` in the spec, so the only defence against a renamed
-    // field is to accept the plausible names rather than silently end up with
-    // no refresh token — and a session that can never renew itself.
+    // `admin-web`'s login page reads the expiry as
+    // `tokenExpiresUtc ?? tokenExpirationDate`, so both spellings exist in the
+    // wild; the rest are defensive, the login response being typed `unknown`.
+    tokenExpirationDate: z.string().optional().nullable(),
     accessToken: z.string().optional().nullable(),
     refresh_token: z.string().optional().nullable(),
     expiresUtc: z.string().optional().nullable(),
     tokenExpiration: z.string().optional().nullable(),
+
+    // The login payload already carries the balances and the entity type —
+    // `admin-web` seeds its whole session from it without a single follow-up
+    // call.
+    operationBalance: z.union([z.number(), z.string()]).optional().nullable(),
+    commissionBalance: z.union([z.number(), z.string()]).optional().nullable(),
+    entityType: z.string().optional().nullable(),
 
     id: z.union([z.string(), z.number()]).optional().nullable(),
     userName: z.string().optional().nullable(),
@@ -52,14 +59,18 @@ export type ReaboSession = z.infer<typeof ReaboSessionSchema>;
  * so a `Z` is appended before parsing — otherwise the browser reads it as local
  * time and the token looks valid for another hour in Douala.
  *
- * A missing or unparseable date counts as expired: a reconnection prompt is a
- * far better failure than a 401 in the middle of a payment.
+ * A missing or unparseable date counts as **valid**, matching ReaboCanal's own
+ * `TokenManager.isTokenExpired`: its date comparison yields `false` on an
+ * `Invalid Date`, so a session whose expiry the API did not return keeps
+ * working and the server rules on it with a 401. Treating the unknown as
+ * expired instead is what made a perfectly good login show up as "session
+ * expirée" the moment it was stored.
  */
 export function isTokenExpired(iso: string | null | undefined, skewMs = 0): boolean {
-  if (!iso) return true;
+  if (!iso) return false;
   const normalised = /Z$|[+-]\d{2}:?\d{2}$/.test(iso) ? iso : `${iso}Z`;
   const at = new Date(normalised);
-  if (Number.isNaN(at.getTime())) return true;
+  if (Number.isNaN(at.getTime())) return false;
   return at.getTime() - skewMs <= Date.now();
 }
 
@@ -89,28 +100,79 @@ export function toReaboAccount(session: ReaboSession): ReaboAccount {
  * the API answers `code: 0` on a successful call whose body is still not a
  * session (wrong shape, partial account), and that must read as a failure.
  */
+/**
+ * Pulls the session out of a login response.
+ *
+ * `admin-web` reads it as `response.data ?? response` and then simply checks
+ * for a `token` — it never inspects an envelope code on this endpoint. The
+ * same shape-tolerance is reproduced here: the payload is looked for at the
+ * top level and one level down, because both forms exist depending on the
+ * endpoint.
+ */
 export function parseReaboSession(raw: unknown): ReaboSession | null {
-  const parsed = ReaboSessionSchema.safeParse(raw);
-  if (!parsed.success) return null;
+  const candidates = [raw, (raw as { data?: unknown })?.data];
 
-  // Normalise the aliases onto the canonical fields, so nothing downstream has
-  // to know which spelling this deployment happens to use.
-  const s = parsed.data;
-  const session: ReaboSession = {
-    ...s,
-    token: s.token || s.accessToken || null,
-    refreshToken: s.refreshToken || s.refresh_token || null,
-    tokenExpiresUtc: s.tokenExpiresUtc || s.expiresUtc || s.tokenExpiration || null,
-  };
+  for (const candidate of candidates) {
+    const parsed = ReaboSessionSchema.safeParse(candidate);
+    if (!parsed.success) continue;
 
-  // A refresh token identical to the access token is not a refresh token: it
-  // would send the same value in both fields and renew nothing. Treat it as
-  // absent so the session fails loudly at expiry instead of looping.
-  if (session.refreshToken && session.refreshToken === session.token) {
-    session.refreshToken = null;
+    // Normalise the aliases onto the canonical fields, so nothing downstream
+    // has to know which spelling this deployment happens to use.
+    const s = parsed.data;
+    const session: ReaboSession = {
+      ...s,
+      token: s.token || s.accessToken || null,
+      refreshToken: s.refreshToken || s.refresh_token || null,
+      tokenExpiresUtc:
+        s.tokenExpiresUtc ||
+        s.tokenExpirationDate ||
+        s.expiresUtc ||
+        s.tokenExpiration ||
+        null,
+    };
+    if (session.token) return session;
   }
 
-  return session.token ? session : null;
+  return null;
+}
+
+/**
+ * Login failures come back as a **negative** `code` on the response envelope,
+ * not as an HTTP error — the same catalogue `admin-web` switches on to decide
+ * which dialog to show.
+ */
+export const REABO_LOGIN_ERRORS: Record<number, string> = {
+  [-1]: "Identifiant ou mot de passe incorrect.",
+  [-2]: "Ce compte est désactivé.",
+  [-3]: "Ce compte est bloqué après trop de tentatives.",
+  [-4]: "Ce compte n'est pas encore approuvé.",
+  [-5]: "Le mot de passe doit être réinitialisé avant de pouvoir se connecter.",
+  [-6]: "Ce compte n'est pas vérifié.",
+  [-7]: "Le mot de passe doit être modifié avant de pouvoir se connecter.",
+};
+
+export function reaboLoginError(code: unknown, message?: unknown): string {
+  if (typeof code === "number" && REABO_LOGIN_ERRORS[code]) {
+    return REABO_LOGIN_ERRORS[code];
+  }
+  if (typeof message === "string" && message.trim()) return message;
+  return REABO_LOGIN_ERRORS[-1];
+}
+
+/** Balances as the login payload carries them, whatever their wire type. */
+export function sessionBalances(session: ReaboSession): {
+  operations: number | null;
+  commissions: number | null;
+} {
+  const toNumber = (v: unknown): number | null => {
+    if (v == null || v === "") return null;
+    const n = Number(v);
+    return Number.isFinite(n) ? n : null;
+  };
+  return {
+    operations: toNumber(session.operationBalance),
+    commissions: toNumber(session.commissionBalance),
+  };
 }
 
 // ─── Solde ───────────────────────────────────────────────────────────────────

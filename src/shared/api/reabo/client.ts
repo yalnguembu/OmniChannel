@@ -25,6 +25,9 @@ export const REABO_BASE_URL =
 
 reaboClient.instance.defaults.baseURL = REABO_BASE_URL;
 reaboClient.instance.defaults.timeout = 120_000;
+// Matches ReaboCanal's own `setupApi`. Safe to pin here, unlike on the
+// OmniChannel client: nothing is uploaded as multipart through this one.
+reaboClient.instance.defaults.headers.common["Content-Type"] = "application/json";
 
 /**
  * Endpoints that must go out **without** an Authorization header — sending a
@@ -101,27 +104,41 @@ async function getValidToken(): Promise<string | null> {
  */
 let refreshInFlight: Promise<string | null> | null = null;
 
+/**
+ * Renews the access token, transcribing `TokenManager.performTokenRefresh`
+ * from ReaboCanal rather than reinterpreting it. Three details matter, and all
+ * three are theirs:
+ *
+ * - the payload is read at `response.data.data` and considered valid only when
+ *   it carries **both** `token` and `tokenExpiresUtc`;
+ * - there is **no envelope code check** here either — the endpoint follows the
+ *   login's convention, not the mypos one;
+ * - the **refresh token is not rotated**. The response renews the access token
+ *   only, and the original refresh token is carried over untouched. Overwriting
+ *   it with an empty value is the exact bug their `restoreAuthEverywhere`
+ *   warns about: silent renewal stops working for good.
+ */
 async function refreshSession(): Promise<string | null> {
   const { token, refreshToken, setSession, account, permissions } =
     useReaboAuthStore.getState();
   if (!token || !refreshToken) return null;
 
   try {
-    const res = await reaboClient.instance.post("/User/refresh-token", {
+    const res = await reaboClient.instance.post("/api/v1/User/refresh-token", {
       token,
       refreshToken,
     });
-    const body = res?.data;
-    const ok = body?.code === 0 || body?.status === 0;
-    const session = ok ? parseReaboSession(body?.data) : null;
-    if (!session?.token) return null;
+    const session = parseReaboSession(res?.data);
+    if (!session?.token || !session.tokenExpiresUtc) return null;
 
     setSession({
       token: session.token,
-      tokenExpiresUtc: session.tokenExpiresUtc ?? null,
-      refreshToken: session.refreshToken ?? refreshToken,
-      refreshTokenExpiresUtc: session.refreshTokenExpiresUtc ?? null,
-      // A refresh rotates tokens, not identity: keep what the login resolved.
+      tokenExpiresUtc: session.tokenExpiresUtc,
+      refreshToken,
+      refreshTokenExpiresUtc:
+        session.refreshTokenExpiresUtc ??
+        useReaboAuthStore.getState().refreshTokenExpiresUtc,
+      // A refresh renews a token, not an identity: keep what the login resolved.
       account,
       permissions: session.permissions?.length ? session.permissions : permissions,
     });
