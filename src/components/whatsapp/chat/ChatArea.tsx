@@ -2,6 +2,7 @@ import React, { useState, useCallback, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
+import { Forward, Loader2, X } from "lucide-react";
 import { ChatHeader } from "./ChatHeader";
 import { ChatSearchBar } from "./ChatSearchBar";
 import { MessagesList } from "./MessagesList";
@@ -11,6 +12,7 @@ import { ChatPlaceholder } from "./ChatPlaceholder";
 import { LightboxModal } from "./LightboxModal";
 import { MsgDetailsModal, FlowModal } from "./Modals";
 import { ConversationDetailsPanel } from "./ConversationDetailsPanel";
+import { ForwardModal } from "./ForwardModal";
 import type { DetailsView } from "./ConversationDetailsPanel";
 import { TemplateBroadcastModal } from "./TemplateBroadcastModal";
 import { useChatViewModel } from "@/hooks/chatViewModel";
@@ -64,6 +66,8 @@ export const ChatArea: React.FC = () => {
     clearScrollTarget,
     jumpToDate,
     isJumpingToDate,
+    goToMessage,
+    isJumpingToMessage,
     availableDays,
     galleryItems,
     replyTo,
@@ -94,6 +98,9 @@ export const ChatArea: React.FC = () => {
   const [msgDetailsId, setMsgDetailsId] = useState<string | null>(null);
   const [flowOpen, setFlowOpen] = useState(false);
   const [templateOpen, setTemplateOpen] = useState(false);
+  /** Ids picked for forwarding; null means selection mode is off. */
+  const [selectedIds, setSelectedIds] = useState<Set<string> | null>(null);
+  const [forwardOpen, setForwardOpen] = useState(false);
   // Contact being edited, snapshotted at open time so a background refetch of
   // the phone→client resolution can't mutate the form under the user.
   const [editingContact, setEditingContact] = useState<{
@@ -206,6 +213,36 @@ export const ChatArea: React.FC = () => {
     setMsgDetailsId(id);
   }, []);
 
+  // ── Forwarding ──
+  const handleToggleSelect = useCallback((id: string) => {
+    setSelectedIds((prev) => {
+      const next = new Set(prev ?? []);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  }, []);
+
+  /** Entering selection mode from a message's menu pre-picks that message. */
+  const handleStartForward = useCallback((vm: MessageViewModel) => {
+    setSelectedIds(new Set([vm.id]));
+  }, []);
+
+  const clearSelection = useCallback(() => setSelectedIds(null), []);
+
+  const handleQuoteClick = useCallback(
+    async (messageId: string) => {
+      const found = await goToMessage(messageId);
+      if (!found) toast.info("Le message d'origine n'a pas été retrouvé");
+    },
+    [goToMessage],
+  );
+
+  const selectedMessages = React.useMemo(
+    () => (selectedIds ? messageVMs.filter((vm) => selectedIds.has(vm.id)) : []),
+    [selectedIds, messageVMs],
+  );
+
   const handleToggleSearch = () => {
     setSearchVisible((v) => !v);
     if (searchVisible) setChatSearch("");
@@ -231,8 +268,12 @@ export const ChatArea: React.FC = () => {
       if (e.key !== "Escape") return;
       if (
         lightbox.open || detailsView || msgDetailsId || flowOpen ||
-        templateOpen || searchVisible
+        templateOpen || forwardOpen || searchVisible
       ) {
+        return;
+      }
+      if (selectedIds) {
+        setSelectedIds(null);
         return;
       }
       if (pendingFiles) {
@@ -243,7 +284,7 @@ export const ChatArea: React.FC = () => {
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [lightbox.open, detailsView, msgDetailsId, flowOpen, templateOpen, searchVisible, pendingFiles, handleBack]);
+  }, [lightbox.open, detailsView, msgDetailsId, flowOpen, templateOpen, forwardOpen, searchVisible, selectedIds, pendingFiles, handleBack]);
 
   if (!activeConversationId) {
     return <ChatPlaceholder />;
@@ -336,6 +377,17 @@ export const ChatArea: React.FC = () => {
             availableDays={availableDays}
           />
 
+          {/* Reaching a quoted message can require widening the loaded window;
+              say so rather than leaving the tap looking unanswered. */}
+          {isJumpingToMessage && (
+            <div className="pointer-events-none absolute left-1/2 top-28 z-30 -translate-x-1/2">
+              <span className="inline-flex items-center gap-2 rounded-full bg-white/95 px-3 py-1.5 text-xs text-wa-icon shadow-[0_1px_3px_rgba(11,20,26,0.2)]">
+                <Loader2 size={13} className="animate-spin text-wa-green" />
+                Recherche du message d'origine…
+              </span>
+            </div>
+          )}
+
           <MessagesList
             conversationId={activeConversationId}
             vms={messageVMs}
@@ -350,19 +402,54 @@ export const ChatArea: React.FC = () => {
             onReply={handleReplyMessage}
             onInfo={handleInfoMessage}
             onImageClick={handleImageClick}
+            onQuoteClick={handleQuoteClick}
+            onForward={handleStartForward}
+            selectable={selectedIds !== null}
+            selectedIds={selectedIds ?? undefined}
+            onToggleSelect={handleToggleSelect}
           />
 
-          <MessageInput
-            replyTo={replyTo}
-            onCancelReply={() => setReplyTo(null)}
-            onSend={handleSendMessage}
-            onPickMedia={setPendingFiles}
-            onOpenFlow={() => setFlowOpen(true)}
-            onOpenTemplate={() => setTemplateOpen(true)}
-            disabled={sessionWindowClosed}
-            isSending={isSending}
-            inputRef={inputRef}
-          />
+          {/* Selection bar — replaces the composer while picking messages */}
+          {selectedIds !== null && (
+            <div className="flex shrink-0 items-center gap-3 border-t border-wa-border bg-wa-header px-4 py-3">
+              <button
+                type="button"
+                onClick={clearSelection}
+                className="rounded-full p-1.5 text-wa-icon transition-colors hover:bg-wa-active"
+                aria-label="Quitter la sélection"
+              >
+                <X size={18} />
+              </button>
+              <span className="flex-1 text-sm text-wa-text">
+                {selectedIds.size} message{selectedIds.size > 1 ? "s" : ""} sélectionné
+                {selectedIds.size > 1 ? "s" : ""}
+              </span>
+              <button
+                type="button"
+                disabled={selectedIds.size === 0}
+                onClick={() => setForwardOpen(true)}
+                className="inline-flex items-center gap-1.5 rounded-full bg-wa-green-send px-4 py-1.5 text-xs font-medium text-white transition-all hover:brightness-105 disabled:opacity-50"
+              >
+                <Forward size={14} />
+                Transférer
+              </button>
+            </div>
+          )}
+
+          {/* The selection bar takes the composer's place while picking. */}
+          {selectedIds === null && (
+            <MessageInput
+              replyTo={replyTo}
+              onCancelReply={() => setReplyTo(null)}
+              onSend={handleSendMessage}
+              onPickMedia={setPendingFiles}
+              onOpenFlow={() => setFlowOpen(true)}
+              onOpenTemplate={() => setTemplateOpen(true)}
+              disabled={sessionWindowClosed}
+              isSending={isSending}
+              inputRef={inputRef}
+            />
+          )}
 
           {/* Media composer — WhatsApp-style preview, one caption per file */}
           {pendingFiles && pendingFiles.length > 0 && (
@@ -384,7 +471,14 @@ export const ChatArea: React.FC = () => {
           />
 
 
-          <MsgDetailsModal
+          <ForwardModal
+          open={forwardOpen}
+          onClose={() => setForwardOpen(false)}
+          messages={selectedMessages}
+          onDone={clearSelection}
+        />
+
+        <MsgDetailsModal
             open={!!msgDetailsId}
             msg={msgDetailsId ? (getMessageDetails(msgDetailsId) ?? null) : null}
             onClose={() => setMsgDetailsId(null)}
