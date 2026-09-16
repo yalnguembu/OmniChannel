@@ -454,10 +454,46 @@ export const PaymentLinkSchema = z
   .passthrough();
 export type PaymentLink = z.infer<typeof PaymentLinkSchema>;
 
+/** `…/pay/07ca873d7b9444b09aa554de9b355f7a` → `07ca873d…`. */
+function guidFromPayUrl(url: string): string | null {
+  const segment = url.split(/[?#]/)[0].split("/").filter(Boolean).pop();
+  return segment && /^[0-9a-f-]{8,}$/i.test(segment) ? segment : null;
+}
+
+/**
+ * Reads what `flux-create-pay-link` actually returns.
+ *
+ * In production the envelope's `data` is a **bare URL string**, not the
+ * `PaymentLinkDto` the spec suggests:
+ *
+ *     { code: 0, status: 200, message: "Success",
+ *       data: "https://app.myreabo.cm/pay/07ca873d7b9444b09aa554de9b355f7a" }
+ *
+ * Expecting an object turned every successful creation into "lien créé sans
+ * URL exploitable". Both shapes are accepted now, and the link's guid is
+ * recovered from the URL when the payload does not spell it out — it is what
+ * lets the link be looked up again later.
+ *
+ * Note what the string form does *not* carry: amount, duration, expiry, used
+ * flag. Everything the customer message needs therefore comes from what the
+ * agent just chose, not from the response.
+ */
 export function parsePaymentLink(raw: unknown): PaymentLink | null {
+  if (typeof raw === "string") {
+    const payUrl = raw.trim();
+    if (!/^https?:\/\//i.test(payUrl)) return null;
+    return { payUrl, linkGuid: guidFromPayUrl(payUrl) };
+  }
+
   const parsed = PaymentLinkSchema.safeParse(raw);
   if (!parsed.success) return null;
-  return parsed.data.payUrl ? parsed.data : null;
+
+  const link = parsed.data;
+  if (!link.payUrl) return null;
+  return {
+    ...link,
+    linkGuid: link.linkGuid || guidFromPayUrl(link.payUrl),
+  };
 }
 
 /**
