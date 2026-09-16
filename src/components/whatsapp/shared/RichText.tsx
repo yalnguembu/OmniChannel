@@ -61,9 +61,16 @@ function isPhoneCandidate(raw: string, kind: PhoneKind): boolean {
 
 const PHONE_ALTERNATIVES = [
   // E.164 with optional cosmetic separators.
-  String.raw`\+[\d\s().-]{7,22}\d`,
-  // International written with the 00 prefix.
-  String.raw`00[\d\s().-]{7,22}\d`,
+  //
+  // The country code must start **right after** the prefix — one tolerated
+  // space, then a digit. Letting the separator class follow the `+` directly
+  // made `+ (24300002183847)` a phone number: the `+` swallowed the space and
+  // the parenthesis, and what was left was a réabonnement number read as a
+  // country code. No notation in the world puts a bracket between `+` and the
+  // country code, while `+1 (555) 123-4567` still matches on its `+1`.
+  String.raw`\+ ?\d[\d\s().-]{6,21}\d`,
+  // International written with the 00 prefix — same rule, same reason.
+  String.raw`00 ?\d[\d\s().-]{6,21}\d`,
   // National, grouped: three or more groups, the first of which may be a lone
   // digit — `6 95 45 73 35` is how a Cameroonian number is usually written out.
   // Dots are excluded on purpose: `10.500.000` is money. Length is checked
