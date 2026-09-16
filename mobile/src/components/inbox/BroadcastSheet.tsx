@@ -1,4 +1,4 @@
-import { Ionicons } from "@expo/vector-icons";
+import { FileText, Upload } from "lucide-react-native";
 import * as DocumentPicker from "expo-document-picker";
 import { useState } from "react";
 import { ActivityIndicator, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
@@ -115,11 +115,11 @@ export function BroadcastSheet({ onClose }: { onClose: () => void }) {
           <>
             <Text style={styles.label}>Fichier de destinataires</Text>
             <Pressable style={styles.filePicker} onPress={pickFile}>
-              <Ionicons
-                name={file ? "document-text" : "cloud-upload-outline"}
-                size={20}
-                color={colors.teal}
-              />
+              {file ? (
+                <FileText size={20} color={colors.teal} />
+              ) : (
+                <Upload size={20} color={colors.teal} />
+              )}
               <Text style={styles.fileName} numberOfLines={1}>
                 {file?.name ?? "Choisir un fichier (CSV, XLSX…)"}
               </Text>

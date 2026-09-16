@@ -1,4 +1,5 @@
 import {
+  keepPreviousData,
   useInfiniteQuery,
   useMutation,
   useQuery,
@@ -20,11 +21,24 @@ import { useWhatsAppStore } from "@/store/whatsappStore";
 // n'affiche qu'une poignée de lignes à la fois.
 const PAGE_SIZE = 30;
 
+/** Les messages arrivent par petites fenêtres, qui grandissent en remontant. */
+export const MESSAGE_PAGE_SIZE = 30;
+
+/**
+ * Ce qu'un élargissement ajoute quand la recherche interne ne trouve rien dans
+ * ce qui est déjà chargé.
+ */
+export const SEARCH_EXTEND_SIZE = 250;
+
 export const whatsappKeys = {
   all: ["whatsapp"] as const,
   conversations: (params: ConversationSearchParams) =>
     [...whatsappKeys.all, "conversations", params] as const,
-  messages: (convId: string) => [...whatsappKeys.all, "messages", convId] as const,
+  /** Sans `limit`, une clé-préfixe qui invalide toutes les tailles de fenêtre. */
+  messages: (convId: string, limit?: number) =>
+    (limit === undefined
+      ? [...whatsappKeys.all, "messages", convId]
+      : [...whatsappKeys.all, "messages", convId, limit]) as readonly unknown[],
   conversation: (convId: string) => [...whatsappKeys.all, "conversation", convId] as const,
   stats: () => [...whatsappKeys.all, "stats"] as const,
   users: () => [...whatsappKeys.all, "users"] as const,
@@ -150,12 +164,18 @@ export function useAssignConversation() {
 
 // ─── Messages ─────────────────────────────────────────────────────────────────
 
-export function useMessages(convId: string | null) {
+/**
+ * Messages d'une conversation, en **fenêtre croissante** : toujours la page 1,
+ * avec `limit` relevé au fur et à mesure que l'on remonte le fil.
+ */
+export function useMessages(convId: string | null, limit: number) {
   return useQuery({
-    queryKey: whatsappKeys.messages(convId ?? ""),
-    queryFn: () => apiEndpoints.searchMessages(convId!),
+    queryKey: whatsappKeys.messages(convId ?? "", limit),
+    queryFn: () => apiEndpoints.fetchMessageWindow(convId!, limit),
     enabled: !!convId,
     staleTime: 60_000,
+    // Garde le fil à l'écran pendant qu'une fenêtre plus large arrive.
+    placeholderData: keepPreviousData,
   });
 }
 
@@ -168,10 +188,16 @@ export interface SendTextPayload {
 export interface SendReplyPayload extends SendTextPayload {
   replyToExternalMessageId: string;
 }
-export interface SendMediaPayload {
-  to: string;
+/** Un attachement en file dans le composeur, avec sa propre légende. */
+export interface PendingMedia {
   file: LocalFile;
   caption?: string;
+}
+
+export interface SendMediaPayload {
+  to: string;
+  /** Envoyés l'un après l'autre, pour que WhatsApp garde l'ordre du composeur. */
+  items: PendingMedia[];
 }
 
 export function useSendText() {
@@ -203,11 +229,17 @@ export function useSendMedia() {
   const qc = useQueryClient();
   const selectedSenderId = useWhatsAppStore((s) => s.selectedSenderId);
   return useMutation({
-    mutationFn: (p: SendMediaPayload) =>
-      apiEndpoints.sendMedia(p.to, p.file, p.caption, selectedSenderId),
-    onSuccess: () => {
+    mutationFn: async (p: SendMediaPayload) => {
+      // En série, pas en parallèle : WhatsApp affiche les messages dans l'ordre
+      // d'arrivée, et un `Promise.all` les mélangerait.
+      for (const item of p.items) {
+        await apiEndpoints.sendMedia(p.to, item.file, item.caption, selectedSenderId);
+      }
+      return p.items.length;
+    },
+    onSuccess: (count) => {
       qc.invalidateQueries({ queryKey: whatsappKeys.all });
-      toast.success("Fichier envoyé", 1500);
+      toast.success(count > 1 ? `${count} fichiers envoyés` : "Fichier envoyé", 1500);
     },
     onError: (e) => toast.error(errorMessage(e, "Erreur lors de l'envoi du fichier")),
   });

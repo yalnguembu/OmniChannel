@@ -1,4 +1,4 @@
-import { Ionicons } from "@expo/vector-icons";
+import { AlertCircle, AlertTriangle, CheckCircle2, Info, type LucideIcon } from "lucide-react-native";
 import { useEffect, useRef } from "react";
 import { Animated, Pressable, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -45,11 +45,11 @@ export const toast = {
     useToastStore.getState().push("warning", message, duration),
 };
 
-const ICONS: Record<ToastKind, keyof typeof Ionicons.glyphMap> = {
-  success: "checkmark-circle",
-  error: "alert-circle",
-  info: "information-circle",
-  warning: "warning",
+const ICONS: Record<ToastKind, LucideIcon> = {
+  success: CheckCircle2,
+  error: AlertCircle,
+  info: Info,
+  warning: AlertTriangle,
 };
 
 const TINTS: Record<ToastKind, string> = {
@@ -60,6 +60,7 @@ const TINTS: Record<ToastKind, string> = {
 };
 
 function Toast({ item }: { item: ToastItem }) {
+  const Icon = ICONS[item.kind];
   const dismiss = useToastStore((s) => s.dismiss);
   const opacity = useRef(new Animated.Value(0)).current;
 
@@ -75,7 +76,7 @@ function Toast({ item }: { item: ToastItem }) {
 
   return (
     <Animated.View style={[styles.toast, { opacity }]}>
-      <Ionicons name={ICONS[item.kind]} size={18} color={TINTS[item.kind]} />
+      <Icon size={18} color={TINTS[item.kind]} />
       <Pressable style={styles.pressable} onPress={() => dismiss(item.id)}>
         <Text style={styles.text} numberOfLines={3}>
           {item.message}
