@@ -66,10 +66,11 @@ export const OperationRow: React.FC<{ op: Operation }> = ({ op }) => {
   const sendMedia = useSendMedia();
   const verify = useVerifyOperation();
 
-  const receiptName = `recu-${op.transReferenceInterne || op.operId || "reabo"}.pdf`;
+  // `facture-<id>.pdf`, as the point-of-sale download names it.
+  const receiptName = `facture-${op.operId || op.transReferenceInterne || "reabo"}.pdf`;
 
   const buildFile = async (): Promise<File> => {
-    const blob = await buildReceiptBlob(toReceiptData(op, fmtFcfa));
+    const blob = await buildReceiptBlob(toReceiptData(op));
     return new File([blob], receiptName, { type: "application/pdf" });
   };
 

@@ -1,12 +1,12 @@
 import type { Operation } from "@/models/reabo.models";
 
 /**
- * Customer receipt for one operation.
+ * Réabonnement receipt for one operation.
  *
  * ReaboCanal has no invoice endpoint: `admin-web` renders its grid row into a
- * PDF on the client, and so does this. Everything printed therefore comes from
- * the operation itself, so a receipt can never show a figure the operation does
- * not carry.
+ * PDF on the client, and so does this — same A7 ticket, same fields, same
+ * wording, so the document a customer receives on WhatsApp is the one they
+ * already know from the point of sale.
  *
  * This module holds the data shape only. The rendering lives in
  * `reaboReceiptDocument.tsx` and is reached exclusively through the dynamic
@@ -15,45 +15,63 @@ import type { Operation } from "@/models/reabo.models";
  */
 
 export interface ReceiptData {
-  reference: string;
+  /** Operation number, printed next to the subscriber's in the header. */
+  id: string;
   date: string;
-  subscriberNumber: string;
-  decoder: string;
-  contract: string;
+  subscriberId: string;
+  deviceNumber: string;
   customerName: string;
   plan: string;
+  /** Digits only — the template appends « F.CFA ». */
   amount: string;
-  fees: string;
-  paymentMethod: string;
-  payer: string;
-  periodStart: string;
-  periodEnd: string;
+  startDate: string;
+  endDate: string;
+  issuedAt: string;
   issuedBy: string;
+  contact: string;
+}
+
+/** Support line printed in the footer, as on the point-of-sale ticket. */
+const SUPPORT_CONTACT = "697953920";
+
+/**
+ * Dates arrive in two shapes on the same row: the operation's timestamp is an
+ * ISO instant, while the subscription's own dates are already written
+ * `JJ/MM/AAAA`. Anything unparseable is therefore printed as it came rather
+ * than turned into `Invalid Date`.
+ */
+function receiptDate(value: string | null | undefined, withTime = false): string {
+  const raw = (value ?? "").trim();
+  if (!raw) return "";
+  if (/^\d{2}\/\d{2}\/\d{4}/.test(raw)) return raw;
+
+  const parsed = new Date(raw);
+  if (Number.isNaN(parsed.getTime())) return raw;
+  return withTime
+    ? parsed.toLocaleString("fr-FR")
+    : parsed.toLocaleDateString("fr-FR");
 }
 
 /** Fields of the operation, laid out for the receipt. */
-export function toReceiptData(
-  op: Operation,
-  fmtAmount: (value: number | null | undefined) => string,
-): ReceiptData {
+export function toReceiptData(op: Operation): ReceiptData {
+  const amount = op.operAmount ?? op.transAmount ?? null;
+
   return {
-    reference:
-      op.transReferenceInterne ||
-      op.transReferenceProvider ||
-      (op.operId != null ? String(op.operId) : "—"),
-    date: op.operCreateDate ?? "",
-    subscriberNumber: op.operNumAbo ?? "",
-    decoder: op.operNumDecoder ?? "",
-    contract: op.operNumContrat != null ? String(op.operNumContrat) : "",
+    id:
+      op.operId != null
+        ? String(op.operId)
+        : (op.transReferenceInterne ?? ""),
+    date: receiptDate(op.operCreateDate, true),
+    subscriberId: op.operNumAbo ?? "",
+    deviceNumber: op.operNumDecoder ?? "",
     customerName: op.custFullName ?? "",
     plan: op.operArticles ?? op.operOperationType ?? "",
-    amount: fmtAmount(op.operAmount ?? op.transAmount ?? null),
-    fees: op.transFees != null ? fmtAmount(op.transFees) : "",
-    paymentMethod: op.transPaymentMethod ?? "",
-    payer: op.transTelephonePayeur ?? "",
-    periodStart: op.custStartDateAbo ?? "",
-    periodEnd: op.custEndDateAbo ?? "",
+    amount: amount != null ? String(Math.round(amount)) : "",
+    startDate: receiptDate(op.custStartDateAbo),
+    endDate: receiptDate(op.custEndDateAbo),
+    issuedAt: receiptDate(op.operCreateDate, true),
     issuedBy: op.usersFullName ?? "",
+    contact: SUPPORT_CONTACT,
   };
 }
 
