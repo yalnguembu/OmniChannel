@@ -153,6 +153,19 @@ export function useEstimateFluxPrice() {
  * In `myreabo` the five fields of a `ReaboFluxRequest` are typed by hand in a
  * modal; here they all come from the subscription already on screen, so the
  * agent checks rather than transcribes.
+ *
+ * **Not implemented: following the link's fate.** The endpoint answers with the
+ * bare URL, so nothing tells us whether the customer has paid — no `isUsed`, no
+ * `expiresAt`. Showing "envoyé il y a 2 h — non utilisé" on the subscriber card
+ * therefore needs a second read, and `parsePaymentLink` already recovers the
+ * guid from the URL for exactly that purpose:
+ *
+ * - `GET /mypos/data-reabo-link/{linkGuid}` for one link, or
+ * - `GET /payment-links/get-paged/{i}/{n}` to list them.
+ *
+ * Deliberately left out for now: creating the link is the part that saves the
+ * agent time, knowing which ones went unpaid is the part that would save their
+ * day, and it can be added without touching anything above.
  */
 export function useCreatePayLink() {
   return useMutation({
