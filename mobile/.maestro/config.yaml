@@ -1,0 +1,3 @@
+# Maestro applique ce fichier à tous les flows du dossier.
+flows:
+  - "*.yml"

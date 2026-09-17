@@ -138,7 +138,10 @@ export const QuickRepliesModal: React.FC<QuickRepliesModalProps> = ({ open, onCl
 
   return (
     <Dialog open={open} onOpenChange={(v) => !v && onClose()}>
-      <DialogContent className="max-w-2xl">
+      {/* Same width as the other form-heavy modal (TemplateBroadcastModal) and
+          a height cap, so a long list scrolls inside instead of pushing the
+          dialog past the viewport. */}
+      <DialogContent className="md:max-w-xl w-full max-h-[85vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Zap size={17} className="text-wa-teal" />
@@ -200,7 +203,7 @@ export const QuickRepliesModal: React.FC<QuickRepliesModalProps> = ({ open, onCl
         </div>
 
         {showFormat && (
-          <pre className="max-h-48 overflow-auto rounded-lg bg-wa-input-bg p-3 text-[11px] leading-relaxed text-wa-text">
+          <pre className="max-h-40 overflow-auto rounded-lg bg-wa-input-bg p-3 text-[11px] leading-relaxed text-wa-text">
             {QUICK_REPLY_FILE_EXAMPLE}
           </pre>
         )}
@@ -280,7 +283,7 @@ export const QuickRepliesModal: React.FC<QuickRepliesModalProps> = ({ open, onCl
         )}
 
         {/* List */}
-        <div className="max-h-72 overflow-y-auto [scrollbar-width:thin]">
+        <div className="[scrollbar-width:thin]">
           {replies.length === 0 ? (
             <p className="py-8 text-center text-sm text-wa-muted">
               Aucune réponse rapide enregistrée.

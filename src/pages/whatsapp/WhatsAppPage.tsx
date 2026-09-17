@@ -5,6 +5,7 @@ import { TemplateBroadcastModal } from "@/components/whatsapp/chat/TemplateBroad
 import { useSignalR } from "@/hooks/useSignalR";
 import { useWhatsappUrlState } from "@/hooks/useWhatsappUrlState";
 import { useWhatsAppStore } from "@/store/useWhatsappStore";
+import { useViewportLock } from "@/hooks/useViewportLock";
 
 interface WhatsAppPageProps {
   senderId?: string;
@@ -24,12 +25,15 @@ export const WhatsAppPage: React.FC<WhatsAppPageProps> = ({ senderId }) => {
   // (or a shared link) reopens the same discussion with the same filters.
   useWhatsappUrlState();
 
+  // Keeps the header and the composer on screen when the keyboard opens.
+  useViewportLock();
+
   useSignalR();
 
   return (
     <>
       <div
-        className="flex h-dvh max-w-450 mx-auto bg-white shadow-[0_0_20px_rgba(0,0,0,0.12)] relative overflow-hidden"
+        className="flex app-viewport max-w-450 mx-auto bg-white shadow-[0_0_20px_rgba(0,0,0,0.12)] relative overflow-hidden"
         style={{ background: "#dfe5e7" }}
       >
         {/* Sidebar — hidden on mobile when chat is open */}

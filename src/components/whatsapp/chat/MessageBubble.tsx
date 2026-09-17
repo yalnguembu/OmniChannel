@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Reply, Info, User, ChevronDown } from 'lucide-react';
+import { Reply, Info, User, ChevronDown, Forward, Check } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { MessageTicks } from '../shared/MessageTicks';
 import { AudioPlayer } from '../shared/AudioPlayer';
@@ -323,6 +323,15 @@ interface MessageBubbleProps {
   highlight?: string;
   /** This bubble is the hit the search is currently focused on. */
   isActiveMatch?: boolean;
+  /** Briefly outlined after the view jumped to it. */
+  isFlashing?: boolean;
+  /** Selection mode is on — the whole row toggles instead of opening menus. */
+  selectable?: boolean;
+  selected?: boolean;
+  onToggleSelect?: (id: string) => void;
+  /** Scroll to the quoted message when its preview is tapped. */
+  onQuoteClick?: (messageId: string) => void;
+  onForward?: (vm: MessageViewModel) => void;
   onReply: (vm: MessageViewModel) => void;
   onInfo: (id: string) => void;
   onImageClick: (url: string, alt: string) => void;
@@ -333,6 +342,12 @@ export const MessageBubble = React.memo<MessageBubbleProps>(({
   isFirstOfGroup = true,
   highlight,
   isActiveMatch = false,
+  isFlashing = false,
+  selectable = false,
+  selected = false,
+  onToggleSelect,
+  onQuoteClick,
+  onForward,
   onReply,
   onInfo,
   onImageClick,
@@ -364,6 +379,11 @@ export const MessageBubble = React.memo<MessageBubbleProps>(({
     setIsMenuOpen(false);
   };
 
+  const handleForward = () => {
+    onForward?.(vm);
+    setIsMenuOpen(false);
+  };
+
   const metaMode = getMetaMode(vm);
   const showTail = isFirstOfGroup;
 
@@ -390,13 +410,29 @@ export const MessageBubble = React.memo<MessageBubbleProps>(({
   return (
     <div
       data-msg-id={vm.id}
+      onClick={selectable ? () => onToggleSelect?.(vm.id) : undefined}
       className={cn(
-        'flex relative group',
+        'flex relative group items-center gap-2',
         // WhatsApp spacing: 2px inside a run, 12px between runs.
         isFirstOfGroup ? 'mt-3' : 'mt-[2px]',
-        vm.isOutbound ? 'justify-end' : 'justify-start'
+        vm.isOutbound ? 'justify-end' : 'justify-start',
+        selectable && 'cursor-pointer rounded-lg -mx-2 px-2 py-0.5',
+        selectable && selected && 'bg-wa-teal/10'
       )}
     >
+      {selectable && (
+        <span
+          aria-hidden
+          className={cn(
+            'order-first flex size-5 shrink-0 items-center justify-center rounded-full border transition-colors',
+            selected
+              ? 'border-wa-teal bg-wa-teal text-white'
+              : 'border-wa-icon/50 bg-white/70'
+          )}
+        >
+          {selected && <Check size={13} strokeWidth={3} />}
+        </span>
+      )}
       {/* Outer wrapper — sizes the bubble but stays unclipped so the tail and
           the hover menu (siblings of the bubble, not descendants) survive the
           bubble's own overflow-hidden. */}
@@ -412,7 +448,9 @@ export const MessageBubble = React.memo<MessageBubbleProps>(({
             vm.isOutbound ? 'bg-wa-bubble-out' : 'bg-wa-bubble-in',
             showTail && (vm.isOutbound ? 'rounded-tr-none' : 'rounded-tl-none'),
             // The focused search hit, so it stands out among the other marks.
-            isActiveMatch && 'ring-2 ring-wa-teal ring-offset-1 ring-offset-transparent'
+            isActiveMatch && 'ring-2 ring-wa-teal ring-offset-1 ring-offset-transparent',
+            // Momentary outline after jumping here from a quote or a date.
+            isFlashing && 'ring-2 ring-wa-teal/70 ring-offset-1 ring-offset-transparent'
           )}
         >
           {/* Sender name (inbound group) */}
@@ -425,12 +463,27 @@ export const MessageBubble = React.memo<MessageBubbleProps>(({
               nowrap line (nowrap here would force the flex chain above to
               grow past the max-width, since min-width wins over max-width). */}
           {vm.replyToContent && (
-            <div className="bg-black/6 rounded-[4px] border-l-4 border-wa-teal px-2 py-1 mb-1 min-w-0 max-h-16 overflow-hidden">
-              <div className="text-xs whitespace-normal break-words min-w-0">
+            // Tapping the preview jumps to the quoted message, like WhatsApp.
+            // Rendered as a button only when there is somewhere to go.
+            <button
+              type="button"
+              disabled={!vm.replyToMessageId || !onQuoteClick || selectable}
+              onClick={(e) => {
+                e.stopPropagation();
+                if (vm.replyToMessageId) onQuoteClick?.(vm.replyToMessageId);
+              }}
+              className={cn(
+                'block w-full text-left bg-black/6 rounded-[4px] border-l-4 border-wa-teal px-2 py-1 mb-1 min-w-0 max-h-16 overflow-hidden transition-colors',
+                vm.replyToMessageId && onQuoteClick && !selectable
+                  ? 'cursor-pointer hover:bg-black/10'
+                  : 'cursor-default'
+              )}
+            >
+              <span className="block text-xs whitespace-normal break-words min-w-0">
                 <span className="font-medium text-wa-teal">{vm.replyToAuthor}</span>{' '}
                 <span className="text-wa-muted">{vm.replyToContent}</span>
-              </div>
-            </div>
+              </span>
+            </button>
           )}
 
           <BubbleContent
@@ -457,6 +510,7 @@ export const MessageBubble = React.memo<MessageBubbleProps>(({
         <div
           className={cn(
             'absolute top-0.5 right-0.5 transition-opacity duration-100',
+            selectable && 'hidden',
             isMenuOpen
               ? 'opacity-100'
               : 'opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto'
@@ -479,6 +533,13 @@ export const MessageBubble = React.memo<MessageBubbleProps>(({
                 >
                   <Reply size={16} className="text-wa-icon" />
                   Répondre
+                </button>
+                <button
+                  onClick={handleForward}
+                  className="flex items-center gap-4 w-full px-4 py-2.5 text-wa-text hover:bg-wa-hover transition-colors text-sm"
+                >
+                  <Forward size={16} className="text-wa-icon" />
+                  Transférer
                 </button>
                 <button
                   onClick={handleInfo}

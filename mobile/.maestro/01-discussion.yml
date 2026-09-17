@@ -1,0 +1,39 @@
+# ⚠️ CES FLOWS TOURNENT CONTRE LA PRODUCTION.
+# Interdits absolus : taper sur un bouton d'envoi (message, média, template,
+# flow), sélectionner une option de statut, assigner une conversation, ou
+# enregistrer un contact. Tout cela écrit chez de vrais clients.
+# Les flows n'ouvrent des écrans et ne vérifient que des libellés.
+#
+# Ouvre la discussion de test et vérifie l'ossature du chat.
+#
+# Les assertions portent sur les commandes de l'écran, pas sur des données :
+# le flow tourne contre l'API réelle, dont le contenu change à chaque passage
+# (voir le README du dossier).
+appId: host.exp.exponent
+---
+- runFlow: 00b-ouvrir-discussion-test.yml
+
+# En-tête + composeur : ce que l'agent doit avoir sous la main.
+- extendedWaitUntil:
+    visible: "Tapez un message"
+    timeout: 30000
+- assertVisible: "Retour"
+- assertVisible: "Plus d'options"
+- assertVisible: "Statut de la conversation"
+# Laisse la première fenêtre de messages arriver : sans ça la capture attrape
+# le spinner et non le fil.
+- waitForAnimationToEnd:
+    timeout: 6000
+- takeScreenshot: .maestro/screens/01-discussion
+
+# Le menu d'actions de la discussion.
+- tapOn: "Plus d'options"
+- assertVisible: "Rechercher un message"
+- assertVisible: "Changer le statut"
+- assertVisible: "Assigner à un agent"
+- assertVisible: "Envoyer un template"
+- takeScreenshot: .maestro/screens/02-menu-discussion
+- tapOn: "Fermer"
+
+- tapOn: "Retour"
+- assertVisible: "Omni WhatsApp"

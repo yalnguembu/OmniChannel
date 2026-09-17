@@ -1,10 +1,18 @@
-import { Ionicons } from "@expo/vector-icons";
+import {
+  LogOut,
+  MessageCircle,
+  MessageSquarePlus,
+  RefreshCw,
+  SlidersHorizontal,
+  UserCheck,
+} from "lucide-react-native";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "expo-router";
 import { useCallback, useState } from "react";
 import {
   ActivityIndicator,
   FlatList,
+  Image,
   Pressable,
   RefreshControl,
   StyleSheet,
@@ -14,9 +22,11 @@ import {
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { logout as logoutRequest } from "@/api/endpoints";
 import { BroadcastSheet } from "@/components/inbox/BroadcastSheet";
+import { ConversationFiltersSheet } from "@/components/inbox/ConversationFiltersSheet";
 import { ConversationRow } from "@/components/inbox/ConversationRow";
 import { FilterChips } from "@/components/inbox/FilterChips";
 import { SearchField } from "@/components/inbox/SearchField";
+import { IconButton } from "@/components/shared/IconButton";
 import { Sheet, SheetOption, SheetSeparator } from "@/components/shared/Sheet";
 import { useInboxViewModel, type ConversationViewModel } from "@/hooks/useInboxViewModel";
 import { useAuthStore } from "@/store/authStore";
@@ -34,13 +44,18 @@ export default function InboxScreen() {
     statsVM,
     filter,
     search,
+    filters,
+    activeFilterCount,
     senders,
+    users,
     selectedSenderId,
     setSelectedSenderId,
     isLoading,
     isRefetching,
     isFetchingNextPage,
     handleFilterChange,
+    handleFiltersChange,
+    resetFilters,
     handleSearchChange,
     handleEndReached,
     refetchConvs,
@@ -49,6 +64,7 @@ export default function InboxScreen() {
   const [senderSheet, setSenderSheet] = useState(false);
   const [accountSheet, setAccountSheet] = useState(false);
   const [broadcastSheet, setBroadcastSheet] = useState(false);
+  const [filtersSheet, setFiltersSheet] = useState(false);
 
   const activeSender = senders.find((s) => s.id === selectedSenderId);
 
@@ -81,34 +97,50 @@ export default function InboxScreen() {
   return (
     <View style={[styles.container, { paddingTop: insets.top }]}>
       <View style={styles.header}>
-        <View style={styles.headerTitles}>
-          <Text style={styles.title}>Discussions</Text>
-          <Pressable style={styles.senderChip} onPress={() => setSenderSheet(true)}>
-            <Ionicons name="logo-whatsapp" size={13} color={colors.teal} />
-            <Text style={styles.senderText} numberOfLines={1}>
-              {activeSender?.senderName ?? "Aucun expéditeur"}
-            </Text>
-            <Ionicons name="chevron-down" size={13} color={colors.muted} />
-          </Pressable>
+        <View style={styles.brand}>
+          <Image
+            source={require("../../assets/logo-whatsapp.png")}
+            style={styles.logo}
+            accessibilityLabel="WhatsApp"
+          />
+          <Text style={styles.brandText}>Omni WhatsApp</Text>
         </View>
-
-        <Pressable
+        <IconButton
+          icon={MessageSquarePlus}
+          label="Diffusion de template"
           onPress={() => setBroadcastSheet(true)}
-          hitSlop={8}
-          style={styles.iconButton}
-          accessibilityLabel="Diffuser un template"
-        >
-          <Ionicons name="megaphone-outline" size={21} color={colors.icon} />
-        </Pressable>
-        <Pressable onPress={() => refetchConvs()} hitSlop={8} style={styles.iconButton}>
-          <Ionicons name="refresh" size={21} color={colors.icon} />
-        </Pressable>
-        <Pressable onPress={() => setAccountSheet(true)} hitSlop={8} style={styles.iconButton}>
-          <Ionicons name="person-circle-outline" size={25} color={colors.icon} />
-        </Pressable>
+        />
+        <IconButton icon={RefreshCw} label="Actualiser" onPress={() => refetchConvs()} />
+        <IconButton icon={UserCheck} label="Compte" onPress={() => setAccountSheet(true)} />
       </View>
 
-      <SearchField value={search} onChange={handleSearchChange} />
+      <View style={styles.searchRow}>
+        <View style={styles.searchFlex}>
+          <SearchField value={search} onChange={handleSearchChange} />
+        </View>
+        <Pressable
+          accessibilityLabel="Filtres"
+          onPress={() => setFiltersSheet(true)}
+          style={[styles.filterButton, activeFilterCount > 0 && styles.filterButtonActive]}
+        >
+          <SlidersHorizontal
+            size={18}
+            color={activeFilterCount > 0 ? colors.teal : colors.icon}
+          />
+          {activeFilterCount > 0 ? (
+            // Un nombre nu ne dit rien à un lecteur d'écran — et c'est aussi ce
+            // qui permet aux flows e2e de repérer un filtre resté actif.
+            <View
+              style={styles.filterBadge}
+              accessibilityLabel={`${activeFilterCount} filtre${
+                activeFilterCount > 1 ? "s" : ""
+              } actif${activeFilterCount > 1 ? "s" : ""}`}
+            >
+              <Text style={styles.filterBadgeText}>{activeFilterCount}</Text>
+            </View>
+          ) : null}
+        </Pressable>
+      </View>
       <FilterChips stats={statsVM} filter={filter} onChange={handleFilterChange} />
 
       {isLoading ? (
@@ -120,7 +152,6 @@ export default function InboxScreen() {
           data={conversationVMs}
           keyExtractor={(item) => item.id}
           renderItem={renderItem}
-          ItemSeparatorComponent={() => <View style={styles.separator} />}
           refreshControl={
             <RefreshControl
               refreshing={isRefetching}
@@ -131,6 +162,10 @@ export default function InboxScreen() {
           }
           onEndReached={handleEndReached}
           onEndReachedThreshold={0.4}
+          // Sans ça, juste après une saisie dans la recherche, le premier appui
+          // sur une ligne est avalé pour refermer le clavier au lieu d'ouvrir
+          // la discussion.
+          keyboardShouldPersistTaps="handled"
           ListEmptyComponent={
             <View style={styles.center}>
               <Text style={styles.empty}>Aucune conversation</Text>
@@ -144,7 +179,9 @@ export default function InboxScreen() {
             ) : null
           }
           contentContainerStyle={
-            conversationVMs.length === 0 ? styles.emptyContent : { paddingBottom: insets.bottom + 12 }
+            conversationVMs.length === 0
+              ? styles.emptyContent
+              : { paddingHorizontal: 8, paddingBottom: insets.bottom + 12 }
           }
           initialNumToRender={12}
           windowSize={9}
@@ -154,6 +191,16 @@ export default function InboxScreen() {
 
       {broadcastSheet ? <BroadcastSheet onClose={() => setBroadcastSheet(false)} /> : null}
 
+      <ConversationFiltersSheet
+        open={filtersSheet}
+        onClose={() => setFiltersSheet(false)}
+        filters={filters}
+        users={users}
+        activeCount={activeFilterCount}
+        onChange={handleFiltersChange}
+        onReset={resetFilters}
+      />
+
       <Sheet open={senderSheet} onClose={() => setSenderSheet(false)} title="Expéditeur" scroll>
         {senders.length === 0 ? (
           <Text style={styles.sheetHint}>Aucun expéditeur WhatsApp configuré.</Text>
@@ -161,7 +208,7 @@ export default function InboxScreen() {
           senders.map((s) => (
             <SheetOption
               key={s.id}
-              icon="logo-whatsapp"
+              icon={MessageCircle}
               label={s.senderName}
               selected={s.id === selectedSenderId}
               onPress={() => {
@@ -183,27 +230,56 @@ export default function InboxScreen() {
           {user?.companyName ? ` · ${user.companyName}` : ""}
         </Text>
         <SheetSeparator />
-        <SheetOption icon="log-out-outline" label="Se déconnecter" danger onPress={handleLogout} />
+        <SheetOption
+          icon={MessageCircle}
+          label="Expéditeur"
+          hint={activeSender?.senderName ?? "Aucun expéditeur configuré"}
+          onPress={() => {
+            setAccountSheet(false);
+            setSenderSheet(true);
+          }}
+        />
+        <SheetOption icon={LogOut} label="Se déconnecter" danger onPress={handleLogout} />
       </Sheet>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  searchRow: { flexDirection: "row", alignItems: "center", paddingRight: 12 },
+  searchFlex: { flex: 1, minWidth: 0 },
+  filterButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  filterButtonActive: { backgroundColor: colors.active },
+  filterBadge: {
+    position: "absolute",
+    top: -2,
+    right: -2,
+    width: 16,
+    height: 16,
+    borderRadius: 8,
+    backgroundColor: colors.green,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  filterBadgeText: { fontSize: 10, fontWeight: "500", color: colors.white },
   container: { flex: 1, backgroundColor: colors.white },
   header: {
     flexDirection: "row",
     alignItems: "center",
+    gap: 8,
     paddingHorizontal: 12,
-    paddingTop: 6,
-    paddingBottom: 10,
+    paddingTop: 10,
+    backgroundColor: colors.header,
   },
-  headerTitles: { flex: 1, minWidth: 0 },
-  title: { fontSize: 21, fontWeight: "700", color: colors.text },
-  senderChip: { flexDirection: "row", alignItems: "center", gap: 5, marginTop: 2 },
-  senderText: { fontSize: 12, color: colors.muted, maxWidth: 200 },
-  iconButton: { padding: 7 },
-  separator: { height: StyleSheet.hairlineWidth, backgroundColor: colors.border, marginLeft: 76 },
+  brand: { flex: 1, flexDirection: "row", alignItems: "center", gap: 8, minWidth: 0 },
+  logo: { width: 48, height: 48 },
+  brandText: { fontSize: 24, fontWeight: "600", color: colors.greenSend },
   center: { paddingVertical: 48, alignItems: "center", justifyContent: "center" },
   emptyContent: { flexGrow: 1 },
   empty: { color: colors.muted, fontSize: 13.5 },

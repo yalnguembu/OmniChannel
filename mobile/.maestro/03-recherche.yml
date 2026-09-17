@@ -1,0 +1,40 @@
+# ⚠️ CES FLOWS TOURNENT CONTRE LA PRODUCTION.
+# Interdits absolus : taper sur un bouton d'envoi (message, média, template,
+# flow), sélectionner une option de statut, assigner une conversation, ou
+# enregistrer un contact. Tout cela écrit chez de vrais clients.
+# Les flows n'ouvrent des écrans et ne vérifient que des libellés.
+#
+# Recherche dans la discussion : surlignage en place, navigation entre
+# résultats, et saut à une date.
+#
+# La recherche ne filtre pas le fil (le web a abandonné le filtrage) : elle
+# surligne et fait défiler vers le résultat visé, avec un compteur qui dit sur
+# combien de messages chargés elle a réellement porté.
+appId: host.exp.exponent
+---
+- runFlow: 00b-ouvrir-discussion-test.yml
+
+- tapOn: "Rechercher"
+- assertVisible: "Rechercher dans la discussion"
+- inputText: "abonnement"
+
+# Le compteur annonce la couverture réelle, pas un simple « aucun résultat ».
+- extendedWaitUntil:
+    visible: ".*message.*charg.*"
+    timeout: 20000
+- takeScreenshot: .maestro/screens/06-recherche
+
+# Navigation entre résultats : elle suit le résultat par id, pas par index.
+- tapOn: "Résultat plus ancien"
+- takeScreenshot: .maestro/screens/07-recherche-navigation
+
+# Saut à une date : les jours porteurs de messages sont pointés.
+- tapOn: "Aller à une date"
+- extendedWaitUntil:
+    visible: "Les jours pointés portent un message déjà chargé.*"
+    timeout: 15000
+- takeScreenshot: .maestro/screens/08-saut-date
+- tapOn: "Fermer"
+
+- tapOn: "Fermer la recherche"
+- assertVisible: "Tapez un message"

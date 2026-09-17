@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { ArrowLeft, X } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
+import { useIsDesktop } from '@/hooks/useIsDesktop';
 
 interface SidePanelProps {
   open: boolean;
@@ -42,6 +43,9 @@ export const SidePanel: React.FC<SidePanelProps> = ({
   footer,
   width = DEFAULT_WIDTH,
 }) => {
+  // One layout at a time: rendering both put two copies of `children` in the
+  // DOM, and a form inside the panel registered every field twice.
+  const isDesktop = useIsDesktop();
   useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => {
@@ -94,14 +98,14 @@ export const SidePanel: React.FC<SidePanelProps> = ({
     <>
       {/* ── Desktop: docked drawer ── */}
       <AnimatePresence initial={false}>
-        {open && (
+        {open && isDesktop && (
           <motion.aside
             key="side-panel"
             initial={{ width: 0 }}
             animate={{ width }}
             exit={{ width: 0 }}
             transition={{ duration: 0.22, ease: [0.4, 0, 0.2, 1] }}
-            className="hidden md:flex shrink-0 flex-col overflow-hidden border-l border-wa-border bg-white"
+            className="flex shrink-0 flex-col overflow-hidden border-l border-wa-border bg-white"
           >
             {/* Fixed inner width: without it the content would reflow on every
                 animation frame while the drawer expands. */}
@@ -116,10 +120,10 @@ export const SidePanel: React.FC<SidePanelProps> = ({
 
       {/* ── Mobile: bottom sheet ── */}
       <AnimatePresence>
-        {open && (
+        {open && !isDesktop && (
           <React.Fragment key="sheet">
             <motion.div
-              className="md:hidden fixed inset-0 z-[900] bg-black/40"
+              className="fixed inset-0 z-[900] bg-black/40"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
@@ -129,8 +133,15 @@ export const SidePanel: React.FC<SidePanelProps> = ({
             <motion.div
               role="dialog"
               aria-label={title}
+              // Sits above the keyboard rather than behind it: `bottom: 0`
+              // anchors to the layout viewport, which the keyboard does not
+              // shrink. Both variables come from `useViewportLock`.
+              style={{
+                bottom: 'var(--keyboard-inset, 0px)',
+                maxHeight: 'calc(var(--app-height, 100dvh) * 0.85)',
+              }}
               className={cn(
-                'md:hidden fixed inset-x-0 bottom-0 z-[901] flex max-h-[85dvh] flex-col',
+                'fixed inset-x-0 z-[901] flex flex-col',
                 'rounded-t-2xl bg-white shadow-[0_-4px_24px_rgba(0,0,0,0.22)]',
               )}
               initial={{ y: '100%' }}

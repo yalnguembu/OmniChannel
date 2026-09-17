@@ -1,0 +1,26 @@
+# ⚠️ CES FLOWS TOURNENT CONTRE LA PRODUCTION.
+# Interdits absolus : taper sur un bouton d'envoi (message, média, template,
+# flow), sélectionner une option de statut, assigner une conversation, ou
+# enregistrer un contact. Tout cela écrit chez de vrais clients.
+#
+# Ouvre **la** conversation de test et rien d'autre.
+#
+# Pourquoi ce détour plutôt que « la première de la liste » : ouvrir une
+# conversation la marque **lue côté serveur** (SignalR `JoinConversation`, il
+# n'existe pas d'endpoint REST pour ça), et rien ne permet de la remettre en
+# non-lue. Tester sur la première de la liste consommait donc les notifications
+# de vrais clients à chaque passage.
+appId: host.exp.exponent
+---
+- runFlow: 00-inbox.yml
+
+- tapOn: "Rechercher une discussion"
+- inputText: "237696851231"
+# La recherche est débouncée (400 ms) et part au backend.
+- extendedWaitUntil:
+    visible: "Discussion 237696851231"
+    timeout: 30000
+- tapOn: "Discussion 237696851231"
+- extendedWaitUntil:
+    visible: "Tapez un message"
+    timeout: 30000

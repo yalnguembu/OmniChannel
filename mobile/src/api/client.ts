@@ -28,14 +28,67 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-// Session expirée : on vide le store, les layouts protégés renvoient au login.
+/**
+ * Rafraîchissement du jeton sur 401.
+ *
+ * Indispensable sur mobile : l'app reste ouverte des jours et le jeton d'accès
+ * expire en quelques heures — sans ça l'agent est déconnecté en pleine
+ * conversation. L'API expose `POST /api/auth/refresh`, dont le corps s'appelle
+ * d'ailleurs `MobileRefreshRequest`.
+ *
+ * Un seul rafraîchissement à la fois : les requêtes qui tombent en 401 pendant
+ * l'opération attendent la même promesse plutôt que d'en déclencher chacune une
+ * (ce qui invaliderait le jeton de rafraîchissement à la première rotation).
+ */
+let refreshing: Promise<string | null> | null = null;
+
+async function refreshAccessToken(): Promise<string | null> {
+  const { refreshToken } = useAuthStore.getState();
+  if (!refreshToken) return null;
+  try {
+    // Instance nue : passer par `api` relancerait l'intercepteur sur un 401.
+    const res = await axios.post(
+      `${API_URL}/api/auth/refresh`,
+      { refreshToken },
+      { timeout: 30_000 },
+    );
+    const data = res?.data?.data ?? {};
+    if (!data.accessToken) return null;
+    useAuthStore.getState().setTokens(data.accessToken, data.refreshToken);
+    return data.accessToken as string;
+  } catch {
+    return null;
+  }
+}
+
 api.interceptors.response.use(
   (res) => res,
-  (error) => {
-    if (error?.response?.status === 401) {
-      const { token, logout } = useAuthStore.getState();
-      if (token) logout();
+  async (error) => {
+    const status = error?.response?.status;
+    const config = error?.config;
+    const url: string = config?.url ?? "";
+
+    // Ni le login ni le rafraîchissement lui-même ne doivent être rejoués.
+    const isAuthCall = url.includes("/api/auth/login") || url.includes("/api/auth/refresh");
+
+    if (status === 401 && config && !config.__retried && !isAuthCall) {
+      const { token } = useAuthStore.getState();
+      if (token) {
+        refreshing ??= refreshAccessToken().finally(() => {
+          refreshing = null;
+        });
+        const fresh = await refreshing;
+        if (fresh) {
+          // On rejoue la requête une seule fois, avec le nouveau jeton.
+          config.__retried = true;
+          config.headers = { ...(config.headers ?? {}), Authorization: `Bearer ${fresh}` };
+          return api.request(config);
+        }
+        // Rafraîchissement impossible : la session est bel et bien finie.
+        useAuthStore.getState().logout();
+      }
     }
+
     return Promise.reject(error);
   },
 );
@@ -47,6 +100,30 @@ api.interceptors.response.use(
 export function unwrapList<T>(res: AxiosResponse<any>): T[] {
   const payload = res?.data?.data;
   return (Array.isArray(payload) ? payload : (payload?.items ?? [])) as T[];
+}
+
+export interface PagedResult<T> {
+  items: T[];
+  hasNextPage: boolean;
+  totalCount: number;
+}
+
+/**
+ * Même enveloppe que `unwrapList`, mais conserve les métadonnées de pagination
+ * dont la fenêtre de messages a besoin. Retombe sur une comparaison à la taille
+ * demandée quand le backend n'envoie pas `hasNextPage`.
+ */
+export function unwrapPaged<T>(res: AxiosResponse<any>, pageSize: number): PagedResult<T> {
+  const payload = res?.data?.data;
+  if (Array.isArray(payload)) {
+    return { items: payload as T[], hasNextPage: false, totalCount: payload.length };
+  }
+  const items = (payload?.items ?? []) as T[];
+  const hasNextPage =
+    typeof payload?.hasNextPage === "boolean"
+      ? payload.hasNextPage
+      : items.length === pageSize;
+  return { items, hasNextPage, totalCount: payload?.totalCount ?? items.length };
 }
 
 export function unwrapOne<T>(res: AxiosResponse<any>): T | null {

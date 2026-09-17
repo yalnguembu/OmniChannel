@@ -1,17 +1,25 @@
-import { Ionicons } from "@expo/vector-icons";
+import { Play, User } from "lucide-react-native";
 import { Image } from "expo-image";
 import * as WebBrowser from "expo-web-browser";
 import { memo, useState } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
+import Svg, { Path } from "react-native-svg";
 import { mediaHeaders, mediaUrl } from "@/api/client";
 import { AudioBubble } from "@/components/shared/AudioBubble";
 import { MessageTicks } from "@/components/shared/Badges";
 import type { MessageViewModel } from "@/hooks/useChatViewModel";
 import type { Media } from "@/models/whatsapp.models";
 import { colors, radius } from "@/theme";
+import { RichText } from "./RichText";
+
+/**
+ * Bulle de message — portage 1:1 de `MessageBubble` du web : mêmes rayons
+ * (7,5px), mêmes paddings (9 / 6 / 8), même typographie (14,2px sur 19),
+ * mêmes queues SVG et même placement de la méta.
+ */
 
 /** Largeur maximale d'un média dans une bulle. */
-const MEDIA_WIDTH = 244;
+const MEDIA_WIDTH = 240;
 
 // ─── Résolution du type de message ────────────────────────────────────────────
 // Le backend relaie un `messageType` libre ; pour un payload TEXT qui est en
@@ -77,17 +85,31 @@ function getMetaMode(vm: MessageViewModel): MetaMode {
   return "inline";
 }
 
+// ─── Queues de bulle ──────────────────────────────────────────────────────────
+// Géométrie de WhatsApp Web (viewBox 8×13), pour que l'encoche tombe pile sur
+// l'angle carré de la bulle.
+
+function TailInbound() {
+  return (
+    <Svg style={styles.tailIn} width={8} height={13} viewBox="0 0 8 13">
+      <Path opacity={0.13} d="M2.812,1H8v11.193l-6.467-8.625C0.474,2.156,1.042,1,2.812,1z" />
+      <Path fill={colors.bubbleIn} d="M2.812,0H8v11.193l-6.467-8.625C0.474,1.156,1.042,0,2.812,0z" />
+    </Svg>
+  );
+}
+
+function TailOutbound() {
+  return (
+    <Svg style={styles.tailOut} width={8} height={13} viewBox="0 0 8 13">
+      <Path opacity={0.13} d="M5.188,1H0v11.193l6.467-8.625C7.526,2.156,6.958,1,5.188,1z" />
+      <Path fill={colors.bubbleOut} d="M5.188,0H0v11.193l6.467-8.625C7.526,1.156,6.958,0,5.188,0z" />
+    </Svg>
+  );
+}
+
 // ─── Rendus média ─────────────────────────────────────────────────────────────
 
-function BubbleImage({
-  uri,
-  alt,
-  onPress,
-}: {
-  uri: string;
-  alt: string;
-  onPress: () => void;
-}) {
+function BubbleImage({ uri, alt, onPress }: { uri: string; alt: string; onPress: () => void }) {
   // L'aspect réel n'est connu qu'au chargement : on part carré puis on ajuste,
   // ce qui évite les sauts de mise en page dans la liste.
   const [ratio, setRatio] = useState(1);
@@ -114,9 +136,8 @@ function VideoThumb({ onPress }: { onPress: () => void }) {
   return (
     <Pressable onPress={onPress} style={styles.videoThumb}>
       <View style={styles.playCircle}>
-        <Ionicons name="play" size={26} color={colors.white} />
+        <Play size={26} color={colors.white} />
       </View>
-      <Text style={styles.videoLabel}>Vidéo</Text>
     </Pressable>
   );
 }
@@ -137,7 +158,7 @@ function DocumentCard({ url, name }: { url: string; name: string }) {
       </View>
       <View style={styles.docLabels}>
         <Text style={styles.docName} numberOfLines={1}>
-          {name || "Document"}
+          {name || "Fichier"}
         </Text>
         <Text style={styles.docHint}>Appuyer pour ouvrir</Text>
       </View>
@@ -166,7 +187,7 @@ function ContactCards({ content }: { content: string | null }) {
       {contacts.map((c, i) => (
         <View key={i} style={styles.contactCard}>
           <View style={styles.contactAvatar}>
-            <Ionicons name="person" size={18} color={colors.white} />
+            <User size={20} color={colors.white} />
           </View>
           <View style={styles.docLabels}>
             <Text style={styles.contactName}>{c.name}</Text>
@@ -180,35 +201,54 @@ function ContactCards({ content }: { content: string | null }) {
 
 function MediaContent({
   media,
+  bleed,
   onOpenImage,
   onOpenVideo,
+  highlight,
 }: {
   media: Media;
+  /** Le média touche le bord de la bulle quand il est tout le message. */
+  bleed: boolean;
   onOpenImage: (url: string, caption?: string) => void;
   onOpenVideo: (url: string) => void;
+  /** Terme de recherche à surligner dans les légendes. */
+  highlight?: string;
 }) {
   const mt = (media.mediaType || "").toUpperCase();
   const mime = media.mimeType || "";
   const url = mediaUrl(media.internalStorageUrl);
+  const bleedStyle = bleed ? styles.bleed : undefined;
 
   if (mt === "IMAGE" || mt === "PHOTO" || mime.startsWith("image/")) {
     return (
-      <View style={styles.stack}>
+      <View style={bleedStyle}>
         <BubbleImage
           uri={url}
           alt={media.fileName || "Photo"}
           onPress={() => onOpenImage(url, media.caption ?? undefined)}
         />
-        {media.caption ? <Text style={styles.text}>{media.caption}</Text> : null}
+        {media.caption ? (
+          <RichText
+            text={media.caption}
+            highlight={highlight}
+            style={[styles.text, styles.caption]}
+          />
+        ) : null}
       </View>
     );
   }
 
   if (mt === "VIDEO" || mime.startsWith("video/")) {
     return (
-      <View style={styles.stack}>
+      <View style={bleedStyle}>
         <VideoThumb onPress={() => onOpenVideo(url)} />
-        {media.caption ? <Text style={styles.text}>{media.caption}</Text> : null}
+        {media.caption ? (
+          <RichText
+            text={media.caption}
+            highlight={highlight}
+            style={[styles.text, styles.caption]}
+          />
+        ) : null}
       </View>
     );
   }
@@ -217,41 +257,65 @@ function MediaContent({
     return <AudioBubble uri={url} />;
   }
 
-  return <DocumentCard url={url} name={media.fileName || "Document"} />;
+  return <DocumentCard url={url} name={media.fileName || "Fichier"} />;
 }
 
 // ─── Contenu de la bulle ──────────────────────────────────────────────────────
 
+/**
+ * Place réservée à la méta sur la dernière ligne, en espaces figures (U+2007,
+ * largeur fixe) : un `<View>` intercalé passerait à la ligne sans réserver de
+ * hauteur et l'heure viendrait chevaucher le texte. C'est l'équivalent RN de
+ * l'espaceur `inline-block` du web.
+ */
+function metaSpacer(isOutbound: boolean): string {
+  // ~7px par espace figure à 14,2px : 62px sortant (heure + coches), 42 entrant.
+  return " ".repeat(isOutbound ? 9 : 6);
+}
+
 interface BubbleBodyProps {
   vm: MessageViewModel;
   metaMode: MetaMode;
-  meta: React.ReactNode;
+  /** Réserve la place de la méta sur la dernière ligne de texte. */
+  spacer: string;
   onOpenImage: (url: string, caption?: string) => void;
   onOpenVideo: (url: string) => void;
+  highlight?: string;
 }
 
-function BubbleBody({ vm, metaMode, meta, onOpenImage, onOpenVideo }: BubbleBodyProps) {
-  const inlineMeta = metaMode === "inline" ? meta : null;
+function BubbleBody({
+  vm,
+  metaMode,
+  spacer,
+  onOpenImage,
+  onOpenVideo,
+  highlight,
+}: BubbleBodyProps) {
+  const inlineSpacer = metaMode === "inline" ? spacer : "";
 
   if (vm.medias && vm.medias.length > 0) {
+    const bleed = metaMode === "overlay";
     return (
       <View style={styles.stack}>
         {vm.medias.map((m, i) => (
           <MediaContent
             key={m.id ?? i}
             media={m}
+            bleed={bleed}
             onOpenImage={onOpenImage}
             onOpenVideo={onOpenVideo}
+            highlight={highlight}
           />
         ))}
         {vm.content ? (
-          <View style={styles.inlineRow}>
-            <Text style={styles.text}>{vm.content}</Text>
-            {inlineMeta}
-          </View>
-        ) : (
-          inlineMeta
-        )}
+          <RichText
+            text={`${vm.content}${inlineSpacer}`}
+            highlight={highlight}
+            style={styles.text}
+          />
+        ) : metaMode === "inline" ? (
+          <Text style={styles.text}>{inlineSpacer}</Text>
+        ) : null}
       </View>
     );
   }
@@ -260,14 +324,20 @@ function BubbleBody({ vm, metaMode, meta, onOpenImage, onOpenVideo }: BubbleBody
     case "IMAGE":
     case "PHOTO":
       return (
-        <BubbleImage
-          uri={mediaUrl(vm.content)}
-          alt="Photo"
-          onPress={() => onOpenImage(mediaUrl(vm.content))}
-        />
+        <View style={styles.bleed}>
+          <BubbleImage
+            uri={mediaUrl(vm.content)}
+            alt="Photo"
+            onPress={() => onOpenImage(mediaUrl(vm.content))}
+          />
+        </View>
       );
     case "VIDEO":
-      return <VideoThumb onPress={() => onOpenVideo(mediaUrl(vm.content))} />;
+      return (
+        <View style={styles.bleed}>
+          <VideoThumb onPress={() => onOpenVideo(mediaUrl(vm.content))} />
+        </View>
+      );
     case "AUDIO":
     case "VOICE":
       return <AudioBubble uri={mediaUrl(vm.content)} />;
@@ -285,10 +355,11 @@ function BubbleBody({ vm, metaMode, meta, onOpenImage, onOpenVideo }: BubbleBody
       return <ContactCards content={vm.content} />;
     default:
       return (
-        <View style={styles.inlineRow}>
-          <Text style={styles.text}>{vm.content || ""}</Text>
-          {inlineMeta}
-        </View>
+        <RichText
+          text={`${vm.content || ""}${inlineSpacer}`}
+          highlight={highlight}
+          style={styles.text}
+        />
       );
   }
 }
@@ -297,8 +368,13 @@ function BubbleBody({ vm, metaMode, meta, onOpenImage, onOpenVideo }: BubbleBody
 
 interface MessageBubbleProps {
   vm: MessageViewModel;
-  /** Premier d'une série de messages du même auteur — porte l'angle coupé. */
+  /** Premier d'une série de messages du même auteur — porte la queue. */
   isFirstOfGroup?: boolean;
+  /** Résultat de recherche mis en évidence (le web surligne au lieu de filtrer). */
+  /** Terme cherché, surligné dans le texte du message. */
+  highlightTerm?: string;
+  /** Résultat actuellement visé par la navigation précédent / suivant. */
+  isActiveMatch?: boolean;
   onLongPress: (vm: MessageViewModel) => void;
   onOpenImage: (url: string, caption?: string) => void;
   onOpenVideo: (url: string) => void;
@@ -307,6 +383,8 @@ interface MessageBubbleProps {
 export const MessageBubble = memo(function MessageBubble({
   vm,
   isFirstOfGroup = true,
+  highlightTerm,
+  isActiveMatch = false,
   onLongPress,
   onOpenImage,
   onOpenVideo,
@@ -314,7 +392,7 @@ export const MessageBubble = memo(function MessageBubble({
   const metaMode = getMetaMode(vm);
 
   const meta = (
-    <View style={[styles.meta, metaMode === "overlay" && styles.metaOverlay]}>
+    <View style={styles.meta}>
       <Text style={[styles.metaTime, metaMode === "overlay" && styles.metaTimeOverlay]}>
         {vm.timeStr}
       </Text>
@@ -323,6 +401,10 @@ export const MessageBubble = memo(function MessageBubble({
       ) : null}
     </View>
   );
+
+  // Réserve exactement la place dont la méta a besoin sur la dernière ligne —
+  // l'astuce de WhatsApp qui garde heure et coches collées en bas à droite.
+  const spacer = metaSpacer(vm.isOutbound);
 
   return (
     <View
@@ -333,102 +415,115 @@ export const MessageBubble = memo(function MessageBubble({
         isFirstOfGroup ? styles.rowSpaced : styles.rowTight,
       ]}
     >
-      <Pressable
-        onLongPress={() => onLongPress(vm)}
-        delayLongPress={220}
-        style={[
-          styles.bubble,
-          vm.isOutbound ? styles.bubbleOut : styles.bubbleIn,
-          isFirstOfGroup && (vm.isOutbound ? styles.cornerOut : styles.cornerIn),
-        ]}
-      >
-        {vm.senderName && isFirstOfGroup ? (
-          <Text style={styles.senderName}>{vm.senderName}</Text>
-        ) : null}
+      {/* Enveloppe non rognée : la queue est une sœur de la bulle, sinon
+          l'`overflow: hidden` de celle-ci la découperait. */}
+      <View style={styles.wrapper}>
+        {isFirstOfGroup ? (vm.isOutbound ? <TailOutbound /> : <TailInbound />) : null}
 
-        {vm.replyToContent ? (
-          <View style={styles.quote}>
-            <Text style={styles.quoteAuthor} numberOfLines={1}>
-              {vm.replyToAuthor}
-            </Text>
-            <Text style={styles.quoteContent} numberOfLines={2}>
-              {vm.replyToContent}
-            </Text>
-          </View>
-        ) : null}
+        <Pressable
+          onLongPress={() => onLongPress(vm)}
+          delayLongPress={220}
+          style={[
+            styles.bubble,
+            vm.isOutbound ? styles.bubbleOut : styles.bubbleIn,
+            isFirstOfGroup && (vm.isOutbound ? styles.cornerOut : styles.cornerIn),
+            isActiveMatch && styles.bubbleActiveMatch,
+          ]}
+        >
+          {vm.senderName && isFirstOfGroup ? (
+            <Text style={styles.senderName}>{vm.senderName}</Text>
+          ) : null}
 
-        <BubbleBody
-          vm={vm}
-          metaMode={metaMode}
-          meta={meta}
-          onOpenImage={onOpenImage}
-          onOpenVideo={onOpenVideo}
-        />
+          {/* Citation de réponse : auteur et contenu s'enchaînent comme un seul
+              paragraphe, qui passe à la ligne au lieu de forcer une ligne unique. */}
+          {vm.replyToContent ? (
+            <View style={styles.quote}>
+              <Text numberOfLines={3} style={styles.quoteText}>
+                <Text style={styles.quoteAuthor}>{vm.replyToAuthor}</Text>{" "}
+                <Text style={styles.quoteContent}>{vm.replyToContent}</Text>
+              </Text>
+            </View>
+          ) : null}
 
-        {metaMode === "block" ? <View style={styles.metaBlock}>{meta}</View> : null}
-        {metaMode === "overlay" ? <View style={styles.metaFloating}>{meta}</View> : null}
-      </Pressable>
+          <BubbleBody
+            vm={vm}
+            metaMode={metaMode}
+            spacer={spacer}
+            onOpenImage={onOpenImage}
+            onOpenVideo={onOpenVideo}
+            highlight={highlightTerm}
+          />
+
+          {/* Méta : heure + coches — le placement dépend du type de contenu. */}
+          {metaMode === "inline" ? <View style={styles.metaInline}>{meta}</View> : null}
+          {metaMode === "overlay" ? <View style={styles.metaOverlay}>{meta}</View> : null}
+          {metaMode === "block" ? <View style={styles.metaBlock}>{meta}</View> : null}
+        </Pressable>
+      </View>
     </View>
   );
 });
 
 const styles = StyleSheet.create({
-  row: { flexDirection: "row", paddingHorizontal: 10 },
+  row: { flexDirection: "row" },
   rowIn: { justifyContent: "flex-start" },
   rowOut: { justifyContent: "flex-end" },
   rowSpaced: { marginTop: 12 },
   rowTight: { marginTop: 2 },
+  wrapper: { position: "relative", maxWidth: "78%", minWidth: 0 },
   bubble: {
-    maxWidth: "86%",
-    borderRadius: 8,
-    paddingHorizontal: 8,
+    borderRadius: 7.5,
+    paddingHorizontal: 9,
     paddingTop: 6,
-    paddingBottom: 7,
-    position: "relative",
+    paddingBottom: 8,
+    overflow: "hidden",
     shadowColor: "#0b141a",
-    shadowOpacity: 0.08,
-    shadowRadius: 1,
+    shadowOpacity: 0.13,
+    shadowRadius: 0.5,
     shadowOffset: { width: 0, height: 1 },
     elevation: 1,
   },
   bubbleIn: { backgroundColor: colors.bubbleIn },
   bubbleOut: { backgroundColor: colors.bubbleOut },
+  bubbleActiveMatch: { borderWidth: 2, borderColor: colors.teal },
   cornerIn: { borderTopLeftRadius: 0 },
   cornerOut: { borderTopRightRadius: 0 },
-  senderName: { fontSize: 12.5, fontWeight: "600", color: colors.teal, marginBottom: 2 },
+  tailIn: { position: "absolute", left: -8, top: 0, zIndex: 1 },
+  tailOut: { position: "absolute", right: -8, top: 0, zIndex: 1 },
+  senderName: { fontSize: 12.8, fontWeight: "500", color: colors.teal, marginBottom: 2 },
   quote: {
-    borderLeftWidth: 3,
+    borderLeftWidth: 4,
     borderLeftColor: colors.teal,
-    backgroundColor: "rgba(0,0,0,0.05)",
+    backgroundColor: "rgba(0,0,0,0.06)",
     borderRadius: 4,
     paddingHorizontal: 8,
-    paddingVertical: 5,
+    paddingVertical: 4,
     marginBottom: 4,
+    maxHeight: 64,
+    overflow: "hidden",
   },
-  quoteAuthor: { fontSize: 12, fontWeight: "600", color: colors.teal },
-  quoteContent: { fontSize: 12, color: colors.muted },
+  quoteText: { fontSize: 12, lineHeight: 16 },
+  quoteAuthor: { fontWeight: "500", color: colors.teal },
+  quoteContent: { color: colors.muted },
   stack: { gap: 4 },
-  inlineRow: { flexDirection: "row", flexWrap: "wrap", alignItems: "flex-end" },
-  text: { fontSize: 14.5, lineHeight: 19, color: colors.text },
-  meta: { flexDirection: "row", alignItems: "center", gap: 3, marginLeft: 8, paddingBottom: 1 },
-  metaOverlay: { marginLeft: 0 },
+  text: { fontSize: 14.2, lineHeight: 19, color: colors.text },
+  caption: { marginTop: 4, paddingHorizontal: 6 },
+  meta: { flexDirection: "row", alignItems: "center", gap: 2 },
   metaTime: { fontSize: 11, color: colors.muted },
   metaTimeOverlay: { color: colors.white },
-  metaBlock: { alignSelf: "flex-end" },
-  metaFloating: {
+  metaInline: { position: "absolute", right: 9, bottom: 6 },
+  metaOverlay: {
     position: "absolute",
-    right: 12,
-    bottom: 12,
-    backgroundColor: "rgba(0,0,0,0.38)",
+    right: 8,
+    bottom: 8,
+    backgroundColor: "rgba(0,0,0,0.35)",
     borderRadius: radius.pill,
-    paddingHorizontal: 7,
+    paddingHorizontal: 6,
     paddingVertical: 2,
   },
-  media: {
-    width: MEDIA_WIDTH,
-    borderRadius: 6,
-    backgroundColor: "rgba(0,0,0,0.06)",
-  },
+  metaBlock: { alignSelf: "flex-end", marginTop: 2 },
+  bleed: { marginHorizontal: -6, marginTop: -3 },
+  media: { width: MEDIA_WIDTH, maxHeight: 330, borderRadius: 6, backgroundColor: "rgba(0,0,0,0.06)" },
   videoThumb: {
     width: MEDIA_WIDTH,
     height: 150,
@@ -436,7 +531,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#0b141a",
     alignItems: "center",
     justifyContent: "center",
-    gap: 6,
   },
   playCircle: {
     width: 52,
@@ -446,16 +540,15 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  videoLabel: { color: colors.white, fontSize: 12 },
   docCard: {
     flexDirection: "row",
     alignItems: "center",
     gap: 10,
     backgroundColor: "rgba(0,0,0,0.05)",
-    borderRadius: 8,
-    paddingHorizontal: 10,
+    borderRadius: radius.md,
+    paddingHorizontal: 12,
     paddingVertical: 8,
-    minWidth: 180,
+    minWidth: 176,
   },
   docBadge: {
     width: 36,
@@ -465,24 +558,24 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  docExt: { color: colors.white, fontSize: 11, fontWeight: "700" },
+  docExt: { color: colors.white, fontSize: 13, fontWeight: "700" },
   docLabels: { flex: 1, minWidth: 0 },
-  docName: { fontSize: 13, fontWeight: "500", color: colors.text },
+  docName: { fontSize: 12, fontWeight: "500", color: colors.text },
   docHint: { fontSize: 11, color: colors.muted },
   contactCard: {
     flexDirection: "row",
     alignItems: "center",
     gap: 10,
     backgroundColor: "rgba(0,0,0,0.05)",
-    borderRadius: 8,
-    paddingHorizontal: 10,
+    borderRadius: radius.md,
+    paddingHorizontal: 12,
     paddingVertical: 8,
-    minWidth: 190,
+    minWidth: 192,
   },
   contactAvatar: {
-    width: 38,
-    height: 38,
-    borderRadius: 19,
+    width: 40,
+    height: 40,
+    borderRadius: 20,
     backgroundColor: colors.icon,
     alignItems: "center",
     justifyContent: "center",

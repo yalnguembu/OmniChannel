@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { errorMessage } from "@/api/client";
 import {
+  changeClientStatus,
   changeContactChannelStatus,
   createClient,
   getClientStatuses,
@@ -58,9 +59,22 @@ export function useWhatsappContact(phone?: string | null) {
       toast.error(errorMessage(e, "Erreur lors de l'enregistrement du contact")),
   });
 
+  const statusMutation = useMutation({
+    mutationFn: ({ id, status }: { id: string; status: string }) =>
+      changeClientStatus(id, status),
+    onSuccess: async () => {
+      toast.success("Statut du client mis à jour");
+      await qc.invalidateQueries({ queryKey: whatsappKeys.clientByPhone(term) });
+    },
+    onError: (e) => toast.error(errorMessage(e, "Erreur lors de la mise à jour du statut")),
+  });
+
   return {
     existing,
     hasContact: !!existing,
+    changeStatus: (status: string) => {
+      if (existing?.id) statusMutation.mutate({ id: existing.id, status });
+    },
     isLoading: searchQuery.isLoading,
     products: productsQuery.data ?? [],
     statuses: statusesQuery.data ?? [],

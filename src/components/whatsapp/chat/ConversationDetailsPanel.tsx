@@ -23,6 +23,7 @@ import {
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { SidePanel } from '../shared/SidePanel';
+import { ReaboSubscriptionSection } from '@/components/reabo/ReaboSubscriptionSection';
 import { Dropdown, type DropdownOption } from '../shared/Dropdown';
 import { MediaGalleryView } from './MediaGalleryView';
 import { ContactEditView } from './ContactEditView';
@@ -469,6 +470,12 @@ export const ConversationDetailsPanel: React.FC<ConversationDetailsPanelProps> =
           </div>
 
           <Band />
+
+          {/* Reabo — renders nothing at all outside the `/wareabo` inbox, and
+              brings its own separator so the plain panel keeps its spacing.
+              Mounted with the panel, so nothing is fetched while the agent is
+              only reading the conversation. */}
+          <ReaboSubscriptionSection phone={conv?.contactAddress} />
 
           {/* Media shortcut — WhatsApp puts the gallery right under the identity */}
           <button

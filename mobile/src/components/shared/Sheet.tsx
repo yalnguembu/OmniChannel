@@ -1,4 +1,4 @@
-import { Ionicons } from "@expo/vector-icons";
+import { ArrowLeft, Check, X, type LucideIcon } from "lucide-react-native";
 import type { ReactNode } from "react";
 import {
   Modal,
@@ -20,13 +20,32 @@ interface SheetProps {
   /** Rend le contenu défilable (listes d'utilisateurs, de templates…). */
   scroll?: boolean;
   contentStyle?: ViewStyle;
+  /** Sur une sous-vue : le bouton de tête devient une flèche retour. */
+  onBack?: () => void;
+  /** Commande en fin de barre de titre (le crayon d'édition de WhatsApp). */
+  headerAction?: ReactNode;
+  /** Épinglé sous le corps défilant — l'action principale de la feuille. */
+  footer?: ReactNode;
+  /** Occupe toute la hauteur permise (panneau de détails). */
+  tall?: boolean;
 }
 
 /**
  * Feuille modale ancrée en bas — remplace les `Dialog`/`DropdownMenu` du web,
  * qui n'ont pas d'équivalent tactile confortable.
  */
-export function Sheet({ open, onClose, title, children, scroll, contentStyle }: SheetProps) {
+export function Sheet({
+  open,
+  onClose,
+  title,
+  children,
+  scroll,
+  contentStyle,
+  onBack,
+  headerAction,
+  footer,
+  tall,
+}: SheetProps) {
   const insets = useSafeAreaInsets();
 
   return (
@@ -39,31 +58,68 @@ export function Sheet({ open, onClose, title, children, scroll, contentStyle }: 
     >
       <Pressable style={styles.backdrop} onPress={onClose} />
       <View
-        style={[styles.sheet, { paddingBottom: insets.bottom + 12 }, contentStyle]}
+        style={[
+          styles.sheet,
+          tall && styles.sheetTall,
+          !footer && { paddingBottom: insets.bottom + 12 },
+          contentStyle,
+        ]}
       >
         <View style={styles.grabber} />
         {title ? (
           <View style={styles.header}>
-            <Text style={styles.title}>{title}</Text>
-            <Pressable onPress={onClose} hitSlop={10}>
-              <Ionicons name="close" size={22} color={colors.icon} />
+            <Pressable
+              testID={onBack ? "sheet-back" : "sheet-close"}
+              accessibilityLabel={onBack ? "Retour" : "Fermer"}
+              onPress={onBack ?? onClose}
+              hitSlop={8}
+              style={styles.headerButton}
+            >
+              {onBack ? (
+                <ArrowLeft size={20} color={colors.icon} />
+              ) : (
+                <X size={20} color={colors.icon} />
+              )}
             </Pressable>
+            <Text style={styles.title} numberOfLines={1}>
+              {title}
+            </Text>
+            {!onBack ? headerAction : null}
+            {/* Sur une sous-vue, la commande de tête revient en arrière : fermer
+                le panneau entier a donc besoin de sa propre sortie. */}
+            {onBack ? (
+              <Pressable
+                testID="sheet-close"
+                accessibilityLabel="Fermer"
+                onPress={onClose}
+                hitSlop={8}
+                style={styles.headerButton}
+              >
+                <X size={20} color={colors.icon} />
+              </Pressable>
+            ) : null}
           </View>
         ) : null}
         {scroll ? (
-          <ScrollView keyboardShouldPersistTaps="handled" style={styles.scroll}>
+          <ScrollView
+            keyboardShouldPersistTaps="handled"
+            style={tall ? styles.scrollTall : styles.scroll}
+          >
             {children}
           </ScrollView>
         ) : (
           children
         )}
+        {footer ? (
+          <View style={[styles.footer, { paddingBottom: insets.bottom + 12 }]}>{footer}</View>
+        ) : null}
       </View>
     </Modal>
   );
 }
 
 interface SheetOptionProps {
-  icon?: keyof typeof Ionicons.glyphMap;
+  icon?: LucideIcon;
   label: string;
   hint?: string;
   selected?: boolean;
@@ -73,7 +129,7 @@ interface SheetOptionProps {
 }
 
 export function SheetOption({
-  icon,
+  icon: Icon,
   label,
   hint,
   selected,
@@ -92,14 +148,12 @@ export function SheetOption({
         disabled && styles.optionDisabled,
       ]}
     >
-      {icon ? (
-        <Ionicons name={icon} size={20} color={danger ? colors.danger : colors.icon} />
-      ) : null}
+      {Icon ? <Icon size={20} color={danger ? colors.danger : colors.icon} /> : null}
       <View style={styles.optionLabels}>
         <Text style={[styles.optionLabel, danger && { color: colors.danger }]}>{label}</Text>
         {hint ? <Text style={styles.optionHint}>{hint}</Text> : null}
       </View>
-      {selected ? <Ionicons name="checkmark" size={20} color={colors.greenSend} /> : null}
+      {selected ? <Check size={20} color={colors.greenSend} /> : null}
     </Pressable>
   );
 }
@@ -108,28 +162,52 @@ const styles = StyleSheet.create({
   backdrop: { flex: 1, backgroundColor: colors.overlay },
   sheet: {
     backgroundColor: colors.white,
-    borderTopLeftRadius: 18,
-    borderTopRightRadius: 18,
-    paddingTop: 8,
-    maxHeight: "82%",
+    borderTopLeftRadius: 16,
+    borderTopRightRadius: 16,
+    paddingTop: 10,
+    maxHeight: "85%",
+    shadowColor: "#000",
+    shadowOpacity: 0.22,
+    shadowRadius: 24,
+    shadowOffset: { width: 0, height: -4 },
+    elevation: 16,
   },
+  sheetTall: { height: "85%" },
   grabber: {
     alignSelf: "center",
-    width: 38,
+    width: 40,
     height: 4,
     borderRadius: 2,
-    backgroundColor: colors.border,
-    marginBottom: 8,
+    backgroundColor: "rgba(0,0,0,0.2)",
+    marginBottom: 4,
   },
   header: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-between",
-    paddingHorizontal: 18,
-    paddingBottom: 10,
+    gap: 12,
+    paddingHorizontal: 16,
+    paddingVertical: 14,
+    backgroundColor: colors.header,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: colors.border,
   },
-  title: { fontSize: 16, fontWeight: "600", color: colors.text },
+  headerButton: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  title: { flex: 1, minWidth: 0, fontSize: 16, fontWeight: "500", color: colors.text },
   scroll: { flexGrow: 0 },
+  scrollTall: { flex: 1 },
+  footer: {
+    paddingHorizontal: 16,
+    paddingTop: 12,
+    backgroundColor: colors.white,
+    borderTopWidth: StyleSheet.hairlineWidth,
+    borderTopColor: colors.border,
+  },
   option: {
     flexDirection: "row",
     alignItems: "center",

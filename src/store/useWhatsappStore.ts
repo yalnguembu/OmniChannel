@@ -42,6 +42,12 @@ interface WhatsAppState {
   messages: Message[];
   chatSearch: string;
   replyTo: ReplyTo | null;
+  /**
+   * Text another part of the app wants in the composer — a suggested message
+   * after a Reabo operation, say. The composer consumes it and clears it, so
+   * it is a one-shot handoff, never a mirror of what is being typed.
+   */
+  composerDraft: string | null;
 
   // UI
   users: User[];
@@ -71,6 +77,7 @@ interface WhatsAppState {
   updateMessage: (msg: Message) => void;
   setChatSearch: (term: string) => void;
   setReplyTo: (reply: ReplyTo | null) => void;
+  setComposerDraft: (text: string | null) => void;
 
   // Actions — UI
   setUsers: (users: User[]) => void;
@@ -95,6 +102,7 @@ export const useWhatsAppStore = create<WhatsAppState>()(
       messages: [],
       chatSearch: '',
       replyTo: null,
+      composerDraft: null,
       users: [],
       isMobileChatOpen: false,
 
@@ -122,7 +130,15 @@ export const useWhatsAppStore = create<WhatsAppState>()(
         set((state) =>
           state.activeConversationId === id
             ? state
-            : { activeConversationId: id, replyTo: null, chatSearch: '', messages: [] },
+            : {
+                activeConversationId: id,
+                replyTo: null,
+                chatSearch: '',
+                messages: [],
+                // A message suggested for the previous conversation must never
+                // surface in the next one's composer.
+                composerDraft: null,
+              },
         ),
 
       setFilter: (filter) => set({ filter }),
@@ -258,6 +274,7 @@ export const useWhatsAppStore = create<WhatsAppState>()(
       setChatSearch: (chatSearch) => set({ chatSearch }),
 
       setReplyTo: (replyTo) => set({ replyTo }),
+      setComposerDraft: (composerDraft) => set({ composerDraft }),
 
       // ── UI ─────────────────────────────────────────────────────────────────────
 

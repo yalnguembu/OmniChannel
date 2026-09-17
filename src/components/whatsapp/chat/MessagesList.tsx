@@ -30,6 +30,13 @@ interface MessagesListProps {
   onReply: (vm: MessageViewModel) => void;
   onInfo: (id: string) => void;
   onImageClick: (url: string, alt: string) => void;
+  /** Tapping a reply preview navigates to the quoted message. */
+  onQuoteClick?: (messageId: string) => void;
+  onForward?: (vm: MessageViewModel) => void;
+  /** Selection mode for forwarding. */
+  selectable?: boolean;
+  selectedIds?: Set<string>;
+  onToggleSelect?: (id: string) => void;
 }
 
 // ─── Grouping ────────────────────────────────────────────────────────────────
@@ -94,6 +101,11 @@ export const MessagesList: React.FC<MessagesListProps> = ({
   onReply,
   onInfo,
   onImageClick,
+  onQuoteClick,
+  onForward,
+  selectable = false,
+  selectedIds,
+  onToggleSelect,
 }) => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [contentEl, setContentEl] = useState<HTMLDivElement | null>(null);
@@ -101,6 +113,11 @@ export const MessagesList: React.FC<MessagesListProps> = ({
   const pinnedRef = useRef(true);
   const [showJump, setShowJump] = useState(false);
   const [newCount, setNewCount] = useState(0);
+  /**
+   * Briefly outlines the message the view just jumped to. Without it the
+   * scroll lands silently and the eye has nothing to catch.
+   */
+  const [flashId, setFlashId] = useState<string | null>(null);
 
   // Day groups, each holding runs of same-author messages. Grouping is done
   // here (not in the bubble) so a bubble stays a pure function of its props.
@@ -291,12 +308,19 @@ export const MessagesList: React.FC<MessagesListProps> = ({
       const top = node.offsetTop - el.clientHeight / 2 + node.offsetHeight / 2;
       el.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
       pinnedRef.current = false;
+      setFlashId(scrollTargetId);
       onScrollTargetConsumed?.();
     };
 
     frame = requestAnimationFrame(tryScroll);
     return () => cancelAnimationFrame(frame);
   }, [scrollTargetId, onScrollTargetConsumed]);
+
+  useEffect(() => {
+    if (!flashId) return;
+    const timer = setTimeout(() => setFlashId(null), 1600);
+    return () => clearTimeout(timer);
+  }, [flashId]);
 
   return (
     <div className="relative flex-1 min-h-0 flex flex-col">
@@ -351,6 +375,12 @@ export const MessagesList: React.FC<MessagesListProps> = ({
                     isFirstOfGroup={item.isFirstOfGroup}
                     highlight={highlightTerm}
                     isActiveMatch={item.vm.id === activeMatchId}
+                    isFlashing={item.vm.id === flashId}
+                    selectable={selectable}
+                    selected={selectedIds?.has(item.vm.id) ?? false}
+                    onToggleSelect={onToggleSelect}
+                    onQuoteClick={onQuoteClick}
+                    onForward={onForward}
                     onReply={onReply}
                     onInfo={onInfo}
                     onImageClick={onImageClick}

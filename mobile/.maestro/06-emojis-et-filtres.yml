@@ -1,0 +1,69 @@
+# ⚠️ CES FLOWS TOURNENT CONTRE LA PRODUCTION.
+# Interdits absolus : taper sur un bouton d'envoi (message, média, template,
+# flow), sélectionner une option de statut, assigner une conversation, ou
+# enregistrer un contact. Tout cela écrit chez de vrais clients.
+#
+# Sélecteur d'émojis du composeur, puis filtres avancés de la liste.
+#
+# Insérer un émoji ne fait que remplir le champ de saisie — un état local, perdu
+# en quittant l'écran. Le flow n'approche jamais le bouton d'envoi.
+#
+# Ordre des étapes : tout ce qui touche à la grille passe **avant** la
+# recherche, car ouvrir le clavier redimensionne l'écran et peut escamoter le
+# panneau.
+appId: host.exp.exponent
+---
+- runFlow: 00b-ouvrir-discussion-test.yml
+
+# ── Sélecteur d'émojis ──────────────────────────────────────────────────────
+- tapOn: "Émojis"
+- assertVisible: "Chercher..."
+# Les huit groupes du web, dans le même ordre.
+- assertVisible: "Frimousses et personnes"
+- assertVisible: "Drapeaux"
+- takeScreenshot: .maestro/screens/17-emojis
+
+# Un autre groupe, puis retour au premier : les onglets changent bien la grille.
+- tapOn: "Nourriture et boissons"
+- takeScreenshot: .maestro/screens/18-emojis-groupe
+- tapOn: "Frimousses et personnes"
+
+# Insertion au curseur : le glyphe atterrit dans le champ de message.
+- tapOn: "sourire visage rieur"
+- assertVisible: "😀"
+- takeScreenshot: .maestro/screens/19-emoji-insere
+
+# La recherche balaie tous les groupes, pas seulement l'onglet actif.
+- tapOn: "Chercher un émoji"
+- inputText: "gateau"
+- takeScreenshot: .maestro/screens/20-emojis-recherche
+
+# ── Filtres avancés de la liste ─────────────────────────────────────────────
+# Quitter la discussion démonte le composeur : le brouillon part avec lui.
+- tapOn: "Retour"
+- extendedWaitUntil:
+    visible: "Omni WhatsApp"
+    timeout: 30000
+- tapOn: "Filtres"
+- assertVisible: "Agent assigné"
+- assertVisible: "Dernier message"
+- assertVisible: "Dernière activité"
+# Les préréglages de période sont ceux du sélecteur de plage du web.
+- assertVisible: "Aujourd'hui"
+- assertVisible: "Cette semaine"
+- assertVisible: "Ce trimestre"
+- assertVisible: "3 dernières années"
+- takeScreenshot: .maestro/screens/21-filtres
+
+# Un filtre actif compte dans le badge du déclencheur.
+- tapOn: "Reçu"
+- tapOn: "Période personnalisée"
+- takeScreenshot: .maestro/screens/22-filtres-calendrier
+# On remet à zéro : la liste ne doit pas rester filtrée pour la session suivante
+# (les filtres sont persistés dans `oc-whatsapp`). Le bouton est sous la ligne
+# de flottaison une fois le calendrier déplié — on va le chercher.
+- scrollUntilVisible:
+    element: "Réinitialiser les filtres"
+    direction: DOWN
+- tapOn: "Réinitialiser les filtres"
+- tapOn: "Fermer"

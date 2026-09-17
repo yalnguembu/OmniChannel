@@ -30,6 +30,8 @@ interface AuthState {
   /** Faux jusqu'à ce que le token persisté soit relu (AsyncStorage est async). */
   hydrated: boolean;
   setSession: (payload: SessionPayload) => void;
+  /** Rotation des seuls jetons — utilisé par l'intercepteur de rafraîchissement. */
+  setTokens: (accessToken: string, refreshToken?: string | null) => void;
   setUser: (user: AuthUser) => void;
   logout: () => void;
 }
@@ -56,6 +58,15 @@ export const useAuthStore = create<AuthState>()(
           isAuthenticated: true,
           requiresPasswordChange,
         }),
+      setTokens: (accessToken, refreshToken = null) =>
+        set((s) => ({
+          token: accessToken,
+          // Le backend peut faire tourner le jeton de rafraîchissement ou le
+          // laisser tel quel : on ne l'écrase que s'il en renvoie un.
+          refreshToken: refreshToken ?? s.refreshToken,
+          isAuthenticated: true,
+        })),
+
       setUser: (user) => set({ user }),
       logout: () =>
         set({

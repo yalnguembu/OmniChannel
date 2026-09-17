@@ -1,5 +1,5 @@
-import { Ionicons } from "@expo/vector-icons";
-import { StyleSheet, Text, View } from "react-native";
+import { AlertCircle, Check, CheckCheck, ChevronDown } from "lucide-react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 import { colors, radius, STATUS_LABELS } from "@/theme";
 
 /** Compteur de messages non lus. */
@@ -21,21 +21,35 @@ export function StatusDot({ status }: { status: string }) {
   );
 }
 
-/** Pilule de statut (lecture seule ; le changement passe par la feuille d'actions). */
-export function StatusPill({ status }: { status: string }) {
+/**
+ * Pilule de statut — équivalent du `StatusPill` du web, qui est un menu
+ * déroulant : ici l'appui ouvre la feuille de statut.
+ */
+export function StatusPill({
+  status,
+  onPress,
+}: {
+  status: string;
+  onPress?: () => void;
+}) {
+  const tint = colors.status[status] ?? colors.status.CLOSED;
   return (
-    <View
+    <Pressable
+      // Décorative quand elle n'est pas cliquable : elle ne doit pas
+      // s'annoncer comme la commande de statut (ni la concurrencer au test).
+      accessibilityLabel={onPress ? "Statut de la conversation" : undefined}
+      onPress={onPress}
+      disabled={!onPress}
       style={[
         styles.pill,
         { backgroundColor: colors.statusBg[status] ?? colors.statusBg.CLOSED },
       ]}
     >
-      <Text
-        style={[styles.pillText, { color: colors.status[status] ?? colors.status.CLOSED }]}
-      >
+      <Text style={[styles.pillText, { color: tint }]}>
         {STATUS_LABELS[status] ?? status}
       </Text>
-    </View>
+      {onPress ? <ChevronDown size={12} color={tint} /> : null}
+    </Pressable>
   );
 }
 
@@ -48,16 +62,16 @@ export function MessageTicks({ status, light }: { status: string; light?: boolea
   const base = light ? colors.white : colors.muted;
 
   if (s === "FAILED" || s === "BOUNCED") {
-    return <Ionicons name="alert-circle" size={14} color={colors.danger} />;
+    return <AlertCircle size={14} strokeWidth={2.5} color={colors.danger} />;
   }
   if (s === "READ") {
-    return <Ionicons name="checkmark-done" size={15} color={colors.tickRead} />;
+    return <CheckCheck size={16} strokeWidth={2.5} color={colors.tickRead} />;
   }
   if (s === "DELIVERED") {
-    return <Ionicons name="checkmark-done" size={15} color={base} />;
+    return <CheckCheck size={16} strokeWidth={2.5} color={base} />;
   }
   // SENT, QUEUED, PENDING, SENDING
-  return <Ionicons name="checkmark" size={15} color={base} />;
+  return <Check size={16} strokeWidth={2.5} color={base} />;
 }
 
 const styles = StyleSheet.create({
@@ -72,6 +86,13 @@ const styles = StyleSheet.create({
   },
   unreadText: { color: colors.white, fontSize: 11, fontWeight: "700" },
   dot: { width: 8, height: 8, borderRadius: 4 },
-  pill: { paddingHorizontal: 10, paddingVertical: 3, borderRadius: radius.pill },
-  pillText: { fontSize: 11, fontWeight: "700" },
+  pill: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 4,
+    paddingHorizontal: 12,
+    paddingVertical: 4,
+    borderRadius: 16,
+  },
+  pillText: { fontSize: 12, fontWeight: "600" },
 });
