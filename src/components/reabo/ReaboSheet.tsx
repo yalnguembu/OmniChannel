@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { ArrowLeft, X } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { useIsDesktop } from "@/hooks/useIsDesktop";
 import { TONE_PRIMARY } from "./tone";
 
 interface ReaboSheetProps {
@@ -28,6 +29,12 @@ const DEFAULT_WIDTH = 420;
  * like the conversation's own details panel — the agent keeps the thread in
  * view while they work.
  *
+ * **One layout is mounted at a time.** They used to be rendered together and
+ * hidden from one another with `md:hidden` / `md:flex`, which put two copies of
+ * the children in the DOM — and a form inside then registered every field
+ * twice, so what was typed on a phone was read from the hidden desktop copy and
+ * came back empty.
+ *
  * It is deliberately *not* {@link ../whatsapp/shared/SidePanel}: that one is a
  * flex sibling of the chat column and can only be rendered from the chat
  * layout, while these flows open from inside the details panel, from a card, or
@@ -42,6 +49,8 @@ export const ReaboSheet: React.FC<ReaboSheetProps> = ({
   footer,
   width = DEFAULT_WIDTH,
 }) => {
+  const isDesktop = useIsDesktop();
+
   useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => {
@@ -103,10 +112,21 @@ export const ReaboSheet: React.FC<ReaboSheetProps> = ({
           />
 
           {/* ── Mobile: bottom sheet ── */}
+          {!isDesktop && (
           <motion.div
             role="dialog"
             aria-label={title}
-            className="fixed inset-x-0 bottom-0 z-[951] flex max-h-[88dvh] flex-col overflow-hidden rounded-t-2xl bg-white md:hidden"
+            // Sits above the keyboard rather than behind it: `bottom: 0` would
+            // anchor to the layout viewport, which the keyboard does not
+            // shrink, leaving the footer — and with it the committing button —
+            // off screen with no way to scroll to it. Both variables are
+            // published by `useViewportLock`; the fallbacks cover the case
+            // where this sheet is opened outside the inbox.
+            style={{
+              bottom: "var(--keyboard-inset, 0px)",
+              maxHeight: "calc(var(--app-height, 100dvh) * 0.88)",
+            }}
+            className="fixed inset-x-0 z-[951] flex flex-col overflow-hidden rounded-t-2xl bg-white"
             initial={{ y: "100%" }}
             animate={{ y: 0 }}
             exit={{ y: "100%" }}
@@ -119,13 +139,15 @@ export const ReaboSheet: React.FC<ReaboSheetProps> = ({
             {body}
             {foot}
           </motion.div>
+          )}
 
           {/* ── Desktop: right drawer ── */}
+          {isDesktop && (
           <motion.aside
             role="dialog"
             aria-label={title}
             style={{ width }}
-            className="fixed inset-y-0 right-0 z-[951] hidden flex-col border-l border-wa-border bg-white md:flex"
+            className="fixed inset-y-0 right-0 z-[951] flex flex-col border-l border-wa-border bg-white"
             initial={{ x: "100%" }}
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
@@ -135,6 +157,7 @@ export const ReaboSheet: React.FC<ReaboSheetProps> = ({
             {body}
             {foot}
           </motion.aside>
+          )}
         </React.Fragment>
       )}
     </AnimatePresence>

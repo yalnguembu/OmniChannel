@@ -48,6 +48,18 @@ export function useViewportLock(): void {
     const apply = () => {
       const height = viewport?.height ?? window.innerHeight;
       root.style.setProperty("--app-height", `${Math.round(height)}px`);
+
+      // How much of the layout viewport the keyboard covers.
+      //
+      // `position: fixed; bottom: 0` anchors to the *layout* viewport, which
+      // the keyboard does not shrink — so a bottom sheet lands behind it, and
+      // with the document locked nothing can scroll it back into view. Any
+      // such surface offsets itself by this value instead.
+      const inset = viewport
+        ? Math.max(0, window.innerHeight - (viewport.height + viewport.offsetTop))
+        : 0;
+      root.style.setProperty("--keyboard-inset", `${Math.round(inset)}px`);
+
       // iOS Safari scrolls the window on focus even with overflow hidden;
       // putting it back costs nothing when it has not moved.
       if (window.scrollY !== 0) window.scrollTo(0, 0);
@@ -65,6 +77,7 @@ export function useViewportLock(): void {
       window.removeEventListener("orientationchange", apply);
 
       root.style.removeProperty("--app-height");
+      root.style.removeProperty("--keyboard-inset");
       root.style.overflow = previous.rootOverflow;
       body.style.overflow = previous.bodyOverflow;
       body.style.overscrollBehavior = previous.bodyOverscroll;
